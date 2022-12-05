@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RemitoComun" pageWidth="595" pageHeight="419" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="dff49ebd-6ce0-4f9d-ac8a-7466b65e877f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="mm"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="cliente" class="java.lang.String">
+		<fieldDescription><![CDATA[cliente]]></fieldDescription>
+	</field>
+	<field name="ubicacion" class="java.lang.String">
+		<fieldDescription><![CDATA[ubicacion]]></fieldDescription>
+	</field>
+	<field name="idUbicacion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[idUbicacion]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="codigoUbicacion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[codigoUbicacion]]></fieldDescription>
+	</field>
+	<field name="fecha_Entrada" class="java.lang.String">
+		<fieldDescription><![CDATA[fecha_Entrada]]></fieldDescription>
+	</field>
+	<field name="idRemito" class="java.lang.Integer">
+		<fieldDescription><![CDATA[idRemito]]></fieldDescription>
+	</field>
+	<field name="numeroRemitoSalida" class="java.lang.Integer">
+		<fieldDescription><![CDATA[numeroRemitoSalida]]></fieldDescription>
+	</field>
+	<field name="remitoConformado" class="java.lang.String">
+		<fieldDescription><![CDATA[remitoConformado]]></fieldDescription>
+	</field>
+	<field name="cantBultos" class="java.lang.Integer">
+		<fieldDescription><![CDATA[cantBultos]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.util.List">
+		<fieldDescription><![CDATA[descripcion]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="90" splitType="Stretch">
+			<rectangle>
+				<reportElement x="28" y="33" width="529" height="45" uuid="3df7ecb0-0146-4e8f-ab86-ee3de5b1012f"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="28" y="7" width="162" height="22" uuid="3fdf08f7-189c-4652-9b85-12f141fb0c06"/>
+				<textElement>
+					<font fontName="Cambria" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REMITO DE SALIDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="413" y="48" width="50" height="15" uuid="01822e18-1d6e-4ea0-8eef-5fbe49857b17"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="413" y="63" width="110" height="15" uuid="87202ade-f14b-4357-a3e2-ec1817148af6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANT. BULTOS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="38" width="80" height="20" uuid="40adc7f1-4de3-40ec-a3ab-5d930b039f4b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="413" y="33" width="30" height="15" uuid="b8f21e0b-0063-41c0-bbb1-08e826efe131"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N°: ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="28" y="85" width="529" height="1" uuid="76488d19-5694-41f3-8388-778227a3734f"/>
+			</line>
+			<line>
+				<reportElement x="28" y="89" width="529" height="1" uuid="6a3924cf-9aa7-43f3-acbd-81d3b1ad38ae"/>
+			</line>
+			<textField>
+				<reportElement positionType="Float" x="114" y="38" width="288" height="40" uuid="295f1c9c-4e90-4578-b109-d43ae7e88854"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Cambria" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="443" y="33" width="100" height="15" uuid="fb5454e0-6879-44a2-9d63-f90d9bcc5b0e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{remitoConformado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="463" y="48" width="80" height="15" uuid="a16323ec-2b44-42b6-96df-45071b6aca1a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat( "dd/MM/yyyy",new Locale("es", "ES")).format (new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="523" y="63" width="20" height="15" uuid="2363b689-5f82-43ff-af19-9c6cc4b9528a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantBultos}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="406" y="33" width="1" height="45" uuid="0364a833-68ce-4b89-868c-a29df2a0aca1"/>
+			</line>
+		</band>
+	</title>
+	<detail>
+		<band height="230" splitType="Stretch">
+			<textField>
+				<reportElement x="34" y="36" width="523" height="194" uuid="5b4db7dd-6d64-408e-8b13-cc29e0153058"/>
+				<textElement textAlignment="Left">
+					<font fontName="Cambria" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}.toString().replace("[", " ").replace("]", "").replace(",", "")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="34" y="4" width="523" height="23" uuid="1a096567-b7d4-4861-a615-e41bee10a2a0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Cambria" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCIÓN]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="89" splitType="Stretch">
+			<line>
+				<reportElement x="28" y="19" width="529" height="1" uuid="51727bfd-48c0-4ee4-80fb-32c6f8cc98ad"/>
+			</line>
+			<line>
+				<reportElement x="28" y="23" width="529" height="1" uuid="617cfff8-cdf0-4743-ae58-8a6130191532"/>
+			</line>
+			<rectangle>
+				<reportElement x="28" y="30" width="187" height="50" uuid="c919fa71-e969-466f-81e2-f6981a8ac822"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="215" y="30" width="180" height="50" uuid="bd3e312f-83cb-46ff-910d-2080575ceb7a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="395" y="30" width="162" height="50" uuid="cfd40ed4-2be1-4d12-9046-ed9986a3f002"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="29" y="31" width="40" height="18" uuid="98023972-4021-4576-b87e-0597ee0db83e"/>
+				<textElement>
+					<font fontName="Cambria" size="10"/>
+				</textElement>
+				<text><![CDATA[Firma:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="215" y="30" width="52" height="18" uuid="98665573-ee1b-4384-8542-545bce7af38a"/>
+				<textElement>
+					<font fontName="Cambria" size="10"/>
+				</textElement>
+				<text><![CDATA[Aclaración:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="396" y="31" width="52" height="18" uuid="af5db58e-044a-42d0-abca-2a03a40348cd"/>
+				<textElement>
+					<font fontName="Cambria" size="10"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
