@@ -3,7 +3,7 @@ Drop DATABASE if exists `ordenesbrc`;
 CREATE DATABASE IF NOT EXISTS `ordenesbrc`;
 USE `ordenesbrc`;
 
-ALTER DATABASE ordenesbrc DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+#ALTER DATABASE ordenesbrc DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 #
 # Table structure for table 'Cliente'
 #
@@ -107,9 +107,9 @@ CREATE TABLE `Equipos` (
 # Dumping data for table 'Equipos'
 #
 
-INSERT INTO `Equipos` (`IdEquipo`, `Nombre`, `Modelo`, `Marca`, `NumeroDeSerie`,`FechaFabr`, `Aviso`, `ClienteCliente`, `RemitoCliente`, `idCliente`, `IdSucursal`) VALUES (1, 'Control de Puerta 220vac/250W', 'VVVF5', 'Fermator', '10/48306', NULL,"", NULL, NULL, 1,0 );
-INSERT INTO `Equipos` (`IdEquipo`, `Nombre`, `Modelo`, `Marca`, `NumeroDeSerie`,`FechaFabr`,`Aviso`, `ClienteCliente`, `RemitoCliente`, `idCliente`, `IdSucursal`) VALUES (2, 'Control de Puerta 220vac/250W', 'VVVF5', 'Fermator', '10/5613', NULL,"", NULL, NULL, 1, 0);
-INSERT INTO `Equipos` (`IdEquipo`, `Nombre`, `Modelo`, `Marca`, `NumeroDeSerie`,`FechaFabr`, `Aviso`, `ClienteCliente`, `RemitoCliente`, `idCliente`, `IdSucursal`) VALUES (3, 'Control de Puerta 220vac/250W', 'VVVF5', 'Fermator', '1/269271',NULL, "", NULL, NULL, 1, 0);
+# INSERT INTO `Equipos` (`IdEquipo`, `Nombre`, `Modelo`, `Marca`, `NumeroDeSerie`,`FechaFabr`, `Aviso`, `ClienteCliente`, `RemitoCliente`, `idCliente`, `IdSucursal`) VALUES (1, 'Control de Puerta 220vac/250W', 'VVVF5', 'Fermator', '10/48306', NULL,"", NULL, NULL, 1,0 );
+# INSERT INTO `Equipos` (`IdEquipo`, `Nombre`, `Modelo`, `Marca`, `NumeroDeSerie`,`FechaFabr`,`Aviso`, `ClienteCliente`, `RemitoCliente`, `idCliente`, `IdSucursal`) VALUES (2, 'Control de Puerta 220vac/250W', 'VVVF5', 'Fermator', '10/5613', NULL,"", NULL, NULL, 1, 0);
+# INSERT INTO `Equipos` (`IdEquipo`, `Nombre`, `Modelo`, `Marca`, `NumeroDeSerie`,`FechaFabr`, `Aviso`, `ClienteCliente`, `RemitoCliente`, `idCliente`, `IdSucursal`) VALUES (3, 'Control de Puerta 220vac/250W', 'VVVF5', 'Fermator', '1/269271',NULL, "", NULL, NULL, 1, 0);
 
 
 
@@ -199,8 +199,8 @@ PRIMARY KEY (idUsuario)
 
 INSERT INTO usuario SELECT 0,1,0,'','','','','','';
 INSERT INTO usuario SELECT 0,2,30925503,'Diego','Bertossi','1137688372','diego.bertossi@elsweb.com.ar','diego','1234';
-INSERT INTO usuario SELECT 0,3,30925501,'Juan','Perez','1137688372','diego.bertossi@elsweb.com.ar','juan','0000';
-INSERT INTO usuario SELECT 0,4,30925505,'Pedro','Zerez','1137688372','diego.bertossi@elsweb.com.ar','pedro','0000';
+# INSERT INTO usuario SELECT 0,3,30925501,'Juan','Perez','1137688372','diego.bertossi@elsweb.com.ar','juan','0000';
+# INSERT INTO usuario SELECT 0,4,30925505,'Pedro','Zerez','1137688372','diego.bertossi@elsweb.com.ar','pedro','0000';
 
 
 
@@ -249,7 +249,7 @@ CREATE TABLE `reparaciones` (
 # Dumping data for table 'reparaciones'
 #
 
-INSERT INTO `reparaciones` (`ELS`, `FechaEntrada`, `FechadeDiagnostico`, `Falla`, `Solucion`, `Informecliente`, `idUsuario`, `EstadoFisico`, `EstadoTecnico`, `EstadoComercial`, `RemitoCliente`, `OrdendeCompra`, `Agregadoaremito`, `RemitoGenerado`, `idEquipo`, `idRemito`, `PrecioPeso`, `PrecioDolar`, `InformeEnviado`, `FechAceptacion`, `PresupuestoGenerado`,`PresupuestoEnviado`, `Enviado`,`AvisoEnviado`, `Pago`) VALUES (1, '2017-09-06 00:00:00', '2017-09-11 00:00:00', '', '', '', 2, 'BRC', 'Reparado', 'Aceptado', NULL, '00001', 0, 0, 1, 0, 100, 0, 1, '2017-09-12 00:00:00', 1,0, 0, 0,50);
+#INSERT INTO `reparaciones` (`ELS`, `FechaEntrada`, `FechadeDiagnostico`, `Falla`, `Solucion`, `Informecliente`, `idUsuario`, `EstadoFisico`, `EstadoTecnico`, `EstadoComercial`, `RemitoCliente`, `OrdendeCompra`, `Agregadoaremito`, `RemitoGenerado`, `idEquipo`, `idRemito`, `PrecioPeso`, `PrecioDolar`, `InformeEnviado`, `FechAceptacion`, `PresupuestoGenerado`,`PresupuestoEnviado`, `Enviado`,`AvisoEnviado`, `Pago`) VALUES (1, '2017-09-06 00:00:00', '2017-09-11 00:00:00', '', '', '', 2, 'BRC', 'Reparado', 'Aceptado', NULL, '00001', 0, 0, 1, 0, 100, 0, 1, '2017-09-12 00:00:00', 1,0, 0, 0,50);
 #INSERT INTO `reparaciones` (`ELS`, `FechaEntrada`, `FechadeDiagnostico`, `Falla`, `Solucion`, `Informecliente`, `idUsuario`, `EstadoFisico`, `EstadoTecnico`, `EstadoComercial`, `RemitoCliente`, `OrdendeCompra`, `Agregadoaremito`, `RemitoGenerado`, `idEquipo`, `idRemito`, `PrecioPeso`, `PrecioDolar`, `InformeEnviado`, `FechAceptacion`, `PresupuestoGenerado`,`PresupuestoEnviado`, `Enviado`,`AvisoEnviado`, `Pago`) VALUES (2, '2017-09-06 00:00:00', '2017-09-11 00:00:00', 'No especifica', 'Tiene en corto un ULN2004 y eso ponÃ­a en corto varios puntos de la alimentaciÃ³n. Se reemplazÃ³ por el mismo sacado de otro equipo.', 'El equipo presenta fallas en la etapa de alimentaciÃ³n a la lÃ³gica de control, en la protecciÃ³n contra sobre tensiones de la entrada y en las fuentes de arranque. Se denotan componentes daÃ±ados en dichas etapas que generan ruido en las alimentaciones correspondientes, provocando fallas aleatorias y un mal funcionamiento general del equipo.\r\nSu reparaciÃ³n es posible.\r\nSe reemplazarÃ¡n los componentes daÃ±ados y el equipo serÃ¡ probado en banco bajo condiciones de laboratorio.', 3,  'BRC', 'Reparado', 'Aceptado', NULL, '00001', 0, 0, 2, 0, 1500, 0, 1, '2017-09-12 00:00:00', 1,0, 0,0, 1500);
 #INSERT INTO `reparaciones` (`ELS`, `FechaEntrada`, `FechadeDiagnostico`, `Falla`, `Solucion`, `Informecliente`, `idUsuario`, `EstadoFisico`, `EstadoTecnico`, `EstadoComercial`, `RemitoCliente`, `OrdendeCompra`, `Agregadoaremito`, `RemitoGenerado`, `idEquipo`, `idRemito`, `PrecioPeso`, `PrecioDolar`, `InformeEnviado`, `FechAceptacion`, `PresupuestoGenerado`, `PresupuestoEnviado`,`Enviado`,`AvisoEnviado`, `Pago`) VALUES (3, '2017-09-06 00:00:00', '2017-09-11 00:00:00', 'No especifica', 'Tiene daÃ±ada una protecciÃ³n gaseosa y evidencias de una explosiÃ³n que afectÃ³ al circuito impreso.El mismo\r\ndebe ser reconstuÃ­do y se debe limpiar la zonaafectada. Se reemplazarÃ¡ el componente daÃ±ado por el mismo sacado de otra placa. ELS: 0004', 'El equipo presenta fallas en la etapa de alimentaciÃ³n a la lÃ³gica de control, en la protecciÃ³n contra sobre tensiones de la entrada y en las fuentes de arranque. Se denotan componentes daÃ±ados en dichas etapas que generan ruido en las alimentaciones correspondientes, provocando fallas aleatorias y un mal funcionamiento general del equipo.\r\nSu reparaciÃ³n es posible.\r\nSe reemplazarÃ¡n los componentes daÃ±ados y el equipo serÃ¡ probado en banco bajo condiciones de laboratorio.', 4, 'BRC', 'Reparado', 'Aceptado', NULL, NULL, 0, 0, 3, 0, 1500, 0, 1, '2017-12-21 00:00:00', 1,0, 0, 0,0);
 
@@ -274,8 +274,7 @@ CREATE TABLE `reemplazos` (
   PRIMARY KEY (`idReemplazos`)
 ) ;
 
-INSERT INTO `reemplazos`(`idReemplazos`, `ELS`, `ref`, `original`, `reemplazo`, `notas`) VALUES (1, 1,"L23","LM24","L24","");
-
+#INSERT INTO `reemplazos`(`idReemplazos`, `ELS`, `ref`, `original`, `reemplazo`, `notas`) VALUES (1, 1,"L23","LM24","L24","");
 
 # Table structure for table 'Sucursal'
 #

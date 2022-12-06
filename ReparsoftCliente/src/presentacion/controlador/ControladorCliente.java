@@ -64,7 +64,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 		this.Clientes_en_tabla = agenda.obtenerCliente();
 
-		for (int i = 1; i < this.Clientes_en_tabla.size(); i++) {
+		for (int i = 0; i < this.Clientes_en_tabla.size(); i++) {
 			Object[] fila = { this.Clientes_en_tabla.get(i).getRazon_Social(), this.Clientes_en_tabla.get(i).getCUIT(),
 					this.Clientes_en_tabla.get(i).getDomicilio(), this.Clientes_en_tabla.get(i).getContacto(),
 					this.Clientes_en_tabla.get(i).getTelefonoContacto(),
@@ -585,7 +585,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				int i = this.ventanaClientes.getTablaClientes().getSelectedRow();
 				if (i != -1) {
 					if (!Clientes_en_tabla.isEmpty()) {
-						clienteElegido = Clientes_en_tabla.get(i+1);
+						clienteElegido = Clientes_en_tabla.get(i);
 
 						this.ventanaClientes.getTxtNombreCliente().setText(clienteElegido.getRazon_Social());
 						this.ventanaClientes.getTxtCUIT().setText(clienteElegido.getCUIT());
