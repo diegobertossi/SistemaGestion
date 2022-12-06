@@ -3,7 +3,7 @@ Drop DATABASE if exists `ordenesbrc`;
 CREATE DATABASE IF NOT EXISTS `ordenesbrc`;
 USE `ordenesbrc`;
 
-#ALTER DATABASE ordenesbrc DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER DATABASE ordenesbrc DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 #
 # Table structure for table 'Cliente'
 #
@@ -29,11 +29,9 @@ CREATE TABLE `Cliente` (
 # Dumping data for table 'Cliente'
 #
 
-INSERT INTO `Cliente` (`idCliente`, `nombre`, `CUIT`, `Domicilio`, `TelefonoEmpresa`, `Contacto`, `TelefonoContacto`, `CorreoElectronico`) VALUES (0, '', 0, '',0, '', 0, '');
-
-#INSERT INTO `Cliente` (`idCliente`, `nombre`, `CUIT`, `Domicilio`, `TelefonoEmpresa`, `Contacto`, `TelefonoContacto`, `CorreoElectronico`) VALUES (1, 'Ascensores Lucero', '30706433585', 'Las Violetas 1215, San Carlos de Bariloche, RÃ­o Negro', 542944425706, 'Ricardo Lucero', 2944602590, 'luceroasc@speedy.com.ar');
-#INSERT INTO `Cliente` (`idCliente`, `nombre`, `CUIT`, `Domicilio`, `TelefonoEmpresa`, `Contacto`, `TelefonoContacto`, `CorreoElectronico`) VALUES (2, 'Felipe', NULL, 'Personal', 0, NULL, 2944685047, NULL);
-#INSERT INTO `Cliente` (`idCliente`, `nombre`, `CUIT`, `Domicilio`, `TelefonoEmpresa`, `Contacto`, `TelefonoContacto`, `CorreoElectronico`) VALUES (3, 'Total Clima', '30708448202', 'Elordi 368 (8400), San Carlos de Bariloche. Rio Negro, Argentina', 2944431070, 'HÃ©ctor Spirito', 2944487014, 'info@totalclimaonline.com.ar');
+INSERT INTO `Cliente` (`idCliente`, `nombre`, `CUIT`, `Domicilio`, `TelefonoEmpresa`, `Contacto`, `TelefonoContacto`, `CorreoElectronico`) VALUES (1, 'Ascensores Lucero', '30706433585', 'Las Violetas 1215, San Carlos de Bariloche, RÃ­o Negro', 542944425706, 'Ricardo Lucero', 2944602590, 'luceroasc@speedy.com.ar');
+INSERT INTO `Cliente` (`idCliente`, `nombre`, `CUIT`, `Domicilio`, `TelefonoEmpresa`, `Contacto`, `TelefonoContacto`, `CorreoElectronico`) VALUES (2, 'Felipe', NULL, 'Personal', 0, NULL, 2944685047, NULL);
+INSERT INTO `Cliente` (`idCliente`, `nombre`, `CUIT`, `Domicilio`, `TelefonoEmpresa`, `Contacto`, `TelefonoContacto`, `CorreoElectronico`) VALUES (3, 'Total Clima', '30708448202', 'Elordi 368 (8400), San Carlos de Bariloche. Rio Negro, Argentina', 2944431070, 'HÃ©ctor Spirito', 2944487014, 'info@totalclimaonline.com.ar');
 
 
 
@@ -71,14 +69,12 @@ CREATE TABLE `Sucursal` (
 # Dumping data for table 'Sucursal'
 #
 
-INSERT INTO `Sucursal` (`IdSucursal`, `NombreSucursal`, `idCliente`, `DomicilioSucursal`, `ContactoSucursal`, `TelefonoSucursal`, `CorreoElectronico`) VALUES (0, '', 0, NULL, NULL, NULL, NULL);
-
 #INSERT INTO `Sucursal` (`IdSucursal`, `NombreSucursal`, `idCliente`, `DomicilioSucursal`, `ContactoSucursal`, `TelefonoSucursal`, `CorreoElectronico`) VALUES (5, 'CABA', 9, NULL, NULL, NULL, NULL);
 #INSERT INTO `Sucursal` (`IdSucursal`, `NombreSucursal`, `idCliente`, `DomicilioSucursal`, `ContactoSucursal`, `TelefonoSucursal`, `CorreoElectronico`) VALUES (6, 'MDP', 9, NULL, NULL, NULL, NULL);
 #INSERT INTO `Sucursal` (`IdSucursal`, `NombreSucursal`, `idCliente`, `DomicilioSucursal`, `ContactoSucursal`, `TelefonoSucursal`, `CorreoElectronico`) VALUES (7, 'BRC', 9, NULL, NULL, NULL, NULL);
-#INSERT INTO `Sucursal` (`IdSucursal`, `NombreSucursal`, `idCliente`, `DomicilioSucursal`, `ContactoSucursal`, `TelefonoSucursal`, `CorreoElectronico`) VALUES (0, '', 1, NULL, NULL, NULL, NULL);
-#INSERT INTO `Sucursal` (`IdSucursal`, `NombreSucursal`, `idCliente`, `DomicilioSucursal`, `ContactoSucursal`, `TelefonoSucursal`, `CorreoElectronico`) VALUES (1, '', 2, NULL, NULL, NULL, NULL);
-#INSERT INTO `Sucursal` (`IdSucursal`, `NombreSucursal`, `idCliente`, `DomicilioSucursal`, `ContactoSucursal`, `TelefonoSucursal`, `CorreoElectronico`) VALUES (2, '', 3, NULL, NULL, NULL, NULL);
+INSERT INTO `Sucursal` (`IdSucursal`, `NombreSucursal`, `idCliente`, `DomicilioSucursal`, `ContactoSucursal`, `TelefonoSucursal`, `CorreoElectronico`) VALUES (0, '', 1, NULL, NULL, NULL, NULL);
+INSERT INTO `Sucursal` (`IdSucursal`, `NombreSucursal`, `idCliente`, `DomicilioSucursal`, `ContactoSucursal`, `TelefonoSucursal`, `CorreoElectronico`) VALUES (1, '', 2, NULL, NULL, NULL, NULL);
+INSERT INTO `Sucursal` (`IdSucursal`, `NombreSucursal`, `idCliente`, `DomicilioSucursal`, `ContactoSucursal`, `TelefonoSucursal`, `CorreoElectronico`) VALUES (2, '', 3, NULL, NULL, NULL, NULL);
 
 
 
@@ -111,11 +107,9 @@ CREATE TABLE `Equipos` (
 # Dumping data for table 'Equipos'
 #
 
-#INSERT INTO `Equipos` (`IdEquipo`, `Nombre`, `Modelo`, `Marca`, `NumeroDeSerie`,`FechaFabr`, `Aviso`, `ClienteCliente`, `RemitoCliente`, `idCliente`, `IdSucursal`) VALUES (0, '', '', '', '', NULL,"", NULL, NULL, 0,0 );
-
-#INSERT INTO `Equipos` (`IdEquipo`, `Nombre`, `Modelo`, `Marca`, `NumeroDeSerie`,`FechaFabr`, `Aviso`, `ClienteCliente`, `RemitoCliente`, `idCliente`, `IdSucursal`) VALUES (1, 'Control de Puerta 220vac/250W', 'VVVF5', 'Fermator', '10/48306', NULL,"", NULL, NULL, 0,0 );
-#INSERT INTO `Equipos` (`IdEquipo`, `Nombre`, `Modelo`, `Marca`, `NumeroDeSerie`,`FechaFabr`,`Aviso`, `ClienteCliente`, `RemitoCliente`, `idCliente`, `IdSucursal`) VALUES (2, 'Control de Puerta 220vac/250W', 'VVVF5', 'Fermator', '10/5613', NULL,"", NULL, NULL, 1, 0);
-#INSERT INTO `Equipos` (`IdEquipo`, `Nombre`, `Modelo`, `Marca`, `NumeroDeSerie`,`FechaFabr`, `Aviso`, `ClienteCliente`, `RemitoCliente`, `idCliente`, `IdSucursal`) VALUES (3, 'Control de Puerta 220vac/250W', 'VVVF5', 'Fermator', '1/269271',NULL, "", NULL, NULL, 1, 0);
+INSERT INTO `Equipos` (`IdEquipo`, `Nombre`, `Modelo`, `Marca`, `NumeroDeSerie`,`FechaFabr`, `Aviso`, `ClienteCliente`, `RemitoCliente`, `idCliente`, `IdSucursal`) VALUES (1, 'Control de Puerta 220vac/250W', 'VVVF5', 'Fermator', '10/48306', NULL,"", NULL, NULL, 1,0 );
+INSERT INTO `Equipos` (`IdEquipo`, `Nombre`, `Modelo`, `Marca`, `NumeroDeSerie`,`FechaFabr`,`Aviso`, `ClienteCliente`, `RemitoCliente`, `idCliente`, `IdSucursal`) VALUES (2, 'Control de Puerta 220vac/250W', 'VVVF5', 'Fermator', '10/5613', NULL,"", NULL, NULL, 1, 0);
+INSERT INTO `Equipos` (`IdEquipo`, `Nombre`, `Modelo`, `Marca`, `NumeroDeSerie`,`FechaFabr`, `Aviso`, `ClienteCliente`, `RemitoCliente`, `idCliente`, `IdSucursal`) VALUES (3, 'Control de Puerta 220vac/250W', 'VVVF5', 'Fermator', '1/269271',NULL, "", NULL, NULL, 1, 0);
 
 
 
@@ -177,7 +171,7 @@ nombre 		VARCHAR(50),
 PRIMARY KEY (idRol)
 );
 
-#INSERT INTO rol SELECT 0,'Default';
+INSERT INTO rol SELECT 0,'Default';
 INSERT INTO rol SELECT 0,'Administrador Programador';
 INSERT INTO rol SELECT 0,'Tecnico';
 INSERT INTO rol SELECT 0,'Contable';
@@ -205,8 +199,8 @@ PRIMARY KEY (idUsuario)
 
 INSERT INTO usuario SELECT 0,1,0,'','','','','','';
 INSERT INTO usuario SELECT 0,2,30925503,'Diego','Bertossi','1137688372','diego.bertossi@elsweb.com.ar','diego','1234';
-#INSERT INTO usuario SELECT 0,3,30925501,'Juan','Perez','1137688372','diego.bertossi@elsweb.com.ar','juan','0000';
-#INSERT INTO usuario SELECT 0,4,30925505,'Pedro','Zerez','1137688372','diego.bertossi@elsweb.com.ar','pedro','0000';
+INSERT INTO usuario SELECT 0,3,30925501,'Juan','Perez','1137688372','diego.bertossi@elsweb.com.ar','juan','0000';
+INSERT INTO usuario SELECT 0,4,30925505,'Pedro','Zerez','1137688372','diego.bertossi@elsweb.com.ar','pedro','0000';
 
 
 
@@ -218,13 +212,13 @@ INSERT INTO usuario SELECT 0,2,30925503,'Diego','Bertossi','1137688372','diego.b
 DROP TABLE IF EXISTS `reparaciones`;
 
 CREATE TABLE `reparaciones` (
-  `ELS` INTEGER NOT NULL DEFAULT 0 , 
+  `ELS` INTEGER NOT NULL DEFAULT 0, 
   `FechaEntrada` DATETIME DEFAULT null ,  
   `FechadeDiagnostico` DATETIME DEFAULT null, 
   `Falla` VARCHAR(1000), 
   `Solucion` LONGTEXT, 
   `Informecliente` LONGTEXT, 
-  `idUsuario` INTEGER, 
+  `idUsuario` INTEGER DEFAULT 0, 
   `EstadoFisico` VARCHAR(255), 
   `EstadoTecnico` VARCHAR(255), 
   `EstadoComercial` VARCHAR(255), 
@@ -232,8 +226,8 @@ CREATE TABLE `reparaciones` (
   `OrdendeCompra` VARCHAR(255), 
   `Agregadoaremito` TINYINT(1) DEFAULT 0, 
   `RemitoGenerado` TINYINT(1) DEFAULT 0, 
-  `idEquipo` INTEGER , 
-  `idRemito` INTEGER, 
+  `idEquipo` INTEGER DEFAULT 0, 
+  `idRemito` INTEGER DEFAULT 0, 
   `PrecioPeso` DECIMAL(19,4) DEFAULT 0, 
   `PrecioDolar` DECIMAL(19,4) DEFAULT 0, 
   `InformeEnviado` TINYINT(1) DEFAULT 0, 
@@ -255,7 +249,7 @@ CREATE TABLE `reparaciones` (
 # Dumping data for table 'reparaciones'
 #
 
-#INSERT INTO `reparaciones` (`ELS`, `FechaEntrada`, `FechadeDiagnostico`, `Falla`, `Solucion`, `Informecliente`, `idUsuario`, `EstadoFisico`, `EstadoTecnico`, `EstadoComercial`, `RemitoCliente`, `OrdendeCompra`, `Agregadoaremito`, `RemitoGenerado`, `idEquipo`, `idRemito`, `PrecioPeso`, `PrecioDolar`, `InformeEnviado`, `FechAceptacion`, `PresupuestoGenerado`,`PresupuestoEnviado`, `Enviado`,`AvisoEnviado`, `Pago`) VALUES (0, NULL, NULL, '', '', '', 1, '', '', '', NULL, '', 0, 0, 0, 0, 0, 0, 0, NULL, 0,0, 0, 0,0);
+INSERT INTO `reparaciones` (`ELS`, `FechaEntrada`, `FechadeDiagnostico`, `Falla`, `Solucion`, `Informecliente`, `idUsuario`, `EstadoFisico`, `EstadoTecnico`, `EstadoComercial`, `RemitoCliente`, `OrdendeCompra`, `Agregadoaremito`, `RemitoGenerado`, `idEquipo`, `idRemito`, `PrecioPeso`, `PrecioDolar`, `InformeEnviado`, `FechAceptacion`, `PresupuestoGenerado`,`PresupuestoEnviado`, `Enviado`,`AvisoEnviado`, `Pago`) VALUES (1, '2017-09-06 00:00:00', '2017-09-11 00:00:00', '', '', '', 2, 'BRC', 'Reparado', 'Aceptado', NULL, '00001', 0, 0, 1, 0, 100, 0, 1, '2017-09-12 00:00:00', 1,0, 0, 0,50);
 #INSERT INTO `reparaciones` (`ELS`, `FechaEntrada`, `FechadeDiagnostico`, `Falla`, `Solucion`, `Informecliente`, `idUsuario`, `EstadoFisico`, `EstadoTecnico`, `EstadoComercial`, `RemitoCliente`, `OrdendeCompra`, `Agregadoaremito`, `RemitoGenerado`, `idEquipo`, `idRemito`, `PrecioPeso`, `PrecioDolar`, `InformeEnviado`, `FechAceptacion`, `PresupuestoGenerado`,`PresupuestoEnviado`, `Enviado`,`AvisoEnviado`, `Pago`) VALUES (2, '2017-09-06 00:00:00', '2017-09-11 00:00:00', 'No especifica', 'Tiene en corto un ULN2004 y eso ponÃ­a en corto varios puntos de la alimentaciÃ³n. Se reemplazÃ³ por el mismo sacado de otro equipo.', 'El equipo presenta fallas en la etapa de alimentaciÃ³n a la lÃ³gica de control, en la protecciÃ³n contra sobre tensiones de la entrada y en las fuentes de arranque. Se denotan componentes daÃ±ados en dichas etapas que generan ruido en las alimentaciones correspondientes, provocando fallas aleatorias y un mal funcionamiento general del equipo.\r\nSu reparaciÃ³n es posible.\r\nSe reemplazarÃ¡n los componentes daÃ±ados y el equipo serÃ¡ probado en banco bajo condiciones de laboratorio.', 3,  'BRC', 'Reparado', 'Aceptado', NULL, '00001', 0, 0, 2, 0, 1500, 0, 1, '2017-09-12 00:00:00', 1,0, 0,0, 1500);
 #INSERT INTO `reparaciones` (`ELS`, `FechaEntrada`, `FechadeDiagnostico`, `Falla`, `Solucion`, `Informecliente`, `idUsuario`, `EstadoFisico`, `EstadoTecnico`, `EstadoComercial`, `RemitoCliente`, `OrdendeCompra`, `Agregadoaremito`, `RemitoGenerado`, `idEquipo`, `idRemito`, `PrecioPeso`, `PrecioDolar`, `InformeEnviado`, `FechAceptacion`, `PresupuestoGenerado`, `PresupuestoEnviado`,`Enviado`,`AvisoEnviado`, `Pago`) VALUES (3, '2017-09-06 00:00:00', '2017-09-11 00:00:00', 'No especifica', 'Tiene daÃ±ada una protecciÃ³n gaseosa y evidencias de una explosiÃ³n que afectÃ³ al circuito impreso.El mismo\r\ndebe ser reconstuÃ­do y se debe limpiar la zonaafectada. Se reemplazarÃ¡ el componente daÃ±ado por el mismo sacado de otra placa. ELS: 0004', 'El equipo presenta fallas en la etapa de alimentaciÃ³n a la lÃ³gica de control, en la protecciÃ³n contra sobre tensiones de la entrada y en las fuentes de arranque. Se denotan componentes daÃ±ados en dichas etapas que generan ruido en las alimentaciones correspondientes, provocando fallas aleatorias y un mal funcionamiento general del equipo.\r\nSu reparaciÃ³n es posible.\r\nSe reemplazarÃ¡n los componentes daÃ±ados y el equipo serÃ¡ probado en banco bajo condiciones de laboratorio.', 4, 'BRC', 'Reparado', 'Aceptado', NULL, NULL, 0, 0, 3, 0, 1500, 0, 1, '2017-12-21 00:00:00', 1,0, 0, 0,0);
 
@@ -280,7 +274,7 @@ CREATE TABLE `reemplazos` (
   PRIMARY KEY (`idReemplazos`)
 ) ;
 
-#INSERT INTO `reemplazos`(`idReemplazos`, `ELS`, `ref`, `original`, `reemplazo`, `notas`) VALUES (1, 1,"L23","LM24","L24","");
+INSERT INTO `reemplazos`(`idReemplazos`, `ELS`, `ref`, `original`, `reemplazo`, `notas`) VALUES (1, 1,"L23","LM24","L24","");
 
 
 # Table structure for table 'Sucursal'
