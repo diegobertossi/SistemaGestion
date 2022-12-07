@@ -50,6 +50,7 @@ import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.SpellChecker;
 import com.itextpdf.text.log.SysoCounter;
 import com.sun.org.apache.xml.internal.utils.StringComparable;
+import com.sun.xml.internal.org.jvnet.fastinfoset.sax.ExtendedContentHandler;
 import com.toedter.calendar.JDateChooser;
 
 import modelo.Agenda;
@@ -110,7 +111,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private ControladorUsuLogin controladorUsuLogin;
 	private ControladorPresupuestos controladorpresupuestos;
 	private ControladorSalidas controladorSalidas;
-
+	
 	private List<RepuestosDTO> Repuestos_en_tabla;
 	private List<ReparacionDTO> Reparaciones_en_tabla;
 	private ReparacionDTO Reparacion_en_tabla;
@@ -159,7 +160,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
 	public ControladorReparacion(VentanaEquipos ventanaEquipos, ControladorUsuLogin controladorUsuLogin,
-			Agenda agenda) {
+			Agenda agenda ) {
 
 		if (ventanaListadoReparaciones == null) {
 			this.ventanaEquipos = ventanaEquipos;
@@ -169,7 +170,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			this.reparacion = null;
 			this.Repuestos_en_tabla = null;
 			this.controladorUsuLogin = controladorUsuLogin;
-
+		
 		}
 
 	}
@@ -331,7 +332,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaAgregarEquipo.getBtnGenerarSerie().addActionListener(this);
 			ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(false);
 			ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().addActionListener(this);
-
+	
 			llenarComboCliente();
 			llenarComboSucursal();
 			llenarComboNombreEquipo();
@@ -1003,9 +1004,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 					this.ventanaClientesWSP.getBtnEliminarCliente().setEnabled(true);
 					this.ventanaClientesWSP.getBtnEditarCliente().setEnabled(true);
-//					
-//					JOptionPane.showMessageDialog(null, "<html><p>Usuario Editado</p></html>", "Edición Exitosa",
-//							JOptionPane.INFORMATION_MESSAGE);
+
 
 					JOptionPane.showMessageDialog(null, new JLabel("Usuario Editado"), "Edición Exitosa",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -1812,6 +1811,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaVerificarIngresoAnterior = null;
 
 		}
+		
+		
 
 		else if (this.ventanaAgregarEquipo != null
 				&& e.getSource() == this.ventanaAgregarEquipo.getBotonNuevaReparacion()) {

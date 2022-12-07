@@ -58,7 +58,6 @@ public class VentanaAgregarEquipo extends JFrame {
 	private JButton BotonGuardar;
 	private JButton BotonGenerarRegistro;
 	private JButton BotonVerificarIngresoAnterior;
-	private JButton BotonAltaCliente;
 	private JButton BotonNuevaReparacion;
 	private JButton btnGenerarSerie;
 	private JButton btnFechaDefault;
@@ -369,13 +368,6 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 
-		BotonAltaCliente = new JButton("<html><center>Alta Cliente</html>");
-		BotonAltaCliente.setBackground(new Color(152, 251, 152));
-		BotonAltaCliente.setBounds(475, 11, 105, 45);
-		panel_3.add(BotonAltaCliente);
-		BotonAltaCliente.setForeground(Color.BLACK);
-		BotonAltaCliente.setFont(new Font("Cambria", Font.BOLD, 14));
-
 		BotonNuevaReparacion = new JButton("<html><center>Nueva Reparaci\u00F3n</html>");
 		BotonNuevaReparacion.setEnabled(false);
 		BotonNuevaReparacion.setBackground(new Color(152, 251, 152));
@@ -638,13 +630,6 @@ public class VentanaAgregarEquipo extends JFrame {
 		this.textRemitoCliente = textRemitoCliente;
 	}
 
-	public JButton getBotonAltaCliente() {
-		return BotonAltaCliente;
-	}
-
-	public void setBotonAltaCliente(JButton botonAltaCliente) {
-		BotonAltaCliente = botonAltaCliente;
-	}
 
 	public JButton getBtnGenerarSerie() {
 		return btnGenerarSerie;
