@@ -50,7 +50,7 @@ import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.SpellChecker;
 import com.itextpdf.text.log.SysoCounter;
 import com.sun.org.apache.xml.internal.utils.StringComparable;
-import com.sun.xml.internal.org.jvnet.fastinfoset.sax.ExtendedContentHandler;
+//import com.sun.xml.internal.org.jvnet.fastinfoset.sax.ExtendedContentHandler;
 import com.toedter.calendar.JDateChooser;
 
 import modelo.Agenda;
