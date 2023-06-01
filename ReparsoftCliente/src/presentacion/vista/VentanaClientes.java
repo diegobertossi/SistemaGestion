@@ -48,7 +48,7 @@ public class VentanaClientes extends JFrame {
 	private DefaultTableModel modelClientes;
 	private String[] nombreColumnas = { "Nombre", "CUIT" };
 	// private String[] nombreColumnas = {"Nombre","CUIT",
-	// "Dirección","Contacto", "Tel. Contácto", "Correo"};
+	// "Direcciï¿½n","Contacto", "Tel. Contï¿½cto", "Correo"};
 	private JPanel panel;
 	private ControladorCliente controladorCliente;
 
@@ -126,7 +126,7 @@ public class VentanaClientes extends JFrame {
 		};
 
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException

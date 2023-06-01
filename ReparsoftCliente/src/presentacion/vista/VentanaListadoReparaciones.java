@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+//import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -61,7 +61,7 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JTable tblReparaciones_1;
 	private DefaultTableModel modelReparaciones;
 	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
-			"N° SERIE", "AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
+			"Nï¿½ SERIE", "AVISO", "REVISIï¿½N", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "Tï¿½CNICO",
 			"UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV" };
 
 	private JButton btnFiltrar;
@@ -178,8 +178,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		tblReparaciones_1 = new JTable(modelReparaciones);
 
 		modelReparaciones = new DefaultTableModel(new Object[][] {},
-				new String[] { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "N° SERIE",
-						"AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
+				new String[] { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "NÂ° SERIE",
+						"AVISO", "REVISIÃ“N", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÃ‰CNICO",
 						"UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV" }) {
 
 			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
@@ -199,14 +199,18 @@ public class VentanaListadoReparaciones extends JFrame {
 			}
 
 		};
+		
+		
 
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+			//UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			//UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 

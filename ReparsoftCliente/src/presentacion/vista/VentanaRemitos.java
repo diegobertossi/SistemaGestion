@@ -68,7 +68,7 @@ public class VentanaRemitos extends JFrame {
 	private JPanel contentPane;
 	private JTable tblEquiposParaRemito;
 	private DefaultTableModel modelEquiposParaRemito;
-	private String[] nombreColumnas = { "ELS","EQUIPO", "MARCA", "MODELO","N° SERIE", "AVISO", "ESTADO TEC", "ESTADO COM", "AGREGAR A REMITO" };
+	private String[] nombreColumnas = { "ELS","EQUIPO", "MARCA", "MODELO","Nï¿½ SERIE", "AVISO", "ESTADO TEC", "ESTADO COM", "AGREGAR A REMITO" };
 	public static int est;
 	private JPanel panel;
 	private JScrollPane  scrollPane ;
@@ -156,7 +156,7 @@ public class VentanaRemitos extends JFrame {
 		tblEquiposParaRemito = new JTable(modelEquiposParaRemito);
 
 		modelEquiposParaRemito = new DefaultTableModel(new Object[][] {},
-				new String[] { "ELS","EQUIPO", "MARCA", "MODELO","N° SERIE", "AVISO", "ESTADO TEC", "ESTADO COM", "AGREGAR A REMITO" }) {
+				new String[] { "ELS","EQUIPO", "MARCA", "MODELO","Nï¿½ SERIE", "AVISO", "ESTADO TEC", "ESTADO COM", "AGREGAR A REMITO" }) {
 
 			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
 					String.class, String.class, String.class, Boolean.class };
@@ -173,7 +173,7 @@ public class VentanaRemitos extends JFrame {
 		};
 
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -396,7 +396,7 @@ public class VentanaRemitos extends JFrame {
             mascara = new MaskFormatter("########");
             mascara.setPlaceholderCharacter('#');
        } catch (ParseException e) {
-           // Algún error que pueda ocurrir
+           // Algï¿½n error que pueda ocurrir
            e.printStackTrace();
        }
        return mascara;

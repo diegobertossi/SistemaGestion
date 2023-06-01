@@ -127,7 +127,7 @@ public class VentanaRolesUsuarios extends JFrame {
 		};
 
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException

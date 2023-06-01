@@ -62,7 +62,7 @@ public class VentanaListadoReparacionesPresupuestos extends JFrame {
 	private JTable tblReparaciones_1;
 	private DefaultTableModel modelReparaciones;
 	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
-			"N° SERIE", "AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
+			"Nï¿½ SERIE", "AVISO", "REVISIï¿½N", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "Tï¿½CNICO",
 			"UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO" };
 
 	private JButton btnFiltrar;
@@ -181,8 +181,8 @@ public class VentanaListadoReparacionesPresupuestos extends JFrame {
 		tblReparaciones_1 = new JTable(modelReparaciones);
 
 		modelReparaciones = new DefaultTableModel(new Object[][] {},
-				new String[] { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "N° SERIE",
-						"AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
+				new String[] { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "Nï¿½ SERIE",
+						"AVISO", "REVISIï¿½N", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "Tï¿½CNICO",
 						"UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO" }) {
 
 			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
@@ -204,7 +204,7 @@ public class VentanaListadoReparacionesPresupuestos extends JFrame {
 		};
 
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
