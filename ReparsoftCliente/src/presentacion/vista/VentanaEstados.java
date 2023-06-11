@@ -178,7 +178,7 @@ public class VentanaEstados extends JFrame
 		rdbtnNoTieneReparacion.setBounds(155, 61, 139, 23);
 		panel_3.add(rdbtnNoTieneReparacion);
 		
-		rdbtnNoAceptaron = new JRadioButton("No Aceptaron Reparaci\u00F3n");
+		rdbtnNoAceptaron = new JRadioButton("No Aceptaron Reparación");
 		rdbtnNoAceptaron.setBackground(SystemColor.activeCaption);
 		rdbtnNoAceptaron.setFont(new Font("Cambria", Font.PLAIN, 12));
 		rdbtnNoAceptaron.setBounds(155, 89, 163, 23);
