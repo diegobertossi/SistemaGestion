@@ -88,7 +88,7 @@ public class VistaPrincipal extends JFrame {
 		botonEquipos.setBounds(11, 37, 200, 73);
 		botonEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonEquipos.setFont(new Font("Arial", Font.BOLD, 12));
-		botonEquipos.setToolTipText("Ingreso y visualizaci\u00F3n de equipos al Sistema");
+		botonEquipos.setToolTipText("Ingreso y visualización de equipos al Sistema");
 		botonEquipos.setIcon(new ImageIcon(this.getClass().getResource("/Motherboard_icon-icons.com_55228.png")));
 		panelDeControl.add(botonEquipos);
 
@@ -97,11 +97,11 @@ public class VistaPrincipal extends JFrame {
 		botonSalidas.setBounds(231, 38, 200, 73);
 		botonSalidas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonSalidas.setFont(new Font("Arial", Font.BOLD, 12));
-		botonSalidas.setToolTipText("Egreso de equipos y generaci\u00F3n de Remitos");
+		botonSalidas.setToolTipText("Egreso de equipos y generaciÃ³n de Remitos");
 		botonSalidas.setIcon(new ImageIcon(this.getClass().getResource("/package.png")));
 		panelDeControl.add(botonSalidas);
 
-		botonBusquedas = new JButton("B\u00DASQUEDAS");
+		botonBusquedas = new JButton("BUDASQUEDAS");
 		botonBusquedas.setForeground(new Color(0, 0, 128));
 		botonBusquedas.setBounds(10, 122, 200, 73);
 		botonBusquedas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -115,7 +115,7 @@ public class VistaPrincipal extends JFrame {
 		botonListados.setBounds(450, 36, 197, 73);
 		botonListados.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonListados.setFont(new Font("Arial", Font.BOLD, 12));
-		botonListados.setToolTipText("LIstados de equipos.");
+		botonListados.setToolTipText("Listados de equipos.");
 		botonListados.setIcon(new ImageIcon(this.getClass().getResource("/notes_64x64.png")));
 		panelDeControl.add(botonListados);
 
@@ -124,7 +124,7 @@ public class VistaPrincipal extends JFrame {
 		botonClientes.setBounds(231, 124, 200, 73);
 		botonClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonClientes.setFont(new Font("Arial", Font.BOLD, 12));
-		botonClientes.setToolTipText("Visualizaci\u00F3n y alta de Clientes");
+		botonClientes.setToolTipText("Visualización y alta de Clientes");
 		botonClientes.setIcon(new ImageIcon(this.getClass().getResource("/admin_64x64.png")));
 		panelDeControl.add(botonClientes);
 
@@ -133,7 +133,7 @@ public class VistaPrincipal extends JFrame {
 		botonPresupuestos.setBounds(450, 122, 197, 73);
 		botonPresupuestos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonPresupuestos.setFont(new Font("Arial", Font.BOLD, 12));
-		botonPresupuestos.setToolTipText("Generaci\u00F3n de Presupuestos, pendientes e Ingreso de Pagos.");
+		botonPresupuestos.setToolTipText("Generación de Presupuestos, pendientes e Ingreso de Pagos.");
 		botonPresupuestos.setIcon(new ImageIcon(this.getClass().getResource("/presupuesto.png")));
 		panelDeControl.add(botonPresupuestos);
 
@@ -142,7 +142,7 @@ public class VistaPrincipal extends JFrame {
 		botonUsuarios.setBounds(10, 208, 200, 73);
 		botonUsuarios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonUsuarios.setFont(new Font("Arial", Font.BOLD, 12));
-		botonUsuarios.setToolTipText("Gesti\u00F3n de los Usuarios del Sistema.");
+		botonUsuarios.setToolTipText("GestiÃ³n de los Usuarios del Sistema.");
 		botonUsuarios.setIcon(new ImageIcon(this.getClass().getResource("/Usuarios.png")));
 		panelDeControl.add(botonUsuarios);
 
@@ -155,7 +155,7 @@ public class VistaPrincipal extends JFrame {
 		botonBackUp.setIcon(new ImageIcon(this.getClass().getResource("/data-backup.png")));
 		panelDeControl.add(botonBackUp);
 
-		botonConfiguracion = new JButton("CONFIGURACI\u00D3N");
+		botonConfiguracion = new JButton("CONFIGURACIÓN");
 		botonConfiguracion.setForeground(new Color(0, 0, 128));
 		botonConfiguracion.setBounds(450, 208, 197, 73);
 		botonConfiguracion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -164,7 +164,7 @@ public class VistaPrincipal extends JFrame {
 		botonConfiguracion.setIcon(new ImageIcon(this.getClass().getResource("/Settings.png")));
 		panelDeControl.add(botonConfiguracion);
 
-		JLabel lblNewLabel = new JLabel("SISTEMA DE GESTI\u00D3N");
+		JLabel lblNewLabel = new JLabel("SISTEMA DE GESIÓN");
 		lblNewLabel.setForeground(Color.WHITE);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 25));
@@ -230,13 +230,13 @@ public class VistaPrincipal extends JFrame {
 	}
 
 	public void setLocationMove(int moveWidth, int moveHeight) {
-		// Obtenemos el tamaño de la pantalla.
+		// Obtenemos el tamaï¿½o de la pantalla.
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		// Obtenemos el tamaño de nuestro frame.
+		// Obtenemos el tamaï¿½o de nuestro frame.
 		Dimension frameSize = this.getSize();
 		frameSize.width = frameSize.width > screenSize.width ? screenSize.width : frameSize.width;
 		frameSize.height = frameSize.height > screenSize.height ? screenSize.height : frameSize.height;
-		// We define the location. Definimos la localización.
+		// We define the location. Definimos la localizaciï¿½n.
 		setLocation((screenSize.width - frameSize.width) / 2 + moveWidth,
 				(screenSize.height - frameSize.height) / 2 + moveHeight);
 	}
