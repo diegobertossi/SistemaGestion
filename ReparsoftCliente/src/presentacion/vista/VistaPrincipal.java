@@ -88,7 +88,11 @@ public class VistaPrincipal extends JFrame {
 		botonEquipos.setBounds(11, 37, 200, 73);
 		botonEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonEquipos.setFont(new Font("Arial", Font.BOLD, 12));
+<<<<<<< HEAD
 		botonEquipos.setToolTipText("Ingreso y visualizaci髇 de equipos al Sistema");
+=======
+		botonEquipos.setToolTipText("Ingreso y visualizaci贸n de equipos al Sistema");
+>>>>>>> refs/remotes/origin/master
 		botonEquipos.setIcon(new ImageIcon(this.getClass().getResource("/Motherboard_icon-icons.com_55228.png")));
 		panelDeControl.add(botonEquipos);
 
@@ -124,7 +128,11 @@ public class VistaPrincipal extends JFrame {
 		botonClientes.setBounds(231, 124, 200, 73);
 		botonClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonClientes.setFont(new Font("Arial", Font.BOLD, 12));
+<<<<<<< HEAD
 		botonClientes.setToolTipText("Visualizaci髇 y alta de Clientes");
+=======
+		botonClientes.setToolTipText("Visualizaci贸n y alta de Clientes");
+>>>>>>> refs/remotes/origin/master
 		botonClientes.setIcon(new ImageIcon(this.getClass().getResource("/admin_64x64.png")));
 		panelDeControl.add(botonClientes);
 
@@ -133,7 +141,11 @@ public class VistaPrincipal extends JFrame {
 		botonPresupuestos.setBounds(450, 122, 197, 73);
 		botonPresupuestos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonPresupuestos.setFont(new Font("Arial", Font.BOLD, 12));
+<<<<<<< HEAD
 		botonPresupuestos.setToolTipText("Generaci髇 de Presupuestos, pendientes e Ingreso de Pagos.");
+=======
+		botonPresupuestos.setToolTipText("Generaci贸n de Presupuestos, pendientes e Ingreso de Pagos.");
+>>>>>>> refs/remotes/origin/master
 		botonPresupuestos.setIcon(new ImageIcon(this.getClass().getResource("/presupuesto.png")));
 		panelDeControl.add(botonPresupuestos);
 
@@ -155,16 +167,24 @@ public class VistaPrincipal extends JFrame {
 		botonBackUp.setIcon(new ImageIcon(this.getClass().getResource("/data-backup.png")));
 		panelDeControl.add(botonBackUp);
 
+<<<<<<< HEAD
 		botonConfiguracion = new JButton("CONFIGURACI覰");
+=======
+		botonConfiguracion = new JButton("CONFIGURACI脫N");
+>>>>>>> refs/remotes/origin/master
 		botonConfiguracion.setForeground(new Color(0, 0, 128));
 		botonConfiguracion.setBounds(450, 208, 197, 73);
 		botonConfiguracion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonConfiguracion.setFont(new Font("Arial", Font.BOLD, 12));
-		botonConfiguracion.setToolTipText("Configuraci髇 del Sitema");
+		botonConfiguracion.setToolTipText("Configuraci贸n del Sitema");
 		botonConfiguracion.setIcon(new ImageIcon(this.getClass().getResource("/Settings.png")));
 		panelDeControl.add(botonConfiguracion);
 
+<<<<<<< HEAD
 		JLabel lblNewLabel = new JLabel("SISTEMA DE GESI覰");
+=======
+		JLabel lblNewLabel = new JLabel("SISTEMA DE GESTI脫N");
+>>>>>>> refs/remotes/origin/master
 		lblNewLabel.setForeground(Color.WHITE);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 25));

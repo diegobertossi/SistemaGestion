@@ -1,5 +1,4 @@
 package presentacion.controlador;
-
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.SystemColor;
@@ -183,7 +182,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaAgregarEquipo.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				int opcion = JOptionPane.showConfirmDialog(ventanaAgregarEquipo,
-						"øDesea salir de la ventana 'AGREGAR EQUIPO'?", "Aviso", JOptionPane.YES_NO_OPTION,
+						"¬øDesea salir de la ventana 'AGREGAR EQUIPO'?", "Aviso", JOptionPane.YES_NO_OPTION,
 						JOptionPane.WARNING_MESSAGE);
 
 				if (opcion == JOptionPane.YES_OPTION) {
@@ -202,7 +201,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				int opcion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-						"øDesea salir de la ventana 'VISUALIZAR EQUIPOS'?", "Aviso", JOptionPane.YES_NO_OPTION,
+						"¬øDesea salir de la ventana 'VISUALIZAR EQUIPOS'?", "Aviso", JOptionPane.YES_NO_OPTION,
 						JOptionPane.WARNING_MESSAGE);
 
 				if (opcion == JOptionPane.YES_OPTION) {
@@ -223,7 +222,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			if (ELS < 1) {
 
-				Object mje = "No se ha ingresado ning˙n equipo.";
+				Object mje = "No se ha ingresado ning√∫n equipo.";
 				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 
 			} else {
@@ -363,8 +362,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			if (!guardado) {
 				eleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
+<<<<<<< HEAD
 						"No se han guardado los cambios. Si continua se descartar·n los mismos. øDesea continuar?",
 						"ConfirmaciÛn", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+=======
+						"No se han guardado los cambios. Si continua se descartar√°n los mismos. ¬øDesea continuar?",
+						"Confirmaci√≥n", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+>>>>>>> refs/remotes/origin/master
 			}
 			if (eleccion == JOptionPane.YES_OPTION) {
 
@@ -380,7 +384,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 						e1.printStackTrace();
 					}
 				} else {
-					Object mje = "No hay m·s reparaciones ";
+					Object mje = "No hay m√°s reparaciones ";
 					JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 				}
 
@@ -393,7 +397,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			if (!guardado) {
 				eleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
+<<<<<<< HEAD
 						"No se han guardado los cambios. Si continua se descartar·n los mismos. øDesea continuar?",
+=======
+						"No se han guardado los cambios. Si continua se descartar√°n los mismos. ¬øDesea continuar?",
+>>>>>>> refs/remotes/origin/master
 						"Confirmaci√≥n", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			}
 			if (eleccion == JOptionPane.YES_OPTION) {
@@ -420,8 +428,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			if (!guardado) {
 				eleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
+<<<<<<< HEAD
 						"No se han guardado los cambios. Si continua se descartar·n los mismos. øDesea continuar?",
 						"ConfirmaciÛn", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+=======
+						"No se han guardado los cambios. Si continua se descartar√°n los mismos. ¬øDesea continuar?",
+						"Confirmaci√≥n", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+>>>>>>> refs/remotes/origin/master
 			}
 			if (eleccion == JOptionPane.YES_OPTION) {
 
@@ -444,8 +457,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			if (!guardado) {
 				eleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
+<<<<<<< HEAD
 						"No se han guardado los cambios. Si continua se descartar·n los mismos. øDesea continuar?",
 						"ConfirmaciÛn", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+=======
+						"No se han guardado los cambios. Si continua se descartar√°n los mismos. ¬øDesea continuar?",
+						"Confirmaci√≥n", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+>>>>>>> refs/remotes/origin/master
 			}
 			if (eleccion == JOptionPane.YES_OPTION) {
 
@@ -470,7 +488,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			String Sucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
 
 			int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
+<<<<<<< HEAD
 					"øDesea enviar el aviso  a " + correo + " ?", "ConfirmaciÛn", JOptionPane.YES_NO_OPTION,
+=======
+					"¬øDesea enviar el aviso  a " + correo + " ?", "Confirmaci√≥n", JOptionPane.YES_NO_OPTION,
+>>>>>>> refs/remotes/origin/master
 					JOptionPane.QUESTION_MESSAGE);
 
 			if (seleccion == JOptionPane.YES_OPTION) {
@@ -497,7 +519,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			String Sucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
 
 			int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
+<<<<<<< HEAD
 					"øDesea enviar el aviso de 'Equipo Terminado' a " + correo + " ?", "ConfirmaciÛn",
+=======
+					"¬øDesea enviar el aviso de 'Equipo Terminado' a " + correo + " ?", "ConfirmaciÔøΩn",
+>>>>>>> refs/remotes/origin/master
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 			if (seleccion == JOptionPane.YES_OPTION) {
@@ -518,7 +544,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			String EstadoComercial = reparacion.getEstadoComercial();
 
 			int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-					"Desea enviar el aviso de 'Respuesta del Cliente' a " + correo + " ?", "ConfirmaciÛn",
+					"Desea enviar el aviso de 'Respuesta del Cliente' a " + correo + " ?", "Confirmaci√≥n",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 			if (seleccion == JOptionPane.YES_OPTION) {
@@ -657,6 +683,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaVisualizarEquipos.setTextEstadoTecnico(estadoTecnico);
 			ventanaVisualizarEquipos.setTextEstadoComercial(estadoComercial);
 
+<<<<<<< HEAD
 			if (estadoTecnico == "En ReparaciÛn" || estadoTecnico == "Reparado"
 					|| estadoTecnico == "Reparado En GarantÌa" || estadoTecnico == "Vendido"
 					|| estadoTecnico == "Desguace" || estadoTecnico == "No Tiene ReparaciÛn"
@@ -677,6 +704,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 
 			Object mje = "Deber· 'GUARDAR CAMBIOS' para mantener las modificaciones.";
+=======
+			Object mje = "Deber√° 'GUARDAR CAMBIOS' para mantener las modificaciones.";
+>>>>>>> refs/remotes/origin/master
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 
 			this.ventanaEstados.dispose();
@@ -781,7 +811,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaGenerarPresupuesto.getTextPrecioDolar().setText(PrecioDolar.toString());
 
 			ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
+<<<<<<< HEAD
 			ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 dÌaas.");
+=======
+			ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 dÔøΩas.");
+>>>>>>> refs/remotes/origin/master
 
 		}
 
@@ -924,7 +958,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				this.ventanaClientesWSP.getErrorMsj("Todos los campos son obligatoriso");
 
 			} else if (existeClienteWSP(this.ventanaClientesWSP.getTxtTelefono().getText())) {
-				JOptionPane.showMessageDialog(null, "El N˙mero de telÈfono ya existe en otro contacto",
+				JOptionPane.showMessageDialog(null, "El NÔøΩmero de telÔøΩfono ya existe en otro contacto",
 						"TELEFONO EXISTENTE", JOptionPane.ERROR_MESSAGE);
 			} else {
 				ClienteWSPDTO nuevoClienteWSPDTO = new ClienteWSPDTO(0,
@@ -951,7 +985,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			else {
 				int seleccion = JOptionPane.showConfirmDialog(ventanaClientesWSP,
-						"øEst· seguro de realizar la operaciÛn?", "ConfirmaciÛn", JOptionPane.YES_NO_OPTION,
+						"¬øEst√° seguro de realizar la operaci√≥n?", "Confirmaci√≥n", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE);
 
 				if (seleccion == JOptionPane.YES_OPTION) {
@@ -1029,7 +1063,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					this.ventanaClientesWSP.getBtnEliminarCliente().setEnabled(true);
 					this.ventanaClientesWSP.getBtnEditarCliente().setEnabled(true);
 
+<<<<<<< HEAD
 					JOptionPane.showMessageDialog(null, new JLabel("Usuario Editado"), "EdiciÛn Exitosa",
+=======
+
+					JOptionPane.showMessageDialog(null, new JLabel("Usuario Editado"), "Edici√≥n Exitosa",
+>>>>>>> refs/remotes/origin/master
 							JOptionPane.INFORMATION_MESSAGE);
 
 				}
@@ -1058,7 +1097,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnGuardarCambios()) {
 
 			int seleccion = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
+<<<<<<< HEAD
 					"øDesea guardar los cambios hechos en el informe y en el precio de la reparaciÛn?", "ConfirmaciÛn",
+=======
+					"¬øDesea guardar los cambios hechos en el informe y en el precio de la reparaci√≥n?", "Confirmaci√≥n",
+>>>>>>> refs/remotes/origin/master
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 			if (seleccion == JOptionPane.YES_OPTION) {
@@ -1143,7 +1186,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			} else {
 
 				int seleccion = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
+<<<<<<< HEAD
 						"øDesea generar el archivo PDF?", "ConfirmaciÛn", JOptionPane.YES_NO_OPTION,
+=======
+						"¬øDesea generar el archivo PDF?", "Confirmaci√≥n", JOptionPane.YES_NO_OPTION,
+>>>>>>> refs/remotes/origin/master
 						JOptionPane.QUESTION_MESSAGE);
 
 				if (seleccion == JOptionPane.YES_OPTION) {
@@ -1158,7 +1205,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					reporte.guardar();
 
 					int seleccion2 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
+<<<<<<< HEAD
 							"øDesea enviar el Presupuesto por correo?", "ConfirmaciÛn", JOptionPane.YES_NO_OPTION,
+=======
+							"¬øDesea enviar el Presupuesto por correo?", "Confirmaci√≥n", JOptionPane.YES_NO_OPTION,
+>>>>>>> refs/remotes/origin/master
 							JOptionPane.QUESTION_MESSAGE);
 
 					if (seleccion2 == JOptionPane.YES_OPTION) {
@@ -1194,7 +1245,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 						String email = "E-mail: els@elsweb.com.ar";
 						String Asunto = "Presupuesto ELS: " + ELS;
 
+<<<<<<< HEAD
 						String cuerpoEnvioPresupuesto = "Buenos dÌas!\n\nAdjunto presupuesto.\nEn caso de aceptar el mismo,favor de responder este correo para poder proceder con la reparaci√≥n.\nAtte.";
+=======
+						String cuerpoEnvioPresupuesto = "Buenos d√≠as!\n\nAdjunto presupuesto.\nEn caso de aceptar el mismo,favor de responder este correo para poder proceder con la reparaci√≥n.\nAtte.";
+>>>>>>> refs/remotes/origin/master
 
 						ventanaEmail.getTextCuerpo().setText(cuerpoEnvioPresupuesto + "\n\n" + empresa + "\n" + mdp
 								+ "\n" + caba + "\n" + brc + "\n" + web + "\n" + email);
@@ -1227,8 +1282,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			} else
 
 			{
+<<<<<<< HEAD
 				int seleccion = JOptionPane.showConfirmDialog(ventanaEmail, "øDesea enviar el Informe al cliente",
 						"ConfirmaciÛn", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+=======
+				int seleccion = JOptionPane.showConfirmDialog(ventanaEmail, "¬øDesea enviar el Informe al cliente",
+						"Confirmaci√≥n", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+>>>>>>> refs/remotes/origin/master
 
 				if (seleccion == JOptionPane.YES_OPTION) {
 
@@ -1368,7 +1428,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			else {
 				int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-						"øEst· seguro de realizar la operaciÛn?", "ConfirmaciÛn", JOptionPane.YES_NO_OPTION,
+						"¬øEst√° seguro de realizar la operaci√≥n?", "Confirmaci√≥n", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE);
 
 				if (seleccion == JOptionPane.YES_OPTION) {
@@ -1524,7 +1584,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			if (verificacionDatosIngreso()) {
 				int opcion = 0;
 
-				opcion = JOptionPane.showConfirmDialog(null, "øDesea guardar este equipo?", "Aviso",
+				opcion = JOptionPane.showConfirmDialog(null, "¬øDesea guardar este equipo?", "Aviso",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				switch (opcion) {
@@ -1559,7 +1619,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 						ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(true);
 						ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().setEnabled(false);
 
+<<<<<<< HEAD
 						Object mje = "Equipo Guardado. Solo se podr· modificar desde la visualizaciÛn";
+=======
+						Object mje = "Equipo Guardado. Solo se podr√° modificar desde la visualizaci√≥n";
+>>>>>>> refs/remotes/origin/master
 						JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
 								JOptionPane.INFORMATION_MESSAGE);
 
@@ -1659,7 +1723,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			if (reparacion == null) {
 
-				Object mje = "No se encontrÛ ning˙n equipo.";
+				Object mje = "No se encontr√≥ ning√∫n equipo.";
 				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 
 				ventanaVerificarIngresoAnterior.getTextELS().setText("");
@@ -1736,15 +1800,23 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				if (dias <= 30) {
 
 					ventanaVerificarIngresoAnterior.getTextNota().setText(
+<<<<<<< HEAD
 							"EL EQUIPO NO DEBER¡? INGRESARSE NUEVAMENTE YA QUE HAN PASADO MENOS DE 30 DÕAS DESDE SU INGRESO ANTERIOR.");
+=======
+							"EL EQUIPO NO DEBER√Å INGRESARSE NUEVAMENTE YA QUE HAN PASADO MENOS DE 30 D√çAS DESDE SU INGRESO ANTERIOR.");
+>>>>>>> refs/remotes/origin/master
 				} else if (dias > 30 && dias <= 90) {
 
 					ventanaVerificarIngresoAnterior.getTextNota()
+<<<<<<< HEAD
 							.setText("EL EQUIPO SE ENCUENTRA EN PERRÕODO DE GARANTÕA. VERIFICAR SI CORRESPONDE.");
+=======
+							.setText("EL EQUIPO SE ENCUENTRA EN PER√çODO DE GARANT√çA. VERIFICAR SI CORRESPONDE.");
+>>>>>>> refs/remotes/origin/master
 
 				} else {
 					ventanaVerificarIngresoAnterior.getTextNota()
-							.setText("EL EQUIPO NO SE ENCUENTRA DENTRO DE LOS 90 DÕAS DE GARANTÕA.");
+							.setText("EL EQUIPO NO SE ENCUENTRA DENTRO DE LOS 90 D√çAS DE GARANT√çA.");
 				}
 
 			}
@@ -1905,7 +1977,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			DateFormat df = new SimpleDateFormat("yyyyMMdd");
 
 			int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-					"øDesea Colocar la fecha default 01/01/0001?", "ConfirmaciÛn", JOptionPane.YES_NO_OPTION,
+					"¬øDesea Colocar la fecha default 01/01/0001?", "Confirmaci√≥n", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE);
 
 			if (seleccion == JOptionPane.YES_OPTION) {
