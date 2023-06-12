@@ -757,6 +757,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ventanaGenerarPresupuesto.setTextFabr(null);
 			else
 				try {
+					
+					
 					ventanaGenerarPresupuesto.setTextFabr((dateFormat.parse(reparacion.getFechaFabr())));
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
