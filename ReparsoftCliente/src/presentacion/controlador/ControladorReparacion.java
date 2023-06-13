@@ -1,4 +1,5 @@
 package presentacion.controlador;
+
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.SystemColor;
@@ -668,11 +669,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaVisualizarEquipos.setTextEstadoTecnico(estadoTecnico);
 			ventanaVisualizarEquipos.setTextEstadoComercial(estadoComercial);
 
-			if (estadoTecnico == "En Reparación" || estadoTecnico == "Reparado"
-					|| estadoTecnico == "Reparado En Garantía" || estadoTecnico == "Vendido"
-					|| estadoTecnico == "Desguace" || estadoTecnico == "No Tiene Reparación"
-					|| estadoTecnico == "No Aceptaron Reparación") {
+			if (estadoTecnico == "Sin Revisar") {
 
+				ventanaVisualizarEquipos.getFechaReparacion().setDate(null);
+			}
+
+			else {
 				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
 				java.util.Date fechaParseada = null;
@@ -769,8 +771,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ventanaGenerarPresupuesto.setTextFabr(null);
 			else
 				try {
-					
-					
+
 					ventanaGenerarPresupuesto.setTextFabr((dateFormat.parse(reparacion.getFechaFabr())));
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
@@ -795,7 +796,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
 
 			ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 díaas.");
-
 
 		}
 
@@ -1043,7 +1043,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					this.ventanaClientesWSP.getBtnEliminarCliente().setEnabled(true);
 					this.ventanaClientesWSP.getBtnEditarCliente().setEnabled(true);
 
-
 					JOptionPane.showMessageDialog(null, new JLabel("Usuario Editado"), "Edición Exitosa",
 
 							JOptionPane.INFORMATION_MESSAGE);
@@ -1218,7 +1217,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 						String cuerpoEnvioPresupuesto = "Buenos días!\n\nAdjunto presupuesto.\nEn caso de aceptar el mismo,favor de responder este correo para poder proceder con la reparaciÃ³n.\nAtte.";
 
-
 						ventanaEmail.getTextCuerpo().setText(cuerpoEnvioPresupuesto + "\n\n" + empresa + "\n" + mdp
 								+ "\n" + caba + "\n" + brc + "\n" + web + "\n" + email);
 						ventanaEmail.getTextAsunto().setText(Asunto);
@@ -1253,7 +1251,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				int seleccion = JOptionPane.showConfirmDialog(ventanaEmail, "¿Desea enviar el Informe al cliente",
 						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
 
 				if (seleccion == JOptionPane.YES_OPTION) {
 
@@ -1584,7 +1581,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 						ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(true);
 						ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().setEnabled(false);
 
-
 						Object mje = "Equipo Guardado. Solo se podrá modificar desde la visualización";
 
 						JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
@@ -1764,7 +1760,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 					ventanaVerificarIngresoAnterior.getTextNota().setText(
 
-							"EL EQUIPO NO DEBERÁ? INGRESARSE NUEVAMENTE YA QUE HAN PASADO MENOS DE 30 DÍAS DESDE SU INGRESO ANTERIOR.");
+							"EL EQUIPO NO DEBERÁ INGRESARSE NUEVAMENTE YA QUE HAN PASADO MENOS DE 30 DÍAS DESDE SU INGRESO ANTERIOR.");
 
 				} else if (dias > 30 && dias <= 90) {
 
@@ -1772,10 +1768,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 							.setText("EL EQUIPO SE ENCUENTRA EN PERRÍODO DE GARANTÍA. VERIFICAR SI CORRESPONDE.");
 
-
 				} else {
 					ventanaVerificarIngresoAnterior.getTextNota()
-							.setText("EL EQUIPO NO SE ENCUENTRA DENTRO DE LOS 90 DÃ�AS DE GARANTÃ�A.");
+							.setText("EL EQUIPO NO SE ENCUENTRA DENTRO DE LOS 90 DÍAS DE GARANTÍA.");
 				}
 
 			}

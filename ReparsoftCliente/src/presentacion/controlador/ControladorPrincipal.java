@@ -150,7 +150,7 @@ public class ControladorPrincipal implements ActionListener {
 
 		this.vistaPrincipal.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				int opcion = JOptionPane.showConfirmDialog(vistaPrincipal, "Â¿Desea salir del sistema?", "Aviso",
+				int opcion = JOptionPane.showConfirmDialog(vistaPrincipal, "¿Desea salir del sistema?", "Aviso",
 						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
 				if (opcion == JOptionPane.YES_OPTION) {
@@ -185,7 +185,7 @@ public class ControladorPrincipal implements ActionListener {
 
 			int opcion = 0;
 
-			opcion = JOptionPane.showConfirmDialog(null, "Â¿Desea salir del sistema?", "Aviso",
+			opcion = JOptionPane.showConfirmDialog(null, "¿Desea salir del sistema?", "Aviso",
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
 			switch (opcion) {
@@ -273,7 +273,7 @@ public class ControladorPrincipal implements ActionListener {
 		
 		else if (arg0.getSource() == vistaPrincipal.getBtnSalir()) {
 
-			int opcion = JOptionPane.showConfirmDialog(vistaPrincipal, "Â¿Desea salir del sistema?", "Aviso",
+			int opcion = JOptionPane.showConfirmDialog(vistaPrincipal, "¿Desea salir del sistema?", "Aviso",
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
 			if (opcion == JOptionPane.YES_OPTION) {
