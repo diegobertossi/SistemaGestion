@@ -632,6 +632,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			String estadoTecnico = "";
 			String estadoComercial = "";
 
+			Boolean cambioDeEstadoBoolean = false;
+
 			Enumeration elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
 
 			while (elementsF.hasMoreElements()) {
@@ -665,10 +667,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				}
 			}
 
-			ventanaVisualizarEquipos.setTextEstadoFisico(estadoFisico);
-			ventanaVisualizarEquipos.setTextEstadoTecnico(estadoTecnico);
-			ventanaVisualizarEquipos.setTextEstadoComercial(estadoComercial);
-
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 			java.util.Date fechaParseadaHOY = null;
 
@@ -679,30 +677,82 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				e1.printStackTrace();
 			}
 
-			if (estadoTecnico == "Sin Revisar") {
+			if (ventanaVisualizarEquipos.getTextEstadoFisico().getText().compareTo(estadoFisico) != 0) {
 
-				ventanaVisualizarEquipos.getFechaReparacion().setDate(null);
-			}
+				cambioDeEstadoBoolean = true;
 
-			else {
+				int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
+						"EL ESTADO FÍSICO A CAMBIADO, ¿DESEA CONTINUAR?", "Confirmación", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
 
-				ventanaVisualizarEquipos.getFechaReparacion().setDate(fechaParseadaHOY);
+				if (seleccion == JOptionPane.YES_OPTION) {
+					ventanaVisualizarEquipos.setTextEstadoFisico(estadoFisico);
 
-			}
-
-			if (estadoComercial == "A la Espera de Aceptación") {
-
-				ventanaVisualizarEquipos.getFechaRespuesta().setDate(null);
+				}
 
 			}
 
-			else {
-				ventanaVisualizarEquipos.getFechaRespuesta().setDate(fechaParseadaHOY);
+			if (ventanaVisualizarEquipos.getTextEstadoTecnico().getText().compareTo(estadoTecnico) != 0) {
+
+				cambioDeEstadoBoolean = true;
+
+				int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
+						"EL ESTADO TÉCNICO A CAMBIADO, SE MODIFICARÁ LA FECHA DE DIAGNÓSTICO. ¿DESEA CONTINUAR?",
+						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+				if (seleccion == JOptionPane.YES_OPTION) {
+					ventanaVisualizarEquipos.setTextEstadoTecnico(estadoTecnico);
+
+					if (estadoTecnico == "Sin Revisar") {
+
+						ventanaVisualizarEquipos.getFechaReparacion().setDate(null);
+
+					}
+
+					else {
+
+						ventanaVisualizarEquipos.getFechaReparacion().setDate(fechaParseadaHOY);
+
+					}
+
+				}
+
 			}
 
-			Object mje = "Deberá 'GUARDAR CAMBIOS' para mantener las modificaciones.";
+			if (ventanaVisualizarEquipos.getTextEstadoComercial().getText().compareTo(estadoComercial) != 0) {
 
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+				cambioDeEstadoBoolean = true;
+
+				int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
+						"EL ESTADO COMERCIAL A CAMBIADO, SE MODIFICARÁ LA FECHA DE ACEPTACIÓN. ¿DESEA CONTINUAR?",
+						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+				if (seleccion == JOptionPane.YES_OPTION) {
+					ventanaVisualizarEquipos.setTextEstadoComercial(estadoComercial);
+
+					if (estadoComercial == "A la Espera de Aceptación") {
+
+						ventanaVisualizarEquipos.getFechaRespuesta().setDate(null);
+
+					}
+
+					else {
+
+						ventanaVisualizarEquipos.getFechaRespuesta().setDate(fechaParseadaHOY);
+
+					}
+
+				}
+
+			}
+
+			if (cambioDeEstadoBoolean) {
+				Object mje = "Deberá 'GUARDAR CAMBIOS' para mantener las modificaciones.";
+				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				Object mje = "No se realizó ningún cambio de estado.";
+				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+			}
 
 			this.ventanaEstados.dispose();
 			this.ventanaEstados = null;
@@ -976,7 +1026,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			else {
 				int seleccion = JOptionPane.showConfirmDialog(ventanaClientesWSP,
-						"Â¿EstÃ¡ seguro de realizar la operaciÃ³n?", "ConfirmaciÃ³n", JOptionPane.YES_NO_OPTION,
+						"¿Está seguro de realizar la operación?", "Confirmación", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE);
 
 				if (seleccion == JOptionPane.YES_OPTION) {
