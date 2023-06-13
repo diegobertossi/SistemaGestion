@@ -669,24 +669,35 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaVisualizarEquipos.setTextEstadoTecnico(estadoTecnico);
 			ventanaVisualizarEquipos.setTextEstadoComercial(estadoComercial);
 
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+			java.util.Date fechaParseadaHOY = null;
+
+			try {
+				fechaParseadaHOY = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(LocalDateTime.now()));
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 			if (estadoTecnico == "Sin Revisar") {
 
 				ventanaVisualizarEquipos.getFechaReparacion().setDate(null);
 			}
 
 			else {
-				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
-				java.util.Date fechaParseada = null;
-				try {
-					fechaParseada = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(LocalDateTime.now()));
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				ventanaVisualizarEquipos.getFechaReparacion().setDate(fechaParseadaHOY);
 
-				ventanaVisualizarEquipos.getFechaReparacion().setDate(fechaParseada);
+			}
 
+			if (estadoComercial == "A la Espera de Aceptación") {
+
+				ventanaVisualizarEquipos.getFechaRespuesta().setDate(null);
+
+			}
+
+			else {
+				ventanaVisualizarEquipos.getFechaRespuesta().setDate(fechaParseadaHOY);
 			}
 
 			Object mje = "Deberá 'GUARDAR CAMBIOS' para mantener las modificaciones.";
