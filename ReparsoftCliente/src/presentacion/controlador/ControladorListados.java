@@ -210,29 +210,23 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		
-		
-		
+
 		ventanaListadoReparaciones.getTblReparaciones().addMouseMotionListener(new MouseMotionAdapter() {
-	            @Override
-	            public void mouseMoved(MouseEvent e) {
-	            
-	            	
-	                int row = ventanaListadoReparaciones.getTblReparaciones().rowAtPoint(e.getPoint());
-	                int column = ventanaListadoReparaciones.getTblReparaciones().columnAtPoint(e.getPoint());
+			@Override
+			public void mouseMoved(MouseEvent e) {
 
-	                // Verificar si el mouse está sobre la celda deseada
-	                if (column == 0) {
-	                	ventanaListadoReparaciones.getTblReparaciones().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	                } else {
-	                	ventanaListadoReparaciones.getTblReparaciones().setCursor(Cursor.getDefaultCursor());
-	                }
-	            }
-	        });
+				int row = ventanaListadoReparaciones.getTblReparaciones().rowAtPoint(e.getPoint());
+				int column = ventanaListadoReparaciones.getTblReparaciones().columnAtPoint(e.getPoint());
 
-		
-		
-		
+				// Verificar si el mouse está sobre la celda deseada
+				if (column == 0) {
+					ventanaListadoReparaciones.getTblReparaciones()
+							.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				} else {
+					ventanaListadoReparaciones.getTblReparaciones().setCursor(Cursor.getDefaultCursor());
+				}
+			}
+		});
 
 		if (arg0.getSource() == this.ventanaListadoReparaciones.getBtnFiltrar()) {
 
@@ -667,7 +661,7 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 
 						els = Integer.parseInt(
 								this.ventanaListadoReparaciones.getTblReparaciones().getValueAt(row, col).toString());
-					
+
 					NumeroELSSeleccionado = els;
 
 					if (NumeroELSSeleccionado != 0) {
@@ -683,34 +677,6 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 						}
 
 						controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
-
-						SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
-
-//						try {
-//							TomarDatosDeTablas();
-//						} catch (ParseException e1) {
-//							// TODO Auto-generated catch block
-//							e1.printStackTrace();
-//						}
-
-						this.ventanaVisualizarEquipos.getBtnGuardarCambios().addActionListener(this);
-						this.ventanaVisualizarEquipos.getBotonRegistroIngreso().addActionListener(this);
-						this.ventanaVisualizarEquipos.getBotonEditarEstados().addActionListener(this);
-						this.ventanaVisualizarEquipos.getBtnEditar().addActionListener(this);
-						this.ventanaVisualizarEquipos.getBotonAvisoInforme().addActionListener(this);
-						this.ventanaVisualizarEquipos.getBotonAvisoEquipoListo().addActionListener(this);
-						this.ventanaVisualizarEquipos.getBotonRespuestaAlTecnico().addActionListener(this);
-						this.ventanaVisualizarEquipos.getBtnGenerarRemito().addActionListener(this);
-						this.ventanaVisualizarEquipos.getBotonPresupuestar().addActionListener(this);
-						this.ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(this);
-						this.ventanaVisualizarEquipos.getComboClientes().addActionListener(this);
-						this.ventanaVisualizarEquipos.getComboSucursal().addActionListener(this);
-						this.ventanaVisualizarEquipos.getComboTecnico().addActionListener(this);
-						this.ventanaVisualizarEquipos.getBtnRepuestos().addActionListener(this);
-						this.ventanaVisualizarEquipos.getBtnEditarRepuesto().addActionListener(this);
-						this.ventanaVisualizarEquipos.getBtnEliminarRepuesto().addActionListener(this);
-						this.ventanaVisualizarEquipos.getTablaRepuestos().addMouseListener(this);
-						this.ventanaVisualizarEquipos.getTablaRepuestos().addKeyListener(this);
 
 						this.ventanaVisualizarEquipos.getTextPresupuesto().addKeyListener(this);
 						this.ventanaVisualizarEquipos.getTextPresupuesto().addFocusListener(new FocusListener() {
