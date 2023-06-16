@@ -183,7 +183,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaAgregarEquipo.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				int opcion = JOptionPane.showConfirmDialog(ventanaAgregarEquipo,
-						"Â¿Desea salir de la ventana 'AGREGAR EQUIPO'?", "Aviso", JOptionPane.YES_NO_OPTION,
+						"¿Desea salir de la ventana 'AGREGAR EQUIPO'?", "Aviso", JOptionPane.YES_NO_OPTION,
 						JOptionPane.WARNING_MESSAGE);
 
 				if (opcion == JOptionPane.YES_OPTION) {
@@ -202,7 +202,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				int opcion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-						"Â¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?", "Aviso", JOptionPane.YES_NO_OPTION,
+						"¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?", "Aviso", JOptionPane.YES_NO_OPTION,
 						JOptionPane.WARNING_MESSAGE);
 
 				if (opcion == JOptionPane.YES_OPTION) {
@@ -223,7 +223,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			if (ELS < 1) {
 
-				Object mje = "No se ha ingresado ningÃºn equipo.";
+				Object mje = "No se ha ingresado ningún equipo.";
 				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 
 			} else {
@@ -382,7 +382,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 						e1.printStackTrace();
 					}
 				} else {
-					Object mje = "No hay mÃ¡s reparaciones ";
+					Object mje = "No hay más reparaciones ";
 					JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 				}
 
@@ -2351,7 +2351,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	private void verificarPresupuestoEditado() {
+	public void verificarPresupuestoEditado() {
 
 		Color EquipoPagado = new Color(130, 224, 170);
 		Color AzulClaro = new Color(169, 204, 227);

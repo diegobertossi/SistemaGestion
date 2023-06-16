@@ -1,8 +1,11 @@
 package presentacion.controlador;
 
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -70,9 +73,9 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
 
 	private ClienteDTO Cliente;
-	
+
 	private ControladorReparacion controladorReparacion;
-	
+	private ControladorUsuLogin controladorUsuLogin;
 
 	private SucursalDTO Sucursal;
 	private String Marca;
@@ -86,14 +89,20 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 
 	private int clickMax = 1;
 	private int clickMin = 1;
+	
+	private int NumeroELSSeleccionado;
+	private ReparacionDTO reparacion;
+	private List<RepuestosDTO> Repuestos_en_tabla;
 
 	private TableRowSorter<DefaultTableModel> sorter;
 
 	private List<ReparacionDTO> Reparaciones_en_tabla;
 
-	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo) {
+	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
+			ControladorUsuLogin controladorUsuLogin) {
 
 		this.ventanaListadoReparaciones = ventanaListadoReparaciones;
+		this.controladorUsuLogin = controladorUsuLogin;
 
 		this.ventanaListadoReparaciones.getBtnFiltrar().addActionListener(this);
 		this.ventanaListadoReparaciones.getBtnMostrarTodo().addActionListener(this);
@@ -626,36 +635,129 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 
 					int els = 0;
 					if (col == 0)
-						
-						els= Integer.parseInt(this.ventanaListadoReparaciones.getTblReparaciones().getValueAt(row, col).toString());
-							
-										
+
+						els = Integer.parseInt(
+								this.ventanaListadoReparaciones.getTblReparaciones().getValueAt(row, col).toString());
+					System.out.println(els);
+					
+					NumeroELSSeleccionado = els;
+					
+					
+
+					ventanaVisualizarEquipos = new VentanaVisualizarEquipos(controladorReparacion);
+					cerraVentanaVisualizarEquipo();
+					
+					try {
+						TomarDatosDeTablas();
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
+
+					SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
+					
+					
+					
+
+//						try {
+//							TomarDatosDeTablas();
+//						} catch (ParseException e1) {
+//							// TODO Auto-generated catch block
+//							e1.printStackTrace();
+//						}
+
+
+					this.ventanaVisualizarEquipos.getBtnGuardarCambios().addActionListener(this);
+					this.ventanaVisualizarEquipos.getBotonRegistroIngreso().addActionListener(this);
+					this.ventanaVisualizarEquipos.getBotonEditarEstados().addActionListener(this);
+					this.ventanaVisualizarEquipos.getBtnEditar().addActionListener(this);
+					this.ventanaVisualizarEquipos.getBotonAvisoInforme().addActionListener(this);
+					this.ventanaVisualizarEquipos.getBotonAvisoEquipoListo().addActionListener(this);
+					this.ventanaVisualizarEquipos.getBotonRespuestaAlTecnico().addActionListener(this);
+					this.ventanaVisualizarEquipos.getBtnGenerarRemito().addActionListener(this);
+					this.ventanaVisualizarEquipos.getBotonPresupuestar().addActionListener(this);
+					this.ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(this);
+					this.ventanaVisualizarEquipos.getComboClientes().addActionListener(this);
+					this.ventanaVisualizarEquipos.getComboSucursal().addActionListener(this);
+					this.ventanaVisualizarEquipos.getComboTecnico().addActionListener(this);
+					this.ventanaVisualizarEquipos.getBtnRepuestos().addActionListener(this);
+					this.ventanaVisualizarEquipos.getBtnEditarRepuesto().addActionListener(this);
+					this.ventanaVisualizarEquipos.getBtnEliminarRepuesto().addActionListener(this);
+					this.ventanaVisualizarEquipos.getTablaRepuestos().addMouseListener(this);
+					this.ventanaVisualizarEquipos.getTablaRepuestos().addKeyListener(this);
+
+					this.ventanaVisualizarEquipos.getTextPresupuesto().addKeyListener(this);
+					this.ventanaVisualizarEquipos.getTextPresupuesto().addFocusListener(new FocusListener() {
+						public void focusLost(FocusEvent e) {
+
+							if (ventanaVisualizarEquipos.getTextPresupuesto().getText().isEmpty()) {
+
+								ventanaVisualizarEquipos.getTextPresupuesto().setText("0.0");
+							}
+
+							controladorReparacion.verificarPresupuestoEditado();
+
+						}
+
+						@Override
+						public void focusGained(FocusEvent arg0) {
+							// TODO Auto-generated method stub
+
+						}
+					});
+
+					this.ventanaVisualizarEquipos.getTextPago().addKeyListener(this);
+					this.ventanaVisualizarEquipos.getTextPago().addFocusListener(new FocusListener() {
+						public void focusLost(FocusEvent e) {
+
+							if (ventanaVisualizarEquipos.getTextPago().getText().isEmpty()) {
+
+								ventanaVisualizarEquipos.getTextPago().setText("0.0");
+							}
+
+							controladorReparacion.verificarPresupuestoEditado();
+							// verificarPresupuestoEditado();
+
+						}
+
+						@Override
+						public void focusGained(FocusEvent arg0) {
+							// TODO Auto-generated method stub
+
+						}
+					});
 
 				}
-			}
 
-			if (arg0.getSource() == this.ventanaListadoReparaciones.getBtnMax()) {
-
-				if (clickMax % 2 != 0) {
-
-					ventanaListadoReparaciones.setExtendedState(max);
-					this.ventanaListadoReparaciones.getBtnMax()
-							.setIcon(new ImageIcon(this.getClass().getResource("/minimizar.png")));
-					ventanaListadoReparaciones.setVisible(true);
-
-				} else {
-
-					ventanaListadoReparaciones.setExtendedState(min);
-					this.ventanaListadoReparaciones.getBtnMax()
-							.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
-					ventanaListadoReparaciones.setVisible(true);
-
-				}
-				clickMax++;
 			}
 
 		}
+
+		if (arg0.getSource() == this.ventanaListadoReparaciones.getBtnMax()) {
+
+			if (clickMax % 2 != 0) {
+
+				ventanaListadoReparaciones.setExtendedState(max);
+				this.ventanaListadoReparaciones.getBtnMax()
+						.setIcon(new ImageIcon(this.getClass().getResource("/minimizar.png")));
+				ventanaListadoReparaciones.setVisible(true);
+
+			} else {
+
+				ventanaListadoReparaciones.setExtendedState(min);
+				this.ventanaListadoReparaciones.getBtnMax()
+						.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
+				ventanaListadoReparaciones.setVisible(true);
+
+			}
+			clickMax++;
+		}
+
 	}
+
+	
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
@@ -684,21 +786,254 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
-		
-		
+
+	}
+	
+	
+	private void TomarDatosDeTablas() throws ParseException {
+
+		// NumberFormat nf =
+		// NumberFormat.getCurrencyInstance(Locale.getDefault());
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+
+		ventanaVisualizarEquipos.setTextELS(Integer.toString(NumeroELSSeleccionado));
+		//NumeroELSSeleccionado = Integer.parseInt(ventanaVisualizarEquipos.getTextELS().toString());
+		reparacion = modelo.dameReparacionXels(NumeroELSSeleccionado);
+
+		// llenarComboTecnico();
+
+		ventanaVisualizarEquipos.setTextNombreEquipo(reparacion.getNombreEquipo());
+		ventanaVisualizarEquipos.setTextMarca(reparacion.getMarca());
+		ventanaVisualizarEquipos.setTextModelo(reparacion.getModelo());
+		ventanaVisualizarEquipos.setTextNSerie(reparacion.getNumeroDeSerie());
+
+		// ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(reparacion.getPresupuestoGenerado());
+
+		if (reparacion.getFalla() == null)
+			ventanaVisualizarEquipos.setTextFalla("");
+		else
+			ventanaVisualizarEquipos.setTextFalla(reparacion.getFalla());
+
+		ventanaVisualizarEquipos.setTextAvisoCliente(reparacion.getAviso());
+		ventanaVisualizarEquipos.setTextClienteCliente(reparacion.getClienteCliente());
+		ventanaVisualizarEquipos.setTextRemitoCliente(reparacion.getRemitoCliente());
+
+		ventanaVisualizarEquipos.setTextCliente(reparacion.getCliente());
+		ventanaVisualizarEquipos.setTextSucursal(reparacion.getSucursal());
+
+		if (reparacion.getFecha_Entrada() == null)
+			ventanaVisualizarEquipos.setTextFechaEntrada2(null);
+		else
+			ventanaVisualizarEquipos.setTextFechaEntrada2((dateFormat.parse(reparacion.getFecha_Entrada())));
+
+		ventanaVisualizarEquipos.setTextEstadoFisico(reparacion.getEstadoFisico());
+		ventanaVisualizarEquipos.setTextEstadoTecnico(reparacion.getEstadoTecnico());
+		ventanaVisualizarEquipos.setTextEstadoComercial(reparacion.getEstadoComercial());
+		ventanaVisualizarEquipos.setTextDiagnostico(reparacion.getSolucion());
+		ventanaVisualizarEquipos.setTextInformeCliente(reparacion.getInformecliente());
+
+		if (reparacion.getFechadereparacion() == null)
+			ventanaVisualizarEquipos.setTextFechaReparacion2(null);
+		else
+			ventanaVisualizarEquipos.setTextFechaReparacion2((dateFormat.parse(reparacion.getFechadereparacion())));
+
+		if (reparacion.getFechAceptacion() == null)
+			ventanaVisualizarEquipos.setTextFechaRespuesta2(null);
+		else
+			ventanaVisualizarEquipos.setTextFechaRespuesta2((dateFormat.parse(reparacion.getFechAceptacion())));
+
+		if (reparacion.getFechaFabr() == null)
+			ventanaVisualizarEquipos.setFechaFabr2(null);
+		else {
+			ventanaVisualizarEquipos.setFechaFabr2((dateFormat.parse(reparacion.getFechaFabr())));
+		}
+
+		ventanaVisualizarEquipos.setTextNombreTecnico(reparacion.getNombreUsuario());
+		// ventanaVisualizarEquipos.getComboTecnico().setSelectedIndex(reparacion.getidUsuario()-1);
+		ventanaVisualizarEquipos.setTextOC(reparacion.getOrdendeCompra());
+		ventanaVisualizarEquipos.setTextUbicacionRemito(Integer.toString(reparacion.getCodigo()));
+		ventanaVisualizarEquipos.setTextNumeroRemito(Integer.toString(reparacion.getNumeroRemitoSalida()));
+		// ventanaVisualizarEquipos.setChckbxAvisoEnviado((boolean)reparacion.getEnviado());
+
+		llenarTablaRepuestos();
+		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
+
+		ventanaVisualizarEquipos.setTextPresupuesto(reparacion.getPrecioPeso().toString());
+		ventanaVisualizarEquipos.setTextPago(reparacion.getPago().toString());
+
+		ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(reparacion.getPresupuestoGenerado());
+		ventanaVisualizarEquipos.setChckbxPresupuestoEnviado(reparacion.getPresupuestoEnviado());
+		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
+
+		verificarPresupuesto();
+		//deshabilitarCampos();
+
+	}
+
+	private void verificarPresupuesto() {
+
+		Color EquipoPagado = new Color(130, 224, 170);
+		Color AzulClaro = new Color(169, 204, 227);
+		Color CyanClaro = new Color(224, 255, 255);
+		Color FaltaPago = new Color(241, 148, 138);
+
+		double PresupuestoDefault = 0;
+		if ((reparacion.getPrecioPeso().compareTo(PresupuestoDefault) != 0)) {
+
+			if (reparacion.getPrecioPeso().compareTo(reparacion.getPago()) == 0) {
+
+				ventanaVisualizarEquipos.getTextEquipoPagado().setText("PAGADO");
+				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
+				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(EquipoPagado);
+				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(EquipoPagado);
+				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(EquipoPagado);
+				ventanaVisualizarEquipos.getTextPago().setBackground(EquipoPagado);
+
+			} else if (reparacion.getPrecioPeso().compareTo(reparacion.getPago()) > 0
+					&& reparacion.getPago().compareTo(PresupuestoDefault) != 0) {
+
+				ventanaVisualizarEquipos.getTextEquipoPagado().setText("PAGADO PARCIALMENTE");
+				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
+				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(CyanClaro);
+				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(CyanClaro);
+				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(CyanClaro);
+				ventanaVisualizarEquipos.getTextPago().setBackground(CyanClaro);
+
+			} else if (reparacion.getPago().compareTo(PresupuestoDefault) == 0) {
+
+				ventanaVisualizarEquipos.getTextEquipoPagado().setText("FALTA PAGO");
+				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
+				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(FaltaPago);
+				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(FaltaPago);
+				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(FaltaPago);
+				ventanaVisualizarEquipos.getTextPago().setBackground(FaltaPago);
+
+			}
+
+		} else {
+			ventanaVisualizarEquipos.getTextEquipoPagado().setText("SIN PRESUPUESTAR");
+			ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
+			ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(AzulClaro);
+			ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(AzulClaro);
+			ventanaVisualizarEquipos.getTextPresupuesto().setBackground(AzulClaro);
+			ventanaVisualizarEquipos.getTextPago().setBackground(AzulClaro);
+
+		}
+		// TODO Auto-generated method stub
+
+	}
+
+	public void verificarPresupuestoEditado() {
+
+		Color EquipoPagado = new Color(130, 224, 170);
+		Color AzulClaro = new Color(169, 204, 227);
+		Color CyanClaro = new Color(224, 255, 255);
+		Color FaltaPago = new Color(241, 148, 138);
+
+		String PresupuestoDefault = "0.0";
+
+		if ((ventanaVisualizarEquipos.getTextPresupuesto().getText().compareTo(PresupuestoDefault) != 0)) {
+
+			if (ventanaVisualizarEquipos.getTextPresupuesto().getText()
+					.compareTo(ventanaVisualizarEquipos.getTextPago().getText()) == 0
+					|| ventanaVisualizarEquipos.getTextPresupuesto().getText()
+							.compareTo(ventanaVisualizarEquipos.getTextPago().getText() + ".0") == 0) {
+
+				ventanaVisualizarEquipos.getTextEquipoPagado().setText("PAGADO");
+				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
+				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(EquipoPagado);
+				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(EquipoPagado);
+				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(EquipoPagado);
+				ventanaVisualizarEquipos.getTextPago().setBackground(EquipoPagado);
+				ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(true);
+
+			} else if (ventanaVisualizarEquipos.getTextPresupuesto().getText()
+					.compareTo(ventanaVisualizarEquipos.getTextPago().getText()) != 0
+					&& ventanaVisualizarEquipos.getTextPago().getText().compareTo(PresupuestoDefault) != 0
+					&& ventanaVisualizarEquipos.getTextPago().getText().compareTo("0") != 0) {
+
+				ventanaVisualizarEquipos.getTextEquipoPagado().setText("PAGADO PARCIALMENTE");
+				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
+				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(CyanClaro);
+				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(CyanClaro);
+				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(CyanClaro);
+				ventanaVisualizarEquipos.getTextPago().setBackground(CyanClaro);
+
+			} else if (ventanaVisualizarEquipos.getTextPago().getText().compareTo("0") == 0
+					|| ventanaVisualizarEquipos.getTextPago().getText().compareTo("0.0") == 0) {
+
+				ventanaVisualizarEquipos.getTextEquipoPagado().setText("FALTA PAGO");
+				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
+				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(FaltaPago);
+				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(FaltaPago);
+				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(FaltaPago);
+				ventanaVisualizarEquipos.getTextPago().setBackground(FaltaPago);
+				ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(true);
+
+			}
+
+		} else {
+			ventanaVisualizarEquipos.getTextEquipoPagado().setText("SIN PRESUPUESTAR");
+			ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
+			ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(AzulClaro);
+			ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(AzulClaro);
+			ventanaVisualizarEquipos.getTextPresupuesto().setBackground(AzulClaro);
+			ventanaVisualizarEquipos.getTextPago().setBackground(AzulClaro);
+			ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(false);
+
+		}
+		// TODO Auto-generated method stub
+
+	}
+
+	
+	private void llenarTablaRepuestos() {
+		this.ventanaVisualizarEquipos.getModelRepuestos().setRowCount(0); // Para
+																			// vaciar
+																			// tabla
+		this.ventanaVisualizarEquipos.getModelRepuestos().setColumnCount(0);
+		this.ventanaVisualizarEquipos.getModelRepuestos()
+				.setColumnIdentifiers(this.ventanaVisualizarEquipos.getNombreColumnas());
+
+		int ELS = Integer.parseInt(this.ventanaVisualizarEquipos.getTextELS());
+
+		this.Repuestos_en_tabla = (List<RepuestosDTO>) modelo.dameRepuestoXels(ELS);
+
+		for (int i = 0; i < this.Repuestos_en_tabla.size(); i++) {
+			Object[] fila = { this.Repuestos_en_tabla.get(i).getRef(), this.Repuestos_en_tabla.get(i).getOriginal(),
+					this.Repuestos_en_tabla.get(i).getReemplazo(), this.Repuestos_en_tabla.get(i).getNotas() };
+			this.ventanaVisualizarEquipos.getModelRepuestos().addRow(fila);
+		}
+		this.ventanaVisualizarEquipos.show();
+
 	}
 	
 	
 	
-	
-	
-	
-	
-	
-	
+
+	public void cerraVentanaVisualizarEquipo() {
+
+		this.ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				int opcion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
+						"¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?", "Aviso", JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE);
+
+				if (opcion == JOptionPane.YES_OPTION) {
+					ventanaVisualizarEquipos.dispose();
+					ventanaVisualizarEquipos = null;
+
+				}
+			}
+
+		});
+
+	}
+
 }

@@ -241,7 +241,7 @@ public class ControladorPrincipal implements ActionListener {
 		else if (arg0.getSource() == vistaPrincipal.getBotonListados()) {
 
 			ventanaListadoReparaciones = new VentanaListadoReparaciones(controladorListados);
-			controladorListados = new ControladorListados(ventanaListadoReparaciones,new Agenda());
+			controladorListados = new ControladorListados(ventanaListadoReparaciones,new Agenda(),controladorUsuLogin);
 			
 		}
 
