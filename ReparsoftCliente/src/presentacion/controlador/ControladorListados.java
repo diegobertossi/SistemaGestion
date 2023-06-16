@@ -1,6 +1,7 @@
 package presentacion.controlador;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -64,6 +66,10 @@ import presentacion.vista.VentanaRolesUsuarios;
 import presentacion.vista.VentanaSalidas;
 import presentacion.vista.VentanaVisualizarEquipos;
 import presentacion.vista.VentanaClientes;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class ControladorListados implements ActionListener, MouseListener, KeyListener, MouseMotionListener {
 
@@ -204,6 +210,29 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
+		
+		
+		
+		ventanaListadoReparaciones.getTblReparaciones().addMouseMotionListener(new MouseMotionAdapter() {
+	            @Override
+	            public void mouseMoved(MouseEvent e) {
+	            
+	            	
+	                int row = ventanaListadoReparaciones.getTblReparaciones().rowAtPoint(e.getPoint());
+	                int column = ventanaListadoReparaciones.getTblReparaciones().columnAtPoint(e.getPoint());
+
+	                // Verificar si el mouse está sobre la celda deseada
+	                if (column == 0) {
+	                	ventanaListadoReparaciones.getTblReparaciones().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	                } else {
+	                	ventanaListadoReparaciones.getTblReparaciones().setCursor(Cursor.getDefaultCursor());
+	                }
+	            }
+	        });
+
+		
+		
+		
 
 		if (arg0.getSource() == this.ventanaListadoReparaciones.getBtnFiltrar()) {
 
