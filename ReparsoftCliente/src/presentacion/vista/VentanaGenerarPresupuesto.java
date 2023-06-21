@@ -426,7 +426,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		chckPesos.setBackground(SystemColor.activeCaption);
 		GrupoMoneda.add(chckPesos);
 
-		chckDolar = new JCheckBox("PRESUPUESTO EN D\u00D3LARES");
+		chckDolar = new JCheckBox("PRESUPUESTO EN DÓLARES");
 		chckDolar.setBounds(160, 11, 168, 17);
 		panel_3.add(chckDolar);
 		chckDolar.setHorizontalAlignment(SwingConstants.LEFT);
@@ -500,7 +500,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		lbltotaldolares.setFont(new Font("Cambria", Font.PLAIN, 12));
 
 		JLabel avisoDelpresupuesto = new JLabel(
-				"Estos datos no se guardar\u00E1n en la base. Ser\u00E1n utilizados solo una v\u00E9z al generar el PDF correspondiente. ");
+				"Estos datos no se guardarán en la base. Serán utilizados solo una véz al generar el PDF correspondiente. ");
 		avisoDelpresupuesto.setFont(new Font("Cambria", Font.PLAIN, 11));
 		avisoDelpresupuesto.setForeground(new Color(47, 79, 79));
 		avisoDelpresupuesto.setBounds(21, 469, 487, 14);
@@ -519,7 +519,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		panel_4_1.setBounds(622, 243, 242, 132);
 		contentPane.add(panel_4_1);
 		
-				btnCotizacionDolar = new JButton("<html>COTIZACI\u00D3N DEL DOLAR</html>");
+				btnCotizacionDolar = new JButton("<html>COTIZACIÓN DEL DOLAR</html>");
 				btnCotizacionDolar.setBounds(10, 11, 93, 39);
 				panel_4_1.add(btnCotizacionDolar);
 				btnCotizacionDolar.setFont(new Font("Cambria", Font.BOLD, 12));
@@ -559,7 +559,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				panel_4_1.add(label_2_1);
 				label_2_1.setFont(new Font("Cambria", Font.BOLD, 14));
 				
-				JLabel lblsugerenciaEnDolares = new JLabel("<html>SUGERENCIA EN DOLARES</html>");
+				JLabel lblsugerenciaEnDolares = new JLabel("<html>SUGERENCIA EN DÓLARES</html>");
 				lblsugerenciaEnDolares.setBounds(121, 73, 69, 31);
 				panel_4_1.add(lblsugerenciaEnDolares);
 				lblsugerenciaEnDolares.setHorizontalAlignment(SwingConstants.CENTER);

@@ -856,7 +856,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
 
-			ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 díaas.");
+			ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
 
 		}
 
@@ -999,7 +999,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				this.ventanaClientesWSP.getErrorMsj("Todos los campos son obligatoriso");
 
 			} else if (existeClienteWSP(this.ventanaClientesWSP.getTxtTelefono().getText())) {
-				JOptionPane.showMessageDialog(null, "El Nï¿½mero de telï¿½fono ya existe en otro contacto",
+				JOptionPane.showMessageDialog(null, "El Número de teléfono ya existe en otro contacto",
 						"TELEFONO EXISTENTE", JOptionPane.ERROR_MESSAGE);
 			} else {
 				ClienteWSPDTO nuevoClienteWSPDTO = new ClienteWSPDTO(0,
@@ -1276,7 +1276,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 						String email = "E-mail: els@elsweb.com.ar";
 						String Asunto = "Presupuesto ELS: " + ELS;
 
-						String cuerpoEnvioPresupuesto = "Buenos días!\n\nAdjunto presupuesto.\nEn caso de aceptar el mismo,favor de responder este correo para poder proceder con la reparaciÃ³n.\nAtte.";
+						String cuerpoEnvioPresupuesto = "Buenos días!\n\nAdjunto presupuesto.\nEn caso de aceptar el mismo,favor de responder este correo para poder proceder con la reparación.\nAtte.";
 
 						ventanaEmail.getTextCuerpo().setText(cuerpoEnvioPresupuesto + "\n\n" + empresa + "\n" + mdp
 								+ "\n" + caba + "\n" + brc + "\n" + web + "\n" + email);
@@ -1451,7 +1451,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			else {
 				int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-						"Â¿EstÃ¡ seguro de realizar la operaciÃ³n?", "ConfirmaciÃ³n", JOptionPane.YES_NO_OPTION,
+						"¿Está seguro de realizar la operación?", "Confirmación", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE);
 
 				if (seleccion == JOptionPane.YES_OPTION) {
@@ -1607,7 +1607,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			if (verificacionDatosIngreso()) {
 				int opcion = 0;
 
-				opcion = JOptionPane.showConfirmDialog(null, "Â¿Desea guardar este equipo?", "Aviso",
+				opcion = JOptionPane.showConfirmDialog(null, "¿Desea guardar este equipo?", "Aviso",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				switch (opcion) {
@@ -1975,7 +1975,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		else if (this.ventanaAgregarEquipo != null && e.getSource() == this.ventanaAgregarEquipo.getBtnGenerarSerie()) {
 
 			int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-					"Â¿Desea generar un NÃºmero De Serie?", "ConfirmaciÃ³n", JOptionPane.YES_NO_OPTION,
+					"¿Desea generar un Número De Serie?", "Confirmación", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE);
 
 			if (seleccion == JOptionPane.YES_OPTION) {
@@ -1992,7 +1992,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			DateFormat df = new SimpleDateFormat("yyyyMMdd");
 
 			int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-					"Â¿Desea Colocar la fecha default 01/01/0001?", "ConfirmaciÃ³n", JOptionPane.YES_NO_OPTION,
+					"¿Desea Colocar la fecha default 01/01/0001?", "Confirmación", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE);
 
 			if (seleccion == JOptionPane.YES_OPTION) {
@@ -2905,13 +2905,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					.isSelected(this.ventanaGenerarPresupuesto.getChckPesos().getModel())) {
 
 				ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
-						"Los precios estï¿½n expresados en Pesos, son Netos y no incluyen el IVA (21%). La garantï¿½a es de 90 dï¿½as sobre la reparaciï¿½n realizada");
+						"Los precios están expresados en Pesos, son Netos y no incluyen el IVA (21%). La garantáa es de 90 días sobre la reparación realizada");
 
 			}
 
 			else {
 				ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
-						"Los precios estï¿½n expresados en Dï¿½lares, son Netos y no incluyen el IVA (21%). La garantï¿½a es de 90 dï¿½as sobre la reparaciï¿½n realizada");
+						"Los precios están expresados en Dólares, son Netos y no incluyen el IVA (21%). La garantía es de 90 días sobre la reparación realizada");
 
 			}
 		}
@@ -2961,11 +2961,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		boolean salida = false;
 		if (idCli == 0) {
 
-			Object mje = "Debe asignar un Cliente a la reparaciÃ³n ";
+			Object mje = "Debe asignar un Cliente a la reparación ";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE); // Tipo
 		} else if (ventanaAgregarEquipo.getFechaEntrada().getDate() == null) {
 
-			Object mje = "Fecha de entrada Incorrecta. Colocar una fecha VÃ¡lida dd/mm/aaaa. Distinta de 00/00/0000";
+			Object mje = "Fecha de entrada Incorrecta. Colocar una fecha Válida dd/mm/aaaa. Distinta de 00/00/0000";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE); // Tipo
 
 		} else if (ventanaAgregarEquipo.getComboNombreEquipo().getSelectedItem().toString().compareTo("") == 0
@@ -2976,7 +2976,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		} else if (ventanaAgregarEquipo.getComboSerie().getSelectedItem() == null) {
 
-			Object mje = "'NUMERO DE SERIE'. Campo obligatorio.";
+			Object mje = "'NÚMERO DE SERIE'. Campo obligatorio.";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE); // Tipo
 		} else if (ventanaAgregarEquipo.getComboSerie().getSelectedItem().toString().compareTo("") == 0
 				|| ventanaAgregarEquipo.getComboSerie().getSelectedItem().toString().compareTo(" ") == 0) {
@@ -2987,7 +2987,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		} else if (ventanaAgregarEquipo.getComboClientes().getSelectedItem().toString().compareTo("Siemens SA") == 0
 				&& ventanaAgregarEquipo.getTextFechafabricacion().getDate() == null) {
 
-			Object mje = "Fecha de fabricaciÃ³n Incorrecta. Colocar una fecha VÃ¡lida dd/mm/aaaa. Distinta de 00/00/0000";
+			Object mje = "Fecha de fabricación Incorrecta. Colocar una fecha Válida dd/mm/aaaa. Distinta de 00/00/0000";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE); // Tipo
 
 		} else {

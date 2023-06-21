@@ -7,7 +7,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/commons-collections-3.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-digester-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jasperreports-6.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/JTattoo-1.6.11.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jcalendar-1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
@@ -33,6 +32,8 @@
 	<classpathentry exported="true" kind="lib" path="javax.mail.jar"/>
 	<classpathentry kind="lib" path="lib/activation.jar"/>
 	<classpathentry kind="lib" path="lib/json-20220320.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-6.20.5.jar" sourcepath="lib/jasperreports-6.20.5.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections4-4.4.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>

@@ -301,7 +301,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaGenerarPresupuesto.getTextPrecioDolar().setText(PrecioDolar.toString());
 
 					ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
-					ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 dÌas.");
+					ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 d√≠as.");
 
 					ventanaPresupuestos.dispose();
 					ventanaPresupuestos = null;
@@ -335,7 +335,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnGuardarCambios()) {
 
 			int seleccion = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
-					"Desea guardar los cambios hechos en el informe y en el precio de la reparaciÛn?", "ConfirmaciÛn",
+					"Desea guardar los cambios hechos en el informe y en el precio de la reparaci√≥n?", "Confirmaci√≥n",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 			if (seleccion == JOptionPane.YES_OPTION) {
@@ -388,7 +388,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			} else {
 
 				int seleccion2 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
-						"Desea generar el archivo PDF?", "ConfirmaciÛn", JOptionPane.YES_NO_OPTION,
+						"Desea generar el archivo PDF?", "Confirmaci√≥n", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE);
 
 				if (seleccion2 == JOptionPane.YES_OPTION) {
@@ -403,7 +403,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					reporte.guardar();
 
 					int seleccion3 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
-							"Desea enviar el Presupuesto por correo?", "ConfirmaciÛn", JOptionPane.YES_NO_OPTION,
+							"Desea enviar el Presupuesto por correo?", "Confirmaci√≥n", JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 
 					if (seleccion3 == JOptionPane.YES_OPTION) {
@@ -433,13 +433,13 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 						String empresa = "ELS - Electronic Laboratory & Services.";
 						String mdp = "Suc. Mar del Plata: Independencia 2609 1er piso- Te: +54 9 223 5969934.";
-						String caba = "Suc. Bs As: Arcos 4002 4∫ A - Buenos Aires(1429) - Te: +54 9 11 4703-2205.";
+						String caba = "Suc. Bs As: Arcos 4002 4 A - Buenos Aires(1429) - Te: +54 9 11 4703-2205.";
 						String brc = "Suc. Bariloche: Onelli 1216 2do 5 - Te: +54 9 11 3768-8372.";
 						String web = "www.elsweb.com.ar";
 						String email = "E-mail: els@elsweb.com.ar";
 						String Asunto = "Presupuesto ELS: " + ELS;
 
-						String cuerpoEnvioPresupuesto = "Buenos dÌas!\n\nAdjunto presupuesto.\nEn caso de aceptar el mismo,favor de responder este correo para poder proceder con la reparaciÛn.\nAtte.";
+						String cuerpoEnvioPresupuesto = "Buenos d√≠as!\n\nAdjunto presupuesto.\nEn caso de aceptar el mismo,favor de responder este correo para poder proceder con la reparaci√≥n.\nAtte.";
 
 						ventanaEmail.getTextCuerpo().setText(cuerpoEnvioPresupuesto + "\n\n" + empresa + "\n" + mdp
 								+ "\n" + caba + "\n" + brc + "\n" + web + "\n" + email);
@@ -473,7 +473,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			{
 				int seleccion = JOptionPane.showConfirmDialog(ventanaEmail, "Desea enviar el Informe al cliente",
-						"ConfirmaciÛn", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+						"Confirmaci√≥n", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (seleccion == JOptionPane.YES_OPTION) {
 
@@ -611,13 +611,13 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					.isSelected(this.ventanaGenerarPresupuesto.getChckPesos().getModel())) {
 
 				ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
-						"Los precios est·n expresados en Pesos, son Netos y no incluyen el IVA (21%). La garantÌa es de 90 dÌas sobre la reparaciÛn realizada");
+						"Los precios est√°n expresados en Pesos, son Netos y no incluyen el IVA (21%). La garant√≠a es de 90 d√≠as sobre la reparaci√≥n realizada");
 
 			}
 
 			else {
 				ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
-						"Los precios est·n expresados en DÛlares, son Netos y no incluyen el IVA (21%). La garantÌa es de 90 dÌas sobre la reparaciÛn realizada");
+						"Los precios est√°n expresados en D√≥lares, son Netos y no incluyen el IVA (21%). La garant√≠a es de 90 d√≠as sobre la reparaci√≥n realizada");
 
 			}
 		}
