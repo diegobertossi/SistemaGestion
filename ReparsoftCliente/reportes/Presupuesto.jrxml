@@ -288,13 +288,6 @@ www.elsweb.com.ar
 	</columnHeader>
 	<detail>
 		<band height="330">
-			<textField textAdjust="StretchHeight">
-				<reportElement x="40" y="30" width="483" height="300" uuid="70f5c5aa-aa89-4079-b62f-9089d2e795c7"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Cambria" size="12" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{informecliente}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="40" y="10" width="77" height="15" uuid="7b91e440-470e-4e56-bbc9-0b1f4f766d5c"/>
 				<textElement>
@@ -302,6 +295,13 @@ www.elsweb.com.ar
 				</textElement>
 				<text><![CDATA[Diagnóstico: ]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="41" y="30" width="462" height="280" uuid="2571ba8e-59f8-40ef-a7e3-0ff785b6f87c"/>
+				<textElement>
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{informecliente}]]></textFieldExpression>
+			</textField>
 		</band>
 		<band height="43">
 			<staticText>
