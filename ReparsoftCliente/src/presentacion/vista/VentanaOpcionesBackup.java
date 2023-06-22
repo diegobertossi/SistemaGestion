@@ -73,13 +73,13 @@ public class VentanaOpcionesBackup extends JFrame {
 		txtRutaArchivo.setForeground(new Color(255, 255, 255));
 		txtRutaArchivo.setFont(new Font("Consolas", Font.BOLD, 12));
 
-		JLabel lblNewLabel = new JLabel("Se generar\u00E1 el siguiente archivo de backup:");
+		JLabel lblNewLabel = new JLabel("Se generarÃ¡ el siguiente archivo de backup:");
 		lblNewLabel.setBounds(27, 106, 275, 20);
 		panel.add(lblNewLabel);
 		lblNewLabel.setForeground(new Color(0, 0, 128));
 		lblNewLabel.setFont(new Font("Calibri", Font.PLAIN, 14));
 
-		JLabel lblNewLabel_1 = new JLabel("Se guardar\u00E1 en el siguiente destino:");
+		JLabel lblNewLabel_1 = new JLabel("Se guardarÃ¡ en el siguiente destino:");
 		lblNewLabel_1.setBounds(27, 176, 295, 20);
 		panel.add(lblNewLabel_1);
 		lblNewLabel_1.setForeground(new Color(0, 0, 128));
@@ -131,13 +131,13 @@ public class VentanaOpcionesBackup extends JFrame {
 	}
 
 	public void setLocationMove(int moveWidth, int moveHeight) {
-		// Obtenemos el tamaño de la pantalla.
+		// Obtenemos el tamaï¿½o de la pantalla.
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		// Obtenemos el tamaño de nuestro frame.
+		// Obtenemos el tamaï¿½o de nuestro frame.
 		Dimension frameSize = this.getSize();
 		frameSize.width = frameSize.width > screenSize.width ? screenSize.width : frameSize.width;
 		frameSize.height = frameSize.height > screenSize.height ? screenSize.height : frameSize.height;
-		// We define the location. Definimos la localización.
+		// We define the location. Definimos la localizaciï¿½n.
 		setLocation((screenSize.width - frameSize.width) / 2 + moveWidth,
 				(screenSize.height - frameSize.height) / 2 + moveHeight);
 	}

@@ -84,7 +84,7 @@ public class VentanaAgregarCliente extends JFrame
 		lblDireccion.setBounds(22, 106, 113, 14);
 		panel.add(lblDireccion);
 		
-		JLabel lblTelefonoEMpresa = new JLabel("Tel\u00E9fono Empresa : ");
+		JLabel lblTelefonoEMpresa = new JLabel("Teléfono Empresa : ");
 		lblTelefonoEMpresa.setFont(new Font("Cambria", Font.BOLD, 14));
 		lblTelefonoEMpresa.setBounds(22, 199, 130, 14);
 		panel.add(lblTelefonoEMpresa);
@@ -132,7 +132,7 @@ public class VentanaAgregarCliente extends JFrame
 		lbleMail.setBounds(22, 152, 63, 14);
 		panel.add(lbleMail);
 		
-		JLabel lblTelefonoContacto = new JLabel("Telefono Contacto : ");
+		JLabel lblTelefonoContacto = new JLabel("Teléfono Contacto : ");
 		lblTelefonoContacto.setFont(new Font("Cambria", Font.BOLD, 14));
 		lblTelefonoContacto.setBounds(22, 176, 130, 14);
 		panel.add(lblTelefonoContacto);
@@ -204,7 +204,7 @@ public class VentanaAgregarCliente extends JFrame
 				 char c = e.getKeyChar();
 				 if(Character.isLetter(c)){
 					 getToolkit().beep();
-					 JOptionPane.showMessageDialog(null, "Solo se admiten numeros");
+					 JOptionPane.showMessageDialog(null, "Solo se admiten números");
 					 e.consume();
 				 }
 			 }

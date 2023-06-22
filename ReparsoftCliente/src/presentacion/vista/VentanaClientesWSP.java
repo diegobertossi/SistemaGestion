@@ -52,7 +52,7 @@ public class VentanaClientesWSP extends JFrame {
 	private JPanel contentPane;
 
 	private DefaultTableModel modelClientesWSP;
-	private String[] nombreColumnasClientesWSP = { "ORGANIZACI�N","CONTACTO", "TEL�FONO" };
+	private String[] nombreColumnasClientesWSP = { "ORGANIZACIÓN","CONTACTO", "TELÉFONO" };
 	private JTable tablaClientesWSP;
 	private JButton btnAgregarCliente;
 	private JButton btnEditarCliente;
@@ -103,7 +103,7 @@ public class VentanaClientesWSP extends JFrame {
 		panel.add(spClientes);
 
 		// modelUsuarios = new DefaultTableModel(null, nombreColumnasUsuarios);
-		modelClientesWSP = new DefaultTableModel(new Object[][] {}, new String[] { "ORGANIZACI�N","CONTACTO", "TEL�FONO" }) {
+		modelClientesWSP = new DefaultTableModel(new Object[][] {}, new String[] { "ORGANIZACIÓN","CONTACTO", "TELÉFONO" }) {
 			Class[] columnTypes = new Class[] { String.class, String.class,String.class };
 
 			public Class getColumnClass(int columnIndex) {
@@ -164,14 +164,14 @@ public class VentanaClientesWSP extends JFrame {
 		lblClientes.setBounds(21, 32, 252, 14);
 		panel.add(lblClientes);
 
-		btnGuardarEdicion = new JButton("<html><center>Guardar Edici\u00F3n</html>");
+		btnGuardarEdicion = new JButton("<html><center>Guardar Edición</html>");
 		btnGuardarEdicion.setVisible(false);
 		btnGuardarEdicion.setBackground(new Color(152, 251, 152));
 		btnGuardarEdicion.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnGuardarEdicion.setBounds(335, 286, 99, 43);
 		panel.add(btnGuardarEdicion);
 
-		btnCancelarEdicion = new JButton("<html><center>Cancelar Edici\u00F3n</html>");
+		btnCancelarEdicion = new JButton("<html><center>Cancelar Edición</html>");
 		btnCancelarEdicion.setVisible(false);
 		btnCancelarEdicion.setBackground(new Color(255, 0, 0));
 		btnCancelarEdicion.setFont(new Font("Cambria", Font.BOLD, 14));
@@ -211,7 +211,7 @@ public class VentanaClientesWSP extends JFrame {
 		lblNombre_1.setBounds(21, 283, 76, 20);
 		panel.add(lblNombre_1);
 
-		JLabel lblTelefono = new JLabel("Tel\u00E9fono");
+		JLabel lblTelefono = new JLabel("Teléfono");
 		lblTelefono.setFont(new Font("Cambria", Font.BOLD, 12));
 		lblTelefono.setBounds(21, 305, 76, 20);
 		panel.add(lblTelefono);
@@ -223,7 +223,7 @@ public class VentanaClientesWSP extends JFrame {
 		panel.add(txtOrganizacion);
 		txtOrganizacion.setColumns(10);
 
-		JLabel lblOrganizacion = new JLabel("Organizaci\u00F3n");
+		JLabel lblOrganizacion = new JLabel("Organización");
 		lblOrganizacion.setFont(new Font("Cambria", Font.BOLD, 12));
 		lblOrganizacion.setBounds(21, 261, 76, 20);
 		panel.add(lblOrganizacion);

@@ -118,11 +118,11 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						|| this.ventanaRolesUsuarios.getTxtTelefonoUsuario().getText().equals("")
 						|| this.ventanaRolesUsuarios.getTxtEmailUsuario().getText().equals("")
 						|| this.ventanaRolesUsuarios.getTxtLogin().getText().equals("")) {
-					this.ventanaRolesUsuarios.getErrorMsj("Todos los campos son obligatoriso");
+					this.ventanaRolesUsuarios.getErrorMsj("Todos los campos son obligatorios");
 				} else if (!validacionMail(ventanaRolesUsuarios.getTxtEmailUsuario().getText())) {
 
 					JOptionPane.showMessageDialog(null, "Escriba un email correcto",
-							"Error al registrar una direccion de email", JOptionPane.ERROR_MESSAGE);
+							"Error al registrar una direcciÃ³n de email", JOptionPane.ERROR_MESSAGE);
 				} else if (existeUsuario(Integer.parseInt(this.ventanaRolesUsuarios.getTxtDNI().getText()))) {
 					JOptionPane.showMessageDialog(null,
 							"Los campos, DNI, Login no pueden estar repetidos con otro usuario", "El dni ya existe",
@@ -224,7 +224,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				} else if (!validacionMail(ventanaRolesUsuarios.getTxtEmailUsuario().getText())) {
 
 					JOptionPane.showMessageDialog(null, "Escriba un email correcto",
-							"Error al registrar una direccion de email", JOptionPane.ERROR_MESSAGE);
+							"Error al registrar una direcciÃ³n de email", JOptionPane.ERROR_MESSAGE);
 				} else if (existeUsuarioEditar(Integer.parseInt(this.ventanaRolesUsuarios.getTxtDNI().getText()))) {
 					JOptionPane.showMessageDialog(null,
 							"Los campos, DNI, Login no pueden estar repetidos con otro usuario", "El dni ya existe",
@@ -257,10 +257,10 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						this.ventanaRolesUsuarios.getBtnEliminarUsuario().setEnabled(true);
 						this.ventanaRolesUsuarios.getBtnEditarUsuario().setEnabled(true);
 //						
-//						JOptionPane.showMessageDialog(null, "<html><p>Usuario Editado</p></html>", "Edición Exitosa",
+//						JOptionPane.showMessageDialog(null, "<html><p>Usuario Editado</p></html>", "Ediciï¿½n Exitosa",
 //								JOptionPane.INFORMATION_MESSAGE);
 
-						JOptionPane.showMessageDialog(null, new JLabel("Usuario Editado"), "Edición Exitosa",
+						JOptionPane.showMessageDialog(null, new JLabel("Usuario Editado"), "EdiciÃ³n Exitosa",
 								JOptionPane.INFORMATION_MESSAGE);
 
 					}
@@ -272,7 +272,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				} else if (usuarioElegido.getIdRol() == 2) {
 
 					JOptionPane.showMessageDialog(null,
-							"No se puede Editar al usuario cliente 'Administrador Programador'", "Error de edición",
+							"No se puede Editar al usuario cliente 'Administrador Programador'", "Error de ediciÃ³n",
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {
 
@@ -319,11 +319,11 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				else if (usuarioElegido.getIdRol() == 2) {
 
 					JOptionPane.showMessageDialog(null,
-							"No se puede eliminar al usuario cliente 'Administrador Programador'", "Error de edición",
+							"No se puede eliminar al usuario cliente 'Administrador Programador'", "Error de ediciÃ³n",
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					int seleccion = JOptionPane.showConfirmDialog(ventanaRolesUsuarios,
-							"¿Está seguro de realizar la operación?", "Confirmación", JOptionPane.YES_NO_OPTION,
+							"Â¿EstÃ¡ seguro de realizar la operaciÃ³n?", "ConfirmaciÃ³n", JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 
 					if (seleccion == JOptionPane.YES_OPTION) {

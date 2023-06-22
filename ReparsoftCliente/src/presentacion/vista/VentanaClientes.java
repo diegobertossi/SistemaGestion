@@ -230,7 +230,7 @@ public class VentanaClientes extends JFrame {
 		panel_1.add(txtCUIT);
 		txtCUIT.setColumns(10);
 
-		lblDiereccion = new JLabel("Direcci\u00F3n : ");
+		lblDiereccion = new JLabel("Dirección : ");
 		lblDiereccion.setFont(new Font("Cambria", Font.BOLD, 12));
 		lblDiereccion.setBounds(6, 60, 84, 20);
 		panel_1.add(lblDiereccion);

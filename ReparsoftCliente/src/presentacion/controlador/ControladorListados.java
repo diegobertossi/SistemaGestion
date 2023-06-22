@@ -218,7 +218,7 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 				int row = ventanaListadoReparaciones.getTblReparaciones().rowAtPoint(e.getPoint());
 				int column = ventanaListadoReparaciones.getTblReparaciones().columnAtPoint(e.getPoint());
 
-				// Verificar si el mouse está sobre la celda deseada
+				// Verificar si el mouse estï¿½ sobre la celda deseada
 				if (column == 0) {
 					ventanaListadoReparaciones.getTblReparaciones()
 							.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -1007,7 +1007,7 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 		this.ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				int opcion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-						"¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?", "Aviso", JOptionPane.YES_NO_OPTION,
+						"Desea salir de la ventana 'VISUALIZAR EQUIPOS'?", "Aviso", JOptionPane.YES_NO_OPTION,
 						JOptionPane.WARNING_MESSAGE);
 
 				if (opcion == JOptionPane.YES_OPTION) {

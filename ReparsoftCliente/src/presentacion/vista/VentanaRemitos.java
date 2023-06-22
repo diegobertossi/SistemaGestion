@@ -68,7 +68,7 @@ public class VentanaRemitos extends JFrame {
 	private JPanel contentPane;
 	private JTable tblEquiposParaRemito;
 	private DefaultTableModel modelEquiposParaRemito;
-	private String[] nombreColumnas = { "ELS","EQUIPO", "MARCA", "MODELO","N� SERIE", "AVISO", "ESTADO TEC", "ESTADO COM", "AGREGAR A REMITO" };
+	private String[] nombreColumnas = { "ELS","EQUIPO", "MARCA", "MODELO","N° SERIE", "AVISO", "ESTADO TEC", "ESTADO COM", "AGREGAR A REMITO" };
 	public static int est;
 	private JPanel panel;
 	private JScrollPane  scrollPane ;
@@ -156,7 +156,7 @@ public class VentanaRemitos extends JFrame {
 		tblEquiposParaRemito = new JTable(modelEquiposParaRemito);
 
 		modelEquiposParaRemito = new DefaultTableModel(new Object[][] {},
-				new String[] { "ELS","EQUIPO", "MARCA", "MODELO","N� SERIE", "AVISO", "ESTADO TEC", "ESTADO COM", "AGREGAR A REMITO" }) {
+				new String[] { "ELS","EQUIPO", "MARCA", "MODELO","N° SERIE", "AVISO", "ESTADO TEC", "ESTADO COM", "AGREGAR A REMITO" }) {
 
 			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
 					String.class, String.class, String.class, Boolean.class };
@@ -244,7 +244,7 @@ public class VentanaRemitos extends JFrame {
 		
 		txtSeleccinDeRemito = new JTextField();
 		txtSeleccinDeRemito.setHorizontalAlignment(SwingConstants.CENTER);
-		txtSeleccinDeRemito.setText("SELECCI\u00D3N DE REMITO: ");
+		txtSeleccinDeRemito.setText("SELECCIÓN DE REMITO: ");
 		txtSeleccinDeRemito.setFont(new Font("Cambria", Font.BOLD, 22));
 		txtSeleccinDeRemito.setEditable(false);
 		txtSeleccinDeRemito.setColumns(10);
@@ -260,13 +260,13 @@ public class VentanaRemitos extends JFrame {
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		lblUbicacin = new JLabel("UBICACI\u00D3N :");
+		lblUbicacin = new JLabel("UBICACIÓN :");
 		lblUbicacin.setBounds(6, 10, 125, 20);
 		panel_1.add(lblUbicacin);
 		lblUbicacin.setFont(new Font("Cambria", Font.BOLD, 14));
 		lblUbicacin.setForeground(new Color(51, 102, 204));
 		
-		lblNDeRemito = new JLabel("N\u00B0 DE REMITO:");
+		lblNDeRemito = new JLabel("N° DE REMITO:");
 		lblNDeRemito.setBounds(6, 40, 125, 20);
 		panel_1.add(lblNDeRemito);
 		lblNDeRemito.setForeground(new Color(51, 102, 204));

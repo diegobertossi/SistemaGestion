@@ -118,7 +118,7 @@ public class VentanaVerificarIngresoAnterior extends JFrame
 		btnPorels.setBackground(new Color(204, 255, 204));
 		btnPorels.setFont(new Font("Cambria", Font.BOLD, 12));
 		
-		btnPorSerie = new JButton("<html><center>POR N\u00B0 SERIE:</html>");
+		btnPorSerie = new JButton("<html><center>POR N° SERIE:</html>");
 		btnPorSerie.setBounds(27, 11, 110, 23);
 		panel_2.add(btnPorSerie);
 		btnPorSerie.setBackground(new Color(204, 255, 204));
@@ -142,7 +142,7 @@ public class VentanaVerificarIngresoAnterior extends JFrame
 		btnVerificar.setBounds(332, 30, 110, 23);
 		panel_2.add(btnVerificar);
 		
-		JLabel lblClientes = new JLabel("VERIFICACI\u00D3N DE INGRESO ANTERIOR");
+		JLabel lblClientes = new JLabel("VERIFICACIÓN DE INGRESO ANTERIOR");
 		lblClientes.setFont(new Font("Cambria", Font.BOLD, 22));
 		lblClientes.setBounds(79, 11, 415, 31);
 		panel.add(lblClientes);
@@ -239,7 +239,7 @@ public class VentanaVerificarIngresoAnterior extends JFrame
 		textIngresoAnterior.setBounds(195, 197, 86, 20);
 		panel_1.add(textIngresoAnterior);
 		
-		lblSerie = new JLabel("N\u00B0 SERIE:");
+		lblSerie = new JLabel("N° SERIE:");
 		lblSerie.setFont(new Font("Cambria", Font.BOLD, 12));
 		lblSerie.setBounds(10, 125, 104, 20);
 		panel_1.add(lblSerie);
@@ -312,7 +312,7 @@ public class VentanaVerificarIngresoAnterior extends JFrame
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 		
-		lblCargarAnuevoELS = new JLabel("CARGAR DATOS A UN NUEVO ELS?");
+		lblCargarAnuevoELS = new JLabel("¿CARGAR DATOS A UN NUEVO ELS?");
 		lblCargarAnuevoELS.setBounds(106, 4, 259, 20);
 		panel_3.add(lblCargarAnuevoELS);
 		lblCargarAnuevoELS.setFont(new Font("Cambria", Font.BOLD, 16));

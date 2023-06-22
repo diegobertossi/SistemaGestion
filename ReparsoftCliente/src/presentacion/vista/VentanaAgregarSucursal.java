@@ -72,7 +72,7 @@ public class VentanaAgregarSucursal extends JFrame
 		lblNombre.setBounds(22, 59, 113, 14);
 		panel.add(lblNombre);
 		
-		JLabel lblDireccion = new JLabel("Diereccion : ");
+		JLabel lblDireccion = new JLabel("Dierección : ");
 		lblDireccion.setFont(new Font("Cambria", Font.BOLD, 14));
 		lblDireccion.setBounds(22, 84, 113, 14);
 		panel.add(lblDireccion);
@@ -113,7 +113,7 @@ public class VentanaAgregarSucursal extends JFrame
 		lbleMail.setBounds(22, 156, 63, 14);
 		panel.add(lbleMail);
 		
-		JLabel lblTelefonoContacto = new JLabel("Telefono Contacto : ");
+		JLabel lblTelefonoContacto = new JLabel("Teléfono Contacto : ");
 		lblTelefonoContacto.setFont(new Font("Cambria", Font.BOLD, 14));
 		lblTelefonoContacto.setBounds(22, 131, 130, 14);
 		panel.add(lblTelefonoContacto);
@@ -194,7 +194,7 @@ public class VentanaAgregarSucursal extends JFrame
 				 char c = e.getKeyChar();
 				 if(Character.isLetter(c)){
 					 getToolkit().beep();
-					 JOptionPane.showMessageDialog(null, "Solo se admiten numeros");
+					 JOptionPane.showMessageDialog(null, "Solo se admiten números");
 					 e.consume();
 				 }
 			 }

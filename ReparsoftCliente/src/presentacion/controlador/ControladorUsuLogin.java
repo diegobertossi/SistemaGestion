@@ -30,7 +30,7 @@ public class ControladorUsuLogin {
 			vistaLogin.getTxtUsuLogin().setText("");
 			vistaLogin.getTxtUsuPass().setText("");
 			vistaLogin.getTxtUsuLogin().requestFocus();
-			JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta");
+			JOptionPane.showMessageDialog(null, "Usuario o contraseÃ±a incorrecta");
 
 			return false;
 		} else {
@@ -47,8 +47,8 @@ public class ControladorUsuLogin {
 			vistaLogin.dispose();
 
 			vistaPrincipal.getTextUsuario().setText("BIENVENIDO/A: " + usu_login.getNombre());
-			vistaPrincipal.getTextProgramador().setText("Diseñado por Diego H. Bertossi");
-			vistaPrincipal.getTextVersionSoft().setText("Versión Reparsoft 3.1");
+			vistaPrincipal.getTextProgramador().setText("DiseÃ±ado por Diego H. Bertossi");
+			vistaPrincipal.getTextVersionSoft().setText("VersiÃ³n Reparsoft 4.1");
 
 			return true;
 		}
@@ -266,12 +266,12 @@ public class ControladorUsuLogin {
 	// usu_login.setPass(newPass);
 	// permisos.actualizarUsuario(usu_login);
 	// JOptionPane.showMessageDialog(null,"se cambio correctamente la
-	// contraseña");
+	// contraseï¿½a");
 	// ventanaCambiarContra.dispose();
 	// }
 	// else
 	// {
-	// JOptionPane.showMessageDialog(null,"La contraseña ingresada no es
+	// JOptionPane.showMessageDialog(null,"La contraseï¿½a ingresada no es
 	// valida");
 	// }
 	// }

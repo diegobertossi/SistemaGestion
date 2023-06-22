@@ -62,7 +62,7 @@ public class VentanaListadoReparacionesPresupuestos extends JFrame {
 	private JTable tblReparaciones_1;
 	private DefaultTableModel modelReparaciones;
 	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
-			"N� SERIE", "AVISO", "REVISI�N", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "T�CNICO",
+			"N° SERIE", "AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
 			"UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO" };
 
 	private JButton btnFiltrar;
@@ -181,9 +181,9 @@ public class VentanaListadoReparacionesPresupuestos extends JFrame {
 		tblReparaciones_1 = new JTable(modelReparaciones);
 
 		modelReparaciones = new DefaultTableModel(new Object[][] {},
-				new String[] { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "N� SERIE",
-						"AVISO", "REVISI�N", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "T�CNICO",
-						"UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO" }) {
+				new String[] { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "N° SERIE",
+						"AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
+						"UBIC. REM", "N° REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO" }) {
 
 			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
 					String.class, String.class, String.class, String.class, String.class, String.class, String.class,
@@ -476,7 +476,7 @@ public class VentanaListadoReparacionesPresupuestos extends JFrame {
 		lblEls.setBounds(6, 102, 60, 14);
 		panel_1.add(lblEls);
 
-		lblTcnico = new JLabel("T\u00C9CNICO:");
+		lblTcnico = new JLabel("TÉCNICO:");
 		lblTcnico.setFont(new Font("Cambria", Font.BOLD, 12));
 		lblTcnico.setBounds(263, 102, 60, 14);
 		panel_1.add(lblTcnico);

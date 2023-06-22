@@ -142,7 +142,7 @@ public class VentanaEstados extends JFrame
 		rdbtnSinRevisar.setBounds(6, 5, 109, 23);
 		panel_3.add(rdbtnSinRevisar);
 		
-		rdbtnEnReparacion = new JRadioButton("En Reparaci髇");
+		rdbtnEnReparacion = new JRadioButton("En Reparaci贸n");
 		rdbtnEnReparacion.setBackground(SystemColor.activeCaption);
 		rdbtnEnReparacion.setFont(new Font("Cambria", Font.PLAIN, 12));
 		rdbtnEnReparacion.setBounds(6, 33, 109, 23);
@@ -154,7 +154,7 @@ public class VentanaEstados extends JFrame
 		rdbtnReparado.setBounds(6, 61, 109, 23);
 		panel_3.add(rdbtnReparado);
 		
-		rdbtnReparadoGarantia = new JRadioButton("Reparado En Garant韆");
+		rdbtnReparadoGarantia = new JRadioButton("Reparado En Garant铆a");
 		rdbtnReparadoGarantia.setBackground(SystemColor.activeCaption);
 		rdbtnReparadoGarantia.setFont(new Font("Cambria", Font.PLAIN, 12));
 		rdbtnReparadoGarantia.setBounds(6, 89, 152, 23);
@@ -172,13 +172,13 @@ public class VentanaEstados extends JFrame
 		rdbtnDesguace.setBounds(155, 33, 139, 23);
 		panel_3.add(rdbtnDesguace);
 		
-		rdbtnNoTieneReparacion = new JRadioButton("No Tiene Reparaci髇");
+		rdbtnNoTieneReparacion = new JRadioButton("No Tiene Reparaci贸n");
 		rdbtnNoTieneReparacion.setBackground(SystemColor.activeCaption);
 		rdbtnNoTieneReparacion.setFont(new Font("Cambria", Font.PLAIN, 12));
 		rdbtnNoTieneReparacion.setBounds(155, 61, 139, 23);
 		panel_3.add(rdbtnNoTieneReparacion);
 		
-		rdbtnNoAceptaron = new JRadioButton("No Aceptaron Reparaci髇");
+		rdbtnNoAceptaron = new JRadioButton("No Aceptaron Reparaci贸n");
 		rdbtnNoAceptaron.setBackground(SystemColor.activeCaption);
 		rdbtnNoAceptaron.setFont(new Font("Cambria", Font.PLAIN, 12));
 		rdbtnNoAceptaron.setBounds(155, 89, 163, 23);
@@ -203,7 +203,7 @@ public class VentanaEstados extends JFrame
 		panel.add(panel_4);
 		panel_4.setLayout(null);
 		
-		rdbtnEspera = new JRadioButton("A la Espera de Aceptaci髇");
+		rdbtnEspera = new JRadioButton("A la Espera de Aceptaci贸n");
 		rdbtnEspera.setBackground(SystemColor.activeCaption);
 		rdbtnEspera.setFont(new Font("Cambria", Font.PLAIN, 12));
 		rdbtnEspera.setBounds(6, 5, 194, 23);
@@ -221,7 +221,7 @@ public class VentanaEstados extends JFrame
 		rdbtnNoAceptado.setBounds(6, 61, 149, 23);
 		panel_4.add(rdbtnNoAceptado);
 		
-		rdbtnGarantia = new JRadioButton("Garant韆");
+		rdbtnGarantia = new JRadioButton("Garant锟絘");
 		rdbtnGarantia.setBackground(SystemColor.activeCaption);
 		rdbtnGarantia.setFont(new Font("Cambria", Font.PLAIN, 12));
 		rdbtnGarantia.setBounds(6, 89, 149, 23);
@@ -235,7 +235,7 @@ public class VentanaEstados extends JFrame
 		GrupoEstadoComercial.add(rdbtnGarantia);
 		
 		
-		lblEstadoFisico = new JLabel("ESTADO F\u00CDSICO:");
+		lblEstadoFisico = new JLabel("ESTADO F脥SICO:");
 		lblEstadoFisico.setBounds(26, 26, 136, 14);
 		panel.add(lblEstadoFisico);
 		lblEstadoFisico.setFont(new Font("Cambria", Font.BOLD, 16));
@@ -245,12 +245,12 @@ public class VentanaEstados extends JFrame
 		panel.add(lblEstadoComercial);
 		lblEstadoComercial.setFont(new Font("Cambria", Font.BOLD, 16));
 		
-		lblEstadoTecnico = new JLabel("ESTADO T\u00C9CNICO:");
+		lblEstadoTecnico = new JLabel("ESTADO T脡CNICO:");
 		lblEstadoTecnico.setBounds(188, 26, 300, 14);
 		panel.add(lblEstadoTecnico);
 		lblEstadoTecnico.setFont(new Font("Cambria", Font.BOLD, 16));
 		
-		btnAceptarEdicion = new JButton("ACEPTAR EDICI\u00D3N");
+		btnAceptarEdicion = new JButton("ACEPTAR EDICI脫N");
 		btnAceptarEdicion.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnAceptarEdicion.setBounds(296, 212, 164, 23);
 		panel.add(btnAceptarEdicion);
@@ -270,13 +270,13 @@ public class VentanaEstados extends JFrame
 	}
 
 	public void setLocationMove(int moveWidth, int moveHeight) {
-		// Obtenemos el tama駉 de la pantalla.
+		// Obtenemos el tama锟給 de la pantalla.
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		// Obtenemos el tama駉 de nuestro frame.
+		// Obtenemos el tama锟給 de nuestro frame.
 		Dimension frameSize = this.getSize();
 		frameSize.width = frameSize.width > screenSize.width ? screenSize.width : frameSize.width;
 		frameSize.height = frameSize.height > screenSize.height ? screenSize.height : frameSize.height;
-		// We define the location. Definimos la localizaci髇.
+		// We define the location. Definimos la localizaci锟絥.
 		setLocation((screenSize.width - frameSize.width) / 2 + moveWidth,
 				(screenSize.height - frameSize.height) / 2 + moveHeight);
 	}

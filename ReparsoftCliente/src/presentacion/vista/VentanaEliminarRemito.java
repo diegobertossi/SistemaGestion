@@ -69,7 +69,7 @@ public class VentanaEliminarRemito extends JFrame {
 	private JPanel contentPane;
 	private JTable tblEquiposParaRemito;
 	private DefaultTableModel modelEquiposParaRemito;
-	private String[] nombreColumnas = { "ELS", "EQUIPO", "MODELO", "N° SERIE"};
+	private String[] nombreColumnas = { "ELS", "EQUIPO", "MODELO", "NÂ° SERIE"};
 	public static int est;
 	private JPanel panel;
 	private JScrollPane scrollPane;
@@ -147,7 +147,7 @@ public class VentanaEliminarRemito extends JFrame {
 		tblEquiposParaRemito = new JTable(modelEquiposParaRemito);
 
 		modelEquiposParaRemito = new DefaultTableModel(new Object[][] {},
-				new String[] { "ELS", "EQUIPO", "MODELO", "N° SERIE" }) {
+				new String[] { "ELS", "EQUIPO", "MODELO", "NÂ° SERIE" }) {
 
 			public int getColumnCount() {
 				return nombreColumnas.length;
@@ -329,7 +329,7 @@ public class VentanaEliminarRemito extends JFrame {
 			mascara = new MaskFormatter("########");
 			mascara.setPlaceholderCharacter('#');
 		} catch (ParseException e) {
-			// Algún error que pueda ocurrir
+			// Algï¿½n error que pueda ocurrir
 			e.printStackTrace();
 		}
 		return mascara;

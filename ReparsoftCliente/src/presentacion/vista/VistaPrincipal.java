@@ -89,7 +89,7 @@ public class VistaPrincipal extends JFrame {
 		botonEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonEquipos.setFont(new Font("Arial", Font.BOLD, 12));
 
-		botonEquipos.setToolTipText("Ingreso y visualización de equipos al Sistema");
+		botonEquipos.setToolTipText("Ingreso y visualizaciÃ³n de equipos al Sistema");
 
 		botonEquipos.setIcon(new ImageIcon(this.getClass().getResource("/Motherboard_icon-icons.com_55228.png")));
 		panelDeControl.add(botonEquipos);
@@ -127,7 +127,7 @@ public class VistaPrincipal extends JFrame {
 		botonClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonClientes.setFont(new Font("Arial", Font.BOLD, 12));
 
-		botonClientes.setToolTipText("Visualización y alta de Clientes");
+		botonClientes.setToolTipText("VisualizaciÃ³n y alta de Clientes");
 
 		botonClientes.setIcon(new ImageIcon(this.getClass().getResource("/admin_64x64.png")));
 		panelDeControl.add(botonClientes);
@@ -138,7 +138,7 @@ public class VistaPrincipal extends JFrame {
 		botonPresupuestos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonPresupuestos.setFont(new Font("Arial", Font.BOLD, 12));
 
-		botonPresupuestos.setToolTipText("Generación de Presupuestos, pendientes e Ingreso de Pagos.");
+		botonPresupuestos.setToolTipText("GeneraciÃ³n de Presupuestos, pendientes e Ingreso de Pagos.");
 
 		botonPresupuestos.setIcon(new ImageIcon(this.getClass().getResource("/presupuesto.png")));
 		panelDeControl.add(botonPresupuestos);
@@ -162,7 +162,7 @@ public class VistaPrincipal extends JFrame {
 		panelDeControl.add(botonBackUp);
 
 
-		botonConfiguracion = new JButton("CONFIGURACIÓN");
+		botonConfiguracion = new JButton("CONFIGURACIÃ“N");
 
 		botonConfiguracion.setForeground(new Color(0, 0, 128));
 		botonConfiguracion.setBounds(450, 208, 197, 73);
@@ -173,7 +173,7 @@ public class VistaPrincipal extends JFrame {
 		panelDeControl.add(botonConfiguracion);
 
 
-		JLabel lblNewLabel = new JLabel("SISTEMA DE GESIÓN");
+		JLabel lblNewLabel = new JLabel("SISTEMA DE GESTIÃ“N");
 
 		lblNewLabel.setForeground(Color.WHITE);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);

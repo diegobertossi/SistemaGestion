@@ -79,7 +79,7 @@ public class VentanaLogin extends JFrame {
 		lblNewLabel.setForeground(new Color(0, 0, 128));
 		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 14));
 		
-		JLabel lblNewLabel_1 = new JLabel("Contrase\u00F1a : ");
+		JLabel lblNewLabel_1 = new JLabel("ContraseÃ±a : ");
 		lblNewLabel_1.setBounds(50, 112, 98, 14);
 		panel.add(lblNewLabel_1);
 		lblNewLabel_1.setForeground(new Color(0, 0, 128));
@@ -108,13 +108,13 @@ public class VentanaLogin extends JFrame {
 	}
 
 	public void setLocationMove(int moveWidth, int moveHeight) {
-		// Obtenemos el tamaño de la pantalla.
+		// Obtenemos el tamaï¿½o de la pantalla.
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		// Obtenemos el tamaño de nuestro frame.
+		// Obtenemos el tamaï¿½o de nuestro frame.
 		Dimension frameSize = this.getSize();
 		frameSize.width = frameSize.width > screenSize.width ? screenSize.width : frameSize.width;
 		frameSize.height = frameSize.height > screenSize.height ? screenSize.height : frameSize.height;
-		// We define the location. Definimos la localización.
+		// We define the location. Definimos la localizaciï¿½n.
 		setLocation((screenSize.width - frameSize.width) / 2 + moveWidth,
 				(screenSize.height - frameSize.height) / 2 + moveHeight);
 	}

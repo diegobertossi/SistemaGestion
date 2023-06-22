@@ -38,7 +38,7 @@ public class VentanaSucursales extends JFrame
 	private JButton btnEditar;
 	private DefaultTableModel modelSucursales;
 	private  String[] nombreColumnas = {"Nombre"};
-	//private  String[] nombreColumnas = {"Nombre","CUIT", "Dirección","Contacto", "Tel. Contácto", "Correo"};
+	//private  String[] nombreColumnas = {"Nombre","CUIT", "Direcciï¿½n","Contacto", "Tel. Contï¿½cto", "Correo"};
 	private JPanel panel;
 	private ControladorCliente controladorSucursal;
 	
@@ -100,7 +100,7 @@ public class VentanaSucursales extends JFrame
 		new String[] {
 				"Nombre"
 				
-				//"Nombre", "CUIT", "Dirección","Contacto", "Tel. Contácto", "Correo"
+				//"Nombre", "CUIT", "Direcciï¿½n","Contacto", "Tel. Contï¿½cto", "Correo"
 		}
 	) 
 		{
@@ -172,7 +172,7 @@ public class VentanaSucursales extends JFrame
 		panel_1.add(txtNombreSucursal);
 		txtNombreSucursal.setColumns(10);
 
-		lblDiereccion = new JLabel("Direcci\u00F3n : ");
+		lblDiereccion = new JLabel("DirecciÃ³n : ");
 		lblDiereccion.setFont(new Font("Cambria", Font.BOLD, 12));
 		lblDiereccion.setBounds(6, 39, 84, 20);
 		panel_1.add(lblDiereccion);

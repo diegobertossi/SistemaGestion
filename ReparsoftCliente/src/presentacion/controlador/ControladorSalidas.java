@@ -101,7 +101,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 		this.ventanaRemitoGenerado.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				int opcion = JOptionPane.showConfirmDialog(ventanaRemitoGenerado, "¿Desea salir de la ventana?",
+				int opcion = JOptionPane.showConfirmDialog(ventanaRemitoGenerado, "Â¿Desea salir de la ventana?",
 						"Aviso", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
 				if (opcion == JOptionPane.YES_OPTION) {
@@ -119,7 +119,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 		this.ventanaEliminarRemito.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				int opcion = JOptionPane.showConfirmDialog(ventanaEliminarRemito, "¿Desea salir de la ventana?",
+				int opcion = JOptionPane.showConfirmDialog(ventanaEliminarRemito, "Â¿Desea salir de la ventana?",
 						"Aviso", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
 				if (opcion == JOptionPane.YES_OPTION) {
@@ -271,7 +271,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				}
 			} else {
 
-				JOptionPane.showMessageDialog(null, "Debe seleccionar una ubicación");
+				JOptionPane.showMessageDialog(null, "Debe seleccionar una ubicaciÃ³n");
 			}
 
 		} else if (ventanaSeleccionarRemito != null
@@ -323,7 +323,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				}
 			} else {
 
-				JOptionPane.showMessageDialog(null, "Debe seleccionar una ubicación");
+				JOptionPane.showMessageDialog(null, "Debe seleccionar una ubicaciÃ³n");
 			}
 
 		}
@@ -331,8 +331,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		if (ventanaEliminarRemito != null && e.getSource() == this.ventanaEliminarRemito.getBtnAnular()) {
 
 			JOptionPane.showMessageDialog(null,
-					"Los equipos asociados serán removidos del remito, \npero el mismo seguirá existiendo. \nEl número no podrá ser utilizado nuevamente.");
-			int opcion = JOptionPane.showConfirmDialog(ventanaEliminarRemito, "¿Desea ANULAR el remito?", "Aviso",
+					"Los equipos asociados serÃ¡n removidos del remito, \npero el mismo seguirÃ¡ existiendo. \nEl nÃºmero no podrÃ¡ ser utilizado nuevamente.");
+			int opcion = JOptionPane.showConfirmDialog(ventanaEliminarRemito, "Â¿Desea ANULAR el remito?", "Aviso",
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
 			if (opcion == JOptionPane.YES_OPTION) {
@@ -356,8 +356,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 		if (ventanaEliminarRemito != null && e.getSource() == this.ventanaEliminarRemito.getBtnEliminar()) {
 
-			JOptionPane.showMessageDialog(null, "El remito será ELIMINADO. \nEl número podrá ser utlizado nuevamente.");
-			int opcion = JOptionPane.showConfirmDialog(ventanaEliminarRemito, "¿Desea ELIMINAR el remito?", "Aviso",
+			JOptionPane.showMessageDialog(null, "El remito serÃ¡ ELIMINADO. \nEl nÃºmero podrÃ¡ ser utlizado nuevamente.");
+			int opcion = JOptionPane.showConfirmDialog(ventanaEliminarRemito, "Â¿Desea ELIMINAR el remito?", "Aviso",
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
 			if (opcion == JOptionPane.YES_OPTION) {
@@ -659,7 +659,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 			if (this.Reparaciones_en_tabla.isEmpty()) {
 
-				JOptionPane.showMessageDialog(null, "Este remito fué anulado o está vacío");
+				JOptionPane.showMessageDialog(null, "Este remito fuÃ© anulado o estÃ¡ vacÃ­o");
 
 			}
 
@@ -693,7 +693,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 			if (this.Reparaciones_en_tabla.isEmpty()) {
 
-				JOptionPane.showMessageDialog(null, "Este remito fué anulado o está vacío");
+				JOptionPane.showMessageDialog(null, "Este remito fuÃ© anulado o estÃ¡ vacÃ­o");
 
 			}
 
@@ -780,7 +780,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 			if (agregar != null) {
 				if (agregar) {
 					descripcion.add("ELS: " + ELS + " - EQUIPO: " + equipo + " - MARCA: " + marca + " - MODELO: "
-							+ modelo + " - N° SERIE: " + serie + "\n\n");
+							+ modelo + " - Nï¿½ SERIE: " + serie + "\n\n");
 
 				}
 			}
@@ -1026,7 +1026,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 5
 					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 6) {
 
-				ventanaRemitos.getTextTipoRemito().setText("REMITO COMÚN");
+				ventanaRemitos.getTextTipoRemito().setText("REMITO COMÃšN");
 				ventanaRemitos.getTextTipoRemito().setVisible(true);
 				ventanaRemitos.getPanel_2().setVisible(true);
 

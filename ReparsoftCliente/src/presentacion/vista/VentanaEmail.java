@@ -195,7 +195,7 @@ public class VentanaEmail extends JFrame {
 		textAdjunto.setBounds(128, 215, 531, 20);
 		panel.add(textAdjunto);
 		
-		btnAdjuntarIMG = new JButton("ADJUNTAR IM\u00C1GENES");
+		btnAdjuntarIMG = new JButton("ADJUNTAR IMÃGENES");
 		btnAdjuntarIMG.setBounds(27, 429, 185, 23);
 		panel.add(btnAdjuntarIMG);
 		
@@ -248,13 +248,13 @@ public class VentanaEmail extends JFrame {
 	}
 
 	public void setLocationMove(int moveWidth, int moveHeight) {
-		// Obtenemos el tamaño de la pantalla.
+		// Obtenemos el tamaï¿½o de la pantalla.
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		// Obtenemos el tamaño de nuestro frame.
+		// Obtenemos el tamaï¿½o de nuestro frame.
 		Dimension frameSize = this.getSize();
 		frameSize.width = frameSize.width > screenSize.width ? screenSize.width : frameSize.width;
 		frameSize.height = frameSize.height > screenSize.height ? screenSize.height : frameSize.height;
-		// We define the location. Definimos la localización.
+		// We define the location. Definimos la localizaciï¿½n.
 		setLocation((screenSize.width - frameSize.width) / 2 + moveWidth,
 				(screenSize.height - frameSize.height) / 2 + moveHeight);
 	}

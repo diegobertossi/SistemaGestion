@@ -147,7 +147,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 							if (seleccion == JOptionPane.YES_OPTION) {
 
 								String respuesta = JOptionPane.showInputDialog(null,
-										"Ingrese la Contrase�a de Seguridad : ", "");
+										"Ingrese la Contraseña de Seguridad : ", "");
 								if (respuesta != null) {
 
 								
@@ -159,7 +159,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 								} 
 								else {
 								
-									JOptionPane.showMessageDialog(null, "Contrase�a Incorrecta. ",
+									JOptionPane.showMessageDialog(null, "Contraseña Incorrecta. ",
 											"Error al Eliminar Cliente", JOptionPane.ERROR_MESSAGE);
 
 								}}
@@ -398,13 +398,13 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					if (!ReparacionAsociadaAsuc(SucursalesEncliente.getIdSucursal())) {
 
 						int seleccion = JOptionPane.showConfirmDialog(ventanaSucursales,
-								"�Est� seguro Eliminar esta Sucursal?", "Confirmaci�n", JOptionPane.YES_NO_OPTION,
+								"Está seguro Eliminar esta Sucursal?", "Confirmación", JOptionPane.YES_NO_OPTION,
 								JOptionPane.QUESTION_MESSAGE);
 
 						if (seleccion == JOptionPane.YES_OPTION) {
 
 							String respuesta = JOptionPane.showInputDialog(null,
-									"Ingrese la Contrase�a de Seguridad : ", "");
+									"Ingrese la Contraseña de Seguridad : ", "");
 							if (respuesta != null) {
 
 							if (respuesta.compareTo("0000") == 0) {
@@ -435,7 +435,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 								}
 
 							} else {
-								JOptionPane.showMessageDialog(null, "Contrase�a Incorrecta. ",
+								JOptionPane.showMessageDialog(null, "Contraseña Incorrecta. ",
 										"Error al Eliminar Cliente", JOptionPane.ERROR_MESSAGE);
 
 							}}

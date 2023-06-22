@@ -208,14 +208,14 @@ public class VentanaRolesUsuarios extends JFrame {
 		btnPermisosXrol.setAlignmentX(SwingConstants.CENTER);
 		btnPermisosXrol.setAlignmentY(SwingConstants.CENTER);
 
-		btnGuardarEdicion = new JButton("<html><center>Guardar Edici\u00F3n</html>");
+		btnGuardarEdicion = new JButton("<html><center>Guardar Edición</html>");
 		btnGuardarEdicion.setVisible(false);
 		btnGuardarEdicion.setBackground(new Color(152, 251, 152));
 		btnGuardarEdicion.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnGuardarEdicion.setBounds(335, 369, 99, 43);
 		panel.add(btnGuardarEdicion);
 
-		btnCancelarEdicion = new JButton("<html><center>Cancelar Edici\u00F3n</html>");
+		btnCancelarEdicion = new JButton("<html><center>Cancelar Edición</html>");
 		btnCancelarEdicion.setVisible(false);
 		btnCancelarEdicion.setBackground(new Color(255, 0, 0));
 		btnCancelarEdicion.setFont(new Font("Cambria", Font.BOLD, 14));
@@ -255,7 +255,7 @@ public class VentanaRolesUsuarios extends JFrame {
 		lblNombre_1.setBounds(21, 264, 76, 14);
 		panel.add(lblNombre_1);
 
-		JLabel lblCantidad = new JLabel("Tel\u00E9fono");
+		JLabel lblCantidad = new JLabel("Teléfono");
 		lblCantidad.setFont(new Font("Cambria", Font.BOLD, 12));
 		lblCantidad.setBounds(21, 329, 76, 14);
 		panel.add(lblCantidad);
@@ -327,7 +327,7 @@ public class VentanaRolesUsuarios extends JFrame {
 		panel.add(txtPass);
 		txtPass.setColumns(10);
 
-		JLabel lblPass = new JLabel("Contrase\u00F1a");
+		JLabel lblPass = new JLabel("Contraseña");
 		lblPass.setFont(new Font("Cambria", Font.BOLD, 12));
 		lblPass.setBounds(21, 393, 76, 14);
 		panel.add(lblPass);

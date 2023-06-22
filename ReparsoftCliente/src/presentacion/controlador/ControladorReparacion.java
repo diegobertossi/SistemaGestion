@@ -2905,7 +2905,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					.isSelected(this.ventanaGenerarPresupuesto.getChckPesos().getModel())) {
 
 				ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
-						"Los precios están expresados en Pesos, son Netos y no incluyen el IVA (21%). La garantáa es de 90 días sobre la reparación realizada");
+						"Los precios están expresados en Pesos, son Netos y no incluyen el IVA (21%). La garantía es de 90 días sobre la reparación realizada");
 
 			}
 
@@ -2981,7 +2981,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		} else if (ventanaAgregarEquipo.getComboSerie().getSelectedItem().toString().compareTo("") == 0
 				|| ventanaAgregarEquipo.getComboSerie().getSelectedItem().toString().compareTo(" ") == 0) {
 
-			Object mje = "'NUMERO DE SERIE'. Campo obligatorio.";
+			Object mje = "'NÚMERO DE SERIE'. Campo obligatorio.";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE); // Tipo
 
 		} else if (ventanaAgregarEquipo.getComboClientes().getSelectedItem().toString().compareTo("Siemens SA") == 0
@@ -3080,7 +3080,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			if (agregar != null) {
 				if (agregar) {
 					descripcion.add("ELS: " + ELS + " - EQUIPO: " + equipo + " - MARCA: " + marca + " - MODELO: "
-							+ modelo + " - Nï¿½ SERIE: " + serie + "\n\n");
+							+ modelo + " - N°SERIE: " + serie + "\n\n");
 
 				}
 			}
@@ -3207,7 +3207,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			if (e.getSource() == this.ventanaVisualizarEquipos.getTablaRepuestos()) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
-					Object mje = "DeberÃ¡ 'GUARDAR EDICIÃ“N' para mantener las modificaciones.";
+					Object mje = "Deberá 'GUARDAR EDICIÓN' para mantener las modificaciones.";
 					JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 
 					ventanaVisualizarEquipos.getBtnEditarRepuesto().setEnabled(true);

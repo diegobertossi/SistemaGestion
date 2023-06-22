@@ -123,7 +123,7 @@ public class VentanaWSP extends JFrame {
 		lblNombre_1.setBounds(10, 32, 112, 20);
 		panel_1.add(lblNombre_1);
 		
-		JLabel lblTelfono_1 = new JLabel("Tel\u00E9fono");
+		JLabel lblTelfono_1 = new JLabel("TelÃ©fono");
 		lblTelfono_1.setForeground(SystemColor.textHighlight);
 		lblTelfono_1.setFont(new Font("Cambria", Font.BOLD, 16));
 		lblTelfono_1.setBounds(10, 57, 112, 20);
@@ -139,7 +139,7 @@ public class VentanaWSP extends JFrame {
 		btnUtilizarContacto.setBounds(379, 48, 85, 40);
 		panel.add(btnUtilizarContacto);
 		
-		JLabel labelPara = new JLabel("N\u00FAmero:");
+		JLabel labelPara = new JLabel("NÃºmero:");
 		labelPara.setFont(new Font("Cambria", Font.BOLD, 14));
 		labelPara.setBounds(37, 288, 65, 18);
 		panel.add(labelPara);
@@ -212,7 +212,7 @@ public class VentanaWSP extends JFrame {
 		comboOrganizacion.setBounds(121, 33, 186, 20);
 		panel_1_1.add(comboOrganizacion);
 		
-		JLabel lblOrganizacin = new JLabel("Organizaci\u00F3n");
+		JLabel lblOrganizacin = new JLabel("OrganizaciÃ³n");
 		lblOrganizacin.setForeground(SystemColor.textHighlight);
 		lblOrganizacin.setFont(new Font("Cambria", Font.BOLD, 16));
 		lblOrganizacin.setBounds(10, 33, 112, 20);
@@ -224,7 +224,7 @@ public class VentanaWSP extends JFrame {
 		lblNombre.setBounds(10, 58, 112, 20);
 		panel_1_1.add(lblNombre);
 		
-		JLabel lblTelfono = new JLabel("Tel\u00E9fono");
+		JLabel lblTelfono = new JLabel("TelÃ©fono");
 		lblTelfono.setForeground(SystemColor.textHighlight);
 		lblTelfono.setFont(new Font("Cambria", Font.BOLD, 16));
 		lblTelfono.setBounds(10, 83, 112, 20);
@@ -242,7 +242,7 @@ public class VentanaWSP extends JFrame {
 		btnClientes.setBounds(379, 138, 85, 40);
 		panel.add(btnClientes);
 		
-		btnEditarNmero = new JButton("<html>\tEDITAR N\u00DAMERO</html>");
+		btnEditarNmero = new JButton("<html>\tEDITAR NÃšMERO</html>");
 		btnEditarNmero.setForeground(SystemColor.textHighlight);
 		btnEditarNmero.setFont(new Font("Cambria", Font.BOLD, 12));
 		btnEditarNmero.setBounds(379, 288, 85, 40);
@@ -259,13 +259,13 @@ public class VentanaWSP extends JFrame {
 	}
 
 	public void setLocationMove(int moveWidth, int moveHeight) {
-		// Obtenemos el tamaño de la pantalla.
+		// Obtenemos el tamaï¿½o de la pantalla.
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		// Obtenemos el tamaño de nuestro frame.
+		// Obtenemos el tamaï¿½o de nuestro frame.
 		Dimension frameSize = this.getSize();
 		frameSize.width = frameSize.width > screenSize.width ? screenSize.width : frameSize.width;
 		frameSize.height = frameSize.height > screenSize.height ? screenSize.height : frameSize.height;
-		// We define the location. Definimos la localización.
+		// We define the location. Definimos la localizaciï¿½n.
 		setLocation((screenSize.width - frameSize.width) / 2 + moveWidth,
 				(screenSize.height - frameSize.height) / 2 + moveHeight);
 	}

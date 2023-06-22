@@ -472,7 +472,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel.add(lblDatosDeEquipo);
 		lblDatosDeEquipo.setFont(new Font("Cambria", Font.BOLD, 18));
 
-		lblDiagnosticoReparacion = new JLabel("DIAGN\u00D3STICO / REPARACI\u00D3N: ");
+		lblDiagnosticoReparacion = new JLabel("DIAGÃ“STICO / REPARACIÃ“N: ");
 		lblDiagnosticoReparacion.setForeground(new Color(0, 0, 128));
 		lblDiagnosticoReparacion.setBounds(397, 60, 260, 17);
 		panel.add(lblDiagnosticoReparacion);
@@ -490,7 +490,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel.add(lblFechaEntrada);
 		lblFechaEntrada.setFont(new Font("Cambria", Font.BOLD, 14));
 
-		lblFechaReparacion = new JLabel("Fecha de Reparación: ");
+		lblFechaReparacion = new JLabel("Fecha de ReparaciÃ³n: ");
 		lblFechaReparacion.setBounds(530, 86, 139, 17);
 		panel.add(lblFechaReparacion);
 		lblFechaReparacion.setFont(new Font("Cambria", Font.BOLD, 14));
@@ -616,13 +616,13 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textEstadoComercial.setEditable(false);
 		textEstadoComercial.setColumns(10);
 
-		lblEstadoFisico = new JLabel("Estado Físico: ");
+		lblEstadoFisico = new JLabel("Estado Fï¿½sico: ");
 		lblEstadoFisico.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
 		lblEstadoFisico.setBounds(10, 14, 125, 14);
 		panel_2.add(lblEstadoFisico);
 		lblEstadoFisico.setFont(new Font("Cambria", Font.BOLD, 14));
 
-		lblEstadoTecnico = new JLabel("Estado Técnico: ");
+		lblEstadoTecnico = new JLabel("Estado Tï¿½cnico: ");
 		lblEstadoTecnico.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
 		lblEstadoTecnico.setBounds(10, 35, 125, 14);
 		panel_2.add(lblEstadoTecnico);
@@ -666,7 +666,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		BotonAvisoEquipoListo.setFont(new Font("Cambria", Font.PLAIN, 10));
 		BotonAvisoEquipoListo.setIcon(new ImageIcon(this.getClass().getResource("/email.png")));
 
-		BotonRespuestaAlTecnico = new JButton("<html><center>RESPUESTA AL T\u00C9CNICO</html>");
+		BotonRespuestaAlTecnico = new JButton("<html><center>RESPUESTA AL TÃ‰CNICO</html>");
 		BotonRespuestaAlTecnico.setBackground(SystemColor.textHighlight);
 		BotonRespuestaAlTecnico.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonRespuestaAlTecnico.setBounds(152, 6, 130, 42);
@@ -699,12 +699,12 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textNombreTecnico.setEditable(false);
 		textNombreTecnico.setColumns(10);
 
-		lblNombreTecnico = new JLabel("Tecnico: ");
+		lblNombreTecnico = new JLabel("TÃ©cnico: ");
 		lblNombreTecnico.setBounds(10, 19, 61, 14);
 		panel_3.add(lblNombreTecnico);
 		lblNombreTecnico.setFont(new Font("Cambria", Font.BOLD, 14));
 
-		lblDiagnostico = new JLabel("Diagnóstico: ");
+		lblDiagnostico = new JLabel("DiagnÃ³stico: ");
 		lblDiagnostico.setBounds(10, 38, 89, 20);
 		panel_3.add(lblDiagnostico);
 		lblDiagnostico.setFont(new Font("Cambria", Font.BOLD, 14));
@@ -791,7 +791,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnRepuestos.setForeground(new Color(0, 128, 0));
 		btnRepuestos.setFont(new Font("Cambria", Font.BOLD, 14));
 
-		btnEditarRepuesto = new JButton("GUARDAR EDICI\u00D3N");
+		btnEditarRepuesto = new JButton("GUARDAR EDICIÃ“N");
 		btnEditarRepuesto.setEnabled(false);
 		btnEditarRepuesto.setBounds(123, 298, 163, 23);
 		panel_3.add(btnEditarRepuesto);
@@ -1103,13 +1103,13 @@ public class VentanaVisualizarEquipos extends JFrame {
 	}
 
 	public void setLocationMove(int moveWidth, int moveHeight) {
-		// Obtenemos el tamaño de la pantalla.
+		// Obtenemos el tamaï¿½o de la pantalla.
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		// Obtenemos el tamaño de nuestro frame.
+		// Obtenemos el tamaï¿½o de nuestro frame.
 		Dimension frameSize = this.getSize();
 		frameSize.width = frameSize.width > screenSize.width ? screenSize.width : frameSize.width;
 		frameSize.height = frameSize.height > screenSize.height ? screenSize.height : frameSize.height;
-		// We define the location. Definimos la localización.
+		// We define the location. Definimos la localizaciï¿½n.
 		setLocation((screenSize.width - frameSize.width) / 2 + moveWidth,
 				(screenSize.height - frameSize.height) / 2 + moveHeight);
 	}

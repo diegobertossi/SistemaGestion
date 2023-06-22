@@ -65,12 +65,12 @@ public class VentanaSeleccionarRemito extends JFrame
 			comboNumRemito.setBounds(122, 59, 165, 20);
 			contentPane.add(comboNumRemito);
 			
-			JLabel lblUbicacion = new JLabel("UBICACI\u00D3N:");
+			JLabel lblUbicacion = new JLabel("UBICACIÓN:");
 			lblUbicacion.setFont(new Font("Cambria", Font.BOLD, 14));
 			lblUbicacion.setBounds(29, 28, 87, 20);
 			contentPane.add(lblUbicacion);
 			
-			JLabel lblNumRemito = new JLabel("N\u00B0 REMITO:");
+			JLabel lblNumRemito = new JLabel("N° REMITO:");
 			lblNumRemito.setFont(new Font("Cambria", Font.BOLD, 14));
 			lblNumRemito.setBounds(29, 59, 87, 20);
 			contentPane.add(lblNumRemito);

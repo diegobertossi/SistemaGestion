@@ -57,7 +57,7 @@ public class VentanaSeleccionarELS extends JFrame {
 		lblELS.setBounds(39, 55, 68, 20);
 		contentPane.add(lblELS);
 
-		labelELS = new JLabel("SELECCIONAR N\u00DAMERO DE ELS:");
+		labelELS = new JLabel("SELECCIONAR N° DE ELS:");
 		labelELS.setFont(new Font("Cambria", Font.BOLD, 14));
 		labelELS.setBounds(29, 11, 306, 20);
 		contentPane.add(labelELS);

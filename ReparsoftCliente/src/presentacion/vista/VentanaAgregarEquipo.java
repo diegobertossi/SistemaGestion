@@ -199,7 +199,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_1.add(lblModelo);
 		lblModelo.setFont(new Font("Cambria", Font.BOLD, 14));
 
-		lblNserie = new JLabel("N\u00B0 de Serie: ");
+		lblNserie = new JLabel("N° de Serie: ");
 		lblNserie.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
 		lblNserie.setBounds(12, 128, 116, 14);
 		panel_1.add(lblNserie);
@@ -304,14 +304,14 @@ public class VentanaAgregarEquipo extends JFrame {
 		lblFechaDeFabr.setBounds(396, 128, 122, 14);
 		panel_1.add(lblFechaDeFabr);
 		
-		btnGenerarSerie = new JButton("<html><center>Generar N\u00B0 de Serie</html>");
+		btnGenerarSerie = new JButton("<html><center>Generar N° de Serie</html>");
 		btnGenerarSerie.setForeground(Color.BLACK);
 		btnGenerarSerie.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnGenerarSerie.setBackground(new Color(176, 224, 230));
 		btnGenerarSerie.setBounds(173, 151, 176, 27);
 		panel_1.add(btnGenerarSerie);
 		
-		btnFechaDefault = new JButton("<html><center>Si no se conoce fecha, presionar aqu\u00ED</html>");
+		btnFechaDefault = new JButton("<html><center>Si no se conoce fecha, presionar aquí</html>");
 		btnFechaDefault.setForeground(Color.BLACK);
 		btnFechaDefault.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnFechaDefault.setBackground(new Color(176, 224, 230));
@@ -368,7 +368,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 
-		BotonNuevaReparacion = new JButton("<html><center>Nueva Reparaci\u00F3n</html>");
+		BotonNuevaReparacion = new JButton("<html><center>Nueva Reparación</html>");
 		BotonNuevaReparacion.setEnabled(false);
 		BotonNuevaReparacion.setBackground(new Color(152, 251, 152));
 		BotonNuevaReparacion.setBounds(620, 11, 105, 45);
@@ -376,7 +376,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		BotonNuevaReparacion.setForeground(Color.BLACK);
 		BotonNuevaReparacion.setFont(new Font("Cambria", Font.BOLD, 14));
 
-		BotonGenerarRegistro = new JButton("<html><center>Generar Registro<html>");
+		BotonGenerarRegistro = new JButton("<html><center>Generár Registro<html>");
 		BotonGenerarRegistro.setBackground(new Color(152, 251, 152));
 		BotonGenerarRegistro.setBounds(330, 11, 105, 45);
 		panel_3.add(BotonGenerarRegistro);
@@ -397,7 +397,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		BotonVerificarIngresoAnterior.setForeground(Color.BLACK);
 		BotonVerificarIngresoAnterior.setFont(new Font("Cambria", Font.BOLD, 14));
 		
-				lblEstadoFisico = new JLabel("Estado F�sico: ");
+				lblEstadoFisico = new JLabel("Estado Físico: ");
 				lblEstadoFisico.setBounds(6, 372, 128, 14);
 				panel.add(lblEstadoFisico);
 				lblEstadoFisico.setFont(new Font("Cambria", Font.BOLD, 14));

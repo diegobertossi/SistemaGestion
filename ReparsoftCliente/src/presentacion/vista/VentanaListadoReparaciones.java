@@ -61,7 +61,7 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JTable tblReparaciones_1;
 	private DefaultTableModel modelReparaciones;
 	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
-			"N° SERIE", "AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
+			"NÂ° SERIE", "AVISO", "REVISIÃ“N", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÃ‰CNICO",
 			"UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV" };
 
 	private JButton btnFiltrar;
