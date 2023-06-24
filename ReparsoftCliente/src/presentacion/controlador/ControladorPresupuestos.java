@@ -1,6 +1,7 @@
 package presentacion.controlador;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Frame;
@@ -14,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Console;
@@ -34,7 +36,9 @@ import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.text.MaskFormatter;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -91,6 +95,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private String sucursalSeleccionada;
 	private String ubicacionRemitoSeleccionado;
 	private String numeroRemitoSeleccionado;
+
+	private int NumeroELSSeleccionado;
 
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
@@ -165,7 +171,93 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			ventanaListadoReparacionesPresupuestos.getBtnMax().addMouseListener(this);
 
+			ventanaListadoReparacionesPresupuestos.getBtnFiltrar().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getBtnMostrarTodo().addActionListener(this);
+
+			ventanaListadoReparacionesPresupuestos.getComboFiltroCliente().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroMarca().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroSucursal().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroAviso().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroEquipo().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoCom().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoFis().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoTec().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroModelo().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroELS().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroTecnico().addActionListener(this);
+
+			ventanaListadoReparacionesPresupuestos.getChckbxPresupuestoEnviado().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getChckbxPresupuestoGenerado().addActionListener(this);
+
+			ventanaListadoReparacionesPresupuestos.getRadioButtonCliente().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonSucursal().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonAviso().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonEquipo().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonEstadoCom().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonEstadoFis().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonEstadoTec().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonModelo().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonELS().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonTecnico().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonPresupEnviado().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonPresupGenerado().addActionListener(this);
+
+			ventanaListadoReparacionesPresupuestos.getRadioButtonCliente().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonMarca().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonSucursal().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonAviso().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonEquipo().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonEstadoCom().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonEstadoFis().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonEstadoTec().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonModelo().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonELS().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonTecnico().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getBtnMax().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getChckbxPresupuestoEnviado().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getChckbxPresupuestoGenerado().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonPresupEnviado().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getRadioButtonPresupGenerado().addMouseListener(this);
+			ventanaListadoReparacionesPresupuestos.getTblReparaciones().addMouseListener(this);
+			// ventanaListadoReparacionesPresupuestos.getTblReparaciones().addMouseMotionListener(this);
+
 			cargarTablaListadoReparaciones();
+
+			llenarComboCliente();
+			llenarComboSucursales();
+			llenarComboMarca();
+			llenarComboNombreEquipo();
+			llenarComboModelo();
+			llenarComboAviso();
+			llenarComboEstadoCom();
+			llenarComboEstadoFis();
+			llenarComboEstadoTec();
+			llenarComboELSlistado();
+			llenarComboTecnico();
+
+			ventanaListadoReparacionesPresupuestos.getComboFiltroCliente().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroMarca().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroSucursal().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroAviso().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroEquipo().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoCom().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoFis().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoTec().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroModelo().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroELS().addActionListener(this);
+			ventanaListadoReparacionesPresupuestos.getComboFiltroTecnico().addActionListener(this);
+
+			AutoCompleteDecorator.decorate(ventanaListadoReparacionesPresupuestos.getComboFiltroCliente());
+			AutoCompleteDecorator.decorate(ventanaListadoReparacionesPresupuestos.getComboFiltroMarca());
+			AutoCompleteDecorator.decorate(ventanaListadoReparacionesPresupuestos.getComboFiltroSucursal());
+			AutoCompleteDecorator.decorate(ventanaListadoReparacionesPresupuestos.getComboFiltroAviso());
+			AutoCompleteDecorator.decorate(ventanaListadoReparacionesPresupuestos.getComboFiltroEquipo());
+			AutoCompleteDecorator.decorate(ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoCom());
+			AutoCompleteDecorator.decorate(ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoFis());
+			AutoCompleteDecorator.decorate(ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoTec());
+			AutoCompleteDecorator.decorate(ventanaListadoReparacionesPresupuestos.getComboFiltroModelo());
+			AutoCompleteDecorator.decorate(ventanaListadoReparacionesPresupuestos.getComboFiltroELS());
+			AutoCompleteDecorator.decorate(ventanaListadoReparacionesPresupuestos.getComboFiltroTecnico());
 
 			ventanaPresupuestos.dispose();
 			ventanaPresupuestos = null;
@@ -364,7 +456,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		else if (this.ventanaGenerarPresupuesto != null
 				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnCotizacionDolar()) {
 
-			
 			String cotizacionDolar = Double.toString(consumoAPI.ConsumoAPI.consultaCotizacionDolar());
 
 			ventanaGenerarPresupuesto.getTextCotizacionDolar().setText(cotizacionDolar);
@@ -372,8 +463,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().compareTo("0.0") != 0) {
 
 			}
-
-			
 
 		}
 
@@ -543,6 +632,24 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	private void cargarTablaListadoReparaciones() {
 
+		ventanaListadoReparacionesPresupuestos.getTblReparaciones().addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+
+				int row = ventanaListadoReparacionesPresupuestos.getTblReparaciones().rowAtPoint(e.getPoint());
+				int column = ventanaListadoReparacionesPresupuestos.getTblReparaciones().columnAtPoint(e.getPoint());
+
+				// Verificar si el mouse est� sobre la celda deseada
+				if (column == 0) {
+					ventanaListadoReparacionesPresupuestos.getTblReparaciones()
+							.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				} else {
+					ventanaListadoReparacionesPresupuestos.getTblReparaciones().setCursor(Cursor.getDefaultCursor());
+				}
+
+			}
+		});
+
 		this.ventanaListadoReparacionesPresupuestos.getModelReparaciones().setRowCount(0); // Para
 		// vaciar
 		// tabla
@@ -581,9 +688,315 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
+	private void llenarComboCliente() {
+
+		agenda.ListarCliente(ventanaListadoReparacionesPresupuestos.getComboFiltroCliente());
+		ventanaListadoReparacionesPresupuestos.getComboFiltroCliente().setSelectedIndex(-1);
+
+	}
+
+	private void llenarComboSucursales() {
+
+		agenda.ListarSucursales(ventanaListadoReparacionesPresupuestos.getComboFiltroSucursal());
+		ventanaListadoReparacionesPresupuestos.getComboFiltroSucursal().setSelectedIndex(-1);
+
+	}
+
+	private void llenarComboMarca() {
+
+		agenda.ListarMarca(ventanaListadoReparacionesPresupuestos.getComboFiltroMarca());
+
+		ventanaListadoReparacionesPresupuestos.getComboFiltroMarca().setSelectedIndex(-1);
+
+	}
+
+	private void llenarComboModelo() {
+
+		agenda.ListarModelos(ventanaListadoReparacionesPresupuestos.getComboFiltroModelo());
+		ventanaListadoReparacionesPresupuestos.getComboFiltroModelo().setSelectedIndex(-1);
+
+	}
+
+	private void llenarComboNombreEquipo() {
+
+		agenda.ListarEquipo(ventanaListadoReparacionesPresupuestos.getComboFiltroEquipo());
+
+		ventanaListadoReparacionesPresupuestos.getComboFiltroEquipo().setSelectedIndex(-1);
+
+	}
+
+	private void llenarComboEstadoCom() {
+
+		agenda.ListarEstadoCom(ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoCom());
+
+		ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoCom().setSelectedIndex(-1);
+
+	}
+
+	private void llenarComboEstadoFis() {
+
+		agenda.ListarEstadoFis(ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoFis());
+
+		ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoFis().setSelectedIndex(-1);
+
+	}
+
+	private void llenarComboEstadoTec() {
+
+		agenda.ListarEstadoTec(ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoTec());
+
+		ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoTec().setSelectedIndex(-1);
+
+	}
+
+	private void llenarComboAviso() {
+
+		agenda.ListarAvisos(ventanaListadoReparacionesPresupuestos.getComboFiltroAviso());
+
+		ventanaListadoReparacionesPresupuestos.getComboFiltroAviso().setSelectedIndex(-1);
+
+	}
+
+	private void llenarComboELSlistado() {
+
+		agenda.ListarELS(ventanaListadoReparacionesPresupuestos.getComboFiltroELS());
+
+		ventanaListadoReparacionesPresupuestos.getComboFiltroELS().setSelectedIndex(-1);
+
+	}
+
+	private void llenarComboTecnico() {
+
+		agenda.ListarTecnicos(ventanaListadoReparacionesPresupuestos.getComboFiltroTecnico());
+
+		ventanaListadoReparacionesPresupuestos.getComboFiltroTecnico().setSelectedIndex(-1);
+
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		if (ventanaListadoReparacionesPresupuestos != null) {
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getBtnFiltrar()) {
+
+				System.out.println("filtrar");
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getBtnMostrarTodo()) {
+
+				System.out.println("mostrar todo");
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getRadioButtonCliente()) {
+
+				if (ventanaListadoReparacionesPresupuestos.getRadioButtonCliente().isSelected())
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroCliente().setEnabled(true);
+				else {
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroCliente().setEnabled(false);
+					ventanaListadoReparacionesPresupuestos.getComboFiltroCliente().setSelectedIndex(-1);
+				}
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getRadioButtonMarca()) {
+				if (ventanaListadoReparacionesPresupuestos.getRadioButtonMarca().isSelected())
+
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroMarca().setEnabled(true);
+				else {
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroMarca().setEnabled(false);
+					ventanaListadoReparacionesPresupuestos.getComboFiltroMarca().setSelectedIndex(-1);
+				}
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getRadioButtonSucursal()) {
+				if (ventanaListadoReparacionesPresupuestos.getRadioButtonSucursal().isSelected())
+
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroSucursal().setEnabled(true);
+				else {
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroSucursal().setEnabled(false);
+					ventanaListadoReparacionesPresupuestos.getComboFiltroSucursal().setSelectedIndex(-1);
+				}
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getRadioButtonEquipo()) {
+				if (ventanaListadoReparacionesPresupuestos.getRadioButtonEquipo().isSelected())
+
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroEquipo().setEnabled(true);
+				else {
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroEquipo().setEnabled(false);
+					ventanaListadoReparacionesPresupuestos.getComboFiltroEquipo().setSelectedIndex(-1);
+				}
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getRadioButtonEstadoCom()) {
+				if (ventanaListadoReparacionesPresupuestos.getRadioButtonEstadoCom().isSelected())
+
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoCom().setEnabled(true);
+				else {
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoCom().setEnabled(false);
+					ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoCom().setSelectedIndex(-1);
+				}
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getRadioButtonEstadoFis()) {
+				if (ventanaListadoReparacionesPresupuestos.getRadioButtonEstadoFis().isSelected())
+
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoFis().setEnabled(true);
+				else {
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoFis().setEnabled(false);
+					ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoFis().setSelectedIndex(-1);
+				}
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getRadioButtonEstadoTec()) {
+				if (ventanaListadoReparacionesPresupuestos.getRadioButtonEstadoTec().isSelected())
+
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoTec().setEnabled(true);
+				else {
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoTec().setEnabled(false);
+					ventanaListadoReparacionesPresupuestos.getComboFiltroEstadoTec().setSelectedIndex(-1);
+				}
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getRadioButtonAviso()) {
+				if (ventanaListadoReparacionesPresupuestos.getRadioButtonAviso().isSelected())
+
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroAviso().setEnabled(true);
+				else {
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroAviso().setEnabled(false);
+					ventanaListadoReparacionesPresupuestos.getComboFiltroAviso().setSelectedIndex(-1);
+				}
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getRadioButtonModelo()) {
+				if (this.ventanaListadoReparacionesPresupuestos.getRadioButtonModelo().isSelected())
+
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroModelo().setEnabled(true);
+				else
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroModelo().setEnabled(false);
+				ventanaListadoReparacionesPresupuestos.getComboFiltroModelo().setSelectedIndex(-1);
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getRadioButtonELS()) {
+				if (ventanaListadoReparacionesPresupuestos.getRadioButtonELS().isSelected())
+
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroELS().setEnabled(true);
+				else {
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroELS().setEnabled(false);
+					ventanaListadoReparacionesPresupuestos.getComboFiltroELS().setSelectedIndex(-1);
+				}
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getRadioButtonTecnico()) {
+				if (this.ventanaListadoReparacionesPresupuestos.getRadioButtonTecnico().isSelected())
+
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroTecnico().setEnabled(true);
+				else {
+					this.ventanaListadoReparacionesPresupuestos.getComboFiltroTecnico().setEnabled(false);
+					ventanaListadoReparacionesPresupuestos.getComboFiltroTecnico().setSelectedIndex(-1);
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getRadioButtonPresupEnviado()) {
+				if (this.ventanaListadoReparacionesPresupuestos.getRadioButtonPresupEnviado().isSelected())
+
+					this.ventanaListadoReparacionesPresupuestos.getChckbxPresupuestoEnviado().setEnabled(true);
+				else {
+					this.ventanaListadoReparacionesPresupuestos.getChckbxPresupuestoEnviado().setEnabled(false);
+					ventanaListadoReparacionesPresupuestos.getChckbxPresupuestoEnviado().setSelected(false);
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getRadioButtonPresupGenerado()) {
+				if (this.ventanaListadoReparacionesPresupuestos.getRadioButtonPresupGenerado().isSelected())
+
+					this.ventanaListadoReparacionesPresupuestos.getChckbxPresupuestoGenerado().setEnabled(true);
+				else {
+					this.ventanaListadoReparacionesPresupuestos.getChckbxPresupuestoGenerado().setEnabled(false);
+					ventanaListadoReparacionesPresupuestos.getChckbxPresupuestoGenerado().setSelected(false);
+				}
+
+			}
+
+			if (this.ventanaListadoReparacionesPresupuestos != null) {
+				if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getTblReparaciones()) {
+
+					int row = this.ventanaListadoReparacionesPresupuestos.getTblReparaciones().getSelectedRow();
+					int col = this.ventanaListadoReparacionesPresupuestos.getTblReparaciones().getSelectedColumn();
+
+					int els = 0;
+					if (col == 0)
+
+						els = Integer.parseInt(this.ventanaListadoReparacionesPresupuestos.getTblReparaciones()
+								.getValueAt(row, col).toString());
+
+					NumeroELSSeleccionado = els;
+
+					if (NumeroELSSeleccionado != 0) {
+
+//							ventanaVisualizarEquipos = new VentanaVisualizarEquipos(controladorReparacion);
+//							cerraVentanaVisualizarEquipo();
+
+//							try {
+//								//TomarDatosDeTablas();
+//							} catch (ParseException e1) {
+//								// TODO Auto-generated catch block
+//								e1.printStackTrace();
+//							}
+
+						// controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
+
+						// this.ventanaVisualizarEquipos.getTextPresupuesto().addKeyListener(this);
+//							this.ventanaVisualizarEquipos.getTextPresupuesto().addFocusListener(new FocusListener() {
+//								public void focusLost(FocusEvent e) {
+//
+//									if (ventanaVisualizarEquipos.getTextPresupuesto().getText().isEmpty()) {
+//
+//										ventanaVisualizarEquipos.getTextPresupuesto().setText("0.0");
+//									}
+//
+//									controladorReparacion.verificarPresupuestoEditado();
+//
+//								}
+//
+//								@Override
+//								public void focusGained(FocusEvent arg0) {
+//									// TODO Auto-generated method stub
+//
+//								}
+//							});
+
+						// this.ventanaVisualizarEquipos.getTextPago().addKeyListener(this);
+//							this.ventanaVisualizarEquipos.getTextPago().addFocusListener(new FocusListener() {
+//								public void focusLost(FocusEvent e) {
+//
+//									if (ventanaVisualizarEquipos.getTextPago().getText().isEmpty()) {
+//
+//										ventanaVisualizarEquipos.getTextPago().setText("0.0");
+//									}
+//
+//									controladorReparacion.verificarPresupuestoEditado();
+//									// verificarPresupuestoEditado();
+//
+//								}
+//
+//								@Override
+//								public void focusGained(FocusEvent arg0) {
+//									// TODO Auto-generated method stub
+//
+//								}
+//							});
+
+					}
+
+				}
+
+			}
+
 			if (arg0.getSource() == this.ventanaListadoReparacionesPresupuestos.getBtnMax()) {
 
 				if (clickMax % 2 != 0) {
@@ -603,6 +1016,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				}
 				clickMax++;
 			}
+
 		}
 
 		if (this.ventanaGenerarPresupuesto != null) {

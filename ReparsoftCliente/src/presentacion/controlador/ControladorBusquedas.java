@@ -131,7 +131,7 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 					if (ventanaBusqueda.getRdbComponenteOriginal().isSelected()) {
 
 						ventanaTablaBusqueda.getTxtCategoriaBusqueda()
-								.setText("EQUIPOS DONDE SE REEMPLAZÓ EL COMPONENTE:      "+"' "
+								.setText("EQUIPOS DONDE SE REEMPLAZï¿½ EL COMPONENTE:      "+"' "
 										+ ventanaBusqueda.getComboBuscador().getSelectedItem().toString()+" '");
 
 						cargarTablaListadoBusqueda(ventanaBusqueda.getComboBuscador().getSelectedItem().toString());
