@@ -293,7 +293,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		lblEls.setBounds(10, 5, 55, 20);
 		panel_6.add(lblEls);
 		lblEls.setForeground(Color.BLUE);
-		lblEls.setFont(new Font("Cambria", Font.BOLD, 22));
+		lblEls.setFont(new Font("Cambria", Font.BOLD, 24));
 
 		textELS = new JTextField();
 		textELS.setBounds(73, 5, 97, 20);
@@ -302,7 +302,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textELS.setBackground(SystemColor.activeCaption);
 		textELS.setForeground(Color.BLUE);
 		textELS.setHorizontalAlignment(SwingConstants.CENTER);
-		textELS.setFont(new Font("Cambria", Font.BOLD, 22));
+		textELS.setFont(new Font("Cambria", Font.BOLD, 24));
 		textELS.setColumns(10);
 		textELS.setText(Integer.toString(ELS));
 		textELS.setEditable(false);
@@ -470,13 +470,13 @@ public class VentanaVisualizarEquipos extends JFrame {
 		lblDatosDeEquipo.setForeground(new Color(0, 0, 128));
 		lblDatosDeEquipo.setBounds(11, 60, 205, 17);
 		panel.add(lblDatosDeEquipo);
-		lblDatosDeEquipo.setFont(new Font("Cambria", Font.BOLD, 18));
+		lblDatosDeEquipo.setFont(new Font("Lucida Bright", Font.BOLD, 18));
 
 		lblDiagnosticoReparacion = new JLabel("DIAGÓSTICO / REPARACIÓN: ");
 		lblDiagnosticoReparacion.setForeground(new Color(0, 0, 128));
-		lblDiagnosticoReparacion.setBounds(397, 60, 260, 17);
+		lblDiagnosticoReparacion.setBounds(397, 60, 307, 17);
 		panel.add(lblDiagnosticoReparacion);
-		lblDiagnosticoReparacion.setFont(new Font("Cambria", Font.BOLD, 18));
+		lblDiagnosticoReparacion.setFont(new Font("Lucida Bright", Font.BOLD, 18));
 
 		lblSalida = new JLabel("SALIDA: ");
 		lblSalida.setForeground(new Color(0, 0, 128));
@@ -616,13 +616,13 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textEstadoComercial.setEditable(false);
 		textEstadoComercial.setColumns(10);
 
-		lblEstadoFisico = new JLabel("Estado F�sico: ");
+		lblEstadoFisico = new JLabel("Estado Físico: ");
 		lblEstadoFisico.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
 		lblEstadoFisico.setBounds(10, 14, 125, 14);
 		panel_2.add(lblEstadoFisico);
 		lblEstadoFisico.setFont(new Font("Cambria", Font.BOLD, 14));
 
-		lblEstadoTecnico = new JLabel("Estado T�cnico: ");
+		lblEstadoTecnico = new JLabel("Estado Técnico: ");
 		lblEstadoTecnico.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
 		lblEstadoTecnico.setBounds(10, 35, 125, 14);
 		panel_2.add(lblEstadoTecnico);
@@ -1045,7 +1045,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 		labelPresupuesto = new JLabel("PRESUPUESTO: ");
 		labelPresupuesto.setForeground(new Color(0, 0, 128));
-		labelPresupuesto.setFont(new Font("Cambria", Font.BOLD, 18));
+		labelPresupuesto.setFont(new Font("Lucida Bright", Font.BOLD, 18));
 		labelPresupuesto.setBounds(834, 60, 150, 17);
 		panel.add(labelPresupuesto);
 

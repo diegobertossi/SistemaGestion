@@ -520,7 +520,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		contentPane.add(panel_4_1);
 		
 				btnCotizacionDolar = new JButton("<html>COTIZACIÓN DEL DOLAR</html>");
-				btnCotizacionDolar.setBounds(10, 11, 93, 39);
+				btnCotizacionDolar.setBounds(10, 11, 94, 51);
 				panel_4_1.add(btnCotizacionDolar);
 				btnCotizacionDolar.setFont(new Font("Cambria", Font.BOLD, 12));
 				

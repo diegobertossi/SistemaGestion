@@ -87,7 +87,7 @@ public class VistaPrincipal extends JFrame {
 		});
 		botonEquipos.setBounds(11, 37, 200, 73);
 		botonEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonEquipos.setFont(new Font("Arial", Font.BOLD, 12));
+		botonEquipos.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		botonEquipos.setToolTipText("Ingreso y visualización de equipos al Sistema");
 
@@ -98,7 +98,7 @@ public class VistaPrincipal extends JFrame {
 		botonSalidas.setForeground(new Color(0, 0, 128));
 		botonSalidas.setBounds(231, 38, 200, 73);
 		botonSalidas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonSalidas.setFont(new Font("Arial", Font.BOLD, 12));
+		botonSalidas.setFont(new Font("Cambria", Font.BOLD, 14));
 		botonSalidas.setToolTipText("Egreso de equipos y generación de Remitos");
 		botonSalidas.setIcon(new ImageIcon(this.getClass().getResource("/package.png")));
 		panelDeControl.add(botonSalidas);
@@ -107,7 +107,7 @@ public class VistaPrincipal extends JFrame {
 		botonBusquedas.setForeground(new Color(0, 0, 128));
 		botonBusquedas.setBounds(10, 122, 200, 73);
 		botonBusquedas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonBusquedas.setFont(new Font("Arial", Font.BOLD, 12));
+		botonBusquedas.setFont(new Font("Cambria", Font.BOLD, 14));
 		botonBusquedas.setToolTipText("Busqueda de equipos, por ELS, Cliente o Tecnico.");
 		botonBusquedas.setIcon(new ImageIcon(this.getClass().getResource("/search_64x64.png")));
 		panelDeControl.add(botonBusquedas);
@@ -116,7 +116,7 @@ public class VistaPrincipal extends JFrame {
 		botonListados.setForeground(new Color(0, 0, 128));
 		botonListados.setBounds(450, 36, 197, 73);
 		botonListados.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonListados.setFont(new Font("Arial", Font.BOLD, 12));
+		botonListados.setFont(new Font("Cambria", Font.BOLD, 14));
 		botonListados.setToolTipText("Listados de equipos.");
 		botonListados.setIcon(new ImageIcon(this.getClass().getResource("/notes_64x64.png")));
 		panelDeControl.add(botonListados);
@@ -125,7 +125,7 @@ public class VistaPrincipal extends JFrame {
 		botonClientes.setForeground(new Color(0, 0, 128));
 		botonClientes.setBounds(231, 124, 200, 73);
 		botonClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonClientes.setFont(new Font("Arial", Font.BOLD, 12));
+		botonClientes.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		botonClientes.setToolTipText("Visualización y alta de Clientes");
 
@@ -136,7 +136,7 @@ public class VistaPrincipal extends JFrame {
 		botonPresupuestos.setForeground(new Color(0, 0, 128));
 		botonPresupuestos.setBounds(450, 122, 197, 73);
 		botonPresupuestos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonPresupuestos.setFont(new Font("Arial", Font.BOLD, 12));
+		botonPresupuestos.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		botonPresupuestos.setToolTipText("Generación de Presupuestos, pendientes e Ingreso de Pagos.");
 
@@ -147,7 +147,7 @@ public class VistaPrincipal extends JFrame {
 		botonUsuarios.setForeground(new Color(0, 0, 128));
 		botonUsuarios.setBounds(10, 208, 200, 73);
 		botonUsuarios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonUsuarios.setFont(new Font("Arial", Font.BOLD, 12));
+		botonUsuarios.setFont(new Font("Cambria", Font.BOLD, 14));
 		botonUsuarios.setToolTipText("Gestión de los Usuarios del Sistema.");
 		botonUsuarios.setIcon(new ImageIcon(this.getClass().getResource("/Usuarios.png")));
 		panelDeControl.add(botonUsuarios);
@@ -156,7 +156,7 @@ public class VistaPrincipal extends JFrame {
 		botonBackUp.setForeground(new Color(0, 0, 128));
 		botonBackUp.setBounds(231, 208, 200, 73);
 		botonBackUp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonBackUp.setFont(new Font("Arial", Font.BOLD, 12));
+		botonBackUp.setFont(new Font("Cambria", Font.BOLD, 14));
 		botonBackUp.setToolTipText("Backup del Sistema.");
 		botonBackUp.setIcon(new ImageIcon(this.getClass().getResource("/data-backup.png")));
 		panelDeControl.add(botonBackUp);
@@ -167,7 +167,7 @@ public class VistaPrincipal extends JFrame {
 		botonConfiguracion.setForeground(new Color(0, 0, 128));
 		botonConfiguracion.setBounds(450, 208, 197, 73);
 		botonConfiguracion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonConfiguracion.setFont(new Font("Arial", Font.BOLD, 12));
+		botonConfiguracion.setFont(new Font("Cambria", Font.BOLD, 12));
 		botonConfiguracion.setToolTipText("Configuración del Sitema");
 		botonConfiguracion.setIcon(new ImageIcon(this.getClass().getResource("/Settings.png")));
 		panelDeControl.add(botonConfiguracion);
@@ -177,15 +177,15 @@ public class VistaPrincipal extends JFrame {
 
 		lblNewLabel.setForeground(Color.WHITE);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 25));
-		lblNewLabel.setBounds(212, 51, 265, 33);
+		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 30));
+		lblNewLabel.setBounds(81, 39, 467, 49);
 		getContentPane().add(lblNewLabel);
 
-		JLabel lblReparacionesEls = new JLabel("REPARACIONES ELS");
+		JLabel lblReparacionesEls = new JLabel("REPARSOFT");
 		lblReparacionesEls.setForeground(Color.WHITE);
 		lblReparacionesEls.setHorizontalAlignment(SwingConstants.CENTER);
-		lblReparacionesEls.setFont(new Font("Cambria", Font.BOLD, 25));
-		lblReparacionesEls.setBounds(212, 88, 265, 33);
+		lblReparacionesEls.setFont(new Font("Cambria", Font.BOLD, 30));
+		lblReparacionesEls.setBounds(81, 88, 467, 49);
 		getContentPane().add(lblReparacionesEls);
 
 		textUsuario = new JTextField();
@@ -224,8 +224,8 @@ public class VistaPrincipal extends JFrame {
 		btnSalir = new JButton("SALIR");
 		btnSalir.setForeground(new Color(255, 0, 51));
 		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnSalir.setFont(new Font("Arial", Font.BOLD, 12));
-		btnSalir.setBounds(558, 61, 103, 49);
+		btnSalir.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnSalir.setBounds(552, 61, 109, 49);
 		btnSalir.setToolTipText("Salir del Sistema");
 		btnSalir.setIcon(new ImageIcon(this.getClass().getResource("/logout.png")));
 		getContentPane().add(btnSalir);

@@ -44,13 +44,13 @@ public class VentanaLogin extends JFrame {
 		panel.setLayout(null);
 		
 				btnAceptar = new JButton("Aceptar");
-				btnAceptar.setBounds(292, 78, 100, 29);
+				btnAceptar.setBounds(292, 78, 108, 29);
 				panel.add(btnAceptar);
 				btnAceptar.setForeground(new Color(0, 0, 128));
 				btnAceptar.setFont(new Font("Cambria", Font.BOLD, 16));
 				
 				btnCancelar = new JButton("Cancelar");
-				btnCancelar.setBounds(292, 108, 100, 29);
+				btnCancelar.setBounds(292, 108, 108, 29);
 				panel.add(btnCancelar);
 				btnCancelar.setForeground(new Color(0, 0, 128));
 				btnCancelar.setFont(new Font("Cambria", Font.BOLD, 16));
@@ -74,22 +74,22 @@ public class VentanaLogin extends JFrame {
 							
 		
 		JLabel lblNewLabel = new JLabel("Usuario : ");
-		lblNewLabel.setBounds(50, 89, 98, 14);
+		lblNewLabel.setBounds(42, 89, 106, 14);
 		panel.add(lblNewLabel);
 		lblNewLabel.setForeground(new Color(0, 0, 128));
 		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 14));
 		
 		JLabel lblNewLabel_1 = new JLabel("Contraseña : ");
-		lblNewLabel_1.setBounds(50, 112, 98, 14);
+		lblNewLabel_1.setBounds(42, 112, 106, 14);
 		panel.add(lblNewLabel_1);
 		lblNewLabel_1.setForeground(new Color(0, 0, 128));
 		lblNewLabel_1.setFont(new Font("Cambria", Font.BOLD, 14));
 		
 		JLabel lblLogingAlSistema = new JLabel("LOGIN AL SISTEMA");
-		lblLogingAlSistema.setBounds(142, 35, 189, 20);
+		lblLogingAlSistema.setBounds(135, 29, 207, 32);
 		panel.add(lblLogingAlSistema);
 		lblLogingAlSistema.setForeground(Color.BLUE);
-		lblLogingAlSistema.setFont(new Font("Cambria", Font.BOLD, 20));
+		lblLogingAlSistema.setFont(new Font("Cambria", Font.BOLD, 22));
 		
 				JLabel img = new JLabel("");
 				img.setBounds(55, 11, 70, 73);
