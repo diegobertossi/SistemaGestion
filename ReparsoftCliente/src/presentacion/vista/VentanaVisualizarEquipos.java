@@ -1693,5 +1693,11 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 	public void setBtnenviarCorreoOwsp(JButton btnenviarCorreoOwsp) {
 		this.btnenviarCorreoOwsp = btnenviarCorreoOwsp;
-	}
+		}
+	
+    public void mostrarVentanaVisualizarEquipos() {
+        setVisible(true);
+    }
+	
+	
 }

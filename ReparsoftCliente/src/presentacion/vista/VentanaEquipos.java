@@ -19,11 +19,11 @@ public class VentanaEquipos extends JFrame
 	private JButton btnVisualizarEquipos;
 	private ControladorReparacion controlador;
 
-	public VentanaEquipos(ControladorReparacion controlador) 
+	public VentanaEquipos() 
 	{
 		super();
 		setResizable(false);
-		this.controlador = controlador;
+		//this.controlador = controlador;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 306, 155);

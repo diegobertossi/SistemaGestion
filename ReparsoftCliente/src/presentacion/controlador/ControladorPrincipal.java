@@ -53,6 +53,7 @@ import presentacion.vista.VentanaBackUp;
 import presentacion.vista.VentanaClientes;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaListadoReparaciones;
+import presentacion.vista.VentanaListadoReparacionesPresupuestos;
 import presentacion.vista.VentanaLogin;
 import presentacion.vista.VentanaPresupuestos;
 import presentacion.vista.VentanaRolesUsuarios;
@@ -70,6 +71,7 @@ public class ControladorPrincipal implements ActionListener {
 	private VentanaClientes ventanaClientes;
 	private VentanaSalidas ventanaSalidas;
 	private VentanaListadoReparaciones ventanaListadoReparaciones;
+	private VentanaListadoReparacionesPresupuestos ventanaListadoReparacionesPresupuestos;
 	private VentanaBackUp ventanaBackUp;
 	private VentanaBusqueda ventanaBusqueda;
 	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
@@ -219,9 +221,11 @@ public class ControladorPrincipal implements ActionListener {
 
 		else if (arg0.getSource() == vistaPrincipal.getBotonEquipos()) {
 
-			ventanaEquipos = new VentanaEquipos(controladorReparacion);
+			ventanaEquipos = new VentanaEquipos();
+	
 			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, new Agenda());
 
+			
 		}
 
 		else if (arg0.getSource() == vistaPrincipal.getBotonSalidas()) {
@@ -241,7 +245,16 @@ public class ControladorPrincipal implements ActionListener {
 		else if (arg0.getSource() == vistaPrincipal.getBotonListados()) {
 
 			ventanaListadoReparaciones = new VentanaListadoReparaciones(controladorListados);
-			controladorListados = new ControladorListados(ventanaListadoReparaciones,new Agenda(),controladorUsuLogin);
+			controladorUsuLogin.verificarPermisosVentanaListados(ventanaListadoReparaciones);
+			ventanaEquipos = new VentanaEquipos();
+			ventanaEquipos.setVisible(false);
+			
+			
+			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, modelo);
+			controladorListados = new ControladorListados(ventanaListadoReparaciones,ventanaListadoReparacionesPresupuestos,modelo,controladorUsuLogin,controladorReparacion);
+			controladorListados.cerraVentanaListadoEquipos();
+			
+			
 			
 		}
 
@@ -261,9 +274,10 @@ public class ControladorPrincipal implements ActionListener {
 		}
 		
 		else if (arg0.getSource() == vistaPrincipal.getBotonPresupuestos()) {
-
+			
+			
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
-			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, new Agenda());
+			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);
 			
 		}
 		

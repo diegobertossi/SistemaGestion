@@ -60,9 +60,11 @@ public class VentanaListadoReparaciones extends JFrame {
 	//private JTable tblReparaciones;
 	private JTable tblReparaciones_1;
 	private DefaultTableModel modelReparaciones;
+	
 	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
 			"N° SERIE", "AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
-			"UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV" };
+			"UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO" };
+
 
 	private JButton btnFiltrar;
 	private JButton btnMostrarTodo;
@@ -180,26 +182,25 @@ public class VentanaListadoReparaciones extends JFrame {
 		modelReparaciones = new DefaultTableModel(new Object[][] {},
 				new String[] { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "N° SERIE",
 						"AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
-						"UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV" }) {
+						"UBIC. REM", "N° REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO" }) {
 
 			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
 					String.class, String.class, String.class, String.class, String.class, String.class, String.class,
 					String.class, String.class, String.class, String.class, String.class, Boolean.class,
-					Boolean.class };
+					Boolean.class, double.class, double.class, double.class   };
 
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 
 			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false,
-					false, false, false, false, false, false, false, false, false, false };
+					false, false, false, false, false, false, false, false, false, false,false,false,false };
 
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 
-		};
-		
+		};	
 		
 
 		try {
@@ -520,7 +521,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		tblReparaciones_1.getTableHeader().setReorderingAllowed(false);
 
-		int[] anchos = { 60, 80, 150, 150, 200, 100, 200, 100, 100, 80, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+		int[] anchos = { 60, 80, 150, 150, 200, 100, 200, 100, 100, 80, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,100,100};
 
 		for (int i = 0; i < tblReparaciones_1.getColumnCount(); i++) {
 
@@ -851,5 +852,7 @@ public class VentanaListadoReparaciones extends JFrame {
 	public void setScrollPane(JScrollPane scrollPane) {
 		this.scrollPane = scrollPane;
 	}
+	
+
 
 }

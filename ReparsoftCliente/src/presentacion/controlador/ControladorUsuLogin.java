@@ -3,10 +3,13 @@ package presentacion.controlador;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import dto.PermisoDTO;
 import dto.UsuarioDTO;
 import modelo.Permisos;
+import presentacion.vista.VentanaListadoReparaciones;
 import presentacion.vista.VentanaLogin;
 import presentacion.vista.VentanaVisualizarEquipos;
 import presentacion.vista.VistaPrincipal;
@@ -16,6 +19,10 @@ public class ControladorUsuLogin {
 	private Permisos permisos;
 	private UsuarioDTO usu_login;
 	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
+	
+	private DefaultTableModel modelReparaciones;
+	private TableColumn columna ; 
+
 
 	public ControladorUsuLogin(Permisos permisos) {
 		this.permisos = permisos;
@@ -126,6 +133,40 @@ public class ControladorUsuLogin {
 		}
 	}
 
+	public void verificarPermisosVentanaListados(VentanaListadoReparaciones ventanaListadoReparaciones) {
+
+		if (usu_login != null) {
+			List<PermisoDTO> permisos_principal = permisos.damePermisosPadres(usu_login.getIdRol());
+
+			if (!permisos_principal.contains(new PermisoDTO(0, 0, 0, "Presupuestos"))) {
+				
+				DefaultTableModel modelo = (DefaultTableModel) ventanaListadoReparaciones.getModelReparaciones();
+				int columnaPrecioPeso = 19;
+				int columnaPrecioDolar = 20;
+				int columnaPrecioPago = 21;
+				
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso).setMaxWidth(0);
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso).setMinWidth(0);
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso).setPreferredWidth(0);
+				
+				
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar).setMaxWidth(0);
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar).setMinWidth(0);
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar).setPreferredWidth(0);
+				
+				
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago).setMaxWidth(0);
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago).setMinWidth(0);
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago).setPreferredWidth(0);
+				
+				
+				modelo.fireTableStructureChanged();
+					}
+
+		}
+	}
+	
+	
 	// public void verificarPermisosInternacion(VistaInternaciones vista)
 	// {
 	// if(usu_login != null)
