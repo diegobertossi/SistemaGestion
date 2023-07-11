@@ -495,12 +495,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 				ventanaRemitos = new VentanaRemitos(this);
 
-				this.ventanaRemitos.getComboUbicacion().addActionListener(this);
-				this.ventanaRemitos.getComboUbicacion().addMouseListener(this);
-				this.ventanaRemitos.getComboUbicacion().addItemListener(this);
-				this.ventanaRemitos.getTxtNumeroRemito().addActionListener(this);
-				this.ventanaRemitos.getBtnVisualizarRemito().addActionListener(this);
-				this.ventanaRemitos.getBtnGuardarRemito().addActionListener(this);
+				agregarListenersVentanaRemitos();
 
 				llenarComboUbicacion();
 
@@ -619,6 +614,17 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 			}
 
 		}
+
+	}
+
+	public void agregarListenersVentanaRemitos() {
+
+		this.ventanaRemitos.getComboUbicacion().addActionListener(this);
+		this.ventanaRemitos.getComboUbicacion().addMouseListener(this);
+		this.ventanaRemitos.getComboUbicacion().addItemListener(this);
+		this.ventanaRemitos.getTxtNumeroRemito().addActionListener(this);
+		this.ventanaRemitos.getBtnVisualizarRemito().addActionListener(this);
+		this.ventanaRemitos.getBtnGuardarRemito().addActionListener(this);
 
 	}
 
@@ -836,6 +842,33 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		ventanaRemitos.setCellRender(this.ventanaRemitos.getTblEquiposParaRemito());
 
 		this.ventanaRemitos.show();
+
+	}
+
+	public void cargarRemitoVisualizacion(int els) {
+
+		ventanaRemitos = new VentanaRemitos(this);
+		
+		
+		this.ventanaRemitos.getModelEquiposParaRemito().setRowCount(0); // Para
+		// vaciar
+		// tabla
+		this.ventanaRemitos.getModelEquiposParaRemito().setColumnCount(0);
+		this.ventanaRemitos.getModelEquiposParaRemito().setColumnIdentifiers(this.ventanaRemitos.getNombreColumnas());
+
+		this.reparacion = agenda.dameReparacionXels(els);
+
+		Object[] fila = { this.reparacion.getELS(), this.reparacion.getNombreEquipo(), this.reparacion.getMarca(),
+				this.reparacion.getModelo(), this.reparacion.getNumeroDeSerie(), this.reparacion.getAviso(),
+				this.reparacion.getEstadoTecnico(), this.reparacion.getEstadoComercial(),
+				this.reparacion.getAgregadoaremito() };
+		this.ventanaRemitos.getModelEquiposParaRemito().addRow(fila);
+
+		ventanaRemitos.setCellRender(this.ventanaRemitos.getTblEquiposParaRemito());
+
+		this.ventanaRemitos.show();
+		
+		llenarComboUbicacion();
 
 	}
 

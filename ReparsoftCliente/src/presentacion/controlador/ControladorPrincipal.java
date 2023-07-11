@@ -225,7 +225,10 @@ public class ControladorPrincipal implements ActionListener {
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
 			ventanaPresupuestos.setVisible(false);
 			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);	
-			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, new Agenda(),controladorPresupuestos);
+			ventanaSalidas = new VentanaSalidas(controladorSalidas);
+			ventanaSalidas.setVisible(false);
+			controladorSalidas = new ControladorSalidas(ventanaSalidas, modelo);
+			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, new Agenda(),controladorPresupuestos, controladorSalidas);
 
 			
 		}
@@ -254,9 +257,11 @@ public class ControladorPrincipal implements ActionListener {
 			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);	
 			ventanaEquipos = new VentanaEquipos();
 			ventanaEquipos.setVisible(false);
+			ventanaSalidas = new VentanaSalidas(controladorSalidas);
+			ventanaSalidas.setVisible(false);
+			controladorSalidas = new ControladorSalidas(ventanaSalidas, modelo);
+			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, new Agenda(),controladorPresupuestos, controladorSalidas);
 			
-			
-			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, modelo,controladorPresupuestos);
 			controladorListados = new ControladorListados(ventanaListadoReparaciones,modelo,controladorUsuLogin,controladorReparacion);
 			controladorListados.cerraVentanaListadoEquipos();
 			

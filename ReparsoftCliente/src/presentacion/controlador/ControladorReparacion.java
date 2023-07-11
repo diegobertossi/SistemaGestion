@@ -103,9 +103,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
 	private VentanaEquipos ventanaEquipos;
-	// private VistaPrincipal vistaPrincipal;
+
 	private VentanaAgregarRepuesto ventanaagregarRepuesto;
-	//private VentanaGenerarPresupuesto ventanaGenerarPresupuesto;
+
 	private VentanaEmail ventanaEmail;
 	private VentanaEnviarCorreoOwsp ventanaEnviarCorreoOwsp;
 	private VentanaAgregarEquipo ventanaAgregarEquipo;
@@ -114,7 +114,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private VentanaRemitos ventanaRemitos;
 	private VentanaWSP ventanaWSP;
 	private VentanaClientesWSP ventanaClientesWSP;
-	//private VentanaListadoReparaciones ventanaListadoReparaciones;
+
 	private ControladorUsuLogin controladorUsuLogin;
 	private ControladorPresupuestos controladorpresupuestos;
 	private ControladorSalidas controladorSalidas;
@@ -141,6 +141,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private ReparacionDTO reparacion;
 	private int NumeroELS;
+	private int NumeroELSParaRemito;
 	private int idEquipo;
 
 	private String estadoFisico = "";
@@ -168,7 +169,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
 	public ControladorReparacion(VentanaEquipos ventanaEquipos,
-			ControladorUsuLogin controladorUsuLogin, Agenda agendas, ControladorPresupuestos controladorPresupuestos) {
+			ControladorUsuLogin controladorUsuLogin, Agenda agendas, ControladorPresupuestos controladorPresupuestos, ControladorSalidas controladorSalidas) {
 
 		this.ventanaEquipos = ventanaEquipos;
 		this.ventanaEquipos.getBtnVisualizarEquipos().addActionListener(this);
@@ -178,6 +179,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.Repuestos_en_tabla = null;
 		this.controladorUsuLogin = controladorUsuLogin;
 		this.controladorpresupuestos = controladorPresupuestos;
+		this.controladorSalidas = controladorSalidas;
 
 	}
 
@@ -999,118 +1001,127 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnGenerarRemito()) {
+			
+//			controladorpresupuestos.TomarDatosDeTablasParaVisualizacion(NumeroELS);
+//
+//			controladorpresupuestos.agregarListenersVentanaGenerarPresupuesto();
 
-			ventanaRemitos = new VentanaRemitos(controladorSalidas);
+			NumeroELSParaRemito = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());	
+			
+			controladorSalidas.cargarRemitoVisualizacion(NumeroELSParaRemito);
+			controladorSalidas.agregarListenersVentanaRemitos();
 
-			this.ventanaRemitos.getComboUbicacion().addActionListener(this);
-			this.ventanaRemitos.getComboUbicacion().addMouseListener(this);
-			this.ventanaRemitos.getComboUbicacion().addItemListener(this);
-			this.ventanaRemitos.getTxtNumeroRemito().addActionListener(this);
-			this.ventanaRemitos.getBtnVisualizarRemito().addActionListener(this);
-			this.ventanaRemitos.getBtnGuardarRemito().addActionListener(this);
-
-			String Cliente = ventanaVisualizarEquipos.getTextCliente().getText();
-			String Sucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
-			int els = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
-
-			cargarTablaEquiposParaRemito(els);
-
-			ventanaRemitos.getTxtCliente().setText(Cliente + " " + "(" + Sucursal + ")");
-
-			llenarComboUbicacion();
-
-			numeros = this.ventanaRemitos.getTxtNumeroRemito().getText();
-			ventanaRemitos.getTextRemitoConformado().setText(part1 + " - " + numeros);
-
-		}
-
-		else if (ventanaRemitos != null && e.getSource() == this.ventanaRemitos.getTxtNumeroRemito()) {
-
-			numeros = this.ventanaRemitos.getTxtNumeroRemito().getText();
-			ventanaRemitos.getTextRemitoConformado().setText(part1 + " - " + numeros);
-
-		}
-
-		else if (ventanaRemitos != null && e.getSource() == this.ventanaRemitos.getBtnVisualizarRemito()) {
-
-			int filas = this.ventanaRemitos.getModelEquiposParaRemito().getRowCount();
-			int cont = 0;
-			for (int i = 0; i < filas; i++) {
-
-				if ((Boolean) this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8) == true)
-					cont++;
-
-			}
-
-			if (ventanaRemitos.getTextCantBultos().getText().isEmpty())
-				JOptionPane.showMessageDialog(null, "Debe ingresar la 'CANTIDAD DE BULTOS'");
-			else if (cont == 0)
-				JOptionPane.showMessageDialog(null, "Debe agregar al menos un equipo al remito");
-
-			else {
-				List<RemitoDTO> lista = new ArrayList<RemitoDTO>();
-				RemitoDTO rep = TomarDatos();
-				lista.add(rep);
-				ReporteRemitoSalida reporte = new ReporteRemitoSalida(rep, lista);
-				reporte.mostrar();
-
-			}
-		}
-
-		else if (ventanaRemitos != null && e.getSource() == this.ventanaRemitos.getBtnGuardarRemito()) {
-
-			int filas = this.ventanaRemitos.getModelEquiposParaRemito().getRowCount();
-			int cont = 0;
-			for (int i = 0; i < filas; i++) {
-
-				if ((Boolean) this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8) == true)
-					cont++;
-
-			}
-
-			if (ventanaRemitos.getTextCantBultos().getText().isEmpty())
-				JOptionPane.showMessageDialog(null, "Debe ingresar la 'CANTIDAD DE BULTOS'");
-			else if (cont == 0)
-				JOptionPane.showMessageDialog(null, "Debe agregar al menos un equipo al remito");
-
-			else {
-				List<RemitoDTO> lista = new ArrayList<RemitoDTO>();
-				RemitoDTO nuevoRemito = TomarDatos();
-				lista.add(nuevoRemito);
-				ReporteRemitoSalida reporte = new ReporteRemitoSalida(nuevoRemito, lista);
-				reporte.mostrar();
-				reporte.guardar();
-
-				RemitoDTO nuevoRemitoTabla = TomarDatosParaTabla();
-				this.agenda.agregarRemito(nuevoRemitoTabla);
-
-				for (int i = 0; i < filas; i++) {
-
-					Boolean agregar = (Boolean) this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8);
-
-					if (agregar != null) {
-						if (agregar) {
-
-							ReparacionDTO reparacionAeditar = TomarDatosPantalla(i);
-							this.agenda.editarReparacionR(reparacionAeditar);
-
-						}
-					}
-
-				}
-
-				JOptionPane.showMessageDialog(null,
-						"Se ha guardodo el remito " + this.ventanaRemitos.getTextRemitoConformado().getText());
-
-				this.ventanaRemitos.getComboUbicacion().setEnabled(false);
-				this.ventanaRemitos.getTxtNumeroRemito().setEnabled(false);
-				this.ventanaRemitos.getBtnVisualizarRemito().setEnabled(false);
-				this.ventanaRemitos.getBtnGuardarRemito().setEnabled(false);
-				this.ventanaRemitos.getTextCantBultos().setEnabled(false);
-				this.ventanaRemitos.getTblEquiposParaRemito().setEnabled(false);
-
-			}
-
+//			ventanaRemitos = new VentanaRemitos(controladorSalidas);
+//
+//			this.ventanaRemitos.getComboUbicacion().addActionListener(this);
+//			this.ventanaRemitos.getComboUbicacion().addMouseListener(this);
+//			this.ventanaRemitos.getComboUbicacion().addItemListener(this);
+//			this.ventanaRemitos.getTxtNumeroRemito().addActionListener(this);
+//			this.ventanaRemitos.getBtnVisualizarRemito().addActionListener(this);
+//			this.ventanaRemitos.getBtnGuardarRemito().addActionListener(this);
+//
+//			String Cliente = ventanaVisualizarEquipos.getTextCliente().getText();
+//			String Sucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
+//			int els = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
+//
+//			cargarTablaEquiposParaRemito(els);
+//
+//			ventanaRemitos.getTxtCliente().setText(Cliente + " " + "(" + Sucursal + ")");
+//
+//			llenarComboUbicacion();
+//
+//			numeros = this.ventanaRemitos.getTxtNumeroRemito().getText();
+//			ventanaRemitos.getTextRemitoConformado().setText(part1 + " - " + numeros);
+//
+//		}
+//
+//		else if (ventanaRemitos != null && e.getSource() == this.ventanaRemitos.getTxtNumeroRemito()) {
+//
+//			numeros = this.ventanaRemitos.getTxtNumeroRemito().getText();
+//			ventanaRemitos.getTextRemitoConformado().setText(part1 + " - " + numeros);
+//
+//		}
+//
+//		else if (ventanaRemitos != null && e.getSource() == this.ventanaRemitos.getBtnVisualizarRemito()) {
+//
+//			int filas = this.ventanaRemitos.getModelEquiposParaRemito().getRowCount();
+//			int cont = 0;
+//			for (int i = 0; i < filas; i++) {
+//
+//				if ((Boolean) this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8) == true)
+//					cont++;
+//
+//			}
+//
+//			if (ventanaRemitos.getTextCantBultos().getText().isEmpty())
+//				JOptionPane.showMessageDialog(null, "Debe ingresar la 'CANTIDAD DE BULTOS'");
+//			else if (cont == 0)
+//				JOptionPane.showMessageDialog(null, "Debe agregar al menos un equipo al remito");
+//
+//			else {
+//				List<RemitoDTO> lista = new ArrayList<RemitoDTO>();
+//				RemitoDTO rep = TomarDatos();
+//				lista.add(rep);
+//				ReporteRemitoSalida reporte = new ReporteRemitoSalida(rep, lista);
+//				reporte.mostrar();
+//
+//			}
+//		}
+//
+//		else if (ventanaRemitos != null && e.getSource() == this.ventanaRemitos.getBtnGuardarRemito()) {
+//
+//			int filas = this.ventanaRemitos.getModelEquiposParaRemito().getRowCount();
+//			int cont = 0;
+//			for (int i = 0; i < filas; i++) {
+//
+//				if ((Boolean) this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8) == true)
+//					cont++;
+//
+//			}
+//
+//			if (ventanaRemitos.getTextCantBultos().getText().isEmpty())
+//				JOptionPane.showMessageDialog(null, "Debe ingresar la 'CANTIDAD DE BULTOS'");
+//			else if (cont == 0)
+//				JOptionPane.showMessageDialog(null, "Debe agregar al menos un equipo al remito");
+//
+//			else {
+//				List<RemitoDTO> lista = new ArrayList<RemitoDTO>();
+//				RemitoDTO nuevoRemito = TomarDatos();
+//				lista.add(nuevoRemito);
+//				ReporteRemitoSalida reporte = new ReporteRemitoSalida(nuevoRemito, lista);
+//				reporte.mostrar();
+//				reporte.guardar();
+//
+//				RemitoDTO nuevoRemitoTabla = TomarDatosParaTabla();
+//				this.agenda.agregarRemito(nuevoRemitoTabla);
+//
+//				for (int i = 0; i < filas; i++) {
+//
+//					Boolean agregar = (Boolean) this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8);
+//
+//					if (agregar != null) {
+//						if (agregar) {
+//
+//							ReparacionDTO reparacionAeditar = TomarDatosPantalla(i);
+//							this.agenda.editarReparacionR(reparacionAeditar);
+//
+//						}
+//					}
+//
+//				}
+//
+//				JOptionPane.showMessageDialog(null,
+//						"Se ha guardodo el remito " + this.ventanaRemitos.getTextRemitoConformado().getText());
+//
+//				this.ventanaRemitos.getComboUbicacion().setEnabled(false);
+//				this.ventanaRemitos.getTxtNumeroRemito().setEnabled(false);
+//				this.ventanaRemitos.getBtnVisualizarRemito().setEnabled(false);
+//				this.ventanaRemitos.getBtnGuardarRemito().setEnabled(false);
+//				this.ventanaRemitos.getTextCantBultos().setEnabled(false);
+//				this.ventanaRemitos.getTblEquiposParaRemito().setEnabled(false);
+//
+//			}
+//
 		}
 
 		else if (this.ventanaAgregarEquipo != null
