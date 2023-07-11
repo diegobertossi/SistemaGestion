@@ -222,7 +222,9 @@ public class ControladorPrincipal implements ActionListener {
 		else if (arg0.getSource() == vistaPrincipal.getBotonEquipos()) {
 
 			ventanaEquipos = new VentanaEquipos();
-	
+			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
+			ventanaPresupuestos.setVisible(false);
+			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);	
 			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, new Agenda(),controladorPresupuestos);
 
 			
