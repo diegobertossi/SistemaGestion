@@ -248,6 +248,10 @@ public class ControladorPrincipal implements ActionListener {
 
 			ventanaListadoReparaciones = new VentanaListadoReparaciones(controladorListados);
 			controladorUsuLogin.verificarPermisosVentanaListados(ventanaListadoReparaciones);
+			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
+			ventanaPresupuestos.setVisible(false);
+			
+			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);	
 			ventanaEquipos = new VentanaEquipos();
 			ventanaEquipos.setVisible(false);
 			
