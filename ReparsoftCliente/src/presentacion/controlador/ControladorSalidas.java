@@ -804,7 +804,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 	}
 
 	private RemitoDTO TomarDatosParaTabla() {
-
+		
 		Integer IdUbicacion = IDdeUbicacion();
 		Integer codigoUbicacion = CodigoDeUbicacion(ventanaRemitos.getTextRemitoConformado().getText());
 		Integer IdRemito = this.agenda.dameIDRemito() + 1;
@@ -847,6 +847,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 	public void cargarRemitoVisualizacion(int els) {
 
+		
+		
 		ventanaRemitos = new VentanaRemitos(this);
 		
 		
