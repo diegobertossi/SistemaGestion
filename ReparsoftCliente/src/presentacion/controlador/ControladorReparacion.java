@@ -168,7 +168,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
 	public ControladorReparacion(VentanaEquipos ventanaEquipos,
-			ControladorUsuLogin controladorUsuLogin, Agenda agendas) {
+			ControladorUsuLogin controladorUsuLogin, Agenda agendas, ControladorPresupuestos controladorPresupuestos) {
 
 		this.ventanaEquipos = ventanaEquipos;
 		this.ventanaEquipos.getBtnVisualizarEquipos().addActionListener(this);
@@ -177,6 +177,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.reparacion = null;
 		this.Repuestos_en_tabla = null;
 		this.controladorUsuLogin = controladorUsuLogin;
+		this.controladorpresupuestos = controladorPresupuestos;
 
 	}
 
@@ -636,102 +637,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonPresupuestar()) {
+			
+			NumeroELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());	
+			
+			controladorpresupuestos.TomarDatosDeTablasParaVisualizacion(NumeroELS);
 
-			ventanaGenerarPresupuesto = new VentanaGenerarPresupuesto(controladorpresupuestos);
+			controladorpresupuestos.agregarListenersVentanaGenerarPresupuesto();
 
-			ventanaGenerarPresupuesto.getTextPrecioPeso()
-					.setText(ventanaVisualizarEquipos.getTextPresupuesto().getText());
-
-			SpellChecker.register(ventanaGenerarPresupuesto.getTextInforme());
-
-			ventanaGenerarPresupuesto.getBtnEditarInforme().addActionListener(this);
-			ventanaGenerarPresupuesto.getBtnGuardarCambios().addActionListener(this);
-			ventanaGenerarPresupuesto.getBtnCotizacionDolar().addActionListener(this);
-			ventanaGenerarPresupuesto.getChckDolar().addMouseListener(this);
-			ventanaGenerarPresupuesto.getChckPesos().addMouseListener(this);
-
-			ventanaGenerarPresupuesto.getGuardarPresupuestoPDF().addActionListener(this);
-			ventanaGenerarPresupuesto.getVisualizarPresupuestoPDF().addActionListener(this);
-
-			this.ventanaGenerarPresupuesto.getTextPrecioPeso().addKeyListener(this);
-			this.ventanaGenerarPresupuesto.getTextPrecioPeso().addFocusListener(new FocusListener() {
-				public void focusLost(FocusEvent e) {
-
-					if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().isEmpty()) {
-
-						ventanaGenerarPresupuesto.getTextPrecioPeso().setText("0.0");
-					}
-
-				}
-
-				@Override
-				public void focusGained(FocusEvent arg0) {
-					// TODO Auto-generated method stub
-
-				}
-			});
-
-			this.ventanaGenerarPresupuesto.getTextPrecioDolar().addKeyListener(this);
-			this.ventanaGenerarPresupuesto.getTextPrecioDolar().addFocusListener(new FocusListener() {
-				public void focusLost(FocusEvent e) {
-
-					if (ventanaGenerarPresupuesto.getTextPrecioDolar().getText().isEmpty()) {
-
-						ventanaGenerarPresupuesto.getTextPrecioDolar().setText("0.0");
-					}
-
-				}
-
-				@Override
-				public void focusGained(FocusEvent arg0) {
-					// TODO Auto-generated method stub
-
-				}
-			});
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-
-			String Cliente = ventanaVisualizarEquipos.getTextCliente().getText();
-			String Sucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
-			String ELS = ventanaVisualizarEquipos.getTextELS().toString();
-			String Equipo = ventanaVisualizarEquipos.getTextNombreEquipo().getText();
-			String Marca = ventanaVisualizarEquipos.getTextMarca().getText();
-			String Modelo = ventanaVisualizarEquipos.getTextModelo().getText();
-			String Serie = ventanaVisualizarEquipos.getTextNSerie().getText();
-			String Aviso = ventanaVisualizarEquipos.getTextAvisoCliente().getText();
-			String ClienteCliente = ventanaVisualizarEquipos.getTextClienteCliente().getText();
-			String RemitoCliente = ventanaVisualizarEquipos.getTextRemitoCliente().getText();
-			String Informe = ventanaVisualizarEquipos.getTextInformeCliente().getText();
-			Double PrecioPeso = reparacion.getPrecioPeso();
-			Double PrecioDolar = reparacion.getPrecioDolar();
-			if (reparacion.getFechaFabr() == null)
-				ventanaGenerarPresupuesto.setTextFabr(null);
-			else
-				try {
-
-					ventanaGenerarPresupuesto.setTextFabr((dateFormat.parse(reparacion.getFechaFabr())));
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-			ventanaGenerarPresupuesto.getTextCliente().setText(Cliente);
-			ventanaGenerarPresupuesto.getTextSucursal().setText(Sucursal);
-			ventanaGenerarPresupuesto.getTextELS().setText(ELS);
-			ventanaGenerarPresupuesto.getTextEquipo().setText(Equipo);
-			ventanaGenerarPresupuesto.getTextMarca().setText(Marca);
-			ventanaGenerarPresupuesto.getTextModelo().setText(Modelo);
-			ventanaGenerarPresupuesto.getTextSerie().setText(Serie);
-			ventanaGenerarPresupuesto.getTextAviso().setText(Aviso);
-			ventanaGenerarPresupuesto.getTextClienteCliente().setText(ClienteCliente);
-			ventanaGenerarPresupuesto.getTextRemCliente().setText(RemitoCliente);
-
-			ventanaGenerarPresupuesto.getTextInforme().setText(Informe);
-			// ventanaGenerarPresupuesto.getTextPrecioPeso().setText(PrecioPeso.toString());
-			ventanaGenerarPresupuesto.getTextPrecioDolar().setText(PrecioDolar.toString());
-
-			ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
-
-			ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
 
 		}
 
@@ -1888,6 +1800,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	public void agregarListenersVentanaVisualizarEquipos() {
 
+		
 		this.ventanaVisualizarEquipos.getBotonAnterior().addActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonSiguiente().addActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonUltimo().addActionListener(this);
@@ -1952,6 +1865,19 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 	}
+	
+	public void agregarListenersVentanaVisualizarEquiposListado() {
+		
+		agregarListenersVentanaVisualizarEquipos();
+		this.ventanaVisualizarEquipos.getBotonAnterior().removeActionListener(this);
+		this.ventanaVisualizarEquipos.getBotonSiguiente().removeActionListener(this);
+		this.ventanaVisualizarEquipos.getBotonUltimo().removeActionListener(this);
+		this.ventanaVisualizarEquipos.getBotonPrimero().removeActionListener(this);
+		
+		
+	}
+	
+	
 
 	public void agregarListenersVentanaAgregarEquipos() {
 
@@ -1988,6 +1914,98 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getGrupoEstadoFisico().setSelected(ventanaAgregarEquipo.getRdbtnBRC().getModel(), true);
 
 	}
+	
+	
+	
+	
+	
+	private void TomarDatosDeTablas() throws ParseException {
+
+		// NumberFormat nf =
+		// NumberFormat.getCurrencyInstance(Locale.getDefault());
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+
+		ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicial));
+		NumeroELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS().toString());
+		reparacion = agenda.dameReparacionXels(NumeroELS);
+
+		// llenarComboTecnico();
+
+		ventanaVisualizarEquipos.setTextNombreEquipo(reparacion.getNombreEquipo());
+		ventanaVisualizarEquipos.setTextMarca(reparacion.getMarca());
+		ventanaVisualizarEquipos.setTextModelo(reparacion.getModelo());
+		ventanaVisualizarEquipos.setTextNSerie(reparacion.getNumeroDeSerie());
+
+		// ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(reparacion.getPresupuestoGenerado());
+
+		if (reparacion.getFalla() == null)
+			ventanaVisualizarEquipos.setTextFalla("");
+		else
+			ventanaVisualizarEquipos.setTextFalla(reparacion.getFalla());
+
+		ventanaVisualizarEquipos.setTextAvisoCliente(reparacion.getAviso());
+		ventanaVisualizarEquipos.setTextClienteCliente(reparacion.getClienteCliente());
+		ventanaVisualizarEquipos.setTextRemitoCliente(reparacion.getRemitoCliente());
+
+		ventanaVisualizarEquipos.setTextCliente(reparacion.getCliente());
+		ventanaVisualizarEquipos.setTextSucursal(reparacion.getSucursal());
+
+		if (reparacion.getFecha_Entrada() == null)
+			ventanaVisualizarEquipos.setTextFechaEntrada2(null);
+		else
+			ventanaVisualizarEquipos.setTextFechaEntrada2((dateFormat.parse(reparacion.getFecha_Entrada())));
+
+		ventanaVisualizarEquipos.setTextEstadoFisico(reparacion.getEstadoFisico());
+		ventanaVisualizarEquipos.setTextEstadoTecnico(reparacion.getEstadoTecnico());
+		ventanaVisualizarEquipos.setTextEstadoComercial(reparacion.getEstadoComercial());
+		ventanaVisualizarEquipos.setTextDiagnostico(reparacion.getSolucion());
+		ventanaVisualizarEquipos.setTextInformeCliente(reparacion.getInformecliente());
+
+		if (reparacion.getFechadereparacion() == null)
+			ventanaVisualizarEquipos.setTextFechaReparacion2(null);
+		else
+			ventanaVisualizarEquipos.setTextFechaReparacion2((dateFormat.parse(reparacion.getFechadereparacion())));
+
+		if (reparacion.getFechAceptacion() == null)
+			ventanaVisualizarEquipos.setTextFechaRespuesta2(null);
+		else
+			ventanaVisualizarEquipos.setTextFechaRespuesta2((dateFormat.parse(reparacion.getFechAceptacion())));
+
+		if (reparacion.getFechaFabr() == null)
+			ventanaVisualizarEquipos.setFechaFabr2(null);
+		else {
+			ventanaVisualizarEquipos.setFechaFabr2((dateFormat.parse(reparacion.getFechaFabr())));
+		}
+
+		ventanaVisualizarEquipos.setTextNombreTecnico(reparacion.getNombreUsuario());
+		// ventanaVisualizarEquipos.getComboTecnico().setSelectedIndex(reparacion.getidUsuario()-1);
+		ventanaVisualizarEquipos.setTextOC(reparacion.getOrdendeCompra());
+		ventanaVisualizarEquipos.setTextUbicacionRemito(Integer.toString(reparacion.getCodigo()));
+		ventanaVisualizarEquipos.setTextNumeroRemito(Integer.toString(reparacion.getNumeroRemitoSalida()));
+		// ventanaVisualizarEquipos.setChckbxAvisoEnviado((boolean)reparacion.getEnviado());
+
+		llenarTablaRepuestos();
+		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
+
+		ventanaVisualizarEquipos.setTextPresupuesto(reparacion.getPrecioPeso().toString());
+		ventanaVisualizarEquipos.setTextPago(reparacion.getPago().toString());
+
+		ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(reparacion.getPresupuestoGenerado());
+		ventanaVisualizarEquipos.setChckbxPresupuestoEnviado(reparacion.getPresupuestoEnviado());
+		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
+
+		verificarPresupuesto();
+		deshabilitarCampos();
+
+	}
+
+	
+	
+	
+	
+	
+	
 
 	public void TomarDatosDeTablasListado(int numeroELSSeleccionado2) throws ParseException {
 
@@ -2070,7 +2088,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
 		verificarPresupuesto();
-		// deshabilitarCampos();
+		deshabilitarCampos();
 
 	}
 
@@ -2280,87 +2298,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	private void TomarDatosDeTablas() throws ParseException {
-
-		// NumberFormat nf =
-		// NumberFormat.getCurrencyInstance(Locale.getDefault());
-
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-
-		ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicial));
-		NumeroELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS().toString());
-		reparacion = agenda.dameReparacionXels(NumeroELS);
-
-		// llenarComboTecnico();
-
-		ventanaVisualizarEquipos.setTextNombreEquipo(reparacion.getNombreEquipo());
-		ventanaVisualizarEquipos.setTextMarca(reparacion.getMarca());
-		ventanaVisualizarEquipos.setTextModelo(reparacion.getModelo());
-		ventanaVisualizarEquipos.setTextNSerie(reparacion.getNumeroDeSerie());
-
-		// ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(reparacion.getPresupuestoGenerado());
-
-		if (reparacion.getFalla() == null)
-			ventanaVisualizarEquipos.setTextFalla("");
-		else
-			ventanaVisualizarEquipos.setTextFalla(reparacion.getFalla());
-
-		ventanaVisualizarEquipos.setTextAvisoCliente(reparacion.getAviso());
-		ventanaVisualizarEquipos.setTextClienteCliente(reparacion.getClienteCliente());
-		ventanaVisualizarEquipos.setTextRemitoCliente(reparacion.getRemitoCliente());
-
-		ventanaVisualizarEquipos.setTextCliente(reparacion.getCliente());
-		ventanaVisualizarEquipos.setTextSucursal(reparacion.getSucursal());
-
-		if (reparacion.getFecha_Entrada() == null)
-			ventanaVisualizarEquipos.setTextFechaEntrada2(null);
-		else
-			ventanaVisualizarEquipos.setTextFechaEntrada2((dateFormat.parse(reparacion.getFecha_Entrada())));
-
-		ventanaVisualizarEquipos.setTextEstadoFisico(reparacion.getEstadoFisico());
-		ventanaVisualizarEquipos.setTextEstadoTecnico(reparacion.getEstadoTecnico());
-		ventanaVisualizarEquipos.setTextEstadoComercial(reparacion.getEstadoComercial());
-		ventanaVisualizarEquipos.setTextDiagnostico(reparacion.getSolucion());
-		ventanaVisualizarEquipos.setTextInformeCliente(reparacion.getInformecliente());
-
-		if (reparacion.getFechadereparacion() == null)
-			ventanaVisualizarEquipos.setTextFechaReparacion2(null);
-		else
-			ventanaVisualizarEquipos.setTextFechaReparacion2((dateFormat.parse(reparacion.getFechadereparacion())));
-
-		if (reparacion.getFechAceptacion() == null)
-			ventanaVisualizarEquipos.setTextFechaRespuesta2(null);
-		else
-			ventanaVisualizarEquipos.setTextFechaRespuesta2((dateFormat.parse(reparacion.getFechAceptacion())));
-
-		if (reparacion.getFechaFabr() == null)
-			ventanaVisualizarEquipos.setFechaFabr2(null);
-		else {
-			ventanaVisualizarEquipos.setFechaFabr2((dateFormat.parse(reparacion.getFechaFabr())));
-		}
-
-		ventanaVisualizarEquipos.setTextNombreTecnico(reparacion.getNombreUsuario());
-		// ventanaVisualizarEquipos.getComboTecnico().setSelectedIndex(reparacion.getidUsuario()-1);
-		ventanaVisualizarEquipos.setTextOC(reparacion.getOrdendeCompra());
-		ventanaVisualizarEquipos.setTextUbicacionRemito(Integer.toString(reparacion.getCodigo()));
-		ventanaVisualizarEquipos.setTextNumeroRemito(Integer.toString(reparacion.getNumeroRemitoSalida()));
-		// ventanaVisualizarEquipos.setChckbxAvisoEnviado((boolean)reparacion.getEnviado());
-
-		llenarTablaRepuestos();
-		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
-
-		ventanaVisualizarEquipos.setTextPresupuesto(reparacion.getPrecioPeso().toString());
-		ventanaVisualizarEquipos.setTextPago(reparacion.getPago().toString());
-
-		ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(reparacion.getPresupuestoGenerado());
-		ventanaVisualizarEquipos.setChckbxPresupuestoEnviado(reparacion.getPresupuestoEnviado());
-		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
-
-		verificarPresupuesto();
-		deshabilitarCampos();
-
-	}
-
+	
 	private void verificarPresupuesto() {
 
 		Color EquipoPagado = new Color(130, 224, 170);
@@ -2753,21 +2691,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		int idSucursal = idSuc;
 		int idUsuarios = 1;
 
-		// SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-		//
-		// String fechaentradavisual = null;
-		// java.util.Date fechaEntradaVisual =
-		// this.ventanaVisualizarEquipos.getFechaEntrada().getDate();
-		// if (fechaEntradaVisual != null) {
-		//
-		// fechaentradavisual = dateFormat.format(fechaEntradaVisual);
-		// }
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
-		// java.util.Date fechaEntrada =
-		// this.ventanaAgregarEquipo.getFechaEntrada().getDate();
-		// fechaentrada = dateFormat.format(fechaEntrada);
+
 
 		fechaentrada = null;
 		java.util.Date fechaEntrada = this.ventanaAgregarEquipo.getFechaEntrada().getDate();

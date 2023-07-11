@@ -53,7 +53,7 @@ import presentacion.vista.VentanaBackUp;
 import presentacion.vista.VentanaClientes;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaListadoReparaciones;
-import presentacion.vista.VentanaListadoReparacionesPresupuestos;
+
 import presentacion.vista.VentanaLogin;
 import presentacion.vista.VentanaPresupuestos;
 import presentacion.vista.VentanaRolesUsuarios;
@@ -71,7 +71,7 @@ public class ControladorPrincipal implements ActionListener {
 	private VentanaClientes ventanaClientes;
 	private VentanaSalidas ventanaSalidas;
 	private VentanaListadoReparaciones ventanaListadoReparaciones;
-	private VentanaListadoReparacionesPresupuestos ventanaListadoReparacionesPresupuestos;
+	
 	private VentanaBackUp ventanaBackUp;
 	private VentanaBusqueda ventanaBusqueda;
 	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
@@ -223,7 +223,7 @@ public class ControladorPrincipal implements ActionListener {
 
 			ventanaEquipos = new VentanaEquipos();
 	
-			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, new Agenda());
+			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, new Agenda(),controladorPresupuestos);
 
 			
 		}
@@ -250,8 +250,8 @@ public class ControladorPrincipal implements ActionListener {
 			ventanaEquipos.setVisible(false);
 			
 			
-			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, modelo);
-			controladorListados = new ControladorListados(ventanaListadoReparaciones,ventanaListadoReparacionesPresupuestos,modelo,controladorUsuLogin,controladorReparacion);
+			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, modelo,controladorPresupuestos);
+			controladorListados = new ControladorListados(ventanaListadoReparaciones,modelo,controladorUsuLogin,controladorReparacion);
 			controladorListados.cerraVentanaListadoEquipos();
 			
 			

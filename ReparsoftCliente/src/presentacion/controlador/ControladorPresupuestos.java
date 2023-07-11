@@ -1,10 +1,7 @@
 package presentacion.controlador;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Desktop;
-import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -15,14 +12,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.Console;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,50 +21,19 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.RowFilter;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
-import javax.swing.text.MaskFormatter;
-
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
-import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.SpellChecker;
 
 import modelo.Agenda;
-import presentacion.reportes.ReporteAgenda;
 import presentacion.reportes.ReportePresupuesto;
-import presentacion.reportes.ReporteRegistroEntrada;
-import presentacion.reportes.ReporteRemitoSalida;
-import presentacion.vista.VentanaAgregarCliente;
-import presentacion.vista.VentanaAgregarSucursal;
-import presentacion.vista.VentanaClientes;
-import presentacion.vista.VentanaEliminarRemito;
 import presentacion.vista.VentanaEmail;
 import presentacion.vista.VentanaGenerarPresupuesto;
-import presentacion.vista.VentanaListadoReparaciones;
-import presentacion.vista.VentanaListadoReparacionesPresupuestos;
 import presentacion.vista.VentanaPresupuestos;
-import presentacion.vista.VentanaRemitoGenerado;
-import presentacion.vista.VentanaRemitos;
-import presentacion.vista.VentanaSalidas;
-import presentacion.vista.VentanaSeleccionarCliente;
 import presentacion.vista.VentanaSeleccionarELS;
-import presentacion.vista.VentanaSeleccionarRemito;
-import presentacion.vista.VentanaSucursales;
-import presentacion.vista.VentanaVisualizarEquipos;
-import dto.ClienteDTO;
-import dto.RegistroEntradaReporteDTO;
 import dto.RegistroPresupuestoDTO;
-import dto.RemitoDTO;
 import dto.ReparacionDTO;
-import dto.SucursalDTO;
 
 public class ControladorPresupuestos implements ActionListener, MouseListener, ItemListener, KeyListener {
 
@@ -83,41 +43,16 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private VentanaEmail ventanaEmail;
 
 	private ControladorReparacion controladorReparacion;
-	private ControladorListados controladorListados;
 
 	private Agenda agenda;
-	private ClienteDTO Cliente;
-	private RemitoDTO Ubicacion;
-	private int idCli;
-	private int idSuc;
-	private int idUbicacion;
-	private String clienteSeleccionado;
-	private String sucursalSeleccionada;
-	private String ubicacionRemitoSeleccionado;
-	private String numeroRemitoSeleccionado;
-
-	private int NumeroELSSeleccionado;
 
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
-	private List<ReparacionDTO> Reparaciones_en_tabla;
-
 	private ReparacionDTO reparacion;
 
-	private int maxHorizontal = Frame.MAXIMIZED_HORIZ;
-	private int maxVertical = Frame.MAXIMIZED_VERT;
-
-	private int clickMax = 1;
-	private int clickMin = 1;
-	private int max = Frame.MAXIMIZED_BOTH;
-	private int min = Frame.NORMAL;
-	private String part1;
-	private String part2;
 	String numeros = "";
 	boolean guardado = false;
 
-	private boolean btnMarcarEnviados = false;
-	private boolean btnDesvincularRemito = false;
 	private boolean btnPresupuestoxELS = false;
 	private boolean btnpago = false;
 
@@ -127,7 +62,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	public ControladorPresupuestos(VentanaPresupuestos ventanaPresupuestos, Agenda agenda) {
 
 		this.ventanaPresupuestos = ventanaPresupuestos;
-		this.controladorListados = controladorListados;
 
 		this.ventanaPresupuestos.getBtnenviarInformesSiemens().addActionListener(this);
 		this.ventanaPresupuestos.getBtnEnviarPresupuestos().addActionListener(this);
@@ -165,8 +99,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			llenarComboELS();
 
 		}
-
-
 
 		else if (ventanaPresupuestos != null && e.getSource() == this.ventanaPresupuestos.getBtnmarcarAceptaciones()) {
 
@@ -208,103 +140,11 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 					SpellChecker.register(ventanaGenerarPresupuesto.getTextInforme());
 
-					ventanaGenerarPresupuesto.getBtnEditarInforme().addActionListener(this);
-					ventanaGenerarPresupuesto.getBtnGuardarCambios().addActionListener(this);
-					ventanaGenerarPresupuesto.getBtnCotizacionDolar().addActionListener(this);
-					ventanaGenerarPresupuesto.getChckDolar().addMouseListener(this);
-					ventanaGenerarPresupuesto.getChckPesos().addMouseListener(this);
+					TomarDatosDeTablas();
 
-					ventanaGenerarPresupuesto.getGuardarPresupuestoPDF().addActionListener(this);
-					ventanaGenerarPresupuesto.getVisualizarPresupuestoPDF().addActionListener(this);
+					// this.ventanaEquipos.dispose();
 
-					this.ventanaGenerarPresupuesto.getTextPrecioPeso().addKeyListener(this);
-					this.ventanaGenerarPresupuesto.getTextPrecioPeso().addFocusListener(new FocusListener() {
-						public void focusLost(FocusEvent e) {
-
-							if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().isEmpty()) {
-
-								ventanaGenerarPresupuesto.getTextPrecioPeso().setText("0.0");
-							}
-
-						}
-
-						@Override
-						public void focusGained(FocusEvent arg0) {
-							// TODO Auto-generated method stub
-
-						}
-					});
-
-					this.ventanaGenerarPresupuesto.getTextPrecioDolar().addKeyListener(this);
-					this.ventanaGenerarPresupuesto.getTextPrecioDolar().addFocusListener(new FocusListener() {
-						public void focusLost(FocusEvent e) {
-
-							if (ventanaGenerarPresupuesto.getTextPrecioDolar().getText().isEmpty()) {
-
-								ventanaGenerarPresupuesto.getTextPrecioDolar().setText("0.0");
-							}
-
-						}
-
-						@Override
-						public void focusGained(FocusEvent arg0) {
-							// TODO Auto-generated method stub
-
-						}
-					});
-
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-
-					int ELS = Integer.parseInt(ventanaSeleccionarELS.getComboELS().getSelectedItem().toString());
-					reparacion = agenda.dameReparacionXels(ELS);
-
-					String Cliente = reparacion.getCliente();
-					String Sucursal = reparacion.getSucursal();
-					String Equipo = reparacion.getNombreEquipo();
-					String Marca = reparacion.getMarca();
-					String Modelo = reparacion.getModelo();
-					String Serie = reparacion.getNumeroDeSerie();
-					String Aviso = reparacion.getAviso();
-					String ClienteCliente = reparacion.getClienteCliente();
-					String RemitoCliente = reparacion.getRemitoCliente();
-					String Informe = reparacion.getInformecliente();
-					Double PrecioPeso = reparacion.getPrecioPeso();
-					Double PrecioDolar = reparacion.getPrecioDolar();
-
-					if (reparacion.getFechaFabr() == null)
-						ventanaGenerarPresupuesto.setTextFabr(null);
-					else
-						try {
-							ventanaGenerarPresupuesto.setTextFabr((dateFormat.parse(reparacion.getFechaFabr())));
-						} catch (ParseException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-
-					ventanaGenerarPresupuesto.getTextCliente().setText(Cliente);
-					ventanaGenerarPresupuesto.getTextSucursal().setText(Sucursal);
-					ventanaGenerarPresupuesto.getTextELS()
-							.setText(ventanaSeleccionarELS.getComboELS().getSelectedItem().toString());
-					ventanaGenerarPresupuesto.getTextEquipo().setText(Equipo);
-					ventanaGenerarPresupuesto.getTextMarca().setText(Marca);
-					ventanaGenerarPresupuesto.getTextModelo().setText(Modelo);
-					ventanaGenerarPresupuesto.getTextSerie().setText(Serie);
-					ventanaGenerarPresupuesto.getTextAviso().setText(Aviso);
-					ventanaGenerarPresupuesto.getTextClienteCliente().setText(ClienteCliente);
-					ventanaGenerarPresupuesto.getTextRemCliente().setText(RemitoCliente);
-
-					ventanaGenerarPresupuesto.getTextInforme().setText(Informe);
-					ventanaGenerarPresupuesto.getTextPrecioPeso().setText(PrecioPeso.toString());
-					ventanaGenerarPresupuesto.getTextPrecioDolar().setText(PrecioDolar.toString());
-
-					ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
-					ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
-
-					ventanaPresupuestos.dispose();
-					ventanaPresupuestos = null;
-
-					ventanaSeleccionarELS.dispose();
-					ventanaSeleccionarELS = null;
+					agregarListenersVentanaGenerarPresupuesto();
 
 				}
 			}
@@ -529,17 +369,180 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		}
 	}
+
+	public void agregarListenersVentanaGenerarPresupuesto() {
+
+		ventanaGenerarPresupuesto.getBtnEditarInforme().addActionListener(this);
+		ventanaGenerarPresupuesto.getBtnGuardarCambios().addActionListener(this);
+		ventanaGenerarPresupuesto.getBtnCotizacionDolar().addActionListener(this);
+		ventanaGenerarPresupuesto.getChckDolar().addMouseListener(this);
+		ventanaGenerarPresupuesto.getChckPesos().addMouseListener(this);
+
+		ventanaGenerarPresupuesto.getGuardarPresupuestoPDF().addActionListener(this);
+		ventanaGenerarPresupuesto.getVisualizarPresupuestoPDF().addActionListener(this);
+
+		this.ventanaGenerarPresupuesto.getTextPrecioPeso().addKeyListener(this);
+		this.ventanaGenerarPresupuesto.getTextPrecioPeso().addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+
+				if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().isEmpty()) {
+
+					ventanaGenerarPresupuesto.getTextPrecioPeso().setText("0.0");
+				}
+
+			}
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		this.ventanaGenerarPresupuesto.getTextPrecioDolar().addKeyListener(this);
+		this.ventanaGenerarPresupuesto.getTextPrecioDolar().addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+
+				if (ventanaGenerarPresupuesto.getTextPrecioDolar().getText().isEmpty()) {
+
+					ventanaGenerarPresupuesto.getTextPrecioDolar().setText("0.0");
+				}
+
+			}
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+	}
+
+	private void TomarDatosDeTablas() {
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+
+		int ELS = Integer.parseInt(ventanaSeleccionarELS.getComboELS().getSelectedItem().toString());
+		reparacion = agenda.dameReparacionXels(ELS);
+
+		String Cliente = reparacion.getCliente();
+		String Sucursal = reparacion.getSucursal();
+		String Equipo = reparacion.getNombreEquipo();
+		String Marca = reparacion.getMarca();
+		String Modelo = reparacion.getModelo();
+		String Serie = reparacion.getNumeroDeSerie();
+		String Aviso = reparacion.getAviso();
+		String ClienteCliente = reparacion.getClienteCliente();
+		String RemitoCliente = reparacion.getRemitoCliente();
+		String Informe = reparacion.getInformecliente();
+		Double PrecioPeso = reparacion.getPrecioPeso();
+		Double PrecioDolar = reparacion.getPrecioDolar();
+
+		if (reparacion.getFechaFabr() == null)
+			ventanaGenerarPresupuesto.setTextFabr(null);
+		else
+			try {
+				ventanaGenerarPresupuesto.setTextFabr((dateFormat.parse(reparacion.getFechaFabr())));
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		ventanaGenerarPresupuesto.getTextCliente().setText(Cliente);
+		ventanaGenerarPresupuesto.getTextSucursal().setText(Sucursal);
+		ventanaGenerarPresupuesto.getTextELS()
+				.setText(ventanaSeleccionarELS.getComboELS().getSelectedItem().toString());
+		ventanaGenerarPresupuesto.getTextEquipo().setText(Equipo);
+		ventanaGenerarPresupuesto.getTextMarca().setText(Marca);
+		ventanaGenerarPresupuesto.getTextModelo().setText(Modelo);
+		ventanaGenerarPresupuesto.getTextSerie().setText(Serie);
+		ventanaGenerarPresupuesto.getTextAviso().setText(Aviso);
+		ventanaGenerarPresupuesto.getTextClienteCliente().setText(ClienteCliente);
+		ventanaGenerarPresupuesto.getTextRemCliente().setText(RemitoCliente);
+
+		ventanaGenerarPresupuesto.getTextInforme().setText(Informe);
+		ventanaGenerarPresupuesto.getTextPrecioPeso().setText(PrecioPeso.toString());
+		ventanaGenerarPresupuesto.getTextPrecioDolar().setText(PrecioDolar.toString());
+
+		ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
+		ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
+
+		ventanaPresupuestos.dispose();
+		ventanaPresupuestos = null;
+
+		ventanaSeleccionarELS.dispose();
+		ventanaSeleccionarELS = null;
+
+	}
+
+	
+	public void TomarDatosDeTablasParaVisualizacion(int numeroELS) {
+		
+		
+		ventanaGenerarPresupuesto = new VentanaGenerarPresupuesto(this);
+
+		SpellChecker.register(ventanaGenerarPresupuesto.getTextInforme());
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+
+	
+		reparacion = agenda.dameReparacionXels(numeroELS);
+		
+		String ELS =  String.valueOf(numeroELS);
+		String Cliente = reparacion.getCliente();
+		String Sucursal = reparacion.getSucursal();
+		String Equipo = reparacion.getNombreEquipo();
+		String Marca = reparacion.getMarca();
+		String Modelo = reparacion.getModelo();
+		String Serie = reparacion.getNumeroDeSerie();
+		String Aviso = reparacion.getAviso();
+		String ClienteCliente = reparacion.getClienteCliente();
+		String RemitoCliente = reparacion.getRemitoCliente();
+		String Informe = reparacion.getInformecliente();
+		Double PrecioPeso = reparacion.getPrecioPeso();
+		Double PrecioDolar = reparacion.getPrecioDolar();
+
+		if (reparacion.getFechaFabr() == null)
+			ventanaGenerarPresupuesto.setTextFabr(null);
+		else
+			try {
+				ventanaGenerarPresupuesto.setTextFabr((dateFormat.parse(reparacion.getFechaFabr())));
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		ventanaGenerarPresupuesto.getTextCliente().setText(Cliente);
+		ventanaGenerarPresupuesto.getTextSucursal().setText(Sucursal);
+		ventanaGenerarPresupuesto.getTextELS().setText(ELS);
+		ventanaGenerarPresupuesto.getTextEquipo().setText(Equipo);
+		ventanaGenerarPresupuesto.getTextMarca().setText(Marca);
+		ventanaGenerarPresupuesto.getTextModelo().setText(Modelo);
+		ventanaGenerarPresupuesto.getTextSerie().setText(Serie);
+		ventanaGenerarPresupuesto.getTextAviso().setText(Aviso);
+		ventanaGenerarPresupuesto.getTextClienteCliente().setText(ClienteCliente);
+		ventanaGenerarPresupuesto.getTextRemCliente().setText(RemitoCliente);
+
+		ventanaGenerarPresupuesto.getTextInforme().setText(Informe);
+		ventanaGenerarPresupuesto.getTextPrecioPeso().setText(PrecioPeso.toString());
+		ventanaGenerarPresupuesto.getTextPrecioDolar().setText(PrecioDolar.toString());
+
+		ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
+		ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
+
+	}
+	
+	
+	
 	//
 	// if (btnpago) {
 	//
 	// System.out.println("chau");
 	//
 
-
-
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-
 
 		if (this.ventanaGenerarPresupuesto != null) {
 
@@ -560,6 +563,15 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private void llenarComboELS() {
 
 		agenda.ListarELS(ventanaSeleccionarELS.getComboELS());

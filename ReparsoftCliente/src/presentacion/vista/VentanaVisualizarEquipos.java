@@ -56,6 +56,17 @@ import java.awt.Cursor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
+//import net.sourceforge.jtextfieldformatter.JTextDouble;
+
+
+
+
 public class VentanaVisualizarEquipos extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -965,7 +976,20 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_presupuesto.add(panel_MontoPresupuesto);
 		panel_MontoPresupuesto.setLayout(null);
 
-		textPresupuesto = new JTextDouble(10);
+		
+		
+//		DecimalFormat decimalFormat = new DecimalFormat("'$',###,###.00");
+//        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+//        NumberFormatter formatter = new NumberFormatter(decimalFormat);
+//        formatter.setValueClass(Double.class);
+//        formatter.setAllowsInvalid(false);
+//        formatter.setFormat(decimalFormat);
+//        formatter.setDecimalSeparatorAlwaysShown(true);
+		
+		
+//		textPresupuesto = new JTextDouble(formatter,10);
+//		textPresupuesto.setColumns(10);
+        textPresupuesto = new JTextDouble(10);
 		textPresupuesto.setForeground(SystemColor.desktop);
 		textPresupuesto.setHorizontalAlignment(SwingConstants.LEFT);
 		textPresupuesto.setFont(new Font("Cambria", Font.BOLD, 12));

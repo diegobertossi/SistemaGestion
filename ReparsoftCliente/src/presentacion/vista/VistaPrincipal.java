@@ -103,7 +103,7 @@ public class VistaPrincipal extends JFrame {
 		botonSalidas.setIcon(new ImageIcon(this.getClass().getResource("/package.png")));
 		panelDeControl.add(botonSalidas);
 
-		botonBusquedas = new JButton("BUDASQUEDAS");
+		botonBusquedas = new JButton("BUSQUEDAS");
 		botonBusquedas.setForeground(new Color(0, 0, 128));
 		botonBusquedas.setBounds(10, 122, 200, 73);
 		botonBusquedas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

@@ -7,12 +7,15 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.text.NumberFormatter;
 
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 
 public class JTextDouble extends JTextField {
 
 	private Integer largo;
+	
+	private NumberFormatter formato;
 	private boolean aceptaNegativo;
 	private final String PATTERN_NUMERICO = "^[0-9]?$";
 	private final String PATTERN_DECIMAL = "^[0-9]+([.][0-9]{1,2})?$";
@@ -26,6 +29,16 @@ public class JTextDouble extends JTextField {
 		this.aceptaNegativo = false;
 	}
 
+	
+	public JTextDouble(NumberFormatter formatter,Integer largo) {
+		super();
+		this.largo = largo;
+		this.formato = formatter;
+		addKey();
+		this.aceptaNegativo = false;
+	}
+	
+	
 	public JTextDouble(Integer largo, Boolean aceptaNegativo) {
 		super();
 		this.largo = largo;

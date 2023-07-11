@@ -61,7 +61,6 @@ import presentacion.vista.VentanaAgregarCliente;
 import presentacion.vista.VentanaClientes;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaListadoReparaciones;
-import presentacion.vista.VentanaListadoReparacionesPresupuestos;
 import presentacion.vista.VentanaLogin;
 import presentacion.vista.VentanaRolesUsuarios;
 import presentacion.vista.VentanaSalidas;
@@ -80,7 +79,7 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 	private Agenda modelo;
 
 	private VentanaListadoReparaciones ventanaListadoReparaciones;
-	private VentanaListadoReparacionesPresupuestos ventanaListadoReparacionesPresupuestos;
+
 
 	private ClienteDTO Cliente;
 
@@ -109,11 +108,10 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 
 	private List<ReparacionDTO> Reparaciones_en_tabla;
 
-	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones,VentanaListadoReparacionesPresupuestos ventanaListadoReparacionesPresupuestos, Agenda modelo,
+	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
 
 		this.ventanaListadoReparaciones = ventanaListadoReparaciones;
-		this.ventanaListadoReparacionesPresupuestos = ventanaListadoReparacionesPresupuestos;
 		this.controladorUsuLogin = controladorUsuLogin;
 		this.controladorReparacion = controladorReparacion;
 		this.modelo = modelo;
@@ -121,6 +119,7 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 		
 		
 		agregarListenerVentanaListados();
+		
 		
 		cargarTablaListadoReparaciones();
 
@@ -695,7 +694,7 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 						e.printStackTrace();
 					}
 
-					controladorReparacion.agregarListenersVentanaVisualizarEquipos();
+					controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
 
 				}
 
