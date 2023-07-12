@@ -10,47 +10,25 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.Console;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.MaskFormatter;
-
-import com.inet.jortho.FileUserDictionary;
-import com.inet.jortho.SpellChecker;
 
 import modelo.Agenda;
-import presentacion.reportes.ReporteAgenda;
-import presentacion.reportes.ReporteRegistroEntrada;
+
 import presentacion.reportes.ReporteRemitoSalida;
-import presentacion.vista.VentanaAgregarCliente;
-import presentacion.vista.VentanaAgregarSucursal;
-import presentacion.vista.VentanaClientes;
+
 import presentacion.vista.VentanaEliminarRemito;
 import presentacion.vista.VentanaRemitoGenerado;
 import presentacion.vista.VentanaRemitos;
 import presentacion.vista.VentanaSalidas;
 import presentacion.vista.VentanaSeleccionarCliente;
 import presentacion.vista.VentanaSeleccionarRemito;
-import presentacion.vista.VentanaSucursales;
 import dto.ClienteDTO;
-import dto.RegistroEntradaReporteDTO;
+
 import dto.RemitoDTO;
 import dto.ReparacionDTO;
-import dto.SucursalDTO;
 
 public class ControladorSalidas implements ActionListener, MouseListener, ItemListener {
 	private VentanaSalidas ventanaSalidas;
@@ -852,6 +830,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		ventanaRemitos = new VentanaRemitos(this);
 		
 		
+		
+		
 		this.ventanaRemitos.getModelEquiposParaRemito().setRowCount(0); // Para
 		// vaciar
 		// tabla
@@ -868,6 +848,13 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 		ventanaRemitos.setCellRender(this.ventanaRemitos.getTblEquiposParaRemito());
 
+		
+		String Cliente = this.reparacion.getCliente();
+		String Sucursal = this.reparacion.getSucursal();
+
+		ventanaRemitos.getTxtCliente().setText(Cliente + " " + "(" + Sucursal + ")");
+		
+		
 		this.ventanaRemitos.show();
 		
 		llenarComboUbicacion();
