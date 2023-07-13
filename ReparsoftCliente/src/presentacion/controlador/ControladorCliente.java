@@ -94,10 +94,11 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == this.ventanaClientes.getBtnAgregar()) {
+			
+			
+			agregarListenersVentanaAgregarCliente();
 
-			this.ventanaAgregarClientes = new VentanaAgregarCliente(this);
-			this.ventanaAgregarClientes.getBtnCancelar().addActionListener(this);
-			this.ventanaAgregarClientes.getBtnAgregarCliente().addActionListener(this);
+			
 
 		}
 
@@ -577,6 +578,17 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		return nuevoCliente;
 	}
 
+	
+	public void agregarListenersVentanaAgregarCliente() {
+		
+		this.ventanaAgregarClientes = new VentanaAgregarCliente(this);
+		this.ventanaAgregarClientes.getBtnCancelar().addActionListener(this);
+		this.ventanaAgregarClientes.getBtnAgregarCliente().addActionListener(this);
+		
+	}
+	
+	
+	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		if (this.ventanaClientes != null) {
@@ -662,6 +674,12 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		return idsucursal;
 	}
 
+	
+
+	
+	
+	
+	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -684,5 +702,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 
 	}
+
+
 
 }

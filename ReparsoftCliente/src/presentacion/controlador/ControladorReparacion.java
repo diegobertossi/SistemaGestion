@@ -1,12 +1,8 @@
 package presentacion.controlador;
 
 import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Desktop;
-import java.awt.SystemColor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
@@ -20,84 +16,57 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
-import java.sql.Date;
-import java.sql.Time;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.AbstractButton;
-import javax.swing.ButtonModel;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
-import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.SpellChecker;
-import com.itextpdf.text.log.SysoCounter;
-import com.sun.org.apache.xml.internal.utils.StringComparable;
+
 //import com.sun.xml.internal.org.jvnet.fastinfoset.sax.ExtendedContentHandler;
-import com.toedter.calendar.JDateChooser;
 
 import modelo.Agenda;
-import modelo.Permisos;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import persistencia.dao.interfaz.ClienteDAO;
-import presentacion.reportes.ReporteAgenda;
-import presentacion.reportes.ReportePresupuesto;
 import presentacion.reportes.ReporteRegistroEntrada;
-import presentacion.reportes.ReporteRemitoSalida;
+
 import presentacion.vista.VentanaAgregarEquipo;
 import presentacion.vista.VentanaAgregarRepuesto;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaEstados;
-import presentacion.vista.VentanaGenerarPresupuesto;
-import presentacion.vista.VentanaListadoReparaciones;
-import presentacion.vista.VentanaRemitos;
+
 import presentacion.vista.VentanaVerificarIngresoAnterior;
 import presentacion.vista.VentanaVisualizarEquipos;
 import presentacion.vista.VentanaWSP;
-import presentacion.vista.VistaPrincipal;
-import sun.invoke.empty.Empty;
-import presentacion.vista.VentanaClientes;
+
 import presentacion.vista.VentanaClientesWSP;
-import presentacion.vista.VentanaEmail;
+
 import presentacion.vista.VentanaEnviarCorreoOwsp;
 import dto.ClienteDTO;
 import dto.ClienteWSPDTO;
-import dto.PermisoDTO;
+
 import dto.RegistroEntradaReporteDTO;
-import dto.RegistroPresupuestoDTO;
-import dto.RemitoDTO;
+
 import dto.ReparacionDTO;
 import dto.RepuestosDTO;
 import dto.SucursalDTO;
-import dto.UsuarioDTO;
 
 import java.security.SecureRandom;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.channels.SelectableChannel;
 
 public class ControladorReparacion implements ActionListener, MouseListener, KeyListener, ItemListener {
 
@@ -106,30 +75,28 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private VentanaAgregarRepuesto ventanaagregarRepuesto;
 
-	private VentanaEmail ventanaEmail;
 	private VentanaEnviarCorreoOwsp ventanaEnviarCorreoOwsp;
 	private VentanaAgregarEquipo ventanaAgregarEquipo;
 	private VentanaEstados ventanaEstados;
 	private VentanaVerificarIngresoAnterior ventanaVerificarIngresoAnterior;
-	private VentanaRemitos ventanaRemitos;
 	private VentanaWSP ventanaWSP;
 	private VentanaClientesWSP ventanaClientesWSP;
 
 	private ControladorUsuLogin controladorUsuLogin;
 	private ControladorPresupuestos controladorpresupuestos;
 	private ControladorSalidas controladorSalidas;
+	private ControladorCliente controladorCliente;
 
 	private int NumeroELSSeleccionado;
 
 	private List<RepuestosDTO> Repuestos_en_tabla;
 
-	private ReparacionDTO Reparacion_en_tabla;
 	private List<ClienteWSPDTO> clientesWSP_en_tabla;
 	private ClienteWSPDTO clienteWSP_Elegido;
 
 	private ClienteDTO Cliente;
 	private SucursalDTO Sucursal;
-	private RepuestosDTO Repuesto;
+
 	private RepuestosDTO repuestoElegido;
 	boolean guardado = true;
 
@@ -137,12 +104,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private int ELSinicial = 1;
 	private int ELS = 1;
 
-	private boolean entroAlistados = false;
-
 	private ReparacionDTO reparacion;
 	private int NumeroELS;
 	private int NumeroELSParaRemito;
-	private int idEquipo;
 
 	private String estadoFisico = "";
 	private String estadoTecnico = "";
@@ -156,20 +120,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private String numeros = "";
 	private String part1;
 	private String part2;
-	private String ubicacionRemitoSeleccionado;
 
 	private int idCli;
 	private int idSuc;
 
 	private String fechaentrada;
 	private String fechaFarbricacion;
-	private String fechareparacion = "";
-	private String fecharespuesta = "";
 
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
-	public ControladorReparacion(VentanaEquipos ventanaEquipos,
-			ControladorUsuLogin controladorUsuLogin, Agenda agendas, ControladorPresupuestos controladorPresupuestos, ControladorSalidas controladorSalidas) {
+	public ControladorReparacion(VentanaEquipos ventanaEquipos, ControladorUsuLogin controladorUsuLogin, Agenda agendas,
+			ControladorPresupuestos controladorPresupuestos, ControladorSalidas controladorSalidas,ControladorCliente controladorCliente) {
 
 		this.ventanaEquipos = ventanaEquipos;
 		this.ventanaEquipos.getBtnVisualizarEquipos().addActionListener(this);
@@ -180,6 +141,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.controladorUsuLogin = controladorUsuLogin;
 		this.controladorpresupuestos = controladorPresupuestos;
 		this.controladorSalidas = controladorSalidas;
+		this.controladorCliente = controladorCliente;
 
 	}
 
@@ -639,13 +601,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonPresupuestar()) {
-			
-			NumeroELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());	
-			
+
+			NumeroELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
+
 			controladorpresupuestos.TomarDatosDeTablasParaVisualizacion(NumeroELS);
 
 			controladorpresupuestos.agregarListenersVentanaGenerarPresupuesto();
-
 
 		}
 
@@ -901,8 +862,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		}
 
-
-
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnRepuestos()) {
 
@@ -1001,15 +960,26 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnGenerarRemito()) {
-			
-			NumeroELSParaRemito = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());	
-			
+
+			NumeroELSParaRemito = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
+
 			controladorSalidas.cargarRemitoVisualizacion(NumeroELSParaRemito);
 			controladorSalidas.agregarListenersVentanaRemitos();
 
-
 		}
 
+
+		else if (this.ventanaAgregarEquipo != null
+				&& e.getSource() == this.ventanaAgregarEquipo.getBtnaltaCliente()) {
+			
+			
+			controladorCliente.agregarListenersVentanaAgregarCliente();
+		
+			
+			
+		}
+		
+		
 		else if (this.ventanaAgregarEquipo != null
 				&& e.getSource() == this.ventanaAgregarEquipo.getBotonGenerarRegistro()) {
 
@@ -1438,7 +1408,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	public void agregarListenersVentanaVisualizarEquipos() {
 
-		
 		this.ventanaVisualizarEquipos.getBotonAnterior().addActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonSiguiente().addActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonUltimo().addActionListener(this);
@@ -1503,19 +1472,16 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 	}
-	
+
 	public void agregarListenersVentanaVisualizarEquiposListado() {
-		
+
 		agregarListenersVentanaVisualizarEquipos();
 		this.ventanaVisualizarEquipos.getBotonAnterior().removeActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonSiguiente().removeActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonUltimo().removeActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonPrimero().removeActionListener(this);
-		
-		
+
 	}
-	
-	
 
 	public void agregarListenersVentanaAgregarEquipos() {
 
@@ -1534,6 +1500,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getBtnGenerarSerie().addActionListener(this);
 		ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(false);
 		ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().addActionListener(this);
+		ventanaAgregarEquipo.getBtnaltaCliente().addActionListener(this);
 
 		llenarComboCliente();
 		llenarComboSucursal();
@@ -1552,11 +1519,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getGrupoEstadoFisico().setSelected(ventanaAgregarEquipo.getRdbtnBRC().getModel(), true);
 
 	}
-	
-	
-	
-	
-	
+
 	private void TomarDatosDeTablas() throws ParseException {
 
 		// NumberFormat nf =
@@ -1637,13 +1600,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		deshabilitarCampos();
 
 	}
-
-	
-	
-	
-	
-	
-	
 
 	public void TomarDatosDeTablasListado(int numeroELSSeleccionado2) throws ParseException {
 
@@ -1815,8 +1771,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		return false;
 	}
 
-
-
 	private RegistroEntradaReporteDTO TomarDatosPantallaIngresoRep() {
 
 		int ELS = Integer.parseInt(this.ventanaAgregarEquipo.getTextELS());
@@ -1907,7 +1861,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	
 	private void verificarPresupuesto() {
 
 		Color EquipoPagado = new Color(130, 224, 170);
@@ -2123,7 +2076,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		return agenda.idUsuarioporNombre(nombreTecnico);
 	}
 
-
 	private void llenarComboClienteV() {
 
 		agenda.ListarCliente(ventanaVisualizarEquipos.getComboClientes());
@@ -2286,10 +2238,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		int idSucursal = idSuc;
 		int idUsuarios = 1;
 
-
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-
-
 
 		fechaentrada = null;
 		java.util.Date fechaEntrada = this.ventanaAgregarEquipo.getFechaEntrada().getDate();
@@ -2422,8 +2371,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-
-
 	private RegistroEntradaReporteDTO TomarDatosPantallaVisualizacion() {
 
 		int ELS = Integer.parseInt(this.ventanaVisualizarEquipos.getTextELS());
@@ -2465,8 +2412,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				}
 			}
 		}
-
-
 
 		if (this.ventanaClientesWSP != null) {
 			if (arg0.getSource() == this.ventanaClientesWSP.getTablaClienteSWSP()) {
@@ -2552,35 +2497,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	private void cargarTablaEquiposParaRemito(int els) {
-
-		this.ventanaRemitos.getModelEquiposParaRemito().setRowCount(0); // Para
-		// vaciar
-		// tabla
-		this.ventanaRemitos.getModelEquiposParaRemito().setColumnCount(0);
-		this.ventanaRemitos.getModelEquiposParaRemito().setColumnIdentifiers(this.ventanaRemitos.getNombreColumnas());
-
-		this.Reparacion_en_tabla = agenda.dameReparacionXels(els);
-
-		Object[] fila = { this.Reparacion_en_tabla.getELS(), this.Reparacion_en_tabla.getNombreEquipo(),
-				this.Reparacion_en_tabla.getMarca(), this.Reparacion_en_tabla.getModelo(),
-				this.Reparacion_en_tabla.getNumeroDeSerie(), this.Reparacion_en_tabla.getAviso(),
-				this.Reparacion_en_tabla.getEstadoTecnico(), this.Reparacion_en_tabla.getEstadoComercial(),
-				this.Reparacion_en_tabla.getAgregadoaremito() };
-		this.ventanaRemitos.getModelEquiposParaRemito().addRow(fila);
-
-		ventanaRemitos.setCellRender(this.ventanaRemitos.getTblEquiposParaRemito());
-
-		this.ventanaRemitos.show();
-
-	}
-
-	private void llenarComboUbicacion() {
-
-		agenda.ListarUbicacion(ventanaRemitos.getComboUbicacion());
-
-	}
-
 	private void llenarComboSeries() {
 
 		agenda.ListarSerie(ventanaVerificarIngresoAnterior.getComboSerie());
@@ -2595,70 +2511,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
-	}
-
-	private ReparacionDTO TomarDatosPantalla(int i) {
-
-		int ELS = Integer.parseInt(this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 0).toString());
-		boolean agregadoAremito = (Boolean) this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8);
-		int idRemito = this.agenda.dameIDRemito();
-
-		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, agregadoAremito, idRemito);
-
-		return reparacionAeditar;
-
-	}
-
-	private RemitoDTO TomarDatos() {
-
-		Integer IdUbicacion = IDdeUbicacion();
-		Integer codigoUbicacion = CodigoDeUbicacion(ventanaRemitos.getTextRemitoConformado().getText());
-		Integer IdRemito = this.agenda.dameIDRemito() + 1;
-		Integer numeroRemitoSalida = Integer.parseInt((String) ventanaRemitos.getTxtNumeroRemito().getValue());
-
-		List<String> descripcion = new ArrayList<String>();
-		Boolean agregar = false;
-
-		int filas = this.ventanaRemitos.getModelEquiposParaRemito().getRowCount();
-
-		for (int i = 0; i < filas; i++) {
-			String ELS = this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 0).toString();
-			String equipo = this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 1).toString();
-			String marca = this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 2).toString();
-			String modelo = this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 3).toString();
-			String serie = this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 4).toString();
-			agregar = (Boolean) this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8);
-
-			if (agregar != null) {
-				if (agregar) {
-					descripcion.add("ELS: " + ELS + " - EQUIPO: " + equipo + " - MARCA: " + marca + " - MODELO: "
-							+ modelo + " - N°SERIE: " + serie + "\n\n");
-
-				}
-			}
-
-		}
-
-		String Cliente = this.ventanaRemitos.getTxtCliente().getText();
-		String RemitoConformado = this.ventanaRemitos.getTextRemitoConformado().getText();
-		int cantBultos = Integer.parseInt(this.ventanaRemitos.getTextCantBultos().getText());
-
-		RemitoDTO nuevoRemito = new RemitoDTO(IdUbicacion, codigoUbicacion, IdRemito, numeroRemitoSalida, descripcion,
-				Cliente, RemitoConformado, cantBultos);
-
-		return nuevoRemito;
-	}
-
-	private RemitoDTO TomarDatosParaTabla() {
-
-		Integer IdUbicacion = IDdeUbicacion();
-		Integer codigoUbicacion = CodigoDeUbicacion(ventanaRemitos.getTextRemitoConformado().getText());
-		Integer IdRemito = this.agenda.dameIDRemito() + 1;
-		Integer numeroRemitoSalida = Integer.parseInt((String) ventanaRemitos.getTxtNumeroRemito().getValue());
-
-		RemitoDTO nuevoRemito = new RemitoDTO(IdUbicacion, numeroRemitoSalida, IdRemito);
-
-		return nuevoRemito;
 	}
 
 	@Override
@@ -2721,7 +2573,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		}
 
-
 	}
 
 	@Override
@@ -2747,175 +2598,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	private int NumeroRemito(String ubicacion) {
-
-		int numero;
-
-		int codigo;
-
-		String[] parts = ubicacion.split(" - ");
-		part1 = parts[0]; // 123
-		part2 = parts[1]; // 654321
-		//
-		// System.out.println(part1);
-		// System.out.println(part2);
-
-		codigo = Integer.parseInt(part1);
-
-		numero = agenda.obtenerNumeroRemito(codigo) + 1;
-
-		return numero;
-
-	}
-
-	private int CodigoDeUbicacion(String ubicacion) {
-
-		int numero;
-
-		int codigo;
-
-		String[] parts = ubicacion.split(" - ");
-		part1 = parts[0]; // 123
-		part2 = parts[1]; // 654321
-		//
-		// System.out.println(part1);
-		// System.out.println(part2);
-
-		codigo = Integer.parseInt(part1);
-
-		numero = agenda.obtenerNumeroRemito(codigo) + 1;
-
-		return codigo;
-
-	}
-
-	private int IDdeUbicacion() {
-
-		int ID = 0;
-
-		if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 0)
-			ID = 6;
-		else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 1)
-			ID = 2;
-		else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 2)
-			ID = 1;
-		else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 3)
-			ID = 7;
-		else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 4)
-			ID = 3;
-		else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 5)
-			ID = 4;
-		else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 6)
-			ID = 5;
-
-		return ID;
-	}
-
-	private int IDUbicacion() {
-
-		int ID = 0;
-
-		int ubicacion = Integer.parseInt(ubicacionRemitoSeleccionado);
-
-		if (ubicacion == 5)
-			ID = 1;
-		else if (ubicacion == 2)
-			ID = 2;
-		else if (ubicacion == 1000)
-			ID = 3;
-		else if (ubicacion == 2000)
-			ID = 4;
-		else if (ubicacion == 3000)
-			ID = 5;
-		else if (ubicacion == 6)
-			ID = 7;
-		else
-			ID = 6;
-
-		return ID;
-	}
-
-	private String tomarNumeroRemito(String ubicacion) {
-		int numero;
-
-		int codigo;
-
-		String[] parts = ubicacion.split(" - ");
-		part1 = parts[0]; // 123
-		part2 = parts[1]; // 654321
-		//
-		// System.out.println(part1);
-		// System.out.println(part2);
-
-		codigo = Integer.parseInt(part1);
-
-		numero = agenda.obtenerNumeroRemito(codigo) + 1;
-
-		if (numero < 10) {
-			numeros = "0000000" + numero;
-
-		} else if (numero >= 10 && numero < 100) {
-			numeros = "000000" + numero;
-
-		} else if (numero >= 100 && numero < 1000) {
-			numeros = "00000" + numero;
-
-		} else if (numero >= 1000 && numero < 10000) {
-			numeros = "0000" + numero;
-
-		}
-
-		ventanaRemitos.getTextRemitoConformado().setText(part1 + " - " + numeros);
-
-		return numeros;
-
-	}
-
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-
-		if (ventanaRemitos != null && e.getSource() == ventanaRemitos.getComboUbicacion()
-				&& ventanaRemitos.getComboUbicacion().getSelectedItem() != null) {
-
-			if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 0) {
-
-				ventanaRemitos.getTextCantBultos().setText("");
-				ventanaRemitos.getTxtNumeroRemito().setText("");
-				ventanaRemitos.getTextTipoRemito().setText("");
-				ventanaRemitos.getTextTipoRemito().setVisible(false);
-				ventanaRemitos.getPanel_2().setVisible(false);
-
-			}
-
-			if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 1
-					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 2
-					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 3) {
-
-				ventanaRemitos.getTextTipoRemito().setText("REMITO PREIMPRESO");
-				ventanaRemitos.getTextTipoRemito().setVisible(true);
-				ventanaRemitos.getPanel_2().setVisible(true);
-
-			} else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 4
-					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 5
-					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 6) {
-
-				ventanaRemitos.getTextTipoRemito().setText("REMITO COMÃšN");
-				ventanaRemitos.getTextTipoRemito().setVisible(true);
-				ventanaRemitos.getPanel_2().setVisible(true);
-
-			}
-			if (ventanaRemitos.getComboUbicacion().getSelectedIndex() != 0)
-				ventanaRemitos.setTxtNumeroRemito(
-						tomarNumeroRemito(ventanaRemitos.getComboUbicacion().getSelectedItem().toString()));
-		}
-
-		if (ventanaRemitos.getComboUbicacion().getSelectedItem() == null) {
-
-			ventanaRemitos.getTextTipoRemito().setVisible(false);
-			ventanaRemitos.getPanel_2().setVisible(false);
-			ventanaRemitos.getTxtNumeroRemito().setText("");
-
-		}
 
 	}
 

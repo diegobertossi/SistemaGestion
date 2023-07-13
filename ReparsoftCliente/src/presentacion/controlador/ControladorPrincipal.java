@@ -71,12 +71,12 @@ public class ControladorPrincipal implements ActionListener {
 	private VentanaClientes ventanaClientes;
 	private VentanaSalidas ventanaSalidas;
 	private VentanaListadoReparaciones ventanaListadoReparaciones;
-	
+
 	private VentanaBackUp ventanaBackUp;
 	private VentanaBusqueda ventanaBusqueda;
 	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
 	private VentanaPresupuestos ventanaPresupuestos;
-	
+
 	private VentanaRolesUsuarios ventanaRolesUsuarios;
 
 	private ControladorCliente controladorCliente;
@@ -88,18 +88,16 @@ public class ControladorPrincipal implements ActionListener {
 	private ControladorUsuarios controladoUsuario;
 	private ControladorBusquedas controladorBusqueda;
 	private ControladorPresupuestos controladorPresupuestos;
-	
-	
-	
+
 	private VentanaLogin vistaLogin;
 
 	private ClienteDTO Cliente;
 
 	private SucursalDTO Sucursal;
-	
+
 	private Permisos permisos;
 	private UsuarioDTO usu_login;
-	
+
 	private String Marca;
 	private String NombreEq = "";
 	private int idCli;
@@ -129,13 +127,10 @@ public class ControladorPrincipal implements ActionListener {
 		this.vistaPrincipal.getBotonListados().addActionListener(this);
 		this.vistaPrincipal.getBotonBackUp().addActionListener(this);
 		this.vistaPrincipal.getBotonPresupuestos().addActionListener(this);
-		this.vistaPrincipal.getBotonConfiguracion().addActionListener(this);	
-		
+		this.vistaPrincipal.getBotonConfiguracion().addActionListener(this);
+
 		controladorUsuLogin = new ControladorUsuLogin(new Permisos());
 
-		
-		
-		
 	}
 
 	public void inicializar() {
@@ -180,9 +175,7 @@ public class ControladorPrincipal implements ActionListener {
 		if (arg0.getSource() == vistaLogin.getBtnAceptar()) {
 			controladorUsuLogin.validarSesion(vistaLogin, this.vistaPrincipal);
 			controladorUsuLogin.verificarPermisosMenu(vistaPrincipal);
-			
-		
-		
+
 		} else if (arg0.getSource() == vistaLogin.getBtnCancelar()) {
 
 			int opcion = 0;
@@ -223,21 +216,28 @@ public class ControladorPrincipal implements ActionListener {
 
 			ventanaEquipos = new VentanaEquipos();
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
-			ventanaPresupuestos.setVisible(false);
-			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);	
-			ventanaSalidas = new VentanaSalidas(controladorSalidas);
-			ventanaSalidas.setVisible(false);
-			controladorSalidas = new ControladorSalidas(ventanaSalidas, modelo);
-			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, new Agenda(),controladorPresupuestos, controladorSalidas);
+			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);
 
-			
+			ventanaSalidas = new VentanaSalidas(controladorSalidas);
+			controladorSalidas = new ControladorSalidas(ventanaSalidas, modelo);
+
+			ventanaClientes = new VentanaClientes(controladorCliente);
+			controladorCliente = new ControladorCliente(ventanaClientes, modelo);
+
+			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, modelo,
+					controladorPresupuestos, controladorSalidas, controladorCliente);
+
+			ventanaSalidas.setVisible(false);
+			ventanaPresupuestos.setVisible(false);
+			ventanaClientes.setVisible(false);
+
 		}
 
 		else if (arg0.getSource() == vistaPrincipal.getBotonSalidas()) {
 
 			ventanaSalidas = new VentanaSalidas(controladorSalidas);
 			controladorSalidas = new ControladorSalidas(ventanaSalidas, new Agenda());
-			
+
 		}
 
 		else if (arg0.getSource() == vistaPrincipal.getBotonClientes()) {
@@ -249,53 +249,56 @@ public class ControladorPrincipal implements ActionListener {
 
 		else if (arg0.getSource() == vistaPrincipal.getBotonListados()) {
 
+			ventanaClientes = new VentanaClientes(controladorCliente);
+			controladorCliente = new ControladorCliente(ventanaClientes, modelo);
+
 			ventanaListadoReparaciones = new VentanaListadoReparaciones(controladorListados);
 			controladorUsuLogin.verificarPermisosVentanaListados(ventanaListadoReparaciones);
+
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
-			ventanaPresupuestos.setVisible(false);
-			
-			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);	
+			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);
+
 			ventanaEquipos = new VentanaEquipos();
-			ventanaEquipos.setVisible(false);
+
 			ventanaSalidas = new VentanaSalidas(controladorSalidas);
-			ventanaSalidas.setVisible(false);
+
 			controladorSalidas = new ControladorSalidas(ventanaSalidas, modelo);
-			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, new Agenda(),controladorPresupuestos, controladorSalidas);
-			
-			controladorListados = new ControladorListados(ventanaListadoReparaciones,modelo,controladorUsuLogin,controladorReparacion);
+
+			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, modelo,
+					controladorPresupuestos, controladorSalidas, controladorCliente);
+
+			controladorListados = new ControladorListados(ventanaListadoReparaciones, modelo, controladorUsuLogin,
+					controladorReparacion);
 			controladorListados.cerraVentanaListadoEquipos();
-			
-			
-			
+
+			ventanaClientes.setVisible(false);
+			ventanaPresupuestos.setVisible(false);
+			ventanaEquipos.setVisible(false);
+			ventanaSalidas.setVisible(false);
+
 		}
 
-		
 		else if (arg0.getSource() == vistaPrincipal.getBotonBackUp()) {
 
 			ventanaBackUp = new VentanaBackUp(controladorBackup);
 			controladorBackup = new ControladorBackup(ventanaBackUp);
-			
+
 		}
-		
+
 		else if (arg0.getSource() == vistaPrincipal.getBotonBusquedas()) {
 
 			ventanaBusqueda = new VentanaBusqueda(controladorBusqueda);
 			controladorBusqueda = new ControladorBusquedas(ventanaBusqueda, new Agenda());
-			
+
 		}
-		
+
 		else if (arg0.getSource() == vistaPrincipal.getBotonPresupuestos()) {
-			
-			
+
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
 			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);
-			
+
 		}
-		
-		
-		
-		
-		
+
 		else if (arg0.getSource() == vistaPrincipal.getBtnSalir()) {
 
 			int opcion = JOptionPane.showConfirmDialog(vistaPrincipal, "¿Desea salir del sistema?", "Aviso",
@@ -306,12 +309,8 @@ public class ControladorPrincipal implements ActionListener {
 
 			}
 
-			
-			
 		}
-		
-		
-	}
 
+	}
 
 }

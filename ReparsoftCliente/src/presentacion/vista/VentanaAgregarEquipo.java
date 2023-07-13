@@ -108,6 +108,7 @@ public class VentanaAgregarEquipo extends JFrame {
 	private JPanel panel_2;
 	private JPanel panel_3;
 	private JTextField textSerie;
+	private JButton btnaltaCliente;
 
 	public VentanaAgregarEquipo(ControladorReparacion controladorReparacion) {
 
@@ -297,27 +298,27 @@ public class VentanaAgregarEquipo extends JFrame {
 		comboSucursal.setBackground(SystemColor.inactiveCaptionBorder);
 		comboSucursal.setBounds(138, 37, 211, 20);
 		panel_1.add(comboSucursal);
-		
+
 		JLabel lblFechaDeFabr = new JLabel("Fecha de Fabr.: ");
 		lblFechaDeFabr.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
 		lblFechaDeFabr.setFont(new Font("Cambria", Font.BOLD, 14));
 		lblFechaDeFabr.setBounds(396, 128, 122, 14);
 		panel_1.add(lblFechaDeFabr);
-		
+
 		btnGenerarSerie = new JButton("<html><center>Generar N° de Serie</html>");
 		btnGenerarSerie.setForeground(Color.BLACK);
 		btnGenerarSerie.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnGenerarSerie.setBackground(new Color(176, 224, 230));
 		btnGenerarSerie.setBounds(173, 151, 176, 27);
 		panel_1.add(btnGenerarSerie);
-		
+
 		btnFechaDefault = new JButton("<html><center>Si no se conoce fecha, presionar aquí</html>");
 		btnFechaDefault.setForeground(Color.BLACK);
 		btnFechaDefault.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnFechaDefault.setBackground(new Color(176, 224, 230));
 		btnFechaDefault.setBounds(557, 151, 176, 44);
 		panel_1.add(btnFechaDefault);
-		
+
 		textSerie = new JTextField();
 		textSerie.setHorizontalAlignment(SwingConstants.LEFT);
 		textSerie.setFont(new Font("Cambria", Font.PLAIN, 14));
@@ -327,13 +328,13 @@ public class VentanaAgregarEquipo extends JFrame {
 		textSerie.setAlignmentX(0.0f);
 		textSerie.setBounds(138, 125, 193, 20);
 		panel_1.add(textSerie);
-		
+
 		textFechafabricacion = new JTextFieldDateEditor("dd/MM/yyyy", "##-##-####", '-');
 		textFechafabricacion.setHorizontalAlignment(SwingConstants.CENTER);
 		textFechafabricacion.setFont(new Font("Cambria", Font.BOLD, 14));
 		textFechafabricacion.setBounds(522, 126, 211, 20);
 		panel_1.add(textFechafabricacion);
-		
+
 		lblDatosDeEquipo = new JLabel("DATOS DEL EQUIPO: ");
 		lblDatosDeEquipo.setBounds(6, 57, 205, 17);
 		panel.add(lblDatosDeEquipo);
@@ -360,7 +361,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel.add(FechaEntrada);
 
 		GrupoEstadoFisico = new ButtonGroup();
-		
+
 		panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.activeCaption);
 		panel_3.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
@@ -396,53 +397,58 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_3.add(BotonVerificarIngresoAnterior);
 		BotonVerificarIngresoAnterior.setForeground(Color.BLACK);
 		BotonVerificarIngresoAnterior.setFont(new Font("Cambria", Font.BOLD, 14));
-		
-				lblEstadoFisico = new JLabel("Estado Físico: ");
-				lblEstadoFisico.setBounds(6, 372, 128, 14);
-				panel.add(lblEstadoFisico);
-				lblEstadoFisico.setFont(new Font("Cambria", Font.BOLD, 14));
-				
-						panel_2 = new JPanel();
-						panel_2.setBounds(6, 390, 356, 37);
-						panel.add(panel_2);
-						panel_2.setBackground(SystemColor.activeCaption);
-						panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-						panel_2.setLayout(null);
-						
-								rdbtnMDQ = new JRadioButton("MDQ");
-								rdbtnMDQ.setBackground(SystemColor.activeCaption);
-								rdbtnMDQ.setFont(new Font("Cambria", Font.PLAIN, 14));
-								rdbtnMDQ.setBounds(93, 7, 85, 23);
-								panel_2.add(rdbtnMDQ);
-								
-										rdbtnBRC = new JRadioButton("BRC");
-										rdbtnBRC.setBackground(SystemColor.activeCaption);
-										rdbtnBRC.setFont(new Font("Cambria", Font.PLAIN, 14));
-										rdbtnBRC.setBounds(180, 7, 60, 23);
-										panel_2.add(rdbtnBRC);
-										
-												rdbtnENVIADO = new JRadioButton("ENVIADO");
-												rdbtnENVIADO.setBackground(SystemColor.activeCaption);
-												rdbtnENVIADO.setFont(new Font("Cambria", Font.PLAIN, 14));
-												rdbtnENVIADO.setBounds(256, 7, 94, 23);
-												panel_2.add(rdbtnENVIADO);
-												
-														rdbtnCABA = new JRadioButton("CABA");
-														rdbtnCABA.setBackground(SystemColor.activeCaption);
-														rdbtnCABA.setFont(new Font("Cambria", Font.PLAIN, 14));
-														rdbtnCABA.setBounds(16, 7, 75, 23);
-														panel_2.add(rdbtnCABA);
-														GrupoEstadoFisico.add(rdbtnMDQ);
-														GrupoEstadoFisico.add(rdbtnBRC);
-														GrupoEstadoFisico.add(rdbtnENVIADO);
-														GrupoEstadoFisico.add(rdbtnCABA);
+
+		btnaltaCliente = new JButton("<html><center>Alta Cliente<html>");
+		btnaltaCliente.setForeground(Color.BLACK);
+		btnaltaCliente.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnaltaCliente.setBackground(new Color(152, 251, 152));
+		btnaltaCliente.setBounds(463, 14, 105, 45);
+		panel_3.add(btnaltaCliente);
+
+		lblEstadoFisico = new JLabel("Estado Físico: ");
+		lblEstadoFisico.setBounds(6, 372, 128, 14);
+		panel.add(lblEstadoFisico);
+		lblEstadoFisico.setFont(new Font("Cambria", Font.BOLD, 14));
+
+		panel_2 = new JPanel();
+		panel_2.setBounds(6, 390, 356, 37);
+		panel.add(panel_2);
+		panel_2.setBackground(SystemColor.activeCaption);
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_2.setLayout(null);
+
+		rdbtnMDQ = new JRadioButton("MDQ");
+		rdbtnMDQ.setBackground(SystemColor.activeCaption);
+		rdbtnMDQ.setFont(new Font("Cambria", Font.PLAIN, 14));
+		rdbtnMDQ.setBounds(93, 7, 85, 23);
+		panel_2.add(rdbtnMDQ);
+
+		rdbtnBRC = new JRadioButton("BRC");
+		rdbtnBRC.setBackground(SystemColor.activeCaption);
+		rdbtnBRC.setFont(new Font("Cambria", Font.PLAIN, 14));
+		rdbtnBRC.setBounds(180, 7, 60, 23);
+		panel_2.add(rdbtnBRC);
+
+		rdbtnENVIADO = new JRadioButton("ENVIADO");
+		rdbtnENVIADO.setBackground(SystemColor.activeCaption);
+		rdbtnENVIADO.setFont(new Font("Cambria", Font.PLAIN, 14));
+		rdbtnENVIADO.setBounds(256, 7, 94, 23);
+		panel_2.add(rdbtnENVIADO);
+
+		rdbtnCABA = new JRadioButton("CABA");
+		rdbtnCABA.setBackground(SystemColor.activeCaption);
+		rdbtnCABA.setFont(new Font("Cambria", Font.PLAIN, 14));
+		rdbtnCABA.setBounds(16, 7, 75, 23);
+		panel_2.add(rdbtnCABA);
+		GrupoEstadoFisico.add(rdbtnMDQ);
+		GrupoEstadoFisico.add(rdbtnBRC);
+		GrupoEstadoFisico.add(rdbtnENVIADO);
+		GrupoEstadoFisico.add(rdbtnCABA);
 
 		this.setVisible(true);
 
 	}
 
-	
-	
 	public JTextField getTextSerie() {
 		return textSerie;
 	}
@@ -571,7 +577,6 @@ public class VentanaAgregarEquipo extends JFrame {
 		FechaEntrada = fechaEntrada;
 	}
 
-	
 	public JTextFieldDateEditor getTextFechafabricacion() {
 		return textFechafabricacion;
 	}
@@ -583,8 +588,7 @@ public class VentanaAgregarEquipo extends JFrame {
 	public void setTextFechafabricacion2(java.util.Date textFechafabricacion) {
 		this.textFechafabricacion.setDate(textFechafabricacion);
 	}
-	
-	
+
 	public String getTextELS() {
 		return textELS.getText();
 	}
@@ -630,7 +634,6 @@ public class VentanaAgregarEquipo extends JFrame {
 		this.textRemitoCliente = textRemitoCliente;
 	}
 
-
 	public JButton getBtnGenerarSerie() {
 		return btnGenerarSerie;
 	}
@@ -647,16 +650,20 @@ public class VentanaAgregarEquipo extends JFrame {
 		this.btnFechaDefault = btnFechaDefault;
 	}
 
-
-
 	public JButton getBotonVerificarIngresoAnterior() {
 		return BotonVerificarIngresoAnterior;
 	}
 
-
-
 	public void setBotonVerificarIngresoAnterior(JButton botonVerificarIngresoAnterior) {
 		BotonVerificarIngresoAnterior = botonVerificarIngresoAnterior;
+	}
+
+	public JButton getBtnaltaCliente() {
+		return btnaltaCliente;
+	}
+
+	public void setBtnaltaCliente(JButton btnaltaCliente) {
+		this.btnaltaCliente = btnaltaCliente;
 	}
 
 }
