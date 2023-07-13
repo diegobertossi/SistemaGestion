@@ -498,6 +498,8 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	private boolean ReparacionAsociadaAsuc(int idsucursal) {
 
 		boolean tieneRepacacionAsociada = false;
+		
+		
 
 		tieneRepacacionAsociada = this.agenda.reparacionAsociada(idsucursal);
 
