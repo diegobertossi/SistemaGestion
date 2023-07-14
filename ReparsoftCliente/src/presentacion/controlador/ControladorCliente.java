@@ -42,21 +42,16 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 		this.ventanaClientes = ventanaClientes;
 
-		this.ventanaClientes.getBtnAgregar().addActionListener(this);
-		this.ventanaClientes.getBtnBorrar().addActionListener(this);
-		this.ventanaClientes.getBtnEditar().addActionListener(this);
-		this.ventanaClientes.getTablaClientes().addMouseListener(this);
-		this.ventanaClientes.getBtnGenerarSucursales().addActionListener(this);
-		this.ventanaClientes.getBtnVisualizarSucursales().addActionListener(this);
+		agregarListenersVentanaCliente();
 
 		this.agenda = agenda;
 		this.Clientes_en_tabla = null;
 		this.clienteElegido = null;
 
-		this.llenarTabla();
+		llenarTabla();
 	}
 
-	private void llenarTabla() {
+	public void llenarTabla() {
 		this.ventanaClientes.getModelClientes().setRowCount(0); // Para vaciar
 																// la tabla
 		this.ventanaClientes.getModelClientes().setColumnCount(0);
@@ -71,7 +66,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					this.Clientes_en_tabla.get(i).getCorreoElectronico() };
 			this.ventanaClientes.getModelClientes().addRow(fila);
 		}
-		
+
 		ventanaClientes.setCellRender(this.ventanaClientes.getTablaClientes());
 		this.ventanaClientes.show();
 	}
@@ -94,11 +89,8 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == this.ventanaClientes.getBtnAgregar()) {
-			
-			
-			agregarListenersVentanaAgregarCliente();
 
-			
+			agregarListenersVentanaAgregarCliente();
 
 		}
 
@@ -151,22 +143,21 @@ public class ControladorCliente implements ActionListener, MouseListener {
 										"Ingrese la Contraseña de Seguridad : ", "");
 								if (respuesta != null) {
 
-								
-								if (respuesta.compareTo("0000") == 0) {
+									if (respuesta.compareTo("0000") == 0) {
 
-									this.agenda.borrarSucursal(SucursalesEncliente);
-									this.agenda.borrarCliente(clienteElegido);
-									this.llenarTabla();
-								} 
-								else {
-								
-									JOptionPane.showMessageDialog(null, "Contraseña Incorrecta. ",
-											"Error al Eliminar Cliente", JOptionPane.ERROR_MESSAGE);
+										this.agenda.borrarSucursal(SucursalesEncliente);
+										this.agenda.borrarCliente(clienteElegido);
+										this.llenarTabla();
+									} else {
 
-								}}
+										JOptionPane.showMessageDialog(null, "Contraseña Incorrecta. ",
+												"Error al Eliminar Cliente", JOptionPane.ERROR_MESSAGE);
+
+									}
+								}
 
 							}
-							
+
 						}
 
 						else if (SucursalesEncliente.getNombreSucursal().compareTo("") != 0) {
@@ -408,38 +399,39 @@ public class ControladorCliente implements ActionListener, MouseListener {
 									"Ingrese la Contraseña de Seguridad : ", "");
 							if (respuesta != null) {
 
-							if (respuesta.compareTo("0000") == 0) {
+								if (respuesta.compareTo("0000") == 0) {
 
-								if (cantidadSucursalesXCliente(clienteElegido.getId()) > 1) {
+									if (cantidadSucursalesXCliente(clienteElegido.getId()) > 1) {
 
-									this.agenda.borrarSucursal(SucursalesEncliente);
-									this.llenarTablaSucursales(clienteElegido.getId());
+										this.agenda.borrarSucursal(SucursalesEncliente);
+										this.llenarTablaSucursales(clienteElegido.getId());
+									} else {
+										int idcli = SucursalesEncliente.getIdClientesuc();
+										int IDSucursal = SucursalesEncliente.getIdSucursal();
+										String NombreSuc = "";
+										String DomicilioSuc = "";
+										String TelefonoSuc = "";
+										String ContactoSuc = "";
+										String CorreoSuc = "";
+
+										SucursalDTO SucursalDefault2 = new SucursalDTO(IDSucursal, NombreSuc, idcli,
+												DomicilioSuc, ContactoSuc, TelefonoSuc, CorreoSuc);
+
+										this.agenda.editarSucursal(SucursalDefault2);
+
+										JOptionPane.showMessageDialog(null, "Este cliente ya no posee Sucursales ",
+												"Cliente Sin sucursales", JOptionPane.INFORMATION_MESSAGE);
+										this.ventanaSucursales.dispose();
+										this.llenarTabla();
+
+									}
+
 								} else {
-									int idcli = SucursalesEncliente.getIdClientesuc();
-									int IDSucursal = SucursalesEncliente.getIdSucursal();
-									String NombreSuc = "";
-									String DomicilioSuc = "";
-									String TelefonoSuc = "";
-									String ContactoSuc = "";
-									String CorreoSuc = "";
-
-									SucursalDTO SucursalDefault2 = new SucursalDTO(IDSucursal, NombreSuc, idcli,
-											DomicilioSuc, ContactoSuc, TelefonoSuc, CorreoSuc);
-
-									this.agenda.editarSucursal(SucursalDefault2);
-
-									JOptionPane.showMessageDialog(null, "Este cliente ya no posee Sucursales ",
-											"Cliente Sin sucursales", JOptionPane.INFORMATION_MESSAGE);
-									this.ventanaSucursales.dispose();
-									this.llenarTabla();
+									JOptionPane.showMessageDialog(null, "Contraseña Incorrecta. ",
+											"Error al Eliminar Cliente", JOptionPane.ERROR_MESSAGE);
 
 								}
-
-							} else {
-								JOptionPane.showMessageDialog(null, "Contraseña Incorrecta. ",
-										"Error al Eliminar Cliente", JOptionPane.ERROR_MESSAGE);
-
-							}}
+							}
 
 						}
 
@@ -498,8 +490,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	private boolean ReparacionAsociadaAsuc(int idsucursal) {
 
 		boolean tieneRepacacionAsociada = false;
-		
-		
 
 		tieneRepacacionAsociada = this.agenda.reparacionAsociada(idsucursal);
 
@@ -580,14 +570,40 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		return nuevoCliente;
 	}
 
-	
 	public void agregarListenersVentanaAgregarCliente() {
-		
+
 		this.ventanaAgregarClientes = new VentanaAgregarCliente(this);
 		this.ventanaAgregarClientes.getBtnCancelar().addActionListener(this);
 		this.ventanaAgregarClientes.getBtnAgregarCliente().addActionListener(this);
-		
+
 	}
+
+	
+	public void agregarListenersVentanaCliente() {
+
+		this.ventanaClientes.getBtnAgregar().addActionListener(this);
+		this.ventanaClientes.getBtnBorrar().addActionListener(this);
+		this.ventanaClientes.getBtnEditar().addActionListener(this);
+		this.ventanaClientes.getTablaClientes().addMouseListener(this);
+		this.ventanaClientes.getBtnGenerarSucursales().addActionListener(this);
+		this.ventanaClientes.getBtnVisualizarSucursales().addActionListener(this);
+
+
+	}
+//	public void agregarListenersVentanaClienteEnEquipo() {
+//
+//		
+//		ventanaClientes = new VentanaClientes(this);
+//		this.ventanaClientes.getBtnAgregar().addActionListener(this);
+//		this.ventanaClientes.getBtnBorrar().addActionListener(this);
+//		this.ventanaClientes.getBtnEditar().addActionListener(this);
+//		this.ventanaClientes.getTablaClientes().addMouseListener(this);
+//		this.ventanaClientes.getBtnGenerarSucursales().addActionListener(this);
+//		this.ventanaClientes.getBtnVisualizarSucursales().addActionListener(this);
+//		
+//
+//
+//	}
 	
 	
 	
@@ -676,12 +692,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		return idsucursal;
 	}
 
-	
-
-	
-	
-	
-	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -704,7 +714,5 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 
 	}
-
-
 
 }

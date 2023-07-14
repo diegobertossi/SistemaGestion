@@ -130,7 +130,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
 	public ControladorReparacion(VentanaEquipos ventanaEquipos, ControladorUsuLogin controladorUsuLogin, Agenda agendas,
-			ControladorPresupuestos controladorPresupuestos, ControladorSalidas controladorSalidas,ControladorCliente controladorCliente) {
+			ControladorPresupuestos controladorPresupuestos, ControladorSalidas controladorSalidas,
+			ControladorCliente controladorCliente) {
 
 		this.ventanaEquipos = ventanaEquipos;
 		this.ventanaEquipos.getBtnVisualizarEquipos().addActionListener(this);
@@ -192,7 +193,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ELS = DameNumeroELS();
 
 			agregarListenersVentanaAgregarEquipos();
-
+					
 			this.ventanaEquipos.dispose();
 
 		}
@@ -968,18 +969,20 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		}
 
+		else if (this.ventanaAgregarEquipo != null && e.getSource() == this.ventanaAgregarEquipo.getBtnaltaCliente()) {
+
+			controladorCliente.agregarListenersVentanaAgregarCliente();
+			//controladorCliente.llenarTabla();
+
+		}
 
 		else if (this.ventanaAgregarEquipo != null
-				&& e.getSource() == this.ventanaAgregarEquipo.getBtnaltaCliente()) {
-			
-			
-			controladorCliente.agregarListenersVentanaAgregarCliente();
-		
-			
-			
+				&& e.getSource() == this.ventanaAgregarEquipo.getBtnrecargarLista()) {
+
+			llenarComboCliente();
+
 		}
-		
-		
+
 		else if (this.ventanaAgregarEquipo != null
 				&& e.getSource() == this.ventanaAgregarEquipo.getBotonGenerarRegistro()) {
 
@@ -1492,7 +1495,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getComboNombreEquipo().addActionListener(this);
 		ventanaAgregarEquipo.getComboModelo().addActionListener(this);
 		ventanaAgregarEquipo.getComboSerie().addActionListener(this);
-
 		ventanaAgregarEquipo.getBotonGuardar().addActionListener(this);
 		ventanaAgregarEquipo.getBotonGenerarRegistro().addActionListener(this);
 		ventanaAgregarEquipo.getBotonNuevaReparacion().addActionListener(this);
@@ -1501,6 +1503,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(false);
 		ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().addActionListener(this);
 		ventanaAgregarEquipo.getBtnaltaCliente().addActionListener(this);
+		ventanaAgregarEquipo.getBtnrecargarLista().addActionListener(this);
 
 		llenarComboCliente();
 		llenarComboSucursal();
@@ -2413,6 +2416,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		}
 
+		
+
 		if (this.ventanaClientesWSP != null) {
 			if (arg0.getSource() == this.ventanaClientesWSP.getTablaClienteSWSP()) {
 				int i = this.ventanaClientesWSP.getTablaClienteSWSP().getSelectedRow();
@@ -2442,8 +2447,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				}
 			}
 		}
-
-	}
+		
+}
 
 	private void llenarComboELS() {
 
@@ -2527,8 +2532,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

@@ -61,6 +61,10 @@ public class VentanaAgregarEquipo extends JFrame {
 	private JButton BotonNuevaReparacion;
 	private JButton btnGenerarSerie;
 	private JButton btnFechaDefault;
+	
+	private JButton btnrecargarLista;
+
+	
 
 	private JTextField textELS;
 	private int ELS = 1;
@@ -158,51 +162,51 @@ public class VentanaAgregarEquipo extends JFrame {
 		comboSerie.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboSerie.setBackground(SystemColor.inactiveCaptionBorder);
 		comboSerie.setEditable(true);
-		comboSerie.setBounds(138, 125, 211, 20);
+		comboSerie.setBounds(120, 125, 229, 20);
 		panel_1.add(comboSerie);
 
 		comboModelo = new JComboBox();
 		comboModelo.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboModelo.setBackground(SystemColor.inactiveCaptionBorder);
 		comboModelo.setEditable(true);
-		comboModelo.setBounds(138, 103, 211, 20);
+		comboModelo.setBounds(120, 103, 229, 20);
 		panel_1.add(comboModelo);
 
 		comboMarca = new JComboBox();
 		comboMarca.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboMarca.setBackground(SystemColor.inactiveCaptionBorder);
 		comboMarca.setEditable(true);
-		comboMarca.setBounds(138, 81, 211, 20);
+		comboMarca.setBounds(120, 81, 229, 20);
 		panel_1.add(comboMarca);
 
 		comboNombreEquipo = new JComboBox();
 		comboNombreEquipo.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboNombreEquipo.setBackground(SystemColor.inactiveCaptionBorder);
 		comboNombreEquipo.setEditable(true);
-		comboNombreEquipo.setBounds(138, 59, 211, 20);
+		comboNombreEquipo.setBounds(120, 59, 229, 20);
 		panel_1.add(comboNombreEquipo);
 
 		lblNombreEquipo = new JLabel("Equipo: ");
 		lblNombreEquipo.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblNombreEquipo.setBounds(12, 62, 116, 14);
+		lblNombreEquipo.setBounds(12, 62, 102, 14);
 		panel_1.add(lblNombreEquipo);
 		lblNombreEquipo.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblMarca = new JLabel("Marca:  ");
 		lblMarca.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblMarca.setBounds(12, 84, 116, 14);
+		lblMarca.setBounds(12, 84, 102, 14);
 		panel_1.add(lblMarca);
 		lblMarca.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblModelo = new JLabel("Modelo: ");
 		lblModelo.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblModelo.setBounds(12, 106, 116, 14);
+		lblModelo.setBounds(12, 106, 102, 14);
 		panel_1.add(lblModelo);
 		lblModelo.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblNserie = new JLabel("N° de Serie: ");
 		lblNserie.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblNserie.setBounds(12, 128, 116, 14);
+		lblNserie.setBounds(12, 128, 102, 14);
 		panel_1.add(lblNserie);
 		lblNserie.setFont(new Font("Cambria", Font.BOLD, 14));
 
@@ -231,13 +235,13 @@ public class VentanaAgregarEquipo extends JFrame {
 
 		lblCliente = new JLabel("Cliente: ");
 		lblCliente.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblCliente.setBounds(12, 18, 116, 14);
+		lblCliente.setBounds(12, 18, 102, 14);
 		panel_1.add(lblCliente);
 		lblCliente.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblSucursal = new JLabel("Sucursal: ");
 		lblSucursal.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblSucursal.setBounds(12, 39, 116, 14);
+		lblSucursal.setBounds(12, 39, 102, 14);
 		panel_1.add(lblSucursal);
 		lblSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
 
@@ -290,13 +294,13 @@ public class VentanaAgregarEquipo extends JFrame {
 		comboClientes = new JComboBox();
 		comboClientes.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboClientes.setBackground(SystemColor.inactiveCaptionBorder);
-		comboClientes.setBounds(138, 15, 211, 20);
+		comboClientes.setBounds(120, 15, 229, 20);
 		panel_1.add(comboClientes);
 
 		comboSucursal = new JComboBox();
 		comboSucursal.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboSucursal.setBackground(SystemColor.inactiveCaptionBorder);
-		comboSucursal.setBounds(138, 37, 211, 20);
+		comboSucursal.setBounds(120, 37, 229, 20);
 		panel_1.add(comboSucursal);
 
 		JLabel lblFechaDeFabr = new JLabel("Fecha de Fabr.: ");
@@ -309,7 +313,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		btnGenerarSerie.setForeground(Color.BLACK);
 		btnGenerarSerie.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnGenerarSerie.setBackground(new Color(176, 224, 230));
-		btnGenerarSerie.setBounds(173, 151, 176, 27);
+		btnGenerarSerie.setBounds(120, 148, 96, 53);
 		panel_1.add(btnGenerarSerie);
 
 		btnFechaDefault = new JButton("<html><center>Si no se conoce fecha, presionar aquí</html>");
@@ -334,6 +338,13 @@ public class VentanaAgregarEquipo extends JFrame {
 		textFechafabricacion.setFont(new Font("Cambria", Font.BOLD, 14));
 		textFechafabricacion.setBounds(522, 126, 211, 20);
 		panel_1.add(textFechafabricacion);
+		
+		btnrecargarLista = new JButton("<html><center>Actualizar Listado Clientes</html>");
+		btnrecargarLista.setBounds(219, 148, 129, 53);
+		panel_1.add(btnrecargarLista);
+		btnrecargarLista.setForeground(Color.BLACK);
+		btnrecargarLista.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnrecargarLista.setBackground(new Color(176, 224, 230));
 
 		lblDatosDeEquipo = new JLabel("DATOS DEL EQUIPO: ");
 		lblDatosDeEquipo.setBounds(6, 57, 205, 17);
@@ -379,14 +390,14 @@ public class VentanaAgregarEquipo extends JFrame {
 
 		BotonGenerarRegistro = new JButton("<html><center>Generár Registro<html>");
 		BotonGenerarRegistro.setBackground(new Color(152, 251, 152));
-		BotonGenerarRegistro.setBounds(330, 11, 105, 45);
+		BotonGenerarRegistro.setBounds(321, 11, 105, 45);
 		panel_3.add(BotonGenerarRegistro);
 		BotonGenerarRegistro.setForeground(Color.BLACK);
 		BotonGenerarRegistro.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		BotonGuardar = new JButton("Guardar");
 		BotonGuardar.setBackground(new Color(152, 251, 152));
-		BotonGuardar.setBounds(185, 11, 105, 45);
+		BotonGuardar.setBounds(436, 11, 105, 45);
 		panel_3.add(BotonGuardar);
 		BotonGuardar.setForeground(Color.BLACK);
 		BotonGuardar.setFont(new Font("Cambria", Font.BOLD, 14));
@@ -402,7 +413,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		btnaltaCliente.setForeground(Color.BLACK);
 		btnaltaCliente.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnaltaCliente.setBackground(new Color(152, 251, 152));
-		btnaltaCliente.setBounds(463, 14, 105, 45);
+		btnaltaCliente.setBounds(155, 11, 105, 45);
 		panel_3.add(btnaltaCliente);
 
 		lblEstadoFisico = new JLabel("Estado Físico: ");
@@ -447,6 +458,14 @@ public class VentanaAgregarEquipo extends JFrame {
 
 		this.setVisible(true);
 
+	}
+
+	public JPanel getPanel_1() {
+		return panel_1;
+	}
+
+	public void setPanel_1(JPanel panel_1) {
+		this.panel_1 = panel_1;
 	}
 
 	public JTextField getTextSerie() {
@@ -665,5 +684,12 @@ public class VentanaAgregarEquipo extends JFrame {
 	public void setBtnaltaCliente(JButton btnaltaCliente) {
 		this.btnaltaCliente = btnaltaCliente;
 	}
+	public JButton getBtnrecargarLista() {
+		return btnrecargarLista;
+	}
 
+	public void setBtnrecargarLista(JButton btnrecargarLista) {
+		this.btnrecargarLista = btnrecargarLista;
+	}
+	
 }
