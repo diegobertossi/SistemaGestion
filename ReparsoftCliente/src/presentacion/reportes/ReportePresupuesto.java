@@ -1,10 +1,8 @@
 package presentacion.reportes;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +11,7 @@ import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -24,6 +23,8 @@ import persistencia.conexion.Conexion;
 import dto.RegistroPresupuestoDTO;
 import dto.RegistroEntradaReporteDTO;
 import dto.ReparacionDTO;
+//import com.lowagie.text.pdf.FopGlyphProcessor;
+
 
 public class ReportePresupuesto {
 	private static JasperReport reporte;
@@ -67,6 +68,7 @@ public class ReportePresupuesto {
 	public void guardar() {
 
 		nombreArchivoPDF = "Presupuesto ELS_" + ELS + "_" + Cliente + ".pdf";
+		//nombreArchivoPDF = "Presupuesto ELS_";
 
 		File fRutaE = new File("E:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF");
 		File fRutaD = new File("D:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF");
@@ -82,9 +84,12 @@ public class ReportePresupuesto {
 		JRExporter exporter = new JRPdfExporter();
 		exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
 		exporter.setParameter(JRExporterParameter.JASPER_PRINT, reporteLleno);
+		
+
 
 		try {
 
+			//JasperExportManager.exportReportToPdfFile(reporteLleno, outFileName);
 			exporter.exportReport();
 			
 			Object mje = "Se ha generado el: "+ nombreArchivoPDF;

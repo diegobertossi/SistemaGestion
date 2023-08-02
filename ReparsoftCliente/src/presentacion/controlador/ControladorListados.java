@@ -44,7 +44,7 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.SpellChecker;
-import com.itextpdf.text.TabStop.Alignment;
+
 
 import VistaPropias.CellRenderer;
 import VistaPropias.Resaltador;

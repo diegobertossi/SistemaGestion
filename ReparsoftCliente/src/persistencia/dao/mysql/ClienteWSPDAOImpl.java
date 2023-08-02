@@ -10,7 +10,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
+//import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.ClienteDAO;
@@ -68,7 +68,7 @@ public class ClienteWSPDAOImpl implements ClienteWSPDAO {
 							+ "' ," + "TelefonoWSP = '" + Cliente_a_editar.getTelefonoWSP()  + "' " + " WHERE idClienteWSP = "
 							+ Cliente_a_editar.getIdClienteWSP() + "");
 
-			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
+			if (statement.executeUpdate() > 0) // Si se ejecutï¿½ devuelvo true
 				return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -88,7 +88,7 @@ public class ClienteWSPDAOImpl implements ClienteWSPDAO {
 			statement = conexion.getSQLConexion().prepareStatement(delete);
 			statement.setString(1, Integer.toString(Cliente_a_eliminar.getIdClienteWSP()));
 			chequeoUpdate = statement.executeUpdate();
-			if (chequeoUpdate > 0) // Si se ejecutó devuelvo true
+			if (chequeoUpdate > 0) // Si se ejecutï¿½ devuelvo true
 				return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
