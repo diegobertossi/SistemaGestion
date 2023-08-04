@@ -16,10 +16,18 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+//import java.util.Date;
+import java.sql.Date;
+
+import java.text.SimpleDateFormat;
 
 import javax.swing.JOptionPane;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -34,6 +42,25 @@ import presentacion.vista.VentanaPresupuestos;
 import presentacion.vista.VentanaSeleccionarELS;
 import dto.RegistroPresupuestoDTO;
 import dto.ReparacionDTO;
+
+import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
+import org.apache.poi.xwpf.usermodel.IBodyElement;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFFooter;
+import org.apache.poi.xwpf.usermodel.XWPFHeader;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class ControladorPresupuestos implements ActionListener, MouseListener, ItemListener, KeyListener {
 
@@ -141,8 +168,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					SpellChecker.register(ventanaGenerarPresupuesto.getTextInforme());
 
 					TomarDatosDeTablas();
-
-					// this.ventanaEquipos.dispose();
 
 					agregarListenersVentanaGenerarPresupuesto();
 
@@ -286,6 +311,67 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			}
 		}
 
+		else if (this.ventanaGenerarPresupuesto != null
+				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens()) {
+
+			String nombreWordBase = "Modelo Generico de informe 2023.docx";
+		
+			String documentoBase = "F:/els/Administracion/Sistema/Informes Siemens/" + nombreWordBase;
+
+			
+
+			LocalDate fechaHoy = LocalDate.now();
+			DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yy");
+			String fechaHoyString = fechaHoy.format(formato);
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+
+			String els = ventanaGenerarPresupuesto.getTextELS().getText();
+			String aviso = ventanaGenerarPresupuesto.getTextAviso().getText();
+			String cliente = ventanaGenerarPresupuesto.getTextCliente().getText();
+			String equipo = ventanaGenerarPresupuesto.getTextEquipo().getText();
+			String modelo = ventanaGenerarPresupuesto.getTextModelo().getText();
+			String serie = ventanaGenerarPresupuesto.getTextSerie().getText();
+									
+			String fechaFabricacion =  ventanaGenerarPresupuesto.getTextFabrString();
+			
+			String diagnostico = ventanaGenerarPresupuesto.getTextInforme().getText();
+			String precioDolar = ventanaGenerarPresupuesto.getTextPrecioDolar().getText();
+			String plazoEntrega = ventanaGenerarPresupuesto.getTextPlazoEntrega().getText();
+			
+			String nombreWordNuevo = "AV " + aviso + "-" + "ELS "+ els + "_" + cliente + ".docx";
+			String nuevoDocumento = "F:/els/Administracion/Sistema/Informes Siemens/" + nombreWordNuevo;
+			
+	        
+			try {
+	            XWPFDocument doc = new XWPFDocument(new FileInputStream(documentoBase));
+	           
+	            buscarYReemplazar(doc, "#fecha#", fechaHoyString);
+	            buscarYReemplazar(doc, "#aviso#", aviso);
+	            buscarYReemplazar(doc, "#cliente#", cliente);
+	            buscarYReemplazar(doc, "#equipo#", equipo);
+	            buscarYReemplazar(doc, "#modelo#", modelo);
+	            buscarYReemplazar(doc, "#serie#", serie);
+	            buscarYReemplazar(doc, "#fechafabr#", fechaFabricacion);
+	            buscarYReemplazar(doc, "#diagnostico#", diagnostico);
+	            buscarYReemplazar(doc, "#PrecioD#", precioDolar);
+	            buscarYReemplazar(doc, "#Plazo# ", plazoEntrega);
+	            
+	            
+	            FileOutputStream out = new FileOutputStream(nuevoDocumento);
+	            doc.write(out);
+	            out.close();
+
+	            JOptionPane.showMessageDialog(null, "Documento generado exitosamente.");
+
+	        } catch (IOException f) {
+	            f.printStackTrace();
+	        }
+	    
+
+
+		}
+
 		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnAgregarContacto()) {
 
 			ventanaEmail.getTextPara().setText(ventanaEmail.getTextEmailContacto().getText());
@@ -369,7 +455,45 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		}
 	}
+	
+	
+	
+	
+	
+	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo) {
+		for (XWPFParagraph paragraph : doc.getParagraphs()) {
+            for (XWPFRun run : paragraph.getRuns()) {
+                String text = run.getText(0);
+                //System.out.println("Text: " + text); 
+                if (text != null && text.contains(textoBusqueda)) {
+                    text = text.replace(textoBusqueda, textoReemplazo);
+                    run.setText(text, 0);
+                }
+            }
+        }
 
+        for (XWPFTable table : doc.getTables()) {
+            for (XWPFTableRow row : table.getRows()) {
+                for (XWPFTableCell cell : row.getTableCells()) {
+                    for (XWPFParagraph paragraph : cell.getParagraphs()) {
+                        for (XWPFRun run : paragraph.getRuns()) {
+                            String text = run.getText(0);
+                           // System.out.println("Text: " + text); 
+                            if (text != null && text.contains(textoBusqueda)) {
+                                text = text.replace(textoBusqueda, textoReemplazo);
+                                run.setText(text, 0);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+	
+	
+
+    
+    
 	public void agregarListenersVentanaGenerarPresupuesto() {
 
 		ventanaGenerarPresupuesto.getBtnEditarInforme().addActionListener(this);
@@ -416,6 +540,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			}
 		});
+
+		this.ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens().addActionListener(this);
 
 	}
 
@@ -476,20 +602,17 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
-	
 	public void TomarDatosDeTablasParaVisualizacion(int numeroELS) {
-		
-		
+
 		ventanaGenerarPresupuesto = new VentanaGenerarPresupuesto(this);
 
 		SpellChecker.register(ventanaGenerarPresupuesto.getTextInforme());
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
-	
 		reparacion = agenda.dameReparacionXels(numeroELS);
-		
-		String ELS =  String.valueOf(numeroELS);
+
+		String ELS = String.valueOf(numeroELS);
 		String Cliente = reparacion.getCliente();
 		String Sucursal = reparacion.getSucursal();
 		String Equipo = reparacion.getNombreEquipo();
@@ -532,9 +655,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
 
 	}
-	
-	
-	
+
 	//
 	// if (btnpago) {
 	//
@@ -563,15 +684,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	private void llenarComboELS() {
 
 		agenda.ListarELS(ventanaSeleccionarELS.getComboELS());

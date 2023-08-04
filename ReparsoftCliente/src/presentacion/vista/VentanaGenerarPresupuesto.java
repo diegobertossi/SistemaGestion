@@ -33,6 +33,8 @@ import javax.swing.JSeparator;
 import javax.swing.JCheckBox;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class VentanaGenerarPresupuesto extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -69,6 +71,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 	private JButton VisualizarPresupuestoPDF;
 	private JTextField textSucursal;
 	private JButton btnCotizacionDolar;
+	private JButton btnGenerarInformeSiemens;
 
 	private JCheckBox chckPesos;
 	private JCheckBox chckDolar;
@@ -579,9 +582,22 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				textSugerenciaDolar.setColumns(10);
 				textSugerenciaDolar.setBorder(null);
 				textSugerenciaDolar.setBackground(Color.LIGHT_GRAY);
+				
+				btnGenerarInformeSiemens = new JButton("<html><center>Generar Informe Siemens WORD</html>");
+				btnGenerarInformeSiemens.setFont(new Font("Cambria", Font.BOLD, 12));
+				btnGenerarInformeSiemens.setBounds(677, 556, 155, 38);
+				contentPane.add(btnGenerarInformeSiemens);
 
 		this.setVisible(true);
 
+	}
+
+	public JButton getBtnGenerarInformeSiemens() {
+		return btnGenerarInformeSiemens;
+	}
+
+	public void setBtnGenerarInformeSiemens(JButton btnGenerarInformeSiemens) {
+		this.btnGenerarInformeSiemens = btnGenerarInformeSiemens;
 	}
 
 	public JTextField getTextSucursal() {
@@ -798,6 +814,11 @@ public class VentanaGenerarPresupuesto extends JFrame {
 	
 	public Date getTextFabr() {
 		return (Date) textFabr.getDate();
+
+	}
+	
+	public String getTextFabrString() {
+		return textFabr.getText();
 
 	}
 	
