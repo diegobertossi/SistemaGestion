@@ -29,13 +29,14 @@ import java.sql.Date;
 
 import java.text.SimpleDateFormat;
 
-import javax.swing.JOptionPane;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import com.inet.jortho.SpellChecker;
 
 import modelo.Agenda;
 import presentacion.reportes.ReportePresupuesto;
+import presentacion.vista.VentanaAgregarEquipo;
+import presentacion.vista.VentanaAgregarImagenes;
 import presentacion.vista.VentanaEmail;
 import presentacion.vista.VentanaGenerarPresupuesto;
 import presentacion.vista.VentanaPresupuestos;
@@ -55,6 +56,8 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -68,6 +71,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private VentanaSeleccionarELS ventanaSeleccionarELS;
 	private VentanaGenerarPresupuesto ventanaGenerarPresupuesto;
 	private VentanaEmail ventanaEmail;
+	private VentanaAgregarImagenes ventanaAgregarImagenes;
 
 	private ControladorReparacion controladorReparacion;
 
@@ -314,16 +318,145 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		else if (this.ventanaGenerarPresupuesto != null
 				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens()) {
 
-			String nombreWordBase = "Modelo Generico de informe 2023.docx";
-		
-			String documentoBase = "F:/els/Administracion/Sistema/Informes Siemens/" + nombreWordBase;
+			ventanaAgregarImagenes = new VentanaAgregarImagenes(this);
+			ventanaAgregarImagenes.getBtngenerarInforme().addActionListener(this);
+			ventanaAgregarImagenes.getBtnAgregarImagen().addActionListener(this);
+			ventanaAgregarImagenes.getBtnBorrarImagen_1().addActionListener(this);
+			ventanaAgregarImagenes.getBtnBorrarImagen_2().addActionListener(this);
+			ventanaAgregarImagenes.getBtnBorrarImagen_3().addActionListener(this);
+			ventanaAgregarImagenes.getBtnBorrarImagen_4().addActionListener(this);
+			ventanaAgregarImagenes.getBtnBorrarImagen_5().addActionListener(this);
+			ventanaAgregarImagenes.getBtnBorrarImagen_6().addActionListener(this);
+			ventanaAgregarImagenes.getBtnCancelar().addActionListener(this);
+			ventanaAgregarImagenes.getBtnAgregarImagenDiagnostico().addActionListener(this);
 
+		}
+
+		else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnAgregarImagen()) {
+
+			JTextField txtRutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1();
+			JTextField txtRutaImagen_2 = ventanaAgregarImagenes.getTxtRutaImagen_2();
+			JTextField txtRutaImagen_3 = ventanaAgregarImagenes.getTxtRutaImagen_3();
+	
+			String rutadefaulImagenes = "F:\\els\\Administracion\\Sistema\\Informes Siemens\\";
+
+			JFileChooser archivosImagenes = new JFileChooser(rutadefaulImagenes);
+
+			FileNameExtensionFilter imagelFilter = new FileNameExtensionFilter("Archivos de Imagen", "gif", "jpg",
+					"jpeg", "bmp");
+			archivosImagenes.setFileFilter(imagelFilter);
+
+			int result;
+			result = archivosImagenes.showOpenDialog(ventanaAgregarImagenes);
+
+			if (result == JFileChooser.APPROVE_OPTION) {
+				File selectedFile = archivosImagenes.getSelectedFile();
+
+				if (txtRutaImagen_1.getText().isEmpty()) {
+					txtRutaImagen_1.setText(selectedFile.getAbsolutePath());
+				} else if (txtRutaImagen_2.getText().isEmpty()) {
+					txtRutaImagen_2.setText(selectedFile.getAbsolutePath());
+				} else if (txtRutaImagen_3.getText().isEmpty()) {
+					txtRutaImagen_3.setText(selectedFile.getAbsolutePath());
+				} else {
+					JOptionPane.showMessageDialog(null, "Solo se pueden agregar 3 imágenes", "Cantidad de imagenes superada",
+							JOptionPane.WARNING_MESSAGE);
+				}
+
+			}
+
+		}
+		
+		
+		else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnAgregarImagenDiagnostico()) {
+
+			JTextField txtRutaImagen_4 = ventanaAgregarImagenes.getTxtRutaImagen_4();
+			JTextField txtRutaImagen_5 = ventanaAgregarImagenes.getTxtRutaImagen_5();
+			JTextField txtRutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6();
+	
+			String rutadefaulImagenes = "F:\\els\\Administracion\\Sistema\\Informes Siemens\\";
+
+			JFileChooser archivosImagenes = new JFileChooser(rutadefaulImagenes);
+
+			FileNameExtensionFilter imagelFilter = new FileNameExtensionFilter("Archivos de Imagen", "gif", "jpg",
+					"jpeg", "bmp");
+			archivosImagenes.setFileFilter(imagelFilter);
+
+			int result;
+			result = archivosImagenes.showOpenDialog(ventanaAgregarImagenes);
+
+			if (result == JFileChooser.APPROVE_OPTION) {
+				File selectedFile = archivosImagenes.getSelectedFile();
+
+				if (txtRutaImagen_4.getText().isEmpty()) {
+					txtRutaImagen_4.setText(selectedFile.getAbsolutePath());
+				} else if (txtRutaImagen_5.getText().isEmpty()) {
+					txtRutaImagen_5.setText(selectedFile.getAbsolutePath());
+				} else if (txtRutaImagen_6.getText().isEmpty()) {
+					txtRutaImagen_6.setText(selectedFile.getAbsolutePath());
+				} else {
+					JOptionPane.showMessageDialog(null, "Solo se pueden agregar 3 imágenes", "Cantidad de imagenes superada",
+							JOptionPane.WARNING_MESSAGE);
+				}
+
+			}
+
+		}
+		
+		else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_1()) {
 			
+			ventanaAgregarImagenes.getTxtRutaImagen_1().setText("");			
+			
+			
+		}
+		else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_2()) {
+			
+			ventanaAgregarImagenes.getTxtRutaImagen_2().setText("");	
+			
+		}
+		else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_3()) {
+			
+			ventanaAgregarImagenes.getTxtRutaImagen_3().setText("");	
+			
+		}
+		else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_4()) {
+			
+			ventanaAgregarImagenes.getTxtRutaImagen_4().setText("");	
+			
+			
+		}
+		else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_5()) {
+			
+			ventanaAgregarImagenes.getTxtRutaImagen_5().setText("");	
+			
+			
+		}
+		else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_6()) {
+			
+			ventanaAgregarImagenes.getTxtRutaImagen_6().setText("");	
+			
+		}
+
+
+		else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtngenerarInforme()) {
+
+			String nombreWordBase = "Modelo Generico de informe 2023.docx";
+
+			String documentoBase = "F:/els/Administracion/Sistema/Informes Siemens/" + nombreWordBase;
 
 			LocalDate fechaHoy = LocalDate.now();
 			DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yy");
 			String fechaHoyString = fechaHoy.format(formato);
-			
+
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
 
 			String els = ventanaGenerarPresupuesto.getTextELS().getText();
@@ -332,43 +465,39 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			String equipo = ventanaGenerarPresupuesto.getTextEquipo().getText();
 			String modelo = ventanaGenerarPresupuesto.getTextModelo().getText();
 			String serie = ventanaGenerarPresupuesto.getTextSerie().getText();
-									
-			String fechaFabricacion =  ventanaGenerarPresupuesto.getTextFabrString();
-			
+
+			String fechaFabricacion = ventanaGenerarPresupuesto.getTextFabrString();
+
 			String diagnostico = ventanaGenerarPresupuesto.getTextInforme().getText();
 			String precioDolar = ventanaGenerarPresupuesto.getTextPrecioDolar().getText();
 			String plazoEntrega = ventanaGenerarPresupuesto.getTextPlazoEntrega().getText();
-			
-			String nombreWordNuevo = "AV " + aviso + "-" + "ELS "+ els + "_" + cliente + ".docx";
+
+			String nombreWordNuevo = "AV " + aviso + "-" + "ELS " + els + "_" + cliente + ".docx";
 			String nuevoDocumento = "F:/els/Administracion/Sistema/Informes Siemens/" + nombreWordNuevo;
-			
-	        
+
 			try {
-	            XWPFDocument doc = new XWPFDocument(new FileInputStream(documentoBase));
-	           
-	            buscarYReemplazar(doc, "#fecha#", fechaHoyString);
-	            buscarYReemplazar(doc, "#aviso#", aviso);
-	            buscarYReemplazar(doc, "#cliente#", cliente);
-	            buscarYReemplazar(doc, "#equipo#", equipo);
-	            buscarYReemplazar(doc, "#modelo#", modelo);
-	            buscarYReemplazar(doc, "#serie#", serie);
-	            buscarYReemplazar(doc, "#fechafabr#", fechaFabricacion);
-	            buscarYReemplazar(doc, "#diagnostico#", diagnostico);
-	            buscarYReemplazar(doc, "#PrecioD#", precioDolar);
-	            buscarYReemplazar(doc, "#Plazo# ", plazoEntrega);
-	            
-	            
-	            FileOutputStream out = new FileOutputStream(nuevoDocumento);
-	            doc.write(out);
-	            out.close();
+				XWPFDocument doc = new XWPFDocument(new FileInputStream(documentoBase));
 
-	            JOptionPane.showMessageDialog(null, "Documento generado exitosamente.");
+				buscarYReemplazar(doc, "#fecha#", fechaHoyString);
+				buscarYReemplazar(doc, "#aviso#", aviso);
+				buscarYReemplazar(doc, "#cliente#", cliente);
+				buscarYReemplazar(doc, "#equipo#", equipo);
+				buscarYReemplazar(doc, "#modelo#", modelo);
+				buscarYReemplazar(doc, "#serie#", serie);
+				buscarYReemplazar(doc, "#fechafabr#", fechaFabricacion);
+				buscarYReemplazar(doc, "#diagnostico#", diagnostico);
+				buscarYReemplazar(doc, "#PrecioD#", precioDolar);
+				buscarYReemplazar(doc, "#Plazo# ", plazoEntrega);
 
-	        } catch (IOException f) {
-	            f.printStackTrace();
-	        }
-	    
+				FileOutputStream out = new FileOutputStream(nuevoDocumento);
+				doc.write(out);
+				out.close();
 
+				JOptionPane.showMessageDialog(null, "Documento generado exitosamente.");
+
+			} catch (IOException f) {
+				f.printStackTrace();
+			}
 
 		}
 
@@ -455,45 +584,37 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		}
 	}
-	
-	
-	
-	
-	
+
 	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo) {
 		for (XWPFParagraph paragraph : doc.getParagraphs()) {
-            for (XWPFRun run : paragraph.getRuns()) {
-                String text = run.getText(0);
-                //System.out.println("Text: " + text); 
-                if (text != null && text.contains(textoBusqueda)) {
-                    text = text.replace(textoBusqueda, textoReemplazo);
-                    run.setText(text, 0);
-                }
-            }
-        }
+			for (XWPFRun run : paragraph.getRuns()) {
+				String text = run.getText(0);
+				// System.out.println("Text: " + text);
+				if (text != null && text.contains(textoBusqueda)) {
+					text = text.replace(textoBusqueda, textoReemplazo);
+					run.setText(text, 0);
+				}
+			}
+		}
 
-        for (XWPFTable table : doc.getTables()) {
-            for (XWPFTableRow row : table.getRows()) {
-                for (XWPFTableCell cell : row.getTableCells()) {
-                    for (XWPFParagraph paragraph : cell.getParagraphs()) {
-                        for (XWPFRun run : paragraph.getRuns()) {
-                            String text = run.getText(0);
-                           // System.out.println("Text: " + text); 
-                            if (text != null && text.contains(textoBusqueda)) {
-                                text = text.replace(textoBusqueda, textoReemplazo);
-                                run.setText(text, 0);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-	
-	
+		for (XWPFTable table : doc.getTables()) {
+			for (XWPFTableRow row : table.getRows()) {
+				for (XWPFTableCell cell : row.getTableCells()) {
+					for (XWPFParagraph paragraph : cell.getParagraphs()) {
+						for (XWPFRun run : paragraph.getRuns()) {
+							String text = run.getText(0);
+							// System.out.println("Text: " + text);
+							if (text != null && text.contains(textoBusqueda)) {
+								text = text.replace(textoBusqueda, textoReemplazo);
+								run.setText(text, 0);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
-    
-    
 	public void agregarListenersVentanaGenerarPresupuesto() {
 
 		ventanaGenerarPresupuesto.getBtnEditarInforme().addActionListener(this);
