@@ -2,6 +2,9 @@ package presentacion.controlador;
 
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -12,6 +15,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -19,17 +24,43 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import java.io.InputStream;
 //import java.util.Date;
 import java.sql.Date;
 
+
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFPicture;
+import org.apache.poi.xwpf.usermodel.XWPFPictureData;
+import org.apache.commons.io.IOUtils;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.util.Units;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.List;
+
+
+
 import java.text.SimpleDateFormat;
+import java.io.ByteArrayOutputStream;
+
+import org.apache.poi.xwpf.usermodel.XWPFPicture;
+import org.apache.poi.util.Units;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.openxmlformats.schemas.drawingml.x2006.main.CTBlip;
 
 import com.inet.jortho.SpellChecker;
 
@@ -44,17 +75,22 @@ import presentacion.vista.VentanaSeleccionarELS;
 import dto.RegistroPresupuestoDTO;
 import dto.ReparacionDTO;
 
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
+import org.apache.poi.xwpf.usermodel.BreakType;
+import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFPicture;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -338,113 +374,53 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			JTextField txtRutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1();
 			JTextField txtRutaImagen_2 = ventanaAgregarImagenes.getTxtRutaImagen_2();
 			JTextField txtRutaImagen_3 = ventanaAgregarImagenes.getTxtRutaImagen_3();
-	
-			String rutadefaulImagenes = "F:\\els\\Administracion\\Sistema\\Informes Siemens\\";
 
-			JFileChooser archivosImagenes = new JFileChooser(rutadefaulImagenes);
-
-			FileNameExtensionFilter imagelFilter = new FileNameExtensionFilter("Archivos de Imagen", "gif", "jpg",
-					"jpeg", "bmp");
-			archivosImagenes.setFileFilter(imagelFilter);
-
-			int result;
-			result = archivosImagenes.showOpenDialog(ventanaAgregarImagenes);
-
-			if (result == JFileChooser.APPROVE_OPTION) {
-				File selectedFile = archivosImagenes.getSelectedFile();
-
-				if (txtRutaImagen_1.getText().isEmpty()) {
-					txtRutaImagen_1.setText(selectedFile.getAbsolutePath());
-				} else if (txtRutaImagen_2.getText().isEmpty()) {
-					txtRutaImagen_2.setText(selectedFile.getAbsolutePath());
-				} else if (txtRutaImagen_3.getText().isEmpty()) {
-					txtRutaImagen_3.setText(selectedFile.getAbsolutePath());
-				} else {
-					JOptionPane.showMessageDialog(null, "Solo se pueden agregar 3 imágenes", "Cantidad de imagenes superada",
-							JOptionPane.WARNING_MESSAGE);
-				}
-
-			}
+			abrirSelectorImagen(txtRutaImagen_1, txtRutaImagen_2, txtRutaImagen_3);
 
 		}
-		
-		
+
 		else if (this.ventanaAgregarImagenes != null
 				&& e.getSource() == this.ventanaAgregarImagenes.getBtnAgregarImagenDiagnostico()) {
 
 			JTextField txtRutaImagen_4 = ventanaAgregarImagenes.getTxtRutaImagen_4();
 			JTextField txtRutaImagen_5 = ventanaAgregarImagenes.getTxtRutaImagen_5();
 			JTextField txtRutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6();
-	
-			String rutadefaulImagenes = "F:\\els\\Administracion\\Sistema\\Informes Siemens\\";
 
-			JFileChooser archivosImagenes = new JFileChooser(rutadefaulImagenes);
-
-			FileNameExtensionFilter imagelFilter = new FileNameExtensionFilter("Archivos de Imagen", "gif", "jpg",
-					"jpeg", "bmp");
-			archivosImagenes.setFileFilter(imagelFilter);
-
-			int result;
-			result = archivosImagenes.showOpenDialog(ventanaAgregarImagenes);
-
-			if (result == JFileChooser.APPROVE_OPTION) {
-				File selectedFile = archivosImagenes.getSelectedFile();
-
-				if (txtRutaImagen_4.getText().isEmpty()) {
-					txtRutaImagen_4.setText(selectedFile.getAbsolutePath());
-				} else if (txtRutaImagen_5.getText().isEmpty()) {
-					txtRutaImagen_5.setText(selectedFile.getAbsolutePath());
-				} else if (txtRutaImagen_6.getText().isEmpty()) {
-					txtRutaImagen_6.setText(selectedFile.getAbsolutePath());
-				} else {
-					JOptionPane.showMessageDialog(null, "Solo se pueden agregar 3 imágenes", "Cantidad de imagenes superada",
-							JOptionPane.WARNING_MESSAGE);
-				}
-
-			}
+			abrirSelectorImagen(txtRutaImagen_4, txtRutaImagen_5, txtRutaImagen_6);
 
 		}
-		
+
 		else if (this.ventanaAgregarImagenes != null
 				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_1()) {
-			
-			ventanaAgregarImagenes.getTxtRutaImagen_1().setText("");			
-			
-			
-		}
-		else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_2()) {
-			
-			ventanaAgregarImagenes.getTxtRutaImagen_2().setText("");	
-			
-		}
-		else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_3()) {
-			
-			ventanaAgregarImagenes.getTxtRutaImagen_3().setText("");	
-			
-		}
-		else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_4()) {
-			
-			ventanaAgregarImagenes.getTxtRutaImagen_4().setText("");	
-			
-			
-		}
-		else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_5()) {
-			
-			ventanaAgregarImagenes.getTxtRutaImagen_5().setText("");	
-			
-			
-		}
-		else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_6()) {
-			
-			ventanaAgregarImagenes.getTxtRutaImagen_6().setText("");	
-			
-		}
 
+			ventanaAgregarImagenes.getTxtRutaImagen_1().setText("");
+
+		} else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_2()) {
+
+			ventanaAgregarImagenes.getTxtRutaImagen_2().setText("");
+
+		} else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_3()) {
+
+			ventanaAgregarImagenes.getTxtRutaImagen_3().setText("");
+
+		} else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_4()) {
+
+			ventanaAgregarImagenes.getTxtRutaImagen_4().setText("");
+
+		} else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_5()) {
+
+			ventanaAgregarImagenes.getTxtRutaImagen_5().setText("");
+
+		} else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_6()) {
+
+			ventanaAgregarImagenes.getTxtRutaImagen_6().setText("");
+
+		}
 
 		else if (this.ventanaAgregarImagenes != null
 				&& e.getSource() == this.ventanaAgregarImagenes.getBtngenerarInforme()) {
@@ -465,6 +441,12 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			String equipo = ventanaGenerarPresupuesto.getTextEquipo().getText();
 			String modelo = ventanaGenerarPresupuesto.getTextModelo().getText();
 			String serie = ventanaGenerarPresupuesto.getTextSerie().getText();
+			String rutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1().getText();
+			String rutaImagen_2 = ventanaAgregarImagenes.getTxtRutaImagen_2().getText();
+			String rutaImagen_3 = ventanaAgregarImagenes.getTxtRutaImagen_3().getText();
+			String rutaImagen_4 = ventanaAgregarImagenes.getTxtRutaImagen_4().getText();
+			String rutaImagen_5 = ventanaAgregarImagenes.getTxtRutaImagen_5().getText();
+			String rutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6().getText();
 
 			String fechaFabricacion = ventanaGenerarPresupuesto.getTextFabrString();
 
@@ -478,16 +460,22 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			try {
 				XWPFDocument doc = new XWPFDocument(new FileInputStream(documentoBase));
 
-				buscarYReemplazar(doc, "#fecha#", fechaHoyString);
-				buscarYReemplazar(doc, "#aviso#", aviso);
-				buscarYReemplazar(doc, "#cliente#", cliente);
-				buscarYReemplazar(doc, "#equipo#", equipo);
-				buscarYReemplazar(doc, "#modelo#", modelo);
-				buscarYReemplazar(doc, "#serie#", serie);
-				buscarYReemplazar(doc, "#fechafabr#", fechaFabricacion);
-				buscarYReemplazar(doc, "#diagnostico#", diagnostico);
-				buscarYReemplazar(doc, "#PrecioD#", precioDolar);
-				buscarYReemplazar(doc, "#Plazo# ", plazoEntrega);
+				buscarYReemplazar(doc, "#fecha#", fechaHoyString, "");
+				buscarYReemplazar(doc, "#aviso#", aviso, "");
+				buscarYReemplazar(doc, "#cliente#", cliente, "");
+				buscarYReemplazar(doc, "#equipo#", equipo, "");
+				buscarYReemplazar(doc, "#modelo#", modelo, "");
+				buscarYReemplazar(doc, "#serie#", serie, "");
+				buscarYReemplazar(doc, "#fechafabr#", fechaFabricacion, "");
+				buscarYReemplazar(doc, "#diagnostico#", diagnostico, "");
+				buscarYReemplazar(doc, "#PrecioD#", precioDolar, "");
+				buscarYReemplazar(doc, "#Plazo#", plazoEntrega, "");
+				buscarYReemplazar(doc, "#Imagen1#","",rutaImagen_1);
+				buscarYReemplazar(doc, "#Imagen2#","",rutaImagen_2);
+				buscarYReemplazar(doc, "#Imagen3#","",rutaImagen_3);
+				buscarYReemplazar(doc, "#Imagen4#","",rutaImagen_4);
+				buscarYReemplazar(doc, "#Imagen5#","",rutaImagen_5);
+				buscarYReemplazar(doc, "#Imagen6#","",rutaImagen_6);
 
 				FileOutputStream out = new FileOutputStream(nuevoDocumento);
 				doc.write(out);
@@ -499,6 +487,12 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				f.printStackTrace();
 			}
 
+		}
+
+		else if (this.ventanaAgregarImagenes != null && e.getSource() == this.ventanaAgregarImagenes.getBtnCancelar()) {
+
+			this.ventanaAgregarImagenes.dispose();
+			this.ventanaAgregarImagenes = null;
 		}
 
 		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnAgregarContacto()) {
@@ -585,35 +579,285 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 	}
 
-	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo) {
-		for (XWPFParagraph paragraph : doc.getParagraphs()) {
-			for (XWPFRun run : paragraph.getRuns()) {
-				String text = run.getText(0);
-				// System.out.println("Text: " + text);
-				if (text != null && text.contains(textoBusqueda)) {
-					text = text.replace(textoBusqueda, textoReemplazo);
-					run.setText(text, 0);
-				}
+	private void abrirSelectorImagen(JTextField txtRutaImagen_1, JTextField txtRutaImagen_2,
+			JTextField txtRutaImagen_3) {
+
+		String rutadefaulImagenes = "F:\\els\\Administracion\\Sistema\\Informes Siemens\\";
+
+		JFileChooser archivosImagenes = new JFileChooser(rutadefaulImagenes);
+
+		FileNameExtensionFilter imagelFilter = new FileNameExtensionFilter("Archivos de Imagen", "gif", "jpg", "jpeg",
+				"bmp");
+		archivosImagenes.setFileFilter(imagelFilter);
+
+		int result;
+		result = archivosImagenes.showOpenDialog(ventanaAgregarImagenes);
+
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = archivosImagenes.getSelectedFile();
+
+			if (txtRutaImagen_1.getText().isEmpty()) {
+				txtRutaImagen_1.setText(selectedFile.getAbsolutePath());
+			} else if (txtRutaImagen_2.getText().isEmpty()) {
+				txtRutaImagen_2.setText(selectedFile.getAbsolutePath());
+			} else if (txtRutaImagen_3.getText().isEmpty()) {
+				txtRutaImagen_3.setText(selectedFile.getAbsolutePath());
+			} else {
+				JOptionPane.showMessageDialog(null, "Solo se pueden agregar 3 imágenes",
+						"Cantidad de imagenes superada", JOptionPane.WARNING_MESSAGE);
 			}
+
 		}
 
-		for (XWPFTable table : doc.getTables()) {
-			for (XWPFTableRow row : table.getRows()) {
-				for (XWPFTableCell cell : row.getTableCells()) {
-					for (XWPFParagraph paragraph : cell.getParagraphs()) {
-						for (XWPFRun run : paragraph.getRuns()) {
-							String text = run.getText(0);
-							// System.out.println("Text: " + text);
-							if (text != null && text.contains(textoBusqueda)) {
-								text = text.replace(textoBusqueda, textoReemplazo);
-								run.setText(text, 0);
-							}
-						}
-					}
-				}
-			}
-		}
 	}
+
+	
+	
+	
+	
+	
+//	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
+//	    for (XWPFParagraph paragraph : doc.getParagraphs()) {
+//	        for (XWPFRun run : paragraph.getRuns()) {
+//	            String text = run.getText(0);
+//	            if (text != null && text.contains(textoBusqueda)) {
+//	                text = text.replace(textoBusqueda, textoReemplazo);
+//	                run.setText(text, 0);
+//	            }
+//	        }
+//	    }
+//
+//	    for (XWPFTable table : doc.getTables()) {
+//	        for (XWPFTableRow row : table.getRows()) {
+//	            for (XWPFTableCell cell : row.getTableCells()) {
+//	                for (XWPFParagraph paragraph : cell.getParagraphs()) {
+//	                    for (XWPFRun run : paragraph.getRuns()) {
+//	                        String text = run.getText(0);
+//	                        if (text != null && text.contains(textoBusqueda)) {
+//	                            run.setText("", 0);
+//	                            if (rutaImagen != null && !rutaImagen.isEmpty()) {
+//	                                try {
+//	                                    BufferedImage image = ImageIO.read(new FileInputStream(rutaImagen));
+//	                                    int width = image.getWidth();
+//	                                    int height = image.getHeight();
+//
+//	                                    // Encode the image as base64
+//	                                    byte[] imageBytes = Base64.getEncoder().encode(imageToBytes(image));
+//
+//	                                    // Add the image to the run
+//	                                    try {
+//											run.addPicture(new ByteArrayInputStream(imageBytes), XWPFDocument.PICTURE_TYPE_PNG, "", Units.toEMU(width), Units.toEMU(height));
+//										} catch (InvalidFormatException e) {
+//											// TODO Auto-generated catch block
+//											e.printStackTrace();
+//										}
+//	                                } catch (IOException e) {
+//	                                    e.printStackTrace();
+//	                                }
+//	                            } else if (textoReemplazo != null && !textoReemplazo.isEmpty()) {
+//	                                String[] lines = textoReemplazo.split("\\r?\\n");
+//	                                for (int i = 0; i < lines.length; i++) {
+//	                                    run.setText(lines[i], i);
+//	                                    if (i < lines.length - 1) {
+//	                                        run.addBreak();
+//	                                    }
+//	                                }
+//	                            }
+//	                        }
+//	                    }
+//	                }
+//	            }
+//	        }
+//	    }
+//	}
+//
+//	private static byte[] imageToBytes(BufferedImage image) throws IOException {
+//	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//	    ImageIO.write(image, "png", baos);
+//	    return baos.toByteArray();
+//	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
+//	    for (XWPFParagraph paragraph : doc.getParagraphs()) {
+//	        for (XWPFRun run : paragraph.getRuns()) {
+//	            String text = run.getText(0);
+//	            if (text != null && text.contains(textoBusqueda)) {
+//	                text = text.replace(textoBusqueda, textoReemplazo);
+//	                run.setText(text, 0);
+//	            }
+//	        }
+//	    }
+//
+//	    for (XWPFTable table : doc.getTables()) {
+//	        for (XWPFTableRow row : table.getRows()) {
+//	            for (XWPFTableCell cell : row.getTableCells()) {
+//	                for (XWPFParagraph paragraph : cell.getParagraphs()) {
+//	                    for (XWPFRun run : paragraph.getRuns()) {
+//	                        String text = run.getText(0);
+//	                        if (text != null && text.contains(textoBusqueda)) {
+//	                            run.setText("", 0);
+//	                            if (rutaImagen != null && !rutaImagen.isEmpty()) {
+//	                                try {
+//	                                    BufferedImage image = ImageIO.read(new FileInputStream(rutaImagen));
+//	                                    int width = image.getWidth();
+//	                                    int height = image.getHeight();
+//
+//	                                    // Encode the image as base64
+//	                                    byte[] imageBytes;
+//	                                    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+//	                                        ImageIO.write(image, "png", baos);
+//	                                        imageBytes = baos.toByteArray();
+//	                                    }
+//
+//	                                    // Add the image to the run
+//	                                    try {
+//											run.addPicture(new ByteArrayInputStream(imageBytes), XWPFDocument.PICTURE_TYPE_PNG, "", Units.toEMU(width), Units.toEMU(height));
+//										} catch (InvalidFormatException e) {
+//											// TODO Auto-generated catch block
+//											e.printStackTrace();
+//										}
+//	                                } catch (IOException e) {
+//	                                    e.printStackTrace();
+//	                                }
+//	                            } else if (textoReemplazo != null && !textoReemplazo.isEmpty()) {
+//	                                String[] lines = textoReemplazo.split("\\r?\\n");
+//	                                for (int i = 0; i < lines.length; i++) {
+//	                                    run.setText(lines[i], i);
+//	                                    if (i < lines.length - 1) {
+//	                                        run.addBreak();
+//	                                    }
+//	                                }
+//	                            }
+//	                        }
+//	                    }
+//	                }
+//	            }
+//	        }
+//	    }
+//	    
+//	    
+//	    
+//	    
+//	    
+//	}
+//	
+	
+	
+	
+
+	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
+	    for (XWPFParagraph paragraph : doc.getParagraphs()) {
+	        for (XWPFRun run : paragraph.getRuns()) {
+	            String text = run.getText(0);
+	            if (text != null && text.contains(textoBusqueda)) {
+	                text = text.replace(textoBusqueda, textoReemplazo);
+	                run.setText(text, 0);
+	            }
+	        }
+	    }
+
+	    for (XWPFTable table : doc.getTables()) {
+	        for (XWPFTableRow row : table.getRows()) {
+	            for (XWPFTableCell cell : row.getTableCells()) {
+	                for (XWPFParagraph paragraph : cell.getParagraphs()) {
+	                    for (XWPFRun run : paragraph.getRuns()) {
+	                        String text = run.getText(0);
+	                        if (text != null && text.contains(textoBusqueda)) {
+	                            run.setText("", 0);
+	                            if (rutaImagen != null && !rutaImagen.isEmpty()) {
+	                                try {
+	                                    
+	                                	File image = new File(rutaImagen);
+	                                    FileInputStream fis
+	                                        = new FileInputStream(image);
+	                                    int imageType = XWPFDocument.PICTURE_TYPE_JPEG;
+	                                    String imageFileName = image.getName();
+	                                	
+	                                    
+	                                    int width = 100;
+	                                    int height = 100;
+	                                	//FileInputStream fis = new FileInputStream(rutaImagen);
+	                                    run.addPicture(fis, imageType, imageFileName,
+	                                            Units.toEMU(width),
+	                                            Units.toEMU(height));
+	                                   
+	                                } catch (Exception e) {
+	                                    e.printStackTrace();
+	                                }
+	                            } else if (textoReemplazo != null && !textoReemplazo.isEmpty()) {
+	                                String[] lines = textoReemplazo.split("\\r?\\n");
+	                                for (int i = 0; i < lines.length; i++) {
+	                                    run.setText(lines[i], i);
+	                                    if (i < lines.length - 1) {
+	                                        run.addBreak();
+	                                    }
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
+	}
+//
+//	private int calculateCellHeight(XWPFTableCell cell) {
+//	    int totalHeight = 0;
+//	    for (XWPFParagraph paragraph : cell.getParagraphs()) {
+//	        totalHeight += paragraph.getSpacingAfter() + paragraph.getSpacingBefore();
+//	        for (XWPFRun run : paragraph.getRuns()) {
+//	            totalHeight += run.getFontFamily().length(); // Use the length of the font family string
+//	        }
+//	    }
+//	    return totalHeight;
+//	}
+		
+//
+//	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo) {
+//	    for (XWPFParagraph paragraph : doc.getParagraphs()) {
+//	        for (XWPFRun run : paragraph.getRuns()) {
+//	            String text = run.getText(0);
+//	            if (text != null && text.contains(textoBusqueda)) {
+//	                text = text.replace(textoBusqueda, textoReemplazo);
+//	                run.setText(text, 0);
+//	            }
+//	        }
+//	    }
+//
+//	    for (XWPFTable table : doc.getTables()) {
+//	        for (XWPFTableRow row : table.getRows()) {
+//	            for (XWPFTableCell cell : row.getTableCells()) {
+//	                for (XWPFParagraph paragraph : cell.getParagraphs()) {
+//	                    for (XWPFRun run : paragraph.getRuns()) {
+//	                        String text = run.getText(0);
+//	                        if (text != null && text.contains(textoBusqueda)) {
+//	                            // Split the replacement text by line breaks
+//	                            String[] lines = textoReemplazo.split("\\r?\\n");
+//	                            
+//	                            // Clear the existing text and add the replacement lines
+//	                            run.setText("", 0);
+//	                            for (int i = 0; i < lines.length; i++) {
+//	                                run.setText(lines[i], i);
+//	                                if (i < lines.length - 1) {
+//	                                    run.addBreak();
+//	                                }
+//	                            }
+//	                        }
+//	                    }
+//	                }
+//	            }
+//	        }
+//	    }
+//	}
 
 	public void agregarListenersVentanaGenerarPresupuesto() {
 
@@ -777,11 +1021,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
-	//
-	// if (btnpago) {
-	//
-	// System.out.println("chau");
-	//
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {

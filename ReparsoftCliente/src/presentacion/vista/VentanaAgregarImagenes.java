@@ -69,7 +69,7 @@ public class VentanaAgregarImagenes extends JFrame {
 		btngenerarInforme.setForeground(new Color(0, 0, 128));
 		btngenerarInforme.setFont(new Font("Calibri", Font.BOLD, 16));
 
-		btnCancelar = new JButton("CANCELAR");
+		btnCancelar = new JButton("<html><center>CANCELAR</html>");
 		btnCancelar.setBounds(110, 493, 174, 29);
 		panel.add(btnCancelar);
 		btnCancelar.setForeground(new Color(0, 0, 128));
@@ -83,7 +83,7 @@ public class VentanaAgregarImagenes extends JFrame {
 
 		txtRutaImagen_1 = new JTextField();
 		txtRutaImagen_1.setEditable(false);
-		txtRutaImagen_1.setBounds(76, 59, 383, 20);
+		txtRutaImagen_1.setBounds(76, 59, 417, 20);
 		panel_1.add(txtRutaImagen_1);
 		txtRutaImagen_1.setBackground(new Color(250, 250, 210));
 		txtRutaImagen_1.setForeground(Color.BLACK);
@@ -91,21 +91,22 @@ public class VentanaAgregarImagenes extends JFrame {
 
 		txtRutaImagen_2 = new JTextField();
 		txtRutaImagen_2.setEditable(false);
-		txtRutaImagen_2.setBounds(76, 90, 383, 20);
+		txtRutaImagen_2.setBounds(76, 90, 417, 20);
 		panel_1.add(txtRutaImagen_2);
 		txtRutaImagen_2.setBackground(new Color(250, 250, 210));
 		txtRutaImagen_2.setForeground(Color.BLACK);
 		txtRutaImagen_2.setFont(new Font("Cambria", Font.PLAIN, 10));
 		
-		btnBorrarImagen_1 = new JButton("<html><center>BORRAR</html>");
-		btnBorrarImagen_1.setBounds(481, 59, 64, 20);
+		btnBorrarImagen_1 = new JButton();
+		btnBorrarImagen_1.setBounds(513, 57, 37, 25);
+		btnBorrarImagen_1.setIcon(new ImageIcon(this.getClass().getResource("/eliminar.png")));
 		panel_1.add(btnBorrarImagen_1);
 		btnBorrarImagen_1.setForeground(new Color(0, 0, 128));
 		btnBorrarImagen_1.setFont(new Font("Calibri", Font.BOLD, 12));
 		
 		txtRutaImagen_3 = new JTextField();
 		txtRutaImagen_3.setEditable(false);
-		txtRutaImagen_3.setBounds(76, 121, 383, 20);
+		txtRutaImagen_3.setBounds(76, 121, 417, 20);
 		panel_1.add(txtRutaImagen_3);
 		txtRutaImagen_3.setForeground(Color.BLACK);
 		txtRutaImagen_3.setFont(new Font("Cambria", Font.PLAIN, 10));
@@ -127,25 +128,27 @@ public class VentanaAgregarImagenes extends JFrame {
 		lblImagen_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		
 		btnAgregarImagen = new JButton("<html><center>AGREGAR IMÁGEN</html>");
-		btnAgregarImagen.setBounds(15, 19, 134, 29);
+		btnAgregarImagen.setBounds(15, 13, 134, 29);
 		panel_1.add(btnAgregarImagen);
 		btnAgregarImagen.setForeground(new Color(0, 0, 128));
 		btnAgregarImagen.setFont(new Font("Calibri", Font.BOLD, 12));
 		
-		btnBorrarImagen_2 = new JButton("<html><center>BORRAR</html>");
-		btnBorrarImagen_2.setBounds(481, 90, 64, 20);
+		btnBorrarImagen_2 = new JButton();
+		btnBorrarImagen_2.setBounds(513, 88, 37, 25);
+		btnBorrarImagen_2.setIcon(new ImageIcon(this.getClass().getResource("/eliminar.png")));
 		panel_1.add(btnBorrarImagen_2);
 		btnBorrarImagen_2.setForeground(new Color(0, 0, 128));
 		btnBorrarImagen_2.setFont(new Font("Calibri", Font.BOLD, 12));
 		
-		btnBorrarImagen_3 = new JButton("<html><center>BORRAR</html>");
-		btnBorrarImagen_3.setBounds(481, 121, 64, 20);
+		btnBorrarImagen_3 = new JButton();
+		btnBorrarImagen_3.setBounds(513, 119, 37, 25);
+		btnBorrarImagen_3.setIcon(new ImageIcon(this.getClass().getResource("/eliminar.png")));
 		panel_1.add(btnBorrarImagen_3);
 		btnBorrarImagen_3.setForeground(new Color(0, 0, 128));
 		btnBorrarImagen_3.setFont(new Font("Calibri", Font.BOLD, 12));
 		
 		JLabel lblBorrarImgen = new JLabel("<html><center>BORRAR IMÁGEN</html>");
-		lblBorrarImgen.setBounds(481, 19, 64, 29);
+		lblBorrarImgen.setBounds(499, 17, 64, 29);
 		panel_1.add(lblBorrarImgen);
 		lblBorrarImgen.setFont(new Font("Cambria", Font.BOLD, 12));
 
@@ -181,7 +184,7 @@ public class VentanaAgregarImagenes extends JFrame {
 		txtRutaImagen_4.setForeground(Color.BLACK);
 		txtRutaImagen_4.setFont(new Font("Cambria", Font.PLAIN, 10));
 		txtRutaImagen_4.setBackground(new Color(250, 250, 210));
-		txtRutaImagen_4.setBounds(76, 59, 383, 20);
+		txtRutaImagen_4.setBounds(76, 59, 417, 20);
 		panel_1_1.add(txtRutaImagen_4);
 		
 		txtRutaImagen_5 = new JTextField();
@@ -189,7 +192,7 @@ public class VentanaAgregarImagenes extends JFrame {
 		txtRutaImagen_5.setForeground(Color.BLACK);
 		txtRutaImagen_5.setFont(new Font("Cambria", Font.PLAIN, 10));
 		txtRutaImagen_5.setBackground(new Color(250, 250, 210));
-		txtRutaImagen_5.setBounds(76, 90, 383, 20);
+		txtRutaImagen_5.setBounds(76, 90, 417, 20);
 		panel_1_1.add(txtRutaImagen_5);
 		
 		txtRutaImagen_6 = new JTextField();
@@ -197,7 +200,7 @@ public class VentanaAgregarImagenes extends JFrame {
 		txtRutaImagen_6.setForeground(Color.BLACK);
 		txtRutaImagen_6.setFont(new Font("Cambria", Font.PLAIN, 10));
 		txtRutaImagen_6.setBackground(new Color(250, 250, 210));
-		txtRutaImagen_6.setBounds(76, 121, 383, 20);
+		txtRutaImagen_6.setBounds(76, 121, 417, 20);
 		panel_1_1.add(txtRutaImagen_6);
 		
 		JLabel lblNewLabel_1 = new JLabel("IMAGEN 1");
@@ -218,44 +221,35 @@ public class VentanaAgregarImagenes extends JFrame {
 		btnAgregarImagenDiagnostico = new JButton("<html><center>AGREGAR IMÁGEN</html>");
 		btnAgregarImagenDiagnostico.setForeground(new Color(0, 0, 128));
 		btnAgregarImagenDiagnostico.setFont(new Font("Calibri", Font.BOLD, 12));
-		btnAgregarImagenDiagnostico.setBounds(15, 19, 134, 29);
+		btnAgregarImagenDiagnostico.setBounds(15, 14, 134, 29);
 		panel_1_1.add(btnAgregarImagenDiagnostico);
 		
-		btnBorrarImagen_5 = new JButton("<html><center>BORRAR</html>");
+		btnBorrarImagen_5 = new JButton();
 		btnBorrarImagen_5.setForeground(new Color(0, 0, 128));
+		btnBorrarImagen_5.setIcon(new ImageIcon(this.getClass().getResource("/eliminar.png")));
 		btnBorrarImagen_5.setFont(new Font("Calibri", Font.BOLD, 12));
-		btnBorrarImagen_5.setBounds(481, 90, 64, 20);
+		btnBorrarImagen_5.setBounds(513, 88, 37, 25);
 		panel_1_1.add(btnBorrarImagen_5);
 		
-		btnBorrarImagen_6 = new JButton("<html><center>BORRAR</html>");
+		btnBorrarImagen_6 = new JButton();
 		btnBorrarImagen_6.setForeground(new Color(0, 0, 128));
+		btnBorrarImagen_6.setIcon(new ImageIcon(this.getClass().getResource("/eliminar.png")));
 		btnBorrarImagen_6.setFont(new Font("Calibri", Font.BOLD, 12));
-		btnBorrarImagen_6.setBounds(481, 121, 64, 20);
+		btnBorrarImagen_6.setBounds(513, 119, 37, 25);
 		panel_1_1.add(btnBorrarImagen_6);
 		
 		JLabel lblBorrarImgen_1 = new JLabel("<html><center>BORRAR IMÁGEN</html>");
 		lblBorrarImgen_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblBorrarImgen_1.setBounds(481, 19, 64, 29);
+		lblBorrarImgen_1.setBounds(499, 19, 64, 29);
 		panel_1_1.add(lblBorrarImgen_1);
 		
-		btnBorrarImagen_4 = new JButton("<html><center>BORRAR</html>");
+		btnBorrarImagen_4 = new JButton();
 		btnBorrarImagen_4.setForeground(new Color(0, 0, 128));
+		btnBorrarImagen_4.setIcon(new ImageIcon(this.getClass().getResource("/eliminar.png")));
 		btnBorrarImagen_4.setFont(new Font("Calibri", Font.BOLD, 12));
-		btnBorrarImagen_4.setBounds(481, 59, 64, 20);
+		btnBorrarImagen_4.setBounds(513, 57, 37, 25);
 		panel_1_1.add(btnBorrarImagen_4);
-		
-		btnBorrarImagen_5 = new JButton("<html><center>BORRAR</html>");
-		btnBorrarImagen_5.setForeground(new Color(0, 0, 128));
-		btnBorrarImagen_5.setFont(new Font("Calibri", Font.BOLD, 12));
-		btnBorrarImagen_5.setBounds(481, 90, 64, 20);
-		panel_1_1.add(btnBorrarImagen_5);
-		
-		btnBorrarImagen_6 = new JButton("<html><center>BORRAR</html>");
-		btnBorrarImagen_6.setForeground(new Color(0, 0, 128));
-		btnBorrarImagen_6.setFont(new Font("Calibri", Font.BOLD, 12));
-		btnBorrarImagen_6.setBounds(481, 121, 64, 20);
-		panel_1_1.add(btnBorrarImagen_6);
-		
+
 		setLocationCenter();
 		setVisible(true);
 
