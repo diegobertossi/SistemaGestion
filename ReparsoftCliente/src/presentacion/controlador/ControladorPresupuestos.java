@@ -30,10 +30,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+
+
 import java.io.InputStream;
 //import java.util.Date;
 import java.sql.Date;
-
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -50,8 +52,6 @@ import org.apache.poi.util.Units;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
-
-
 
 import java.text.SimpleDateFormat;
 import java.io.ByteArrayOutputStream;
@@ -470,16 +470,17 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				buscarYReemplazar(doc, "#diagnostico#", diagnostico, "");
 				buscarYReemplazar(doc, "#PrecioD#", precioDolar, "");
 				buscarYReemplazar(doc, "#Plazo#", plazoEntrega, "");
-				buscarYReemplazar(doc, "#Imagen1#","",rutaImagen_1);
-				buscarYReemplazar(doc, "#Imagen2#","",rutaImagen_2);
-				buscarYReemplazar(doc, "#Imagen3#","",rutaImagen_3);
-				buscarYReemplazar(doc, "#Imagen4#","",rutaImagen_4);
-				buscarYReemplazar(doc, "#Imagen5#","",rutaImagen_5);
-				buscarYReemplazar(doc, "#Imagen6#","",rutaImagen_6);
+				buscarYReemplazar(doc, "#Imagen1#", "", rutaImagen_1);
+				buscarYReemplazar(doc, "#Imagen2#", "", rutaImagen_2);
+				buscarYReemplazar(doc, "#Imagen3#", "", rutaImagen_3);
+				buscarYReemplazar(doc, "#Imagen4#", "", rutaImagen_4);
+				buscarYReemplazar(doc, "#Imagen5#", "", rutaImagen_5);
+				buscarYReemplazar(doc, "#Imagen6#", "", rutaImagen_6);
 
 				FileOutputStream out = new FileOutputStream(nuevoDocumento);
 				doc.write(out);
 				out.close();
+				doc.close();
 
 				JOptionPane.showMessageDialog(null, "Documento generado exitosamente.");
 
@@ -611,11 +612,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
-	
-	
-	
-	
-	
 //	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
 //	    for (XWPFParagraph paragraph : doc.getParagraphs()) {
 //	        for (XWPFRun run : paragraph.getRuns()) {
@@ -676,16 +672,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 //	    ImageIO.write(image, "png", baos);
 //	    return baos.toByteArray();
 //	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 //	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
 //	    for (XWPFParagraph paragraph : doc.getParagraphs()) {
 //	        for (XWPFRun run : paragraph.getRuns()) {
@@ -750,65 +737,131 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 //	    
 //	}
 //	
-	
-	
-	
 
 	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
-	    for (XWPFParagraph paragraph : doc.getParagraphs()) {
-	        for (XWPFRun run : paragraph.getRuns()) {
-	            String text = run.getText(0);
-	            if (text != null && text.contains(textoBusqueda)) {
-	                text = text.replace(textoBusqueda, textoReemplazo);
-	                run.setText(text, 0);
-	            }
-	        }
-	    }
+		for (XWPFParagraph paragraph : doc.getParagraphs()) {
+			for (XWPFRun run : paragraph.getRuns()) {
+				String text = run.getText(0);
+				if (text != null && text.contains(textoBusqueda)) {
+					text = text.replace(textoBusqueda, textoReemplazo);
+					run.setText(text, 0);
+				}
+			}
+		}
 
-	    for (XWPFTable table : doc.getTables()) {
-	        for (XWPFTableRow row : table.getRows()) {
-	            for (XWPFTableCell cell : row.getTableCells()) {
-	                for (XWPFParagraph paragraph : cell.getParagraphs()) {
-	                    for (XWPFRun run : paragraph.getRuns()) {
-	                        String text = run.getText(0);
-	                        if (text != null && text.contains(textoBusqueda)) {
-	                            run.setText("", 0);
-	                            if (rutaImagen != null && !rutaImagen.isEmpty()) {
-	                                try {
-	                                    
-	                                	File image = new File(rutaImagen);
-	                                    FileInputStream fis
-	                                        = new FileInputStream(image);
-	                                    int imageType = XWPFDocument.PICTURE_TYPE_JPEG;
-	                                    String imageFileName = image.getName();
-	                                	
-	                                    
-	                                    int width = 100;
-	                                    int height = 100;
-	                                	//FileInputStream fis = new FileInputStream(rutaImagen);
-	                                    run.addPicture(fis, imageType, imageFileName,
-	                                            Units.toEMU(width),
-	                                            Units.toEMU(height));
-	                                   
-	                                } catch (Exception e) {
-	                                    e.printStackTrace();
-	                                }
-	                            } else if (textoReemplazo != null && !textoReemplazo.isEmpty()) {
-	                                String[] lines = textoReemplazo.split("\\r?\\n");
-	                                for (int i = 0; i < lines.length; i++) {
-	                                    run.setText(lines[i], i);
-	                                    if (i < lines.length - 1) {
-	                                        run.addBreak();
-	                                    }
-	                                }
-	                            }
-	                        }
-	                    }
-	                }
-	            }
-	        }
-	    }
+		for (XWPFTable table : doc.getTables()) {
+			for (XWPFTableRow row : table.getRows()) {
+				for (XWPFTableCell cell : row.getTableCells()) {
+					for (XWPFParagraph paragraph : cell.getParagraphs()) {
+						for (XWPFRun run : paragraph.getRuns()) {
+							String text = run.getText(0);
+							if (text != null && text.contains(textoBusqueda)) {
+								run.setText("", 0);
+								if (rutaImagen != null && !rutaImagen.isEmpty()) {
+									try {
+										
+										
+
+										File image = new File(rutaImagen);
+										
+										BufferedImage bimg = ImageIO.read(image);
+										int width = bimg.getWidth();
+										int height = bimg.getHeight();
+										String imgFile = image.getName();
+										int imgFormat = getImageFormat(imgFile);
+										
+										FileInputStream fis = new FileInputStream(image);
+//										int imageType = XWPFDocument.PICTURE_TYPE_JPEG;
+//										String imageFileName = image.getName();
+
+										run.addPicture(fis, imgFormat, imgFile, Units.toEMU(width), Units.toEMU(height));
+		
+									
+										//run.addPicture(fis, imageType, imageFileName, Units.toEMU(width),Units.toEMU(height));
+
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								} else if (textoReemplazo != null && !textoReemplazo.isEmpty()) {
+									String[] lines = textoReemplazo.split("\\r?\\n");
+									for (int i = 0; i < lines.length; i++) {
+										run.setText(lines[i], i);
+										if (i < lines.length - 1) {
+											run.addBreak();
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
+
+	public static void addImagesToWordDocument(File imageFile1, File imageFile2)
+			throws IOException, InvalidFormatException {
+		XWPFDocument doc = new XWPFDocument();
+		XWPFParagraph p = doc.createParagraph();
+		XWPFRun r = p.createRun();
+		BufferedImage bimg1 = ImageIO.read(imageFile1);
+		int width1 = bimg1.getWidth();
+		int height1 = bimg1.getHeight();
+		BufferedImage bimg2 = ImageIO.read(imageFile2);
+		int width2 = bimg2.getWidth();
+		int height2 = bimg2.getHeight();
+		String imgFile1 = imageFile1.getName();
+		String imgFile2 = imageFile2.getName();
+		int imgFormat1 = getImageFormat(imgFile1);
+		int imgFormat2 = getImageFormat(imgFile2);
+		String p1 = "Sample Paragraph Post. This is a sample Paragraph post. Sample Paragraph text is being cut and pasted again and again. This is a sample Paragraph post. peru-duellmans-poison-dart-frog.";
+		String p2 = "Sample Paragraph Post. This is a sample Paragraph post. Sample Paragraph text is being cut and pasted again and again. This is a sample Paragraph post. peru-duellmans-poison-dart-frog.";
+		r.setText(p1);
+		r.addBreak();
+		r.addPicture(new FileInputStream(imageFile1), imgFormat1, imgFile1, Units.toEMU(width1), Units.toEMU(height1));
+		// page break
+		// r.addBreak(BreakType.PAGE);
+		// line break
+		r.addBreak();
+		r.setText(p2);
+		r.addBreak();
+		r.addPicture(new FileInputStream(imageFile2), imgFormat2, imgFile2, Units.toEMU(width2), Units.toEMU(height2));
+		FileOutputStream out = new FileOutputStream("word_images.docx");
+		doc.write(out);
+		out.close();
+		doc.close();
+	}
+
+	private static int getImageFormat(String imgFileName) {
+		int format;
+		if (imgFileName.endsWith(".emf"))
+			format = XWPFDocument.PICTURE_TYPE_EMF;
+		else if (imgFileName.endsWith(".wmf"))
+			format = XWPFDocument.PICTURE_TYPE_WMF;
+		else if (imgFileName.endsWith(".pict"))
+			format = XWPFDocument.PICTURE_TYPE_PICT;
+		else if (imgFileName.endsWith(".jpeg") || imgFileName.endsWith(".jpg"))
+			format = XWPFDocument.PICTURE_TYPE_JPEG;
+		else if (imgFileName.endsWith(".png"))
+			format = XWPFDocument.PICTURE_TYPE_PNG;
+		else if (imgFileName.endsWith(".dib"))
+			format = XWPFDocument.PICTURE_TYPE_DIB;
+		else if (imgFileName.endsWith(".gif"))
+			format = XWPFDocument.PICTURE_TYPE_GIF;
+		else if (imgFileName.endsWith(".tiff"))
+			format = XWPFDocument.PICTURE_TYPE_TIFF;
+		else if (imgFileName.endsWith(".eps"))
+			format = XWPFDocument.PICTURE_TYPE_EPS;
+		else if (imgFileName.endsWith(".bmp"))
+			format = XWPFDocument.PICTURE_TYPE_BMP;
+		else if (imgFileName.endsWith(".wpg"))
+			format = XWPFDocument.PICTURE_TYPE_WPG;
+		else {
+			return 0;
+		}
+		return format;
+	}
+
 //
 //	private int calculateCellHeight(XWPFTableCell cell) {
 //	    int totalHeight = 0;
@@ -820,7 +873,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 //	    }
 //	    return totalHeight;
 //	}
-		
+
 //
 //	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo) {
 //	    for (XWPFParagraph paragraph : doc.getParagraphs()) {
@@ -1020,7 +1073,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
 
 	}
-
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
