@@ -612,136 +612,13 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
-//	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
-//	    for (XWPFParagraph paragraph : doc.getParagraphs()) {
-//	        for (XWPFRun run : paragraph.getRuns()) {
-//	            String text = run.getText(0);
-//	            if (text != null && text.contains(textoBusqueda)) {
-//	                text = text.replace(textoBusqueda, textoReemplazo);
-//	                run.setText(text, 0);
-//	            }
-//	        }
-//	    }
-//
-//	    for (XWPFTable table : doc.getTables()) {
-//	        for (XWPFTableRow row : table.getRows()) {
-//	            for (XWPFTableCell cell : row.getTableCells()) {
-//	                for (XWPFParagraph paragraph : cell.getParagraphs()) {
-//	                    for (XWPFRun run : paragraph.getRuns()) {
-//	                        String text = run.getText(0);
-//	                        if (text != null && text.contains(textoBusqueda)) {
-//	                            run.setText("", 0);
-//	                            if (rutaImagen != null && !rutaImagen.isEmpty()) {
-//	                                try {
-//	                                    BufferedImage image = ImageIO.read(new FileInputStream(rutaImagen));
-//	                                    int width = image.getWidth();
-//	                                    int height = image.getHeight();
-//
-//	                                    // Encode the image as base64
-//	                                    byte[] imageBytes = Base64.getEncoder().encode(imageToBytes(image));
-//
-//	                                    // Add the image to the run
-//	                                    try {
-//											run.addPicture(new ByteArrayInputStream(imageBytes), XWPFDocument.PICTURE_TYPE_PNG, "", Units.toEMU(width), Units.toEMU(height));
-//										} catch (InvalidFormatException e) {
-//											// TODO Auto-generated catch block
-//											e.printStackTrace();
-//										}
-//	                                } catch (IOException e) {
-//	                                    e.printStackTrace();
-//	                                }
-//	                            } else if (textoReemplazo != null && !textoReemplazo.isEmpty()) {
-//	                                String[] lines = textoReemplazo.split("\\r?\\n");
-//	                                for (int i = 0; i < lines.length; i++) {
-//	                                    run.setText(lines[i], i);
-//	                                    if (i < lines.length - 1) {
-//	                                        run.addBreak();
-//	                                    }
-//	                                }
-//	                            }
-//	                        }
-//	                    }
-//	                }
-//	            }
-//	        }
-//	    }
-//	}
-//
-//	private static byte[] imageToBytes(BufferedImage image) throws IOException {
-//	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//	    ImageIO.write(image, "png", baos);
-//	    return baos.toByteArray();
-//	}
 
-//	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
-//	    for (XWPFParagraph paragraph : doc.getParagraphs()) {
-//	        for (XWPFRun run : paragraph.getRuns()) {
-//	            String text = run.getText(0);
-//	            if (text != null && text.contains(textoBusqueda)) {
-//	                text = text.replace(textoBusqueda, textoReemplazo);
-//	                run.setText(text, 0);
-//	            }
-//	        }
-//	    }
-//
-//	    for (XWPFTable table : doc.getTables()) {
-//	        for (XWPFTableRow row : table.getRows()) {
-//	            for (XWPFTableCell cell : row.getTableCells()) {
-//	                for (XWPFParagraph paragraph : cell.getParagraphs()) {
-//	                    for (XWPFRun run : paragraph.getRuns()) {
-//	                        String text = run.getText(0);
-//	                        if (text != null && text.contains(textoBusqueda)) {
-//	                            run.setText("", 0);
-//	                            if (rutaImagen != null && !rutaImagen.isEmpty()) {
-//	                                try {
-//	                                    BufferedImage image = ImageIO.read(new FileInputStream(rutaImagen));
-//	                                    int width = image.getWidth();
-//	                                    int height = image.getHeight();
-//
-//	                                    // Encode the image as base64
-//	                                    byte[] imageBytes;
-//	                                    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-//	                                        ImageIO.write(image, "png", baos);
-//	                                        imageBytes = baos.toByteArray();
-//	                                    }
-//
-//	                                    // Add the image to the run
-//	                                    try {
-//											run.addPicture(new ByteArrayInputStream(imageBytes), XWPFDocument.PICTURE_TYPE_PNG, "", Units.toEMU(width), Units.toEMU(height));
-//										} catch (InvalidFormatException e) {
-//											// TODO Auto-generated catch block
-//											e.printStackTrace();
-//										}
-//	                                } catch (IOException e) {
-//	                                    e.printStackTrace();
-//	                                }
-//	                            } else if (textoReemplazo != null && !textoReemplazo.isEmpty()) {
-//	                                String[] lines = textoReemplazo.split("\\r?\\n");
-//	                                for (int i = 0; i < lines.length; i++) {
-//	                                    run.setText(lines[i], i);
-//	                                    if (i < lines.length - 1) {
-//	                                        run.addBreak();
-//	                                    }
-//	                                }
-//	                            }
-//	                        }
-//	                    }
-//	                }
-//	            }
-//	        }
-//	    }
-//	    
-//	    
-//	    
-//	    
-//	    
-//	}
-//	
 
 	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
 		for (XWPFParagraph paragraph : doc.getParagraphs()) {
 			for (XWPFRun run : paragraph.getRuns()) {
 				String text = run.getText(0);
+				//System.out.println("text: " + text);
 				if (text != null && text.contains(textoBusqueda)) {
 					text = text.replace(textoBusqueda, textoReemplazo);
 					run.setText(text, 0);
@@ -755,8 +632,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					for (XWPFParagraph paragraph : cell.getParagraphs()) {
 						for (XWPFRun run : paragraph.getRuns()) {
 							String text = run.getText(0);
+							System.out.println("text: " + text);
 							if (text != null && text.contains(textoBusqueda)) {
 								run.setText("", 0);
+								
 								if (rutaImagen != null && !rutaImagen.isEmpty()) {
 									try {
 										
@@ -771,13 +650,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 										int imgFormat = getImageFormat(imgFile);
 										
 										FileInputStream fis = new FileInputStream(image);
-//										int imageType = XWPFDocument.PICTURE_TYPE_JPEG;
-//										String imageFileName = image.getName();
-
-										run.addPicture(fis, imgFormat, imgFile, Units.toEMU(width), Units.toEMU(height));
-		
-									
-										//run.addPicture(fis, imageType, imageFileName, Units.toEMU(width),Units.toEMU(height));
+										run.addPicture(fis, imgFormat, imgFile, Units.toEMU(100), Units.toEMU(100));
 
 									} catch (Exception e) {
 										e.printStackTrace();
@@ -799,38 +672,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 	}
 
-	public static void addImagesToWordDocument(File imageFile1, File imageFile2)
-			throws IOException, InvalidFormatException {
-		XWPFDocument doc = new XWPFDocument();
-		XWPFParagraph p = doc.createParagraph();
-		XWPFRun r = p.createRun();
-		BufferedImage bimg1 = ImageIO.read(imageFile1);
-		int width1 = bimg1.getWidth();
-		int height1 = bimg1.getHeight();
-		BufferedImage bimg2 = ImageIO.read(imageFile2);
-		int width2 = bimg2.getWidth();
-		int height2 = bimg2.getHeight();
-		String imgFile1 = imageFile1.getName();
-		String imgFile2 = imageFile2.getName();
-		int imgFormat1 = getImageFormat(imgFile1);
-		int imgFormat2 = getImageFormat(imgFile2);
-		String p1 = "Sample Paragraph Post. This is a sample Paragraph post. Sample Paragraph text is being cut and pasted again and again. This is a sample Paragraph post. peru-duellmans-poison-dart-frog.";
-		String p2 = "Sample Paragraph Post. This is a sample Paragraph post. Sample Paragraph text is being cut and pasted again and again. This is a sample Paragraph post. peru-duellmans-poison-dart-frog.";
-		r.setText(p1);
-		r.addBreak();
-		r.addPicture(new FileInputStream(imageFile1), imgFormat1, imgFile1, Units.toEMU(width1), Units.toEMU(height1));
-		// page break
-		// r.addBreak(BreakType.PAGE);
-		// line break
-		r.addBreak();
-		r.setText(p2);
-		r.addBreak();
-		r.addPicture(new FileInputStream(imageFile2), imgFormat2, imgFile2, Units.toEMU(width2), Units.toEMU(height2));
-		FileOutputStream out = new FileOutputStream("word_images.docx");
-		doc.write(out);
-		out.close();
-		doc.close();
-	}
 
 	private static int getImageFormat(String imgFileName) {
 		int format;
