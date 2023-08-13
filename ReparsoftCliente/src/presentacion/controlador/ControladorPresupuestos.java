@@ -30,9 +30,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
-
 import java.io.InputStream;
 //import java.util.Date;
 import java.sql.Date;
@@ -456,6 +453,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			String nombreWordNuevo = "AV " + aviso + "-" + "ELS " + els + "_" + cliente + ".docx";
 			String nuevoDocumento = "F:/els/Administracion/Sistema/Informes Siemens/" + nombreWordNuevo;
+			
 
 			try {
 				XWPFDocument doc = new XWPFDocument(new FileInputStream(documentoBase));
@@ -612,90 +610,173 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
-
-
+	
+	
+	
 	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
-		for (XWPFParagraph paragraph : doc.getParagraphs()) {
-			for (XWPFRun run : paragraph.getRuns()) {
-				String text = run.getText(0);
-				//System.out.println("text: " + text);
-				if (text != null && text.contains(textoBusqueda)) {
-					text = text.replace(textoBusqueda, textoReemplazo);
-					run.setText(text, 0);
-				}
-			}
-		}
+		Double anchoImagen= 6.0;
+		
+	    for (XWPFParagraph paragraph : doc.getParagraphs()) {
+	        for (XWPFRun run : paragraph.getRuns()) {
+	            String text = run.getText(0);
+	            if (text != null && text.contains(textoBusqueda)) {
+	                text = text.replace(textoBusqueda, textoReemplazo);
+	                run.setText(text, 0);
+	            }
+	        }
+	    }
 
-		for (XWPFTable table : doc.getTables()) {
-			for (XWPFTableRow row : table.getRows()) {
-				for (XWPFTableCell cell : row.getTableCells()) {
-					for (XWPFParagraph paragraph : cell.getParagraphs()) {
-						for (XWPFRun run : paragraph.getRuns()) {
-							String text = run.getText(0);
-							System.out.println("text: " + text);
-							if (text != null && text.contains(textoBusqueda)) {
-								run.setText("", 0);
-								
-								if (rutaImagen != null && !rutaImagen.isEmpty()) {
-									try {
-										
-										
+	    for (XWPFTable table : doc.getTables()) {
+	        for (XWPFTableRow row : table.getRows()) {
+	            for (XWPFTableCell cell : row.getTableCells()) {
+	                for (XWPFParagraph paragraph : cell.getParagraphs()) {
+	                    for (XWPFRun run : paragraph.getRuns()) {
+	                        String text = run.getText(0);
+	                        System.out.println("text: " +text);
+	                        if (text != null && text.contains(textoBusqueda)) {
+	                            run.setText("", 0);
+	                            
+	                            if (rutaImagen != null && !rutaImagen.isEmpty()) {
+	                                try {
+	                                    File image = new File(rutaImagen);
+	                                    BufferedImage bimg = ImageIO.read(image);
 
-										File image = new File(rutaImagen);
-										
-										BufferedImage bimg = ImageIO.read(image);
-										int width = bimg.getWidth();
-										int height = bimg.getHeight();
-										String imgFile = image.getName();
-										int imgFormat = getImageFormat(imgFile);
-										
-										FileInputStream fis = new FileInputStream(image);
-										run.addPicture(fis, imgFormat, imgFile, Units.toEMU(100), Units.toEMU(100));
+	                                    double aspectRatio = (double) bimg.getWidth() / bimg.getHeight();
+	                                    int newWidth = cmToPixels(anchoImagen);
 
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-								} else if (textoReemplazo != null && !textoReemplazo.isEmpty()) {
-									String[] lines = textoReemplazo.split("\\r?\\n");
-									for (int i = 0; i < lines.length; i++) {
-										run.setText(lines[i], i);
-										if (i < lines.length - 1) {
-											run.addBreak();
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+	                                    
+	                                    int newHeight = (int) (newWidth / aspectRatio);
+	                                    
+	                                    System.out.println("ancho: " + bimg.getWidth() + " alto: " + bimg.getHeight());
+	                                    System.out.println("aspect ratio: " + aspectRatio);
+	                                    System.out.println("nuevo ancho: " + newWidth + " nuevo alto: " + newHeight);
+	                                    
+	                                    
+	                                    
+	                                    String imgFile = image.getName();
+	                                    int imgFormat = getImageFormat(imgFile);
+
+	                                    FileInputStream fis = new FileInputStream(image);
+	                                    run.addPicture(fis, imgFormat, imgFile, Units.toEMU(newWidth), Units.toEMU(newHeight));
+	                                    
+	                                    
+	                                                                
+	                                    
+	                                    
+	                                    
+	                                    
+	                                } catch (Exception e) {
+	                                    e.printStackTrace();
+	                                }
+	                            } else if (textoReemplazo != null && !textoReemplazo.isEmpty()) {
+	                                String[] lines = textoReemplazo.split("\\r?\\n");
+	                                for (int i = 0; i < lines.length; i++) {
+	                                    run.setText(lines[i], i);
+	                                    if (i < lines.length - 1) {
+	                                        run.addBreak();
+	                                    }
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
 	}
 
+	
+	
+	public static int cmToPixels(double cm) {
+	    // 1 centimeter is approximately 0.3937 inches
+	    // 1 inch is exactly 96 pixels
+	    return (int) (cm * 0.3937 * 96);
+	}
+	
+	
+	
+	
+	
+//	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
+//		for (XWPFParagraph paragraph : doc.getParagraphs()) {
+//			for (XWPFRun run : paragraph.getRuns()) {
+//				String text = run.getText(0);
+//				// System.out.println("text: " + text);
+//				if (text != null && text.contains(textoBusqueda)) {
+//					text = text.replace(textoBusqueda, textoReemplazo);
+//					run.setText(text, 0);
+//				}
+//			}
+//		}
+//
+//		for (XWPFTable table : doc.getTables()) {
+//			for (XWPFTableRow row : table.getRows()) {
+//				for (XWPFTableCell cell : row.getTableCells()) {
+//					for (XWPFParagraph paragraph : cell.getParagraphs()) {
+//						for (XWPFRun run : paragraph.getRuns()) {
+//							String text = run.getText(0);
+//							System.out.println("text: " + text);
+//							if (text != null && text.contains(textoBusqueda)) {
+//								run.setText("", 0);
+//
+//								if (rutaImagen != null && !rutaImagen.isEmpty()) {
+//									try {
+//
+//										File image = new File(rutaImagen);
+//
+//										BufferedImage bimg = ImageIO.read(image);
+//										int width = bimg.getWidth();
+//										int height = bimg.getHeight();
+//										String imgFile = image.getName();
+//										int imgFormat = getImageFormat(imgFile);
+//
+//										FileInputStream fis = new FileInputStream(image);
+//										run.addPicture(fis, imgFormat, imgFile, Units.toEMU(100), Units.toEMU(100));
+//
+//									} catch (Exception e) {
+//										e.printStackTrace();
+//									}
+//								} else if (textoReemplazo != null && !textoReemplazo.isEmpty()) {
+//									String[] lines = textoReemplazo.split("\\r?\\n");
+//									for (int i = 0; i < lines.length; i++) {
+//										run.setText(lines[i], i);
+//										if (i < lines.length - 1) {
+//											run.addBreak();
+//										}
+//									}
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
 
 	private static int getImageFormat(String imgFileName) {
 		int format;
-		if (imgFileName.endsWith(".emf"))
+		if (imgFileName.endsWith(".emf") || imgFileName.endsWith(".EMF"))
 			format = XWPFDocument.PICTURE_TYPE_EMF;
-		else if (imgFileName.endsWith(".wmf"))
+		else if (imgFileName.endsWith(".wmf") || imgFileName.endsWith(".WMF"))
 			format = XWPFDocument.PICTURE_TYPE_WMF;
-		else if (imgFileName.endsWith(".pict"))
+		else if (imgFileName.endsWith(".pict") || imgFileName.endsWith(".PICT"))
 			format = XWPFDocument.PICTURE_TYPE_PICT;
-		else if (imgFileName.endsWith(".jpeg") || imgFileName.endsWith(".jpg"))
+		else if (imgFileName.endsWith(".jpeg") || imgFileName.endsWith(".jpg") || imgFileName.endsWith(".JPEG")
+				|| imgFileName.endsWith(".JPG"))
 			format = XWPFDocument.PICTURE_TYPE_JPEG;
-		else if (imgFileName.endsWith(".png"))
+		else if (imgFileName.endsWith(".png") || imgFileName.endsWith(".PNG"))
 			format = XWPFDocument.PICTURE_TYPE_PNG;
-		else if (imgFileName.endsWith(".dib"))
+		else if (imgFileName.endsWith(".dib") || imgFileName.endsWith(".DIB"))
 			format = XWPFDocument.PICTURE_TYPE_DIB;
-		else if (imgFileName.endsWith(".gif"))
+		else if (imgFileName.endsWith(".gif") || imgFileName.endsWith(".GIF"))
 			format = XWPFDocument.PICTURE_TYPE_GIF;
-		else if (imgFileName.endsWith(".tiff"))
+		else if (imgFileName.endsWith(".tiff") || imgFileName.endsWith(".TIFF"))
 			format = XWPFDocument.PICTURE_TYPE_TIFF;
-		else if (imgFileName.endsWith(".eps"))
+		else if (imgFileName.endsWith(".eps") || imgFileName.endsWith(".EPS"))
 			format = XWPFDocument.PICTURE_TYPE_EPS;
-		else if (imgFileName.endsWith(".bmp"))
+		else if (imgFileName.endsWith(".bmp") || imgFileName.endsWith(".BMP"))
 			format = XWPFDocument.PICTURE_TYPE_BMP;
-		else if (imgFileName.endsWith(".wpg"))
+		else if (imgFileName.endsWith(".wpg") || imgFileName.endsWith(".WPG"))
 			format = XWPFDocument.PICTURE_TYPE_WPG;
 		else {
 			return 0;
