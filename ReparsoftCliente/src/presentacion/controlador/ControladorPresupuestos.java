@@ -453,7 +453,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			String nombreWordNuevo = "AV " + aviso + "-" + "ELS " + els + "_" + cliente + ".docx";
 			String nuevoDocumento = "F:/els/Administracion/Sistema/Informes Siemens/" + nombreWordNuevo;
-			
 
 			try {
 				XWPFDocument doc = new XWPFDocument(new FileInputStream(documentoBase));
@@ -610,93 +609,89 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
-	
-	
-	
 	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
-		Double anchoImagen= 6.0;
-		
-	    for (XWPFParagraph paragraph : doc.getParagraphs()) {
-	        for (XWPFRun run : paragraph.getRuns()) {
-	            String text = run.getText(0);
-	            if (text != null && text.contains(textoBusqueda)) {
-	                text = text.replace(textoBusqueda, textoReemplazo);
-	                run.setText(text, 0);
-	            }
-	        }
-	    }
+		Double anchoImagen = 6.0;
+		Double altoImagen = 3.5;
+		int newWidth = 0;
+		int newHeight = 0;
+		Double aspectRatio = 0.0;
 
-	    for (XWPFTable table : doc.getTables()) {
-	        for (XWPFTableRow row : table.getRows()) {
-	            for (XWPFTableCell cell : row.getTableCells()) {
-	                for (XWPFParagraph paragraph : cell.getParagraphs()) {
-	                    for (XWPFRun run : paragraph.getRuns()) {
-	                        String text = run.getText(0);
-	                        System.out.println("text: " +text);
-	                        if (text != null && text.contains(textoBusqueda)) {
-	                            run.setText("", 0);
-	                            
-	                            if (rutaImagen != null && !rutaImagen.isEmpty()) {
-	                                try {
-	                                    File image = new File(rutaImagen);
-	                                    BufferedImage bimg = ImageIO.read(image);
+		for (XWPFParagraph paragraph : doc.getParagraphs()) {
+			for (XWPFRun run : paragraph.getRuns()) {
+				String text = run.getText(0);
+				if (text != null && text.contains(textoBusqueda)) {
+					text = text.replace(textoBusqueda, textoReemplazo);
+					run.setText(text, 0);
+				}
+			}
+		}
 
-	                                    double aspectRatio = (double) bimg.getWidth() / bimg.getHeight();
-	                                    int newWidth = cmToPixels(anchoImagen);
+		for (XWPFTable table : doc.getTables()) {
+			for (XWPFTableRow row : table.getRows()) {
+				for (XWPFTableCell cell : row.getTableCells()) {
+					for (XWPFParagraph paragraph : cell.getParagraphs()) {
+						for (XWPFRun run : paragraph.getRuns()) {
+							String text = run.getText(0);
+							//System.out.println("text: " + text);
+							if (text != null && text.contains(textoBusqueda)) {
+								run.setText("", 0);
 
-	                                    
-	                                    int newHeight = (int) (newWidth / aspectRatio);
-	                                    
-	                                    System.out.println("ancho: " + bimg.getWidth() + " alto: " + bimg.getHeight());
-	                                    System.out.println("aspect ratio: " + aspectRatio);
-	                                    System.out.println("nuevo ancho: " + newWidth + " nuevo alto: " + newHeight);
-	                                    
-	                                    
-	                                    
-	                                    String imgFile = image.getName();
-	                                    int imgFormat = getImageFormat(imgFile);
+								if (rutaImagen != null && !rutaImagen.isEmpty()) {
+									try {
+										File image = new File(rutaImagen);
+										BufferedImage bimg = ImageIO.read(image);
 
-	                                    FileInputStream fis = new FileInputStream(image);
-	                                    run.addPicture(fis, imgFormat, imgFile, Units.toEMU(newWidth), Units.toEMU(newHeight));
-	                                    
-	                                    
-	                                                                
-	                                    
-	                                    
-	                                    
-	                                    
-	                                } catch (Exception e) {
-	                                    e.printStackTrace();
-	                                }
-	                            } else if (textoReemplazo != null && !textoReemplazo.isEmpty()) {
-	                                String[] lines = textoReemplazo.split("\\r?\\n");
-	                                for (int i = 0; i < lines.length; i++) {
-	                                    run.setText(lines[i], i);
-	                                    if (i < lines.length - 1) {
-	                                        run.addBreak();
-	                                    }
-	                                }
-	                            }
-	                        }
-	                    }
-	                }
-	            }
-	        }
-	    }
+										//double aspectRatio = (double) bimg.getWidth() / bimg.getHeight();
+
+										if (bimg.getWidth() > bimg.getHeight()) {
+											aspectRatio = (double) bimg.getWidth() / bimg.getHeight();
+
+											newWidth = cmToPixels(anchoImagen);
+											newHeight = (int) (newWidth / aspectRatio);
+											
+										} else {
+											aspectRatio = (double) bimg.getHeight() / bimg.getWidth();
+											newHeight = cmToPixels(altoImagen);
+											newWidth = (int) (newHeight / aspectRatio);
+										}
+
+										System.out.println("ancho: " + bimg.getWidth() + " alto: " + bimg.getHeight());
+										System.out.println("aspect ratio: " + aspectRatio);
+										System.out.println("nuevo ancho: " + newWidth + " nuevo alto: " + newHeight);
+
+										String imgFile = image.getName();
+										int imgFormat = getImageFormat(imgFile);
+
+										FileInputStream fis = new FileInputStream(image);
+										run.addPicture(fis, imgFormat, imgFile, Units.toEMU(newWidth),
+												Units.toEMU(newHeight));
+
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								} else if (textoReemplazo != null && !textoReemplazo.isEmpty()) {
+									String[] lines = textoReemplazo.split("\\r?\\n");
+									for (int i = 0; i < lines.length; i++) {
+										run.setText(lines[i], i);
+										if (i < lines.length - 1) {
+											run.addBreak();
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
-	
-	
 	public static int cmToPixels(double cm) {
-	    // 1 centimeter is approximately 0.3937 inches
-	    // 1 inch is exactly 96 pixels
-	    return (int) (cm * 0.3937 * 96);
+		// 1 centimeter is approximately 0.3937 inches
+		// 1 inch is exactly 96 pixels
+		return (int) (cm * 0.3937 * 96);
 	}
-	
-	
-	
-	
-	
+
 //	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
 //		for (XWPFParagraph paragraph : doc.getParagraphs()) {
 //			for (XWPFRun run : paragraph.getRuns()) {
