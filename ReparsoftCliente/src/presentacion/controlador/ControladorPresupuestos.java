@@ -779,55 +779,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		return format;
 	}
 
-//
-//	private int calculateCellHeight(XWPFTableCell cell) {
-//	    int totalHeight = 0;
-//	    for (XWPFParagraph paragraph : cell.getParagraphs()) {
-//	        totalHeight += paragraph.getSpacingAfter() + paragraph.getSpacingBefore();
-//	        for (XWPFRun run : paragraph.getRuns()) {
-//	            totalHeight += run.getFontFamily().length(); // Use the length of the font family string
-//	        }
-//	    }
-//	    return totalHeight;
-//	}
 
-//
-//	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo) {
-//	    for (XWPFParagraph paragraph : doc.getParagraphs()) {
-//	        for (XWPFRun run : paragraph.getRuns()) {
-//	            String text = run.getText(0);
-//	            if (text != null && text.contains(textoBusqueda)) {
-//	                text = text.replace(textoBusqueda, textoReemplazo);
-//	                run.setText(text, 0);
-//	            }
-//	        }
-//	    }
-//
-//	    for (XWPFTable table : doc.getTables()) {
-//	        for (XWPFTableRow row : table.getRows()) {
-//	            for (XWPFTableCell cell : row.getTableCells()) {
-//	                for (XWPFParagraph paragraph : cell.getParagraphs()) {
-//	                    for (XWPFRun run : paragraph.getRuns()) {
-//	                        String text = run.getText(0);
-//	                        if (text != null && text.contains(textoBusqueda)) {
-//	                            // Split the replacement text by line breaks
-//	                            String[] lines = textoReemplazo.split("\\r?\\n");
-//	                            
-//	                            // Clear the existing text and add the replacement lines
-//	                            run.setText("", 0);
-//	                            for (int i = 0; i < lines.length; i++) {
-//	                                run.setText(lines[i], i);
-//	                                if (i < lines.length - 1) {
-//	                                    run.addBreak();
-//	                                }
-//	                            }
-//	                        }
-//	                    }
-//	                }
-//	            }
-//	        }
-//	    }
-//	}
 
 	public void agregarListenersVentanaGenerarPresupuesto() {
 
