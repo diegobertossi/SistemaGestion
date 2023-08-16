@@ -346,10 +346,10 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		btnGuardarCambios.setBounds(221, 386, 185, 23);
 		contentPane.add(btnGuardarCambios);
 		
-		GuardarPresupuestoPDF = new JButton("Guardar PDF");
+		GuardarPresupuestoPDF = new JButton("<html><center>Generar Informe Genérico PDF</html>");
 		GuardarPresupuestoPDF.setEnabled(false);
 		GuardarPresupuestoPDF.setFont(new Font("Cambria", Font.BOLD, 12));
-		GuardarPresupuestoPDF.setBounds(677, 522, 155, 23);
+		GuardarPresupuestoPDF.setBounds(677, 541, 155, 38);
 		contentPane.add(GuardarPresupuestoPDF);
 
 		JPanel panel_3 = new JPanel();
@@ -584,8 +584,9 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				textSugerenciaDolar.setBackground(Color.LIGHT_GRAY);
 				
 				btnGenerarInformeSiemens = new JButton("<html><center>Generar Informe Siemens WORD</html>");
+				btnGenerarInformeSiemens.setEnabled(false);
 				btnGenerarInformeSiemens.setFont(new Font("Cambria", Font.BOLD, 12));
-				btnGenerarInformeSiemens.setBounds(677, 556, 155, 38);
+				btnGenerarInformeSiemens.setBounds(677, 602, 155, 38);
 				contentPane.add(btnGenerarInformeSiemens);
 
 		this.setVisible(true);

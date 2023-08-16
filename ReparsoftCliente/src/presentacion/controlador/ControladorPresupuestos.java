@@ -69,6 +69,7 @@ import presentacion.vista.VentanaEmail;
 import presentacion.vista.VentanaGenerarPresupuesto;
 import presentacion.vista.VentanaPresupuestos;
 import presentacion.vista.VentanaSeleccionarELS;
+import presentacion.vista.VentanaVisualizarEquipos;
 import dto.RegistroPresupuestoDTO;
 import dto.ReparacionDTO;
 
@@ -256,6 +257,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 				ventanaGenerarPresupuesto.getVisualizarPresupuestoPDF().setEnabled(true);
 				ventanaGenerarPresupuesto.getGuardarPresupuestoPDF().setEnabled(true);
+				ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens().setEnabled(true);
 
 			}
 		}
@@ -297,7 +299,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 					ReportePresupuesto reporte = new ReportePresupuesto(rep, lista);
 					reporte.guardar();
-
+					
+			
+					
+					
 					int seleccion3 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
 							"Desea enviar el Presupuesto por correo?", "Confirmación", JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
@@ -351,20 +356,34 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		else if (this.ventanaGenerarPresupuesto != null
 				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens()) {
 
-			ventanaAgregarImagenes = new VentanaAgregarImagenes(this);
-			ventanaAgregarImagenes.getBtngenerarInforme().addActionListener(this);
-			ventanaAgregarImagenes.getBtnAgregarImagen().addActionListener(this);
-			ventanaAgregarImagenes.getBtnBorrarImagen_1().addActionListener(this);
-			ventanaAgregarImagenes.getBtnBorrarImagen_2().addActionListener(this);
-			ventanaAgregarImagenes.getBtnBorrarImagen_3().addActionListener(this);
-			ventanaAgregarImagenes.getBtnBorrarImagen_4().addActionListener(this);
-			ventanaAgregarImagenes.getBtnBorrarImagen_5().addActionListener(this);
-			ventanaAgregarImagenes.getBtnBorrarImagen_6().addActionListener(this);
-			ventanaAgregarImagenes.getBtnCancelar().addActionListener(this);
-			ventanaAgregarImagenes.getBtnAgregarImagenDiagnostico().addActionListener(this);
+			if (ventanaGenerarPresupuesto.getGrupoMoneda().getSelection() == null) {
 
+				Object mje = "Debe seleccionar un moneda para agregar al informe.";
+				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+
+			} else {
+
+				int seleccion2 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
+						"Desea generar el archivo WORD?", "Confirmación", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+
+				if (seleccion2 == JOptionPane.YES_OPTION) {
+
+					ventanaAgregarImagenes = new VentanaAgregarImagenes(this);
+					ventanaAgregarImagenes.getBtngenerarInforme().addActionListener(this);
+					ventanaAgregarImagenes.getBtnAgregarImagen().addActionListener(this);
+					ventanaAgregarImagenes.getBtnBorrarImagen_1().addActionListener(this);
+					ventanaAgregarImagenes.getBtnBorrarImagen_2().addActionListener(this);
+					ventanaAgregarImagenes.getBtnBorrarImagen_3().addActionListener(this);
+					ventanaAgregarImagenes.getBtnBorrarImagen_4().addActionListener(this);
+					ventanaAgregarImagenes.getBtnBorrarImagen_5().addActionListener(this);
+					ventanaAgregarImagenes.getBtnBorrarImagen_6().addActionListener(this);
+					ventanaAgregarImagenes.getBtnCancelar().addActionListener(this);
+					ventanaAgregarImagenes.getBtnAgregarImagenDiagnostico().addActionListener(this);
+
+				}
+			}
 		}
-
 		else if (this.ventanaAgregarImagenes != null
 				&& e.getSource() == this.ventanaAgregarImagenes.getBtnAgregarImagen()) {
 
@@ -485,9 +504,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				f.printStackTrace();
 			}
 
-		}
-
-		else if (this.ventanaAgregarImagenes != null && e.getSource() == this.ventanaAgregarImagenes.getBtnCancelar()) {
+		} else if (this.ventanaAgregarImagenes != null
+				&& e.getSource() == this.ventanaAgregarImagenes.getBtnCancelar()) {
 
 			this.ventanaAgregarImagenes.dispose();
 			this.ventanaAgregarImagenes = null;
@@ -632,7 +650,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					for (XWPFParagraph paragraph : cell.getParagraphs()) {
 						for (XWPFRun run : paragraph.getRuns()) {
 							String text = run.getText(0);
-							//System.out.println("text: " + text);
+							// System.out.println("text: " + text);
 							if (text != null && text.contains(textoBusqueda)) {
 								run.setText("", 0);
 
@@ -641,23 +659,23 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 										File image = new File(rutaImagen);
 										BufferedImage bimg = ImageIO.read(image);
 
-										//double aspectRatio = (double) bimg.getWidth() / bimg.getHeight();
+										// double aspectRatio = (double) bimg.getWidth() / bimg.getHeight();
 
 										if (bimg.getWidth() > bimg.getHeight()) {
 											aspectRatio = (double) bimg.getWidth() / bimg.getHeight();
 
 											newWidth = cmToPixels(anchoImagen);
 											newHeight = (int) (newWidth / aspectRatio);
-											
+
 										} else {
 											aspectRatio = (double) bimg.getHeight() / bimg.getWidth();
 											newHeight = cmToPixels(altoImagen);
 											newWidth = (int) (newHeight / aspectRatio);
 										}
 
-										System.out.println("ancho: " + bimg.getWidth() + " alto: " + bimg.getHeight());
-										System.out.println("aspect ratio: " + aspectRatio);
-										System.out.println("nuevo ancho: " + newWidth + " nuevo alto: " + newHeight);
+//										System.out.println("ancho: " + bimg.getWidth() + " alto: " + bimg.getHeight());
+//										System.out.println("aspect ratio: " + aspectRatio);
+//										System.out.println("nuevo ancho: " + newWidth + " nuevo alto: " + newHeight);
 
 										String imgFile = image.getName();
 										int imgFormat = getImageFormat(imgFile);
@@ -692,62 +710,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		return (int) (cm * 0.3937 * 96);
 	}
 
-//	public void buscarYReemplazar(XWPFDocument doc, String textoBusqueda, String textoReemplazo, String rutaImagen) {
-//		for (XWPFParagraph paragraph : doc.getParagraphs()) {
-//			for (XWPFRun run : paragraph.getRuns()) {
-//				String text = run.getText(0);
-//				// System.out.println("text: " + text);
-//				if (text != null && text.contains(textoBusqueda)) {
-//					text = text.replace(textoBusqueda, textoReemplazo);
-//					run.setText(text, 0);
-//				}
-//			}
-//		}
-//
-//		for (XWPFTable table : doc.getTables()) {
-//			for (XWPFTableRow row : table.getRows()) {
-//				for (XWPFTableCell cell : row.getTableCells()) {
-//					for (XWPFParagraph paragraph : cell.getParagraphs()) {
-//						for (XWPFRun run : paragraph.getRuns()) {
-//							String text = run.getText(0);
-//							System.out.println("text: " + text);
-//							if (text != null && text.contains(textoBusqueda)) {
-//								run.setText("", 0);
-//
-//								if (rutaImagen != null && !rutaImagen.isEmpty()) {
-//									try {
-//
-//										File image = new File(rutaImagen);
-//
-//										BufferedImage bimg = ImageIO.read(image);
-//										int width = bimg.getWidth();
-//										int height = bimg.getHeight();
-//										String imgFile = image.getName();
-//										int imgFormat = getImageFormat(imgFile);
-//
-//										FileInputStream fis = new FileInputStream(image);
-//										run.addPicture(fis, imgFormat, imgFile, Units.toEMU(100), Units.toEMU(100));
-//
-//									} catch (Exception e) {
-//										e.printStackTrace();
-//									}
-//								} else if (textoReemplazo != null && !textoReemplazo.isEmpty()) {
-//									String[] lines = textoReemplazo.split("\\r?\\n");
-//									for (int i = 0; i < lines.length; i++) {
-//										run.setText(lines[i], i);
-//										if (i < lines.length - 1) {
-//											run.addBreak();
-//										}
-//									}
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
-
 	private static int getImageFormat(String imgFileName) {
 		int format;
 		if (imgFileName.endsWith(".emf") || imgFileName.endsWith(".EMF"))
@@ -778,8 +740,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 		return format;
 	}
-
-
 
 	public void agregarListenersVentanaGenerarPresupuesto() {
 
