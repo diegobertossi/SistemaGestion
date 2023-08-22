@@ -1595,8 +1595,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setTextPresupuesto(reparacion.getPrecioPeso().toString());
 		ventanaVisualizarEquipos.setTextPago(reparacion.getPago().toString());
 
-		ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(reparacion.getPresupuestoGenerado());
-		ventanaVisualizarEquipos.setChckbxPresupuestoEnviado(reparacion.getPresupuestoEnviado());
+		ventanaVisualizarEquipos.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
+		ventanaVisualizarEquipos.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
 		verificarPresupuesto();
@@ -1680,8 +1680,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setTextPresupuesto(reparacion.getPrecioPeso().toString());
 		ventanaVisualizarEquipos.setTextPago(reparacion.getPago().toString());
 
-		ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(reparacion.getPresupuestoGenerado());
-		ventanaVisualizarEquipos.setChckbxPresupuestoEnviado(reparacion.getPresupuestoEnviado());
+		ventanaVisualizarEquipos.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
+		ventanaVisualizarEquipos.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
 		verificarPresupuesto();
@@ -1939,7 +1939,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(EquipoPagado);
 				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(EquipoPagado);
 				ventanaVisualizarEquipos.getTextPago().setBackground(EquipoPagado);
-				ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(true);
+				ventanaVisualizarEquipos.setChckPDFGenerado(true);
 
 			} else if (ventanaVisualizarEquipos.getTextPresupuesto().getText()
 					.compareTo(ventanaVisualizarEquipos.getTextPago().getText()) != 0
@@ -1962,7 +1962,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(FaltaPago);
 				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(FaltaPago);
 				ventanaVisualizarEquipos.getTextPago().setBackground(FaltaPago);
-				ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(true);
+				ventanaVisualizarEquipos.setChckPDFGenerado(true);
 
 			}
 
@@ -1973,7 +1973,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(AzulClaro);
 			ventanaVisualizarEquipos.getTextPresupuesto().setBackground(AzulClaro);
 			ventanaVisualizarEquipos.getTextPago().setBackground(AzulClaro);
-			ventanaVisualizarEquipos.setChckbxPresupuestoGenerado(false);
+			ventanaVisualizarEquipos.setChckPDFGenerado(false);
 
 		}
 		// TODO Auto-generated method stub
@@ -2320,8 +2320,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		boolean enviado = false;
 
-		boolean presupuestoGenerado = this.ventanaVisualizarEquipos.getChckbxPresupuestoGenerado();
-		boolean presupuestoEnviado = this.ventanaVisualizarEquipos.getChckbxPresupuestoEnviado();
+		boolean presupuestoGenerado = this.ventanaVisualizarEquipos.getChckPDFGenerado();
+		boolean presupuestoEnviado = this.ventanaVisualizarEquipos.getChckPDFEnviado();
 		boolean avisoEnviado = this.ventanaVisualizarEquipos.getChckbxAvisoEnviado();
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");

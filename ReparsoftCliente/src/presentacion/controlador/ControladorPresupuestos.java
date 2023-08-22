@@ -123,7 +123,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	private boolean presupuestoGenerado = false;
 	private boolean presupuestoEnviado = false;
-
+	private boolean informeWordGenerado = false;
+	private boolean informeWordEnviado = false;
+	
 	public ControladorPresupuestos(VentanaPresupuestos ventanaPresupuestos, Agenda agenda) {
 
 		this.ventanaPresupuestos = ventanaPresupuestos;

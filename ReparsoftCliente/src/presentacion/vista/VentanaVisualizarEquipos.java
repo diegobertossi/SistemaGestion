@@ -92,10 +92,10 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JButton btnenviarCorreoOwsp;
 
 	private JCheckBox chckbxAvisoEnviado;
-	private JCheckBox chckbxPresupuestoGenerado;
-	private JCheckBox chckbxPresupuestoEnviado;
-	private JCheckBox chckbxInformeSiemensGenerado;
-	private JCheckBox chckbxInformeSiemensEnviado;
+	private JCheckBox chckPDFgenerado;
+	private JCheckBox chckPDFenviado;
+	private JCheckBox chckWORDgenerado;
+	private JCheckBox chckWORDenviado;
 
 	private JTextField textELS;
 	private int ELS = 1;
@@ -937,37 +937,37 @@ public class VentanaVisualizarEquipos extends JFrame {
 		BotonPresupuestar.setFont(new Font("Cambria", Font.PLAIN, 10));
 		BotonPresupuestar.setIcon(null);
 
-		chckbxPresupuestoGenerado = new JCheckBox("");
-		chckbxPresupuestoGenerado.setEnabled(false);
-		chckbxPresupuestoGenerado.setBounds(6, 91, 21, 23);
-		panel_presupuesto.add(chckbxPresupuestoGenerado);
-		chckbxPresupuestoGenerado.setBackground(SystemColor.activeCaption);
-		chckbxPresupuestoGenerado.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxPresupuestoGenerado.setForeground(Color.BLUE);
+		chckPDFgenerado = new JCheckBox("");
+		chckPDFgenerado.setEnabled(false);
+		chckPDFgenerado.setBounds(6, 91, 21, 23);
+		panel_presupuesto.add(chckPDFgenerado);
+		chckPDFgenerado.setBackground(SystemColor.activeCaption);
+		chckPDFgenerado.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckPDFgenerado.setForeground(Color.BLUE);
 
-		chckbxPresupuestoEnviado = new JCheckBox("");
-		chckbxPresupuestoEnviado.setEnabled(false);
-		chckbxPresupuestoEnviado.setBounds(6, 111, 21, 23);
-		panel_presupuesto.add(chckbxPresupuestoEnviado);
-		chckbxPresupuestoEnviado.setBackground(SystemColor.activeCaption);
-		chckbxPresupuestoEnviado.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxPresupuestoEnviado.setForeground(Color.BLUE);
+		chckPDFenviado = new JCheckBox("");
+		chckPDFenviado.setEnabled(false);
+		chckPDFenviado.setBounds(6, 111, 21, 23);
+		panel_presupuesto.add(chckPDFenviado);
+		chckPDFenviado.setBackground(SystemColor.activeCaption);
+		chckPDFenviado.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckPDFenviado.setForeground(Color.BLUE);
 
-		chckbxInformeSiemensGenerado = new JCheckBox("");
-		chckbxInformeSiemensGenerado.setEnabled(false);
-		chckbxInformeSiemensGenerado.setBounds(164, 91, 21, 23);
-		panel_presupuesto.add(chckbxInformeSiemensGenerado);
-		chckbxInformeSiemensGenerado.setBackground(SystemColor.activeCaption);
-		chckbxInformeSiemensGenerado.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxInformeSiemensGenerado.setForeground(Color.BLUE);
+		chckWORDgenerado = new JCheckBox("");
+		chckWORDgenerado.setEnabled(false);
+		chckWORDgenerado.setBounds(164, 91, 21, 23);
+		panel_presupuesto.add(chckWORDgenerado);
+		chckWORDgenerado.setBackground(SystemColor.activeCaption);
+		chckWORDgenerado.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckWORDgenerado.setForeground(Color.BLUE);
 
-		chckbxInformeSiemensEnviado = new JCheckBox("");
-		chckbxInformeSiemensEnviado.setEnabled(false);
-		chckbxInformeSiemensEnviado.setBounds(164, 111, 21, 23);
-		panel_presupuesto.add(chckbxInformeSiemensEnviado);
-		chckbxInformeSiemensEnviado.setBackground(SystemColor.activeCaption);
-		chckbxInformeSiemensEnviado.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxInformeSiemensEnviado.setForeground(Color.BLUE);
+		chckWORDenviado = new JCheckBox("");
+		chckWORDenviado.setEnabled(false);
+		chckWORDenviado.setBounds(164, 111, 21, 23);
+		panel_presupuesto.add(chckWORDenviado);
+		chckWORDenviado.setBackground(SystemColor.activeCaption);
+		chckWORDenviado.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckWORDenviado.setForeground(Color.BLUE);
 
 		panel_MontoPresupuesto = new JPanel();
 		panel_MontoPresupuesto.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -1607,36 +1607,36 @@ public class VentanaVisualizarEquipos extends JFrame {
 		chckbxAvisoEnviado.setSelected(AvEnviado);
 	}
 
-	public boolean getChckbxPresupuestoGenerado() {
-		return chckbxPresupuestoGenerado.isSelected();
+	public boolean getChckPDFGenerado() {
+		return chckPDFgenerado.isSelected();
 	}
 
-	public void setChckbxPresupuestoGenerado(Boolean enviado) {
-		chckbxPresupuestoGenerado.setSelected(enviado);
+	public void setChckPDFGenerado(Boolean enviado) {
+		chckPDFgenerado.setSelected(enviado);
 	}
 
-	public boolean getChckbxPresupuestoEnviado() {
-		return chckbxPresupuestoEnviado.isSelected();
+	public boolean getChckPDFEnviado() {
+		return chckPDFenviado.isSelected();
 	}
 
-	public void setChckbxPresupuestoEnviado(Boolean PresupuestoEnviado) {
-		chckbxPresupuestoEnviado.setSelected(PresupuestoEnviado);
+	public void setChckPDFEnviado(Boolean PresupuestoEnviado) {
+		chckPDFenviado.setSelected(PresupuestoEnviado);
 	}
 
-	public JCheckBox getChckbxInformeSiemensGenerado() {
-		return chckbxInformeSiemensGenerado;
+	public JCheckBox getChckWORDGenerado() {
+		return chckWORDgenerado;
 	}
 
-	public void setChckbxInformeSiemensGenerado(JCheckBox chckbxInformeSiemensGenerado) {
-		this.chckbxInformeSiemensGenerado = chckbxInformeSiemensGenerado;
+	public void setChckWORDGenerado(JCheckBox chckbxInformeSiemensGenerado) {
+		this.chckWORDgenerado = chckbxInformeSiemensGenerado;
 	}
 
-	public JCheckBox getChckbxInformeSiemensEnviado() {
-		return chckbxInformeSiemensEnviado;
+	public JCheckBox getChckWORDEnviado() {
+		return chckWORDenviado;
 	}
 
-	public void setChckbxInformeSiemensEnviado(JCheckBox chckbxInformeSiemensEnviado) {
-		this.chckbxInformeSiemensEnviado = chckbxInformeSiemensEnviado;
+	public void setChckWORDEnviado(JCheckBox chckbxInformeSiemensEnviado) {
+		this.chckWORDenviado = chckbxInformeSiemensEnviado;
 	}
 
 	public JButton getBotonPresupuestar() {

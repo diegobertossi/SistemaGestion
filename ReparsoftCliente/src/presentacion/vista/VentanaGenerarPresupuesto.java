@@ -35,6 +35,7 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.UIManager;
 
 public class VentanaGenerarPresupuesto extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -75,6 +76,12 @@ public class VentanaGenerarPresupuesto extends JFrame {
 
 	private JCheckBox chckPesos;
 	private JCheckBox chckDolar;
+	
+	private JCheckBox chckPDFgenerado;
+	private JCheckBox chckPDFenviado;
+	private JCheckBox chckWORDgenerado;
+	private JCheckBox chckWORDenviado;
+	
 	
 	private JTextFieldDateEditor textFabr;
 
@@ -346,10 +353,10 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		btnGuardarCambios.setBounds(221, 386, 185, 23);
 		contentPane.add(btnGuardarCambios);
 		
-		GuardarPresupuestoPDF = new JButton("<html><center>Generar Informe Genérico PDF</html>");
+		GuardarPresupuestoPDF = new JButton("<html><center>Informe PDF</html>");
 		GuardarPresupuestoPDF.setEnabled(false);
 		GuardarPresupuestoPDF.setFont(new Font("Cambria", Font.BOLD, 12));
-		GuardarPresupuestoPDF.setBounds(677, 541, 155, 38);
+		GuardarPresupuestoPDF.setBounds(647, 541, 92, 38);
 		contentPane.add(GuardarPresupuestoPDF);
 
 		JPanel panel_3 = new JPanel();
@@ -512,7 +519,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		VisualizarPresupuestoPDF = new JButton("Visualizar PDF");
 		VisualizarPresupuestoPDF.setEnabled(false);
 		VisualizarPresupuestoPDF.setFont(new Font("Cambria", Font.BOLD, 12));
-		VisualizarPresupuestoPDF.setBounds(677, 496, 155, 23);
+		VisualizarPresupuestoPDF.setBounds(647, 496, 114, 23);
 		contentPane.add(VisualizarPresupuestoPDF);
 		
 		JPanel panel_4_1 = new JPanel();
@@ -583,11 +590,67 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				textSugerenciaDolar.setBorder(null);
 				textSugerenciaDolar.setBackground(Color.LIGHT_GRAY);
 				
-				btnGenerarInformeSiemens = new JButton("<html><center>Generar Informe Siemens WORD</html>");
+				btnGenerarInformeSiemens = new JButton("<html><center>Informe WORD</html>");
 				btnGenerarInformeSiemens.setEnabled(false);
 				btnGenerarInformeSiemens.setFont(new Font("Cambria", Font.BOLD, 12));
-				btnGenerarInformeSiemens.setBounds(677, 602, 155, 38);
+				btnGenerarInformeSiemens.setBounds(647, 602, 92, 38);
 				contentPane.add(btnGenerarInformeSiemens);
+				
+				chckPDFgenerado = new JCheckBox("");
+				chckPDFgenerado.setEnabled(false);
+				chckPDFgenerado.setHorizontalAlignment(SwingConstants.LEFT);
+				chckPDFgenerado.setFont(new Font("Cambria", Font.BOLD, 9));
+				chckPDFgenerado.setBackground(UIManager.getColor("inactiveCaption"));
+				chckPDFgenerado.setBounds(745, 541, 21, 17);
+				contentPane.add(chckPDFgenerado);
+				
+				chckPDFenviado = new JCheckBox("");
+				chckPDFenviado.setEnabled(false);
+				chckPDFenviado.setHorizontalAlignment(SwingConstants.LEFT);
+				chckPDFenviado.setFont(new Font("Cambria", Font.BOLD, 9));
+				chckPDFenviado.setBackground(UIManager.getColor("inactiveCaption"));
+				chckPDFenviado.setBounds(745, 562, 21, 17);
+				contentPane.add(chckPDFenviado);
+				
+				chckWORDgenerado = new JCheckBox("");
+				chckWORDgenerado.setEnabled(false);
+				chckWORDgenerado.setHorizontalAlignment(SwingConstants.LEFT);
+				chckWORDgenerado.setFont(new Font("Cambria", Font.BOLD, 9));
+				chckWORDgenerado.setBackground(UIManager.getColor("inactiveCaption"));
+				chckWORDgenerado.setBounds(745, 602, 21, 17);
+				contentPane.add(chckWORDgenerado);
+				
+				chckWORDenviado = new JCheckBox("");
+				chckWORDenviado.setEnabled(false);
+				chckWORDenviado.setHorizontalAlignment(SwingConstants.LEFT);
+				chckWORDenviado.setFont(new Font("Cambria", Font.BOLD, 9));
+				chckWORDenviado.setBackground(UIManager.getColor("inactiveCaption"));
+				chckWORDenviado.setBounds(745, 623, 21, 17);
+				contentPane.add(chckWORDenviado);
+				
+				JLabel lblNewLabel = new JLabel("PDF GENERADO");
+				lblNewLabel.setForeground(new Color(0, 0, 51));
+				lblNewLabel.setFont(new Font("Cambria", Font.PLAIN, 11));
+				lblNewLabel.setBounds(772, 542, 90, 14);
+				contentPane.add(lblNewLabel);
+				
+				JLabel lblPdfEnviado = new JLabel("PDF ENVIADO");
+				lblPdfEnviado.setForeground(new Color(0, 0, 51));
+				lblPdfEnviado.setFont(new Font("Cambria", Font.PLAIN, 11));
+				lblPdfEnviado.setBounds(772, 562, 90, 14);
+				contentPane.add(lblPdfEnviado);
+				
+				JLabel lblWordGenerado = new JLabel("WORD GENERADO");
+				lblWordGenerado.setForeground(new Color(0, 0, 51));
+				lblWordGenerado.setFont(new Font("Cambria", Font.PLAIN, 11));
+				lblWordGenerado.setBounds(772, 602, 90, 14);
+				contentPane.add(lblWordGenerado);
+				
+				JLabel lblWordEnviado = new JLabel("WORD ENVIADO");
+				lblWordEnviado.setForeground(new Color(0, 0, 51));
+				lblWordEnviado.setFont(new Font("Cambria", Font.PLAIN, 11));
+				lblWordEnviado.setBounds(772, 622, 90, 14);
+				contentPane.add(lblWordEnviado);
 
 		this.setVisible(true);
 
@@ -857,5 +920,37 @@ public class VentanaGenerarPresupuesto extends JFrame {
 
 	public void setTextSugerenciaDolar(String textSugerenciaDolar) {
 		this.textSugerenciaDolar.setText(textSugerenciaDolar);
+	}
+
+	public boolean getChckPDFGenerado() {
+		return chckPDFgenerado.isSelected();
+	}
+
+	public void setChckPDFGenerado(Boolean enviado) {
+		chckPDFgenerado.setSelected(enviado);
+	}
+
+	public boolean getChckPDFEnviado() {
+		return chckPDFenviado.isSelected();
+	}
+
+	public void setChckPDFEnviado(Boolean PresupuestoEnviado) {
+		chckPDFenviado.setSelected(PresupuestoEnviado);
+	}
+
+	public JCheckBox getChckWORDGenerado() {
+		return chckWORDgenerado;
+	}
+
+	public void setChckWORDGenerado(JCheckBox chckbxInformeSiemensGenerado) {
+		this.chckWORDgenerado = chckbxInformeSiemensGenerado;
+	}
+
+	public JCheckBox getChckWORDEnviado() {
+		return chckWORDenviado;
+	}
+
+	public void setChckWORDEnviado(JCheckBox chckbxInformeSiemensEnviado) {
+		this.chckWORDenviado = chckbxInformeSiemensEnviado;
 	}
 }
