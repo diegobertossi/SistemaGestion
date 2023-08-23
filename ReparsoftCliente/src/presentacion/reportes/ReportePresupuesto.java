@@ -95,6 +95,7 @@ public class ReportePresupuesto {
 			
 			Object mje = "Se ha generado el: "+ nombreArchivoPDF;
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+		
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block

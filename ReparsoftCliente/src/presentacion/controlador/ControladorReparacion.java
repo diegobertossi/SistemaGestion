@@ -1597,6 +1597,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ventanaVisualizarEquipos.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
 		ventanaVisualizarEquipos.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
+		ventanaVisualizarEquipos.setChckWORDGenerado(reparacion.getWORDgenerado());
+		ventanaVisualizarEquipos.setChckWORDEnviado(reparacion.getWORDenviado());
+		
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
 		verificarPresupuesto();
