@@ -234,6 +234,8 @@ CREATE TABLE `reparaciones` (
   `FechAceptacion` DATETIME DEFAULT null, 
   `PresupuestoGenerado` TINYINT(1) DEFAULT 0, 
   `PresupuestoEnviado` TINYINT(1) DEFAULT 0, 
+  `WordGenerado` TINYINT(1) DEFAULT 0, 
+  `WordEnviado` TINYINT(1) DEFAULT 0, 
   `Enviado` TINYINT(1) DEFAULT 0, 
   `AvisoEnviado` TINYINT(1) DEFAULT 0,
   `Pago` DECIMAL(19,4) DEFAULT 0, 

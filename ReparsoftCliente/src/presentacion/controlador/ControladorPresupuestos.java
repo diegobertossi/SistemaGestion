@@ -791,6 +791,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		});
 
 		this.ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens().addActionListener(this);
+		
+		
+		
 
 	}
 
@@ -813,6 +816,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		String Informe = reparacion.getInformecliente();
 		Double PrecioPeso = reparacion.getPrecioPeso();
 		Double PrecioDolar = reparacion.getPrecioDolar();
+	
 
 		if (reparacion.getFechaFabr() == null)
 			ventanaGenerarPresupuesto.setTextFabr(null);
@@ -842,7 +846,12 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
 		ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
-
+		
+		ventanaGenerarPresupuesto.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
+		ventanaGenerarPresupuesto.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
+		ventanaGenerarPresupuesto.setChckWORDGenerado(true);
+		ventanaGenerarPresupuesto.setChckWORDEnviado(true);
+		
 		ventanaPresupuestos.dispose();
 		ventanaPresupuestos = null;
 
@@ -903,6 +912,13 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
 		ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
 
+		ventanaGenerarPresupuesto.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
+		ventanaGenerarPresupuesto.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
+		ventanaGenerarPresupuesto.setChckWORDGenerado(true);
+		ventanaGenerarPresupuesto.setChckWORDEnviado(true);
+		//ventanaGenerarPresupuesto.setChckWORDEnviado(reparacion.getWORDenviado());
+		
+		
 	}
 
 	@Override
@@ -942,10 +958,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		double PrecioPeso = Double.parseDouble(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
 		double PrecioDolar = Double.parseDouble(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
 
-		if (PrecioPeso != 0) {
-			presupuestoGenerado = true;
-		}
-		System.out.println(presupuestoEnviado);
+//		if (PrecioPeso != 0) {
+//			presupuestoGenerado = true;
+//		}
+//		System.out.println(presupuestoEnviado);
 
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, informeCliente, PrecioPeso, PrecioDolar,
 				presupuestoGenerado, presupuestoEnviado);

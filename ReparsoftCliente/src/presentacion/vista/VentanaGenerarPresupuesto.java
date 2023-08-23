@@ -938,19 +938,19 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		chckPDFenviado.setSelected(PresupuestoEnviado);
 	}
 
-	public JCheckBox getChckWORDGenerado() {
-		return chckWORDgenerado;
+	public boolean getChckWORDGenerado() {
+		return chckWORDgenerado.isSelected();
 	}
 
-	public void setChckWORDGenerado(JCheckBox chckbxInformeSiemensGenerado) {
-		this.chckWORDgenerado = chckbxInformeSiemensGenerado;
+	public void setChckWORDGenerado(Boolean Generado) {
+		chckWORDgenerado.setSelected(Generado);
 	}
 
-	public JCheckBox getChckWORDEnviado() {
-		return chckWORDenviado;
+	public boolean getChckWORDEnviado() {
+		return chckWORDenviado.isSelected();
 	}
 
-	public void setChckWORDEnviado(JCheckBox chckbxInformeSiemensEnviado) {
-		this.chckWORDenviado = chckbxInformeSiemensEnviado;
+	public void setChckWORDEnviado(Boolean Enviado) {
+		chckWORDenviado.setSelected(Enviado);
 	}
 }
