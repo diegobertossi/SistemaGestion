@@ -28,6 +28,11 @@ public class ReparacionDTO {
 	private Boolean InformeEnviado;
 	private Boolean PresupuestoGenerado;
 	private Boolean PresupuestoEnviado;
+	
+	private Boolean wordGenerado;
+	private Boolean wordEnviado;
+	
+	
 	private Boolean Enviado;
 	private Boolean AvisoEnviado;
 	private Double Pago;
@@ -57,7 +62,7 @@ public class ReparacionDTO {
 			Boolean PresupuestoGenerado, Boolean Enviado, Double Pago, Boolean PresupuestoEnviado, String Nombre, String Correo, String Modelo,
 			String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente, int IDCliente, int IDSuc,
 			String Cliente, String Sucursal, String NombreUsuario, int Codigo, int NumeroRemitoSalida,
-			String FechaFabr, Boolean AvisoEnviado) {
+			String FechaFabr, Boolean AvisoEnviado,Boolean WordGenerado,Boolean WordEnviado) {
 
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
@@ -81,6 +86,10 @@ public class ReparacionDTO {
 		this.InformeEnviado = InformeEnviado;
 		this.PresupuestoGenerado = PresupuestoGenerado;
 		this.PresupuestoEnviado = PresupuestoEnviado;
+		
+		this.wordGenerado = WordGenerado;
+		this.wordEnviado = WordEnviado;
+		
 		this.Enviado = Enviado;
 		this.Pago = Pago;
 		this.NombreEquipo = Nombre;
@@ -117,7 +126,7 @@ public class ReparacionDTO {
 
 	}
 
-	public ReparacionDTO(int ELS, String Informecliente, Double preciopeso, Double preciodolar,boolean PresupuestoGenerado, boolean PresupuestoEnviado) {
+	public ReparacionDTO(int ELS, String Informecliente, Double preciopeso, Double preciodolar,boolean PresupuestoGenerado, boolean PresupuestoEnviado,boolean informeWordGenerado, boolean informeWordEnviado) {
 
 		this.ELS = ELS;
 		this.Informecliente = Informecliente;
@@ -125,6 +134,8 @@ public class ReparacionDTO {
 		this.PrecioDolar = preciodolar;
 		this.PresupuestoGenerado = PresupuestoGenerado;
 		this.PresupuestoEnviado = PresupuestoEnviado;
+		this.wordGenerado = informeWordGenerado;
+		this.wordEnviado = informeWordEnviado;
 
 	}
 
@@ -639,5 +650,24 @@ public class ReparacionDTO {
 	public void setPresupuestoEnviado(Boolean presupuestoEnviado) {
 		PresupuestoEnviado = presupuestoEnviado;
 	}
+
+	public Boolean getWORDenviado() {
+		return wordEnviado;
+	}
+
+	public Boolean getWORDgenerado() {
+		// TODO Auto-generated method stub
+		return wordGenerado;
+	}
+	
+	public void setWordEnviado(Boolean WordEnviado) {
+		wordEnviado = WordEnviado;
+	}
+	
+	public void setWordGenerado(Boolean WordGenerado) {
+		wordGenerado = WordGenerado;
+	}
+	
+
 
 }

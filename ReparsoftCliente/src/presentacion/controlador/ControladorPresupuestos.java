@@ -302,7 +302,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ReportePresupuesto reporte = new ReportePresupuesto(rep, lista);
 					reporte.guardar();
 					
-			
+					presupuestoGenerado = true;
+					ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
+					this.agenda.editarReparacionR(reparacionAeditar);
 					
 					
 					int seleccion3 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
@@ -501,6 +503,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				doc.close();
 
 				JOptionPane.showMessageDialog(null, "Documento generado exitosamente.");
+				
+				informeWordGenerado = true;
+				ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
+				this.agenda.editarReparacionR(reparacionAeditar);
 
 			} catch (IOException f) {
 				f.printStackTrace();
@@ -849,8 +855,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		
 		ventanaGenerarPresupuesto.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
 		ventanaGenerarPresupuesto.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
-		ventanaGenerarPresupuesto.setChckWORDGenerado(true);
-		ventanaGenerarPresupuesto.setChckWORDEnviado(true);
+		ventanaGenerarPresupuesto.setChckWORDGenerado(reparacion.getWORDgenerado());
+		ventanaGenerarPresupuesto.setChckWORDEnviado(reparacion.getWORDenviado());
 		
 		ventanaPresupuestos.dispose();
 		ventanaPresupuestos = null;
@@ -914,9 +920,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		ventanaGenerarPresupuesto.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
 		ventanaGenerarPresupuesto.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
-		ventanaGenerarPresupuesto.setChckWORDGenerado(true);
-		ventanaGenerarPresupuesto.setChckWORDEnviado(true);
-		//ventanaGenerarPresupuesto.setChckWORDEnviado(reparacion.getWORDenviado());
+		//ventanaGenerarPresupuesto.setChckWORDGenerado(true);
+		//ventanaGenerarPresupuesto.setChckWORDEnviado(true);
+		ventanaGenerarPresupuesto.setChckWORDGenerado(reparacion.getWORDgenerado());
+		ventanaGenerarPresupuesto.setChckWORDEnviado(reparacion.getWORDenviado());
 		
 		
 	}
@@ -964,7 +971,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 //		System.out.println(presupuestoEnviado);
 
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, informeCliente, PrecioPeso, PrecioDolar,
-				presupuestoGenerado, presupuestoEnviado);
+				presupuestoGenerado, presupuestoEnviado,informeWordGenerado,informeWordEnviado);
 
 		return reparacionAeditar;
 
