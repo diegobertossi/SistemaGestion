@@ -49,11 +49,11 @@ public class VentanaEmail extends JFrame {
 	
 	
 	
-	public VentanaEmail(ControladorReparacion controlador){
+	public VentanaEmail(){
 		
 		super();
 		setResizable(false);
-		this.controlador = controlador;
+		//this.controlador = controlador;
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setUndecorated(true);

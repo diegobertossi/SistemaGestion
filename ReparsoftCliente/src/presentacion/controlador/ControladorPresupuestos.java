@@ -125,8 +125,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private boolean presupuestoEnviado = false;
 	private boolean informeWordGenerado = false;
 	private boolean informeWordEnviado = false;
-	
-	public ControladorPresupuestos(VentanaPresupuestos ventanaPresupuestos, Agenda agenda ) {
+
+	public ControladorPresupuestos(VentanaPresupuestos ventanaPresupuestos, Agenda agenda) {
 
 		this.ventanaPresupuestos = ventanaPresupuestos;
 
@@ -138,13 +138,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		this.ventanaPresupuestos.getBtnPresupuestoPorELS().addActionListener(this);
 
 		this.agenda = agenda;
-		
 
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		
-
 
 		if (ventanaPresupuestos != null && e.getSource() == this.ventanaPresupuestos.getBtnenviarInformesSiemens()) {
 
@@ -303,42 +300,32 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 					ReportePresupuesto reporte = new ReportePresupuesto(rep, lista);
 					reporte.guardar();
-					
-					
+
 					ventanaGenerarPresupuesto.setChckPDFGenerado(true);
-							
+
 					ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
 					this.agenda.editarReparacionR(reparacionAeditar);
-					
-					
-					
+
 					int seleccion3 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
 							"Desea enviar el Presupuesto por correo?", "Confirmación", JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 
 					if (seleccion3 == JOptionPane.YES_OPTION) {
 
-						ventanaEmail = new VentanaEmail(controladorReparacion);
+						ventanaEmail = new VentanaEmail();
 
 						String NombreCliente = ventanaGenerarPresupuesto.getTextCliente().getText();
 						String Sucursal = ventanaGenerarPresupuesto.getTextSucursal().getText();
 						String ELS = ventanaGenerarPresupuesto.getTextELS().getText();
-
 						String NombreContacto = this.agenda.ContactoPorCliente(NombreCliente);
 						String emailContacto = this.agenda.EmailPorCliente(NombreCliente);
-
 						String NombrePDF = "Presupuesto ELS_" + ELS + "_" + NombreCliente + ".pdf";
 
-						ventanaEmail.getBtnAdjuntarIMG().addActionListener(this);
-						ventanaEmail.getBtnAdjunto().addActionListener(this);
-						ventanaEmail.getBtnAgregarContacto().addActionListener(this);
-						ventanaEmail.getBtnEditar().addActionListener(this);
-						ventanaEmail.getBtnEnviar().addActionListener(this);
+						agregarListenerAventanaEmail();
 
 						ventanaEmail.getTextCliente().setText(NombreCliente + " ( " + Sucursal + " ) ");
 						ventanaEmail.getTextNombreContacto().setText(NombreContacto);
 						ventanaEmail.getTextEmailContacto().setText(emailContacto);
-
 						ventanaEmail.getTextAdjunto().setText(NombrePDF);
 
 						String empresa = "ELS - Electronic Laboratory & Services.";
@@ -348,13 +335,11 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						String web = "www.elsweb.com.ar";
 						String email = "E-mail: els@elsweb.com.ar";
 						String Asunto = "Presupuesto ELS: " + ELS;
-
 						String cuerpoEnvioPresupuesto = "Buenos días!\n\nAdjunto presupuesto.\nEn caso de aceptar el mismo,favor de responder este correo para poder proceder con la reparación.\nAtte.";
 
 						ventanaEmail.getTextCuerpo().setText(cuerpoEnvioPresupuesto + "\n\n" + empresa + "\n" + mdp
 								+ "\n" + caba + "\n" + brc + "\n" + web + "\n" + email);
 						ventanaEmail.getTextAsunto().setText(Asunto);
-
 						ventanaEmail.getTextCuerpo().moveCaretPosition(0);
 					}
 
@@ -392,8 +377,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 				}
 			}
-		}
-		else if (this.ventanaAgregarImagenes != null
+		} else if (this.ventanaAgregarImagenes != null
 				&& e.getSource() == this.ventanaAgregarImagenes.getBtnAgregarImagen()) {
 
 			JTextField txtRutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1();
@@ -463,6 +447,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			String els = ventanaGenerarPresupuesto.getTextELS().getText();
 			String aviso = ventanaGenerarPresupuesto.getTextAviso().getText();
 			String cliente = ventanaGenerarPresupuesto.getTextCliente().getText();
+			String sucursal = ventanaGenerarPresupuesto.getTextSucursal().getText();
 			String equipo = ventanaGenerarPresupuesto.getTextEquipo().getText();
 			String modelo = ventanaGenerarPresupuesto.getTextModelo().getText();
 			String serie = ventanaGenerarPresupuesto.getTextSerie().getText();
@@ -508,11 +493,44 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				doc.close();
 
 				JOptionPane.showMessageDialog(null, "Documento generado exitosamente.");
-				
+
 				ventanaGenerarPresupuesto.setChckWORDGenerado(true);
-			
+
 				ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
 				this.agenda.editarReparacionR(reparacionAeditar);
+
+				int seleccion3 = JOptionPane.showConfirmDialog(null, "Desea enviar el informe WORD por correo?",
+						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+				if (seleccion3 == JOptionPane.YES_OPTION) {
+
+					ventanaEmail = new VentanaEmail();
+
+					String NombreContacto = this.agenda.ContactoPorCliente(cliente);
+					String emailContacto = this.agenda.EmailPorCliente(cliente);
+					// String NombreWORD = "AV " + aviso + "_" + cliente + ".pdf";
+
+					agregarListenerAventanaEmail();
+
+					ventanaEmail.getTextCliente().setText(cliente + " ( " + sucursal + " ) ");
+					ventanaEmail.getTextNombreContacto().setText(NombreContacto);
+					ventanaEmail.getTextEmailContacto().setText(emailContacto);
+					ventanaEmail.getTextAdjunto().setText(nombreWordNuevo);
+
+					String empresa = "ELS - Electronic Laboratory & Services.";
+					String mdp = "Suc. Mar del Plata: Independencia 2609 1er piso- Te: +54 9 223 5969934.";
+					String caba = "Suc. Bs As: Arcos 4002 4 A - Buenos Aires(1429) - Te: +54 9 11 4703-2205.";
+					String brc = "Suc. Bariloche: 9 de Julio 710 - Te: +54 9 11 3768-8372.";
+					String web = "www.elsweb.com.ar";
+					String email = "E-mail: els@elsweb.com.ar";
+					String Asunto = "Informe " + nombreWordNuevo;
+					String cuerpoEnvioPresupuesto = "Buenos días!\n\nAdjunto el informe correspondiente.\n";
+
+					ventanaEmail.getTextCuerpo().setText(cuerpoEnvioPresupuesto + "\n\n" + empresa + "\n" + mdp + "\n"
+							+ caba + "\n" + brc + "\n" + web + "\n" + email);
+					ventanaEmail.getTextAsunto().setText(Asunto);
+					ventanaEmail.getTextCuerpo().moveCaretPosition(0);
+				}
 
 			} catch (IOException f) {
 				f.printStackTrace();
@@ -553,14 +571,31 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					String correo = ventanaEmail.getTextPara().getText();
 					String Asunto = ventanaEmail.getTextAsunto().getText();
 					String Cuerpo = ventanaEmail.getTextCuerpo().getText();
-					String NombrePDF = ventanaEmail.getTextAdjunto().getText();
 
-					if (mails.EnviarMail.enviarInformeAlCliente(correo, Asunto, Cuerpo, NombrePDF)) {
+					if (ventanaAgregarImagenes == null) {
 
-						ventanaGenerarPresupuesto.setChckPDFEnviado(true);
-					
-						ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
-						this.agenda.editarReparacionR(reparacionAeditar);
+						String NombrePDF = ventanaEmail.getTextAdjunto().getText();
+
+						if (mails.EnviarMail.enviarInformeAlCliente(correo, Asunto, Cuerpo, NombrePDF)) {
+
+							ventanaGenerarPresupuesto.setChckPDFEnviado(true);
+
+							ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
+							this.agenda.editarReparacionR(reparacionAeditar);
+
+						}
+
+					} else {
+						String NombreWORD = ventanaEmail.getTextAdjunto().getText();
+
+						if (mails.EnviarMail.enviarInformeAlCliente(correo, Asunto, Cuerpo, NombreWORD)) {
+
+							ventanaGenerarPresupuesto.setChckWORDEnviado(true);
+
+							ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
+							this.agenda.editarReparacionR(reparacionAeditar);
+
+						}
 
 					}
 
@@ -577,13 +612,26 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnAdjunto()) {
 
-			String NombrePDF = ventanaEmail.getTextAdjunto().getText();
+			if (ventanaAgregarImagenes == null) {
 
-			try {
-				File path = new File("F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/" + NombrePDF);
-				Desktop.getDesktop().open(path);
-			} catch (IOException ex) {
-				ex.printStackTrace();
+				String NombrePDF = ventanaEmail.getTextAdjunto().getText();
+
+				try {
+					File path = new File("F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/" + NombrePDF);
+					Desktop.getDesktop().open(path);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+			else {
+				String nombreWORD = ventanaEmail.getTextAdjunto().getText();
+
+				try {
+					File path = new File("F:/ELS/Administracion/Sistema/Informes Siemens/" + nombreWORD);
+					Desktop.getDesktop().open(path);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
 			}
 
 		}
@@ -804,9 +852,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		});
 
 		this.ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens().addActionListener(this);
-		
-		
-		
 
 	}
 
@@ -829,7 +874,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		String Informe = reparacion.getInformecliente();
 		Double PrecioPeso = reparacion.getPrecioPeso();
 		Double PrecioDolar = reparacion.getPrecioDolar();
-	
 
 		if (reparacion.getFechaFabr() == null)
 			ventanaGenerarPresupuesto.setTextFabr(null);
@@ -859,12 +903,12 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
 		ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
-		
+
 		ventanaGenerarPresupuesto.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
 		ventanaGenerarPresupuesto.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
 		ventanaGenerarPresupuesto.setChckWORDGenerado(reparacion.getWORDgenerado());
 		ventanaGenerarPresupuesto.setChckWORDEnviado(reparacion.getWORDenviado());
-		
+
 		ventanaPresupuestos.dispose();
 		ventanaPresupuestos = null;
 
@@ -929,8 +973,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaGenerarPresupuesto.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
 		ventanaGenerarPresupuesto.setChckWORDGenerado(reparacion.getWORDgenerado());
 		ventanaGenerarPresupuesto.setChckWORDEnviado(reparacion.getWORDenviado());
-		
-		
+
 	}
 
 	@Override
@@ -974,14 +1017,14 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 //			presupuestoGenerado = true;
 //		}
 //		System.out.println(presupuestoEnviado);
-		
+
 		presupuestoEnviado = ventanaGenerarPresupuesto.getChckPDFEnviado();
 		presupuestoGenerado = ventanaGenerarPresupuesto.getChckPDFGenerado();
 		informeWordGenerado = ventanaGenerarPresupuesto.getChckWORDGenerado();
 		informeWordEnviado = ventanaGenerarPresupuesto.getChckWORDEnviado();
 
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, informeCliente, PrecioPeso, PrecioDolar,
-				presupuestoGenerado, presupuestoEnviado,informeWordGenerado,informeWordEnviado);
+				presupuestoGenerado, presupuestoEnviado, informeWordGenerado, informeWordEnviado);
 
 		return reparacionAeditar;
 
@@ -1015,6 +1058,16 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				chckpesos, chckdolar, CondicionesMoneda, CondicionesPago, plazoEntrega);
 
 		return nuevoPresupuesto;
+
+	}
+
+	private void agregarListenerAventanaEmail() {
+
+		ventanaEmail.getBtnAdjuntarIMG().addActionListener(this);
+		ventanaEmail.getBtnAdjunto().addActionListener(this);
+		ventanaEmail.getBtnAgregarContacto().addActionListener(this);
+		ventanaEmail.getBtnEditar().addActionListener(this);
+		ventanaEmail.getBtnEnviar().addActionListener(this);
 
 	}
 

@@ -209,7 +209,7 @@ public class EnviarMail {
 			t.sendMessage(message, message.getAllRecipients());
 			
 			
-			Object mje = "El correo se envi� Exitosamente.";
+			Object mje = "El correo se envió Exitosamente.";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 			
 
