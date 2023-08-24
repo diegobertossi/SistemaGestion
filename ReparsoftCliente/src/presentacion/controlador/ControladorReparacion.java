@@ -1702,6 +1702,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ventanaVisualizarEquipos.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
 		ventanaVisualizarEquipos.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
+		ventanaVisualizarEquipos.setChckWORDGenerado(reparacion.getWORDgenerado());
+		ventanaVisualizarEquipos.setChckWORDEnviado(reparacion.getWORDenviado());
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
 		verificarPresupuesto();
@@ -2645,36 +2647,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 	
-	public void actualizarCheckPDFgenerado() {
-		
-		ventanaVisualizarEquipos.setChckPDFGenerado(true);
-		
-		
-	}
 
-	
-	public void actualizarCheckPDFenviado() {
-		
-		ventanaVisualizarEquipos.setChckPDFEnviado(true);
-		
-		
-	}
-	
-	public void actualizarCheckWORDgenerado() {
-		
-		ventanaVisualizarEquipos.setChckWORDGenerado(true);
-		
-		
-	}
-	
-	public void actualizarCheckWORDenviado() {
-		
-		ventanaVisualizarEquipos.setChckWORDEnviado(true);
-		
-		
-	}
-	
-	
 	
 	
 	public void cerraVentanaVisualizarEquipo() {
