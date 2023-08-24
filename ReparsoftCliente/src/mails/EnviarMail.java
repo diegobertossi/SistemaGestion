@@ -17,17 +17,13 @@ import javax.swing.JOptionPane;
 
 //import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeBodyPart;
 
-
 import presentacion.vista.VentanaVisualizarEquipos;
 
 public class EnviarMail {
 
-	
-	
 	private static boolean enviarAvisoInformePR(String correo, String ELS, String Cliente, String Sucursal) {
 		try {
-			
-			
+
 			// Propiedades de la conexi�n
 			Properties props = new Properties();
 			props.setProperty("mail.smtp.host", "smtp.elsweb.com.ar");
@@ -44,18 +40,16 @@ public class EnviarMail {
 
 			message.addRecipients(Message.RecipientType.BCC, correo);
 
-			message.setSubject("ELS: "+ELS+" "+Cliente + "-" +Sucursal + " - DIAGNOSTICADO" );
+			message.setSubject("ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - DIAGNOSTICADO");
 			message.setText("");
 
 			// Lo enviamos.
 			Transport t = session.getTransport("smtp");
 			t.connect("diego.bertossi@elsweb.com.ar", "Diego1216");
 			t.sendMessage(message, message.getAllRecipients());
-			
-			
+
 			Object mje = "El correo se envi� Exitosamente.";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-			
 
 			// Cierre.
 			t.close();
@@ -64,17 +58,15 @@ public class EnviarMail {
 			Object mje = "El correo NO ha sido enviado.";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.WARNING_MESSAGE);
 			e.printStackTrace();
-			
+
 			return false;
 		}
 
 	}
-	
-	
+
 	private static void enviarAvisoEquipoTerminadoPR(String correo, String ELS, String Cliente, String Sucursal) {
 		try {
-			
-			
+
 			// Propiedades de la conexi�n
 			Properties props = new Properties();
 			props.setProperty("mail.smtp.host", "smtp.elsweb.com.ar");
@@ -91,36 +83,33 @@ public class EnviarMail {
 
 			message.addRecipients(Message.RecipientType.BCC, correo);
 
-			message.setSubject("ELS: "+ELS+" "+Cliente + "-" +Sucursal + " - TERMINADO" );
+			message.setSubject("ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - TERMINADO");
 			message.setText("");
 
 			// Lo enviamos.
 			Transport t = session.getTransport("smtp");
 			t.connect("diego.bertossi@elsweb.com.ar", "Diego1216");
 			t.sendMessage(message, message.getAllRecipients());
-			
-			
+
 			Object mje = "El correo se envi� Exitosamente.";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-			
 
 			// Cierre.
 			t.close();
-		
+
 		} catch (Exception e) {
 			Object mje = "El correo NO ha sido enviado.";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.WARNING_MESSAGE);
 			e.printStackTrace();
-	
+
 		}
 
 	}
-	
-	
-	private static void enviarAvisoRespuestaClientePR(String correo, String ELS, String Cliente, String Sucursal,String EstadoComercial) {
+
+	private static void enviarAvisoRespuestaClientePR(String correo, String ELS, String Cliente, String Sucursal,
+			String EstadoComercial) {
 		try {
-			
-			
+
 			// Propiedades de la conexi�n
 			Properties props = new Properties();
 			props.setProperty("mail.smtp.host", "smtp.elsweb.com.ar");
@@ -137,38 +126,32 @@ public class EnviarMail {
 
 			message.addRecipients(Message.RecipientType.BCC, correo);
 
-			message.setSubject("ELS: "+ELS+" "+Cliente + "-" +Sucursal + " - " + EstadoComercial );
+			message.setSubject("ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - " + EstadoComercial);
 			message.setText("PROCEDER SEG�N CORRESPONDA");
 
 			// Lo enviamos.
 			Transport t = session.getTransport("smtp");
 			t.connect("diego.bertossi@elsweb.com.ar", "Diego1216");
 			t.sendMessage(message, message.getAllRecipients());
-			
-			
+
 			Object mje = "El correo se envi� Exitosamente.";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-			
 
 			// Cierre.
 			t.close();
-		
+
 		} catch (Exception e) {
 			Object mje = "El correo NO ha sido enviado.";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.WARNING_MESSAGE);
 			e.printStackTrace();
-	
+
 		}
 
 	}
 
-	
-	
-	
-	private static boolean enviarInformeAlClientePR(String correo, String Asunto, String Cuerpo,String NombrePDF) {
+	private static boolean enviarInformeAlClientePR(String correo, String Asunto, String Cuerpo, String nombreArchivo) {
 		try {
-			
-			
+
 			// Propiedades de la conexi�n
 			Properties props = new Properties();
 			props.setProperty("mail.smtp.host", "smtp.elsweb.com.ar");
@@ -187,16 +170,22 @@ public class EnviarMail {
 
 			message.setSubject(Asunto);
 			message.setText(Cuerpo);
-			
-			
+
 			BodyPart texto = new javax.mail.internet.MimeBodyPart();
 			texto.setText(Cuerpo);
-			
+
 //			
 			BodyPart adjunto = new javax.mail.internet.MimeBodyPart();
-			adjunto.setDataHandler(new DataHandler(new FileDataSource("F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/"+NombrePDF)));
-			adjunto.setFileName(NombrePDF);
-			
+
+			if (nombreArchivo.endsWith(".pdf")) {
+				adjunto.setDataHandler(new DataHandler(new FileDataSource(
+						"F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/" + nombreArchivo)));
+			}else if (nombreArchivo.endsWith(".docx")) {
+				adjunto.setDataHandler(new DataHandler(new FileDataSource(
+						"F:/ELS/Administracion/Sistema/Informes Siemens/" + nombreArchivo)));
+			}
+			adjunto.setFileName(nombreArchivo);
+
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(texto);
 			multipart.addBodyPart(adjunto);
@@ -207,16 +196,14 @@ public class EnviarMail {
 			Transport t = session.getTransport("smtp");
 			t.connect("diego.bertossi@elsweb.com.ar", "Diego1216");
 			t.sendMessage(message, message.getAllRecipients());
-			
-			
+
 			Object mje = "El correo se envió Exitosamente.";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-			
 
 			// Cierre.
 			t.close();
 			return true;
-		
+
 		} catch (Exception e) {
 			Object mje = "El correo NO ha sido enviado.";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.WARNING_MESSAGE);
@@ -225,47 +212,30 @@ public class EnviarMail {
 		}
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	public static boolean enviarAvisoInforme( String correo, String ELS, String Cliente, String Sucursal) {
 
-		return enviarAvisoInformePR( correo, ELS, Cliente, Sucursal);
+	public static boolean enviarAvisoInforme(String correo, String ELS, String Cliente, String Sucursal) {
+
+		return enviarAvisoInformePR(correo, ELS, Cliente, Sucursal);
 
 	}
-
-
-
 
 	public static void enviarAvisoEquipoTerminado(String correo, String ELS, String Cliente, String Sucursal) {
-		
-		enviarAvisoEquipoTerminadoPR( correo, ELS, Cliente, Sucursal);
-		
+
+		enviarAvisoEquipoTerminadoPR(correo, ELS, Cliente, Sucursal);
+
 	}
 
+	public static void enviarAvisoRespuestaCliente(String correo, String ELS, String Cliente, String Sucursal,
+			String EstadoComercial) {
 
-	public static void enviarAvisoRespuestaCliente(String correo, String ELS, String Cliente, String Sucursal, String EstadoComercial) {
-		
-		enviarAvisoRespuestaClientePR( correo, ELS, Cliente, Sucursal, EstadoComercial);
-		
+		enviarAvisoRespuestaClientePR(correo, ELS, Cliente, Sucursal, EstadoComercial);
+
 	}
-	
-	
-public static boolean enviarInformeAlCliente(String correo, String Asunto, String Cuerpo,String NombrePDF) {
-		
-	return enviarInformeAlClientePR( correo, Asunto, Cuerpo, NombrePDF);
-		
+
+	public static boolean enviarInformeAlCliente(String correo, String Asunto, String Cuerpo, String NombrePDF) {
+
+		return enviarInformeAlClientePR(correo, Asunto, Cuerpo, NombrePDF);
+
 	}
-	
-	
-	
-	
-	
-	
-	
+
 }
