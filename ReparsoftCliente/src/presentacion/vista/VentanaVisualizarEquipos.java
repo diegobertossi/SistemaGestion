@@ -89,6 +89,8 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JButton BotonPresupuestar;
 	private JButton btnGenerarRemito;
 	
+	private JButton BotonRefrescarPantalla;
+	
 	private JButton btnenviarCorreoOwsp;
 
 	private JCheckBox chckbxAvisoEnviado;
@@ -1116,6 +1118,14 @@ public class VentanaVisualizarEquipos extends JFrame {
 		separator_10.setForeground(Color.BLACK);
 		separator_10.setBounds(826, 441, 355, 2);
 		panel.add(separator_10);
+		
+		BotonRefrescarPantalla = new JButton("<html><center>REFRESCAR PANTALLA<html>");
+		BotonRefrescarPantalla.setForeground(new Color(100, 149, 237));
+		BotonRefrescarPantalla.setIcon(new ImageIcon(this.getClass().getResource("/refresh.png")));
+		BotonRefrescarPantalla.setFont(new Font("Cambria", Font.BOLD, 10));
+		BotonRefrescarPantalla.setBackground(new Color(224, 255, 255));
+		BotonRefrescarPantalla.setBounds(1036, 4, 124, 35);
+		panel.add(BotonRefrescarPantalla);
 
 		setLocationCenter();
 		this.setVisible(true);
@@ -1722,6 +1732,12 @@ public class VentanaVisualizarEquipos extends JFrame {
     public void mostrarVentanaVisualizarEquipos() {
         setVisible(true);
     }
-	
-	
+
+	public JButton getBotonRefrescarPantalla() {
+		return BotonRefrescarPantalla;
+	}
+
+	public void setBotonRefrescarPantalla(JButton botonRefrescarPantalla) {
+		BotonRefrescarPantalla = botonRefrescarPantalla;
+	}
 }

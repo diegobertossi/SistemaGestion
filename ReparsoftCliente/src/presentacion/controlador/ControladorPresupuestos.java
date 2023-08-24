@@ -126,7 +126,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private boolean informeWordGenerado = false;
 	private boolean informeWordEnviado = false;
 	
-	public ControladorPresupuestos(VentanaPresupuestos ventanaPresupuestos, Agenda agenda) {
+	public ControladorPresupuestos(VentanaPresupuestos ventanaPresupuestos, Agenda agenda ) {
 
 		this.ventanaPresupuestos = ventanaPresupuestos;
 
@@ -138,10 +138,13 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		this.ventanaPresupuestos.getBtnPresupuestoPorELS().addActionListener(this);
 
 		this.agenda = agenda;
+		
 
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
+
 
 		if (ventanaPresupuestos != null && e.getSource() == this.ventanaPresupuestos.getBtnenviarInformesSiemens()) {
 
@@ -301,8 +304,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ReportePresupuesto reporte = new ReportePresupuesto(rep, lista);
 					reporte.guardar();
 					
-					//presupuestoGenerado = true;
+					
 					ventanaGenerarPresupuesto.setChckPDFGenerado(true);
+							
 					ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
 					this.agenda.editarReparacionR(reparacionAeditar);
 					
@@ -506,6 +510,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				JOptionPane.showMessageDialog(null, "Documento generado exitosamente.");
 				
 				ventanaGenerarPresupuesto.setChckWORDGenerado(true);
+			
 				ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
 				this.agenda.editarReparacionR(reparacionAeditar);
 
@@ -553,6 +558,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					if (mails.EnviarMail.enviarInformeAlCliente(correo, Asunto, Cuerpo, NombrePDF)) {
 
 						ventanaGenerarPresupuesto.setChckPDFEnviado(true);
+					
 						ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
 						this.agenda.editarReparacionR(reparacionAeditar);
 

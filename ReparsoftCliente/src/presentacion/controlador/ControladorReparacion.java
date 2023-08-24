@@ -409,6 +409,22 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			reporte.mostrar();
 
 		}
+		
+		
+		else if (this.ventanaVisualizarEquipos != null
+				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonRefrescarPantalla()) {
+			
+			
+			try {
+				TomarDatosDeTablas();
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+
+			}
+
+			
+		}
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnGuardarCambios()) {
@@ -1433,6 +1449,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getBtnEliminarRepuesto().addActionListener(this);
 		this.ventanaVisualizarEquipos.getTablaRepuestos().addMouseListener(this);
 		this.ventanaVisualizarEquipos.getTablaRepuestos().addKeyListener(this);
+		this.ventanaVisualizarEquipos.getBotonRefrescarPantalla().addActionListener(this);
 
 		this.ventanaVisualizarEquipos.getTextPresupuesto().addKeyListener(this);
 		this.ventanaVisualizarEquipos.getTextPresupuesto().addFocusListener(new FocusListener() {
@@ -2627,7 +2644,39 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 	}
+	
+	public void actualizarCheckPDFgenerado() {
+		
+		ventanaVisualizarEquipos.setChckPDFGenerado(true);
+		
+		
+	}
 
+	
+	public void actualizarCheckPDFenviado() {
+		
+		ventanaVisualizarEquipos.setChckPDFEnviado(true);
+		
+		
+	}
+	
+	public void actualizarCheckWORDgenerado() {
+		
+		ventanaVisualizarEquipos.setChckWORDGenerado(true);
+		
+		
+	}
+	
+	public void actualizarCheckWORDenviado() {
+		
+		ventanaVisualizarEquipos.setChckWORDEnviado(true);
+		
+		
+	}
+	
+	
+	
+	
 	public void cerraVentanaVisualizarEquipo() {
 
 		this.ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
