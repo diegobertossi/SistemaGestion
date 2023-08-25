@@ -92,6 +92,8 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JButton BotonRefrescarPantalla;
 	
 	private JButton btnenviarCorreoOwsp;
+	
+	private JButton btnBuscarELS;
 
 	private JCheckBox chckbxAvisoEnviado;
 	private JCheckBox chckPDFgenerado;
@@ -127,6 +129,8 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JComboBox comboSucursal;
 	private JComboBox comboTecnico;
 
+	private JComboBox comboELS;
+	
 	private JLabel lblEls;
 	private JLabel lblNombreEquipo;
 	private JLabel lblMarca;
@@ -297,8 +301,8 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 		panel_6 = new JPanel();
 		panel_6.setBackground(SystemColor.activeCaption);
-		panel_6.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_6.setBounds(11, 7, 181, 29);
+		panel_6.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_6.setBounds(11, 7, 181, 32);
 		panel.add(panel_6);
 		panel_6.setLayout(null);
 
@@ -1126,6 +1130,21 @@ public class VentanaVisualizarEquipos extends JFrame {
 		BotonRefrescarPantalla.setBackground(new Color(224, 255, 255));
 		BotonRefrescarPantalla.setBounds(1036, 4, 124, 35);
 		panel.add(BotonRefrescarPantalla);
+		
+		JLabel lblNewLabel = new JLabel("BUSCAR ORDEN:");
+		lblNewLabel.setFont(new Font("Cambria", Font.PLAIN, 16));
+		lblNewLabel.setBounds(232, 11, 124, 20);
+		panel.add(lblNewLabel);
+		
+		comboELS = new JComboBox();
+		comboELS.setFont(new Font("Cambria", Font.PLAIN, 14));
+		comboELS.setBounds(357, 11, 100, 20);
+		panel.add(comboELS);
+		
+		btnBuscarELS = new JButton("BUSCAR");
+		btnBuscarELS.setFont(new Font("Cambria", Font.PLAIN, 13));
+		btnBuscarELS.setBounds(463, 11, 80, 20);
+		panel.add(btnBuscarELS);
 
 		setLocationCenter();
 		this.setVisible(true);
@@ -1739,5 +1758,21 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 	public void setBotonRefrescarPantalla(JButton botonRefrescarPantalla) {
 		BotonRefrescarPantalla = botonRefrescarPantalla;
+	}
+
+	public JButton getBtnBuscarELS() {
+		return btnBuscarELS;
+	}
+
+	public void setBtnBuscarELS(JButton btnBuscarELS) {
+		this.btnBuscarELS = btnBuscarELS;
+	}
+
+	public JComboBox getComboELS() {
+		return comboELS;
+	}
+
+	public void setComboELS(JComboBox comboELS) {
+		this.comboELS = comboELS;
 	}
 }
