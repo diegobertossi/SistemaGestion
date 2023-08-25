@@ -68,6 +68,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 	private JButton btnFiltrar;
 	private JButton btnMostrarTodo;
+	private JButton btnEstadisticas;
 	private JButton btnMax;
 	public static int est;
 	private JPanel panel;
@@ -497,12 +498,12 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		btnFiltrar = new JButton("FILTRAR");
 		btnFiltrar.setFont(new Font("Cambria", Font.BOLD, 10));
-		btnFiltrar.setBounds(440, 193, 113, 23);
+		btnFiltrar.setBounds(178, 193, 113, 23);
 		panel.add(btnFiltrar);
 
 		btnMostrarTodo = new JButton("MOSTRAR TODO");
 		btnMostrarTodo.setFont(new Font("Cambria", Font.BOLD, 10));
-		btnMostrarTodo.setBounds(588, 193, 113, 23);
+		btnMostrarTodo.setBounds(469, 193, 113, 23);
 		panel.add(btnMostrarTodo);
 
 		txtListadosDeEquipos = new JTextField();
@@ -518,6 +519,11 @@ public class VentanaListadoReparaciones extends JFrame {
 		btnMax.setBounds(999, 14, 30, 25);
 		btnMax.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
 		panel.add(btnMax);
+		
+		btnEstadisticas = new JButton("ESTADÍSTICAS");
+		btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 10));
+		btnEstadisticas.setBounds(760, 193, 113, 23);
+		panel.add(btnEstadisticas);
 
 		tblReparaciones_1.getTableHeader().setReorderingAllowed(false);
 
@@ -852,7 +858,12 @@ public class VentanaListadoReparaciones extends JFrame {
 	public void setScrollPane(JScrollPane scrollPane) {
 		this.scrollPane = scrollPane;
 	}
-	
 
+	public JButton getBtnEstadisticas() {
+		return btnEstadisticas;
+	}
 
+	public void setBtnEstadisticas(JButton btnEstadisticas) {
+		this.btnEstadisticas = btnEstadisticas;
+	}
 }

@@ -71,8 +71,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-//public class ControladorListados extends ControladorReparacion
-//		implements ActionListener, MouseListener, KeyListener, MouseMotionListener {
+
 
 public class ControladorListados implements ActionListener, MouseListener, KeyListener, MouseMotionListener {
 
@@ -305,6 +304,16 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 			this.ventanaListadoReparaciones.getTblReparaciones().setRowSorter(null);
 
 		}
+		
+		
+		else if (this.ventanaListadoReparaciones != null
+				&& arg0.getSource() == this.ventanaListadoReparaciones.getBtnEstadisticas()) {
+
+			
+			System.out.println("ESTADISTICAS");
+		}
+		
+		
 
 	}
 
@@ -351,6 +360,8 @@ public class ControladorListados implements ActionListener, MouseListener, KeyLi
 
 		this.ventanaListadoReparaciones.getBtnFiltrar().addActionListener(this);
 		this.ventanaListadoReparaciones.getBtnMostrarTodo().addActionListener(this);
+		this.ventanaListadoReparaciones.getBtnEstadisticas().addActionListener(this);
+		
 
 		this.ventanaListadoReparaciones.getComboFiltroCliente().addActionListener(this);
 		this.ventanaListadoReparaciones.getComboFiltroMarca().addActionListener(this);
