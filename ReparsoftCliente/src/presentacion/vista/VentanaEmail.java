@@ -53,7 +53,6 @@ public class VentanaEmail extends JFrame {
 		
 		super();
 		setResizable(false);
-		//this.controlador = controlador;
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setUndecorated(true);

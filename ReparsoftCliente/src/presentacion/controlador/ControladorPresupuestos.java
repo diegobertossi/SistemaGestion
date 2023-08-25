@@ -266,10 +266,15 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		else if (this.ventanaGenerarPresupuesto != null
 				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnCotizacionDolar()) {
+			
+			double[] cotizaciones =consumoAPI.ConsumoAPI.consultaCotizacionDolar();
 
-			String cotizacionDolar = Double.toString(consumoAPI.ConsumoAPI.consultaCotizacionDolar());
+			String cotizacionDolarOf = Double.toString(cotizaciones[0]);
+			
+			String cotizacionDolarBl = Double.toString(cotizaciones[1]); 
 
-			ventanaGenerarPresupuesto.getTextCotizacionDolar().setText(cotizacionDolar);
+			ventanaGenerarPresupuesto.getTextCotizacionDolarOf().setText(cotizacionDolarOf);
+			ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
 
 			if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().compareTo("0.0") != 0) {
 

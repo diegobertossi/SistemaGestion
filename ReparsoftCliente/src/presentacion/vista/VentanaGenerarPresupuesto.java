@@ -61,7 +61,8 @@ public class VentanaGenerarPresupuesto extends JFrame {
 
 	private JTextDouble textPrecioPeso;
 	private JTextDouble textPrecioDolar;
-	private JTextDouble textCotizacionDolar;
+	private JTextDouble textCotizacionDolarOf;
+	private JTextDouble textCotizacionDolarBl;
 	
 	private JTextDouble textSugerenciaPeso;
 	private JTextDouble textSugerenciaDolar;
@@ -530,23 +531,18 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		contentPane.add(panel_4_1);
 		
 				btnCotizacionDolar = new JButton("<html>COTIZACIÓN DEL DOLAR</html>");
-				btnCotizacionDolar.setBounds(10, 11, 94, 51);
+				btnCotizacionDolar.setBounds(10, 11, 87, 51);
 				panel_4_1.add(btnCotizacionDolar);
 				btnCotizacionDolar.setFont(new Font("Cambria", Font.BOLD, 12));
 				
-				textCotizacionDolar = new JTextDouble(10);
-				textCotizacionDolar.setBounds(141, 23, 87, 20);
-				panel_4_1.add(textCotizacionDolar);
-				textCotizacionDolar.setFont(new Font("Cambria", Font.BOLD, 14));
-				textCotizacionDolar.setEditable(false);
-				textCotizacionDolar.setColumns(10);
-				textCotizacionDolar.setBorder(null);
-				textCotizacionDolar.setBackground(Color.LIGHT_GRAY);
-				
-				JLabel lblUs_1 = new JLabel("US$");
-				lblUs_1.setBounds(113, 23, 30, 20);
-				panel_4_1.add(lblUs_1);
-				lblUs_1.setFont(new Font("Cambria", Font.BOLD, 14));
+				textCotizacionDolarOf = new JTextDouble(10);
+				textCotizacionDolarOf.setBounds(163, 11, 69, 20);
+				panel_4_1.add(textCotizacionDolarOf);
+				textCotizacionDolarOf.setFont(new Font("Cambria", Font.BOLD, 14));
+				textCotizacionDolarOf.setEditable(false);
+				textCotizacionDolarOf.setColumns(10);
+				textCotizacionDolarOf.setBorder(null);
+				textCotizacionDolarOf.setBackground(Color.LIGHT_GRAY);
 				
 				JLabel lblsugerenciaEnPesos = new JLabel("<html>SUGERENCIA EN PESOS</html>");
 				lblsugerenciaEnPesos.setBounds(22, 73, 69, 31);
@@ -589,6 +585,37 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				textSugerenciaDolar.setColumns(10);
 				textSugerenciaDolar.setBorder(null);
 				textSugerenciaDolar.setBackground(Color.LIGHT_GRAY);
+				
+				JLabel lblOficial = new JLabel("<html>OFICIAL</html>");
+				lblOficial.setBounds(107, 17, 45, 14);
+				panel_4_1.add(lblOficial);
+				lblOficial.setHorizontalAlignment(SwingConstants.LEFT);
+				lblOficial.setForeground(new Color(47, 79, 79));
+				lblOficial.setFont(new Font("Cambria", Font.PLAIN, 11));
+				
+				JLabel lblblue = new JLabel("BLUE");
+				lblblue.setBounds(107, 48, 45, 14);
+				panel_4_1.add(lblblue);
+				lblblue.setHorizontalAlignment(SwingConstants.LEFT);
+				lblblue.setForeground(new Color(47, 79, 79));
+				lblblue.setFont(new Font("Cambria", Font.PLAIN, 11));
+				
+				textCotizacionDolarBl = new JTextDouble(10);
+				textCotizacionDolarBl.setFont(new Font("Cambria", Font.BOLD, 14));
+				textCotizacionDolarBl.setEditable(false);
+				textCotizacionDolarBl.setColumns(10);
+				textCotizacionDolarBl.setBorder(null);
+				textCotizacionDolarBl.setBackground(Color.LIGHT_GRAY);
+				textCotizacionDolarBl.setBounds(163, 42, 69, 20);
+				panel_4_1.add(textCotizacionDolarBl);
+				
+				JSeparator separator = new JSeparator();
+				separator.setBounds(107, 32, 125, 2);
+				panel_4_1.add(separator);
+				
+				JSeparator separator_2 = new JSeparator();
+				separator_2.setBounds(107, 62, 125, 2);
+				panel_4_1.add(separator_2);
 				
 				btnGenerarInformeSiemens = new JButton("<html><center>Informe WORD</html>");
 				btnGenerarInformeSiemens.setEnabled(false);
@@ -898,13 +925,13 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		this.btnCotizacionDolar = btnCotizacionDolar;
 	}
 
-	public JTextDouble getTextCotizacionDolar() {
-		return textCotizacionDolar;
-	}
-
-	public void setTextCotizacionDolar(String textCotizacionDolar) {
-		this.textCotizacionDolar.setText(textCotizacionDolar);
-	}
+//	public JTextDouble getTextCotizacionDolar() {
+//		return textCotizacionDolarOf;
+//	}
+//
+//	public void setTextCotizacionDolar(String textCotizacionDolar) {
+//		this.textCotizacionDolarOf.setText(textCotizacionDolar);
+//	}
 
 	public JTextDouble getTextSugerenciaPeso() {
 		return textSugerenciaPeso;
@@ -952,5 +979,22 @@ public class VentanaGenerarPresupuesto extends JFrame {
 
 	public void setChckWORDEnviado(Boolean Enviado) {
 		chckWORDenviado.setSelected(Enviado);
+	}
+
+	public JTextDouble getTextCotizacionDolarOf() {
+		return textCotizacionDolarOf;
+	}
+
+	public void setTextCotizacionDolarOf(String textCotizacionDolarOf) {
+		this.textCotizacionDolarOf.setText(textCotizacionDolarOf);
+	}
+	
+	
+	public JTextDouble getTextCotizacionDolarBl() {
+		return textCotizacionDolarBl;
+	}
+
+	public void setTextCotizacionDolarBl(String textCotizacionDolarBl) {
+		this.textCotizacionDolarBl.setText(textCotizacionDolarBl);
 	}
 }

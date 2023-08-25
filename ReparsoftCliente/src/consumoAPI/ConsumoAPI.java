@@ -14,15 +14,17 @@ import org.json.JSONString;
 
 public class ConsumoAPI {
 
-	public static double consultaCotizacionDolar() {
+	public static double[] consultaCotizacionDolar() {
 
-		double compra = 0, venta = 0, promedio = 0;
+		double compra = 0, venta = 0;
+		double[] cotizacionesPromedios = { 0, 0 };
 
 		try {
 			// https://www.metaweather.com/api/location/search/?query=Madrid --> no funciona
 			// https://api-dolar-argentina.herokuapp.com/api/nacion --> OK
-
-			URL url = new URL("https://api-dolar-argentina.herokuapp.com/api/nacion");
+			//URL url = new URL("https://api-dolar-argentina.herokuapp.com/api/nacion");
+			
+			URL url = new URL("https://api.bluelytics.com.ar/v2/latest");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.connect();
@@ -30,7 +32,7 @@ public class ConsumoAPI {
 			int responseCode = conn.getResponseCode();
 			if (responseCode != 200) {
 
-				throw new RuntimeException("Ocurrió un error " + responseCode);
+				throw new RuntimeException("Ocurriï¿½ un error " + responseCode);
 
 			} else {
 
@@ -46,20 +48,28 @@ public class ConsumoAPI {
 				scanner.close();
 
 				JSONObject jo = new JSONObject(informationString.toString());
-
-				compra = Double.parseDouble(jo.getString("compra"));
-				venta = Double.parseDouble(jo.getString("venta"));
-
-				promedio = (compra + venta) / 2;
-
-				return promedio;
+		
+				
+				JSONObject oficialObject = jo.getJSONObject("oficial");
+			    double valorPromedioOficial = oficialObject.getDouble("value_avg");
+			    
+			    JSONObject blueObject = jo.getJSONObject("blue");
+			    double valorPromedioBlue = blueObject.getDouble("value_avg");
+			     
+			    cotizacionesPromedios[0] = valorPromedioOficial;
+			    cotizacionesPromedios[1] = valorPromedioBlue;
+			    
+			   
+				return cotizacionesPromedios;
 
 			}
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			return 0;
+			double[] valuesOnError = { -1.0, -1.0 }; // Valores de reemplazo en caso de error
+	        return valuesOnError;
+			
 
 		}
 
