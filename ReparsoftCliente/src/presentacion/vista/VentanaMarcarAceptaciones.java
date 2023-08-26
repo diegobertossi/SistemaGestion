@@ -14,6 +14,7 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
 
 import VistaPropias.CellRenderer;
 import VistaPropias.CellRendererTablaMarcarAceptaciones;
+import VistaPropias.CellRendererTablaMarcarAceptaciones1;
 import presentacion.controlador.ControladorListados;
 import presentacion.controlador.ControladorPresupuestos;
 import presentacion.controlador.ControladorReparacion;
@@ -61,7 +62,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 	private JTable tblReparaciones_1;
 	private DefaultTableModel modelReparaciones;
 
-	private String[] nombreColumnas = { "ELS","AVISO", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
+	private String[] nombreColumnas = { "ELS","AVISO", "CLIENTE", "SUCURSAL", "EQUIPO","MODELO",
 			"ESTADO TEC", "ESTADO COM", "ACEP", "NO ACEP","GTÍA","PEND" };
 	
 //	private String[] nombreColumnas = { "ELS","AVISO", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "N° SERIE",
@@ -161,14 +162,14 @@ public class VentanaMarcarAceptaciones extends JFrame {
 //			Class[] columnTypes = new Class[] { Integer.class,String.class,  Integer.class, String.class, String.class, String.class,
 //					String.class, String.class, String.class, String.class, String.class, Boolean.class,Boolean.class,Boolean.class,Boolean.class };
 			
-			Class[] columnTypes = new Class[] { Integer.class, Integer.class, String.class, String.class, String.class,
+			Class[] columnTypes = new Class[] { Integer.class, Integer.class, String.class, String.class,
 					String.class, String.class, String.class, String.class,Boolean.class,Boolean.class,Boolean.class,Boolean.class };
 
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 
-			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false,
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false,
 					false,true,true,true,true };
 
 			public boolean isCellEditable(int row, int column) {
@@ -336,7 +337,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		tblReparaciones_1.getTableHeader().setReorderingAllowed(false);
 
 		//int[] anchos = { 60, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 ,100,100};
-		int[] anchos = { 60, 60, 100, 100, 100, 100, 100, 100, 100, 60,60,60,60};
+		int[] anchos = { 60, 60, 100, 100, 100, 100, 100, 100, 60,60,60,60};
 
 		for (int i = 0; i < tblReparaciones_1.getColumnCount(); i++) {
 

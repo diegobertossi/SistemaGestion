@@ -1,124 +1,76 @@
 package VistaPropias;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Label;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+public class CellRendererTablaMarcarAceptaciones extends DefaultTableCellRenderer implements TableCellRenderer {
 
-//import com.sun.xml.internal.ws.assembler.jaxws.HandlerTubeFactory;
+    private Map<Integer, JCheckBox> checkBoxMap = new HashMap<>();
+    private Map<Integer, ButtonGroup> buttonGroupMap = new HashMap<>();
+    private Font fuenteELS = new Font("Cambria", Font.BOLD, 14);
 
-import presentacion.vista.VentanaListadoReparaciones;
-import presentacion.vista.VentanaMarcarAceptaciones;
+    /** Constructor de clase */
+    public CellRendererTablaMarcarAceptaciones() {
+    }
 
-public class CellRendererTablaMarcarAceptaciones extends DefaultTableCellRenderer implements TableCellRenderer{
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+            int row, int column) {
 
-	private VentanaMarcarAceptaciones ventanaMarcarAceptaciones;
+        if (column == 8 || column == 9 || column == 10 || column == 11) {
+            boolean oddRow = (row % 2 == 0);
+            Color fondoImpar = new Color(230, 230, 250);
+            Color fondoPar = new Color(176, 196, 222);
+            Color fondoParSeleccionado = new Color(70, 130, 180);
+            Color fondoImparSeleccionado = new Color(70, 130, 180);
+            Color letra = new Color(0, 0, 0);
+            Color letraSeleccionado = new Color(255, 255, 255);
 
-	private JCheckBox check = new JCheckBox();
-	Font fuenteELS = new Font("Cambria", Font.BOLD, 14);
+            JCheckBox checkBox;
+            if (checkBoxMap.containsKey(row)) {
+                checkBox = checkBoxMap.get(row);
+            } else {
+                checkBox = new JCheckBox();
+                checkBoxMap.put(row, checkBox);
+            }
 
-	/** Constructor de clase */
-	public CellRendererTablaMarcarAceptaciones() {
-	}
+            boolean isChecked = Boolean.parseBoolean(String.valueOf(value));
+            checkBox.setSelected(isChecked);
+            checkBox.setHorizontalAlignment(JLabel.CENTER);
 
-	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-			int row, int column) {
+            if (oddRow) {
+                checkBox.setBackground((isSelected) ? fondoImparSeleccionado : fondoImpar);
+                checkBox.setForeground((isSelected) ? letraSeleccionado : letra);
+            } else {
+                checkBox.setBackground((isSelected) ? fondoParSeleccionado : fondoPar);
+                checkBox.setForeground((isSelected) ? letraSeleccionado : letra);
+            }
 
-		// establecemos el fondo blanco o vac�o
-		setBackground(null);
-		// COnstructor de la clase DefaultTableCellRenderer
-		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            return checkBox;
+        } else {
+            // Establecemos el fondo y la fuente para las celdas normales
+            setBackground(null);
+            setFont(table.getFont());
 
-		// Establecemos las filas que queremos cambiar el color. == 0 para pares
-		// y != 0 para impares
-		boolean oddRow = (row % 2 == 0);
+            if (column == 0) {
+                setHorizontalAlignment(SwingConstants.CENTER);
+                setFont(fuenteELS);
+                setForeground(Color.blue);
+            }
 
-		Color fondoImpar = new Color(230, 230, 250);
-		Color fondoPar = new Color(176, 196, 222);
-		Color fondoParSeleccionado = new Color(70, 130, 180);
-		Color fondoImparSeleccionado = new Color(70, 130, 180);
-		Color letra = new Color(0, 0, 0);
-		Color letraSeleccionado = new Color(255, 255, 255);
-
-		if (column == 9 || column == 10 || column == 11|| column == 12) {
-			Boolean bol = Boolean.valueOf(String.valueOf(value));
-			setHorizontalAlignment(SwingConstants.CENTER);
-			check = new JCheckBox();
-			check.setHorizontalAlignment(JLabel.CENTER);
-			if (oddRow)
-				check.setBackground((isSelected) ? fondoImparSeleccionado : fondoImpar);
-			else
-				check.setBackground((isSelected) ? fondoParSeleccionado : fondoPar);
-
-			check.setSelected(bol); // valor de celda
-			return check;
-
-		}
-
-		// Si las filas son pares, se cambia el color a gris
-		if (oddRow) {
-			setBackground((isSelected) ? fondoImparSeleccionado : fondoImpar);
-			setForeground((isSelected) ? letraSeleccionado : letra);
-
-		} else {
-			setBackground((isSelected) ? fondoParSeleccionado : fondoPar);
-			setForeground((isSelected) ? letraSeleccionado : letra);
-		}
-
-		if (column == 0) {
-			
-			setHorizontalAlignment(SwingConstants.CENTER);
-			setFont(fuenteELS);
-			setForeground(Color.blue);
-			
-		
-		}
-
-//		if ((column == 1 || column == 9) && (value != null && value != "")) {
-//
-//			SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
-//			Date fechaDate = null;
-//			try {
-//				fechaDate = formato.parse(value.toString());
-//			} catch (ParseException ex) {
-//				System.out.println(ex);
-//			}
-//
-//			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-//
-//			setText((value.toString() == null) ? "" : formatter.format(fechaDate));
-//
-//		}
-
-		return this;
-	}
-
-
-
-
+            return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        }
+    }
 }
+

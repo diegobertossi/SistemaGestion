@@ -120,7 +120,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	
 	private List<ReparacionDTO> Reparaciones_en_tabla;
 
-	private List<ReparacionDTO> Reparaciones_en_tabla_Marcar_Aceptaciones;
 	
 	String numeros = "";
 	boolean guardado = false;
@@ -887,15 +886,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaMarcarAceptaciones.getComboFiltroAviso().setSelectedIndex(-1);
 
 	}
-
-//	private void llenarComboELSEnMarcarAceptados() {
-//
-//		agenda.ListarELS(ventanaMarcarAceptaciones.getComboFiltroELS());
-//
-//		ventanaMarcarAceptaciones.getComboFiltroELS().setSelectedIndex(-1);
-//
-//	}
-//	
+	
 
 	public void agregarListenersVentanaGenerarPresupuesto() {
 
@@ -960,46 +951,23 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		this.ventanaMarcarAceptaciones.getModelReparaciones()
 				.setColumnIdentifiers(this.ventanaMarcarAceptaciones.getNombreColumnas());
 
-		this.Reparaciones_en_tabla_Marcar_Aceptaciones = (List<ReparacionDTO>) agenda.obtenerReparacionParaListadoMarcarAceptaciones();
+		this.Reparaciones_en_tabla = (List<ReparacionDTO>) agenda.obtenerReparacionParaListadoMarcarAceptaciones();
 		
 
 
-		for (int i = 0; i < this.Reparaciones_en_tabla_Marcar_Aceptaciones.size(); i++) {
+		for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
 
-			Object[] fila = { this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getELS(),
-					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getAviso(),
-					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getCliente(),
-					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getSucursal(),
-					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getNombreEquipo(), 
-					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getMarca(),
-					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getModelo(), 
-					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getEstadoTecnico(),
-					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getEstadoComercial(), };
+			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
+					this.Reparaciones_en_tabla.get(i).getAviso(),
+					this.Reparaciones_en_tabla.get(i).getCliente(),
+					this.Reparaciones_en_tabla.get(i).getSucursal(),
+					this.Reparaciones_en_tabla.get(i).getNombreEquipo(), 
+					this.Reparaciones_en_tabla.get(i).getMarca(),
+					this.Reparaciones_en_tabla.get(i).getModelo(), 
+					this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
+					this.Reparaciones_en_tabla.get(i).getEstadoComercial(), };
 			this.ventanaMarcarAceptaciones.getModelReparaciones().addRow(fila);
 		}
-		
-		
-		
-//		for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
-//
-//			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
-//					this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
-//					this.Reparaciones_en_tabla.get(i).getCliente(), this.Reparaciones_en_tabla.get(i).getSucursal(),
-//					this.Reparaciones_en_tabla.get(i).getNombreEquipo(), this.Reparaciones_en_tabla.get(i).getMarca(),
-//					this.Reparaciones_en_tabla.get(i).getModelo(), this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
-//					this.Reparaciones_en_tabla.get(i).getAviso(),
-//					this.Reparaciones_en_tabla.get(i).getFechadereparacion(),
-//					this.Reparaciones_en_tabla.get(i).getClienteCliente(),
-//					this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
-//					this.Reparaciones_en_tabla.get(i).getEstadoComercial(),
-//					this.Reparaciones_en_tabla.get(i).getEstadoFisico(),
-//					this.Reparaciones_en_tabla.get(i).getNombreUsuario(), this.Reparaciones_en_tabla.get(i).getCodigo(),
-//					this.Reparaciones_en_tabla.get(i).getNumeroRemitoSalida(),
-//					this.Reparaciones_en_tabla.get(i).getPresupuestoGenerado(),
-//					this.Reparaciones_en_tabla.get(i).getInformeEnviado(),this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
-//					this.Reparaciones_en_tabla.get(i).getPrecioDolar(), this.Reparaciones_en_tabla.get(i).getPago(), };
-//			this.ventanaMarcarAceptaciones.getModelReparaciones().addRow(fila);
-//		}
 		
 
 		ventanaMarcarAceptaciones.setCellRender(this.ventanaMarcarAceptaciones.getTblReparaciones());
