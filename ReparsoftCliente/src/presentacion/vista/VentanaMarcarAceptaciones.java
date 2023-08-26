@@ -13,9 +13,9 @@ import javax.swing.table.TableColumn;
 import org.jdesktop.swingx.plaf.UIManagerExt;
 
 import VistaPropias.CellRenderer;
-import VistaPropias.CellRendererTablaListado;
-import VistaPropias.CellRendererTablaRemitos;
+import VistaPropias.CellRendererTablaMarcarAceptaciones;
 import presentacion.controlador.ControladorListados;
+import presentacion.controlador.ControladorPresupuestos;
 import presentacion.controlador.ControladorReparacion;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -61,8 +61,11 @@ public class VentanaMarcarAceptaciones extends JFrame {
 	private JTable tblReparaciones_1;
 	private DefaultTableModel modelReparaciones;
 
-	private String[] nombreColumnas = { "ELS", "AVISO", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "N° SERIE",
-			"ESTADO TEC", "ESTADO COM", "ACEPTADO", "NO ACEPTADO","GARANTÍA","PENDIENTE" };
+	private String[] nombreColumnas = { "ELS","AVISO", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
+			"ESTADO TEC", "ESTADO COM", "ACEP", "NO ACEP","GTÍA","PEND" };
+	
+//	private String[] nombreColumnas = { "ELS","AVISO", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "N° SERIE",
+//			"ESTADO TEC", "ESTADO COM" };
 
 	private JButton btnFiltrar;
 	private JButton btnMostrarTodo;
@@ -72,9 +75,8 @@ public class VentanaMarcarAceptaciones extends JFrame {
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
-	private ControladorListados controlador;
-	private ControladorReparacion controladorReparacion;
-
+    private ControladorPresupuestos controladorPresupuestos;
+	
 	private JComboBox comboFiltroCliente;
 	private JRadioButton radioButtonCliente;
 
@@ -109,12 +111,12 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		setLocation((pantalla.width - ventana.width) / 2, (pantalla.height - ventana.height) / 2);
 	}
 
-	public VentanaMarcarAceptaciones(ControladorListados controlador) {
+	public VentanaMarcarAceptaciones(ControladorPresupuestos controlador) {
 
 		super();
 		setUndecorated(true);
 		setResizable(false);
-		this.controlador = controlador;
+		this.controladorPresupuestos = controlador;
 
 		this.this_windowOpened(null);
 		setSize(1080, 600);
@@ -156,14 +158,17 @@ public class VentanaMarcarAceptaciones extends JFrame {
 
 		modelReparaciones = new DefaultTableModel(new Object[][] {}, nombreColumnas) {
 
-			Class[] columnTypes = new Class[] { Integer.class,  Integer.class, String.class, String.class, String.class,
-					String.class, String.class, String.class, String.class, String.class, Boolean.class,Boolean.class,Boolean.class,Boolean.class };
+//			Class[] columnTypes = new Class[] { Integer.class,String.class,  Integer.class, String.class, String.class, String.class,
+//					String.class, String.class, String.class, String.class, String.class, Boolean.class,Boolean.class,Boolean.class,Boolean.class };
+			
+			Class[] columnTypes = new Class[] { Integer.class, Integer.class, String.class, String.class, String.class,
+					String.class, String.class, String.class, String.class,Boolean.class,Boolean.class,Boolean.class,Boolean.class };
 
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 
-			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false,
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false,
 					false,true,true,true,true };
 
 			public boolean isCellEditable(int row, int column) {
@@ -184,8 +189,8 @@ public class VentanaMarcarAceptaciones extends JFrame {
 			e.printStackTrace();
 		}
 
-		Font fuenteCabecera = new Font("Cambria", Font.BOLD, 14);
-		Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 12);
+		Font fuenteCabecera = new Font("Cambria", Font.BOLD, 12);
+		Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 10);
 
 		tblReparaciones_1 = new JTable(modelReparaciones);
 		// tblReparaciones_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -330,8 +335,8 @@ public class VentanaMarcarAceptaciones extends JFrame {
 
 		tblReparaciones_1.getTableHeader().setReorderingAllowed(false);
 
-		int[] anchos = { 60, 80, 150, 150, 200, 100, 200, 100, 100, 80, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-				100, 100, 100 };
+		//int[] anchos = { 60, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 ,100,100};
+		int[] anchos = { 60, 60, 100, 100, 100, 100, 100, 100, 100, 60,60,60,60};
 
 		for (int i = 0; i < tblReparaciones_1.getColumnCount(); i++) {
 
@@ -376,7 +381,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
 		while (en.hasMoreElements()) {
 			TableColumn tc = en.nextElement();
-			tc.setCellRenderer(new CellRendererTablaListado());
+			tc.setCellRenderer(new CellRendererTablaMarcarAceptaciones());
 		}
 	}
 

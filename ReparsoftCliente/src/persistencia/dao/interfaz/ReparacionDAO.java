@@ -61,6 +61,8 @@ public interface ReparacionDAO
 
 	public List<ReparacionDTO> readAllxComponenteReemplazo(String componente);
 
+	public List<ReparacionDTO> readAllListadoMarcarAceptaciones();
+
 
 	
 

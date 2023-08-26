@@ -3,6 +3,7 @@ package presentacion.controlador;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
@@ -67,6 +68,7 @@ import presentacion.vista.VentanaAgregarEquipo;
 import presentacion.vista.VentanaAgregarImagenes;
 import presentacion.vista.VentanaEmail;
 import presentacion.vista.VentanaGenerarPresupuesto;
+import presentacion.vista.VentanaMarcarAceptaciones;
 import presentacion.vista.VentanaPresupuestos;
 import presentacion.vista.VentanaSeleccionarELS;
 import presentacion.vista.VentanaVisualizarEquipos;
@@ -106,15 +108,20 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private VentanaGenerarPresupuesto ventanaGenerarPresupuesto;
 	private VentanaEmail ventanaEmail;
 	private VentanaAgregarImagenes ventanaAgregarImagenes;
+	private VentanaMarcarAceptaciones ventanaMarcarAceptaciones;
 
-	private ControladorReparacion controladorReparacion;
+	// private ControladorReparacion controladorReparacion;
 
 	private Agenda agenda;
 
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
 	private ReparacionDTO reparacion;
+	
+	private List<ReparacionDTO> Reparaciones_en_tabla;
 
+	private List<ReparacionDTO> Reparaciones_en_tabla_Marcar_Aceptaciones;
+	
 	String numeros = "";
 	boolean guardado = false;
 
@@ -125,6 +132,13 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private boolean presupuestoEnviado = false;
 	private boolean informeWordGenerado = false;
 	private boolean informeWordEnviado = false;
+	
+	
+	private int max = Frame.MAXIMIZED_BOTH;
+	private int min = Frame.NORMAL;
+
+	private int clickMax = 1;
+	private int clickMin = 1;
 
 	public ControladorPresupuestos(VentanaPresupuestos ventanaPresupuestos, Agenda agenda) {
 
@@ -168,9 +182,15 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 
 		else if (ventanaPresupuestos != null && e.getSource() == this.ventanaPresupuestos.getBtnmarcarAceptaciones()) {
+
+			ventanaMarcarAceptaciones = new VentanaMarcarAceptaciones(this);
+			agregarListenerAMarcarAceptaciones();
+			llenarComboAviso();
+			llenarComboCliente();
+			llenarComboELS();
+			llenarComboSucursales();
 			
-			
-			
+			cargarTablaMarcarAceptaciones();
 
 		}
 
@@ -269,12 +289,12 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		else if (this.ventanaGenerarPresupuesto != null
 				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnCotizacionDolar()) {
-			
-			double[] cotizaciones =consumoAPI.ConsumoAPI.consultaCotizacionDolar();
+
+			double[] cotizaciones = consumoAPI.ConsumoAPI.consultaCotizacionDolar();
 
 			String cotizacionDolarOf = Double.toString(cotizaciones[0]);
-			
-			String cotizacionDolarBl = Double.toString(cotizaciones[1]); 
+
+			String cotizacionDolarBl = Double.toString(cotizaciones[1]);
 
 			ventanaGenerarPresupuesto.getTextCotizacionDolarOf().setText(cotizacionDolarOf);
 			ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
@@ -630,8 +650,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
-			}
-			else {
+			} else {
 				String nombreWORD = ventanaEmail.getTextAdjunto().getText();
 
 				try {
@@ -812,6 +831,72 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		return format;
 	}
 
+	private void agregarListenerAMarcarAceptaciones() {
+
+		ventanaMarcarAceptaciones.getBtnFiltrar().addActionListener(this);
+		ventanaMarcarAceptaciones.getBtnMax().addActionListener(this);
+		ventanaMarcarAceptaciones.getBtnMostrarTodo().addActionListener(this);
+
+		ventanaMarcarAceptaciones.getComboFiltroAviso().addActionListener(this);
+		ventanaMarcarAceptaciones.getComboFiltroELS().addActionListener(this);
+		ventanaMarcarAceptaciones.getComboFiltroCliente().addActionListener(this);
+		ventanaMarcarAceptaciones.getComboFiltroSucursal().addActionListener(this);
+
+		ventanaMarcarAceptaciones.getRadioButtonAviso().addActionListener(this);
+		ventanaMarcarAceptaciones.getRadioButtonCliente().addActionListener(this);
+		ventanaMarcarAceptaciones.getRadioButtonELS().addActionListener(this);
+		ventanaMarcarAceptaciones.getRadioButtonSucursal().addActionListener(this);
+
+		ventanaMarcarAceptaciones.getRadioButtonAviso().addMouseListener(this);
+		ventanaMarcarAceptaciones.getRadioButtonCliente().addMouseListener(this);
+		ventanaMarcarAceptaciones.getRadioButtonELS().addMouseListener(this);
+		ventanaMarcarAceptaciones.getRadioButtonSucursal().addMouseListener(this);
+
+		ventanaMarcarAceptaciones.getRadioButtonAviso().addItemListener(this);
+		ventanaMarcarAceptaciones.getRadioButtonCliente().addItemListener(this);
+		ventanaMarcarAceptaciones.getRadioButtonELS().addItemListener(this);
+		ventanaMarcarAceptaciones.getRadioButtonSucursal().addItemListener(this);
+		
+		ventanaMarcarAceptaciones.getBtnMax().addMouseListener(this);
+
+		AutoCompleteDecorator.decorate(ventanaMarcarAceptaciones.getComboFiltroCliente());
+		AutoCompleteDecorator.decorate(ventanaMarcarAceptaciones.getComboFiltroAviso());
+		AutoCompleteDecorator.decorate(ventanaMarcarAceptaciones.getComboFiltroELS());
+		AutoCompleteDecorator.decorate(ventanaMarcarAceptaciones.getComboFiltroSucursal());
+
+	}
+
+	private void llenarComboCliente() {
+
+		agenda.ListarCliente(ventanaMarcarAceptaciones.getComboFiltroCliente());
+		ventanaMarcarAceptaciones.getComboFiltroCliente().setSelectedIndex(-1);
+
+	}
+
+	private void llenarComboSucursales() {
+
+		agenda.ListarSucursales(ventanaMarcarAceptaciones.getComboFiltroSucursal());
+		ventanaMarcarAceptaciones.getComboFiltroSucursal().setSelectedIndex(-1);
+
+	}
+
+	private void llenarComboAviso() {
+
+		agenda.ListarAvisos(ventanaMarcarAceptaciones.getComboFiltroAviso());
+
+		ventanaMarcarAceptaciones.getComboFiltroAviso().setSelectedIndex(-1);
+
+	}
+
+//	private void llenarComboELSEnMarcarAceptados() {
+//
+//		agenda.ListarELS(ventanaMarcarAceptaciones.getComboFiltroELS());
+//
+//		ventanaMarcarAceptaciones.getComboFiltroELS().setSelectedIndex(-1);
+//
+//	}
+//	
+
 	public void agregarListenersVentanaGenerarPresupuesto() {
 
 		ventanaGenerarPresupuesto.getBtnEditarInforme().addActionListener(this);
@@ -863,6 +948,67 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
+	
+	
+	private void cargarTablaMarcarAceptaciones(){
+		
+		
+		this.ventanaMarcarAceptaciones.getModelReparaciones().setRowCount(0); // Para
+		// vaciar
+		// tabla
+		this.ventanaMarcarAceptaciones.getModelReparaciones().setColumnCount(0);
+		this.ventanaMarcarAceptaciones.getModelReparaciones()
+				.setColumnIdentifiers(this.ventanaMarcarAceptaciones.getNombreColumnas());
+
+		this.Reparaciones_en_tabla_Marcar_Aceptaciones = (List<ReparacionDTO>) agenda.obtenerReparacionParaListadoMarcarAceptaciones();
+		
+
+
+		for (int i = 0; i < this.Reparaciones_en_tabla_Marcar_Aceptaciones.size(); i++) {
+
+			Object[] fila = { this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getELS(),
+					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getAviso(),
+					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getCliente(),
+					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getSucursal(),
+					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getNombreEquipo(), 
+					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getMarca(),
+					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getModelo(), 
+					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getEstadoTecnico(),
+					this.Reparaciones_en_tabla_Marcar_Aceptaciones.get(i).getEstadoComercial(), };
+			this.ventanaMarcarAceptaciones.getModelReparaciones().addRow(fila);
+		}
+		
+		
+		
+//		for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
+//
+//			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
+//					this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
+//					this.Reparaciones_en_tabla.get(i).getCliente(), this.Reparaciones_en_tabla.get(i).getSucursal(),
+//					this.Reparaciones_en_tabla.get(i).getNombreEquipo(), this.Reparaciones_en_tabla.get(i).getMarca(),
+//					this.Reparaciones_en_tabla.get(i).getModelo(), this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
+//					this.Reparaciones_en_tabla.get(i).getAviso(),
+//					this.Reparaciones_en_tabla.get(i).getFechadereparacion(),
+//					this.Reparaciones_en_tabla.get(i).getClienteCliente(),
+//					this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
+//					this.Reparaciones_en_tabla.get(i).getEstadoComercial(),
+//					this.Reparaciones_en_tabla.get(i).getEstadoFisico(),
+//					this.Reparaciones_en_tabla.get(i).getNombreUsuario(), this.Reparaciones_en_tabla.get(i).getCodigo(),
+//					this.Reparaciones_en_tabla.get(i).getNumeroRemitoSalida(),
+//					this.Reparaciones_en_tabla.get(i).getPresupuestoGenerado(),
+//					this.Reparaciones_en_tabla.get(i).getInformeEnviado(),this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
+//					this.Reparaciones_en_tabla.get(i).getPrecioDolar(), this.Reparaciones_en_tabla.get(i).getPago(), };
+//			this.ventanaMarcarAceptaciones.getModelReparaciones().addRow(fila);
+//		}
+		
+
+		ventanaMarcarAceptaciones.setCellRender(this.ventanaMarcarAceptaciones.getTblReparaciones());
+
+		this.ventanaMarcarAceptaciones.show();
+		
+		
+		
+	}
 	private void TomarDatosDeTablas() {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -1003,14 +1149,44 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			}
 		}
+		
+		if (arg0.getSource() == this.ventanaMarcarAceptaciones.getBtnMax()) {
+
+			if (clickMax % 2 != 0) {
+
+				ventanaMarcarAceptaciones.setExtendedState(max);
+				this.ventanaMarcarAceptaciones.getBtnMax()
+						.setIcon(new ImageIcon(this.getClass().getResource("/minimizar.png")));
+				ventanaMarcarAceptaciones.setVisible(true);
+
+			} else {
+
+				ventanaMarcarAceptaciones.setExtendedState(min);
+				this.ventanaMarcarAceptaciones.getBtnMax()
+						.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
+				ventanaMarcarAceptaciones.setVisible(true);
+
+			}
+			clickMax++;
+		}
+
+		
+		
 
 	}
 
 	private void llenarComboELS() {
 
-		agenda.ListarELS(ventanaSeleccionarELS.getComboELS());
+		if (ventanaSeleccionarELS != null) {
+			agenda.ListarELS(ventanaSeleccionarELS.getComboELS());
+			ventanaSeleccionarELS.getComboELS().setSelectedIndex(-1);
 
-		ventanaSeleccionarELS.getComboELS().setSelectedIndex(-1);
+		} else if (ventanaMarcarAceptaciones != null) {
+
+			agenda.ListarELS(ventanaMarcarAceptaciones.getComboFiltroELS());
+			ventanaMarcarAceptaciones.getComboFiltroELS().setSelectedIndex(-1);
+
+		}
 
 	}
 
@@ -1101,7 +1277,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -1113,6 +1288,58 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
+
+		if (this.ventanaMarcarAceptaciones != null) {
+			
+			if (e.getSource() == this.ventanaMarcarAceptaciones.getRadioButtonCliente()) {
+
+				if (ventanaMarcarAceptaciones.getRadioButtonCliente().isSelected())
+					this.ventanaMarcarAceptaciones.getComboFiltroCliente().setEnabled(true);
+				else {
+					this.ventanaMarcarAceptaciones.getComboFiltroCliente().setEnabled(false);
+					ventanaMarcarAceptaciones.getComboFiltroCliente().setSelectedIndex(-1);
+
+				}
+			}
+			
+			
+			
+			if (e.getSource() == this.ventanaMarcarAceptaciones.getRadioButtonAviso()) {
+
+				if (ventanaMarcarAceptaciones.getRadioButtonAviso().isSelected())
+					this.ventanaMarcarAceptaciones.getComboFiltroAviso().setEnabled(true);
+				else {
+					this.ventanaMarcarAceptaciones.getComboFiltroAviso().setEnabled(false);
+					ventanaMarcarAceptaciones.getComboFiltroAviso().setSelectedIndex(-1);
+
+				}
+			}
+			
+			
+			
+			if (e.getSource() == this.ventanaMarcarAceptaciones.getRadioButtonELS()) {
+
+				if (ventanaMarcarAceptaciones.getRadioButtonELS().isSelected())
+					this.ventanaMarcarAceptaciones.getComboFiltroELS().setEnabled(true);
+				else {
+					this.ventanaMarcarAceptaciones.getComboFiltroELS().setEnabled(false);
+					ventanaMarcarAceptaciones.getComboFiltroELS().setSelectedIndex(-1);
+				}
+			}
+			
+			
+			if (e.getSource() == this.ventanaMarcarAceptaciones.getRadioButtonSucursal()) {
+
+				if (ventanaMarcarAceptaciones.getRadioButtonSucursal().isSelected())
+					this.ventanaMarcarAceptaciones.getComboFiltroSucursal().setEnabled(true);
+				else {
+					this.ventanaMarcarAceptaciones.getComboFiltroSucursal().setEnabled(false);
+					ventanaMarcarAceptaciones.getComboFiltroSucursal().setSelectedIndex(-1);
+
+				}
+			}
+
+		}
 
 	}
 

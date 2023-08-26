@@ -310,6 +310,26 @@ public class ReparacionDTO {
 
 	}
 
+	public ReparacionDTO(int ELS, String aviso, String cliente, String sucursal, String equipo, String marca,
+			String modelo, String serie, String estadoTecnico, String estadoComercial) {
+
+		this.ELS =ELS;
+		this.Aviso = aviso;
+		this.Cliente = cliente;
+		this.Sucursal = sucursal;
+		this.NombreEquipo = equipo;
+		this.Modelo = modelo;
+		this.Marca = marca;
+		this.NumeroDeSerie = serie;
+		this.EstadoTecnico = estadoTecnico;
+		this.EstadoComercial = estadoComercial;
+		
+		
+		
+		
+		
+	}
+
 	public String getNombreUsuario() {
 		return NombreUsuario;
 	}

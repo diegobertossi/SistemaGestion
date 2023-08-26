@@ -25,11 +25,17 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	private static final String delete = "DELETE FROM reparaciones WHERE ELS = ?";
 
+	private static final String readallListadoMarcarAceptaciones = "SELECT  reparaciones.ELS, Equipos.Aviso, Cliente.nombre, Sucursal.NombreSucursal, Equipos.Nombre, Equipos.Modelo, Equipos.Marca, Equipos.NumeroDeSerie, reparaciones.EstadoTecnico, reparaciones.EstadoComercial"
+			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario ON reparaciones.idUsuario=usuario.IdUsuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
+			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente) And ((usuario.IdUsuario)=reparaciones.idUsuario)) and ((Sucursal.IdSucursal)=Equipos.idSucursal) ORDER BY reparaciones.ELS ASC";
+
 	private static final String readall = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
 			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente, reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado,reparaciones.WordGenerado,reparaciones.WordEnviado, reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.Pago, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca, DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, reparaciones.Enviado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago"
 			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario ON reparaciones.idUsuario=usuario.IdUsuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
 			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente) And ((usuario.IdUsuario)=reparaciones.idUsuario)) and ((Sucursal.IdSucursal)=Equipos.idSucursal) ORDER BY reparaciones.ELS ASC";
 
+	
+	
 	private static final String readallNombreEquipo = "SELECT DISTINCT * FROM Equipos group by Equipos.Nombre";
 
 	private static final String readallMarca = "SELECT Equipos.Marca FROM Equipos group by Equipos.Marca";
@@ -1019,6 +1025,41 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						resultSet.getString("reemplazo")));
 			}
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+		return Reparaciones;
+	}
+
+	@Override
+	public List<ReparacionDTO> readAllListadoMarcarAceptaciones() {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<ReparacionDTO> Reparaciones = new ArrayList<ReparacionDTO>();
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(readallListadoMarcarAceptaciones);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				Reparaciones.add(new ReparacionDTO(
+						resultSet.getInt("ELS"),
+						resultSet.getString("Aviso"),
+						resultSet.getString("nombre"),
+						resultSet.getString("NombreSucursal"),
+						resultSet.getString("Equipos.Nombre"),
+						resultSet.getString("Marca"), 
+						resultSet.getString("Modelo"),
+						resultSet.getString("NumeroDeSerie"),
+						resultSet.getString("EstadoTecnico"),
+						resultSet.getString("EstadoComercial")
+						
+												));
+
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre

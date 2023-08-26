@@ -312,6 +312,10 @@ public class Agenda {
 	public List<ReparacionDTO> obtenerReparacion() {
 		return ReparacionR.readAll();
 	}
+	
+	public List<ReparacionDTO> obtenerReparacionParaListadoMarcarAceptaciones() {
+		return ReparacionR.readAllListadoMarcarAceptaciones();
+	}
 
 
 	public ReparacionDTO dameReparacionXels(int i) {
