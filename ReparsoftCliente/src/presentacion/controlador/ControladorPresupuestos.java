@@ -168,6 +168,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 
 		else if (ventanaPresupuestos != null && e.getSource() == this.ventanaPresupuestos.getBtnmarcarAceptaciones()) {
+			
+			
+			
 
 		}
 
