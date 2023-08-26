@@ -62,7 +62,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 	private DefaultTableModel modelReparaciones;
 
 	private String[] nombreColumnas = { "ELS", "AVISO", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "N° SERIE",
-			"ESTADO TEC", "ESTADO COM" };
+			"ESTADO TEC", "ESTADO COM", "ACEPTADO", "NO ACEPTADO","GARANTÍA","PENDIENTE" };
 
 	private JButton btnFiltrar;
 	private JButton btnMostrarTodo;
@@ -89,8 +89,6 @@ public class VentanaMarcarAceptaciones extends JFrame {
 	private JRadioButton radioButtonAviso;
 
 	private JSeparator separator_1;
-	private JSeparator separator_4;
-	private JSeparator separator_5;
 
 	private JPanel panel_1;
 
@@ -159,14 +157,14 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		modelReparaciones = new DefaultTableModel(new Object[][] {}, nombreColumnas) {
 
 			Class[] columnTypes = new Class[] { Integer.class,  Integer.class, String.class, String.class, String.class,
-					String.class, String.class, String.class, String.class, String.class };
+					String.class, String.class, String.class, String.class, String.class, Boolean.class,Boolean.class,Boolean.class,Boolean.class };
 
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 
 			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false,
-					false };
+					false,true,true,true,true };
 
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -226,7 +224,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		panel_1 = new JPanel();
 		panel_1.setBackground(SystemColor.inactiveCaption);
 		panel_1.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_1.setBounds(35, 50, 994, 134);
+		panel_1.setBounds(35, 50, 395, 134);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 
@@ -290,30 +288,6 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		separator_1.setForeground(SystemColor.textInactiveText);
 
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(494, 19, 4, 98);
-		panel_1.add(separator_2);
-		separator_2.setOrientation(SwingConstants.VERTICAL);
-		separator_2.setForeground(SystemColor.textInactiveText);
-
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setBounds(497, 19, 1, 98);
-		panel_1.add(separator_3);
-		separator_3.setOrientation(SwingConstants.VERTICAL);
-		separator_3.setForeground(SystemColor.textInactiveText);
-
-		separator_4 = new JSeparator();
-		separator_4.setBounds(772, 19, 6, 101);
-		panel_1.add(separator_4);
-		separator_4.setOrientation(SwingConstants.VERTICAL);
-		separator_4.setForeground(SystemColor.textInactiveText);
-
-		separator_5 = new JSeparator();
-		separator_5.setBounds(775, 19, 3, 101);
-		panel_1.add(separator_5);
-		separator_5.setOrientation(SwingConstants.VERTICAL);
-		separator_5.setForeground(SystemColor.textInactiveText);
-
 		radioButtonELS = new JRadioButton("");
 		radioButtonELS.setBackground(SystemColor.inactiveCaption);
 		radioButtonELS.setBounds(221, 100, 21, 20);
@@ -331,14 +305,14 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		panel_1.add(lblEls);
 
 		btnFiltrar = new JButton("FILTRAR");
+		btnFiltrar.setBounds(266, 29, 113, 23);
+		panel_1.add(btnFiltrar);
 		btnFiltrar.setFont(new Font("Cambria", Font.BOLD, 10));
-		btnFiltrar.setBounds(178, 193, 113, 23);
-		panel.add(btnFiltrar);
 
 		btnMostrarTodo = new JButton("MOSTRAR TODO");
+		btnMostrarTodo.setBounds(266, 81, 113, 23);
+		panel_1.add(btnMostrarTodo);
 		btnMostrarTodo.setFont(new Font("Cambria", Font.BOLD, 10));
-		btnMostrarTodo.setBounds(469, 193, 113, 23);
-		panel.add(btnMostrarTodo);
 
 		txtListadosDeEquipos = new JTextField();
 		txtListadosDeEquipos.setEditable(false);
