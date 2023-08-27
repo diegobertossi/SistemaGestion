@@ -74,7 +74,7 @@ public class CellRendererTablaMarcarAceptaciones1 extends DefaultTableCellRender
 			setHorizontalAlignment(SwingConstants.CENTER);
 			check = new JCheckBox();
 			
-			buttonGroup.add(check);
+			//buttonGroup.add(check);
 			
 			check.setHorizontalAlignment(JLabel.CENTER);
 			if (oddRow)
@@ -83,10 +83,21 @@ public class CellRendererTablaMarcarAceptaciones1 extends DefaultTableCellRender
 				check.setBackground((isSelected) ? fondoParSeleccionado : fondoPar);
 
 			check.setSelected(bol); // valor de celda
+			
+				
 			return check;
-
+			
+			
+		
 		}
 
+		
+		
+		
+		
+		
+		
+		
 		// Si las filas son pares, se cambia el color a gris
 		if (oddRow) {
 			setBackground((isSelected) ? fondoImparSeleccionado : fondoImpar);

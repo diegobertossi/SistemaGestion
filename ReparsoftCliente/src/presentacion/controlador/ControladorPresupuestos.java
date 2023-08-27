@@ -93,6 +93,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.TableColumn;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -189,8 +190,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			llenarComboELS();
 			llenarComboSucursales();
 			
+			
+			
 			cargarTablaMarcarAceptaciones();
-
+			initCheckboxListeners();
 		}
 
 		else if (ventanaPresupuestos != null && e.getSource() == this.ventanaPresupuestos.getBtnPresupuestoPorELS()) {
@@ -556,7 +559,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaEmail.getTextCuerpo().setText(cuerpoEnvioPresupuesto + "\n\n" + empresa + "\n" + mdp + "\n"
 							+ caba + "\n" + brc + "\n" + web + "\n" + email);
 					ventanaEmail.getTextAsunto().setText(Asunto);
-					ventanaEmail.getTextCuerpo().moveCaretPosition(0);
+						ventanaEmail.getTextCuerpo().moveCaretPosition(0);
 				}
 
 			} catch (IOException f) {
@@ -962,7 +965,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					this.Reparaciones_en_tabla.get(i).getCliente(),
 					this.Reparaciones_en_tabla.get(i).getSucursal(),
 					this.Reparaciones_en_tabla.get(i).getNombreEquipo(), 
-					this.Reparaciones_en_tabla.get(i).getMarca(),
 					this.Reparaciones_en_tabla.get(i).getModelo(), 
 					this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
 					this.Reparaciones_en_tabla.get(i).getEstadoComercial(), };
@@ -970,13 +972,53 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 		
 
-		ventanaMarcarAceptaciones.setCellRender(this.ventanaMarcarAceptaciones.getTblReparaciones());
+		//ventanaMarcarAceptaciones.setCellRender(this.ventanaMarcarAceptaciones.getTblReparaciones());
 
 		this.ventanaMarcarAceptaciones.show();
 		
 		
 		
 	}
+	
+	
+	
+	
+	
+	
+    // Método para manejar la selección de los checkboxes
+    private void handleCheckboxSelection(int selectedRow, int selectedColumn) {
+        if (selectedRow != -1 && selectedColumn != -1) {
+            for (int i = this.ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount() - 4; i < this.ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
+                if (i != selectedColumn) {
+                	this.ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(false, selectedRow, i);
+                }
+            }
+        }
+    }
+
+    // Método para inicializar los listeners de los checkboxes
+    public void initCheckboxListeners() {
+        ActionListener checkboxListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedRow();
+                int selectedColumn =ventanaMarcarAceptaciones.getTblReparaciones().getSelectedColumn();
+                handleCheckboxSelection(selectedRow, selectedColumn);
+            }
+        };
+
+        // Agregar listener a las celdas de checkbox
+        for (int i = ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount() - 4; i < ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
+            TableColumn column = ventanaMarcarAceptaciones.getTblReparaciones().getColumnModel().getColumn(i);
+            column.setCellEditor(new DefaultCellEditor(new JCheckBox()));
+            JCheckBox checkBox = (JCheckBox) column.getCellEditor().getTableCellEditorComponent(ventanaMarcarAceptaciones.getTblReparaciones(), null, false, 0, i);
+            checkBox.addActionListener(checkboxListener);
+        }
+    }
+    
+    
+    
+    
 	private void TomarDatosDeTablas() {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");

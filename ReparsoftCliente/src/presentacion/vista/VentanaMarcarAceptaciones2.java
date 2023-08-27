@@ -54,7 +54,7 @@ import javax.swing.ScrollPaneConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class VentanaMarcarAceptaciones extends JFrame {
+public class VentanaMarcarAceptaciones2 extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -112,7 +112,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		setLocation((pantalla.width - ventana.width) / 2, (pantalla.height - ventana.height) / 2);
 	}
 
-	public VentanaMarcarAceptaciones(ControladorPresupuestos controlador) {
+	public VentanaMarcarAceptaciones2(ControladorPresupuestos controlador) {
 
 		super();
 		setUndecorated(true);
@@ -344,11 +344,6 @@ public class VentanaMarcarAceptaciones extends JFrame {
 			tblReparaciones_1.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
 
 		}
-		
-		
-		for (int i = tblReparaciones_1.getColumnCount() - 4; i < tblReparaciones_1.getColumnCount(); i++) {
-			tblReparaciones_1.getColumnModel().getColumn(i).setCellRenderer(new CellRendererTablaMarcarAceptaciones1());
-        }
 
 		this.addComponentListener(new java.awt.event.ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
@@ -383,13 +378,13 @@ public class VentanaMarcarAceptaciones extends JFrame {
 
 	}
 
-//	public void setCellRender(JTable table) {
-//		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
-//		while (en.hasMoreElements()) {
-//			TableColumn tc = en.nextElement();
-//			tc.setCellRenderer(new CellRendererTablaMarcarAceptaciones1());
-//		}
-//	}
+	public void setCellRender(JTable table) {
+		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
+		while (en.hasMoreElements()) {
+			TableColumn tc = en.nextElement();
+			tc.setCellRenderer(new CellRendererTablaMarcarAceptaciones1());
+		}
+	}
 
 	public DefaultTableModel getModelReparaciones() {
 		return modelReparaciones;
