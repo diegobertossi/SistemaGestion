@@ -190,7 +190,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			llenarComboELS();
 			llenarComboSucursales();
 			
-			
+			System.out.println("hho");
 			
 			cargarTablaMarcarAceptaciones();
 			initCheckboxListeners();
