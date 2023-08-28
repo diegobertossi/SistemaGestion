@@ -93,7 +93,9 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableRowSorter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -118,10 +120,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
 	private ReparacionDTO reparacion;
-	
+
 	private List<ReparacionDTO> Reparaciones_en_tabla;
 
-	
 	String numeros = "";
 	boolean guardado = false;
 
@@ -132,8 +133,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private boolean presupuestoEnviado = false;
 	private boolean informeWordGenerado = false;
 	private boolean informeWordEnviado = false;
-	
-	
+
 	private int max = Frame.MAXIMIZED_BOTH;
 	private int min = Frame.NORMAL;
 
@@ -189,9 +189,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			llenarComboCliente();
 			llenarComboELS();
 			llenarComboSucursales();
-			
-			System.out.println("hho");
-			
+
 			cargarTablaMarcarAceptaciones();
 			initCheckboxListeners();
 		}
@@ -559,7 +557,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaEmail.getTextCuerpo().setText(cuerpoEnvioPresupuesto + "\n\n" + empresa + "\n" + mdp + "\n"
 							+ caba + "\n" + brc + "\n" + web + "\n" + email);
 					ventanaEmail.getTextAsunto().setText(Asunto);
-						ventanaEmail.getTextCuerpo().moveCaretPosition(0);
+					ventanaEmail.getTextCuerpo().moveCaretPosition(0);
 				}
 
 			} catch (IOException f) {
@@ -683,6 +681,82 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				ReportePresupuesto reporte = new ReportePresupuesto(rep, lista);
 				reporte.mostrar();
 			}
+
+		}
+		
+		
+		
+		else if ( ventanaMarcarAceptaciones != null && e.getSource() == this.ventanaMarcarAceptaciones.getBtnFiltrar()) {
+			
+		
+			DefaultTableModel dm;
+			dm = (DefaultTableModel) this.ventanaMarcarAceptaciones.getTblReparaciones().getModel();
+
+			TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(dm);
+
+			this.ventanaMarcarAceptaciones.getTblReparaciones().setRowSorter(tr);
+
+			RowFilter<DefaultTableModel, Object> rf = null;
+			List<RowFilter<Object, Object>> rfs = new ArrayList<RowFilter<Object, Object>>();
+
+			if (!ventanaMarcarAceptaciones.getRadioButtonCliente().isSelected()
+					&& !ventanaMarcarAceptaciones.getRadioButtonSucursal().isSelected()
+					&& !ventanaMarcarAceptaciones.getRadioButtonAviso().isSelected()
+					&& !ventanaMarcarAceptaciones.getRadioButtonELS().isSelected()) {
+				this.ventanaMarcarAceptaciones.getTblReparaciones().setRowSorter(null);
+			}
+
+			if (ventanaMarcarAceptaciones.getRadioButtonCliente().isSelected()
+					&& ventanaMarcarAceptaciones.getComboFiltroCliente().getSelectedItem() != null
+					&& ventanaMarcarAceptaciones.getComboFiltroCliente().getSelectedItem().toString() != null) {
+				rfs.add(RowFilter
+
+						.regexFilter(ventanaMarcarAceptaciones.getComboFiltroCliente().getSelectedItem().toString(),
+								2));
+			}
+
+			if (ventanaMarcarAceptaciones.getRadioButtonSucursal().isSelected()
+					&& ventanaMarcarAceptaciones.getComboFiltroSucursal().getSelectedItem() != null
+					&& ventanaMarcarAceptaciones.getComboFiltroSucursal().getSelectedItem().toString() != null) {
+				rfs.add(RowFilter.regexFilter(
+						ventanaMarcarAceptaciones.getComboFiltroSucursal().getSelectedItem().toString(), 3));
+			}
+
+			
+			if (ventanaMarcarAceptaciones.getRadioButtonAviso().isSelected()
+					&& ventanaMarcarAceptaciones.getComboFiltroAviso().getSelectedItem() != null
+					&& ventanaMarcarAceptaciones.getComboFiltroAviso().getSelectedItem().toString() != null) {
+				rfs.add(RowFilter
+
+						.regexFilter(ventanaMarcarAceptaciones.getComboFiltroAviso().getSelectedItem().toString(), 8));
+			}
+			
+			if (ventanaMarcarAceptaciones.getRadioButtonELS().isSelected()
+					&& ventanaMarcarAceptaciones.getComboFiltroELS().getSelectedItem() != null
+					&& ventanaMarcarAceptaciones.getComboFiltroELS().getSelectedItem().toString() != null) {
+				rfs.add(RowFilter
+
+						.regexFilter(ventanaMarcarAceptaciones.getComboFiltroELS().getSelectedItem().toString(), 0));
+			}
+			
+			
+			rf = RowFilter.andFilter(rfs);
+
+			tr.setRowFilter(rf);
+			
+			
+
+		}
+		
+		
+		else if (ventanaMarcarAceptaciones != null && e.getSource() == this.ventanaMarcarAceptaciones.getBtnMostrarTodo()) {
+		
+			this.ventanaMarcarAceptaciones.getTblReparaciones().setRowSorter(null);
+
+		}
+		
+		
+		else if (ventanaMarcarAceptaciones != null && e.getSource() == this.ventanaMarcarAceptaciones.getBtnActualizar()) {
 
 		}
 	}
@@ -838,6 +912,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaMarcarAceptaciones.getBtnFiltrar().addActionListener(this);
 		ventanaMarcarAceptaciones.getBtnMax().addActionListener(this);
 		ventanaMarcarAceptaciones.getBtnMostrarTodo().addActionListener(this);
+		ventanaMarcarAceptaciones.getBtnActualizar().addActionListener(this);
 
 		ventanaMarcarAceptaciones.getComboFiltroAviso().addActionListener(this);
 		ventanaMarcarAceptaciones.getComboFiltroELS().addActionListener(this);
@@ -858,8 +933,12 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaMarcarAceptaciones.getRadioButtonCliente().addItemListener(this);
 		ventanaMarcarAceptaciones.getRadioButtonELS().addItemListener(this);
 		ventanaMarcarAceptaciones.getRadioButtonSucursal().addItemListener(this);
-		
+
 		ventanaMarcarAceptaciones.getBtnMax().addMouseListener(this);
+		ventanaMarcarAceptaciones.getBtnActualizar().addMouseListener(this);
+		ventanaMarcarAceptaciones.getBtnFiltrar().addMouseListener(this);
+		ventanaMarcarAceptaciones.getBtnMostrarTodo().addMouseListener(this);
+		
 
 		AutoCompleteDecorator.decorate(ventanaMarcarAceptaciones.getComboFiltroCliente());
 		AutoCompleteDecorator.decorate(ventanaMarcarAceptaciones.getComboFiltroAviso());
@@ -889,7 +968,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaMarcarAceptaciones.getComboFiltroAviso().setSelectedIndex(-1);
 
 	}
-	
 
 	public void agregarListenersVentanaGenerarPresupuesto() {
 
@@ -942,11 +1020,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
-	
-	
-	private void cargarTablaMarcarAceptaciones(){
-		
-		
+	private void cargarTablaMarcarAceptaciones() {
+
 		this.ventanaMarcarAceptaciones.getModelReparaciones().setRowCount(0); // Para
 		// vaciar
 		// tabla
@@ -955,70 +1030,72 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				.setColumnIdentifiers(this.ventanaMarcarAceptaciones.getNombreColumnas());
 
 		this.Reparaciones_en_tabla = (List<ReparacionDTO>) agenda.obtenerReparacionParaListadoMarcarAceptaciones();
-		
-
 
 		for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
 
-			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
-					this.Reparaciones_en_tabla.get(i).getAviso(),
-					this.Reparaciones_en_tabla.get(i).getCliente(),
-					this.Reparaciones_en_tabla.get(i).getSucursal(),
-					this.Reparaciones_en_tabla.get(i).getNombreEquipo(), 
-					this.Reparaciones_en_tabla.get(i).getModelo(), 
+			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(), this.Reparaciones_en_tabla.get(i).getAviso(),
+					this.Reparaciones_en_tabla.get(i).getCliente(), this.Reparaciones_en_tabla.get(i).getSucursal(),
+					this.Reparaciones_en_tabla.get(i).getNombreEquipo(), this.Reparaciones_en_tabla.get(i).getModelo(),
 					this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
 					this.Reparaciones_en_tabla.get(i).getEstadoComercial(), };
 			this.ventanaMarcarAceptaciones.getModelReparaciones().addRow(fila);
 		}
-		
 
-		//ventanaMarcarAceptaciones.setCellRender(this.ventanaMarcarAceptaciones.getTblReparaciones());
+		ventanaMarcarAceptaciones.setCellRender(this.ventanaMarcarAceptaciones.getTblReparaciones());
 
 		this.ventanaMarcarAceptaciones.show();
-		
-		
-		
+
 	}
-	
-	
-	
-	
-	
-	
-    // Método para manejar la selección de los checkboxes
-    private void handleCheckboxSelection(int selectedRow, int selectedColumn) {
-        if (selectedRow != -1 && selectedColumn != -1) {
-            for (int i = this.ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount() - 4; i < this.ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
-                if (i != selectedColumn) {
-                	this.ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(false, selectedRow, i);
-                }
-            }
-        }
-    }
 
-    // Método para inicializar los listeners de los checkboxes
-    public void initCheckboxListeners() {
-        ActionListener checkboxListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedRow();
-                int selectedColumn =ventanaMarcarAceptaciones.getTblReparaciones().getSelectedColumn();
-                handleCheckboxSelection(selectedRow, selectedColumn);
-            }
-        };
+	// Método para manejar la selección de los checkboxes
+	private void handleCheckboxSelection(int selectedRow, int selectedColumn) {
+		if (selectedRow != -1 && selectedColumn != -1) {
+			for (int i = this.ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount()
+					- 4; i < this.ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
+				if (i != selectedColumn) {
+					this.ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(false, selectedRow, i);
+				}
+			}
+		}
+	}
 
-        // Agregar listener a las celdas de checkbox
-        for (int i = ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount() - 4; i < ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
-            TableColumn column = ventanaMarcarAceptaciones.getTblReparaciones().getColumnModel().getColumn(i);
-            column.setCellEditor(new DefaultCellEditor(new JCheckBox()));
-            JCheckBox checkBox = (JCheckBox) column.getCellEditor().getTableCellEditorComponent(ventanaMarcarAceptaciones.getTblReparaciones(), null, false, 0, i);
-            checkBox.addActionListener(checkboxListener);
-        }
-    }
-    
-    
-    
-    
+	// Método para inicializar los listeners de los checkboxes
+	public void initCheckboxListeners() {
+		ActionListener checkboxListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedRow();
+				int selectedColumn = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedColumn();
+				handleCheckboxSelection(selectedRow, selectedColumn);
+
+				if (selectedColumn == 8) {
+					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Aceptado", selectedRow, 7);
+				}
+				if (selectedColumn == 9) {
+					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(" NO Aceptado", selectedRow, 7);
+				}
+				if (selectedColumn == 10) {
+					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Garantía", selectedRow, 7);
+				}
+				if (selectedColumn == 11) {
+					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Pendiente", selectedRow, 7);
+				}
+
+			}
+		};
+
+		// Agregar listener a las celdas de checkbox
+		for (int i = ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount()
+				- 4; i < ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
+			TableColumn column = ventanaMarcarAceptaciones.getTblReparaciones().getColumnModel().getColumn(i);
+			column.setCellEditor(new DefaultCellEditor(new JCheckBox()));
+			JCheckBox checkBox = (JCheckBox) column.getCellEditor()
+					.getTableCellEditorComponent(ventanaMarcarAceptaciones.getTblReparaciones(), null, false, 0, i);
+			checkBox.addActionListener(checkboxListener);
+		}
+
+	}
+
 	private void TomarDatosDeTablas() {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -1159,31 +1236,37 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			}
 		}
-		
-		if (arg0.getSource() == this.ventanaMarcarAceptaciones.getBtnMax()) {
 
-			if (clickMax % 2 != 0) {
+		if (this.ventanaMarcarAceptaciones != null) {
+			
+			if (arg0.getSource() == this.ventanaMarcarAceptaciones.getBtnMax()) {
+				
+				System.out.println("max");
 
-				ventanaMarcarAceptaciones.setExtendedState(max);
-				this.ventanaMarcarAceptaciones.getBtnMax()
-						.setIcon(new ImageIcon(this.getClass().getResource("/minimizar.png")));
-				ventanaMarcarAceptaciones.setVisible(true);
+				if (clickMax % 2 != 0) {
 
-			} else {
+					ventanaMarcarAceptaciones.setExtendedState(max);
+					this.ventanaMarcarAceptaciones.getBtnMax()
+							.setIcon(new ImageIcon(this.getClass().getResource("/minimizar.png")));
+					ventanaMarcarAceptaciones.setVisible(true);
 
-				ventanaMarcarAceptaciones.setExtendedState(min);
-				this.ventanaMarcarAceptaciones.getBtnMax()
-						.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
-				ventanaMarcarAceptaciones.setVisible(true);
+				} else {
 
+					ventanaMarcarAceptaciones.setExtendedState(min);
+					this.ventanaMarcarAceptaciones.getBtnMax()
+							.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
+					ventanaMarcarAceptaciones.setVisible(true);
+
+				}
+				clickMax++;
 			}
-			clickMax++;
 		}
+			
 
-		
-		
-
-	}
+			
+			
+		}
+	
 
 	private void llenarComboELS() {
 
@@ -1300,7 +1383,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	public void itemStateChanged(ItemEvent e) {
 
 		if (this.ventanaMarcarAceptaciones != null) {
-			
+
 			if (e.getSource() == this.ventanaMarcarAceptaciones.getRadioButtonCliente()) {
 
 				if (ventanaMarcarAceptaciones.getRadioButtonCliente().isSelected())
@@ -1311,9 +1394,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 				}
 			}
-			
-			
-			
+
 			if (e.getSource() == this.ventanaMarcarAceptaciones.getRadioButtonAviso()) {
 
 				if (ventanaMarcarAceptaciones.getRadioButtonAviso().isSelected())
@@ -1324,9 +1405,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 				}
 			}
-			
-			
-			
+
 			if (e.getSource() == this.ventanaMarcarAceptaciones.getRadioButtonELS()) {
 
 				if (ventanaMarcarAceptaciones.getRadioButtonELS().isSelected())
@@ -1336,8 +1415,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaMarcarAceptaciones.getComboFiltroELS().setSelectedIndex(-1);
 				}
 			}
-			
-			
+
 			if (e.getSource() == this.ventanaMarcarAceptaciones.getRadioButtonSucursal()) {
 
 				if (ventanaMarcarAceptaciones.getRadioButtonSucursal().isSelected())

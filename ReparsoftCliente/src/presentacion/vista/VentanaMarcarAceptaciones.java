@@ -13,8 +13,8 @@ import javax.swing.table.TableColumn;
 import org.jdesktop.swingx.plaf.UIManagerExt;
 
 import VistaPropias.CellRenderer;
+import VistaPropias.CellRendererTablaMarcarAceptaciones2;
 import VistaPropias.CellRendererTablaMarcarAceptaciones;
-import VistaPropias.CellRendererTablaMarcarAceptaciones1;
 import presentacion.controlador.ControladorListados;
 import presentacion.controlador.ControladorPresupuestos;
 import presentacion.controlador.ControladorReparacion;
@@ -70,6 +70,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 
 	private JButton btnFiltrar;
 	private JButton btnMostrarTodo;
+	private JButton btnActualizar;
 
 	private JButton btnMax;
 	public static int est;
@@ -120,7 +121,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		this.controladorPresupuestos = controlador;
 
 		this.this_windowOpened(null);
-		setSize(1080, 600);
+		setSize(1225, 600);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 
@@ -137,7 +138,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(0, 0));
-		panel.setBounds(10, 0, 1054, 561);
+		panel.setBounds(-12, 0, 1227, 561);
 		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setAlignmentY(Component.CENTER_ALIGNMENT);
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -149,7 +150,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		// scrollPane.setAutoscrolls(true);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(0, 227, 1054, 334);
+		scrollPane.setBounds(20, 227, 1197, 334);
 		panel.add(scrollPane);
 
 		DimScrollPane = scrollPane.getSize();
@@ -190,8 +191,8 @@ public class VentanaMarcarAceptaciones extends JFrame {
 			e.printStackTrace();
 		}
 
-		Font fuenteCabecera = new Font("Cambria", Font.BOLD, 12);
-		Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 10);
+		Font fuenteCabecera = new Font("Tahoma", Font.BOLD, 13);
+		Font fuenteCeldas = new Font("Tahoma", Font.PLAIN, 12);
 
 		tblReparaciones_1 = new JTable(modelReparaciones);
 		// tblReparaciones_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -330,14 +331,19 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		txtListadosDeEquipos.setColumns(10);
 
 		btnMax = new JButton("");
-		btnMax.setBounds(999, 14, 30, 25);
+		btnMax.setBounds(1187, 11, 30, 25);
 		btnMax.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
 		panel.add(btnMax);
+		
+		btnActualizar = new JButton("ACTUALIZAR");
+		btnActualizar.setFont(new Font("Cambria", Font.BOLD, 10));
+		btnActualizar.setBounds(778, 83, 113, 23);
+		panel.add(btnActualizar);
 
 		tblReparaciones_1.getTableHeader().setReorderingAllowed(false);
 
 		//int[] anchos = { 60, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 ,100,100};
-		int[] anchos = { 60, 60, 100, 100, 120, 120, 100, 100, 60,60,60,60};
+		int[] anchos = { 65, 65, 130, 130, 195, 130, 90, 90, 70,70,70,70};
 
 		for (int i = 0; i < tblReparaciones_1.getColumnCount(); i++) {
 
@@ -347,7 +353,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		
 		
 		for (int i = tblReparaciones_1.getColumnCount() - 4; i < tblReparaciones_1.getColumnCount(); i++) {
-			tblReparaciones_1.getColumnModel().getColumn(i).setCellRenderer(new CellRendererTablaMarcarAceptaciones1());
+			tblReparaciones_1.getColumnModel().getColumn(i).setCellRenderer(new CellRendererTablaMarcarAceptaciones());
         }
 
 		this.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -383,13 +389,13 @@ public class VentanaMarcarAceptaciones extends JFrame {
 
 	}
 
-//	public void setCellRender(JTable table) {
-//		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
-//		while (en.hasMoreElements()) {
-//			TableColumn tc = en.nextElement();
-//			tc.setCellRenderer(new CellRendererTablaMarcarAceptaciones1());
-//		}
-//	}
+	public void setCellRender(JTable table) {
+		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
+		while (en.hasMoreElements()) {
+			TableColumn tc = en.nextElement();
+			tc.setCellRenderer(new CellRendererTablaMarcarAceptaciones());
+		}
+	}
 
 	public DefaultTableModel getModelReparaciones() {
 		return modelReparaciones;
@@ -525,5 +531,13 @@ public class VentanaMarcarAceptaciones extends JFrame {
 
 	public void setScrollPane(JScrollPane scrollPane) {
 		this.scrollPane = scrollPane;
+	}
+
+	public JButton getBtnActualizar() {
+		return btnActualizar;
+	}
+
+	public void setBtnActualizar(JButton btnActualizar) {
+		this.btnActualizar = btnActualizar;
 	}
 }

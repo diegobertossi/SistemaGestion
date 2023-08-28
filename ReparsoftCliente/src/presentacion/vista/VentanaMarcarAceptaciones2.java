@@ -13,8 +13,8 @@ import javax.swing.table.TableColumn;
 import org.jdesktop.swingx.plaf.UIManagerExt;
 
 import VistaPropias.CellRenderer;
+import VistaPropias.CellRendererTablaMarcarAceptaciones2;
 import VistaPropias.CellRendererTablaMarcarAceptaciones;
-import VistaPropias.CellRendererTablaMarcarAceptaciones1;
 import presentacion.controlador.ControladorListados;
 import presentacion.controlador.ControladorPresupuestos;
 import presentacion.controlador.ControladorReparacion;
@@ -382,7 +382,7 @@ public class VentanaMarcarAceptaciones2 extends JFrame {
 		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
 		while (en.hasMoreElements()) {
 			TableColumn tc = en.nextElement();
-			tc.setCellRenderer(new CellRendererTablaMarcarAceptaciones1());
+			tc.setCellRenderer(new CellRendererTablaMarcarAceptaciones());
 		}
 	}
 
