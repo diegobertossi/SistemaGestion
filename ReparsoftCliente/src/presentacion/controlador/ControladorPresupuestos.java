@@ -191,7 +191,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			llenarComboSucursales();
 
 			cargarTablaMarcarAceptaciones();
-			initCheckboxListeners();
+			
 		}
 
 		else if (ventanaPresupuestos != null && e.getSource() == this.ventanaPresupuestos.getBtnPresupuestoPorELS()) {
@@ -687,6 +687,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		
 		
 		else if ( ventanaMarcarAceptaciones != null && e.getSource() == this.ventanaMarcarAceptaciones.getBtnFiltrar()) {
+			
+			initCheckboxListeners();
 			
 		
 			DefaultTableModel dm;
