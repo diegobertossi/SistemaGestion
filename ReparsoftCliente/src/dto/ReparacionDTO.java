@@ -330,6 +330,14 @@ public class ReparacionDTO {
 		
 	}
 
+	public ReparacionDTO(int ELS, String estadoComercial) {
+		
+		this.ELS =ELS;
+		this.EstadoComercial = estadoComercial;
+		
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getNombreUsuario() {
 		return NombreUsuario;
 	}

@@ -456,6 +456,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ "' ," + "AvisoEnviado = '" + AvisoEnviado + "' ," + "PresupuestoEnviado = '" + PresupEnviado
 						+ "' ," + "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
 						+ reparacion_a_editar.getELS() + "");
+				
+				System.out.println("0");
 
 			} else if (reparacion_a_editar.getFechadereparacion() != null
 					&& reparacion_a_editar.getFechAceptacion() == null
@@ -471,6 +473,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ reparacion_a_editar.getEstadoComercial() + "' ," + "RemitoCliente = '"
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = null " + "WHERE ELS = "
 						+ reparacion_a_editar.getELS() + "");
+				
+				System.out.println("1");
 
 			}
 
@@ -489,6 +493,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = '"
 						+ reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = " + reparacion_a_editar.getELS()
 						+ "");
+				
+				System.out.println("2");
 
 			}
 
@@ -506,22 +512,40 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = null " + "WHERE ELS = "
 						+ reparacion_a_editar.getELS() + "");
 
+				
+				System.out.println("3");
 			}
 
 			else if (reparacion_a_editar.getFechadereparacion() == null
 					&& reparacion_a_editar.getFechAceptacion() == null && reparacion_a_editar.getFecha_Entrada() == null
 					&& reparacion_a_editar.getNombreEquipo() == null
 					&& reparacion_a_editar.getAgregadoaremito() == null) {
+				
+				if(reparacion_a_editar.getPrecioPeso() !=null) {
+				
 				statement = conexion.getSQLConexion()
 						.prepareStatement("UPDATE reparaciones SET Informecliente = '"
 								+ reparacion_a_editar.getInformecliente() + "' ," + "PrecioPeso = '"
 								+ reparacion_a_editar.getPrecioPeso() + "' ," + "PresupuestoEnviado = '" + PresupEnviado
 								+ "' ," + "PresupuestoGenerado = '"
-
 								+ PresupGenerado + "' ," + "PrecioDolar = '" + reparacion_a_editar.getPrecioDolar()
 								+ "' ," + "WordGenerado = '" + informeWordGenerado + "' ," + "WordEnviado = '"
 								+ informeWordEnviado + "'" + "WHERE ELS = " + reparacion_a_editar.getELS() + "");
-
+				
+				
+				System.out.println("4");
+			}
+				
+				else
+				{
+					statement = conexion.getSQLConexion()
+					.prepareStatement("UPDATE reparaciones SET EstadoComercial = '"
+							+ reparacion_a_editar.getEstadoComercial()
+						    + "'" + "WHERE ELS = " + reparacion_a_editar.getELS() + "");
+					
+					System.out.println("4.1");
+					
+				}
 			}
 
 			else if (reparacion_a_editar.getAgregadoaremito() == true && reparacion_a_editar.getEnviado() == null
@@ -531,6 +555,9 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 								+ reparacion_a_editar.getidRemito() + "'" + "WHERE ELS = "
 								+ reparacion_a_editar.getELS() + "");
 
+				
+				System.out.println("5");
+				
 			}
 
 			else if (reparacion_a_editar.getEnviado() != null && reparacion_a_editar.getEstadoFisico() == "Enviado") {
@@ -538,6 +565,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						.prepareStatement("UPDATE reparaciones SET EstadoFisico = '"
 								+ reparacion_a_editar.getEstadoFisico() + "'," + "Enviado = '" + enviado + "'"
 								+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
+				
+				System.out.println("6");
 
 			}
 
@@ -549,6 +578,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 								+ reparacion_a_editar.getidRemito() + "' ," + "EstadoFisico = '"
 								+ reparacion_a_editar.getEstadoFisico() + "'," + "Enviado = '" + enviado + "'"
 								+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
+				
+				System.out.println("7");
 
 			}
 

@@ -191,6 +191,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			llenarComboSucursales();
 
 			cargarTablaMarcarAceptaciones();
+			initCheckboxListeners();
 			
 		}
 
@@ -759,6 +760,28 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		
 		
 		else if (ventanaMarcarAceptaciones != null && e.getSource() == this.ventanaMarcarAceptaciones.getBtnActualizar()) {
+			
+			
+			
+			
+			
+			String estadoComercial;
+			int filas = this.ventanaMarcarAceptaciones.getModelReparaciones().getRowCount();
+
+			for (int i = 0; i < filas; i++) {
+
+				estadoComercial = this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 7).toString();
+				if (estadoComercial != "A la Espera de Aceptación") {
+
+					ReparacionDTO reparacionAeditar = TomarDatosVentanaMarcarAceptaciones(i);
+					this.agenda.editarReparacionR(reparacionAeditar);
+
+				}
+			}
+
+			JOptionPane.showMessageDialog(null, "Se guardaron los cambios");
+
+				
 
 		}
 	}
@@ -1339,6 +1362,28 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		return nuevoPresupuesto;
 
 	}
+	
+	
+	
+	
+	private ReparacionDTO TomarDatosVentanaMarcarAceptaciones(int i) {
+
+		
+		int ELS = Integer.parseInt(this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 0).toString());
+		String estadoComercial;
+		estadoComercial =  this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 7).toString();
+
+		
+		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, estadoComercial);
+
+		return reparacionAeditar;
+
+	}
+	
+	
+	
+	
+	
 
 	private void agregarListenerAventanaEmail() {
 
