@@ -454,6 +454,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ "' ," + "PrecioPeso = '" + reparacion_a_editar.getPrecioPeso() + "' ," + "EstadoComercial = '"
 						+ reparacion_a_editar.getEstadoComercial() + "' ," + "RemitoCliente = '"
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "PresupuestoGenerado = '" + PresupGenerado
+						+ "' ," + "OrdendeCompra = '" +  reparacion_a_editar.getOrdendeCompra()
 						+ "' ," + "AvisoEnviado = '" + AvisoEnviado + "' ," + "PresupuestoEnviado = '" + PresupEnviado
 						+ "' ," + "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
 						+ reparacion_a_editar.getELS() + "");

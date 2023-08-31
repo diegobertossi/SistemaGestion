@@ -2500,12 +2500,14 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		double presupuesto = Double.parseDouble(this.ventanaVisualizarEquipos.getTextPresupuesto().getText());
 		double pago = Double.parseDouble(this.ventanaVisualizarEquipos.getTextPago().getText());
+		
+		String OrdenDeCompra= this.ventanaVisualizarEquipos.getTextOC().getText();
 
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, fechaentradavisual, fechareparacionvisual, falla,
 				solucion, informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo,
 				Cliente, Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
 				idCliente, idSucursal, fechafabrvisual, idUsuario, enviado, presupuesto, pago, presupuestoGenerado,
-				avisoEnviado, presupuestoEnviado);
+				avisoEnviado, presupuestoEnviado,OrdenDeCompra);
 
 		return reparacionAeditar;
 

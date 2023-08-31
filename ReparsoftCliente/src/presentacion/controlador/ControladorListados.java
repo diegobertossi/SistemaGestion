@@ -384,7 +384,7 @@ public class ControladorListados
 					this.Reparaciones_en_tabla.get(i).getNombreUsuario(), this.Reparaciones_en_tabla.get(i).getCodigo(),
 					this.Reparaciones_en_tabla.get(i).getNumeroRemitoSalida(),
 					this.Reparaciones_en_tabla.get(i).getPresupuestoGenerado(),
-					this.Reparaciones_en_tabla.get(i).getInformeEnviado(),
+					this.Reparaciones_en_tabla.get(i).getPresupuestoEnviado(),
 					this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
 					this.Reparaciones_en_tabla.get(i).getPrecioDolar(), this.Reparaciones_en_tabla.get(i).getPago(), };
 			this.ventanaListadoReparaciones.getModelReparaciones().addRow(fila);
