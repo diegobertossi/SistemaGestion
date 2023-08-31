@@ -192,6 +192,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			cargarTablaMarcarAceptaciones();
 			initCheckboxListeners();
+			marcarPorDefault();
+			
 
 		}
 
@@ -751,27 +753,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		else if (ventanaMarcarAceptaciones != null
 				&& e.getSource() == this.ventanaMarcarAceptaciones.getBtnMostrarTodo()) {
+		
+			
+			mostrarTodo();
 
-			this.ventanaMarcarAceptaciones.getTblReparaciones().setRowSorter(null);
-			
-			this.ventanaMarcarAceptaciones.getComboFiltroELS().setSelectedItem(null);
-			this.ventanaMarcarAceptaciones.getComboFiltroELS().setEnabled(false);
-			
-			this.ventanaMarcarAceptaciones.getComboFiltroAviso().setSelectedItem(null);
-			this.ventanaMarcarAceptaciones.getComboFiltroAviso().setEnabled(false);
-			
-			this.ventanaMarcarAceptaciones.getComboFiltroCliente().setSelectedItem(null);
-			this.ventanaMarcarAceptaciones.getComboFiltroCliente().setEnabled(false);
-			
-			this.ventanaMarcarAceptaciones.getComboFiltroSucursal().setSelectedItem(null);
-			this.ventanaMarcarAceptaciones.getComboFiltroSucursal().setEnabled(false);
-			
-			this.ventanaMarcarAceptaciones.getRadioButtonAviso().setSelected(false);
-			this.ventanaMarcarAceptaciones.getRadioButtonELS().setSelected(false);
-			this.ventanaMarcarAceptaciones.getRadioButtonCliente().setSelected(false);
-			this.ventanaMarcarAceptaciones.getRadioButtonSucursal().setSelected(false);
-			
-			
 			
 		}
 
@@ -794,8 +779,13 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			JOptionPane.showMessageDialog(null, "Se guardaron los cambios");
 
+			cargarTablaMarcarAceptaciones();
+			mostrarTodo();
+			
 		}
 	}
+
+
 
 	private void abrirSelectorImagen(JTextField txtRutaImagen_1, JTextField txtRutaImagen_2,
 			JTextField txtRutaImagen_3) {
@@ -981,6 +971,20 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		AutoCompleteDecorator.decorate(ventanaMarcarAceptaciones.getComboFiltroSucursal());
 
 	}
+	
+	
+	
+	private void marcarPorDefault(){
+		
+		int filas = this.ventanaMarcarAceptaciones.getModelReparaciones().getRowCount();
+
+		for (int i = 0; i < filas; i++) {
+
+			this.ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(true, i, 11);
+		}
+		
+		
+	}
 
 	private void llenarComboCliente() {
 
@@ -1082,20 +1086,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
-//	// Método para manejar la selección de los checkboxes
-//	private void handleCheckboxSelection(int selectedRow, int selectedColumn) {
-//		//System.out.println("fila seleccionada: " + selectedRow);
-//		if (selectedRow != -1 && selectedColumn != -1) {
-//			
-//			for (int i = this.ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount()
-//					- 4; i < this.ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
-//				if (i != selectedColumn) {
-//					this.ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(false, selectedRow, i);
-//					//System.out.println("fila seleccionada : " + selectedRow);
-//				}
-//			}
-//		}
-//	}
 
 	private void handleCheckboxSelection(int selectedRowInView, int selectedColumnInView) {
 		if (selectedRowInView != -1 && selectedColumnInView != -1) {
@@ -1112,48 +1102,156 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	}
 
 	// Método para inicializar los listeners de los checkboxes
+
+	
+	
 	public void initCheckboxListeners() {
-		ActionListener checkboxListener = new ActionListener() {
+	    ActionListener checkboxListener = new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int selectedRow = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedRow();
-				int selectedColumn = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedColumn();
-				handleCheckboxSelection(selectedRow, selectedColumn);
-				int selectedRowInModel = ventanaMarcarAceptaciones.getTblReparaciones()
-						.convertRowIndexToModel(selectedRow);
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            int selectedRow = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedRow();
+	            int selectedColumn = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedColumn();
+	            handleCheckboxSelection(selectedRow, selectedColumn);
+	            int selectedRowInModel = ventanaMarcarAceptaciones.getTblReparaciones().convertRowIndexToModel(selectedRow);
 
-				if (selectedColumn == 8) {
+	            // Lógica para manejar la selección automática del último checkbox si todos los demás están deseleccionados
+	            boolean anyChecked = true;
+	            for (int i = ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount() - 4; i < ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
+	                Object value = ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(selectedRowInModel, i);
+	                boolean isChecked = value != null && (boolean) value;
+	                if (isChecked) {
+	                    anyChecked = false;
+	                    break;
+	                }
+	            }
 
-					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Aceptado", selectedRowInModel, 7);
-				}
-				if (selectedColumn == 9) {
 
-					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(" NO Aceptado", selectedRowInModel, 7);
-				}
-				if (selectedColumn == 10) {
+	            // Resto de la lógica para manejar la selección de checkboxes y otras acciones
+	            if (selectedColumn == 8) {
+	                ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Aceptado", selectedRowInModel, 7);
+	            }
+	            if (selectedColumn == 9) {
+	                ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(" NO Aceptado", selectedRowInModel, 7);
+	            }
+	            if (selectedColumn == 10) {
+	                ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Garantía", selectedRowInModel, 7);
+	            }
+	            if (selectedColumn == 11) {
+	                ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("A la Espera de Aceptación", selectedRowInModel, 7);
+	            }
+	            
+	            
 
-					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Garantía", selectedRowInModel, 7);
-				}
-				if (selectedColumn == 11) {
+	            if (!anyChecked) {
+	                int lastColumn = ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount() - 1;
+	                ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(true, selectedRowInModel, lastColumn);
+	                ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("A la Espera de Aceptación", selectedRowInModel, 7);
+	                
+	            }
+	        }
+	    };
 
-					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Pendiente", selectedRowInModel, 7);
-				}
-
-			}
-		};
-
-		// Agregar listener a las celdas de checkbox
-		for (int i = ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount()
-				- 4; i < ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
-			TableColumn column = ventanaMarcarAceptaciones.getTblReparaciones().getColumnModel().getColumn(i);
-			column.setCellEditor(new DefaultCellEditor(new JCheckBox()));
-			JCheckBox checkBox = (JCheckBox) column.getCellEditor()
-					.getTableCellEditorComponent(ventanaMarcarAceptaciones.getTblReparaciones(), null, false, 0, i);
-			checkBox.addActionListener(checkboxListener);
-		}
-
+	    // Agregar listener a las celdas de checkbox
+	    for (int i = ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount() - 4; i < ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
+	        TableColumn column = ventanaMarcarAceptaciones.getTblReparaciones().getColumnModel().getColumn(i);
+	        column.setCellEditor(new DefaultCellEditor(new JCheckBox()));
+	        JCheckBox checkBox = (JCheckBox) column.getCellEditor().getTableCellEditorComponent(ventanaMarcarAceptaciones.getTblReparaciones(), null, false, 0, i);
+	        checkBox.addActionListener(checkboxListener);
+	    }
 	}
+
+
+	
+	private void mostrarTodo() {
+		this.ventanaMarcarAceptaciones.getTblReparaciones().setRowSorter(null);
+		
+		this.ventanaMarcarAceptaciones.getComboFiltroELS().setSelectedItem(null);
+		this.ventanaMarcarAceptaciones.getComboFiltroELS().setEnabled(false);
+		
+		this.ventanaMarcarAceptaciones.getComboFiltroAviso().setSelectedItem(null);
+		this.ventanaMarcarAceptaciones.getComboFiltroAviso().setEnabled(false);
+		
+		this.ventanaMarcarAceptaciones.getComboFiltroCliente().setSelectedItem(null);
+		this.ventanaMarcarAceptaciones.getComboFiltroCliente().setEnabled(false);
+		
+		this.ventanaMarcarAceptaciones.getComboFiltroSucursal().setSelectedItem(null);
+		this.ventanaMarcarAceptaciones.getComboFiltroSucursal().setEnabled(false);
+		
+		this.ventanaMarcarAceptaciones.getRadioButtonAviso().setSelected(false);
+		this.ventanaMarcarAceptaciones.getRadioButtonELS().setSelected(false);
+		this.ventanaMarcarAceptaciones.getRadioButtonCliente().setSelected(false);
+		this.ventanaMarcarAceptaciones.getRadioButtonSucursal().setSelected(false);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//	public void initCheckboxListeners() {
+//		ActionListener checkboxListener = new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				int selectedRow = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedRow();
+//				int selectedColumn = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedColumn();
+//				handleCheckboxSelection(selectedRow, selectedColumn);
+//				int selectedRowInModel = ventanaMarcarAceptaciones.getTblReparaciones()
+//						.convertRowIndexToModel(selectedRow);
+//
+//				if (selectedColumn == 8) {
+//
+//					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Aceptado", selectedRowInModel, 7);
+//				}
+//				if (selectedColumn == 9) {
+//
+//					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(" NO Aceptado", selectedRowInModel, 7);
+//				}
+//				if (selectedColumn == 10) {
+//
+//					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Garantía", selectedRowInModel, 7);
+//				}
+//				if (selectedColumn == 11) {
+//
+//					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Pendiente", selectedRowInModel, 7);
+//				}
+//
+//			}
+//		};
+//
+//		// Agregar listener a las celdas de checkbox
+//		for (int i = ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount()
+//				- 4; i < ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
+//			TableColumn column = ventanaMarcarAceptaciones.getTblReparaciones().getColumnModel().getColumn(i);
+//			column.setCellEditor(new DefaultCellEditor(new JCheckBox()));
+//			JCheckBox checkBox = (JCheckBox) column.getCellEditor()
+//					.getTableCellEditorComponent(ventanaMarcarAceptaciones.getTblReparaciones(), null, false, 0, i);
+//			checkBox.addActionListener(checkboxListener);
+//		}
+//
+//	}
 
 	private void TomarDatosDeTablas() {
 

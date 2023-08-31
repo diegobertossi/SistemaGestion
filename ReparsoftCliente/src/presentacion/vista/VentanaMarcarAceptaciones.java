@@ -171,7 +171,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 			}
 
 			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false,
-					false,true,true,true,true };
+					false,true,true,true,false };
 
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
