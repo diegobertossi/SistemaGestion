@@ -183,21 +183,6 @@ public class ControladorListados
 				this.ventanaListadoReparaciones.getTblReparaciones().setRowSorter(null);
 			}
 
-//			if (ventanaListadoReparaciones.getRadioButtonCliente().isSelected()
-//					&& ventanaListadoReparaciones.getComboFiltroCliente().getSelectedItem() != null
-//					&& ventanaListadoReparaciones.getComboFiltroCliente().getSelectedItem().toString() != null) {
-//				rfs.add(RowFilter
-//
-//						.regexFilter("." + "*" +"\\" +"(" + ventanaListadoReparaciones.getComboFiltroCliente().getSelectedItem().toString() + "\\)",
-//								2));
-//			}
-
-//			if (ventanaListadoReparaciones.getRadioButtonMarca().isSelected()
-//					&& ventanaListadoReparaciones.getComboFiltroMarca().getSelectedItem() != null
-//					&& ventanaListadoReparaciones.getComboFiltroMarca().getSelectedItem().toString() != null) {
-//				rfs.add(RowFilter
-//						.regexFilter("^" + ventanaListadoReparaciones.getComboFiltroMarca().getSelectedItem().toString() + "$", 5));
-//			}
 
 			if (ventanaListadoReparaciones.getRadioButtonCliente().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroCliente().getSelectedItem() != null
@@ -305,7 +290,63 @@ public class ControladorListados
 				&& arg0.getSource() == this.ventanaListadoReparaciones.getBtnMostrarTodo()) {
 
 			this.ventanaListadoReparaciones.getTblReparaciones().setRowSorter(null);
+			
+			this.ventanaListadoReparaciones.getComboFiltroCliente().setSelectedItem(null);
+			this.ventanaListadoReparaciones.getComboFiltroCliente().setEnabled(false);
+			
+			this.ventanaListadoReparaciones.getComboFiltroSucursal().setSelectedItem(null);
+			this.ventanaListadoReparaciones.getComboFiltroSucursal().setEnabled(false);
+			
+			this.ventanaListadoReparaciones.getComboFiltroMarca().setSelectedItem(null);
+			this.ventanaListadoReparaciones.getComboFiltroMarca().setEnabled(false);
+						
+			this.ventanaListadoReparaciones.getComboFiltroELS().setSelectedItem(null);
+			this.ventanaListadoReparaciones.getComboFiltroELS().setEnabled(false);
+			
+			this.ventanaListadoReparaciones.getComboFiltroEquipo().setSelectedItem(null);
+			this.ventanaListadoReparaciones.getComboFiltroEquipo().setEnabled(false);
+			
+			this.ventanaListadoReparaciones.getComboFiltroModelo().setSelectedItem(null);
+			this.ventanaListadoReparaciones.getComboFiltroModelo().setEnabled(false);
+				
+			this.ventanaListadoReparaciones.getComboFiltroAviso().setSelectedItem(null);
+			this.ventanaListadoReparaciones.getComboFiltroAviso().setEnabled(false);
+			
+			this.ventanaListadoReparaciones.getComboFiltroTecnico().setSelectedItem(null);
+			this.ventanaListadoReparaciones.getComboFiltroTecnico().setEnabled(false);
+			
+			this.ventanaListadoReparaciones.getComboFiltroEstadoCom().setSelectedItem(null);
+			this.ventanaListadoReparaciones.getComboFiltroEstadoCom().setEnabled(false);
+						
+			this.ventanaListadoReparaciones.getComboFiltroEstadoFis().setSelectedItem(null);
+			this.ventanaListadoReparaciones.getComboFiltroEstadoFis().setEnabled(false);
+			
+			this.ventanaListadoReparaciones.getComboFiltroEstadoTec().setSelectedItem(null);
+			this.ventanaListadoReparaciones.getComboFiltroEstadoTec().setEnabled(false);
+			
+			this.ventanaListadoReparaciones.getChckbxPresupuestoEnviado().setSelected(false);;
+			this.ventanaListadoReparaciones.getChckbxPresupuestoEnviado().setEnabled(false);
 
+			this.ventanaListadoReparaciones.getChckbxPresupuestoGenerado().setSelected(false);;
+			this.ventanaListadoReparaciones.getChckbxPresupuestoGenerado().setEnabled(false);		
+			
+			
+			this.ventanaListadoReparaciones.getRadioButtonCliente().setSelected(false);
+			this.ventanaListadoReparaciones.getRadioButtonSucursal().setSelected(false);
+			this.ventanaListadoReparaciones.getRadioButtonMarca().setSelected(false);
+			this.ventanaListadoReparaciones.getRadioButtonELS().setSelected(false);
+			this.ventanaListadoReparaciones.getRadioButtonEquipo().setSelected(false);
+			this.ventanaListadoReparaciones.getRadioButtonModelo().setSelected(false);
+			this.ventanaListadoReparaciones.getRadioButtonAviso().setSelected(false);
+			this.ventanaListadoReparaciones.getRadioButtonTecnico().setSelected(false);
+			this.ventanaListadoReparaciones.getRadioButtonEstadoCom().setSelected(false);
+			this.ventanaListadoReparaciones.getRadioButtonEstadoFis().setSelected(false);
+			this.ventanaListadoReparaciones.getRadioButtonEstadoTec().setSelected(false);
+			this.ventanaListadoReparaciones.getRadioButtonPresupEnviado().setSelected(false);
+			this.ventanaListadoReparaciones.getRadioButtonPresupGenerado().setSelected(false);
+
+		
+			
 		}
 
 		else if (this.ventanaListadoReparaciones != null

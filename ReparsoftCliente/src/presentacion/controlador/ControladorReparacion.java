@@ -110,6 +110,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private String estadoFisico = "";
 	private String estadoTecnico = "";
+	private String estadocomercial = "";
 	private String NombreEq = "";
 	private String Marca = "";
 	private String Modelo = "";
@@ -2406,9 +2407,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		}
 
 		estadoTecnico = "Sin revisar";
-		String estadoComercial = "A la Espera de Aceptación";
+		estadocomercial = "A la Espera de Aceptación";
 
-		ReparacionDTO nuevoReparacion = new ReparacionDTO(ELS, fechaentrada, falla, estadoFisico, estadoTecnico,estadoComercial,
+		ReparacionDTO nuevoReparacion = new ReparacionDTO(ELS, fechaentrada, falla, estadoFisico, estadoTecnico,estadocomercial,
 				RemitoCLiente, IDEquipo, idUsuarios, NombreEquipo, Modelo, Marca, Series, aviso, ClienteCliente,
 				idCliente, idSucursal, fechaFarbricacion);
 
