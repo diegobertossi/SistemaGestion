@@ -231,95 +231,111 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		panel_1 = new JPanel();
 		panel_1.setBackground(SystemColor.inactiveCaption);
 		panel_1.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_1.setBounds(90, 65, 395, 134);
+		panel_1.setBounds(90, 65, 578, 134);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 
 		JLabel lblCliente = new JLabel("CLIENTE:");
-		lblCliente.setBounds(6, 15, 60, 14);
+		lblCliente.setBounds(6, 13, 60, 14);
 		panel_1.add(lblCliente);
-		lblCliente.setFont(new Font("Cambria", Font.BOLD, 12));
+		lblCliente.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		comboFiltroCliente = new JComboBox();
-		comboFiltroCliente.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroCliente.setBounds(77, 10, 138, 20);
+		comboFiltroCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
+		comboFiltroCliente.setBounds(120, 10, 191, 20);
 		panel_1.add(comboFiltroCliente);
 		comboFiltroCliente.setEnabled(false);
 
 		radioButtonCliente = new JRadioButton("");
-		radioButtonCliente.setBounds(221, 10, 21, 20);
+		radioButtonCliente.setBounds(317, 10, 21, 20);
 		panel_1.add(radioButtonCliente);
 		radioButtonCliente.setBackground(SystemColor.inactiveCaption);
 
 		comboFiltroSucursal = new JComboBox();
-		comboFiltroSucursal.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroSucursal.setBounds(77, 40, 138, 20);
+		comboFiltroSucursal.setFont(new Font("Cambria", Font.PLAIN, 14));
+		comboFiltroSucursal.setBounds(120, 40, 191, 20);
 		panel_1.add(comboFiltroSucursal);
 		comboFiltroSucursal.setEnabled(false);
 
 		JLabel lblSucursal = new JLabel("SUCURSAL:");
-		lblSucursal.setBounds(6, 44, 72, 14);
+		lblSucursal.setBounds(6, 43, 72, 14);
 		panel_1.add(lblSucursal);
-		lblSucursal.setFont(new Font("Cambria", Font.BOLD, 12));
+		lblSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		radioButtonSucursal = new JRadioButton("");
-		radioButtonSucursal.setBounds(221, 40, 21, 20);
+		radioButtonSucursal.setBounds(317, 40, 21, 20);
 		panel_1.add(radioButtonSucursal);
 		radioButtonSucursal.setBackground(SystemColor.inactiveCaption);
 
 		lblAviso = new JLabel("AVISO:");
 		lblAviso.setBounds(6, 74, 60, 14);
 		panel_1.add(lblAviso);
-		lblAviso.setFont(new Font("Cambria", Font.BOLD, 12));
+		lblAviso.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		comboFiltroAviso = new JComboBox();
-		comboFiltroAviso.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroAviso.setBounds(77, 71, 138, 20);
+		comboFiltroAviso.setFont(new Font("Cambria", Font.PLAIN, 14));
+		comboFiltroAviso.setBounds(120, 71, 191, 20);
 		panel_1.add(comboFiltroAviso);
 		comboFiltroAviso.setEnabled(false);
 
 		radioButtonAviso = new JRadioButton("");
-		radioButtonAviso.setBounds(221, 71, 21, 20);
+		radioButtonAviso.setBounds(317, 71, 21, 20);
 		panel_1.add(radioButtonAviso);
 		radioButtonAviso.setBackground(SystemColor.inactiveCaption);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(246, 17, 5, 103);
+		separator.setBounds(355, 15, 5, 103);
 		panel_1.add(separator);
 		separator.setForeground(SystemColor.textInactiveText);
 		separator.setOrientation(SwingConstants.VERTICAL);
 
 		separator_1 = new JSeparator();
-		separator_1.setBounds(249, 17, 2, 103);
+		separator_1.setBounds(358, 15, 2, 103);
 		panel_1.add(separator_1);
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		separator_1.setForeground(SystemColor.textInactiveText);
 
 		radioButtonELS = new JRadioButton("");
 		radioButtonELS.setBackground(SystemColor.inactiveCaption);
-		radioButtonELS.setBounds(221, 100, 21, 20);
+		radioButtonELS.setBounds(317, 100, 21, 20);
 		panel_1.add(radioButtonELS);
 
 		comboFiltroELS = new JComboBox();
-		comboFiltroELS.setFont(new Font("Cambria", Font.PLAIN, 12));
+		comboFiltroELS.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboFiltroELS.setEnabled(false);
-		comboFiltroELS.setBounds(77, 100, 138, 20);
+		comboFiltroELS.setBounds(120, 100, 191, 20);
 		panel_1.add(comboFiltroELS);
 
 		JLabel lblEls = new JLabel("ELS:");
-		lblEls.setFont(new Font("Cambria", Font.BOLD, 12));
+		lblEls.setFont(new Font("Cambria", Font.BOLD, 14));
 		lblEls.setBounds(6, 102, 60, 14);
 		panel_1.add(lblEls);
 
 		btnFiltrar = new JButton("FILTRAR");
-		btnFiltrar.setBounds(266, 29, 113, 23);
+		btnFiltrar.setBounds(403, 15, 132, 48);
 		panel_1.add(btnFiltrar);
-		btnFiltrar.setFont(new Font("Cambria", Font.BOLD, 10));
+		btnFiltrar.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnMostrarTodo = new JButton("MOSTRAR TODO");
-		btnMostrarTodo.setBounds(266, 81, 113, 23);
+		btnMostrarTodo.setBounds(403, 70, 132, 48);
 		panel_1.add(btnMostrarTodo);
-		btnMostrarTodo.setFont(new Font("Cambria", Font.BOLD, 10));
+		btnMostrarTodo.setFont(new Font("Cambria", Font.BOLD, 14));
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setBounds(5, 28, 107, 2);
+		panel_1.add(separator_2);
+		
+		JSeparator separator_2_1 = new JSeparator();
+		separator_2_1.setBounds(3, 58, 107, 2);
+		panel_1.add(separator_2_1);
+		
+		JSeparator separator_2_2 = new JSeparator();
+		separator_2_2.setBounds(6, 89, 107, 2);
+		panel_1.add(separator_2_2);
+		
+		JSeparator separator_2_3 = new JSeparator();
+		separator_2_3.setBounds(3, 118, 107, 2);
+		panel_1.add(separator_2_3);
 
 		txtListadosDeEquipos = new JTextField();
 		txtListadosDeEquipos.setEditable(false);
@@ -335,10 +351,24 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		btnMax.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
 		panel.add(btnMax);
 		
-		btnActualizar = new JButton("ACTUALIZAR");
-		btnActualizar.setFont(new Font("Cambria", Font.BOLD, 10));
-		btnActualizar.setBounds(778, 83, 113, 23);
+		btnActualizar = new JButton("<html><center>GUARDAR CAMBIOS Y ACTUALIZAR</html>");
+		btnActualizar.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnActualizar.setBounds(998, 101, 147, 63);
 		panel.add(btnActualizar);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(255, 255, 153));
+		panel_2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel_2.setBounds(705, 93, 262, 78);
+		panel.add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("<html><center>SE MUESTRAN LOS EQUIPOS CUYOS PRESUPUESTOS FUERON ENVIADOS Y ESTÁN PENDIENTES DE RESPUESTA<html>");
+		lblNewLabel.setBackground(new Color(255, 255, 255));
+		lblNewLabel.setBounds(0, 0, 262, 78);
+		panel_2.add(lblNewLabel);
+		lblNewLabel.setForeground(new Color(0, 0, 128));
+		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		tblReparaciones_1.getTableHeader().setReorderingAllowed(false);
 
