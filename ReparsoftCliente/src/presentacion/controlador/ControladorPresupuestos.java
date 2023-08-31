@@ -192,7 +192,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			cargarTablaMarcarAceptaciones();
 			initCheckboxListeners();
-			marcarPorDefault();
+			
 			
 
 		}
@@ -1083,6 +1083,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaMarcarAceptaciones.setCellRender(this.ventanaMarcarAceptaciones.getTblReparaciones());
 
 		this.ventanaMarcarAceptaciones.show();
+		
+		marcarPorDefault();
 
 	}
 
