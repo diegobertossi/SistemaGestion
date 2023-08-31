@@ -753,7 +753,26 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				&& e.getSource() == this.ventanaMarcarAceptaciones.getBtnMostrarTodo()) {
 
 			this.ventanaMarcarAceptaciones.getTblReparaciones().setRowSorter(null);
-
+			
+			this.ventanaMarcarAceptaciones.getComboFiltroELS().setSelectedItem(null);
+			this.ventanaMarcarAceptaciones.getComboFiltroELS().setEnabled(false);
+			
+			this.ventanaMarcarAceptaciones.getComboFiltroAviso().setSelectedItem(null);
+			this.ventanaMarcarAceptaciones.getComboFiltroAviso().setEnabled(false);
+			
+			this.ventanaMarcarAceptaciones.getComboFiltroCliente().setSelectedItem(null);
+			this.ventanaMarcarAceptaciones.getComboFiltroCliente().setEnabled(false);
+			
+			this.ventanaMarcarAceptaciones.getComboFiltroSucursal().setSelectedItem(null);
+			this.ventanaMarcarAceptaciones.getComboFiltroSucursal().setEnabled(false);
+			
+			this.ventanaMarcarAceptaciones.getRadioButtonAviso().setSelected(false);
+			this.ventanaMarcarAceptaciones.getRadioButtonELS().setSelected(false);
+			this.ventanaMarcarAceptaciones.getRadioButtonCliente().setSelected(false);
+			this.ventanaMarcarAceptaciones.getRadioButtonSucursal().setSelected(false);
+			
+			
+			
 		}
 
 		else if (ventanaMarcarAceptaciones != null

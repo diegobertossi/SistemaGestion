@@ -19,7 +19,7 @@ import dto.SucursalDTO;
 
 public class ReparacionDAOImpl implements ReparacionDAO {
 
-	private static final String insert = "INSERT INTO reparaciones(ELS,FechaEntrada,Falla, EstadoFisico, EstadoTecnico, RemitoCliente, idEquipo, idUsuario) VALUES( ? , ? ,? , ? , ? , ? , ?,?)";
+	private static final String insert = "INSERT INTO reparaciones(ELS,FechaEntrada,Falla, EstadoFisico, EstadoTecnico,EstadoComercial, RemitoCliente, idEquipo, idUsuario) VALUES( ? , ? ,? , ? , ?,? , ? , ?,?)";
 
 	private static final String insertEquipo = "INSERT INTO Equipos (IdEquipo, Nombre, Modelo, Marca, NumeroDeSerie, FechaFabr,Aviso, ClienteCliente, RemitoCliente, idCliente, idSucursal ) VALUES(? , ? ,? , ? , ? , ? , ? , ? , ?, ?,?)";
 
@@ -101,9 +101,10 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			statement.setString(3, Reparaciones.getFalla());
 			statement.setString(4, Reparaciones.getEstadoFisico());
 			statement.setString(5, Reparaciones.getEstadoTecnico());
-			statement.setString(6, Reparaciones.getRemitoCliente());
-			statement.setInt(7, Reparaciones.getIDEquipo());
-			statement.setInt(8, Reparaciones.getidUsuario());
+			statement.setString(6, Reparaciones.getEstadoComercial());		
+			statement.setString(7, Reparaciones.getRemitoCliente());
+			statement.setInt(8, Reparaciones.getIDEquipo());
+			statement.setInt(9, Reparaciones.getidUsuario());
 
 			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
 				return true;

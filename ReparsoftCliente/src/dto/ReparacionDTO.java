@@ -238,14 +238,16 @@ public class ReparacionDTO {
 
 	}
 
-	public ReparacionDTO(int ELS, String Fecha_Entrada, String Falla, String EstadoFisico, String EstadoTecnico,
+	public ReparacionDTO(int ELS, String Fecha_Entrada, String Falla, String EstadoFisico, String EstadoTecnico,String EstadoComercial,
 			String RemitoCliente, int IDEquipo, int IDusuario, String Nombre, String Modelo, String Marca,
 			String NumeroDeSerie, String Aviso, String ClienteCliente, int IDCliente, int IDSuc, String FechaFabr) {
+		
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
 		this.Falla = Falla;
 		this.EstadoFisico = EstadoFisico;
 		this.EstadoTecnico = EstadoTecnico;
+		this.EstadoComercial = EstadoComercial;
 		this.RemitoCliente = RemitoCliente;
 		this.idEquipo = IDEquipo;
 		this.idUsuario = IDusuario;
