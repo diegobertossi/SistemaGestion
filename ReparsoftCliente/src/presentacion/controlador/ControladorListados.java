@@ -273,11 +273,8 @@ public class ControladorListados
 			if (ventanaListadoReparaciones.getRadioButtonELS().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroELS().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroELS().getSelectedItem().toString() != null) {
-				rfs.add(RowFilter
-
-						.regexFilter(
-								"^" + ventanaListadoReparaciones.getComboFiltroELS().getSelectedItem().toString() + "$",
-								0));
+				rfs.add(RowFilter.regexFilter(
+						"^" + ventanaListadoReparaciones.getComboFiltroELS().getSelectedItem().toString() + "$", 0));
 			}
 
 			if (ventanaListadoReparaciones.getRadioButtonTecnico().isSelected()

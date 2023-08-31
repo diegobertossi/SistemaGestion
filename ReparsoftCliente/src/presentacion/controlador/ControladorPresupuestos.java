@@ -687,7 +687,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		else if (ventanaMarcarAceptaciones != null && e.getSource() == this.ventanaMarcarAceptaciones.getBtnFiltrar()) {
 
-			
 			DefaultTableModel dm;
 			dm = (DefaultTableModel) this.ventanaMarcarAceptaciones.getTblReparaciones().getModel();
 
@@ -708,45 +707,42 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			if (ventanaMarcarAceptaciones.getRadioButtonCliente().isSelected()
 					&& ventanaMarcarAceptaciones.getComboFiltroCliente().getSelectedItem() != null
 					&& ventanaMarcarAceptaciones.getComboFiltroCliente().getSelectedItem().toString() != null) {
-				rfs.add(RowFilter
-
-						.regexFilter("^" + ventanaMarcarAceptaciones.getComboFiltroCliente().getSelectedItem().toString() + "$",
-								2));
+				String searchText = ventanaMarcarAceptaciones.getComboFiltroCliente().getSelectedItem().toString();
+				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 2)); // (?i) para ignorar
+																								// mayúsculas/minúsculas
 			}
 
 			if (ventanaMarcarAceptaciones.getRadioButtonSucursal().isSelected()
 					&& ventanaMarcarAceptaciones.getComboFiltroSucursal().getSelectedItem() != null
 					&& ventanaMarcarAceptaciones.getComboFiltroSucursal().getSelectedItem().toString() != null) {
-				rfs.add(RowFilter.regexFilter(
-						"^" + ventanaMarcarAceptaciones.getComboFiltroSucursal().getSelectedItem().toString() + "$", 3));
+				String searchText = ventanaMarcarAceptaciones.getComboFiltroSucursal().getSelectedItem().toString();
+				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 3)); // (?i) para ignorar
+																								// mayúsculas/minúsculas
 			}
 
 			if (ventanaMarcarAceptaciones.getRadioButtonAviso().isSelected()
 					&& ventanaMarcarAceptaciones.getComboFiltroAviso().getSelectedItem() != null
 					&& ventanaMarcarAceptaciones.getComboFiltroAviso().getSelectedItem().toString() != null) {
-				rfs.add(RowFilter
-
-						.regexFilter("^" + ventanaMarcarAceptaciones.getComboFiltroAviso().getSelectedItem().toString() + "$", 1));
+				rfs.add(RowFilter.regexFilter(
+						"^" + ventanaMarcarAceptaciones.getComboFiltroAviso().getSelectedItem().toString() + "$", 1));
 			}
 
 			if (ventanaMarcarAceptaciones.getRadioButtonELS().isSelected()
 					&& ventanaMarcarAceptaciones.getComboFiltroELS().getSelectedItem() != null
 					&& ventanaMarcarAceptaciones.getComboFiltroELS().getSelectedItem().toString() != null) {
-				rfs.add(RowFilter
-
-						.regexFilter("^" +  ventanaMarcarAceptaciones.getComboFiltroELS().getSelectedItem().toString()+ "$", 0));
+				rfs.add(RowFilter.regexFilter(
+						"^" + ventanaMarcarAceptaciones.getComboFiltroELS().getSelectedItem().toString() + "$", 0));
 			}
 
 			rf = RowFilter.andFilter(rfs);
 
 			tr.setRowFilter(rf);
-			
+
 			if (this.ventanaMarcarAceptaciones.getTblReparaciones().getRowSorter() != null) {
 				int rowCount = this.ventanaMarcarAceptaciones.getTblReparaciones().getRowSorter().getViewRowCount();
-				System.out.println("Número de filas después de aplicar filtros: " + rowCount);
-				
-				if (rowCount != 0){
-					
+
+				if (rowCount != 0) {
+
 					initCheckboxListeners();
 				}
 			}
@@ -1067,16 +1063,30 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
-	// Método para manejar la selección de los checkboxes
-	private void handleCheckboxSelection(int selectedRow, int selectedColumn) {
-		//System.out.println("fila seleccionada: " + selectedRow);
-		if (selectedRow != -1 && selectedColumn != -1) {
-			
-			for (int i = this.ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount()
-					- 4; i < this.ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
-				if (i != selectedColumn) {
-					this.ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(false, selectedRow, i);
-					//System.out.println("fila seleccionada : " + selectedRow);
+//	// Método para manejar la selección de los checkboxes
+//	private void handleCheckboxSelection(int selectedRow, int selectedColumn) {
+//		//System.out.println("fila seleccionada: " + selectedRow);
+//		if (selectedRow != -1 && selectedColumn != -1) {
+//			
+//			for (int i = this.ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount()
+//					- 4; i < this.ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
+//				if (i != selectedColumn) {
+//					this.ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(false, selectedRow, i);
+//					//System.out.println("fila seleccionada : " + selectedRow);
+//				}
+//			}
+//		}
+//	}
+
+	private void handleCheckboxSelection(int selectedRowInView, int selectedColumnInView) {
+		if (selectedRowInView != -1 && selectedColumnInView != -1) {
+			int selectedRowInModel = ventanaMarcarAceptaciones.getTblReparaciones()
+					.convertRowIndexToModel(selectedRowInView);
+
+			for (int i = ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount()
+					- 4; i < ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
+				if (i != selectedColumnInView) {
+					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(false, selectedRowInModel, i);
 				}
 			}
 		}
@@ -1085,73 +1095,30 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	// Método para inicializar los listeners de los checkboxes
 	public void initCheckboxListeners() {
 		ActionListener checkboxListener = new ActionListener() {
-			
-//		
-//			
-//			
-//	        @Override
-//	        public void actionPerformed(ActionEvent e) {
-//	            int selectedRow = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedRow();
-//	            int selectedColumn = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedColumn();
-//	            
-//	            if (ventanaMarcarAceptaciones.getTblReparaciones().getRowSorter().getViewRowCount() > 1) {
-//	                handleCheckboxSelection(selectedRow, selectedColumn);
-//	                
-//					if (selectedColumn == 8) {
-//					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Aceptado", selectedRow, 7);
-//				}
-//				if (selectedColumn == 9) {
-//					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(" NO Aceptado", selectedRow, 7);
-//				}
-//				if (selectedColumn == 10) {
-//					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Garantía", selectedRow, 7);
-//				}
-//				if (selectedColumn == 11) {
-//					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Pendiente", selectedRow, 7);
-//				}
-//	                
-//	                
-//	                
-//	            } else {
-//	                // Lógica especial cuando solo hay una fila visible
-//	                boolean currentValue = (boolean) ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(selectedRow, selectedColumn);
-//	                for (int i = ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount() - 4; i < ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
-//	                    if (i != selectedColumn) {
-//	                    	ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(false, selectedRow, i);
-//	                    }
-//	                }
-//	                ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(!currentValue, selectedRow, selectedColumn);
-//	            }
-//	        }
-//	    };
-			
-			
-			
-			
-			
-			
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedRow();
 				int selectedColumn = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedColumn();
 				handleCheckboxSelection(selectedRow, selectedColumn);
+				int selectedRowInModel = ventanaMarcarAceptaciones.getTblReparaciones()
+						.convertRowIndexToModel(selectedRow);
 
 				if (selectedColumn == 8) {
-					
-					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Aceptado", selectedRow, 7);
+
+					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Aceptado", selectedRowInModel, 7);
 				}
 				if (selectedColumn == 9) {
-					
-					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(" NO Aceptado", selectedRow, 7);
+
+					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(" NO Aceptado", selectedRowInModel, 7);
 				}
 				if (selectedColumn == 10) {
-					
-					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Garantía", selectedRow, 7);
+
+					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Garantía", selectedRowInModel, 7);
 				}
 				if (selectedColumn == 11) {
-					
-					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Pendiente", selectedRow, 7);
+
+					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Pendiente", selectedRowInModel, 7);
 				}
 
 			}
