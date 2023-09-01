@@ -253,6 +253,7 @@ public class ControladorPrincipal implements ActionListener {
 			controladorCliente = new ControladorCliente(ventanaClientes, modelo);
 
 			ventanaListadoReparaciones = new VentanaListadoReparaciones(controladorListados);
+			
 			controladorUsuLogin.verificarPermisosVentanaListados(ventanaListadoReparaciones);
 
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);

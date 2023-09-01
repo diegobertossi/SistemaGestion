@@ -144,7 +144,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		this.this_windowOpened(null);
 		setSize(1080, 600);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 
 		getContentPane().setLayout(null);

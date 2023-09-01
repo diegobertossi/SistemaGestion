@@ -1187,73 +1187,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//	public void initCheckboxListeners() {
-//		ActionListener checkboxListener = new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				int selectedRow = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedRow();
-//				int selectedColumn = ventanaMarcarAceptaciones.getTblReparaciones().getSelectedColumn();
-//				handleCheckboxSelection(selectedRow, selectedColumn);
-//				int selectedRowInModel = ventanaMarcarAceptaciones.getTblReparaciones()
-//						.convertRowIndexToModel(selectedRow);
-//
-//				if (selectedColumn == 8) {
-//
-//					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Aceptado", selectedRowInModel, 7);
-//				}
-//				if (selectedColumn == 9) {
-//
-//					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt(" NO Aceptado", selectedRowInModel, 7);
-//				}
-//				if (selectedColumn == 10) {
-//
-//					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Garantía", selectedRowInModel, 7);
-//				}
-//				if (selectedColumn == 11) {
-//
-//					ventanaMarcarAceptaciones.getModelReparaciones().setValueAt("Pendiente", selectedRowInModel, 7);
-//				}
-//
-//			}
-//		};
-//
-//		// Agregar listener a las celdas de checkbox
-//		for (int i = ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount()
-//				- 4; i < ventanaMarcarAceptaciones.getModelReparaciones().getColumnCount(); i++) {
-//			TableColumn column = ventanaMarcarAceptaciones.getTblReparaciones().getColumnModel().getColumn(i);
-//			column.setCellEditor(new DefaultCellEditor(new JCheckBox()));
-//			JCheckBox checkBox = (JCheckBox) column.getCellEditor()
-//					.getTableCellEditorComponent(ventanaMarcarAceptaciones.getTblReparaciones(), null, false, 0, i);
-//			checkBox.addActionListener(checkboxListener);
-//		}
-//
-//	}
+
 
 	private void TomarDatosDeTablas() {
 
