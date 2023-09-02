@@ -1018,8 +1018,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		ventanaGenerarPresupuesto.getGuardarPresupuestoPDF().addActionListener(this);
 		ventanaGenerarPresupuesto.getVisualizarPresupuestoPDF().addActionListener(this);
-
 		this.ventanaGenerarPresupuesto.getTextPrecioPeso().addKeyListener(this);
+		
+		this.ventanaGenerarPresupuesto.getTextPrecioPeso().addActionListener(this);
 		this.ventanaGenerarPresupuesto.getTextPrecioPeso().addFocusListener(new FocusListener() {
 			public void focusLost(FocusEvent e) {
 
