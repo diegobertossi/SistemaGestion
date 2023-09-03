@@ -67,6 +67,7 @@ public class VentanaIngresoDePago extends JFrame {
 	private JTextField textEstadoComercial;
 	private JTextField textPrecioPeso;
 	private JTextField textPrecioDolar;
+	private JTextField textIngresoPago;
 
 	public VentanaIngresoDePago(ControladorPresupuestos controlador) {
 		super();
@@ -339,6 +340,26 @@ public class VentanaIngresoDePago extends JFrame {
 		textPrecioDolar.setBackground(new Color(192, 192, 192));
 		textPrecioDolar.setBounds(179, 11, 106, 30);
 		panel_5.add(textPrecioDolar);
+		
+		JPanel panel_4_1 = new JPanel();
+		panel_4_1.setLayout(null);
+		panel_4_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
+		panel_4_1.setBackground(Color.LIGHT_GRAY);
+		panel_4_1.setBounds(385, 252, 372, 53);
+		contentPane.add(panel_4_1);
+		
+		JLabel lblPagoRecibidoEn = new JLabel("PAGO RECIBIDO EN PESOS:");
+		lblPagoRecibidoEn.setFont(new Font("Cambria", Font.PLAIN, 16));
+		lblPagoRecibidoEn.setBorder(null);
+		lblPagoRecibidoEn.setBounds(10, 11, 198, 30);
+		panel_4_1.add(lblPagoRecibidoEn);
+		
+		textIngresoPago = new JTextField(10);
+		textIngresoPago.setFont(new Font("Cambria", Font.PLAIN, 16));
+		textIngresoPago.setBorder(null);
+		textIngresoPago.setBackground(Color.LIGHT_GRAY);
+		textIngresoPago.setBounds(235, 11, 106, 30);
+		panel_4_1.add(textIngresoPago);
 
 		this.setVisible(true);
 
@@ -364,5 +385,14 @@ public class VentanaIngresoDePago extends JFrame {
 		this.textPrecioDolar.setText(textPrecioDolar); 
 	}
 	
+	
+	public JTextField gettextIngresoPago() {
+		return textIngresoPago;
+	}
+
+
+	public void settextIngresoPago(String textIngresoPago) {
+		this.textIngresoPago.setText(textIngresoPago); 
+	}
 	
 }

@@ -247,6 +247,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			}
 
 			if (btnpago) {
+				
+				MonedaFormatter monedaFormatter = new MonedaFormatter();
 
 				if (ventanaSeleccionarELS.getComboELS().getSelectedItem() != null
 						&& ventanaSeleccionarELS.getComboELS().getSelectedIndex() != -1) {
@@ -256,14 +258,15 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaIngresoDePago = new VentanaIngresoDePago(this);
 					ventanaIngresoDePago.setTextPrecioPeso("$ 0,00");
 					ventanaIngresoDePago.setTextPrecioDolar("U$S 0,00");
+					ventanaIngresoDePago.settextIngresoPago("$ 0,00");
+					
 
 					ventanaIngresoDePago.getTextPrecioPeso().addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 
 							String peso = ventanaIngresoDePago.getTextPrecioPeso().getText();
-							MonedaFormatter monedaFormatter = new MonedaFormatter();
-
+							
 							ventanaIngresoDePago.getTextPrecioPeso().setText(monedaFormatter.formatPeso(peso));
 
 						}
@@ -274,12 +277,25 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						public void actionPerformed(ActionEvent e) {
 
 							String dolar = ventanaIngresoDePago.getTextPrecioDolar().getText();
-							MonedaFormatter monedaFormatter = new MonedaFormatter();
+							
 
 							ventanaIngresoDePago.getTextPrecioDolar().setText(monedaFormatter.formatDolar(dolar));
 
 						}
 					});
+					
+					
+					
+					ventanaIngresoDePago.gettextIngresoPago().addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+
+							String pesos = ventanaIngresoDePago.gettextIngresoPago().getText();
+							ventanaIngresoDePago.gettextIngresoPago().setText(monedaFormatter.formatPeso(pesos));
+
+						}
+					});
+
 
 //					ventanaGenerarPresupuesto = new VentanaGenerarPresupuesto(this);
 //
