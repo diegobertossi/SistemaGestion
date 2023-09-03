@@ -127,6 +127,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private String fechaentrada;
 	private String fechaFarbricacion;
+	
+	private MonedaFormatter monedaFormatter;
 
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
@@ -148,6 +150,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
+		monedaFormatter = new  MonedaFormatter();
 
 		if (e.getSource() == this.ventanaEquipos.getBtnVisualizarEquipos()) {
 
@@ -1523,7 +1527,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 //		});
 
 		
-		MonedaFormatter monedaFormatter = new MonedaFormatter();
+		
 		
 		ventanaVisualizarEquipos.getTextPresupuesto().addActionListener(new ActionListener() {
 			@Override
@@ -1532,6 +1536,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				String peso = ventanaVisualizarEquipos.getTextPresupuesto().getText();
 				
 				ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.formatPeso(peso));
+				verificarPresupuestoEditado();
 
 			}
 		});
@@ -1543,6 +1548,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				String peso = ventanaVisualizarEquipos.getTextPago().getText();
 				
 				ventanaVisualizarEquipos.getTextPago().setText(monedaFormatter.formatPeso(peso));
+				verificarPresupuestoEditado();
 
 			}
 		});
@@ -1669,8 +1675,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		llenarTablaRepuestos();
 		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
 
-		ventanaVisualizarEquipos.setTextPresupuesto(reparacion.getPrecioPeso().toString());
-		ventanaVisualizarEquipos.setTextPago(reparacion.getPago().toString());
+		String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
+		String pagoPeso = monedaFormatter.formatPeso(reparacion.getPago().toString());
+		
+		
+		ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);
+		ventanaVisualizarEquipos.setTextPago(pagoPeso);
 
 		ventanaVisualizarEquipos.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
 		ventanaVisualizarEquipos.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
@@ -2041,7 +2051,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		Color CyanClaro = new Color(224, 255, 255);
 		Color FaltaPago = new Color(241, 148, 138);
 
-		double PresupuestoDefault = 0;
+		Double PresupuestoDefault = 0.0;
 		if ((reparacion.getPrecioPeso().compareTo(PresupuestoDefault) != 0)) {
 
 			if (reparacion.getPrecioPeso().compareTo(reparacion.getPago()) == 0) {
@@ -2095,13 +2105,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		Color FaltaPago = new Color(241, 148, 138);
 
 		String PresupuestoDefault = "0.0";
+		
+		double presupuesto  = monedaFormatter.parseAmount(ventanaVisualizarEquipos.getTextPresupuesto().getText());
+		double pago  = monedaFormatter.parseAmount(ventanaVisualizarEquipos.getTextPago().getText());
+		
+		double diferencia = presupuesto - pago;
+		
+		System.out.println(presupuesto +"-"+pago+"="+ diferencia);
 
-		if ((ventanaVisualizarEquipos.getTextPresupuesto().getText().compareTo(PresupuestoDefault) != 0)) {
+		if ((presupuesto != 0.0)) {
 
-			if (ventanaVisualizarEquipos.getTextPresupuesto().getText()
-					.compareTo(ventanaVisualizarEquipos.getTextPago().getText()) == 0
-					|| ventanaVisualizarEquipos.getTextPresupuesto().getText()
-							.compareTo(ventanaVisualizarEquipos.getTextPago().getText() + ".0") == 0) {
+			if (diferencia == 0.0) {
 
 				ventanaVisualizarEquipos.getTextEquipoPagado().setText("PAGADO");
 				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
@@ -2111,10 +2125,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ventanaVisualizarEquipos.getTextPago().setBackground(EquipoPagado);
 				ventanaVisualizarEquipos.setChckPDFGenerado(true);
 
-			} else if (ventanaVisualizarEquipos.getTextPresupuesto().getText()
-					.compareTo(ventanaVisualizarEquipos.getTextPago().getText()) != 0
-					&& ventanaVisualizarEquipos.getTextPago().getText().compareTo(PresupuestoDefault) != 0
-					&& ventanaVisualizarEquipos.getTextPago().getText().compareTo("0") != 0) {
+			} else if (diferencia > 0.0 && diferencia < presupuesto) {
 
 				ventanaVisualizarEquipos.getTextEquipoPagado().setText("PAGADO PARCIALMENTE");
 				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
@@ -2123,8 +2134,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(CyanClaro);
 				ventanaVisualizarEquipos.getTextPago().setBackground(CyanClaro);
 
-			} else if (ventanaVisualizarEquipos.getTextPago().getText().compareTo("0") == 0
-					|| ventanaVisualizarEquipos.getTextPago().getText().compareTo("0.0") == 0) {
+			} else if (diferencia == presupuesto) {
 
 				ventanaVisualizarEquipos.getTextEquipoPagado().setText("FALTA PAGO");
 				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
@@ -2531,12 +2541,14 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		} else
 			enviado = true;
+		
+		
 
-		double presupuesto = Double.parseDouble(this.ventanaVisualizarEquipos.getTextPresupuesto().getText());
-		double pago = Double.parseDouble(this.ventanaVisualizarEquipos.getTextPago().getText());
+		Double presupuesto = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPresupuesto().getText());
+		Double pago = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPago().getText());
 
 		String OrdenDeCompra = this.ventanaVisualizarEquipos.getTextOC().getText();
-
+		
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, fechaentradavisual, fechareparacionvisual, falla,
 				solucion, informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo,
 				Cliente, Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,

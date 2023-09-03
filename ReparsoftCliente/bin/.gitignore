@@ -1,7 +1,5 @@
-/VistaPropias/
+/com/
 /consumoAPI/
-/dictionary_en.ortho
-/dictionary_es.ortho
 /dto/
 /mails/
 /main/
@@ -10,4 +8,3 @@
 /persistencia/
 /presentacion/
 /tiposPropios/
-/com/
