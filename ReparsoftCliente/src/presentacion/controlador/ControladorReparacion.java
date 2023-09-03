@@ -1483,44 +1483,44 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		llenarComboELSvisualizacion();
 		AutoCompleteDecorator.decorate(ventanaVisualizarEquipos.getComboELS());
 
-		this.ventanaVisualizarEquipos.getTextPresupuesto().addFocusListener(new FocusListener() {
-			public void focusLost(FocusEvent e) {
-
-				if (ventanaVisualizarEquipos.getTextPresupuesto().getText().isEmpty()) {
-
-					ventanaVisualizarEquipos.getTextPresupuesto().setText("0.0");
-				}
-
-				verificarPresupuestoEditado();
-
-			}
-
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		this.ventanaVisualizarEquipos.getTextPago().addKeyListener(this);
-		this.ventanaVisualizarEquipos.getTextPago().addFocusListener(new FocusListener() {
-			public void focusLost(FocusEvent e) {
-
-				if (ventanaVisualizarEquipos.getTextPago().getText().isEmpty()) {
-
-					ventanaVisualizarEquipos.getTextPago().setText("0.0");
-				}
-
-				verificarPresupuestoEditado();
-
-			}
-
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
+//		this.ventanaVisualizarEquipos.getTextPresupuesto().addFocusListener(new FocusListener() {
+//			public void focusLost(FocusEvent e) {
+//
+//				if (ventanaVisualizarEquipos.getTextPresupuesto().getText().isEmpty()) {
+//
+//					ventanaVisualizarEquipos.getTextPresupuesto().setText("0.0");
+//				}
+//
+//				verificarPresupuestoEditado();
+//
+//			}
+//
+//			@Override
+//			public void focusGained(FocusEvent arg0) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//		});
+//
+//		this.ventanaVisualizarEquipos.getTextPago().addKeyListener(this);
+//		this.ventanaVisualizarEquipos.getTextPago().addFocusListener(new FocusListener() {
+//			public void focusLost(FocusEvent e) {
+//
+//				if (ventanaVisualizarEquipos.getTextPago().getText().isEmpty()) {
+//
+//					ventanaVisualizarEquipos.getTextPago().setText("0.0");
+//				}
+//
+//				verificarPresupuestoEditado();
+//
+//			}
+//
+//			@Override
+//			public void focusGained(FocusEvent arg0) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//		});
 
 		
 		MonedaFormatter monedaFormatter = new MonedaFormatter();
@@ -1532,6 +1532,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				String peso = ventanaVisualizarEquipos.getTextPresupuesto().getText();
 				
 				ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.formatPeso(peso));
+
+			}
+		});
+		
+		ventanaVisualizarEquipos.getTextPago().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				String peso = ventanaVisualizarEquipos.getTextPago().getText();
+				
+				ventanaVisualizarEquipos.getTextPago().setText(monedaFormatter.formatPeso(peso));
 
 			}
 		});
@@ -2713,20 +2724,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		char c = e.getKeyChar();
 		if (this.ventanaVisualizarEquipos != null) {
 
-//			if (e.getSource() == this.ventanaVisualizarEquipos.getTextPresupuesto()) {
-//
-//				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-//
-//					if (ventanaVisualizarEquipos.getTextPresupuesto().getText().isEmpty()) {
-//
-//						ventanaVisualizarEquipos.getTextPresupuesto().setText("0.0");
-//					}
-//
-//					verificarPresupuestoEditado();
-//
-//				}
-//
-//			}
 
 //			if (e.getSource() == this.ventanaVisualizarEquipos.getTextPago()) {
 //

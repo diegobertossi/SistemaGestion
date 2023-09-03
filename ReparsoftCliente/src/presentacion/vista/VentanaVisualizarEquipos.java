@@ -1005,7 +1005,8 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_MontoPresupuesto.add(textPresupuesto);
 		textPresupuesto.setColumns(10);
 
-		JLabel lblPresupuesto = new JLabel("PRESUPUESTO =   $");
+		JLabel lblPresupuesto = new JLabel("PRESUPUESTO:");
+		lblPresupuesto.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPresupuesto.setForeground(SystemColor.desktop);
 		lblPresupuesto.setBorder(null);
 		lblPresupuesto.setBounds(10, 7, 108, 15);
@@ -1022,8 +1023,8 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_MontoPresupuesto.add(textPago);
 		textPago.setColumns(10);
 
-		lblPago = new JLabel("PAGO =   $ ");
-		lblPago.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPago = new JLabel("PAGO:");
+		lblPago.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPago.setForeground(SystemColor.desktop);
 		lblPago.setBorder(null);
 		lblPago.setBounds(10, 28, 108, 15);
