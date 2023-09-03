@@ -253,8 +253,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				if (ventanaSeleccionarELS.getComboELS().getSelectedItem() != null
 						&& ventanaSeleccionarELS.getComboELS().getSelectedIndex() != -1) {
 
-					System.out.println("Pago ELS: " + ventanaSeleccionarELS.getComboELS().getSelectedItem());
-
+					
 					ventanaIngresoDePago = new VentanaIngresoDePago(this);
 					ventanaIngresoDePago.setTextPrecioPeso("$ 0,00");
 					ventanaIngresoDePago.setTextPrecioDolar("U$S 0,00");

@@ -52,7 +52,7 @@ import presentacion.vista.VentanaEstados;
 import presentacion.vista.VentanaVerificarIngresoAnterior;
 import presentacion.vista.VentanaVisualizarEquipos;
 import presentacion.vista.VentanaWSP;
-
+import tiposPropios.MonedaFormatter;
 import presentacion.vista.VentanaClientesWSP;
 
 import presentacion.vista.VentanaEnviarCorreoOwsp;
@@ -1522,6 +1522,24 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		});
 
+		
+		MonedaFormatter monedaFormatter = new MonedaFormatter();
+		
+		ventanaVisualizarEquipos.getTextPresupuesto().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				String peso = ventanaVisualizarEquipos.getTextPresupuesto().getText();
+				
+				ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.formatPeso(peso));
+
+			}
+		});
+		
+		
+		
+		
+		
 	}
 
 	public void agregarListenersVentanaVisualizarEquiposListado() {
@@ -2695,35 +2713,35 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		char c = e.getKeyChar();
 		if (this.ventanaVisualizarEquipos != null) {
 
-			if (e.getSource() == this.ventanaVisualizarEquipos.getTextPresupuesto()) {
+//			if (e.getSource() == this.ventanaVisualizarEquipos.getTextPresupuesto()) {
+//
+//				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+//
+//					if (ventanaVisualizarEquipos.getTextPresupuesto().getText().isEmpty()) {
+//
+//						ventanaVisualizarEquipos.getTextPresupuesto().setText("0.0");
+//					}
+//
+//					verificarPresupuestoEditado();
+//
+//				}
+//
+//			}
 
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-
-					if (ventanaVisualizarEquipos.getTextPresupuesto().getText().isEmpty()) {
-
-						ventanaVisualizarEquipos.getTextPresupuesto().setText("0.0");
-					}
-
-					verificarPresupuestoEditado();
-
-				}
-
-			}
-
-			if (e.getSource() == this.ventanaVisualizarEquipos.getTextPago()) {
-
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-
-					if (ventanaVisualizarEquipos.getTextPago().getText().isEmpty()) {
-
-						ventanaVisualizarEquipos.getTextPago().setText("0.0");
-					}
-
-					verificarPresupuestoEditado();
-
-				}
-
-			}
+//			if (e.getSource() == this.ventanaVisualizarEquipos.getTextPago()) {
+//
+//				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+//
+//					if (ventanaVisualizarEquipos.getTextPago().getText().isEmpty()) {
+//
+//						ventanaVisualizarEquipos.getTextPago().setText("0.0");
+//					}
+//
+//					verificarPresupuestoEditado();
+//
+//				}
+//
+//			}
 		}
 
 	}
