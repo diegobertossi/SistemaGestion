@@ -1,0 +1,368 @@
+package presentacion.vista;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import presentacion.controlador.ControladorPresupuestos;
+import presentacion.controlador.ControladorPrincipal;
+import presentacion.controlador.ControladorReparacion;
+import java.awt.SystemColor;
+import java.sql.Date;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.awt.Font;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.border.MatteBorder;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javax.swing.border.BevelBorder;
+import java.awt.Component;
+import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
+import javax.swing.text.MaskFormatter;
+
+import VistaPropias.JTextDouble;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.border.LineBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.JSeparator;
+import javax.swing.JCheckBox;
+import javax.swing.JFormattedTextField;
+
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.UIManager;
+
+public class VentanaIngresoDePago extends JFrame {
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JPanel panel_4;
+	private JPanel panel_5;
+
+	private ControladorReparacion controladorP;
+	private ControladorPresupuestos controlador;
+	private JTextField textCliente;
+	private JTextField textELS;
+	private JTextField textEquipo;
+	private JTextField textMarca;
+	private JTextField textModelo;
+	private JTextField textSerie;
+	private JButton btnGuardarCambios;
+	private JTextField textSucursal;
+
+	private ButtonGroup GrupoMoneda;
+	private JTextField textAviso;
+	private JTextField textEstadoFisico;
+	private JTextField textEstadoTecnico;
+	private JTextField textEstadoComercial;
+	private JTextField textPrecioPeso;
+	private JTextField textPrecioDolar;
+
+	public VentanaIngresoDePago(ControladorPresupuestos controlador) {
+		super();
+		setResizable(false);
+		this.controlador = controlador;
+
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 888, 389);
+
+		this.setLocationRelativeTo(null);
+
+		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.inactiveCaption);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JPanel panel = new JPanel();
+		panel.setBackground(SystemColor.activeCaption);
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(95, 158, 160), null));
+		panel.setBounds(353, 11, 511, 73);
+		contentPane.add(panel);
+		panel.setLayout(null);
+
+		JLabel lblCliente = new JLabel("CLIENTE :");
+		lblCliente.setForeground(new Color(0, 0, 0));
+		lblCliente.setBounds(10, 25, 90, 22);
+		panel.add(lblCliente);
+		lblCliente.setFont(new Font("Cambria", Font.BOLD, 18));
+
+		JLabel lblEls = new JLabel("ELS :");
+		lblEls.setForeground(new Color(0, 0, 0));
+		lblEls.setBounds(10, 4, 46, 22);
+		panel.add(lblEls);
+		lblEls.setFont(new Font("Cambria", Font.BOLD, 18));
+
+		textELS = new JTextField();
+		textELS.setEditable(false);
+		textELS.setForeground(new Color(0, 0, 0));
+		textELS.setBounds(66, 4, 106, 22);
+		panel.add(textELS);
+		textELS.setBorder(null);
+		textELS.setBackground(SystemColor.activeCaption);
+		textELS.setFont(new Font("Cambria", Font.BOLD, 18));
+		textELS.setColumns(10);
+
+		textCliente = new JTextField();
+		textCliente.setEditable(false);
+		textCliente.setForeground(new Color(0, 0, 0));
+		textCliente.setBounds(117, 25, 384, 22);
+		panel.add(textCliente);
+		textCliente.setBorder(null);
+		textCliente.setBackground(SystemColor.activeCaption);
+		textCliente.setFont(new Font("Cambria", Font.BOLD, 18));
+		textCliente.setColumns(10);
+
+		JLabel Sucursal = new JLabel("SUCURSAL: ");
+		Sucursal.setForeground(Color.BLACK);
+		Sucursal.setFont(new Font("Cambria", Font.BOLD, 18));
+		Sucursal.setBounds(10, 47, 97, 22);
+		panel.add(Sucursal);
+
+		textSucursal = new JTextField();
+		textSucursal.setForeground(Color.BLACK);
+		textSucursal.setFont(new Font("Cambria", Font.BOLD, 18));
+		textSucursal.setEditable(false);
+		textSucursal.setColumns(10);
+		textSucursal.setBorder(null);
+		textSucursal.setBackground(SystemColor.activeCaption);
+		textSucursal.setBounds(117, 47, 384, 22);
+		panel.add(textSucursal);
+
+		JLabel lblAviso_2 = new JLabel("AVISO :");
+		lblAviso_2.setForeground(Color.BLACK);
+		lblAviso_2.setFont(new Font("Cambria", Font.BOLD, 18));
+		lblAviso_2.setBounds(199, 4, 69, 22);
+		panel.add(lblAviso_2);
+
+		textAviso = new JTextField();
+		textAviso.setForeground(Color.BLACK);
+		textAviso.setFont(new Font("Cambria", Font.BOLD, 18));
+		textAviso.setEditable(false);
+		textAviso.setColumns(10);
+		textAviso.setBorder(null);
+		textAviso.setBackground(SystemColor.activeCaption);
+		textAviso.setBounds(271, 4, 106, 22);
+		panel.add(textAviso);
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(SystemColor.inactiveCaption);
+		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(95, 158, 160), null));
+		panel_1.setBounds(21, 95, 843, 109);
+		contentPane.add(panel_1);
+		panel_1.setLayout(null);
+
+		JLabel lblEquipo = new JLabel("Equipo:");
+		lblEquipo.setBorder(new MatteBorder(0, 0, 1, 0, (Color) SystemColor.controlDkShadow));
+		lblEquipo.setBounds(32, 11, 60, 20);
+		panel_1.add(lblEquipo);
+		lblEquipo.setForeground(Color.BLACK);
+		lblEquipo.setFont(new Font("Cambria", Font.BOLD, 15));
+
+		JLabel lblModelo = new JLabel("Modelo:");
+		lblModelo.setBorder(new MatteBorder(0, 0, 1, 0, (Color) SystemColor.controlDkShadow));
+		lblModelo.setBounds(32, 55, 60, 20);
+		panel_1.add(lblModelo);
+		lblModelo.setForeground(Color.BLACK);
+		lblModelo.setFont(new Font("Cambria", Font.BOLD, 15));
+
+		JLabel lblMarca = new JLabel("Marca:");
+		lblMarca.setBorder(new MatteBorder(0, 0, 1, 0, (Color) SystemColor.controlDkShadow));
+		lblMarca.setBounds(32, 33, 60, 20);
+		panel_1.add(lblMarca);
+		lblMarca.setForeground(Color.BLACK);
+		lblMarca.setFont(new Font("Cambria", Font.BOLD, 15));
+
+		JLabel lblNSerie = new JLabel("N Serie:");
+		lblNSerie.setBorder(new MatteBorder(0, 0, 1, 0, (Color) SystemColor.controlDkShadow));
+		lblNSerie.setBounds(32, 77, 60, 20);
+		panel_1.add(lblNSerie);
+		lblNSerie.setForeground(Color.BLACK);
+		lblNSerie.setFont(new Font("Cambria", Font.BOLD, 15));
+
+		textEquipo = new JTextField();
+		textEquipo.setEditable(false);
+		textEquipo.setForeground(Color.BLACK);
+		textEquipo.setFont(new Font("Cambria", Font.PLAIN, 15));
+		textEquipo.setColumns(10);
+		textEquipo.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		textEquipo.setBackground(SystemColor.inactiveCaption);
+		textEquipo.setBounds(101, 11, 341, 20);
+		panel_1.add(textEquipo);
+
+		textMarca = new JTextField();
+		textMarca.setEditable(false);
+		textMarca.setForeground(Color.BLACK);
+		textMarca.setFont(new Font("Cambria", Font.PLAIN, 15));
+		textMarca.setColumns(10);
+		textMarca.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		textMarca.setBackground(SystemColor.inactiveCaption);
+		textMarca.setBounds(101, 33, 341, 20);
+		panel_1.add(textMarca);
+
+		textModelo = new JTextField();
+		textModelo.setEditable(false);
+		textModelo.setForeground(Color.BLACK);
+		textModelo.setFont(new Font("Cambria", Font.PLAIN, 15));
+		textModelo.setColumns(10);
+		textModelo.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		textModelo.setBackground(SystemColor.inactiveCaption);
+		textModelo.setBounds(101, 55, 341, 20);
+		panel_1.add(textModelo);
+
+		textSerie = new JTextField();
+		textSerie.setEditable(false);
+		textSerie.setForeground(Color.BLACK);
+		textSerie.setFont(new Font("Cambria", Font.PLAIN, 15));
+		textSerie.setColumns(10);
+		textSerie.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		textSerie.setBackground(SystemColor.inactiveCaption);
+		textSerie.setBounds(101, 77, 341, 20);
+		panel_1.add(textSerie);
+
+		textEstadoFisico = new JTextField();
+		textEstadoFisico.setForeground(Color.BLACK);
+		textEstadoFisico.setFont(new Font("Cambria", Font.PLAIN, 15));
+		textEstadoFisico.setEditable(false);
+		textEstadoFisico.setColumns(10);
+		textEstadoFisico.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		textEstadoFisico.setBackground(SystemColor.inactiveCaption);
+		textEstadoFisico.setBounds(603, 11, 207, 20);
+		panel_1.add(textEstadoFisico);
+
+		JLabel lblEstadoFsico = new JLabel("Estado Físico:");
+		lblEstadoFsico.setForeground(Color.BLACK);
+		lblEstadoFsico.setFont(new Font("Cambria", Font.BOLD, 15));
+		lblEstadoFsico.setBorder(new MatteBorder(0, 0, 1, 0, (Color) SystemColor.controlDkShadow));
+		lblEstadoFsico.setBounds(466, 11, 127, 20);
+		panel_1.add(lblEstadoFsico);
+
+		JLabel lblEstadoTcnico = new JLabel("Estado Técnico");
+		lblEstadoTcnico.setForeground(Color.BLACK);
+		lblEstadoTcnico.setFont(new Font("Cambria", Font.BOLD, 15));
+		lblEstadoTcnico.setBorder(new MatteBorder(0, 0, 1, 0, (Color) SystemColor.controlDkShadow));
+		lblEstadoTcnico.setBounds(466, 33, 127, 20);
+		panel_1.add(lblEstadoTcnico);
+
+		textEstadoTecnico = new JTextField();
+		textEstadoTecnico.setForeground(Color.BLACK);
+		textEstadoTecnico.setFont(new Font("Cambria", Font.PLAIN, 15));
+		textEstadoTecnico.setEditable(false);
+		textEstadoTecnico.setColumns(10);
+		textEstadoTecnico.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		textEstadoTecnico.setBackground(SystemColor.inactiveCaption);
+		textEstadoTecnico.setBounds(603, 33, 207, 20);
+		panel_1.add(textEstadoTecnico);
+
+		JLabel lblEstadoComercial = new JLabel("Estado Comercial:");
+		lblEstadoComercial.setForeground(Color.BLACK);
+		lblEstadoComercial.setFont(new Font("Cambria", Font.BOLD, 15));
+		lblEstadoComercial.setBorder(new MatteBorder(0, 0, 1, 0, (Color) SystemColor.controlDkShadow));
+		lblEstadoComercial.setBounds(466, 55, 127, 20);
+		panel_1.add(lblEstadoComercial);
+
+		textEstadoComercial = new JTextField();
+		textEstadoComercial.setForeground(Color.BLACK);
+		textEstadoComercial.setFont(new Font("Cambria", Font.PLAIN, 15));
+		textEstadoComercial.setEditable(false);
+		textEstadoComercial.setColumns(10);
+		textEstadoComercial.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		textEstadoComercial.setBackground(SystemColor.inactiveCaption);
+		textEstadoComercial.setBounds(603, 55, 207, 20);
+		panel_1.add(textEstadoComercial);
+
+		JLabel lblPresupuesto = new JLabel("INGRESO DE PAGO");
+		lblPresupuesto.setBounds(20, 11, 283, 73);
+		contentPane.add(lblPresupuesto);
+		lblPresupuesto.setBackground(SystemColor.activeCaption);
+		lblPresupuesto.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPresupuesto.setForeground(new Color(0, 0, 139));
+		lblPresupuesto.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblPresupuesto.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblPresupuesto.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		lblPresupuesto.setFont(new Font("Cambria", Font.BOLD, 24));
+
+		GrupoMoneda = new ButtonGroup();
+
+		btnGuardarCambios = new JButton("Guardar Cambios");
+		btnGuardarCambios.setFont(new Font("Cambria", Font.BOLD, 12));
+		btnGuardarCambios.setBounds(662, 316, 185, 23);
+		contentPane.add(btnGuardarCambios);
+
+		panel_4 = new JPanel();
+		panel_4.setBounds(21, 232, 295, 53);
+		contentPane.add(panel_4);
+		panel_4.setBackground(Color.LIGHT_GRAY);
+		panel_4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
+		panel_4.setLayout(null);
+
+		JLabel lblTotalPesos = new JLabel("TOTAL EN PESOS:");
+		lblTotalPesos.setBounds(10, 11, 128, 30);
+		panel_4.add(lblTotalPesos);
+		lblTotalPesos.setBorder(null);
+		lblTotalPesos.setFont(new Font("Cambria", Font.PLAIN, 16));
+		
+				textPrecioPeso = new JTextField(10);
+				textPrecioPeso.setBorder(null);
+				textPrecioPeso.setBackground(new Color(192, 192, 192));
+				textPrecioPeso.setFont(new Font("Cambria", Font.PLAIN, 16));
+				textPrecioPeso.setBounds(179, 11, 106, 30);
+				panel_4.add(textPrecioPeso);
+				textPrecioPeso.setColumns(10);
+
+		panel_5 = new JPanel();
+		panel_5.setBounds(21, 286, 295, 53);
+		contentPane.add(panel_5);
+		panel_5.setBackground(Color.LIGHT_GRAY);
+		panel_5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
+		panel_5.setLayout(null);
+
+		JLabel lbltotaldolares = new JLabel("TOTAL EN DÓLARES");
+		lbltotaldolares.setBounds(10, 11, 146, 30);
+		panel_5.add(lbltotaldolares);
+		lbltotaldolares.setBorder(null);
+		lbltotaldolares.setFont(new Font("Cambria", Font.PLAIN, 16));
+
+		textPrecioDolar = new JTextField(10);
+		textPrecioDolar.setBorder(null);
+		textPrecioDolar.setFont(new Font("Cambria", Font.PLAIN, 16));
+		textPrecioDolar.setBackground(new Color(192, 192, 192));
+		textPrecioDolar.setBounds(179, 11, 106, 30);
+		panel_5.add(textPrecioDolar);
+
+		this.setVisible(true);
+
+	}
+
+	public JTextField getTextPrecioPeso() {
+		return textPrecioPeso;
+	}
+
+	public void setTextPrecioPeso(String textPresioPesotexto) {
+		this.textPrecioPeso.setText(textPresioPesotexto);
+	}
+	
+	
+	
+	
+	public JTextField getTextPrecioDolar() {
+		return textPrecioDolar;
+	}
+
+
+	public void setTextPrecioDolar(String textPrecioDolar) {
+		this.textPrecioDolar.setText(textPrecioDolar); 
+	}
+	
+	
+}

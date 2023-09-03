@@ -619,12 +619,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonPresupuestar()) {
 
-			NumeroELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
+			if (ventanaVisualizarEquipos.getBtnGuardarCambios().isEnabled()) {
 
-			controladorpresupuestos.TomarDatosDeTablasParaVisualizacion(NumeroELS);
+				Object mje = "Debe guardar los cambios realizados para poder presupuestar.";
+				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 
-			controladorpresupuestos.agregarListenersVentanaGenerarPresupuesto();
+			} else {
 
+				NumeroELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
+				controladorpresupuestos.TomarDatosDeTablasParaVisualizacion(NumeroELS);
+				controladorpresupuestos.agregarListenersVentanaGenerarPresupuesto();
+			}
 		}
 
 		else if (this.ventanaVisualizarEquipos != null
@@ -641,7 +646,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			if (ventanaVisualizarEquipos.getComboELS().getSelectedItem() != null
 					&& ventanaVisualizarEquipos.getComboELS().getSelectedIndex() != -1) {
-				
+
 				Integer ELS = Integer.parseInt(ventanaVisualizarEquipos.getComboELS().getSelectedItem().toString());
 				// reparacion = agenda.dameReparacionXels(ELS);
 
@@ -2409,9 +2414,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		estadoTecnico = "Sin revisar";
 		estadocomercial = "A la Espera de Aceptación";
 
-		ReparacionDTO nuevoReparacion = new ReparacionDTO(ELS, fechaentrada, falla, estadoFisico, estadoTecnico,estadocomercial,
-				RemitoCLiente, IDEquipo, idUsuarios, NombreEquipo, Modelo, Marca, Series, aviso, ClienteCliente,
-				idCliente, idSucursal, fechaFarbricacion);
+		ReparacionDTO nuevoReparacion = new ReparacionDTO(ELS, fechaentrada, falla, estadoFisico, estadoTecnico,
+				estadocomercial, RemitoCLiente, IDEquipo, idUsuarios, NombreEquipo, Modelo, Marca, Series, aviso,
+				ClienteCliente, idCliente, idSucursal, fechaFarbricacion);
 
 		return nuevoReparacion;
 
@@ -2500,14 +2505,14 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		double presupuesto = Double.parseDouble(this.ventanaVisualizarEquipos.getTextPresupuesto().getText());
 		double pago = Double.parseDouble(this.ventanaVisualizarEquipos.getTextPago().getText());
-		
-		String OrdenDeCompra= this.ventanaVisualizarEquipos.getTextOC().getText();
+
+		String OrdenDeCompra = this.ventanaVisualizarEquipos.getTextOC().getText();
 
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, fechaentradavisual, fechareparacionvisual, falla,
 				solucion, informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo,
 				Cliente, Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
 				idCliente, idSucursal, fechafabrvisual, idUsuario, enviado, presupuesto, pago, presupuestoGenerado,
-				avisoEnviado, presupuestoEnviado,OrdenDeCompra);
+				avisoEnviado, presupuestoEnviado, OrdenDeCompra);
 
 		return reparacionAeditar;
 
