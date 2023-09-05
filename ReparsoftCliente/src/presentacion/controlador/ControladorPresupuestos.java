@@ -248,7 +248,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			if (btnpago) {
 				
-				MonedaFormatter monedaFormatter = new MonedaFormatter();
+				
 
 				if (ventanaSeleccionarELS.getComboELS().getSelectedItem() != null
 						&& ventanaSeleccionarELS.getComboELS().getSelectedIndex() != -1) {
@@ -263,10 +263,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaIngresoDePago.getTextPrecioPeso().addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-
-							String peso = ventanaIngresoDePago.getTextPrecioPeso().getText();
 							
-							ventanaIngresoDePago.getTextPrecioPeso().setText(monedaFormatter.formatPeso(peso));
+							MonedaFormatter monedaFormatter = new MonedaFormatter("peso");
+							String peso = ventanaIngresoDePago.getTextPrecioPeso().getText();							
+							ventanaIngresoDePago.getTextPrecioPeso().setText(monedaFormatter.format(peso));
 
 						}
 					});
@@ -274,11 +274,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaIngresoDePago.getTextPrecioDolar().addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-
+							MonedaFormatter monedaFormatter = new MonedaFormatter("dolar");
 							String dolar = ventanaIngresoDePago.getTextPrecioDolar().getText();
-							
-
-							ventanaIngresoDePago.getTextPrecioDolar().setText(monedaFormatter.formatDolar(dolar));
+							ventanaIngresoDePago.getTextPrecioDolar().setText(monedaFormatter.format(dolar));
 
 						}
 					});
@@ -288,14 +286,15 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaIngresoDePago.gettextIngresoPago().addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-
+							
+							MonedaFormatter monedaFormatter = new MonedaFormatter("peso");
 							String pesos = ventanaIngresoDePago.gettextIngresoPago().getText();
-							ventanaIngresoDePago.gettextIngresoPago().setText(monedaFormatter.formatPeso(pesos));
+							ventanaIngresoDePago.gettextIngresoPago().setText(monedaFormatter.format(pesos));
 
 						}
 					});
 
-
+	
 //					ventanaGenerarPresupuesto = new VentanaGenerarPresupuesto(this);
 //
 //					SpellChecker.register(ventanaGenerarPresupuesto.getTextInforme());

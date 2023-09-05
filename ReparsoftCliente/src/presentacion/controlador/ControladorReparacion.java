@@ -151,7 +151,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	public void actionPerformed(ActionEvent e) {
 		
-		monedaFormatter = new  MonedaFormatter();
+		
 
 		if (e.getSource() == this.ventanaEquipos.getBtnVisualizarEquipos()) {
 
@@ -1532,10 +1532,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getTextPresupuesto().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				String peso = ventanaVisualizarEquipos.getTextPresupuesto().getText();
 				
-				ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.formatPeso(peso));
+				monedaFormatter = new  MonedaFormatter("peso");
+				String peso = ventanaVisualizarEquipos.getTextPresupuesto().getText();				
+				ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.format(peso));				
 				verificarPresupuestoEditado();
 
 			}
@@ -1545,10 +1545,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				monedaFormatter = new  MonedaFormatter("peso");
 				String peso = ventanaVisualizarEquipos.getTextPago().getText();
-				
-				ventanaVisualizarEquipos.getTextPago().setText(monedaFormatter.formatPeso(peso));
+				ventanaVisualizarEquipos.getTextPago().setText(monedaFormatter.format(peso));
 				verificarPresupuestoEditado();
+				
+				
 
 			}
 		});
@@ -1610,6 +1612,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		// NumberFormat nf =
 		// NumberFormat.getCurrencyInstance(Locale.getDefault());
+		
+		MonedaFormatter monedaFormatter = new MonedaFormatter("peso");
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
@@ -1675,8 +1679,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		llenarTablaRepuestos();
 		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
 
-		String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
-		String pagoPeso = monedaFormatter.formatPeso(reparacion.getPago().toString());
+		String presupuestoPeso = monedaFormatter.format(reparacion.getPrecioPeso().toString());
+		String pagoPeso = monedaFormatter.format(reparacion.getPago().toString());
 		
 		
 		ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);

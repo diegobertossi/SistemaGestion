@@ -68,6 +68,8 @@ public class VentanaIngresoDePago extends JFrame {
 	private JTextField textPrecioPeso;
 	private JTextField textPrecioDolar;
 	private JTextField textIngresoPago;
+	
+	private JFormattedTextField formattedTextpeso;
 
 	public VentanaIngresoDePago(ControladorPresupuestos controlador) {
 		super();
@@ -360,6 +362,23 @@ public class VentanaIngresoDePago extends JFrame {
 		textIngresoPago.setBackground(Color.LIGHT_GRAY);
 		textIngresoPago.setBounds(235, 11, 106, 30);
 		panel_4_1.add(textIngresoPago);
+		
+		 MaskFormatter maskFormatter;
+		try {
+			maskFormatter = new MaskFormatter("$###,###.00");
+			maskFormatter.setPlaceholderCharacter('0');
+			
+
+			formattedTextpeso = new JFormattedTextField(maskFormatter);
+			formattedTextpeso.setBounds(395, 318, 103, 21);
+			contentPane.add(formattedTextpeso);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+ 	
 
 		this.setVisible(true);
 
@@ -394,5 +413,13 @@ public class VentanaIngresoDePago extends JFrame {
 	public void settextIngresoPago(String textIngresoPago) {
 		this.textIngresoPago.setText(textIngresoPago); 
 	}
+
+	public JFormattedTextField getFormattedTextpeso() {
+		return formattedTextpeso;
+	}
+
+	public void setFormattedTextpeso(String formattedTextpeso) {
+		this.formattedTextpeso.setText(formattedTextpeso);
+}
 	
 }
