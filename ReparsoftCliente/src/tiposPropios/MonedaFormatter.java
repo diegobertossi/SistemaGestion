@@ -37,28 +37,23 @@ public class MonedaFormatter {
     }
 
     public double parseAmount(String amount) {
-        // Elimina todos los caracteres no numéricos, pero conserva los ceros iniciales
-        StringBuilder cleanedAmount = new StringBuilder();
-        boolean leadingZero = true;
-
-        for (char c : amount.toCharArray()) {
-            if (Character.isDigit(c)) {
-                if (leadingZero && c == '0') {
-                    // Ignorar ceros iniciales
-                    continue;
-                }
-                cleanedAmount.append(c);
-                leadingZero = false;
-            }
-        }
+        // Elimina los caracteres no numéricos y la coma
+        String cleanedAmount = amount.replaceAll("[^0-9.]", "");
 
         try {
-            // Intenta analizar el número, ahora sin caracteres no numéricos y sin eliminar los ceros iniciales
-            return Double.parseDouble(cleanedAmount.toString());
+            // Intenta analizar el número y divide por 100 para obtener dos decimales
+            return Double.parseDouble(cleanedAmount);
         } catch (NumberFormatException e) {
             return 0.00; // Valor predeterminado si no se puede analizar el número
         }
     }
+
+    public String formatAmount(double amount) {
+        // Formatea el número en el formato deseado con dos decimales
+        DecimalFormat formatter = new DecimalFormat("#,##0.00");
+        return formatter.format(amount);
+    }
+
 
 
 }

@@ -1536,7 +1536,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				monedaFormatter = new  MonedaFormatter("peso");
 				String peso = ventanaVisualizarEquipos.getTextPresupuesto().getText();				
 				ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.format(peso));				
-				verificarPresupuestoEditado();
+				//verificarPresupuestoEditado();
 
 			}
 		});
@@ -1548,7 +1548,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				monedaFormatter = new  MonedaFormatter("peso");
 				String peso = ventanaVisualizarEquipos.getTextPago().getText();
 				ventanaVisualizarEquipos.getTextPago().setText(monedaFormatter.format(peso));
-				verificarPresupuestoEditado();
+				//verificarPresupuestoEditado();
 				
 				
 
@@ -1693,7 +1693,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
-		verificarPresupuesto();
+		//verificarPresupuesto();
 		deshabilitarCampos();
 
 	}
@@ -1781,7 +1781,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
-		verificarPresupuesto();
+		//verificarPresupuesto();
 		deshabilitarCampos();
 
 	}
@@ -1868,7 +1868,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setChckWORDEnviado(reparacion.getWORDenviado());
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
-		verificarPresupuesto();
+		//verificarPresupuesto();
 		deshabilitarCampos();
 
 	}
@@ -2548,8 +2548,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		
 		
 
-		Double presupuesto = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPresupuesto().getText());
-		Double pago = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPago().getText());
+		double presupuesto = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPresupuesto().getText());
+		double pago = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPago().getText());
+		
+		System.out.println(presupuesto);
 
 		String OrdenDeCompra = this.ventanaVisualizarEquipos.getTextOC().getText();
 		
