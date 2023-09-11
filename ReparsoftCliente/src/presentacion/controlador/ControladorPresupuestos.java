@@ -77,7 +77,7 @@ import presentacion.vista.VentanaMarcarAceptaciones;
 import presentacion.vista.VentanaPresupuestos;
 import presentacion.vista.VentanaSeleccionarELS;
 import presentacion.vista.VentanaVisualizarEquipos;
-import tiposPropios.MonedaFormatter;
+import tiposPropios.MonedaFormatterbis;
 import dto.RegistroPresupuestoDTO;
 import dto.ReparacionDTO;
 
@@ -264,7 +264,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							
-							MonedaFormatter monedaFormatter = new MonedaFormatter("peso");
+							MonedaFormatterbis monedaFormatter = new MonedaFormatterbis("peso");
 							String peso = ventanaIngresoDePago.getTextPrecioPeso().getText();							
 							ventanaIngresoDePago.getTextPrecioPeso().setText(monedaFormatter.format(peso));
 
@@ -274,7 +274,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaIngresoDePago.getTextPrecioDolar().addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							MonedaFormatter monedaFormatter = new MonedaFormatter("dolar");
+							MonedaFormatterbis monedaFormatter = new MonedaFormatterbis("dolar");
 							String dolar = ventanaIngresoDePago.getTextPrecioDolar().getText();
 							ventanaIngresoDePago.getTextPrecioDolar().setText(monedaFormatter.format(dolar));
 
@@ -287,7 +287,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							
-							MonedaFormatter monedaFormatter = new MonedaFormatter("peso");
+							MonedaFormatterbis monedaFormatter = new MonedaFormatterbis("peso");
 							String pesos = ventanaIngresoDePago.gettextIngresoPago().getText();
 							ventanaIngresoDePago.gettextIngresoPago().setText(monedaFormatter.format(pesos));
 

@@ -127,7 +127,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private String fechaentrada;
 	private String fechaFarbricacion;
-	
+
 	private MonedaFormatter monedaFormatter;
 
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
@@ -150,8 +150,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		
-		
 
 		if (e.getSource() == this.ventanaEquipos.getBtnVisualizarEquipos()) {
 
@@ -166,6 +164,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
 				cerraVentanaVisualizarEquipo();
+				monedaFormatter = new MonedaFormatter();
 
 				controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
 
@@ -1526,39 +1525,29 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 //			}
 //		});
 
-		
-		
-		
 		ventanaVisualizarEquipos.getTextPresupuesto().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				monedaFormatter = new  MonedaFormatter("peso");
-				String peso = ventanaVisualizarEquipos.getTextPresupuesto().getText();				
-				ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.format(peso));				
-				//verificarPresupuestoEditado();
+
+				String presupuesto = ventanaVisualizarEquipos.getTextPresupuesto().getText();
+				ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.formatPeso(presupuesto));
+
+				// verificarPresupuestoEditado();
 
 			}
 		});
-		
+
 		ventanaVisualizarEquipos.getTextPago().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				monedaFormatter = new  MonedaFormatter("peso");
-				String peso = ventanaVisualizarEquipos.getTextPago().getText();
-				ventanaVisualizarEquipos.getTextPago().setText(monedaFormatter.format(peso));
-				//verificarPresupuestoEditado();
-				
-				
+				String pago = ventanaVisualizarEquipos.getTextPago().getText();
+				ventanaVisualizarEquipos.getTextPago().setText(monedaFormatter.formatPeso(pago));
+				// verificarPresupuestoEditado();
 
 			}
 		});
-		
-		
-		
-		
-		
+
 	}
 
 	public void agregarListenersVentanaVisualizarEquiposListado() {
@@ -1609,11 +1598,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	private void TomarDatosDeTablas() throws ParseException {
-
-		// NumberFormat nf =
-		// NumberFormat.getCurrencyInstance(Locale.getDefault());
-		
-		MonedaFormatter monedaFormatter = new MonedaFormatter("peso");
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
@@ -1679,10 +1663,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		llenarTablaRepuestos();
 		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
 
-		String presupuestoPeso = monedaFormatter.format(reparacion.getPrecioPeso().toString());
-		String pagoPeso = monedaFormatter.format(reparacion.getPago().toString());
-		
-		
+		String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
+		String pagoPeso = monedaFormatter.formatPeso(reparacion.getPago().toString());
+
 		ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);
 		ventanaVisualizarEquipos.setTextPago(pagoPeso);
 
@@ -1693,7 +1676,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
-		//verificarPresupuesto();
+		// verificarPresupuesto();
 		deshabilitarCampos();
 
 	}
@@ -1781,7 +1764,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
-		//verificarPresupuesto();
+		// verificarPresupuesto();
 		deshabilitarCampos();
 
 	}
@@ -1868,7 +1851,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setChckWORDEnviado(reparacion.getWORDenviado());
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
-		//verificarPresupuesto();
+		// verificarPresupuesto();
 		deshabilitarCampos();
 
 	}
@@ -2109,13 +2092,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		Color FaltaPago = new Color(241, 148, 138);
 
 		String PresupuestoDefault = "0.0";
-		
-		double presupuesto  = monedaFormatter.parseAmount(ventanaVisualizarEquipos.getTextPresupuesto().getText());
-		double pago  = monedaFormatter.parseAmount(ventanaVisualizarEquipos.getTextPago().getText());
-		
+
+		double presupuesto = monedaFormatter.parseAmount(ventanaVisualizarEquipos.getTextPresupuesto().getText());
+		double pago = monedaFormatter.parseAmount(ventanaVisualizarEquipos.getTextPago().getText());
+
 		double diferencia = presupuesto - pago;
-		
-		System.out.println(presupuesto +"-"+pago+"="+ diferencia);
+
+		System.out.println(presupuesto + "-" + pago + "=" + diferencia);
 
 		if ((presupuesto != 0.0)) {
 
@@ -2546,15 +2529,28 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		} else
 			enviado = true;
 		
-		
+		double presupuesto;
+		double pago;
 
-		double presupuesto = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPresupuesto().getText());
-		double pago = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPago().getText());
-		
-		System.out.println(presupuesto);
+		if (monedaFormatter.tieneFormato(this.ventanaVisualizarEquipos.getTextPresupuesto().getText())) {
+			
+			presupuesto = monedaFormatter.parseAmountGuardar(this.ventanaVisualizarEquipos.getTextPresupuesto().getText());
+			pago = monedaFormatter.parseAmountGuardar(this.ventanaVisualizarEquipos.getTextPago().getText());
+			
+		} else {
+			
+			presupuesto = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPresupuesto().getText());
+			pago = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPago().getText());
+			
+			ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.formatPeso(this.ventanaVisualizarEquipos.getTextPresupuesto().getText()));
+			ventanaVisualizarEquipos.getTextPago().setText(monedaFormatter.formatPeso(this.ventanaVisualizarEquipos.getTextPago().getText()));
+
+			
+		}
+
 
 		String OrdenDeCompra = this.ventanaVisualizarEquipos.getTextOC().getText();
-		
+
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, fechaentradavisual, fechareparacionvisual, falla,
 				solucion, informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo,
 				Cliente, Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
@@ -2741,7 +2737,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	public void keyPressed(KeyEvent e) {
 		char c = e.getKeyChar();
 		if (this.ventanaVisualizarEquipos != null) {
-
 
 //			if (e.getSource() == this.ventanaVisualizarEquipos.getTextPago()) {
 //

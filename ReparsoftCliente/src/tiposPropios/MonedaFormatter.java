@@ -6,54 +6,95 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class MonedaFormatter {
-    private NumberFormat formatter;
+    private NumberFormat pesoFormatter;
+    private NumberFormat dolarFormatter;
 
-    public MonedaFormatter(String moneda) {
-        // Determina el símbolo y el formato según la moneda
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
-        String currencySymbol = "$ "; // Símbolo predeterminado
+    public MonedaFormatter() {
+        // Configura el formato de moneda argentina con el símbolo "$" seguido de un espacio
+        DecimalFormatSymbols pesoSymbols = new DecimalFormatSymbols(Locale.getDefault());
+        pesoSymbols.setCurrencySymbol("$ ");
+        String currencySymbolP = "$ ";
+        pesoFormatter = new DecimalFormat(currencySymbolP + "#,##0.00", pesoSymbols);
 
-        if ("dolar".equalsIgnoreCase(moneda)) {
-            currencySymbol = "U$S ";
-        } else if ("peso".equalsIgnoreCase(moneda)) {
-            currencySymbol = "$ ";
-        }
-
-        formatter = new DecimalFormat(currencySymbol + "#,##0.00", symbols);
+        // Configura el formato de dólar estadounidense con el símbolo "$" y sin espacio
+        DecimalFormatSymbols dolarSymbols = new DecimalFormatSymbols(Locale.US);
+        dolarSymbols.setCurrencySymbol("U$S");
+        String currencySymbolD = "U$S ";
+        dolarFormatter = new DecimalFormat(currencySymbolD + "#,##0.00", dolarSymbols);
     }
 
-    public String format(String amount) {
+    public String formatPeso(String amount) {
         if (amount == null || amount.trim().isEmpty() || amount.equals("0")) {
-            return "$ 0.00"; // Valor predeterminado
+            return "$ 0.00";
         }
 
         try {
             double parsedAmount = parseAmount(amount);
-            // Formatea el número y lo devuelve como una cadena
-            return formatter.format(parsedAmount);
+            // Formatea el número en pesos argentinos y lo devuelve como una cadena
+            return pesoFormatter.format(parsedAmount);
+        } catch (NumberFormatException e) {
+            return "Formato de número inválido";
+        }
+    }
+
+    public String formatDolar(String amount) {
+        if (amount == null || amount.trim().isEmpty() || amount.equals("0")) {
+            return "$ 0.00";
+        }
+
+        try {
+            double parsedAmount = parseAmount(amount);
+            // Formatea el número en dólares estadounidenses y lo devuelve como una cadena
+            return dolarFormatter.format(parsedAmount);
         } catch (NumberFormatException e) {
             return "Formato de número inválido";
         }
     }
 
     public double parseAmount(String amount) {
-        // Elimina los caracteres no numéricos y la coma
-        String cleanedAmount = amount.replaceAll("[^0-9.]", "");
+        // Elimina todos los caracteres no numéricos, excepto comas y puntos
+        String cleanedAmount = amount.replaceAll("[^0-9,.]", "");
 
         try {
-            // Intenta analizar el número y divide por 100 para obtener dos decimales
+            // Sustituye comas por puntos para obtener un formato válido para Double
+        	cleanedAmount = cleanedAmount.replace(",", ".");
+
+            // Intenta analizar el número
+        	
             return Double.parseDouble(cleanedAmount);
+            
         } catch (NumberFormatException e) {
+        	
             return 0.00; // Valor predeterminado si no se puede analizar el número
         }
     }
+    
+    public double parseAmountGuardar(String amount) {
+        // Elimina todos los caracteres no numéricos, excepto comas y puntos
+        String cleanedAmount = amount.replaceAll("[^0-9]", "");
+
+        try {
+        	
+            return Double.parseDouble(cleanedAmount)/100;
+            
+        } catch (NumberFormatException e) {
+        	
+            return 0.00; // Valor predeterminado si no se puede analizar el número
+        }
+    }
+
+
 
     public String formatAmount(double amount) {
         // Formatea el número en el formato deseado con dos decimales
         DecimalFormat formatter = new DecimalFormat("#,##0.00");
         return formatter.format(amount);
     }
-
-
+    
+    
+    public boolean tieneFormato(String input) {
+        // Expresión regular para el formato de pesos argentinos o dólares estadounidenses
+    	 return input.contains("$") || input.contains("U$S");
+    }
 
 }
