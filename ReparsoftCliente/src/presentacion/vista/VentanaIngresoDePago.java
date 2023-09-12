@@ -58,6 +58,7 @@ public class VentanaIngresoDePago extends JFrame {
 	private JTextField textModelo;
 	private JTextField textSerie;
 	private JButton btnGuardarCambios;
+	private JButton btnEditarPrecios;
 	private JTextField textSucursal;
 
 	private ButtonGroup GrupoMoneda;
@@ -68,6 +69,7 @@ public class VentanaIngresoDePago extends JFrame {
 	private JTextField textPrecioPeso;
 	private JTextField textPrecioDolar;
 	private JTextField textIngresoPago;
+	private JTextField textIngresoPagoDolar;
 
 	public VentanaIngresoDePago(ControladorPresupuestos controlador) {
 		super();
@@ -295,9 +297,9 @@ public class VentanaIngresoDePago extends JFrame {
 
 		GrupoMoneda = new ButtonGroup();
 
-		btnGuardarCambios = new JButton("Guardar Cambios");
+		btnGuardarCambios = new JButton("GUARDAR CAMBIOS");
 		btnGuardarCambios.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnGuardarCambios.setBounds(616, 404, 185, 23);
+		btnGuardarCambios.setBounds(508, 397, 185, 38);
 		contentPane.add(btnGuardarCambios);
 		
 		JPanel panel_2 = new JPanel();
@@ -308,7 +310,7 @@ public class VentanaIngresoDePago extends JFrame {
 		panel_2.setLayout(null);
 
 		panel_4 = new JPanel();
-		panel_4.setBounds(97, 17, 295, 53);
+		panel_4.setBounds(69, 17, 295, 53);
 		panel_2.add(panel_4);
 		panel_4.setBackground(Color.LIGHT_GRAY);
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
@@ -330,7 +332,7 @@ public class VentanaIngresoDePago extends JFrame {
 				textPrecioPeso.setColumns(10);
 
 		panel_5 = new JPanel();
-		panel_5.setBounds(97, 71, 295, 53);
+		panel_5.setBounds(69, 71, 295, 53);
 		panel_2.add(panel_5);
 		panel_5.setBackground(Color.LIGHT_GRAY);
 		panel_5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
@@ -351,7 +353,7 @@ public class VentanaIngresoDePago extends JFrame {
 		panel_5.add(textPrecioDolar);
 		
 		JPanel panel_4_1 = new JPanel();
-		panel_4_1.setBounds(411, 17, 295, 53);
+		panel_4_1.setBounds(461, 17, 295, 53);
 		panel_2.add(panel_4_1);
 		panel_4_1.setLayout(null);
 		panel_4_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
@@ -370,10 +372,30 @@ public class VentanaIngresoDePago extends JFrame {
 		textIngresoPago.setBounds(145, 11, 140, 30);
 		panel_4_1.add(textIngresoPago);
 		
-		JButton btnGuardarCambios_1 = new JButton("Guardar Cambios");
-		btnGuardarCambios_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnGuardarCambios_1.setBounds(121, 404, 185, 23);
-		contentPane.add(btnGuardarCambios_1);
+		JPanel panel_4_1_1 = new JPanel();
+		panel_4_1_1.setLayout(null);
+		panel_4_1_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
+		panel_4_1_1.setBackground(Color.LIGHT_GRAY);
+		panel_4_1_1.setBounds(461, 71, 295, 53);
+		panel_2.add(panel_4_1_1);
+		
+		JLabel lblPagoEnDolares = new JLabel("PAGO EN DOLARES:");
+		lblPagoEnDolares.setFont(new Font("Cambria", Font.PLAIN, 16));
+		lblPagoEnDolares.setBorder(null);
+		lblPagoEnDolares.setBounds(10, 11, 146, 30);
+		panel_4_1_1.add(lblPagoEnDolares);
+		
+		textIngresoPagoDolar = new JTextField(10);
+		textIngresoPagoDolar.setFont(new Font("Cambria", Font.PLAIN, 16));
+		textIngresoPagoDolar.setBorder(null);
+		textIngresoPagoDolar.setBackground(Color.LIGHT_GRAY);
+		textIngresoPagoDolar.setBounds(165, 11, 120, 30);
+		panel_4_1_1.add(textIngresoPagoDolar);
+		
+		btnEditarPrecios = new JButton("EDITAR PRECIOS");
+		btnEditarPrecios.setFont(new Font("Cambria", Font.BOLD, 12));
+		btnEditarPrecios.setBounds(187, 397, 185, 38);
+		contentPane.add(btnEditarPrecios);
 		
 	
 
@@ -505,5 +527,13 @@ public class VentanaIngresoDePago extends JFrame {
 
 	public void setTextAviso(JTextField textAviso) {
 		this.textAviso = textAviso;
+	}
+
+	public JButton getBtnEditarPrecios() {
+		return btnEditarPrecios;
+	}
+
+	public void setBtnEditarPrecios(JButton btnEditarPrecios) {
+		this.btnEditarPrecios = btnEditarPrecios;
 	}
 }

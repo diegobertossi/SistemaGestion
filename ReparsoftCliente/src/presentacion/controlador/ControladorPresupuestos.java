@@ -258,6 +258,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					monedaFormatter = new MonedaFormatter();
 
 					TomarDatosDeTablas();
+					
+					ventanaIngresoDePago.gettextIngresoPago().requestFocus();
+					ventanaIngresoDePago.gettextIngresoPago().selectAll();
 //					ventanaIngresoDePago.setTextPrecioPeso("$ 0,00");
 //					ventanaIngresoDePago.setTextPrecioDolar("U$S 0,00");
 //					ventanaIngresoDePago.settextIngresoPago("$ 0,00");
