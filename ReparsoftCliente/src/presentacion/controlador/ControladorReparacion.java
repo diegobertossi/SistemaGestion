@@ -12,6 +12,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -34,6 +35,7 @@ import javax.swing.AbstractButton;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
@@ -1486,45 +1488,50 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		llenarComboELSvisualizacion();
 		AutoCompleteDecorator.decorate(ventanaVisualizarEquipos.getComboELS());
 
-//		this.ventanaVisualizarEquipos.getTextPresupuesto().addFocusListener(new FocusListener() {
-//			public void focusLost(FocusEvent e) {
-//
-//				if (ventanaVisualizarEquipos.getTextPresupuesto().getText().isEmpty()) {
-//
-//					ventanaVisualizarEquipos.getTextPresupuesto().setText("0.0");
-//				}
-//
-//				verificarPresupuestoEditado();
-//
-//			}
-//
-//			@Override
-//			public void focusGained(FocusEvent arg0) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//		});
-//
-//		this.ventanaVisualizarEquipos.getTextPago().addKeyListener(this);
-//		this.ventanaVisualizarEquipos.getTextPago().addFocusListener(new FocusListener() {
-//			public void focusLost(FocusEvent e) {
-//
-//				if (ventanaVisualizarEquipos.getTextPago().getText().isEmpty()) {
-//
-//					ventanaVisualizarEquipos.getTextPago().setText("0.0");
-//				}
-//
-//				verificarPresupuestoEditado();
-//
-//			}
-//
-//			@Override
-//			public void focusGained(FocusEvent arg0) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//		});
+		this.ventanaVisualizarEquipos.getTextPresupuesto().addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
 
+			}
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				SwingUtilities.invokeLater(() -> {
+					ventanaVisualizarEquipos.getTextPresupuesto().selectAll();
+				});
+			}
+		});
+
+		this.ventanaVisualizarEquipos.getTextPago().addKeyListener(this);
+		this.ventanaVisualizarEquipos.getTextPago().addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+
+			}
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+
+				SwingUtilities.invokeLater(() -> {
+					ventanaVisualizarEquipos.getTextPago().selectAll();
+				});
+
+			}
+		});
+
+		
+		
+//		ventanaVisualizarEquipos.getTextPresupuesto().addKeyListener(new KeyAdapter() {
+//            @Override
+//            public void keyPressed(KeyEvent e) {
+//                SwingUtilities.invokeLater(() -> {
+//                	
+//                	
+//                	ventanaVisualizarEquipos.getTextPresupuesto().setText(""); // Borra el texto al presionar cualquier tecla
+//                });
+//            }
+//        });
+		
+		
+		
 		ventanaVisualizarEquipos.getTextPresupuesto().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -2092,7 +2099,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		String PresupuestoDefault = "0.0";
 
-		double presupuesto = monedaFormatter.parseAmountGuardar(ventanaVisualizarEquipos.getTextPresupuesto().getText());
+		double presupuesto = monedaFormatter
+				.parseAmountGuardar(ventanaVisualizarEquipos.getTextPresupuesto().getText());
 		double pago = monedaFormatter.parseAmountGuardar(ventanaVisualizarEquipos.getTextPago().getText());
 
 		double diferencia = presupuesto - pago;
@@ -2527,26 +2535,27 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		} else
 			enviado = true;
-		
+
 		double presupuesto;
 		double pago;
 
 		if (monedaFormatter.tieneFormato(this.ventanaVisualizarEquipos.getTextPresupuesto().getText())) {
-			
-			presupuesto = monedaFormatter.parseAmountGuardar(this.ventanaVisualizarEquipos.getTextPresupuesto().getText());
+
+			presupuesto = monedaFormatter
+					.parseAmountGuardar(this.ventanaVisualizarEquipos.getTextPresupuesto().getText());
 			pago = monedaFormatter.parseAmountGuardar(this.ventanaVisualizarEquipos.getTextPago().getText());
-			
+
 		} else {
-			
+
 			presupuesto = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPresupuesto().getText());
 			pago = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPago().getText());
-			
-			ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.formatPeso(this.ventanaVisualizarEquipos.getTextPresupuesto().getText()));
-			ventanaVisualizarEquipos.getTextPago().setText(monedaFormatter.formatPeso(this.ventanaVisualizarEquipos.getTextPago().getText()));
 
-			
+			ventanaVisualizarEquipos.getTextPresupuesto()
+					.setText(monedaFormatter.formatPeso(this.ventanaVisualizarEquipos.getTextPresupuesto().getText()));
+			ventanaVisualizarEquipos.getTextPago()
+					.setText(monedaFormatter.formatPeso(this.ventanaVisualizarEquipos.getTextPago().getText()));
+
 		}
-
 
 		String OrdenDeCompra = this.ventanaVisualizarEquipos.getTextOC().getText();
 

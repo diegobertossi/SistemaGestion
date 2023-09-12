@@ -185,8 +185,10 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JPanel panel_9;
 	private JLabel lblFechaFabr;
 	private JTextFieldDateEditor FechaFabr;
-	private JTextDouble textPresupuesto;
-	private JTextDouble textPago;
+//	private JTextDouble textPresupuesto;
+//	private JTextDouble textPago;
+	private JTextField textPresupuesto;
+	private JTextField textPago;
 	private JLabel lblPago;
 	private JPanel panel_MontoPresupuesto;
 	private JTextField textEquipoPagado;
@@ -995,7 +997,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		
 //		textPresupuesto = new JTextDouble(formatter,10);
 //		textPresupuesto.setColumns(10);
-        textPresupuesto = new JTextDouble(10);
+        textPresupuesto = new JTextField(10);
 		textPresupuesto.setForeground(SystemColor.desktop);
 		textPresupuesto.setHorizontalAlignment(SwingConstants.LEFT);
 		textPresupuesto.setFont(new Font("Cambria", Font.BOLD, 12));
@@ -1013,7 +1015,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_MontoPresupuesto.add(lblPresupuesto);
 		lblPresupuesto.setFont(new Font("Cambria", Font.BOLD, 12));
 
-		textPago = new JTextDouble(10);
+		textPago = new JTextField(10);
 		textPago.setForeground(SystemColor.desktop);
 		textPago.setHorizontalAlignment(SwingConstants.LEFT);
 		textPago.setFont(new Font("Cambria", Font.BOLD, 12));
