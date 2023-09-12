@@ -68,8 +68,6 @@ public class VentanaIngresoDePago extends JFrame {
 	private JTextField textPrecioPeso;
 	private JTextField textPrecioDolar;
 	private JTextField textIngresoPago;
-	
-	private JFormattedTextField formattedTextpeso;
 
 	public VentanaIngresoDePago(ControladorPresupuestos controlador) {
 		super();
@@ -77,7 +75,7 @@ public class VentanaIngresoDePago extends JFrame {
 		this.controlador = controlador;
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 888, 389);
+		setBounds(100, 100, 888, 477);
 
 		this.setLocationRelativeTo(null);
 
@@ -90,13 +88,13 @@ public class VentanaIngresoDePago extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.activeCaption);
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(95, 158, 160), null));
-		panel.setBounds(353, 11, 511, 73);
+		panel.setBounds(353, 11, 511, 111);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
 		JLabel lblCliente = new JLabel("CLIENTE :");
 		lblCliente.setForeground(new Color(0, 0, 0));
-		lblCliente.setBounds(10, 25, 90, 22);
+		lblCliente.setBounds(10, 56, 90, 22);
 		panel.add(lblCliente);
 		lblCliente.setFont(new Font("Cambria", Font.BOLD, 18));
 
@@ -109,7 +107,7 @@ public class VentanaIngresoDePago extends JFrame {
 		textELS = new JTextField();
 		textELS.setEditable(false);
 		textELS.setForeground(new Color(0, 0, 0));
-		textELS.setBounds(66, 4, 106, 22);
+		textELS.setBounds(117, 4, 106, 22);
 		panel.add(textELS);
 		textELS.setBorder(null);
 		textELS.setBackground(SystemColor.activeCaption);
@@ -119,7 +117,7 @@ public class VentanaIngresoDePago extends JFrame {
 		textCliente = new JTextField();
 		textCliente.setEditable(false);
 		textCliente.setForeground(new Color(0, 0, 0));
-		textCliente.setBounds(117, 25, 384, 22);
+		textCliente.setBounds(117, 56, 384, 22);
 		panel.add(textCliente);
 		textCliente.setBorder(null);
 		textCliente.setBackground(SystemColor.activeCaption);
@@ -129,7 +127,7 @@ public class VentanaIngresoDePago extends JFrame {
 		JLabel Sucursal = new JLabel("SUCURSAL: ");
 		Sucursal.setForeground(Color.BLACK);
 		Sucursal.setFont(new Font("Cambria", Font.BOLD, 18));
-		Sucursal.setBounds(10, 47, 97, 22);
+		Sucursal.setBounds(10, 82, 97, 22);
 		panel.add(Sucursal);
 
 		textSucursal = new JTextField();
@@ -139,13 +137,13 @@ public class VentanaIngresoDePago extends JFrame {
 		textSucursal.setColumns(10);
 		textSucursal.setBorder(null);
 		textSucursal.setBackground(SystemColor.activeCaption);
-		textSucursal.setBounds(117, 47, 384, 22);
+		textSucursal.setBounds(117, 82, 384, 22);
 		panel.add(textSucursal);
 
 		JLabel lblAviso_2 = new JLabel("AVISO :");
 		lblAviso_2.setForeground(Color.BLACK);
 		lblAviso_2.setFont(new Font("Cambria", Font.BOLD, 18));
-		lblAviso_2.setBounds(199, 4, 69, 22);
+		lblAviso_2.setBounds(10, 30, 69, 22);
 		panel.add(lblAviso_2);
 
 		textAviso = new JTextField();
@@ -155,13 +153,13 @@ public class VentanaIngresoDePago extends JFrame {
 		textAviso.setColumns(10);
 		textAviso.setBorder(null);
 		textAviso.setBackground(SystemColor.activeCaption);
-		textAviso.setBounds(271, 4, 106, 22);
+		textAviso.setBounds(117, 30, 106, 22);
 		panel.add(textAviso);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(SystemColor.inactiveCaption);
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(95, 158, 160), null));
-		panel_1.setBounds(21, 95, 843, 109);
+		panel_1.setBounds(21, 133, 843, 109);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 
@@ -285,7 +283,7 @@ public class VentanaIngresoDePago extends JFrame {
 		panel_1.add(textEstadoComercial);
 
 		JLabel lblPresupuesto = new JLabel("INGRESO DE PAGO");
-		lblPresupuesto.setBounds(20, 11, 283, 73);
+		lblPresupuesto.setBounds(20, 11, 309, 111);
 		contentPane.add(lblPresupuesto);
 		lblPresupuesto.setBackground(SystemColor.activeCaption);
 		lblPresupuesto.setHorizontalAlignment(SwingConstants.CENTER);
@@ -299,12 +297,19 @@ public class VentanaIngresoDePago extends JFrame {
 
 		btnGuardarCambios = new JButton("Guardar Cambios");
 		btnGuardarCambios.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnGuardarCambios.setBounds(662, 316, 185, 23);
+		btnGuardarCambios.setBounds(616, 404, 185, 23);
 		contentPane.add(btnGuardarCambios);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(SystemColor.inactiveCaption);
+		panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(95, 158, 160), null));
+		panel_2.setBounds(21, 253, 841, 140);
+		contentPane.add(panel_2);
+		panel_2.setLayout(null);
 
 		panel_4 = new JPanel();
-		panel_4.setBounds(21, 232, 295, 53);
-		contentPane.add(panel_4);
+		panel_4.setBounds(97, 17, 295, 53);
+		panel_2.add(panel_4);
 		panel_4.setBackground(Color.LIGHT_GRAY);
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
 		panel_4.setLayout(null);
@@ -316,69 +321,61 @@ public class VentanaIngresoDePago extends JFrame {
 		lblTotalPesos.setFont(new Font("Cambria", Font.PLAIN, 16));
 		
 				textPrecioPeso = new JTextField(10);
+				textPrecioPeso.setEditable(false);
 				textPrecioPeso.setBorder(null);
 				textPrecioPeso.setBackground(new Color(192, 192, 192));
 				textPrecioPeso.setFont(new Font("Cambria", Font.PLAIN, 16));
-				textPrecioPeso.setBounds(179, 11, 106, 30);
+				textPrecioPeso.setBounds(148, 11, 140, 30);
 				panel_4.add(textPrecioPeso);
 				textPrecioPeso.setColumns(10);
 
 		panel_5 = new JPanel();
-		panel_5.setBounds(21, 286, 295, 53);
-		contentPane.add(panel_5);
+		panel_5.setBounds(97, 71, 295, 53);
+		panel_2.add(panel_5);
 		panel_5.setBackground(Color.LIGHT_GRAY);
 		panel_5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
 		panel_5.setLayout(null);
 
-		JLabel lbltotaldolares = new JLabel("TOTAL EN DÓLARES");
+		JLabel lbltotaldolares = new JLabel("TOTAL EN DÓLARES:");
 		lbltotaldolares.setBounds(10, 11, 146, 30);
 		panel_5.add(lbltotaldolares);
 		lbltotaldolares.setBorder(null);
 		lbltotaldolares.setFont(new Font("Cambria", Font.PLAIN, 16));
 
 		textPrecioDolar = new JTextField(10);
+		textPrecioDolar.setEditable(false);
 		textPrecioDolar.setBorder(null);
 		textPrecioDolar.setFont(new Font("Cambria", Font.PLAIN, 16));
 		textPrecioDolar.setBackground(new Color(192, 192, 192));
-		textPrecioDolar.setBounds(179, 11, 106, 30);
+		textPrecioDolar.setBounds(165, 11, 120, 30);
 		panel_5.add(textPrecioDolar);
 		
 		JPanel panel_4_1 = new JPanel();
+		panel_4_1.setBounds(411, 17, 295, 53);
+		panel_2.add(panel_4_1);
 		panel_4_1.setLayout(null);
 		panel_4_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
 		panel_4_1.setBackground(Color.LIGHT_GRAY);
-		panel_4_1.setBounds(385, 252, 372, 53);
-		contentPane.add(panel_4_1);
 		
-		JLabel lblPagoRecibidoEn = new JLabel("PAGO RECIBIDO EN PESOS:");
+		JLabel lblPagoRecibidoEn = new JLabel("PAGO EN PESOS:");
 		lblPagoRecibidoEn.setFont(new Font("Cambria", Font.PLAIN, 16));
 		lblPagoRecibidoEn.setBorder(null);
-		lblPagoRecibidoEn.setBounds(10, 11, 198, 30);
+		lblPagoRecibidoEn.setBounds(10, 11, 125, 30);
 		panel_4_1.add(lblPagoRecibidoEn);
 		
 		textIngresoPago = new JTextField(10);
 		textIngresoPago.setFont(new Font("Cambria", Font.PLAIN, 16));
 		textIngresoPago.setBorder(null);
 		textIngresoPago.setBackground(Color.LIGHT_GRAY);
-		textIngresoPago.setBounds(235, 11, 106, 30);
+		textIngresoPago.setBounds(145, 11, 140, 30);
 		panel_4_1.add(textIngresoPago);
 		
-		 MaskFormatter maskFormatter;
-		try {
-			maskFormatter = new MaskFormatter("$###,###.00");
-			maskFormatter.setPlaceholderCharacter('0');
-			
-
-			formattedTextpeso = new JFormattedTextField(maskFormatter);
-			formattedTextpeso.setBounds(395, 318, 103, 21);
-			contentPane.add(formattedTextpeso);
-			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
- 	
+		JButton btnGuardarCambios_1 = new JButton("Guardar Cambios");
+		btnGuardarCambios_1.setFont(new Font("Cambria", Font.BOLD, 12));
+		btnGuardarCambios_1.setBounds(121, 404, 185, 23);
+		contentPane.add(btnGuardarCambios_1);
+		
+	
 
 		this.setVisible(true);
 
@@ -414,12 +411,99 @@ public class VentanaIngresoDePago extends JFrame {
 		this.textIngresoPago.setText(textIngresoPago); 
 	}
 
-	public JFormattedTextField getFormattedTextpeso() {
-		return formattedTextpeso;
+	public JTextField getTextCliente() {
+		return textCliente;
 	}
 
-	public void setFormattedTextpeso(String formattedTextpeso) {
-		this.formattedTextpeso.setText(formattedTextpeso);
-}
-	
+	public void setTextCliente(JTextField textCliente) {
+		this.textCliente = textCliente;
+	}
+
+	public JTextField getTextELS() {
+		return textELS;
+	}
+
+	public void setTextELS(JTextField textELS) {
+		this.textELS = textELS;
+	}
+
+	public JTextField getTextEquipo() {
+		return textEquipo;
+	}
+
+	public void setTextEquipo(JTextField textEquipo) {
+		this.textEquipo = textEquipo;
+	}
+
+	public JTextField getTextMarca() {
+		return textMarca;
+	}
+
+	public void setTextMarca(JTextField textMarca) {
+		this.textMarca = textMarca;
+	}
+
+	public JTextField getTextModelo() {
+		return textModelo;
+	}
+
+	public void setTextModelo(JTextField textModelo) {
+		this.textModelo = textModelo;
+	}
+
+	public JTextField getTextSerie() {
+		return textSerie;
+	}
+
+	public void setTextSerie(JTextField textSerie) {
+		this.textSerie = textSerie;
+	}
+
+	public JTextField getTextSucursal() {
+		return textSucursal;
+	}
+
+	public void setTextSucursal(JTextField textSucursal) {
+		this.textSucursal = textSucursal;
+	}
+
+	public JTextField getTextEstadoFisico() {
+		return textEstadoFisico;
+	}
+
+	public void setTextEstadoFisico(JTextField textEstadoFisico) {
+		this.textEstadoFisico = textEstadoFisico;
+	}
+
+	public JTextField getTextEstadoTecnico() {
+		return textEstadoTecnico;
+	}
+
+	public void setTextEstadoTecnico(JTextField textEstadoTecnico) {
+		this.textEstadoTecnico = textEstadoTecnico;
+	}
+
+	public JTextField getTextEstadoComercial() {
+		return textEstadoComercial;
+	}
+
+	public void setTextEstadoComercial(JTextField textEstadoComercial) {
+		this.textEstadoComercial = textEstadoComercial;
+	}
+
+	public JButton getBtnGuardarCambios() {
+		return btnGuardarCambios;
+	}
+
+	public void setBtnGuardarCambios(JButton btnGuardarCambios) {
+		this.btnGuardarCambios = btnGuardarCambios;
+	}
+
+	public JTextField getTextAviso() {
+		return textAviso;
+	}
+
+	public void setTextAviso(JTextField textAviso) {
+		this.textAviso = textAviso;
+	}
 }

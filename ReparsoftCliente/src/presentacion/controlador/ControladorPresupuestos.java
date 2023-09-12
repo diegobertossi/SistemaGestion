@@ -77,6 +77,7 @@ import presentacion.vista.VentanaMarcarAceptaciones;
 import presentacion.vista.VentanaPresupuestos;
 import presentacion.vista.VentanaSeleccionarELS;
 import presentacion.vista.VentanaVisualizarEquipos;
+import tiposPropios.MonedaFormatter;
 import tiposPropios.MonedaFormatterbis;
 import dto.RegistroPresupuestoDTO;
 import dto.ReparacionDTO;
@@ -147,6 +148,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	private int clickMax = 1;
 	private int clickMin = 1;
+
+	private MonedaFormatter monedaFormatter;
 
 	public ControladorPresupuestos(VentanaPresupuestos ventanaPresupuestos, Agenda agenda) {
 
@@ -247,26 +250,25 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			}
 
 			if (btnpago) {
-				
-				
 
 				if (ventanaSeleccionarELS.getComboELS().getSelectedItem() != null
 						&& ventanaSeleccionarELS.getComboELS().getSelectedIndex() != -1) {
 
-					
 					ventanaIngresoDePago = new VentanaIngresoDePago(this);
-					ventanaIngresoDePago.setTextPrecioPeso("$ 0,00");
-					ventanaIngresoDePago.setTextPrecioDolar("U$S 0,00");
-					ventanaIngresoDePago.settextIngresoPago("$ 0,00");
-					
+					monedaFormatter = new MonedaFormatter();
+
+					TomarDatosDeTablas();
+//					ventanaIngresoDePago.setTextPrecioPeso("$ 0,00");
+//					ventanaIngresoDePago.setTextPrecioDolar("U$S 0,00");
+//					ventanaIngresoDePago.settextIngresoPago("$ 0,00");
+//					
 
 					ventanaIngresoDePago.getTextPrecioPeso().addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							
-							MonedaFormatterbis monedaFormatter = new MonedaFormatterbis("peso");
-							String peso = ventanaIngresoDePago.getTextPrecioPeso().getText();							
-							ventanaIngresoDePago.getTextPrecioPeso().setText(monedaFormatter.format(peso));
+
+							String precioPeso = ventanaIngresoDePago.getTextPrecioPeso().getText();
+							ventanaIngresoDePago.getTextPrecioPeso().setText(monedaFormatter.formatPeso(precioPeso));
 
 						}
 					});
@@ -274,27 +276,23 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaIngresoDePago.getTextPrecioDolar().addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							MonedaFormatterbis monedaFormatter = new MonedaFormatterbis("dolar");
-							String dolar = ventanaIngresoDePago.getTextPrecioDolar().getText();
-							ventanaIngresoDePago.getTextPrecioDolar().setText(monedaFormatter.format(dolar));
+
+							String prcioDolar = ventanaIngresoDePago.getTextPrecioDolar().getText();
+							ventanaIngresoDePago.getTextPrecioDolar().setText(monedaFormatter.formatDolar(prcioDolar));
 
 						}
 					});
-					
-					
-					
+
 					ventanaIngresoDePago.gettextIngresoPago().addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							
-							MonedaFormatterbis monedaFormatter = new MonedaFormatterbis("peso");
-							String pesos = ventanaIngresoDePago.gettextIngresoPago().getText();
-							ventanaIngresoDePago.gettextIngresoPago().setText(monedaFormatter.format(pesos));
+
+							String pagoPesos = ventanaIngresoDePago.gettextIngresoPago().getText();
+							ventanaIngresoDePago.gettextIngresoPago().setText(monedaFormatter.formatPeso(pagoPesos));
 
 						}
 					});
 
-	
 //					ventanaGenerarPresupuesto = new VentanaGenerarPresupuesto(this);
 //
 //					SpellChecker.register(ventanaGenerarPresupuesto.getTextInforme());
@@ -1267,40 +1265,65 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		String Informe = reparacion.getInformecliente();
 		Double PrecioPeso = reparacion.getPrecioPeso();
 		Double PrecioDolar = reparacion.getPrecioDolar();
+		Double pago = reparacion.getPago();
+		String EstadoTecnico = reparacion.getEstadoTecnico();
+		String EstadoComercial = reparacion.getEstadoComercial();
+		String EstadoFisico = reparacion.getEstadoFisico();
 
-		if (reparacion.getFechaFabr() == null)
-			ventanaGenerarPresupuesto.setTextFabr(null);
-		else
-			try {
-				ventanaGenerarPresupuesto.setTextFabr((dateFormat.parse(reparacion.getFechaFabr())));
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+		if (ventanaGenerarPresupuesto != null && ventanaIngresoDePago == null) {
+			if (reparacion.getFechaFabr() == null)
+				ventanaGenerarPresupuesto.setTextFabr(null);
+			else
+				try {
+					ventanaGenerarPresupuesto.setTextFabr((dateFormat.parse(reparacion.getFechaFabr())));
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
-		ventanaGenerarPresupuesto.getTextCliente().setText(Cliente);
-		ventanaGenerarPresupuesto.getTextSucursal().setText(Sucursal);
-		ventanaGenerarPresupuesto.getTextELS()
-				.setText(ventanaSeleccionarELS.getComboELS().getSelectedItem().toString());
-		ventanaGenerarPresupuesto.getTextEquipo().setText(Equipo);
-		ventanaGenerarPresupuesto.getTextMarca().setText(Marca);
-		ventanaGenerarPresupuesto.getTextModelo().setText(Modelo);
-		ventanaGenerarPresupuesto.getTextSerie().setText(Serie);
-		ventanaGenerarPresupuesto.getTextAviso().setText(Aviso);
-		ventanaGenerarPresupuesto.getTextClienteCliente().setText(ClienteCliente);
-		ventanaGenerarPresupuesto.getTextRemCliente().setText(RemitoCliente);
+			ventanaGenerarPresupuesto.getTextCliente().setText(Cliente);
+			ventanaGenerarPresupuesto.getTextSucursal().setText(Sucursal);
+			ventanaGenerarPresupuesto.getTextELS()
+					.setText(ventanaSeleccionarELS.getComboELS().getSelectedItem().toString());
+			ventanaGenerarPresupuesto.getTextEquipo().setText(Equipo);
+			ventanaGenerarPresupuesto.getTextMarca().setText(Marca);
+			ventanaGenerarPresupuesto.getTextModelo().setText(Modelo);
+			ventanaGenerarPresupuesto.getTextSerie().setText(Serie);
+			ventanaGenerarPresupuesto.getTextAviso().setText(Aviso);
+			ventanaGenerarPresupuesto.getTextClienteCliente().setText(ClienteCliente);
+			ventanaGenerarPresupuesto.getTextRemCliente().setText(RemitoCliente);
 
-		ventanaGenerarPresupuesto.getTextInforme().setText(Informe);
-		ventanaGenerarPresupuesto.getTextPrecioPeso().setText(PrecioPeso.toString());
-		ventanaGenerarPresupuesto.getTextPrecioDolar().setText(PrecioDolar.toString());
+			ventanaGenerarPresupuesto.getTextInforme().setText(Informe);
+			ventanaGenerarPresupuesto.getTextPrecioPeso().setText(PrecioPeso.toString());
+			ventanaGenerarPresupuesto.getTextPrecioDolar().setText(PrecioDolar.toString());
 
-		ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
-		ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
+			ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
+			ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
 
-		ventanaGenerarPresupuesto.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
-		ventanaGenerarPresupuesto.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
-		ventanaGenerarPresupuesto.setChckWORDGenerado(reparacion.getWORDgenerado());
-		ventanaGenerarPresupuesto.setChckWORDEnviado(reparacion.getWORDenviado());
+			ventanaGenerarPresupuesto.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
+			ventanaGenerarPresupuesto.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
+			ventanaGenerarPresupuesto.setChckWORDGenerado(reparacion.getWORDgenerado());
+			ventanaGenerarPresupuesto.setChckWORDEnviado(reparacion.getWORDenviado());
+
+		} else if (ventanaIngresoDePago != null) {
+
+			ventanaIngresoDePago.getTextELS().setText(Integer.toString(ELS));
+			ventanaIngresoDePago.getTextAviso().setText(Aviso);
+			ventanaIngresoDePago.getTextCliente().setText(Cliente);
+			ventanaIngresoDePago.getTextSucursal().setText(Sucursal);
+			ventanaIngresoDePago.getTextEquipo().setText(Equipo);
+			ventanaIngresoDePago.getTextModelo().setText(Modelo);
+			ventanaIngresoDePago.getTextMarca().setText(Marca);
+			ventanaIngresoDePago.getTextSerie().setText(Serie);
+			ventanaIngresoDePago.getTextEstadoComercial().setText(EstadoComercial);
+			ventanaIngresoDePago.getTextEstadoTecnico().setText(EstadoTecnico);
+			ventanaIngresoDePago.getTextEstadoFisico().setText(EstadoFisico);
+
+			ventanaIngresoDePago.getTextPrecioPeso().setText(monedaFormatter.formatPeso(PrecioPeso.toString()));
+			ventanaIngresoDePago.getTextPrecioDolar().setText(monedaFormatter.formatPeso(PrecioDolar.toString()));
+			ventanaIngresoDePago.gettextIngresoPago().setText(monedaFormatter.formatPeso(pago.toString()));
+			
+		}
 
 		ventanaPresupuestos.dispose();
 		ventanaPresupuestos = null;
