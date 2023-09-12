@@ -1531,8 +1531,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				String presupuesto = ventanaVisualizarEquipos.getTextPresupuesto().getText();
 				ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.formatPeso(presupuesto));
-
-				// verificarPresupuestoEditado();
+				verificarPresupuestoEditado();
 
 			}
 		});
@@ -1543,7 +1542,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				String pago = ventanaVisualizarEquipos.getTextPago().getText();
 				ventanaVisualizarEquipos.getTextPago().setText(monedaFormatter.formatPeso(pago));
-				// verificarPresupuestoEditado();
+				verificarPresupuestoEditado();
 
 			}
 		});
@@ -1676,7 +1675,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
-		// verificarPresupuesto();
+		verificarPresupuesto();
 		deshabilitarCampos();
 
 	}
@@ -1764,7 +1763,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
-		// verificarPresupuesto();
+		verificarPresupuesto();
 		deshabilitarCampos();
 
 	}
@@ -1851,7 +1850,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setChckWORDEnviado(reparacion.getWORDenviado());
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
-		// verificarPresupuesto();
+		verificarPresupuesto();
 		deshabilitarCampos();
 
 	}
@@ -2093,8 +2092,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		String PresupuestoDefault = "0.0";
 
-		double presupuesto = monedaFormatter.parseAmount(ventanaVisualizarEquipos.getTextPresupuesto().getText());
-		double pago = monedaFormatter.parseAmount(ventanaVisualizarEquipos.getTextPago().getText());
+		double presupuesto = monedaFormatter.parseAmountGuardar(ventanaVisualizarEquipos.getTextPresupuesto().getText());
+		double pago = monedaFormatter.parseAmountGuardar(ventanaVisualizarEquipos.getTextPago().getText());
 
 		double diferencia = presupuesto - pago;
 
