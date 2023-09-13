@@ -25,7 +25,7 @@ public class MonedaFormatter {
 
     public String formatPeso(String amount) {
         if (amount == null || amount.trim().isEmpty() || amount.equals("0")) {
-            return "$ 0.00";
+            return "$ 0,00";
         }
 
         try {
@@ -39,7 +39,7 @@ public class MonedaFormatter {
 
     public String formatDolar(String amount) {
         if (amount == null || amount.trim().isEmpty() || amount.equals("0")) {
-            return "$ 0.00";
+            return "U$S 0,00";
         }
 
         try {

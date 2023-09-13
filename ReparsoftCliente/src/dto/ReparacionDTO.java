@@ -28,11 +28,10 @@ public class ReparacionDTO {
 	private Boolean InformeEnviado;
 	private Boolean PresupuestoGenerado;
 	private Boolean PresupuestoEnviado;
-	
+
 	private Boolean wordGenerado;
 	private Boolean wordEnviado;
-	
-	
+
 	private Boolean Enviado;
 	private Boolean AvisoEnviado;
 	private Double Pago;
@@ -53,16 +52,15 @@ public class ReparacionDTO {
 	private String FechaFabr;
 	private String componenteOriginal;
 	private String componenteReemplazo;
-	
 
 	public ReparacionDTO(int ELS, String Fecha_Entrada, String Fechadereparacion, String Falla, String Solucion,
 			String Informecliente, int IDTecnico, String EstadoFisico, String EstadoTecnico, String EstadoComercial,
 			String RemitoCliente, String OrdendeCompra, Boolean Agregadoaremito, Boolean RemitoGenerado, int IDEquipo,
 			int CodigoRemito, Double PrecioPeso, Double PrecioDolar, Boolean InformeEnviado, String FechAceptacion,
-			Boolean PresupuestoGenerado, Boolean Enviado, Double Pago, Boolean PresupuestoEnviado, String Nombre, String Correo, String Modelo,
-			String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente, int IDCliente, int IDSuc,
-			String Cliente, String Sucursal, String NombreUsuario, int Codigo, int NumeroRemitoSalida,
-			String FechaFabr, Boolean AvisoEnviado,Boolean WordGenerado,Boolean WordEnviado) {
+			Boolean PresupuestoGenerado, Boolean Enviado, Double Pago, Boolean PresupuestoEnviado, String Nombre,
+			String Correo, String Modelo, String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente,
+			int IDCliente, int IDSuc, String Cliente, String Sucursal, String NombreUsuario, int Codigo,
+			int NumeroRemitoSalida, String FechaFabr, Boolean AvisoEnviado, Boolean WordGenerado, Boolean WordEnviado) {
 
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
@@ -86,10 +84,10 @@ public class ReparacionDTO {
 		this.InformeEnviado = InformeEnviado;
 		this.PresupuestoGenerado = PresupuestoGenerado;
 		this.PresupuestoEnviado = PresupuestoEnviado;
-		
+
 		this.wordGenerado = WordGenerado;
 		this.wordEnviado = WordEnviado;
-		
+
 		this.Enviado = Enviado;
 		this.Pago = Pago;
 		this.NombreEquipo = Nombre;
@@ -126,7 +124,9 @@ public class ReparacionDTO {
 
 	}
 
-	public ReparacionDTO(int ELS, String Informecliente, Double preciopeso, Double preciodolar,boolean PresupuestoGenerado, boolean PresupuestoEnviado,boolean informeWordGenerado, boolean informeWordEnviado) {
+	public ReparacionDTO(int ELS, String Informecliente, Double preciopeso, Double preciodolar,
+			boolean PresupuestoGenerado, boolean PresupuestoEnviado, boolean informeWordGenerado,
+			boolean informeWordEnviado) {
 
 		this.ELS = ELS;
 		this.Informecliente = Informecliente;
@@ -143,7 +143,8 @@ public class ReparacionDTO {
 			String Informecliente, String EstadoFisico, String EstadoTecnico, String EstadoComercial,
 			String RemitoCliente, int IDEquipo, String Cliente, String Sucursal, String FechAceptacion, String Nombre,
 			String Modelo, String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente, int IDCliente,
-			int IDSuc, String FechaFabr, int idUsuario, boolean enviado, double presupuesto, double pago, boolean PresupuestoGenerado, boolean avisoEnviao,boolean PresupuestoEnviado,String ordenDeCompra ) {
+			int IDSuc, String FechaFabr, int idUsuario, boolean enviado, double presupuesto, double pago,
+			boolean PresupuestoGenerado, boolean avisoEnviao, boolean PresupuestoEnviado, String ordenDeCompra) {
 
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
@@ -177,10 +178,7 @@ public class ReparacionDTO {
 		this.PresupuestoEnviado = PresupuestoEnviado;
 		this.OrdendeCompra = ordenDeCompra;
 
-	
 	}
-	
-	
 
 	public ReparacionDTO(int ELS, String Fecha_Entrada, String Fechadereparacion, String Falla, String Solucion,
 			String Informecliente, String EstadoFisico, String EstadoTecnico, String EstadoComercial,
@@ -239,10 +237,11 @@ public class ReparacionDTO {
 
 	}
 
-	public ReparacionDTO(int ELS, String Fecha_Entrada, String Falla, String EstadoFisico, String EstadoTecnico,String EstadoComercial,
-			String RemitoCliente, int IDEquipo, int IDusuario, String Nombre, String Modelo, String Marca,
-			String NumeroDeSerie, String Aviso, String ClienteCliente, int IDCliente, int IDSuc, String FechaFabr) {
-		
+	public ReparacionDTO(int ELS, String Fecha_Entrada, String Falla, String EstadoFisico, String EstadoTecnico,
+			String EstadoComercial, String RemitoCliente, int IDEquipo, int IDusuario, String Nombre, String Modelo,
+			String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente, int IDCliente, int IDSuc,
+			String FechaFabr) {
+
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
 		this.Falla = Falla;
@@ -316,7 +315,7 @@ public class ReparacionDTO {
 	public ReparacionDTO(int ELS, String aviso, String cliente, String sucursal, String equipo, String marca,
 			String modelo, String serie, String estadoTecnico, String estadoComercial) {
 
-		this.ELS =ELS;
+		this.ELS = ELS;
 		this.Aviso = aviso;
 		this.Cliente = cliente;
 		this.Sucursal = sucursal;
@@ -326,19 +325,24 @@ public class ReparacionDTO {
 		this.NumeroDeSerie = serie;
 		this.EstadoTecnico = estadoTecnico;
 		this.EstadoComercial = estadoComercial;
-		
-		
-		
-		
-		
+
 	}
 
 	public ReparacionDTO(int ELS, String estadoComercial) {
-		
-		this.ELS =ELS;
+
+		this.ELS = ELS;
 		this.EstadoComercial = estadoComercial;
-		
+
 		// TODO Auto-generated constructor stub
+	}
+
+	public ReparacionDTO(int ELS, double precioPeso, double precioDolar, double pago) {
+
+		this.ELS = ELS;
+		this.PrecioPeso = precioPeso;
+		this.PrecioDolar = precioDolar;
+		this.Pago = pago;
+
 	}
 
 	public String getNombreUsuario() {
@@ -608,7 +612,7 @@ public class ReparacionDTO {
 	public Double getPrecioDolar() {
 		return PrecioDolar;
 	}
-	
+
 	public void setComponenteOriginal(String ComponenteOriginal) {
 		componenteOriginal = ComponenteOriginal;
 	}
@@ -616,7 +620,7 @@ public class ReparacionDTO {
 	public String getComponenteOriginal() {
 		return componenteOriginal;
 	}
-	
+
 	public void setComponenteReemplazo(String ComponenteReemplazo) {
 		componenteReemplazo = ComponenteReemplazo;
 	}
@@ -669,7 +673,7 @@ public class ReparacionDTO {
 	public Boolean getAvisoEnviado() {
 		return AvisoEnviado;
 	}
-	
+
 	public void setAvisoEnviado(Boolean AvEnviado) {
 		AvisoEnviado = AvEnviado;
 	}
@@ -690,15 +694,13 @@ public class ReparacionDTO {
 		// TODO Auto-generated method stub
 		return wordGenerado;
 	}
-	
+
 	public void setWordEnviado(Boolean WordEnviado) {
 		wordEnviado = WordEnviado;
 	}
-	
+
 	public void setWordGenerado(Boolean WordGenerado) {
 		wordGenerado = WordGenerado;
 	}
-	
-
 
 }

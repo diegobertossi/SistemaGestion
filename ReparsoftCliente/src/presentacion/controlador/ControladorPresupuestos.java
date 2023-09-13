@@ -258,13 +258,21 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					monedaFormatter = new MonedaFormatter();
 
 					TomarDatosDeTablas();
-					
-					ventanaIngresoDePago.gettextIngresoPago().requestFocus();
-					ventanaIngresoDePago.gettextIngresoPago().selectAll();
-//					ventanaIngresoDePago.setTextPrecioPeso("$ 0,00");
-//					ventanaIngresoDePago.setTextPrecioDolar("U$S 0,00");
-//					ventanaIngresoDePago.settextIngresoPago("$ 0,00");
-//					
+
+					if (ventanaIngresoDePago.gettextIngresoPago().getText().compareTo("$ 0,00") != 0) {
+
+						ventanaIngresoDePago.gettextIngresoPago().setEditable(false);
+
+					} else {
+
+						ventanaIngresoDePago.gettextIngresoPago().setEditable(true);
+						ventanaIngresoDePago.gettextIngresoPago().requestFocus();
+						ventanaIngresoDePago.gettextIngresoPago().selectAll();
+
+					}
+
+					ventanaIngresoDePago.getBtnEditarPrecios().addActionListener(this);
+					ventanaIngresoDePago.getBtnGuardarCambios().addActionListener(this);
 
 					ventanaIngresoDePago.getTextPrecioPeso().addActionListener(new ActionListener() {
 						@Override
@@ -296,16 +304,32 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						}
 					});
 
-//					ventanaGenerarPresupuesto = new VentanaGenerarPresupuesto(this);
-//
-//					SpellChecker.register(ventanaGenerarPresupuesto.getTextInforme());
-//
-//					TomarDatosDeTablas();
-//
-//					agregarListenersVentanaGenerarPresupuesto();
-
 				}
 
+			}
+
+		}
+
+		else if (this.ventanaIngresoDePago != null
+				&& e.getSource() == this.ventanaIngresoDePago.getBtnEditarPrecios()) {
+
+			ventanaIngresoDePago.gettextIngresoPago().setEditable(true);
+			ventanaIngresoDePago.getTextPrecioDolar().setEditable(true);
+			ventanaIngresoDePago.getTextPrecioPeso().setEditable(true);
+
+		}
+
+		else if (this.ventanaIngresoDePago != null
+				&& e.getSource() == this.ventanaIngresoDePago.getBtnGuardarCambios()) {
+
+			int seleccion = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto, "Desea guardar el pago realizado?",
+					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+			if (seleccion == JOptionPane.YES_OPTION) {
+
+				ReparacionDTO reparacionAeditar = TomarDatosPago();
+
+				this.agenda.editarReparacionR(reparacionAeditar);
 			}
 
 		}
@@ -1325,7 +1349,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			ventanaIngresoDePago.getTextPrecioPeso().setText(monedaFormatter.formatPeso(PrecioPeso.toString()));
 			ventanaIngresoDePago.getTextPrecioDolar().setText(monedaFormatter.formatPeso(PrecioDolar.toString()));
 			ventanaIngresoDePago.gettextIngresoPago().setText(monedaFormatter.formatPeso(pago.toString()));
-			
+
 		}
 
 		ventanaPresupuestos.dispose();
@@ -1476,6 +1500,53 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, informeCliente, PrecioPeso, PrecioDolar,
 				presupuestoGenerado, presupuestoEnviado, informeWordGenerado, informeWordEnviado);
+
+		return reparacionAeditar;
+
+	}
+
+	private ReparacionDTO TomarDatosPago() {
+
+		int ELS = Integer.parseInt(this.ventanaIngresoDePago.getTextELS().getText());
+
+		double PrecioPeso;
+		double PrecioDolar;
+		double pago;
+
+		if (monedaFormatter.tieneFormato(this.ventanaIngresoDePago.getTextPrecioPeso().getText())) {
+
+			PrecioPeso = monedaFormatter.parseAmountGuardar(this.ventanaIngresoDePago.getTextPrecioPeso().getText());
+
+		} else {
+
+			PrecioPeso = monedaFormatter.parseAmount(this.ventanaIngresoDePago.getTextPrecioPeso().getText());
+
+		}
+		
+		if (monedaFormatter.tieneFormato(this.ventanaIngresoDePago.getTextPrecioDolar().getText())) {
+
+			PrecioDolar = monedaFormatter.parseAmountGuardar(this.ventanaIngresoDePago.getTextPrecioDolar().getText());
+
+		} else {
+
+			PrecioDolar = monedaFormatter.parseAmount(this.ventanaIngresoDePago.getTextPrecioDolar().getText());
+
+		}
+
+		if (monedaFormatter.tieneFormato(this.ventanaIngresoDePago.gettextIngresoPago().getText())) {
+
+			pago = monedaFormatter.parseAmountGuardar(this.ventanaIngresoDePago.gettextIngresoPago().getText());
+		}
+
+		else {
+
+			pago = monedaFormatter.parseAmount(this.ventanaIngresoDePago.gettextIngresoPago().getText());
+
+		}
+		
+		
+
+		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, PrecioPeso, PrecioDolar, pago);
 
 		return reparacionAeditar;
 

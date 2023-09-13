@@ -34,8 +34,6 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario ON reparaciones.idUsuario=usuario.IdUsuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
 			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente) And ((usuario.IdUsuario)=reparaciones.idUsuario)) and ((Sucursal.IdSucursal)=Equipos.idSucursal) ORDER BY reparaciones.ELS ASC";
 
-	
-	
 	private static final String readallNombreEquipo = "SELECT DISTINCT * FROM Equipos group by Equipos.Nombre";
 
 	private static final String readallMarca = "SELECT Equipos.Marca FROM Equipos group by Equipos.Marca";
@@ -101,7 +99,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			statement.setString(3, Reparaciones.getFalla());
 			statement.setString(4, Reparaciones.getEstadoFisico());
 			statement.setString(5, Reparaciones.getEstadoTecnico());
-			statement.setString(6, Reparaciones.getEstadoComercial());		
+			statement.setString(6, Reparaciones.getEstadoComercial());
 			statement.setString(7, Reparaciones.getRemitoCliente());
 			statement.setInt(8, Reparaciones.getIDEquipo());
 			statement.setInt(9, Reparaciones.getidUsuario());
@@ -454,11 +452,11 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ "' ," + "PrecioPeso = '" + reparacion_a_editar.getPrecioPeso() + "' ," + "EstadoComercial = '"
 						+ reparacion_a_editar.getEstadoComercial() + "' ," + "RemitoCliente = '"
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "PresupuestoGenerado = '" + PresupGenerado
-						+ "' ," + "OrdendeCompra = '" +  reparacion_a_editar.getOrdendeCompra()
-						+ "' ," + "AvisoEnviado = '" + AvisoEnviado + "' ," + "PresupuestoEnviado = '" + PresupEnviado
-						+ "' ," + "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
+						+ "' ," + "OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ,"
+						+ "AvisoEnviado = '" + AvisoEnviado + "' ," + "PresupuestoEnviado = '" + PresupEnviado + "' ,"
+						+ "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
 						+ reparacion_a_editar.getELS() + "");
-				
+
 				System.out.println("0");
 
 			} else if (reparacion_a_editar.getFechadereparacion() != null
@@ -468,18 +466,17 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ reparacion_a_editar.getFecha_Entrada() + "' , " + "FechadeDiagnostico = '"
 						+ reparacion_a_editar.getFechadereparacion() + "' ," + "Falla = '"
 						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
-						+ "' ," + "OrdendeCompra = '" +  reparacion_a_editar.getOrdendeCompra()
-						+ "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario() + "' ," + "Enviado = '" + enviado
-						+ "' ," + "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ,"
-						+ "PrecioPeso = '" + reparacion_a_editar.getPrecioPeso() + "' ," 
-						+ "Pago = '" + reparacion_a_editar.getPago() + "' ," 
-						+ "PresupuestoGenerado = '" + PresupGenerado+ "' ,"
-						+ "EstadoFisico = '" + reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
+						+ "' ," + "OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ," + "idUsuario = '"
+						+ reparacion_a_editar.getidUsuario() + "' ," + "Enviado = '" + enviado + "' ,"
+						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "PrecioPeso = '"
+						+ reparacion_a_editar.getPrecioPeso() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
+						+ "' ," + "PresupuestoGenerado = '" + PresupGenerado + "' ," + "EstadoFisico = '"
+						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
 						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
 						+ reparacion_a_editar.getEstadoComercial() + "' ," + "RemitoCliente = '"
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = null " + "WHERE ELS = "
 						+ reparacion_a_editar.getELS() + "");
-				
+
 				System.out.println("1");
 
 			}
@@ -499,7 +496,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = '"
 						+ reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = " + reparacion_a_editar.getELS()
 						+ "");
-				
+
 				System.out.println("2");
 
 			}
@@ -518,7 +515,6 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = null " + "WHERE ELS = "
 						+ reparacion_a_editar.getELS() + "");
 
-				
 				System.out.println("3");
 			}
 
@@ -526,31 +522,43 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 					&& reparacion_a_editar.getFechAceptacion() == null && reparacion_a_editar.getFecha_Entrada() == null
 					&& reparacion_a_editar.getNombreEquipo() == null
 					&& reparacion_a_editar.getAgregadoaremito() == null) {
-				
-				if(reparacion_a_editar.getPrecioPeso() !=null) {
-				
-				statement = conexion.getSQLConexion()
-						.prepareStatement("UPDATE reparaciones SET Informecliente = '"
-								+ reparacion_a_editar.getInformecliente() + "' ," + "PrecioPeso = '"
-								+ reparacion_a_editar.getPrecioPeso() + "' ," + "PresupuestoEnviado = '" + PresupEnviado
-								+ "' ," + "PresupuestoGenerado = '"
-								+ PresupGenerado + "' ," + "PrecioDolar = '" + reparacion_a_editar.getPrecioDolar()
-								+ "' ," + "WordGenerado = '" + informeWordGenerado + "' ," + "WordEnviado = '"
-								+ informeWordEnviado + "'" + "WHERE ELS = " + reparacion_a_editar.getELS() + "");
-				
-				
-				System.out.println("4");
-			}
-				
-				else
-				{
+
+				if (reparacion_a_editar.getPrecioPeso() != null && reparacion_a_editar.getInformecliente() != null) {
+
+					statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET Informecliente = '"
+							+ reparacion_a_editar.getInformecliente() + "' ," + "PrecioPeso = '"
+							+ reparacion_a_editar.getPrecioPeso() + "' ," + "PresupuestoEnviado = '" + PresupEnviado
+//								+ "' ," + "Pago = '"
+//								+ reparacion_a_editar.getPago()
+							+ "' ," + "PresupuestoGenerado = '" + PresupGenerado + "' ," + "PrecioDolar = '"
+							+ reparacion_a_editar.getPrecioDolar() + "' ," + "WordGenerado = '" + informeWordGenerado
+							+ "' ," + "WordEnviado = '" + informeWordEnviado + "'" + "WHERE ELS = "
+							+ reparacion_a_editar.getELS() + "");
+
+					System.out.println("4");
+				}
+
+				else if (reparacion_a_editar.getPago() == null) {
+					
 					statement = conexion.getSQLConexion()
-					.prepareStatement("UPDATE reparaciones SET EstadoComercial = '"
-							+ reparacion_a_editar.getEstadoComercial()
-						    + "'" + "WHERE ELS = " + reparacion_a_editar.getELS() + "");
-					
+							.prepareStatement("UPDATE reparaciones SET EstadoComercial = '"
+									+ reparacion_a_editar.getEstadoComercial() + "'" + "WHERE ELS = "
+									+ reparacion_a_editar.getELS() + "");
+
 					System.out.println("4.1");
-					
+
+				}
+
+				else {
+
+					statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET EstadoComercial = '"
+							+ reparacion_a_editar.getEstadoComercial() + "' ," + "PrecioDolar = '"
+							+ reparacion_a_editar.getPrecioDolar() + "' ," + "PrecioPeso = '"
+							+ reparacion_a_editar.getPrecioPeso() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
+							+ "'" + "WHERE ELS = " + reparacion_a_editar.getELS() + "");
+
+					System.out.println("4.2");
+
 				}
 			}
 
@@ -561,9 +569,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 								+ reparacion_a_editar.getidRemito() + "'" + "WHERE ELS = "
 								+ reparacion_a_editar.getELS() + "");
 
-				
 				System.out.println("5");
-				
+
 			}
 
 			else if (reparacion_a_editar.getEnviado() != null && reparacion_a_editar.getEstadoFisico() == "Enviado") {
@@ -571,7 +578,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						.prepareStatement("UPDATE reparaciones SET EstadoFisico = '"
 								+ reparacion_a_editar.getEstadoFisico() + "'," + "Enviado = '" + enviado + "'"
 								+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
-				
+
 				System.out.println("6");
 
 			}
@@ -584,7 +591,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 								+ reparacion_a_editar.getidRemito() + "' ," + "EstadoFisico = '"
 								+ reparacion_a_editar.getEstadoFisico() + "'," + "Enviado = '" + enviado + "'"
 								+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
-				
+
 				System.out.println("7");
 
 			}
@@ -1082,19 +1089,13 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 			while (resultSet.next()) {
 
-				Reparaciones.add(new ReparacionDTO(
-						resultSet.getInt("ELS"),
-						resultSet.getString("Aviso"),
-						resultSet.getString("nombre"),
-						resultSet.getString("NombreSucursal"),
-						resultSet.getString("Equipos.Nombre"),
-						resultSet.getString("Marca"), 
-						resultSet.getString("Modelo"),
-						resultSet.getString("NumeroDeSerie"),
-						resultSet.getString("EstadoTecnico"),
-						resultSet.getString("EstadoComercial")
-						
-												));
+				Reparaciones.add(new ReparacionDTO(resultSet.getInt("ELS"), resultSet.getString("Aviso"),
+						resultSet.getString("nombre"), resultSet.getString("NombreSucursal"),
+						resultSet.getString("Equipos.Nombre"), resultSet.getString("Marca"),
+						resultSet.getString("Modelo"), resultSet.getString("NumeroDeSerie"),
+						resultSet.getString("EstadoTecnico"), resultSet.getString("EstadoComercial")
+
+				));
 
 			}
 		} catch (SQLException e) {
