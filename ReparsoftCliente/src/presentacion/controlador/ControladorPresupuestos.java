@@ -239,12 +239,17 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						&& ventanaSeleccionarELS.getComboELS().getSelectedIndex() != -1) {
 
 					ventanaGenerarPresupuesto = new VentanaGenerarPresupuesto(this);
+					monedaFormatter = new MonedaFormatter();
 
 					SpellChecker.register(ventanaGenerarPresupuesto.getTextInforme());
 
 					TomarDatosDeTablas();
 
 					agregarListenersVentanaGenerarPresupuesto();
+					
+					
+					
+					
 
 				}
 			}
@@ -288,8 +293,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						@Override
 						public void actionPerformed(ActionEvent e) {
 
-							String prcioDolar = ventanaIngresoDePago.getTextPrecioDolar().getText();
-							ventanaIngresoDePago.getTextPrecioDolar().setText(monedaFormatter.formatDolar(prcioDolar));
+							String precioDolar = ventanaIngresoDePago.getTextPrecioDolar().getText();
+							ventanaIngresoDePago.getTextPrecioDolar().setText(monedaFormatter.formatDolar(precioDolar));
 
 						}
 					});
@@ -1104,43 +1109,74 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		ventanaGenerarPresupuesto.getGuardarPresupuestoPDF().addActionListener(this);
 		ventanaGenerarPresupuesto.getVisualizarPresupuestoPDF().addActionListener(this);
-		this.ventanaGenerarPresupuesto.getTextPrecioPeso().addKeyListener(this);
-
-		this.ventanaGenerarPresupuesto.getTextPrecioPeso().addActionListener(this);
-		this.ventanaGenerarPresupuesto.getTextPrecioPeso().addFocusListener(new FocusListener() {
-			public void focusLost(FocusEvent e) {
-
-				if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().isEmpty()) {
-
-					ventanaGenerarPresupuesto.getTextPrecioPeso().setText("0.0");
-				}
-
-			}
-
+		
+				
+		ventanaGenerarPresupuesto.getTextPrecioPeso().addActionListener(new ActionListener() {
 			@Override
-			public void focusGained(FocusEvent arg0) {
-				// TODO Auto-generated method stub
+			public void actionPerformed(ActionEvent e) {
+
+				String precioPeso = ventanaGenerarPresupuesto.getTextPrecioPeso().getText();
+				ventanaGenerarPresupuesto.getTextPrecioPeso().setText(monedaFormatter.formatPeso(precioPeso));
 
 			}
 		});
 
-		this.ventanaGenerarPresupuesto.getTextPrecioDolar().addKeyListener(this);
-		this.ventanaGenerarPresupuesto.getTextPrecioDolar().addFocusListener(new FocusListener() {
-			public void focusLost(FocusEvent e) {
-
-				if (ventanaGenerarPresupuesto.getTextPrecioDolar().getText().isEmpty()) {
-
-					ventanaGenerarPresupuesto.getTextPrecioDolar().setText("0.0");
-				}
-
-			}
-
+		ventanaGenerarPresupuesto.getTextPrecioDolar().addActionListener(new ActionListener() {
 			@Override
-			public void focusGained(FocusEvent arg0) {
-				// TODO Auto-generated method stub
+			public void actionPerformed(ActionEvent e) {
+
+				String precioDolar = ventanaGenerarPresupuesto.getTextPrecioDolar().getText();
+				ventanaGenerarPresupuesto.getTextPrecioDolar().setText(monedaFormatter.formatDolar(precioDolar));
 
 			}
 		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	//	this.ventanaGenerarPresupuesto.getTextPrecioPeso().addKeyListener(this);
+
+//		this.ventanaGenerarPresupuesto.getTextPrecioPeso().addActionListener(this);
+//		this.ventanaGenerarPresupuesto.getTextPrecioPeso().addFocusListener(new FocusListener() {
+//			public void focusLost(FocusEvent e) {
+//
+//				if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().isEmpty()) {
+//
+//					ventanaGenerarPresupuesto.getTextPrecioPeso().setText("0.0");
+//				}
+//
+//			}
+//
+//			@Override
+//			public void focusGained(FocusEvent arg0) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//		});
+//
+//		this.ventanaGenerarPresupuesto.getTextPrecioDolar().addKeyListener(this);
+//		this.ventanaGenerarPresupuesto.getTextPrecioDolar().addFocusListener(new FocusListener() {
+//			public void focusLost(FocusEvent e) {
+//
+//				if (ventanaGenerarPresupuesto.getTextPrecioDolar().getText().isEmpty()) {
+//
+//					ventanaGenerarPresupuesto.getTextPrecioDolar().setText("0.0");
+//				}
+//
+//			}
+//
+//			@Override
+//			public void focusGained(FocusEvent arg0) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//		});
 
 		this.ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens().addActionListener(this);
 
@@ -1512,6 +1548,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		double PrecioPeso;
 		double PrecioDolar;
 		double pago;
+		
+		String EstadoComercial;
 
 		if (monedaFormatter.tieneFormato(this.ventanaIngresoDePago.getTextPrecioPeso().getText())) {
 
@@ -1544,9 +1582,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		}
 		
-		
+		EstadoComercial = ventanaIngresoDePago.getTextEstadoComercial().getText();
 
-		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, PrecioPeso, PrecioDolar, pago);
+		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, PrecioPeso, PrecioDolar, pago, EstadoComercial);
 
 		return reparacionAeditar;
 
@@ -1572,8 +1610,33 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		String CondicionesPago = this.ventanaGenerarPresupuesto.getTextcondicionesPago().getText();
 		String plazoEntrega = this.ventanaGenerarPresupuesto.getTextPlazoEntrega().getText();
 
-		Double PrecioPeso = Double.parseDouble(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
-		Double PrecioDolar = Double.parseDouble(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
+		
+		double PrecioPeso;
+		double PrecioDolar;
+		
+		if (monedaFormatter.tieneFormato(this.ventanaIngresoDePago.getTextPrecioPeso().getText())) {
+
+			PrecioPeso = monedaFormatter.parseAmountGuardar(this.ventanaIngresoDePago.getTextPrecioPeso().getText());
+
+		} else {
+
+			PrecioPeso = monedaFormatter.parseAmount(this.ventanaIngresoDePago.getTextPrecioPeso().getText());
+
+		}
+		
+		if (monedaFormatter.tieneFormato(this.ventanaIngresoDePago.getTextPrecioDolar().getText())) {
+
+			PrecioDolar = monedaFormatter.parseAmountGuardar(this.ventanaIngresoDePago.getTextPrecioDolar().getText());
+
+		} else {
+
+			PrecioDolar = monedaFormatter.parseAmount(this.ventanaIngresoDePago.getTextPrecioDolar().getText());
+
+		}
+		
+		
+//		Double PrecioPeso = Double.parseDouble(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
+//		Double PrecioDolar = Double.parseDouble(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
 
 		RegistroPresupuestoDTO nuevoPresupuesto = new RegistroPresupuestoDTO(ELS, InformeCliente, RemitoCLiente,
 				PrecioPeso, PrecioDolar, NombreEquipo, Modelo, Marca, Serie, ClienteCliente, aviso, Sucursal, Cliente,

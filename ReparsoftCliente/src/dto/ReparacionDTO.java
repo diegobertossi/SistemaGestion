@@ -336,12 +336,13 @@ public class ReparacionDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReparacionDTO(int ELS, double precioPeso, double precioDolar, double pago) {
+	public ReparacionDTO(int ELS, double precioPeso, double precioDolar, double pago, String estadoComercial) {
 
 		this.ELS = ELS;
 		this.PrecioPeso = precioPeso;
 		this.PrecioDolar = precioDolar;
 		this.Pago = pago;
+		this.EstadoComercial = estadoComercial;
 
 	}
 

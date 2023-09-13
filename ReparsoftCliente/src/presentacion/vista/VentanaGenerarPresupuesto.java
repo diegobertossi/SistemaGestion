@@ -59,8 +59,8 @@ public class VentanaGenerarPresupuesto extends JFrame {
 	private JTextArea textcondicionesPago;
 	private JTextArea textPlazoEntrega;
 
-	private JTextDouble textPrecioPeso;
-	private JTextDouble textPrecioDolar;
+	private JTextField textPrecioPeso;
+	private JTextField textPrecioDolar;
 	private JTextDouble textCotizacionDolarOf;
 	private JTextDouble textCotizacionDolarBl;
 	
@@ -463,19 +463,14 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
 		panel_4.setLayout(null);
 
-		textPrecioPeso = new JTextDouble(10);
+		textPrecioPeso = new JTextField(10);
 		textPrecioPeso.setEditable(false);
-		textPrecioPeso.setBounds(124, 4, 69, 15);
+		textPrecioPeso.setBounds(108, 4, 125, 15);
 		panel_4.add(textPrecioPeso);
 		textPrecioPeso.setBorder(null);
 		textPrecioPeso.setBackground(Color.LIGHT_GRAY);
 		textPrecioPeso.setFont(new Font("Cambria", Font.BOLD, 12));
 		textPrecioPeso.setColumns(10);
-
-		JLabel label_2 = new JLabel("$");
-		label_2.setBounds(105, 4, 20, 15);
-		panel_4.add(label_2);
-		label_2.setFont(new Font("Cambria", Font.PLAIN, 12));
 
 		JLabel lblTotalPesos = new JLabel("Total en Pesos:");
 		lblTotalPesos.setBounds(10, 4, 104, 15);
@@ -490,19 +485,14 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		panel_5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
 		panel_5.setLayout(null);
 
-		textPrecioDolar = new JTextDouble(10);
+		textPrecioDolar = new JTextField(10);
 		textPrecioDolar.setEditable(false);
-		textPrecioDolar.setBounds(133, 5, 69, 15);
+		textPrecioDolar.setBounds(108, 5, 125, 15);
 		panel_5.add(textPrecioDolar);
 		textPrecioDolar.setBorder(null);
 		textPrecioDolar.setBackground(Color.LIGHT_GRAY);
 		textPrecioDolar.setFont(new Font("Cambria", Font.BOLD, 12));
 		textPrecioDolar.setColumns(10);
-
-		JLabel lblUs = new JLabel("US$");
-		lblUs.setBounds(105, 5, 30, 15);
-		panel_5.add(lblUs);
-		lblUs.setFont(new Font("Cambria", Font.PLAIN, 12));
 
 		JLabel lbltotaldolares = new JLabel("Total en Dolares:");
 		lbltotaldolares.setBounds(10, 5, 115, 15);
