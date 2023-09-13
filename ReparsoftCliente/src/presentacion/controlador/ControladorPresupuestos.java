@@ -1357,8 +1357,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			ventanaGenerarPresupuesto.getTextRemCliente().setText(RemitoCliente);
 
 			ventanaGenerarPresupuesto.getTextInforme().setText(Informe);
-			ventanaGenerarPresupuesto.getTextPrecioPeso().setText(PrecioPeso.toString());
-			ventanaGenerarPresupuesto.getTextPrecioDolar().setText(PrecioDolar.toString());
+			
+			
+			ventanaGenerarPresupuesto.getTextPrecioPeso().setText(monedaFormatter.formatPeso(PrecioPeso.toString()));
+			ventanaGenerarPresupuesto.getTextPrecioDolar().setText(monedaFormatter.formatDolar(PrecioDolar.toString()));
 
 			ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
 			ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
@@ -1397,6 +1399,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	}
 
 	public void TomarDatosDeTablasParaVisualizacion(int numeroELS) {
+		
+		monedaFormatter = new MonedaFormatter();
 
 		ventanaGenerarPresupuesto = new VentanaGenerarPresupuesto(this);
 
@@ -1442,8 +1446,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaGenerarPresupuesto.getTextRemCliente().setText(RemitoCliente);
 
 		ventanaGenerarPresupuesto.getTextInforme().setText(Informe);
-		ventanaGenerarPresupuesto.getTextPrecioPeso().setText(PrecioPeso.toString());
-		ventanaGenerarPresupuesto.getTextPrecioDolar().setText(PrecioDolar.toString());
+		ventanaGenerarPresupuesto.getTextPrecioPeso().setText(monedaFormatter.formatPeso(PrecioPeso.toString()));
+		ventanaGenerarPresupuesto.getTextPrecioDolar().setText(monedaFormatter.formatDolar(PrecioDolar.toString()));
 
 		ventanaGenerarPresupuesto.getTextcondicionesPago().setText("Contado.");
 		ventanaGenerarPresupuesto.getTextPlazoEntrega().setText("7 días.");
@@ -1521,13 +1525,31 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		int ELS = Integer.parseInt(this.ventanaGenerarPresupuesto.getTextELS().getText());
 		String informeCliente = this.ventanaGenerarPresupuesto.getTextInforme().getText();
-		double PrecioPeso = Double.parseDouble(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
-		double PrecioDolar = Double.parseDouble(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
+		
+		double PrecioPeso;
+		double PrecioDolar;
+		
+	
+		if (monedaFormatter.tieneFormato(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText())) {
 
-//		if (PrecioPeso != 0) {
-//			presupuestoGenerado = true;
-//		}
-//		System.out.println(presupuestoEnviado);
+			PrecioPeso = monedaFormatter.parseAmountGuardar(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
+
+		} else {
+
+			PrecioPeso = monedaFormatter.parseAmount(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
+
+		}
+		
+		if (monedaFormatter.tieneFormato(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText())) {
+
+			PrecioDolar = monedaFormatter.parseAmountGuardar(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
+
+		} else {
+
+			PrecioDolar = monedaFormatter.parseAmount(this.ventanaIngresoDePago.getTextPrecioDolar().getText());
+
+		}
+
 
 		presupuestoEnviado = ventanaGenerarPresupuesto.getChckPDFEnviado();
 		presupuestoGenerado = ventanaGenerarPresupuesto.getChckPDFGenerado();
@@ -1614,29 +1636,26 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		double PrecioPeso;
 		double PrecioDolar;
 		
-		if (monedaFormatter.tieneFormato(this.ventanaIngresoDePago.getTextPrecioPeso().getText())) {
+		if (monedaFormatter.tieneFormato(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText())) {
 
-			PrecioPeso = monedaFormatter.parseAmountGuardar(this.ventanaIngresoDePago.getTextPrecioPeso().getText());
-
-		} else {
-
-			PrecioPeso = monedaFormatter.parseAmount(this.ventanaIngresoDePago.getTextPrecioPeso().getText());
-
-		}
-		
-		if (monedaFormatter.tieneFormato(this.ventanaIngresoDePago.getTextPrecioDolar().getText())) {
-
-			PrecioDolar = monedaFormatter.parseAmountGuardar(this.ventanaIngresoDePago.getTextPrecioDolar().getText());
+			PrecioPeso = monedaFormatter.parseAmountGuardar(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
 
 		} else {
 
-			PrecioDolar = monedaFormatter.parseAmount(this.ventanaIngresoDePago.getTextPrecioDolar().getText());
+			PrecioPeso = monedaFormatter.parseAmount(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
 
 		}
 		
-		
-//		Double PrecioPeso = Double.parseDouble(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
-//		Double PrecioDolar = Double.parseDouble(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
+		if (monedaFormatter.tieneFormato(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText())) {
+
+			PrecioDolar = monedaFormatter.parseAmountGuardar(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
+
+		} else {
+
+			PrecioDolar = monedaFormatter.parseAmount(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
+
+		}
+
 
 		RegistroPresupuestoDTO nuevoPresupuesto = new RegistroPresupuestoDTO(ELS, InformeCliente, RemitoCLiente,
 				PrecioPeso, PrecioDolar, NombreEquipo, Modelo, Marca, Serie, ClienteCliente, aviso, Sucursal, Cliente,

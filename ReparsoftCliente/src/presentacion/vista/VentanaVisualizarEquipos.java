@@ -1003,7 +1003,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textPresupuesto.setFont(new Font("Cambria", Font.BOLD, 12));
 		textPresupuesto.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
 		textPresupuesto.setBackground(SystemColor.inactiveCaption);
-		textPresupuesto.setBounds(119, 7, 70, 15);
+		textPresupuesto.setBounds(100, 7, 97, 15);
 		panel_MontoPresupuesto.add(textPresupuesto);
 		textPresupuesto.setColumns(10);
 
@@ -1021,7 +1021,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textPago.setFont(new Font("Cambria", Font.BOLD, 12));
 		textPago.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
 		textPago.setBackground(SystemColor.inactiveCaption);
-		textPago.setBounds(119, 28, 70, 15);
+		textPago.setBounds(100, 28, 97, 15);
 		panel_MontoPresupuesto.add(textPago);
 		textPago.setColumns(10);
 
