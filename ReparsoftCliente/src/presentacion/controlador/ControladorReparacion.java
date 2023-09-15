@@ -2250,7 +2250,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private int IDUsuarioPorNombre(String nombreTecnico) {
 
+		
+		
 		return agenda.idUsuarioporNombre(nombreTecnico);
+		
+	
 	}
 
 	private void llenarComboClienteV() {
@@ -2487,7 +2491,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		int idCliente = IDClientePorNombre(Cliente);
 		int idSucursal = IDSucursalPorNombre(Sucursal, idCliente);
+		
+		
 		int idUsuario = IDUsuarioPorNombre(nombreTecnico);
+		
 
 		String estadoFisico = this.ventanaVisualizarEquipos.getTextEstadoFisico().getText();
 		String estadoTecnico = this.ventanaVisualizarEquipos.getTextEstadoTecnico().getText();
@@ -2562,7 +2569,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, fechaentradavisual, fechareparacionvisual, falla,
 				solucion, informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo,
 				Cliente, Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
-				idCliente, idSucursal, fechafabrvisual, idUsuario, enviado, presupuesto, pago, presupuestoGenerado,
+				idCliente, idSucursal, fechafabrvisual, idUsuario,nombreTecnico, enviado, presupuesto, pago, presupuestoGenerado,
 				avisoEnviado, presupuestoEnviado, OrdenDeCompra);
 
 		return reparacionAeditar;

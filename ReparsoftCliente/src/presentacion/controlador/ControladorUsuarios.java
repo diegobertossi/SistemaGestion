@@ -37,6 +37,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import dto.PermisoDTO;
+import dto.ReparacionDTO;
 import dto.RolDTO;
 import dto.UsuarioDTO;
 import modelo.Agenda;
@@ -59,7 +60,9 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	private UsuarioDTO user;
 	private RolDTO rolElegido;
 	private UsuarioDTO usuarioElegido;
-
+	
+	
+	
 //	private final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 //			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[com]{2,})$";
 
@@ -331,7 +334,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						int[] filas_seleccionadas = this.ventanaRolesUsuarios.getTablaUsuarios().getSelectedRows();
 						for (int fila : filas_seleccionadas) {
 							agenda.borrarUsuario(usuarios_en_tabla.get(fila));
-						}
+
+									}
 
 						llenarTablaUsuarios();
 						this.ventanaRolesUsuarios.getTxtNombreUsuario().setText("");
@@ -382,6 +386,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		}
 
 	}
+
 
 	private void borrarPermiso() {
 
