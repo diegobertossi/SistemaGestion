@@ -158,7 +158,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		this.ventanaPresupuestos.getBtnenviarInformesSiemens().addActionListener(this);
 		this.ventanaPresupuestos.getBtnEnviarPresupuestos().addActionListener(this);
 		this.ventanaPresupuestos.getBtningresarPago().addActionListener(this);
-		this.ventanaPresupuestos.getBtnListadoEquipos().addActionListener(this);
 		this.ventanaPresupuestos.getBtnmarcarAceptaciones().addActionListener(this);
 		this.ventanaPresupuestos.getBtnPresupuestoPorELS().addActionListener(this);
 

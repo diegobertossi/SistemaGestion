@@ -1,3 +1,4 @@
+
 Drop DATABASE if exists `ordenesbrc`;
 
 CREATE DATABASE IF NOT EXISTS `ordenesbrc`;

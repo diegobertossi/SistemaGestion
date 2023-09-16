@@ -1559,6 +1559,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	public void agregarListenersVentanaVisualizarEquiposListado() {
 
 		agregarListenersVentanaVisualizarEquipos();
+		
 		this.ventanaVisualizarEquipos.getBotonAnterior().removeActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonSiguiente().removeActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonUltimo().removeActionListener(this);
@@ -1695,6 +1696,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos = null;
 		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
 		cerraVentanaVisualizarEquipo();
+		monedaFormatter = new MonedaFormatter();
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
@@ -1759,9 +1761,15 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		llenarTablaRepuestos();
 		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
+		
+		String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
+		String pagoPeso = monedaFormatter.formatPeso(reparacion.getPago().toString());
 
-		ventanaVisualizarEquipos.setTextPresupuesto(reparacion.getPrecioPeso().toString());
-		ventanaVisualizarEquipos.setTextPago(reparacion.getPago().toString());
+		ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);
+		ventanaVisualizarEquipos.setTextPago(pagoPeso);
+//
+//		ventanaVisualizarEquipos.setTextPresupuesto(reparacion.getPrecioPeso().toString());
+//		ventanaVisualizarEquipos.setTextPago(reparacion.getPago().toString());
 
 		ventanaVisualizarEquipos.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
 		ventanaVisualizarEquipos.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
@@ -1780,6 +1788,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
 		cerraVentanaVisualizarEquipo();
 
+		monedaFormatter = new MonedaFormatter();
+		
 		controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
 
 		SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
@@ -1847,9 +1857,15 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		llenarTablaRepuestos();
 		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
+		
+		String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
+		String pagoPeso = monedaFormatter.formatPeso(reparacion.getPago().toString());
 
-		ventanaVisualizarEquipos.setTextPresupuesto(reparacion.getPrecioPeso().toString());
-		ventanaVisualizarEquipos.setTextPago(reparacion.getPago().toString());
+		ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);
+		ventanaVisualizarEquipos.setTextPago(pagoPeso);
+//
+//		ventanaVisualizarEquipos.setTextPresupuesto(reparacion.getPrecioPeso().toString());
+//		ventanaVisualizarEquipos.setTextPago(reparacion.getPago().toString());
 
 		ventanaVisualizarEquipos.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
 		ventanaVisualizarEquipos.setChckPDFEnviado(reparacion.getPresupuestoEnviado());

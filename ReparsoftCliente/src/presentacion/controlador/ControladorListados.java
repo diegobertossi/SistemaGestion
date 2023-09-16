@@ -56,6 +56,7 @@ import modelo.Agenda;
 import modelo.Permisos;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import presentacion.vista.VistaPrincipal;
+import tiposPropios.MonedaFormatter;
 import presentacion.vista.VentanaAgregarCliente;
 import presentacion.vista.VentanaClientes;
 import presentacion.vista.VentanaEquipos;
@@ -103,7 +104,7 @@ public class ControladorListados
 	private TableRowSorter<DefaultTableModel> sorter;
 
 	private List<ReparacionDTO> Reparaciones_en_tabla;
-
+	
 	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
 

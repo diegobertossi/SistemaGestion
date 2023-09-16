@@ -17,7 +17,6 @@ public class VentanaPresupuestos extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JButton btnListadoEquipos;
 	private JButton btnEnviarPresupuestos;
 	private JButton btnPresupuestoPorELS;
 	
@@ -35,7 +34,7 @@ public class VentanaPresupuestos extends JFrame
 		this.controlador = controlador;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 494, 213);
+		setBounds(100, 100, 504, 213);
 
 		this.setLocationRelativeTo(null);
 
@@ -45,49 +44,35 @@ public class VentanaPresupuestos extends JFrame
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-				
-		btnListadoEquipos = new JButton("<html><center>LISTADO DE EQUIPOS</html>");
-		btnListadoEquipos.setBounds(10, 29, 151, 60);
-		contentPane.add(btnListadoEquipos);
-		btnListadoEquipos.setFont(new Font("Cambria", Font.BOLD, 14));
-		
 			
 			btnPresupuestoPorELS = new JButton("<html><center>PRESUPUESTO POR ELS</html>");
-			btnPresupuestoPorELS.setBounds(171, 29, 151, 60);
+			btnPresupuestoPorELS.setBounds(8, 29, 151, 60);
 			contentPane.add(btnPresupuestoPorELS);
 			btnPresupuestoPorELS.setFont(new Font("Cambria", Font.BOLD, 14));
 			
 			btnEnviarPresupuestos = new JButton("<html><center>ENVIAR PRESUPUESTOS</html>");
-			btnEnviarPresupuestos.setBounds(332, 29, 151, 60);
+			btnEnviarPresupuestos.setBounds(62, 107, 151, 60);
 			contentPane.add(btnEnviarPresupuestos);
 			btnEnviarPresupuestos.setFont(new Font("Cambria", Font.BOLD, 14));
 			
 			btningresarPago = new JButton("<html><center>INGRESAR PAGOS</html>");
 			btningresarPago.setFont(new Font("Cambria", Font.BOLD, 14));
-			btningresarPago.setBounds(10, 107, 151, 60);
+			btningresarPago.setBounds(326, 29, 151, 60);
 			contentPane.add(btningresarPago);
 			
 			btnmarcarAceptaciones = new JButton("<html><center>MARCAR ACEPTACIONES</html>");
 			btnmarcarAceptaciones.setFont(new Font("Cambria", Font.BOLD, 14));
-			btnmarcarAceptaciones.setBounds(171, 107, 151, 60);
+			btnmarcarAceptaciones.setBounds(167, 29, 151, 60);
 			contentPane.add(btnmarcarAceptaciones);
 			
 			btnenviarInformesSiemens = new JButton("<html><center>ENVIAR INFORMES SIEMENS</html>");
 			btnenviarInformesSiemens.setFont(new Font("Cambria", Font.BOLD, 14));
-			btnenviarInformesSiemens.setBounds(332, 107, 151, 60);
+			btnenviarInformesSiemens.setBounds(275, 107, 151, 60);
 			contentPane.add(btnenviarInformesSiemens);
 
 		
 		
 		this.setVisible(true);
-	}
-
-	public JButton getBtnListadoEquipos() {
-		return btnListadoEquipos;
-	}
-
-	public void setBtnListadoEquipos(JButton btnListadoEquipos) {
-		this.btnListadoEquipos = btnListadoEquipos;
 	}
 
 	public JButton getBtnEnviarPresupuestos() {
