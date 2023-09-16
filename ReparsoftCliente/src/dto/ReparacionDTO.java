@@ -346,6 +346,17 @@ public class ReparacionDTO {
 		this.EstadoComercial = estadoComercial;
 
 	}
+	
+	public ReparacionDTO(int ELS, int idUsuarioBorrado) {
+
+		this.ELS = ELS;
+		this.idUsuario = idUsuarioBorrado;
+
+		// TODO Auto-generated constructor stub
+	}
+
+	
+	
 
 	public String getNombreUsuario() {
 		return NombreUsuario;

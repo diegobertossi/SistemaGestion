@@ -2818,6 +2818,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
+	
+	
+	
+	
+	
+	
+	
 	public void cerraVentanaVisualizarEquipo() {
 
 		this.ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {

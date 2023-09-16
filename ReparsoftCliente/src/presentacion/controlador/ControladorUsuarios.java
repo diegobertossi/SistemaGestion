@@ -60,6 +60,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	private UsuarioDTO user;
 	private RolDTO rolElegido;
 	private UsuarioDTO usuarioElegido;
+	private List<ReparacionDTO> Reparaciones;
+	
 	
 	
 	
@@ -333,7 +335,12 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 						int[] filas_seleccionadas = this.ventanaRolesUsuarios.getTablaUsuarios().getSelectedRows();
 						for (int fila : filas_seleccionadas) {
+							
+							int idTecnico = usuarios_en_tabla.get(fila).getIdUsuario();
+							
+							editarReparacionesSinTecnico(idTecnico);
 							agenda.borrarUsuario(usuarios_en_tabla.get(fila));
+							
 
 									}
 
@@ -387,6 +394,32 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 	}
 
+
+	private void editarReparacionesSinTecnico(int idTecnico) {
+		
+		
+		this.Reparaciones = (List<ReparacionDTO>) agenda.obtenerReparacion();
+
+		for (int i = 0; i < this.Reparaciones.size(); i++) {
+			
+			if (Reparaciones.get(i).getidUsuario() == idTecnico) {
+				
+				int ELS = Reparaciones.get(i).getELS();
+				int idUsuarioBorrado = 1;
+				
+				ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS,idUsuarioBorrado);
+				this.agenda.editarReparacionR(reparacionAeditar);
+
+				
+			}
+			
+			
+		}
+
+		
+		
+		
+	}
 
 	private void borrarPermiso() {
 
