@@ -27,7 +27,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	private static final String readallListadoMarcarAceptaciones = "SELECT  reparaciones.ELS, Equipos.Aviso, Cliente.nombre, Sucursal.NombreSucursal, Equipos.Nombre, Equipos.Modelo, Equipos.Marca, Equipos.NumeroDeSerie, reparaciones.EstadoTecnico, reparaciones.EstadoComercial"
 			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
-			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente)) And ((Sucursal.IdSucursal)=Equipos.idSucursal) and reparaciones.EstadoComercial = 'A la Espera de Aceptación' and PresupuestoEnviado = true and usuario.nombre != '' ORDER BY reparaciones.ELS ASC";
+			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente)) And ((Sucursal.IdSucursal)=Equipos.idSucursal) and reparaciones.EstadoComercial = 'A la Espera de Aceptación' and PresupuestoEnviado = true and ((usuario.IdUsuario)=reparaciones.idUsuario)  ORDER BY reparaciones.ELS ASC";
 
 	private static final String readall = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
 			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente, reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado,reparaciones.WordGenerado,reparaciones.WordEnviado, reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.Pago, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca, DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, reparaciones.Enviado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago"
@@ -58,15 +58,11 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 //			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario ON reparaciones.idUsuario=usuario.IdUsuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
 //			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente) And ((usuario.IdUsuario)=reparaciones.idUsuario)) and ((Sucursal.IdSucursal)=Equipos.idSucursal) and ELS = ?";
 
-	
-private static final String readallxELS = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
+	private static final String readallxELS = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
 			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado,reparaciones.WordGenerado,reparaciones.WordEnviado, reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.NombreUsuario,reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, reparaciones.Enviado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago"
 			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
 			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente)) and ((Sucursal.IdSucursal)=Equipos.idSucursal) And ((usuario.IdUsuario)=reparaciones.idUsuario)  and ELS = ?";
 
-	
-	
-	
 	private static final String readallxIDClienteIDSucursal = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
 			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente,reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado, reparaciones.WordGenerado,reparaciones.WordEnviado,reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, reparaciones.Enviado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago"
 			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
@@ -454,11 +450,10 @@ private static final String readallxELS = "SELECT Cliente.idCliente, Cliente.nom
 						+ reparacion_a_editar.getFecha_Entrada() + "' , " + "FechadeDiagnostico = '"
 						+ reparacion_a_editar.getFechadereparacion() + "' ," + "Falla = '"
 						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
-						+ "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario() 
-						+ "' ," + "NombreUsuario = '" + reparacion_a_editar.getNombreUsuario() 
-						+ "' ," + "Enviado = '" + enviado
-						+ "' ," + "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ,"
-						+ "EstadoFisico = '" + reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
+						+ "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario() + "' ," + "NombreUsuario = '"
+						+ reparacion_a_editar.getNombreUsuario() + "' ," + "Enviado = '" + enviado + "' ,"
+						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "EstadoFisico = '"
+						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
 						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
 						+ "' ," + "PrecioPeso = '" + reparacion_a_editar.getPrecioPeso() + "' ," + "EstadoComercial = '"
 						+ reparacion_a_editar.getEstadoComercial() + "' ," + "RemitoCliente = '"
@@ -478,7 +473,8 @@ private static final String readallxELS = "SELECT Cliente.idCliente, Cliente.nom
 						+ reparacion_a_editar.getFechadereparacion() + "' ," + "Falla = '"
 						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
 						+ "' ," + "OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ," + "idUsuario = '"
-						+ reparacion_a_editar.getidUsuario() + "' ," + "Enviado = '" + enviado + "' ,"
+						+ reparacion_a_editar.getidUsuario() + "' ," + "NombreUsuario = '"
+						+ reparacion_a_editar.getNombreUsuario() + "' ," + "Enviado = '" + enviado + "' ,"
 						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "PrecioPeso = '"
 						+ reparacion_a_editar.getPrecioPeso() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
 						+ "' ," + "PresupuestoGenerado = '" + PresupGenerado + "' ," + "EstadoFisico = '"
@@ -519,9 +515,9 @@ private static final String readallxELS = "SELECT Cliente.idCliente, Cliente.nom
 						+ reparacion_a_editar.getFecha_Entrada() + "' ," + "FechadeDiagnostico = null ," + "Falla = '"
 						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
 						+ "' ," + "Enviado = '" + enviado + "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario()
-						+ "' ," + "NombreUsuario = '" + reparacion_a_editar.getNombreUsuario() 
-						+ "' ," + "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ,"
-						+ "EstadoFisico = '" + reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
+						+ "' ," + "NombreUsuario = '" + reparacion_a_editar.getNombreUsuario() + "' ,"
+						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "EstadoFisico = '"
+						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
 						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
 						+ reparacion_a_editar.getEstadoComercial() + "' ," + "RemitoCliente = '"
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = null " + "WHERE ELS = "
@@ -550,31 +546,15 @@ private static final String readallxELS = "SELECT Cliente.idCliente, Cliente.nom
 					System.out.println("4");
 				}
 
-				
-				
-				else if (reparacion_a_editar.getPago() == null && reparacion_a_editar.getidUsuario() != 1) {
+				else if (reparacion_a_editar.getidUsuario() == 1) {
 
-					statement = conexion.getSQLConexion()
-							.prepareStatement("UPDATE reparaciones SET EstadoComercial = '"
-									+ reparacion_a_editar.getEstadoComercial() + "'" + "WHERE ELS = "
-									+ reparacion_a_editar.getELS() + "");
-
-					System.out.println("4.1");
-
-				}
-				
-				
-				else if (reparacion_a_editar.getidUsuario() ==1) {
-
-					statement = conexion.getSQLConexion()
-							.prepareStatement("UPDATE reparaciones SET idUsuario = '"
-									+ reparacion_a_editar.getidUsuario() + "'" + "WHERE ELS = "
-									+ reparacion_a_editar.getELS() + "");
+					statement = conexion.getSQLConexion().prepareStatement(
+							"UPDATE reparaciones SET idUsuario = '" + reparacion_a_editar.getidUsuario() + "'"
+									+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
 
 					System.out.println("4.1.1");
 
 				}
-
 
 				else {
 
@@ -589,8 +569,24 @@ private static final String readallxELS = "SELECT Cliente.idCliente, Cliente.nom
 				}
 			}
 
+			else if (reparacion_a_editar.getFechAceptacion() != null && reparacion_a_editar.getEstadoComercial() != null) {
+
+				statement = conexion.getSQLConexion().prepareStatement(
+						
+						
+						"UPDATE reparaciones SET EstadoComercial = '" + reparacion_a_editar.getEstadoComercial() + "' ,"
+								+ "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
+								+ reparacion_a_editar.getELS() + "");
+
+				System.out.println("8");
+				System.out.println( reparacion_a_editar.getFechAceptacion());
+				
+			}
+			
+			
 			else if (reparacion_a_editar.getAgregadoaremito() == true && reparacion_a_editar.getEnviado() == null
 					&& reparacion_a_editar.getidRemito() != 0) {
+
 				statement = conexion.getSQLConexion()
 						.prepareStatement("UPDATE reparaciones SET Agregadoaremito = '" + 1 + "' ," + "idRemito = '"
 								+ reparacion_a_editar.getidRemito() + "'" + "WHERE ELS = "
@@ -622,6 +618,8 @@ private static final String readallxELS = "SELECT Cliente.idCliente, Cliente.nom
 				System.out.println("7");
 
 			}
+
+			
 
 			if (statement.executeUpdate() > 0) // Si se ejecut� devuelvo true
 

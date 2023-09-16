@@ -706,7 +706,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_3.setLayout(null);
 
 		comboTecnico = new JComboBox();
-		comboTecnico.setBounds(147, 16, 139, 20);
+		comboTecnico.setBounds(81, 16, 139, 20);
 		comboTecnico.setFont(new Font("Cambria", Font.PLAIN, 14));
 		panel_3.add(comboTecnico);
 

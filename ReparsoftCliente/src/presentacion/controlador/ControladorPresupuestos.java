@@ -26,6 +26,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -1666,11 +1667,19 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	private ReparacionDTO TomarDatosVentanaMarcarAceptaciones(int i) {
 
+		
 		int ELS = Integer.parseInt(this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 0).toString());
 		String estadoComercial;
+		String fechaAceptacion;
+		boolean agregadoARemito = false;
+		
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		fechaAceptacion = dtf.format(LocalDateTime.now());
+				
 		estadoComercial = this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 7).toString();
 
-		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, estadoComercial);
+		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS,fechaAceptacion, estadoComercial );
 
 		return reparacionAeditar;
 
