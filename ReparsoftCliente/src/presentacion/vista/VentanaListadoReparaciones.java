@@ -527,7 +527,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		tblReparaciones_1.getTableHeader().setReorderingAllowed(false);
 
-		int[] anchos = { 60, 80, 150, 150, 200, 100, 200, 100, 100, 80, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,100,100};
+		int[] anchos = { 60, 80, 150, 150, 200, 100, 200, 100, 100, 80, 100, 120, 150, 100, 100, 100, 100, 100, 100, 100,100,100};
 
 		for (int i = 0; i < tblReparaciones_1.getColumnCount(); i++) {
 

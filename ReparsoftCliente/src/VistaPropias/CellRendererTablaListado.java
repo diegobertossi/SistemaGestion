@@ -28,14 +28,15 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-
 //import com.sun.xml.internal.ws.assembler.jaxws.HandlerTubeFactory;
 
 import presentacion.vista.VentanaListadoReparaciones;
+import tiposPropios.MonedaFormatter;
 
-public class CellRendererTablaListado extends DefaultTableCellRenderer implements TableCellRenderer{
+public class CellRendererTablaListado extends DefaultTableCellRenderer implements TableCellRenderer {
 
 	private VentanaListadoReparaciones ventanaListadoReparaciones;
+	private MonedaFormatter monedaFormatter;
 
 	private JCheckBox check = new JCheckBox();
 	Font fuenteELS = new Font("Cambria", Font.BOLD, 14);
@@ -64,9 +65,17 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 		Color letra = new Color(0, 0, 0);
 		Color letraSeleccionado = new Color(255, 255, 255);
 
+
+		if (column == 0 || column == 1 || column == 8 || column == 9 || column == 11 || column == 12 || column == 13
+				|| column == 14 || column == 17 || column == 18 || column == 19 || column == 20 || column == 21) {
+
+			setHorizontalAlignment(SwingConstants.CENTER);
+
+		}
+
 		if (column == 17 || column == 18) {
 			Boolean bol = Boolean.valueOf(String.valueOf(value));
-			setHorizontalAlignment(SwingConstants.CENTER);
+
 			check = new JCheckBox();
 			check.setHorizontalAlignment(JLabel.CENTER);
 			if (oddRow)
@@ -76,6 +85,22 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 
 			check.setSelected(bol); // valor de celda
 			return check;
+
+		}
+
+		if (column == 19 || column == 21) {
+
+			monedaFormatter = new MonedaFormatter();
+			String valor = monedaFormatter.formatPeso(value.toString());
+			setText((value == null) ? "" : valor);
+
+		}
+
+		if (column == 20) {
+
+			monedaFormatter = new MonedaFormatter();
+			String valor = monedaFormatter.formatDolar(value.toString());
+			setText((value == null) ? "" : valor);
 
 		}
 
@@ -90,12 +115,10 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 		}
 
 		if (column == 0) {
-			
-			setHorizontalAlignment(SwingConstants.CENTER);
+
 			setFont(fuenteELS);
 			setForeground(Color.blue);
-			
-		
+
 		}
 
 		if ((column == 1 || column == 9) && (value != null && value != "")) {
@@ -116,8 +139,5 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 
 		return this;
 	}
-
-
-
 
 }

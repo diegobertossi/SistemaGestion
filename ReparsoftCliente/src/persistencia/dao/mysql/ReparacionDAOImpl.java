@@ -578,8 +578,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 								+ "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
 								+ reparacion_a_editar.getELS() + "");
 
-				System.out.println("8");
-				System.out.println( reparacion_a_editar.getFechAceptacion());
+				System.out.println("4.9");
+		
 				
 			}
 			

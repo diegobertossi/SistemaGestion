@@ -105,6 +105,8 @@ public class ControladorListados
 
 	private List<ReparacionDTO> Reparaciones_en_tabla;
 	
+	
+	
 	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
 
@@ -114,6 +116,7 @@ public class ControladorListados
 		this.modelo = modelo;
 
 		agregarListenerVentanaListados();
+	
 
 		cargarTablaListadoReparaciones();
 
@@ -387,6 +390,16 @@ public class ControladorListados
 					this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
 					this.Reparaciones_en_tabla.get(i).getPrecioDolar(), this.Reparaciones_en_tabla.get(i).getPago(), };
 			this.ventanaListadoReparaciones.getModelReparaciones().addRow(fila);
+			
+			
+//			String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
+//			String pagoPeso = monedaFormatter.formatPeso(reparacion.getPago().toString());
+//
+//			ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);
+//			ventanaVisualizarEquipos.setTextPago(pagoPeso);
+
+			
+			
 		}
 
 		ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTblReparaciones());

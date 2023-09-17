@@ -865,7 +865,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			for (int i = 0; i < filas; i++) {
 
 				estadoComercial = this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 7).toString();
-				if (estadoComercial != "A la Espera de Aceptación") {
+				if (estadoComercial.compareTo("A la Espera de Aceptación") > 0 ) {
+					
+					//System.out.println(estadoComercial);
 
 					ReparacionDTO reparacionAeditar = TomarDatosVentanaMarcarAceptaciones(i);
 					this.agenda.editarReparacionR(reparacionAeditar);
@@ -1671,10 +1673,12 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		int ELS = Integer.parseInt(this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 0).toString());
 		String estadoComercial;
 		String fechaAceptacion;
-		boolean agregadoARemito = false;
+	
 		
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		
+		
 		fechaAceptacion = dtf.format(LocalDateTime.now());
 				
 		estadoComercial = this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 7).toString();
