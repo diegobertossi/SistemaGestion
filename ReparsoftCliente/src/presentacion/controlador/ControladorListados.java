@@ -412,7 +412,7 @@ public class ControladorListados
 
 		this.ventanaListadoReparaciones.getBtnFiltrar().addActionListener(this);
 		this.ventanaListadoReparaciones.getBtnMostrarTodo().addActionListener(this);
-		this.ventanaListadoReparaciones.getBtnEstadisticas().addActionListener(this);
+		//this.ventanaListadoReparaciones.getBtnEstadisticas().addActionListener(this);
 
 		this.ventanaListadoReparaciones.getComboFiltroCliente().addActionListener(this);
 		this.ventanaListadoReparaciones.getComboFiltroMarca().addActionListener(this);
@@ -454,7 +454,7 @@ public class ControladorListados
 		this.ventanaListadoReparaciones.getRadioButtonModelo().addItemListener(this);
 		this.ventanaListadoReparaciones.getRadioButtonELS().addItemListener(this);
 		this.ventanaListadoReparaciones.getRadioButtonTecnico().addItemListener(this);
-		this.ventanaListadoReparaciones.getBtnMax().addMouseListener(this);
+		//this.ventanaListadoReparaciones.getBtnMax().addMouseListener(this);
 		this.ventanaListadoReparaciones.getChckbxPresupuestoEnviado().addMouseListener(this);
 		this.ventanaListadoReparaciones.getChckbxPresupuestoGenerado().addMouseListener(this);
 		this.ventanaListadoReparaciones.getRadioButtonPresupEnviado().addItemListener(this);
@@ -641,24 +641,23 @@ public class ControladorListados
 		}
 
 		if (arg0.getSource() == this.ventanaListadoReparaciones.getBtnMax()) {
+		    int state = ventanaListadoReparaciones.getExtendedState();
 
-			if (clickMax % 2 != 0) {
-
-				ventanaListadoReparaciones.setExtendedState(max);
-				this.ventanaListadoReparaciones.getBtnMax()
-						.setIcon(new ImageIcon(this.getClass().getResource("/minimizar.png")));
-				ventanaListadoReparaciones.setVisible(true);
-
-			} else {
-
-				ventanaListadoReparaciones.setExtendedState(min);
-				this.ventanaListadoReparaciones.getBtnMax()
-						.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
-				ventanaListadoReparaciones.setVisible(true);
-
-			}
-			clickMax++;
+		    if ((state & JFrame.MAXIMIZED_BOTH) == 0) {
+		        // La ventana no está maximizada, maximízala
+		        ventanaListadoReparaciones.setExtendedState(state | JFrame.MAXIMIZED_BOTH);
+		        this.ventanaListadoReparaciones.getBtnMax().setIcon(new ImageIcon(this.getClass().getResource("/minimizar.png")));
+		    } else {
+		        // La ventana ya está maximizada, restaura el tamaño original
+		        ventanaListadoReparaciones.setExtendedState(state & ~JFrame.MAXIMIZED_BOTH);
+		        this.ventanaListadoReparaciones.getBtnMax().setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
+		    }
+		    
+		    // Forzar una actualización completa del contenido de la ventana
+		    ventanaListadoReparaciones.repaint();
 		}
+
+
 
 	}
 
@@ -866,25 +865,25 @@ public class ControladorListados
 
 		}
 
-		if (e.getSource() == this.ventanaListadoReparaciones.getBtnMax()) {
-
-			if (clickMax % 2 != 0) {
-
-				ventanaListadoReparaciones.setExtendedState(max);
-				this.ventanaListadoReparaciones.getBtnMax()
-						.setIcon(new ImageIcon(this.getClass().getResource("/minimizar.png")));
-				ventanaListadoReparaciones.setVisible(true);
-
-			} else {
-
-				ventanaListadoReparaciones.setExtendedState(min);
-				this.ventanaListadoReparaciones.getBtnMax()
-						.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
-				ventanaListadoReparaciones.setVisible(true);
-
-			}
-			clickMax++;
-		}
+//		if (e.getSource() == this.ventanaListadoReparaciones.getBtnMax()) {
+//
+//			if (clickMax % 2 != 0) {
+//
+//				ventanaListadoReparaciones.setExtendedState(max);
+//				this.ventanaListadoReparaciones.getBtnMax()
+//						.setIcon(new ImageIcon(this.getClass().getResource("/minimizar.png")));
+//				ventanaListadoReparaciones.setVisible(true);
+//
+//			} else {
+//
+//				ventanaListadoReparaciones.setExtendedState(min);
+//				this.ventanaListadoReparaciones.getBtnMax()
+//						.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
+//				ventanaListadoReparaciones.setVisible(true);
+//
+//			}
+//			clickMax++;
+//		}
 	}
 
 }
