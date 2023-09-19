@@ -412,7 +412,7 @@ public class ControladorListados
 
 		this.ventanaListadoReparaciones.getBtnFiltrar().addActionListener(this);
 		this.ventanaListadoReparaciones.getBtnMostrarTodo().addActionListener(this);
-		//this.ventanaListadoReparaciones.getBtnEstadisticas().addActionListener(this);
+		this.ventanaListadoReparaciones.getBtnEstadisticas().addActionListener(this);
 
 		this.ventanaListadoReparaciones.getComboFiltroCliente().addActionListener(this);
 		this.ventanaListadoReparaciones.getComboFiltroMarca().addActionListener(this);
@@ -454,7 +454,7 @@ public class ControladorListados
 		this.ventanaListadoReparaciones.getRadioButtonModelo().addItemListener(this);
 		this.ventanaListadoReparaciones.getRadioButtonELS().addItemListener(this);
 		this.ventanaListadoReparaciones.getRadioButtonTecnico().addItemListener(this);
-		//this.ventanaListadoReparaciones.getBtnMax().addMouseListener(this);
+		this.ventanaListadoReparaciones.getBtnMax().addMouseListener(this);
 		this.ventanaListadoReparaciones.getChckbxPresupuestoEnviado().addMouseListener(this);
 		this.ventanaListadoReparaciones.getChckbxPresupuestoGenerado().addMouseListener(this);
 		this.ventanaListadoReparaciones.getRadioButtonPresupEnviado().addItemListener(this);

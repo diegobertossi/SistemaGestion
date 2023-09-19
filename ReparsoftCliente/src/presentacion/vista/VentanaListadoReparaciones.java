@@ -57,14 +57,13 @@ public class VentanaListadoReparaciones extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	//private JTable tblReparaciones;
+	// private JTable tblReparaciones;
 	private JTable tblReparaciones_1;
 	private DefaultTableModel modelReparaciones;
-	
+
 	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
 			"N° SERIE", "AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
 			"UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO" };
-
 
 	private JButton btnFiltrar;
 	private JButton btnMostrarTodo;
@@ -76,7 +75,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 	private ControladorListados controlador;
 	private ControladorReparacion controladorReparacion;
-	
+
 	private JComboBox comboFiltroMarca;
 	private JComboBox comboFiltroCliente;
 	private JComboBox comboFiltroSucursal;
@@ -135,7 +134,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		setLocation((pantalla.width - ventana.width) / 2, (pantalla.height - ventana.height) / 2);
 	}
 
-	public VentanaListadoReparaciones(ControladorListados controlador ) {
+	public VentanaListadoReparaciones(ControladorListados controlador) {
 
 		super();
 		setUndecorated(true);
@@ -149,117 +148,35 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		getContentPane().setLayout(null);
 
-//		contentPane = new JPanel();
-//		contentPane.setPreferredSize(new Dimension(0, 0));
-//		contentPane.setAlignmentY(Component.CENTER_ALIGNMENT);
-//		contentPane.setAlignmentX(Component.CENTER_ALIGNMENT);
-//		contentPane.setBorder(null);
-//		setContentPane(contentPane);
-//		contentPane.setLayout(null);
-//		DimContentPane = contentPane.getSize();
-
 		panelPrincipal = new JPanel(new BorderLayout());
-		//panel = new JPanel();
 		panelPrincipal.setPreferredSize(new Dimension(0, 0));
 		panelPrincipal.setBounds(10, 0, 1054, 561);
 		panelPrincipal.setBackground(SystemColor.inactiveCaption);
-		panelPrincipal.setAlignmentY(Component.CENTER_ALIGNMENT);
-		panelPrincipal.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 		setContentPane(panelPrincipal);
-		//contentPane.add(panel);
-		//panelPrincipal.setLayout(null);
 		DimPanel = panelPrincipal.getSize();
 
-		scrollPane = new JScrollPane();
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		// scrollPane.setAutoscrolls(true);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(0, 227, 1054, 334);
-		panelPrincipal.add(scrollPane,BorderLayout.SOUTH);
+		JPanel panelSuperior = new JPanel();
+		panelPrincipal.add(panelSuperior, BorderLayout.NORTH);
+		panelSuperior.setLayout(new BorderLayout(0, 0));
 
-		DimScrollPane = scrollPane.getSize();
+		JLabel txtListadosDeEquipos = new JLabel("LISTADOS DE EQUIPOS");
+		txtListadosDeEquipos.setFont(new Font("Cambria", Font.BOLD, 22));
+		txtListadosDeEquipos.setBounds(35, 11, 253, 28);
+		panelSuperior.add(txtListadosDeEquipos, BorderLayout.WEST);
 
-		modelReparaciones = new DefaultTableModel(null, nombreColumnas);
-		tblReparaciones_1 = new JTable(modelReparaciones);
-
-		modelReparaciones = new DefaultTableModel(new Object[][] {},
-				new String[] { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "N° SERIE",
-						"AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
-						"UBIC. REM", "N° REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO" }) {
-
-			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
-					String.class, String.class, String.class, String.class, String.class, String.class, String.class,
-					String.class, String.class, String.class, String.class, String.class, Boolean.class,
-					Boolean.class, double.class, double.class, double.class   };
-
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-
-			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false,
-					false, false, false, false, false, false, false, false, false, false,false,false,false };
-
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-
-		};	
-		
-
-		try {
-			UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
-			//UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-			//UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			
-			e.printStackTrace();
-		}
-
-		Font fuenteCabecera = new Font("Cambria", Font.BOLD, 14);
-		Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 12);
-
-		tblReparaciones_1 = new JTable(modelReparaciones);
-		//tblReparaciones_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-		tblReparaciones_1.setFont(fuenteCeldas);
-
-		tblReparaciones_1.getTableHeader().setForeground(Color.BLACK);
-		tblReparaciones_1.getTableHeader().setFont(fuenteCabecera);
-		tblReparaciones_1.getTableHeader().setReorderingAllowed(false);
-
-		((DefaultTableCellRenderer) tblReparaciones_1.getTableHeader().getDefaultRenderer())
-				.setHorizontalAlignment(JLabel.CENTER);
-
-		tblReparaciones_1.setShowGrid(true);
-		tblReparaciones_1.setCellSelectionEnabled(true);
-
-		tblReparaciones_1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		tblReparaciones_1.doLayout();
-
-		scrollPane.setViewportView(tblReparaciones_1);
-
-		try {
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		tblReparaciones_1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		tblReparaciones_1.setAutoCreateColumnsFromModel(false);
-
-		DimTblReparaciones = tblReparaciones_1.getSize();
+		btnMax = new JButton("");
+		btnMax.setBounds(999, 14, 30, 25);
+		btnMax.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
+		panelSuperior.add(btnMax, BorderLayout.EAST);
 
 		panel_Filtros = new JPanel();
+		panelPrincipal.add(panel_Filtros, BorderLayout.CENTER);
+		// panel_Filtros.setLayout(new BorderLayout(0, 0));
 		panel_Filtros.setBackground(SystemColor.inactiveCaption);
 		panel_Filtros.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel_Filtros.setBounds(35, 50, 994, 134);
-		panelPrincipal.add(panel_Filtros);
+//		panelPrincipal.add(panel_Filtros);
 		panel_Filtros.setLayout(null);
 
 		JLabel lblCliente = new JLabel("CLIENTE:");
@@ -478,9 +395,9 @@ public class VentanaListadoReparaciones extends JFrame {
 		panel_Filtros.add(comboFiltroELS);
 
 		JLabel lblEls = new JLabel("ELS:");
-		lblEls.setFont(new Font("Cambria", Font.BOLD, 12));
 		lblEls.setBounds(6, 102, 60, 14);
 		panel_Filtros.add(lblEls);
+		lblEls.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		lblTcnico = new JLabel("T\u00C9CNICO:");
 		lblTcnico.setFont(new Font("Cambria", Font.BOLD, 12));
@@ -498,38 +415,124 @@ public class VentanaListadoReparaciones extends JFrame {
 		radioButtonTecnico.setBounds(467, 100, 21, 20);
 		panel_Filtros.add(radioButtonTecnico);
 
+//		JPanel panelBotones = new JPanel();
+//		panelPrincipal.add(panelBotones, BorderLayout.EAST);
+//		// panelBotones.setLayout(new BorderLayout(0, 0));
+//		panelBotones.setLayout(new BorderLayout(0, 0));
+
 		btnFiltrar = new JButton("FILTRAR");
 		btnFiltrar.setFont(new Font("Cambria", Font.BOLD, 10));
 		btnFiltrar.setBounds(178, 193, 113, 23);
-		panelPrincipal.add(btnFiltrar);
+		panel_Filtros.add(btnFiltrar, BorderLayout.WEST);
+		// panelBotones.add(btnFiltrar);
 
 		btnMostrarTodo = new JButton("MOSTRAR TODO");
 		btnMostrarTodo.setFont(new Font("Cambria", Font.BOLD, 10));
 		btnMostrarTodo.setBounds(469, 193, 113, 23);
-		panelPrincipal.add(btnMostrarTodo);
+		panel_Filtros.add(btnMostrarTodo, BorderLayout.CENTER);
+		// panelBotones.add(btnMostrarTodo);
 
-		txtListadosDeEquipos = new JTextField();
-		txtListadosDeEquipos.setEditable(false);
-		txtListadosDeEquipos.setBackground(SystemColor.inactiveCaption);
-		txtListadosDeEquipos.setFont(new Font("Cambria", Font.BOLD, 22));
-		txtListadosDeEquipos.setText("LISTADOS DE EQUIPOS");
-		txtListadosDeEquipos.setBounds(35, 11, 253, 28);
-		panelPrincipal.add(txtListadosDeEquipos);
-		txtListadosDeEquipos.setColumns(10);
-
-		btnMax = new JButton("");
-		btnMax.setBounds(999, 14, 30, 25);
-		btnMax.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
-		panelPrincipal.add(btnMax,null);
-		
 		btnEstadisticas = new JButton("ESTADÍSTICAS");
 		btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 10));
 		btnEstadisticas.setBounds(760, 193, 113, 23);
-		panelPrincipal.add(btnEstadisticas,null);
+		panel_Filtros.add(btnEstadisticas, BorderLayout.EAST);
+		// panelBotones.add(btnEstadisticas);
+
+
+
+		scrollPane = new JScrollPane(tblReparaciones_1);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setBounds(10, 350, 1054, 200);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		panel_Filtros.add(scrollPane);
+
+//		scrollPane = new JScrollPane();
+//		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+//		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+//		scrollPane.setBounds(10, 350, 1054, 200);
+//		panel_tabla.add(scrollPane);
+
+		DimScrollPane = scrollPane.getSize();
+
+		modelReparaciones = new DefaultTableModel(null, nombreColumnas);
+		tblReparaciones_1 = new JTable(modelReparaciones);
+
+		modelReparaciones = new DefaultTableModel(new Object[][] {},
+				new String[] { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "N° SERIE",
+						"AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
+						"UBIC. REM", "N° REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO" }) {
+
+			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
+					String.class, String.class, String.class, String.class, String.class, String.class, String.class,
+					String.class, String.class, String.class, String.class, String.class, Boolean.class, Boolean.class,
+					double.class, double.class, double.class };
+
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false,
+					false, false, false, false, false, false, false, false, false, false, false, false, false };
+
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+
+		};
+
+		try {
+			UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+
+			e.printStackTrace();
+		}
+
+		Font fuenteCabecera = new Font("Cambria", Font.BOLD, 14);
+		Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 12);
+
+		tblReparaciones_1 = new JTable(modelReparaciones);
+		// tblReparaciones_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		tblReparaciones_1.setFont(fuenteCeldas);
+
+		tblReparaciones_1.getTableHeader().setForeground(Color.BLACK);
+		tblReparaciones_1.getTableHeader().setFont(fuenteCabecera);
+		tblReparaciones_1.getTableHeader().setReorderingAllowed(false);
+
+		((DefaultTableCellRenderer) tblReparaciones_1.getTableHeader().getDefaultRenderer())
+				.setHorizontalAlignment(JLabel.CENTER);
+
+		tblReparaciones_1.setShowGrid(true);
+		tblReparaciones_1.setCellSelectionEnabled(true);
+
+		// tblReparaciones_1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		// tblReparaciones_1.doLayout();
+
+		scrollPane.setViewportView(tblReparaciones_1);
+
+		try {
+			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		tblReparaciones_1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tblReparaciones_1.setAutoCreateColumnsFromModel(false);
+
+		DimTblReparaciones = tblReparaciones_1.getSize();
 
 		tblReparaciones_1.getTableHeader().setReorderingAllowed(false);
 
-		int[] anchos = { 60, 80, 150, 150, 200, 100, 200, 100, 100, 80, 100, 120, 150, 100, 100, 100, 100, 100, 100, 100,100,100};
+		int[] anchos = { 60, 80, 150, 150, 200, 100, 200, 100, 100, 80, 100, 120, 150, 100, 100, 100, 100, 100, 100,
+				100, 100, 100 };
 
 		for (int i = 0; i < tblReparaciones_1.getColumnCount(); i++) {
 
@@ -569,9 +572,6 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.setVisible(true);
 
 	}
-	
-	
-	
 
 	public void setCellRender(JTable table) {
 		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
