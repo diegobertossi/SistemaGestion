@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
@@ -45,6 +46,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.JTextField;
@@ -98,7 +100,6 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JCheckBox chckbxPresupuestoEnviado;
 
 	private JLabel lblMarca;
-
 	private JLabel lblEquipo;
 	private JLabel lblModelo;
 	private JLabel lblAviso;
@@ -119,6 +120,8 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JRadioButton radioButtonTecnico;
 	private JTextField txtListadosDeEquipos;
 
+	
+	
 	Dimension DimScrollPane;
 	Dimension DimPanel;
 	Dimension DimContentPane;
@@ -137,8 +140,9 @@ public class VentanaListadoReparaciones extends JFrame {
 	public VentanaListadoReparaciones(ControladorListados controlador) {
 
 		super();
-		setUndecorated(true);
 		setResizable(false);
+		//setUndecorated(true);
+		//setResizable(false);
 		this.controlador = controlador;
 
 		this.this_windowOpened(null);
@@ -146,12 +150,37 @@ public class VentanaListadoReparaciones extends JFrame {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 
-		getContentPane().setLayout(null);
+		//getContentPane().setLayout(null);
 
-		panelPrincipal = new JPanel(new BorderLayout());
-		panelPrincipal.setPreferredSize(new Dimension(0, 0));
-		panelPrincipal.setBounds(10, 0, 1054, 561);
-		panelPrincipal.setBackground(SystemColor.inactiveCaption);
+		
+		JPanel panelsur = new JPanel();
+		getContentPane().add(panelsur, BorderLayout.SOUTH);
+		
+		JPanel panelcentro = new JPanel();
+		getContentPane().add(panelcentro, BorderLayout.CENTER);
+		
+		
+		JPanel panelizq = new JPanel();
+		getContentPane().add(panelizq, BorderLayout.WEST);
+		
+		JPanel panelder = new JPanel();
+		panelder.setAlignmentX(0.0f);
+		panelder.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Paleta de Filtros", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		getContentPane().add(panelder, BorderLayout.EAST);
+		
+		JPanel panelnorte = new JPanel();
+		panelnorte.setBorder(new LineBorder(Color.LIGHT_GRAY));
+		FlowLayout flowLayout = (FlowLayout) panelnorte.getLayout();
+		flowLayout.setVgap(0);
+		flowLayout.setHgap(0);
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		getContentPane().add(panelnorte, BorderLayout.NORTH);
+		
+		
+//		panelPrincipal = new JPanel(new BorderLayout());
+//		panelPrincipal.setPreferredSize(new Dimension(0, 0));
+//		panelPrincipal.setBounds(10, 0, 1054, 561);
+//		panelPrincipal.setBackground(SystemColor.inactiveCaption);
 
 		setContentPane(panelPrincipal);
 		DimPanel = panelPrincipal.getSize();
