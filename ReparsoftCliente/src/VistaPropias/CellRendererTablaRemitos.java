@@ -40,7 +40,7 @@ public class CellRendererTablaRemitos extends DefaultTableCellRenderer implement
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
 
-			// establecemos el fondo blanco o vacío
+			// establecemos el fondo blanco o vacï¿½o
 			setBackground(null);
 			// COnstructor de la clase DefaultTableCellRenderer
 			super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);

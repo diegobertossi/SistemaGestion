@@ -45,7 +45,7 @@ public class CellRenderer extends DefaultTableCellRenderer implements TableCellR
 			int row, int column) {			
 		
 
-		// establecemos el fondo blanco o vacío
+		// establecemos el fondo blanco o vacï¿½o
 		setBackground(null);
 		// COnstructor de la clase DefaultTableCellRenderer
 		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
