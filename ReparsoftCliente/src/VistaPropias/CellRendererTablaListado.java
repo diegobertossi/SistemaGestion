@@ -60,9 +60,6 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 		// y != 0 para impares
 		boolean oddRow = (row % 2 == 0);
 		
-		
-		
-
 		Color fondoImpar = new Color(230, 230, 250);
 		Color fondoPar = new Color(176, 196, 222);
 		Color fondoParSeleccionado = new Color(70, 130, 180);

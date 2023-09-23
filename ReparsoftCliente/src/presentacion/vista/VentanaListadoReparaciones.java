@@ -45,6 +45,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.ScrollPaneConstants;
 
 public class VentanaListadoReparaciones extends JFrame {
 
@@ -602,6 +603,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelCentral.setLayout(new BorderLayout(0, 0));
 
 		scrollPane = new JScrollPane();
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		panelCentral.add(scrollPane, BorderLayout.CENTER);
 
 		
