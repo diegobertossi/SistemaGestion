@@ -174,7 +174,8 @@ public class VentanaRemitoGenerado extends JFrame {
 		};
 
 		try {
-			UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+			//UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 			//UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 

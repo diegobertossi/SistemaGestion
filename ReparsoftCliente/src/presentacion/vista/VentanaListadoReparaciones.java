@@ -48,7 +48,9 @@ import javax.swing.JButton;
 
 public class VentanaListadoReparaciones extends JFrame {
 
-	private JTable tblReparaciones_1;
+
+	private static final long serialVersionUID = 1L;
+	private JTable tblListado;
 	private DefaultTableModel modelReparaciones;
 
 	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
@@ -72,17 +74,17 @@ public class VentanaListadoReparaciones extends JFrame {
 
 	private ControladorListados controlador;
 
-	private JComboBox comboFiltroMarca;
-	private JComboBox comboFiltroCliente;
-	private JComboBox comboFiltroSucursal;
-	private JComboBox comboFiltroEstadoFis;
-	private JComboBox comboFiltroEstadoCom;
-	private JComboBox comboFiltroEstadoTec;
-	private JComboBox comboFiltroELS;
-	private JComboBox comboFiltroEquipo;
-	private JComboBox comboFiltroModelo;
-	private JComboBox comboFiltroAviso;
-	private JComboBox comboFiltroTecnico;
+	private JComboBox<?> comboFiltroMarca;
+	private JComboBox<?> comboFiltroCliente;
+	private JComboBox<?> comboFiltroSucursal;
+	private JComboBox<?> comboFiltroEstadoFis;
+	private JComboBox<?> comboFiltroEstadoCom;
+	private JComboBox<?> comboFiltroEstadoTec;
+	private JComboBox<?> comboFiltroELS;
+	private JComboBox<?> comboFiltroEquipo;
+	private JComboBox<?> comboFiltroModelo;
+	private JComboBox<?> comboFiltroAviso;
+	private JComboBox<?> comboFiltroTecnico;
 
 	private JRadioButton radioButtonMarca;
 	private JRadioButton radioButtonCliente;
@@ -105,7 +107,6 @@ public class VentanaListadoReparaciones extends JFrame {
 	Dimension DimPanel;
 	Dimension DimContentPane;
 	Dimension DimTblReparaciones;
-	private JLabel lblNewLabel_2;
 
 
 	protected void this_windowOpened(WindowEvent e) {
@@ -122,7 +123,6 @@ public class VentanaListadoReparaciones extends JFrame {
 		
 		
 		super();
-		setType(Type.POPUP);
 		this.controlador = controlador;
 
 		this.this_windowOpened(null);
@@ -142,6 +142,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelSuperior.setLayout(new BorderLayout(0, 0));
 
 		panelFiltros = new JPanel();
+		panelFiltros.setBackground(new Color(176, 196, 222));
 		panelFiltros.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 
 		panelFiltros.setBounds(35, 50, 994, 134);
@@ -155,6 +156,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.setLayout(gbl_panelFiltros);
 
 		JLabel lblNewLabel_1 = new JLabel("CLIENTE");
+		lblNewLabel_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_1.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
@@ -164,7 +166,9 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_lblNewLabel_1.gridy = 1;
 		panelFiltros.add(lblNewLabel_1, gbc_lblNewLabel_1);
 
-		comboFiltroCliente = new JComboBox();
+		comboFiltroCliente = new JComboBox<Object>();
+		comboFiltroCliente.setEnabled(false);
+		comboFiltroCliente.setBackground(new Color(176, 196, 222));
 		comboFiltroCliente.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_comboFiltroCliente = new GridBagConstraints();
 		gbc_comboFiltroCliente.insets = new Insets(0, 0, 5, 5);
@@ -174,6 +178,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(comboFiltroCliente, gbc_comboFiltroCliente);
 
 		radioButtonCliente = new JRadioButton("");
+		radioButtonCliente.setBackground(new Color(176, 196, 222));
 		radioButtonCliente.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_radioButtonCliente = new GridBagConstraints();
 		gbc_radioButtonCliente.anchor = GridBagConstraints.WEST;
@@ -183,6 +188,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonCliente, gbc_radioButtonCliente);
 
 		JLabel lblNewLabel_4_1 = new JLabel("EQUIPO");
+		lblNewLabel_4_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_4_1.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_lblNewLabel_4_1 = new GridBagConstraints();
 		gbc_lblNewLabel_4_1.insets = new Insets(0, 0, 5, 5);
@@ -191,7 +197,9 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_lblNewLabel_4_1.gridy = 1;
 		panelFiltros.add(lblNewLabel_4_1, gbc_lblNewLabel_4_1);
 
-		comboFiltroEquipo = new JComboBox();
+		comboFiltroEquipo = new JComboBox<Object>();
+		comboFiltroEquipo.setEnabled(false);
+		comboFiltroEquipo.setBackground(new Color(176, 196, 222));
 		comboFiltroEquipo.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_comboFiltroEquipo = new GridBagConstraints();
 		gbc_comboFiltroEquipo.insets = new Insets(0, 0, 5, 5);
@@ -201,6 +209,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(comboFiltroEquipo, gbc_comboFiltroEquipo);
 
 		radioButtonEquipo = new JRadioButton("");
+		radioButtonEquipo.setBackground(new Color(176, 196, 222));
 		radioButtonEquipo.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_radioButtonEquipo = new GridBagConstraints();
 		gbc_radioButtonEquipo.anchor = GridBagConstraints.WEST;
@@ -211,6 +220,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonEquipo, gbc_radioButtonEquipo);
 
 		JLabel lblNewLabel_9_1 = new JLabel("ESTADO COM");
+		lblNewLabel_9_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_9_1.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_lblNewLabel_9_1 = new GridBagConstraints();
 		gbc_lblNewLabel_9_1.insets = new Insets(0, 0, 5, 5);
@@ -219,7 +229,9 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_lblNewLabel_9_1.gridy = 1;
 		panelFiltros.add(lblNewLabel_9_1, gbc_lblNewLabel_9_1);
 
-		comboFiltroEstadoCom = new JComboBox();
+		comboFiltroEstadoCom = new JComboBox<Object>();
+		comboFiltroEstadoCom.setEnabled(false);
+		comboFiltroEstadoCom.setBackground(new Color(176, 196, 222));
 		comboFiltroEstadoCom.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_comboFiltroEstadoCom = new GridBagConstraints();
 		gbc_comboFiltroEstadoCom.insets = new Insets(0, 0, 5, 5);
@@ -229,6 +241,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(comboFiltroEstadoCom, gbc_comboFiltroEstadoCom);
 
 		radioButtonEstadoCom = new JRadioButton("");
+		radioButtonEstadoCom.setBackground(new Color(176, 196, 222));
 		radioButtonEstadoCom.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_radioButtonEstadoCom = new GridBagConstraints();
 		gbc_radioButtonEstadoCom.anchor = GridBagConstraints.WEST;
@@ -239,6 +252,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonEstadoCom, gbc_radioButtonEstadoCom);
 
 		chckbxPresupuestoEnviado = new JCheckBox("PRESUPUESTO ENVIADO");
+		chckbxPresupuestoEnviado.setEnabled(false);
+		chckbxPresupuestoEnviado.setBackground(new Color(176, 196, 222));
 		chckbxPresupuestoEnviado.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_chckbxPresupuestoEnviado = new GridBagConstraints();
 		gbc_chckbxPresupuestoEnviado.anchor = GridBagConstraints.WEST;
@@ -248,6 +263,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(chckbxPresupuestoEnviado, gbc_chckbxPresupuestoEnviado);
 
 		radioButtonPresupEnviado = new JRadioButton("");
+		radioButtonPresupEnviado.setBackground(new Color(176, 196, 222));
 		radioButtonPresupEnviado.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_radioButtonPresupEnviado = new GridBagConstraints();
 		gbc_radioButtonPresupEnviado.anchor = GridBagConstraints.WEST;
@@ -257,6 +273,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonPresupEnviado, gbc_radioButtonPresupEnviado);
 
 		JLabel lblNewLabel_1_1 = new JLabel("SUCURSAL");
+		lblNewLabel_1_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_1_1.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_lblNewLabel_1_1 = new GridBagConstraints();
@@ -266,7 +283,9 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_lblNewLabel_1_1.gridy = 2;
 		panelFiltros.add(lblNewLabel_1_1, gbc_lblNewLabel_1_1);
 
-		comboFiltroSucursal = new JComboBox();
+		comboFiltroSucursal = new JComboBox<Object>();
+		comboFiltroSucursal.setEnabled(false);
+		comboFiltroSucursal.setBackground(new Color(176, 196, 222));
 		comboFiltroSucursal.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_comboFiltroSucursal = new GridBagConstraints();
 		gbc_comboFiltroSucursal.insets = new Insets(0, 0, 5, 5);
@@ -276,6 +295,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(comboFiltroSucursal, gbc_comboFiltroSucursal);
 
 		radioButtonSucursal = new JRadioButton("");
+		radioButtonSucursal.setBackground(new Color(176, 196, 222));
 		radioButtonSucursal.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_radioButtonSucursal = new GridBagConstraints();
 		gbc_radioButtonSucursal.anchor = GridBagConstraints.WEST;
@@ -286,6 +306,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonSucursal, gbc_radioButtonSucursal);
 
 		JLabel lblNewLabel_2_1 = new JLabel("MARCA");
+		lblNewLabel_2_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_2_1.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_lblNewLabel_2_1 = new GridBagConstraints();
@@ -295,7 +316,9 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_lblNewLabel_2_1.gridy = 2;
 		panelFiltros.add(lblNewLabel_2_1, gbc_lblNewLabel_2_1);
 
-		comboFiltroMarca = new JComboBox();
+		comboFiltroMarca = new JComboBox<Object>();
+		comboFiltroMarca.setEnabled(false);
+		comboFiltroMarca.setBackground(new Color(176, 196, 222));
 		comboFiltroMarca.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_comboFiltroMarca = new GridBagConstraints();
 		gbc_comboFiltroMarca.insets = new Insets(0, 0, 5, 5);
@@ -305,6 +328,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(comboFiltroMarca, gbc_comboFiltroMarca);
 
 		radioButtonMarca = new JRadioButton("");
+		radioButtonMarca.setBackground(new Color(176, 196, 222));
 		radioButtonMarca.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_radioButtonMarca = new GridBagConstraints();
 		gbc_radioButtonMarca.anchor = GridBagConstraints.WEST;
@@ -315,6 +339,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonMarca, gbc_radioButtonMarca);
 
 		JLabel lblNewLabel_8_1 = new JLabel("ESTADO TEC");
+		lblNewLabel_8_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_8_1.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_lblNewLabel_8_1 = new GridBagConstraints();
 		gbc_lblNewLabel_8_1.insets = new Insets(0, 0, 5, 5);
@@ -323,7 +348,9 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_lblNewLabel_8_1.gridy = 2;
 		panelFiltros.add(lblNewLabel_8_1, gbc_lblNewLabel_8_1);
 
-		comboFiltroEstadoTec = new JComboBox();
+		comboFiltroEstadoTec = new JComboBox<Object>();
+		comboFiltroEstadoTec.setEnabled(false);
+		comboFiltroEstadoTec.setBackground(new Color(176, 196, 222));
 		comboFiltroEstadoTec.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_comboFiltroEstadoTec = new GridBagConstraints();
 		gbc_comboFiltroEstadoTec.insets = new Insets(0, 0, 5, 5);
@@ -333,6 +360,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(comboFiltroEstadoTec, gbc_comboFiltroEstadoTec);
 
 		radioButtonEstadoTec = new JRadioButton("");
+		radioButtonEstadoTec.setBackground(new Color(176, 196, 222));
 		radioButtonEstadoTec.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_radioButtonEstadoTec = new GridBagConstraints();
 		gbc_radioButtonEstadoTec.anchor = GridBagConstraints.WEST;
@@ -343,6 +371,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonEstadoTec, gbc_radioButtonEstadoTec);
 
 		chckbxPresupuestoGenerado = new JCheckBox("PRESUPUESTO GENERADO");
+		chckbxPresupuestoGenerado.setEnabled(false);
+		chckbxPresupuestoGenerado.setBackground(new Color(176, 196, 222));
 		chckbxPresupuestoGenerado.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_chckbxPresupuestoGenerado = new GridBagConstraints();
 		gbc_chckbxPresupuestoGenerado.anchor = GridBagConstraints.WEST;
@@ -352,6 +382,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(chckbxPresupuestoGenerado, gbc_chckbxPresupuestoGenerado);
 
 		radioButtonPresupGenerado = new JRadioButton("");
+		radioButtonPresupGenerado.setBackground(new Color(176, 196, 222));
 		radioButtonPresupGenerado.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_radioButtonPresupGenerado = new GridBagConstraints();
 		gbc_radioButtonPresupGenerado.anchor = GridBagConstraints.WEST;
@@ -361,6 +392,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonPresupGenerado, gbc_radioButtonPresupGenerado);
 
 		JLabel lblNewLabel_3_1 = new JLabel("ELS");
+		lblNewLabel_3_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_3_1.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_lblNewLabel_3_1 = new GridBagConstraints();
@@ -370,7 +402,9 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_lblNewLabel_3_1.gridy = 3;
 		panelFiltros.add(lblNewLabel_3_1, gbc_lblNewLabel_3_1);
 
-		comboFiltroELS = new JComboBox();
+		comboFiltroELS = new JComboBox<Object>();
+		comboFiltroELS.setEnabled(false);
+		comboFiltroELS.setBackground(new Color(176, 196, 222));
 		comboFiltroELS.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_comboFiltroELS = new GridBagConstraints();
 		gbc_comboFiltroELS.insets = new Insets(0, 0, 5, 5);
@@ -380,6 +414,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(comboFiltroELS, gbc_comboFiltroELS);
 
 		radioButtonELS = new JRadioButton("");
+		radioButtonELS.setBackground(new Color(176, 196, 222));
 		radioButtonELS.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_radioButtonELS = new GridBagConstraints();
 		gbc_radioButtonELS.anchor = GridBagConstraints.WEST;
@@ -389,6 +424,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonELS, gbc_radioButtonELS);
 
 		JLabel lblNewLabel_7_1 = new JLabel("TÉCNICO");
+		lblNewLabel_7_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_7_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_7_1.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_lblNewLabel_7_1 = new GridBagConstraints();
@@ -398,7 +434,9 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_lblNewLabel_7_1.gridy = 3;
 		panelFiltros.add(lblNewLabel_7_1, gbc_lblNewLabel_7_1);
 
-		comboFiltroTecnico = new JComboBox();
+		comboFiltroTecnico = new JComboBox<Object>();
+		comboFiltroTecnico.setEnabled(false);
+		comboFiltroTecnico.setBackground(new Color(176, 196, 222));
 		comboFiltroTecnico.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_comboFiltroTecnico = new GridBagConstraints();
 		gbc_comboFiltroTecnico.insets = new Insets(0, 0, 5, 5);
@@ -408,6 +446,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(comboFiltroTecnico, gbc_comboFiltroTecnico);
 
 		radioButtonTecnico = new JRadioButton("");
+		radioButtonTecnico.setBackground(new Color(176, 196, 222));
 		radioButtonTecnico.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_radioButtonTecnico = new GridBagConstraints();
 		gbc_radioButtonTecnico.anchor = GridBagConstraints.WEST;
@@ -418,6 +457,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonTecnico, gbc_radioButtonTecnico);
 
 		JLabel lblNewLabel_10_1 = new JLabel("ESTADO FIS");
+		lblNewLabel_10_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_10_1.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_lblNewLabel_10_1 = new GridBagConstraints();
 		gbc_lblNewLabel_10_1.insets = new Insets(0, 0, 5, 5);
@@ -426,7 +466,9 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_lblNewLabel_10_1.gridy = 3;
 		panelFiltros.add(lblNewLabel_10_1, gbc_lblNewLabel_10_1);
 
-		comboFiltroEstadoFis = new JComboBox();
+		comboFiltroEstadoFis = new JComboBox<Object>();
+		comboFiltroEstadoFis.setEnabled(false);
+		comboFiltroEstadoFis.setBackground(new Color(176, 196, 222));
 		comboFiltroEstadoFis.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_comboFiltroEstadoFis = new GridBagConstraints();
 		gbc_comboFiltroEstadoFis.insets = new Insets(0, 0, 5, 5);
@@ -436,6 +478,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(comboFiltroEstadoFis, gbc_comboFiltroEstadoFis);
 
 		radioButtonEstadoFis = new JRadioButton("");
+		radioButtonEstadoFis.setBackground(new Color(176, 196, 222));
 		radioButtonEstadoFis.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_radioButtonEstadoFis = new GridBagConstraints();
 		gbc_radioButtonEstadoFis.anchor = GridBagConstraints.WEST;
@@ -445,6 +488,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonEstadoFis, gbc_radioButtonEstadoFis);
 
 		JLabel lblNewLabel_6_1 = new JLabel("AVISO");
+		lblNewLabel_6_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_6_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_6_1.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_lblNewLabel_6_1 = new GridBagConstraints();
@@ -454,7 +498,9 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_lblNewLabel_6_1.gridy = 4;
 		panelFiltros.add(lblNewLabel_6_1, gbc_lblNewLabel_6_1);
 
-		comboFiltroAviso = new JComboBox();
+		comboFiltroAviso = new JComboBox<Object>();
+		comboFiltroAviso.setEnabled(false);
+		comboFiltroAviso.setBackground(new Color(176, 196, 222));
 		comboFiltroAviso.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_comboFiltroAviso = new GridBagConstraints();
 		gbc_comboFiltroAviso.insets = new Insets(0, 0, 5, 5);
@@ -464,6 +510,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(comboFiltroAviso, gbc_comboFiltroAviso);
 
 		radioButtonAviso = new JRadioButton("");
+		radioButtonAviso.setBackground(new Color(176, 196, 222));
 		radioButtonAviso.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_radioButtonAviso = new GridBagConstraints();
 		gbc_radioButtonAviso.anchor = GridBagConstraints.WEST;
@@ -473,6 +520,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonAviso, gbc_radioButtonAviso);
 
 		JLabel lblNewLabel_5_1 = new JLabel("MODELO");
+		lblNewLabel_5_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_5_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_5_1.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_lblNewLabel_5_1 = new GridBagConstraints();
@@ -482,7 +530,9 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_lblNewLabel_5_1.gridy = 4;
 		panelFiltros.add(lblNewLabel_5_1, gbc_lblNewLabel_5_1);
 
-		comboFiltroModelo = new JComboBox();
+		comboFiltroModelo = new JComboBox<Object>();
+		comboFiltroModelo.setEnabled(false);
+		comboFiltroModelo.setBackground(new Color(176, 196, 222));
 		comboFiltroModelo.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_comboFiltroModelo = new GridBagConstraints();
 		gbc_comboFiltroModelo.insets = new Insets(0, 0, 5, 5);
@@ -492,6 +542,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(comboFiltroModelo, gbc_comboFiltroModelo);
 
 		radioButtonModelo = new JRadioButton("");
+		radioButtonModelo.setBackground(new Color(176, 196, 222));
 		radioButtonModelo.setFont(new Font("Cambria", Font.BOLD, 13));
 		GridBagConstraints gbc_radioButtonModelo = new GridBagConstraints();
 		gbc_radioButtonModelo.anchor = GridBagConstraints.WEST;
@@ -499,36 +550,16 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_radioButtonModelo.gridx = 6;
 		gbc_radioButtonModelo.gridy = 4;
 		panelFiltros.add(radioButtonModelo, gbc_radioButtonModelo);
-
-//		panelTitulo = new JPanel();
-//		panelSuperior.add(panelTitulo, BorderLayout.NORTH);
-//		panelTitulo.setLayout(new BorderLayout(0, 0));
-		
-
-//		JLabel lblNewLabel_11 = new JLabel("      ");
-//		panelTitulo.add(lblNewLabel_11,BorderLayout.WEST );
-//
-//		JLabel lbTitulo_1 = new JLabel("LISTADO DE EQUIPOS");
-//		lbTitulo_1.setFont(new Font("Cambria", Font.BOLD, 30));
-//		panelTitulo.add(lbTitulo_1,BorderLayout.CENTER );
-//		
-//		btnMax = new JButton("");
-//		btnMax.setPreferredSize(new Dimension(50, 30));
-//		btnMax.setFont(new Font("Cambria", Font.BOLD, 14));
-//		btnMax.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
-//		panelTitulo.add(btnMax,BorderLayout.EAST );
-		
+	
 		panelTitulo = new JPanel();
+		panelTitulo.setBackground(new Color(176, 196, 222));
 		panelSuperior.add(panelTitulo, BorderLayout.NORTH);
-		FlowLayout fl_panelTitulo = new FlowLayout(FlowLayout.CENTER, 190, 15);
+		FlowLayout fl_panelTitulo = new FlowLayout(FlowLayout.CENTER, 400, 15);
 		panelTitulo.setLayout(fl_panelTitulo);
 
 		JLabel lbTitulo_1 = new JLabel("LISTADO DE EQUIPOS");
 		lbTitulo_1.setFont(new Font("Cambria", Font.BOLD, 30));
 		panelTitulo.add(lbTitulo_1 );
-		
-		lblNewLabel_2 = new JLabel("                                                                                                     \r\n\r\n");
-		panelTitulo.add(lblNewLabel_2);
 		
 		btnMax = new JButton("");
 		btnMax.setPreferredSize(new Dimension(50, 30));
@@ -537,6 +568,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelTitulo.add(btnMax );
 		
 		panelBotones = new JPanel();
+		panelBotones.setBackground(new Color(176, 196, 222));
 		panelSuperior.add(panelBotones, BorderLayout.SOUTH);
 		FlowLayout fl_panelBotones = new FlowLayout(FlowLayout.CENTER, 190, 15);
 		panelBotones.setLayout(fl_panelBotones);
@@ -558,27 +590,24 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelBotones.add(btnEstadisticas);
 
 		panelInferior = new JPanel();
+		panelInferior.setBackground(new Color(176, 196, 222));
 		panelPrincipal.add(panelInferior, BorderLayout.SOUTH);
 
 		JLabel lblNewLabel = new JLabel("       ");
 		panelInferior.add(lblNewLabel);
 
 		panelCentral = new JPanel();
+		panelCentral.setBackground(new Color(176, 196, 222));
 		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
 		panelCentral.setLayout(new BorderLayout(0, 0));
 
 		scrollPane = new JScrollPane();
-		scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0), 3));
 		panelCentral.add(scrollPane, BorderLayout.CENTER);
 
-		// modelReparaciones = new DefaultTableModel(null, nombreColumnas);
-		tblReparaciones_1 = new JTable(modelReparaciones);
-
+		
 		modelReparaciones = new DefaultTableModel(new Object[][] {}, nombreColumnas) {
 
-			/**
-			 * 
-			 */
+			
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
@@ -586,7 +615,7 @@ public class VentanaListadoReparaciones extends JFrame {
 					String.class, String.class, String.class, String.class, String.class, Boolean.class, Boolean.class,
 					double.class, double.class, double.class };
 
-			public Class getColumnClass(int columnIndex) {
+			public Class<?> getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 
@@ -598,9 +627,14 @@ public class VentanaListadoReparaciones extends JFrame {
 			}
 
 		};
+		
+		tblListado = new JTable(modelReparaciones);
+		
+
 
 		try {
-			UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+			//UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -611,28 +645,32 @@ public class VentanaListadoReparaciones extends JFrame {
 			e.printStackTrace();
 		}
 
-		Font fuenteCabecera = new Font("Cambria", Font.BOLD, 14);
-		Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 12);
+//		Font fuenteCabecera = new Font("Cambria", Font.BOLD, 12);
+//		Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 12);
 
-		tblReparaciones_1 = new JTable(modelReparaciones);
-		// tblReparaciones_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		tblListado = new JTable(modelReparaciones);
+		tblListado.setGridColor(new Color(105, 105, 105));
+		tblListado.setBackground(new Color(176, 196, 222));
+		tblListado.setOpaque(false);
+		tblListado.setRowMargin(3);
+		tblListado.setRowHeight(18);
+	
+		//tblListado.setFont(fuenteCeldas);
 
-		tblReparaciones_1.setFont(fuenteCeldas);
+		//tblListado.getTableHeader().setForeground(Color.BLACK);
+		//tblListado.getTableHeader().setFont(fuenteCabecera);
+		//tblListado.getTableHeader().setReorderingAllowed(false);
 
-		tblReparaciones_1.getTableHeader().setForeground(Color.BLACK);
-		tblReparaciones_1.getTableHeader().setFont(fuenteCabecera);
-		tblReparaciones_1.getTableHeader().setReorderingAllowed(false);
-
-		((DefaultTableCellRenderer) tblReparaciones_1.getTableHeader().getDefaultRenderer())
+		((DefaultTableCellRenderer) tblListado.getTableHeader().getDefaultRenderer())
 				.setHorizontalAlignment(JLabel.CENTER);
 
-		tblReparaciones_1.setShowGrid(true);
-		tblReparaciones_1.setCellSelectionEnabled(true);
+		tblListado.setShowGrid(true);
+		tblListado.setCellSelectionEnabled(true);
 
 		// tblReparaciones_1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		// tblReparaciones_1.doLayout();
 
-		scrollPane.setViewportView(tblReparaciones_1);
+		scrollPane.setViewportView(tblListado);
 
 		try {
 			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
@@ -643,21 +681,23 @@ public class VentanaListadoReparaciones extends JFrame {
 			e.printStackTrace();
 		}
 
-		tblReparaciones_1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		tblReparaciones_1.setAutoCreateColumnsFromModel(false);
+		tblListado.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tblListado.setAutoCreateColumnsFromModel(false);
 
-		// DimTblReparaciones = tblReparaciones_1.getSize();
+		tblListado.getTableHeader().setReorderingAllowed(false);
 
-		tblReparaciones_1.getTableHeader().setReorderingAllowed(false);
-
-		int[] anchos = { 60, 80, 150, 150, 200, 100, 200, 100, 100, 80, 100, 120, 150, 100, 100, 100, 100, 100, 100,
+		int[] anchos = { 60, 80, 150, 150, 200, 100, 150, 100, 100, 80, 110, 120, 150, 100, 100, 100, 100, 80, 80,
 				100, 100, 100 };
+		
+//		int[] anchos = { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+//				30, 30, 30 };
 
-		for (int i = 0; i < tblReparaciones_1.getColumnCount(); i++) {
+		for (int i = 0; i < tblListado.getColumnCount(); i++) {
 
-			tblReparaciones_1.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+			tblListado.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
 
 		}
+	
 
 		this.setVisible(true);
 
@@ -683,11 +723,11 @@ public class VentanaListadoReparaciones extends JFrame {
 	}
 
 	public JTable getTblReparaciones() {
-		return tblReparaciones_1;
+		return tblListado;
 	}
 
 	public void setTblReparaciones(JTable tblReparaciones) {
-		this.tblReparaciones_1 = tblReparaciones;
+		this.tblListado = tblReparaciones;
 	}
 
 	public String[] getNombreColumnas() {
@@ -698,11 +738,11 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.nombreColumnas = nombreColumnas;
 	}
 
-	public JComboBox getComboFiltroCliente() {
+	public JComboBox<?> getComboFiltroCliente() {
 		return comboFiltroCliente;
 	}
 
-	public void setComboFiltroCliente(JComboBox comboFiltroCliente) {
+	public void setComboFiltroCliente(JComboBox<?> comboFiltroCliente) {
 		this.comboFiltroCliente = comboFiltroCliente;
 	}
 
@@ -722,11 +762,11 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.btnMostrarTodo = btnMostrarTodo;
 	}
 
-	public JComboBox getComboFiltroMarca() {
+	public JComboBox<?> getComboFiltroMarca() {
 		return comboFiltroMarca;
 	}
 
-	public void setComboFiltroMarca(JComboBox comboFiltroMarca) {
+	public void setComboFiltroMarca(JComboBox<?> comboFiltroMarca) {
 		this.comboFiltroMarca = comboFiltroMarca;
 	}
 
@@ -750,11 +790,11 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.radioButtonCliente = radioButtonCliente;
 	}
 
-	public JComboBox getComboFiltroSucursal() {
+	public JComboBox<?> getComboFiltroSucursal() {
 		return comboFiltroSucursal;
 	}
 
-	public void setComboFiltroSucursal(JComboBox comboFiltroSucursal) {
+	public void setComboFiltroSucursal(JComboBox<?> comboFiltroSucursal) {
 		this.comboFiltroSucursal = comboFiltroSucursal;
 	}
 
@@ -766,27 +806,27 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.radioButtonSucursal = radioButtonSucursal;
 	}
 
-	public JComboBox getComboFiltroEstadoFis() {
+	public JComboBox<?> getComboFiltroEstadoFis() {
 		return comboFiltroEstadoFis;
 	}
 
-	public void setComboFiltroEstadoFis(JComboBox comboFiltroEstadoFis) {
+	public void setComboFiltroEstadoFis(JComboBox<?> comboFiltroEstadoFis) {
 		this.comboFiltroEstadoFis = comboFiltroEstadoFis;
 	}
 
-	public JComboBox getComboFiltroEstadoCom() {
+	public JComboBox<?> getComboFiltroEstadoCom() {
 		return comboFiltroEstadoCom;
 	}
 
-	public void setComboFiltroEstadoCom(JComboBox comboFiltroEstadoCom) {
+	public void setComboFiltroEstadoCom(JComboBox<?> comboFiltroEstadoCom) {
 		this.comboFiltroEstadoCom = comboFiltroEstadoCom;
 	}
 
-	public JComboBox getComboFiltroEstadoTec() {
+	public JComboBox<?> getComboFiltroEstadoTec() {
 		return comboFiltroEstadoTec;
 	}
 
-	public void setComboFiltroEstadoTec(JComboBox comboFiltroEstadoTec) {
+	public void setComboFiltroEstadoTec(JComboBox<?> comboFiltroEstadoTec) {
 		this.comboFiltroEstadoTec = comboFiltroEstadoTec;
 	}
 
@@ -830,27 +870,27 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.chckbxPresupuestoEnviado = chckbxPresupuestoEnviado;
 	}
 
-	public JComboBox getComboFiltroEquipo() {
+	public JComboBox<?> getComboFiltroEquipo() {
 		return comboFiltroEquipo;
 	}
 
-	public void setComboFiltroEquipo(JComboBox comboFiltroEquipo) {
+	public void setComboFiltroEquipo(JComboBox<?> comboFiltroEquipo) {
 		this.comboFiltroEquipo = comboFiltroEquipo;
 	}
 
-	public JComboBox getComboFiltroModelo() {
+	public JComboBox<?> getComboFiltroModelo() {
 		return comboFiltroModelo;
 	}
 
-	public void setComboFiltroModelo(JComboBox comboFiltroModelo) {
+	public void setComboFiltroModelo(JComboBox<?> comboFiltroModelo) {
 		this.comboFiltroModelo = comboFiltroModelo;
 	}
 
-	public JComboBox getRadio() {
+	public JComboBox<?> getRadio() {
 		return comboFiltroAviso;
 	}
 
-	public void setComboFiltroAviso(JComboBox comboFiltroAviso) {
+	public void setComboFiltroAviso(JComboBox<?> comboFiltroAviso) {
 		this.comboFiltroAviso = comboFiltroAviso;
 	}
 
@@ -894,15 +934,15 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.radioButtonPresupEnviado = radioButtonPresupEnviado;
 	}
 
-	public JComboBox getComboFiltroAviso() {
+	public JComboBox<?> getComboFiltroAviso() {
 		return comboFiltroAviso;
 	}
 
-	public JComboBox getComboFiltroELS() {
+	public JComboBox<?> getComboFiltroELS() {
 		return comboFiltroELS;
 	}
 
-	public void setComboFiltroELS(JComboBox comboFiltroELS) {
+	public void setComboFiltroELS(JComboBox<?> comboFiltroELS) {
 		this.comboFiltroELS = comboFiltroELS;
 	}
 
@@ -914,11 +954,11 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.radioButtonELS = radioButtonELS;
 	}
 
-	public JComboBox getComboFiltroTecnico() {
+	public JComboBox<?> getComboFiltroTecnico() {
 		return comboFiltroTecnico;
 	}
 
-	public void setComboFiltroTecnico(JComboBox comboFiltroTecnico) {
+	public void setComboFiltroTecnico(JComboBox<?> comboFiltroTecnico) {
 		this.comboFiltroTecnico = comboFiltroTecnico;
 	}
 

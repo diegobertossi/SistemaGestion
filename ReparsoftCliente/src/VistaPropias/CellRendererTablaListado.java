@@ -39,7 +39,9 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 	private MonedaFormatter monedaFormatter;
 
 	private JCheckBox check = new JCheckBox();
-	Font fuenteELS = new Font("Cambria", Font.BOLD, 14);
+	Font fuenteELS = new Font("Cambria", Font.BOLD, 12);
+	Font fuenteCabecera = new Font("Cambria", Font.BOLD, 12);
+	Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 12);
 
 	/** Constructor de clase */
 	public CellRendererTablaListado() {
@@ -65,11 +67,16 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 		Color letra = new Color(0, 0, 0);
 		Color letraSeleccionado = new Color(255, 255, 255);
 
-
+		
+		table.getTableHeader().setFont(fuenteCabecera);
+		setFont(fuenteCeldas);
+		
 		if (column == 0 || column == 1 || column == 8 || column == 9 || column == 11 || column == 12 || column == 13
 				|| column == 14 || column == 17 || column == 18 || column == 19 || column == 20 || column == 21) {
 
 			setHorizontalAlignment(SwingConstants.CENTER);
+			
+
 
 		}
 

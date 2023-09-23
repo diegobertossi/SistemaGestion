@@ -180,7 +180,8 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		};
 
 		try {
-			UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+			//UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -381,6 +382,12 @@ public class VentanaMarcarAceptaciones extends JFrame {
 
 		}
 		
+		
+		for (int i = 0; i < tblReparaciones_1.getColumnCount(); i++) {
+
+			System.out.println(tblReparaciones_1.getColumnCount());
+
+		}
 		
 		for (int i = tblReparaciones_1.getColumnCount() - 4; i < tblReparaciones_1.getColumnCount(); i++) {
 			tblReparaciones_1.getColumnModel().getColumn(i).setCellRenderer(new CellRendererTablaMarcarAceptaciones());
