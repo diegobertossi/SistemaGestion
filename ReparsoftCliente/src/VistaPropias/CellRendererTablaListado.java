@@ -59,6 +59,9 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 		// Establecemos las filas que queremos cambiar el color. == 0 para pares
 		// y != 0 para impares
 		boolean oddRow = (row % 2 == 0);
+		
+		
+		
 
 		Color fondoImpar = new Color(230, 230, 250);
 		Color fondoPar = new Color(176, 196, 222);
