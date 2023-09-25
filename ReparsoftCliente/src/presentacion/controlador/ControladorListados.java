@@ -290,48 +290,32 @@ public class ControladorListados
 				&& arg0.getSource() == this.ventanaListadoReparaciones.getBtnMostrarTodo()) {
 
 			this.ventanaListadoReparaciones.getTblReparaciones().setRowSorter(null);
-
 			this.ventanaListadoReparaciones.getComboFiltroCliente().setSelectedItem(null);
 			this.ventanaListadoReparaciones.getComboFiltroCliente().setEnabled(false);
-
 			this.ventanaListadoReparaciones.getComboFiltroSucursal().setSelectedItem(null);
 			this.ventanaListadoReparaciones.getComboFiltroSucursal().setEnabled(false);
-
 			this.ventanaListadoReparaciones.getComboFiltroMarca().setSelectedItem(null);
 			this.ventanaListadoReparaciones.getComboFiltroMarca().setEnabled(false);
-
 			this.ventanaListadoReparaciones.getComboFiltroELS().setSelectedItem(null);
 			this.ventanaListadoReparaciones.getComboFiltroELS().setEnabled(false);
-
 			this.ventanaListadoReparaciones.getComboFiltroEquipo().setSelectedItem(null);
 			this.ventanaListadoReparaciones.getComboFiltroEquipo().setEnabled(false);
-
 			this.ventanaListadoReparaciones.getComboFiltroModelo().setSelectedItem(null);
 			this.ventanaListadoReparaciones.getComboFiltroModelo().setEnabled(false);
-
 			this.ventanaListadoReparaciones.getComboFiltroAviso().setSelectedItem(null);
 			this.ventanaListadoReparaciones.getComboFiltroAviso().setEnabled(false);
-
 			this.ventanaListadoReparaciones.getComboFiltroTecnico().setSelectedItem(null);
 			this.ventanaListadoReparaciones.getComboFiltroTecnico().setEnabled(false);
-
 			this.ventanaListadoReparaciones.getComboFiltroEstadoCom().setSelectedItem(null);
 			this.ventanaListadoReparaciones.getComboFiltroEstadoCom().setEnabled(false);
-
 			this.ventanaListadoReparaciones.getComboFiltroEstadoFis().setSelectedItem(null);
 			this.ventanaListadoReparaciones.getComboFiltroEstadoFis().setEnabled(false);
-
 			this.ventanaListadoReparaciones.getComboFiltroEstadoTec().setSelectedItem(null);
 			this.ventanaListadoReparaciones.getComboFiltroEstadoTec().setEnabled(false);
-
 			this.ventanaListadoReparaciones.getChckbxPresupuestoEnviado().setSelected(false);
-			;
 			this.ventanaListadoReparaciones.getChckbxPresupuestoEnviado().setEnabled(false);
-
 			this.ventanaListadoReparaciones.getChckbxPresupuestoGenerado().setSelected(false);
-			;
 			this.ventanaListadoReparaciones.getChckbxPresupuestoGenerado().setEnabled(false);
-
 			this.ventanaListadoReparaciones.getRadioButtonCliente().setSelected(false);
 			this.ventanaListadoReparaciones.getRadioButtonSucursal().setSelected(false);
 			this.ventanaListadoReparaciones.getRadioButtonMarca().setSelected(false);
@@ -467,33 +451,82 @@ public class ControladorListados
 		this.ventanaListadoReparaciones.getChckbxCliente().addActionListener(this);
 		this.ventanaListadoReparaciones.getChckbxCliente().addItemListener(this);
 		this.ventanaListadoReparaciones.getChckbxCliente().addMouseListener(this);
-				
+
 		this.ventanaListadoReparaciones.getChckbxSucursal().addActionListener(this);
 		this.ventanaListadoReparaciones.getChckbxSucursal().addItemListener(this);
 		this.ventanaListadoReparaciones.getChckbxSucursal().addMouseListener(this);
-		
+
 		this.ventanaListadoReparaciones.getChckbxEquipo().addActionListener(this);
 		this.ventanaListadoReparaciones.getChckbxEquipo().addItemListener(this);
 		this.ventanaListadoReparaciones.getChckbxEquipo().addMouseListener(this);
-		
+
 		this.ventanaListadoReparaciones.getChckbxMarca().addActionListener(this);
 		this.ventanaListadoReparaciones.getChckbxMarca().addItemListener(this);
 		this.ventanaListadoReparaciones.getChckbxMarca().addMouseListener(this);
-		
+
 		this.ventanaListadoReparaciones.getChckbxModelo().addActionListener(this);
 		this.ventanaListadoReparaciones.getChckbxModelo().addItemListener(this);
 		this.ventanaListadoReparaciones.getChckbxModelo().addMouseListener(this);
-		
+
 		this.ventanaListadoReparaciones.getChckbxSerie().addActionListener(this);
 		this.ventanaListadoReparaciones.getChckbxSerie().addItemListener(this);
 		this.ventanaListadoReparaciones.getChckbxSerie().addMouseListener(this);
-		
+
 		this.ventanaListadoReparaciones.getChckbxAviso().addActionListener(this);
 		this.ventanaListadoReparaciones.getChckbxAviso().addItemListener(this);
 		this.ventanaListadoReparaciones.getChckbxAviso().addMouseListener(this);
-		
-		
-		
+
+		this.ventanaListadoReparaciones.getChckbxRevisión().addActionListener(this);
+		this.ventanaListadoReparaciones.getChckbxRevisión().addItemListener(this);
+		this.ventanaListadoReparaciones.getChckbxRevisión().addMouseListener(this);
+
+		this.ventanaListadoReparaciones.getChckbxClienteCliente().addActionListener(this);
+		this.ventanaListadoReparaciones.getChckbxClienteCliente().addItemListener(this);
+		this.ventanaListadoReparaciones.getChckbxClienteCliente().addMouseListener(this);
+
+		this.ventanaListadoReparaciones.getChckbxEstadoTec().addActionListener(this);
+		this.ventanaListadoReparaciones.getChckbxEstadoTec().addItemListener(this);
+		this.ventanaListadoReparaciones.getChckbxEstadoTec().addMouseListener(this);
+
+		this.ventanaListadoReparaciones.getChckbxEstadoCom().addActionListener(this);
+		this.ventanaListadoReparaciones.getChckbxEstadoCom().addItemListener(this);
+		this.ventanaListadoReparaciones.getChckbxEstadoCom().addMouseListener(this);
+
+		this.ventanaListadoReparaciones.getChckbxEstadoFis().addActionListener(this);
+		this.ventanaListadoReparaciones.getChckbxEstadoFis().addItemListener(this);
+		this.ventanaListadoReparaciones.getChckbxEstadoFis().addMouseListener(this);
+
+		this.ventanaListadoReparaciones.getChckbxTecnico().addActionListener(this);
+		this.ventanaListadoReparaciones.getChckbxTecnico().addItemListener(this);
+		this.ventanaListadoReparaciones.getChckbxTecnico().addMouseListener(this);
+
+		this.ventanaListadoReparaciones.getChckbxUbicacionRemito().addActionListener(this);
+		this.ventanaListadoReparaciones.getChckbxUbicacionRemito().addItemListener(this);
+		this.ventanaListadoReparaciones.getChckbxUbicacionRemito().addMouseListener(this);
+
+		this.ventanaListadoReparaciones.getChckbxNumeroRemito().addActionListener(this);
+		this.ventanaListadoReparaciones.getChckbxNumeroRemito().addItemListener(this);
+		this.ventanaListadoReparaciones.getChckbxNumeroRemito().addMouseListener(this);
+
+		this.ventanaListadoReparaciones.getChckbxPresupuestoGeneradoColumna().addActionListener(this);
+		this.ventanaListadoReparaciones.getChckbxPresupuestoGeneradoColumna().addItemListener(this);
+		this.ventanaListadoReparaciones.getChckbxPresupuestoGeneradoColumna().addMouseListener(this);
+
+		this.ventanaListadoReparaciones.getChckbxPresupuestoEnviadoColumna().addActionListener(this);
+		this.ventanaListadoReparaciones.getChckbxPresupuestoEnviadoColumna().addItemListener(this);
+		this.ventanaListadoReparaciones.getChckbxPresupuestoEnviadoColumna().addMouseListener(this);
+
+		this.ventanaListadoReparaciones.getChckbxPrecioPeso().addActionListener(this);
+		this.ventanaListadoReparaciones.getChckbxPrecioPeso().addItemListener(this);
+		this.ventanaListadoReparaciones.getChckbxPrecioPeso().addMouseListener(this);
+
+		this.ventanaListadoReparaciones.getChckbxPrecioDolar().addActionListener(this);
+		this.ventanaListadoReparaciones.getChckbxPrecioDolar().addItemListener(this);
+		this.ventanaListadoReparaciones.getChckbxPrecioDolar().addMouseListener(this);
+
+		this.ventanaListadoReparaciones.getChckbxPago().addActionListener(this);
+		this.ventanaListadoReparaciones.getChckbxPago().addItemListener(this);
+		this.ventanaListadoReparaciones.getChckbxPago().addMouseListener(this);
 
 		AutoCompleteDecorator.decorate(ventanaListadoReparaciones.getComboFiltroCliente());
 		AutoCompleteDecorator.decorate(ventanaListadoReparaciones.getComboFiltroMarca());
@@ -753,9 +786,7 @@ public class ControladorListados
 				}
 
 			}
-			
-			
-			
+
 			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxSucursal()) {
 				if (this.ventanaListadoReparaciones.getChckbxSucursal().isSelected()) {
 
@@ -783,7 +814,7 @@ public class ControladorListados
 				}
 
 			}
-			
+
 			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxEquipo()) {
 				if (this.ventanaListadoReparaciones.getChckbxEquipo().isSelected()) {
 
@@ -811,8 +842,7 @@ public class ControladorListados
 				}
 
 			}
-			
-			
+
 			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxMarca()) {
 				if (this.ventanaListadoReparaciones.getChckbxMarca().isSelected()) {
 
@@ -840,10 +870,7 @@ public class ControladorListados
 				}
 
 			}
-			
-			
-			
-			
+
 			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxModelo()) {
 				if (this.ventanaListadoReparaciones.getChckbxModelo().isSelected()) {
 
@@ -871,8 +898,7 @@ public class ControladorListados
 				}
 
 			}
-			
-			
+
 			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxSerie()) {
 				if (this.ventanaListadoReparaciones.getChckbxSerie().isSelected()) {
 
@@ -900,8 +926,7 @@ public class ControladorListados
 				}
 
 			}
-			
-			
+
 			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxAviso()) {
 				if (this.ventanaListadoReparaciones.getChckbxAviso().isSelected()) {
 
@@ -929,13 +954,370 @@ public class ControladorListados
 				}
 
 			}
-			
-			
-			
-			
-			
-			
-			
+
+			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxRevisión()) {
+				if (this.ventanaListadoReparaciones.getChckbxRevisión().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(9))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(9))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(9))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(9))
+							.setWidth(80);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(9))
+							.setMinWidth(80);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(9))
+							.setMaxWidth(110);
+
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxClienteCliente()) {
+				if (this.ventanaListadoReparaciones.getChckbxClienteCliente().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(10))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(10))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(10))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(10))
+							.setWidth(110);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(10))
+							.setMinWidth(110);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(10))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxEstadoTec()) {
+				if (this.ventanaListadoReparaciones.getChckbxEstadoTec().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(11))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(11))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(11))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(11))
+							.setWidth(120);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(11))
+							.setMinWidth(120);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(11))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxEstadoCom()) {
+				if (this.ventanaListadoReparaciones.getChckbxEstadoCom().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(12))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(12))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(12))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(12))
+							.setWidth(150);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(12))
+							.setMinWidth(150);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(12))
+							.setMaxWidth(200);
+
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxEstadoFis()) {
+				if (this.ventanaListadoReparaciones.getChckbxEstadoFis().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(13))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(13))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(13))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(13))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(13))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(13))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxTecnico()) {
+				if (this.ventanaListadoReparaciones.getChckbxTecnico().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(14))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(14))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(14))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(14))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(14))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(14))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxUbicacionRemito()) {
+				if (this.ventanaListadoReparaciones.getChckbxUbicacionRemito().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(15))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(15))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(15))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(15))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(15))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(15))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxNumeroRemito()) {
+				if (this.ventanaListadoReparaciones.getChckbxNumeroRemito().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(16))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(16))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(16))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(16))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(16))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(16))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxPresupuestoGeneradoColumna()) {
+				if (this.ventanaListadoReparaciones.getChckbxPresupuestoGeneradoColumna().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(17))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(17))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(17))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(17))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(17))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(17))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxPresupuestoEnviadoColumna()) {
+				if (this.ventanaListadoReparaciones.getChckbxPresupuestoEnviadoColumna().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(18))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(18))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(18))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(18))
+							.setWidth(80);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(18))
+							.setMinWidth(80);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(18))
+							.setMaxWidth(80);
+
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxPrecioPeso()) {
+				if (this.ventanaListadoReparaciones.getChckbxPrecioPeso().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(19))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(19))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(19))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(19))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(19))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(19))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxPrecioDolar()) {
+				if (this.ventanaListadoReparaciones.getChckbxPrecioDolar().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(20))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(20))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(20))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(20))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(20))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(20))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxPago()) {
+				if (this.ventanaListadoReparaciones.getChckbxPago().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(21))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(21))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(21))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(21))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(21))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(21))
+							.setMaxWidth(150);
+
+				}
+
+			}
 
 		}
 
@@ -1213,9 +1595,7 @@ public class ControladorListados
 				}
 
 			}
-			
-			
-			
+
 			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxSucursal()) {
 				if (this.ventanaListadoReparaciones.getChckbxSucursal().isSelected()) {
 
@@ -1243,7 +1623,7 @@ public class ControladorListados
 				}
 
 			}
-			
+
 			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxEquipo()) {
 				if (this.ventanaListadoReparaciones.getChckbxEquipo().isSelected()) {
 
@@ -1271,8 +1651,7 @@ public class ControladorListados
 				}
 
 			}
-			
-			
+
 			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxMarca()) {
 				if (this.ventanaListadoReparaciones.getChckbxMarca().isSelected()) {
 
@@ -1300,8 +1679,7 @@ public class ControladorListados
 				}
 
 			}
-			
-			
+
 			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxModelo()) {
 				if (this.ventanaListadoReparaciones.getChckbxModelo().isSelected()) {
 
@@ -1329,8 +1707,7 @@ public class ControladorListados
 				}
 
 			}
-			
-			
+
 			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxSerie()) {
 				if (this.ventanaListadoReparaciones.getChckbxSerie().isSelected()) {
 
@@ -1358,8 +1735,7 @@ public class ControladorListados
 				}
 
 			}
-			
-			
+
 			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxAviso()) {
 				if (this.ventanaListadoReparaciones.getChckbxMarca().isSelected()) {
 
@@ -1387,9 +1763,370 @@ public class ControladorListados
 				}
 
 			}
-			
-			
-			
+
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxRevisión()) {
+				if (this.ventanaListadoReparaciones.getChckbxRevisión().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(9))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(9))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(9))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(9))
+							.setWidth(80);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(9))
+							.setMinWidth(80);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(9))
+							.setMaxWidth(110);
+
+				}
+
+			}
+
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxClienteCliente()) {
+				if (this.ventanaListadoReparaciones.getChckbxClienteCliente().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(10))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(10))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(10))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(10))
+							.setWidth(110);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(10))
+							.setMinWidth(110);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(10))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxEstadoTec()) {
+				if (this.ventanaListadoReparaciones.getChckbxEstadoTec().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(11))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(11))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(11))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(11))
+							.setWidth(120);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(11))
+							.setMinWidth(120);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(11))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxEstadoCom()) {
+				if (this.ventanaListadoReparaciones.getChckbxEstadoCom().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(12))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(12))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(12))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(12))
+							.setWidth(150);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(12))
+							.setMinWidth(150);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(12))
+							.setMaxWidth(200);
+
+				}
+
+			}
+
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxEstadoFis()) {
+				if (this.ventanaListadoReparaciones.getChckbxEstadoFis().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(13))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(13))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(13))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(13))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(13))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(13))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxTecnico()) {
+				if (this.ventanaListadoReparaciones.getChckbxTecnico().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(14))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(14))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(14))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(14))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(14))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(14))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxUbicacionRemito()) {
+				if (this.ventanaListadoReparaciones.getChckbxUbicacionRemito().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(15))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(15))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(15))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(15))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(15))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(15))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxNumeroRemito()) {
+				if (this.ventanaListadoReparaciones.getChckbxNumeroRemito().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(16))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(16))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(16))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(16))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(16))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(16))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxPresupuestoGeneradoColumna()) {
+				if (this.ventanaListadoReparaciones.getChckbxPresupuestoGeneradoColumna().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(17))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(17))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(17))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(17))
+							.setWidth(80);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(17))
+							.setMinWidth(80);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(17))
+							.setMaxWidth(80);
+
+				}
+
+			}
+
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxPresupuestoEnviadoColumna()) {
+				if (this.ventanaListadoReparaciones.getChckbxPresupuestoEnviadoColumna().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(18))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(18))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(18))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(18))
+							.setWidth(80);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(18))
+							.setMinWidth(80);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(18))
+							.setMaxWidth(80);
+
+				}
+
+			}
+
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxPrecioPeso()) {
+				if (this.ventanaListadoReparaciones.getChckbxPrecioPeso().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(19))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(19))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(19))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(19))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(19))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(19))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxPrecioDolar()) {
+				if (this.ventanaListadoReparaciones.getChckbxPrecioDolar().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(20))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(20))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(20))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(20))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(20))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(20))
+							.setMaxWidth(150);
+
+				}
+
+			}
+
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxPago()) {
+				if (this.ventanaListadoReparaciones.getChckbxPago().isSelected()) {
+
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(21))
+							.setWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(21))
+							.setMinWidth(0);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(21))
+							.setMaxWidth(0);
+
+				} else {
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(21))
+							.setWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(21))
+							.setMinWidth(100);
+					this.ventanaListadoReparaciones.getTblReparaciones()
+							.getColumn(this.ventanaListadoReparaciones.getTblReparaciones().getColumnName(21))
+							.setMaxWidth(150);
+
+				}
+
+			}
 
 		}
 

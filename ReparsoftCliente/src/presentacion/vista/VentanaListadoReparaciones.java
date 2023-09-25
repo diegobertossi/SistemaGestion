@@ -131,7 +131,7 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JCheckBox chckbxUbicacionRemito;
 	private JCheckBox chckbxNumeroRemito;
 	private JCheckBox chckbxPresupuestoGeneradoColumna;
-	private JCheckBox chckbxPresupúestoEnviadoColumna;
+	private JCheckBox chckbxPresupuestoEnviadoColumna;
 	private JCheckBox chckbxPago;
 	private JCheckBox chckbxPrecioPeso;
 	private JCheckBox chckbxPrecioDolar;
@@ -736,16 +736,16 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_chckbxUbicacionRemito.gridy = 3;
 		panelColumnas.add(chckbxUbicacionRemito, gbc_chckbxUbicacionRemito);
 		
-		chckbxPresupúestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENVIADO");
-		chckbxPresupúestoEnviadoColumna.setOpaque(false);
-		chckbxPresupúestoEnviadoColumna.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxPresupúestoEnviadoColumna.setHorizontalAlignment(SwingConstants.LEFT);
+		chckbxPresupuestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENVIADO");
+		chckbxPresupuestoEnviadoColumna.setOpaque(false);
+		chckbxPresupuestoEnviadoColumna.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxPresupuestoEnviadoColumna.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxPresupúestoEnviadoColumna = new GridBagConstraints();
 		gbc_chckbxPresupúestoEnviadoColumna.anchor = GridBagConstraints.WEST;
 		gbc_chckbxPresupúestoEnviadoColumna.insets = new Insets(0, 0, 5, 5);
 		gbc_chckbxPresupúestoEnviadoColumna.gridx = 7;
 		gbc_chckbxPresupúestoEnviadoColumna.gridy = 3;
-		panelColumnas.add(chckbxPresupúestoEnviadoColumna, gbc_chckbxPresupúestoEnviadoColumna);
+		panelColumnas.add(chckbxPresupuestoEnviadoColumna, gbc_chckbxPresupúestoEnviadoColumna);
 		
 		chckbxPago = new JCheckBox("PAGO");
 		chckbxPago.setOpaque(false);
@@ -1495,12 +1495,12 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.chckbxPresupuestoGeneradoColumna = chckbxPresupuestoGeneradoColumna;
 	}
 
-	public JCheckBox getChckbxPresupúestoEnviadoColumna() {
-		return chckbxPresupúestoEnviadoColumna;
+	public JCheckBox getChckbxPresupuestoEnviadoColumna() {
+		return chckbxPresupuestoEnviadoColumna;
 	}
 
-	public void setChckbxPresupúestoEnviadoColumna(JCheckBox chckbxPresupúestoEnviadoColumna) {
-		this.chckbxPresupúestoEnviadoColumna = chckbxPresupúestoEnviadoColumna;
+	public void setChckbxPresupuestoEnviadoColumna(JCheckBox chckbxPresupuestoEnviadoColumna) {
+		this.chckbxPresupuestoEnviadoColumna = chckbxPresupuestoEnviadoColumna;
 	}
 
 	public JCheckBox getChckbxPago() {
