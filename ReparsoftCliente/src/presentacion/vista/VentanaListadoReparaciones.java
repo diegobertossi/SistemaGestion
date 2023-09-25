@@ -46,6 +46,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.MatteBorder;
 
 public class VentanaListadoReparaciones extends JFrame {
 
@@ -110,31 +112,33 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JButton btnMostrarTodo;
 	private JButton btnEstadisticas;
 	private JPanel panelColumnas;
-	private JCheckBox chckbxNewCheckBox;
-	private JCheckBox chckbxNewCheckBox_1;
-	private JCheckBox chckbxNewCheckBox_2;
-	private JCheckBox chckbxNewCheckBox_3;
-	private JCheckBox chckbxNewCheckBox_4;
-	private JCheckBox chckbxNewCheckBox_5;
-	private JCheckBox chckbxNewCheckBox_6;
-	private JCheckBox chckbxNewCheckBox_10;
+	private JCheckBox chckbxSucursal;
+	private JCheckBox chckbxModelo;
+	private JCheckBox chckbxRevisión;
+	private JCheckBox chckbxEntrada;
+	private JCheckBox chckbxEquipo;
+	private JCheckBox chckbxELS;
+	private JCheckBox chckbxClienteCliente;
+	private JCheckBox chckbxSerie;
 	private JLabel lblNewLabel_2;
-	private JCheckBox chckbxNewCheckBox_7;
-	private JCheckBox chckbxNewCheckBox_8;
-	private JCheckBox chckbxNewCheckBox_9;
-	private JCheckBox chckbxNewCheckBox_11;
-	private JCheckBox chckbxNewCheckBox_12;
-	private JCheckBox chckbxNewCheckBox_13;
-	private JCheckBox chckbxNewCheckBox_14;
-	private JCheckBox chckbxNewCheckBox_15;
-	private JCheckBox chckbxNewCheckBox_16;
-	private JCheckBox chckbxNewCheckBox_17;
-	private JCheckBox chckbxNewCheckBox_18;
-	private JCheckBox chckbxNewCheckBox_19;
-	private JCheckBox chckbxNewCheckBox_20;
-	private JCheckBox chckbxNewCheckBox_21;
-	private JCheckBox chckbxNewCheckBox_22;
-	private JCheckBox chckbxNewCheckBox_23;
+	private JCheckBox chckbxCliente;
+	private JCheckBox chckbxMarca;
+	private JCheckBox chckbxAviso;
+	private JCheckBox chckbxEstadoTec;
+	private JCheckBox chckbxEstadoCom;
+	private JCheckBox chckbxEstadoFis;
+	private JCheckBox chckbxTecnico;
+	private JCheckBox chckbxUbicacionRemito;
+	private JCheckBox chckbxNumeroRemito;
+	private JCheckBox chckbxPresupuestoGeneradoColumna;
+	private JCheckBox chckbxPresupúestoEnviadoColumna;
+	private JCheckBox chckbxPago;
+	private JCheckBox chckbxPrecioPeso;
+	private JCheckBox chckbxPrecioDolar;
+	private JLabel lblNewLabel_3;
+	private JLabel lblNewLabel_4;
+	private JLabel lblNewLabel_5;
+	private JLabel lblNewLabel_6;
 
 
 	protected void this_windowOpened(WindowEvent e) {
@@ -172,7 +176,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros = new JPanel();
 		panelFiltros.setFont(new Font("Cambria", Font.PLAIN, 10));
 		panelFiltros.setBackground(new Color(176, 196, 222));
-		panelFiltros.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		panelFiltros.setBorder(new LineBorder(new Color(0, 128, 128)));
 
 		panelFiltros.setBounds(35, 50, 994, 134);
 		panelSuperior.add(panelFiltros, BorderLayout.CENTER);
@@ -595,9 +599,10 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonModelo, gbc_radioButtonModelo);
 	
 		panelTitulo = new JPanel();
+		panelTitulo.setBorder(new LineBorder(new Color(0, 128, 128)));
 		panelTitulo.setBackground(new Color(176, 196, 222));
 		panelSuperior.add(panelTitulo, BorderLayout.NORTH);
-		FlowLayout fl_panelTitulo = new FlowLayout(FlowLayout.LEFT, 15, 15);
+		FlowLayout fl_panelTitulo = new FlowLayout(FlowLayout.LEFT, 25, 10);
 		panelTitulo.setLayout(fl_panelTitulo);
 		
 		System.out.println("s");
@@ -619,9 +624,10 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelBotonera.setLayout(new BorderLayout(0, 0));
 		
 		panelBotones = new JPanel();
+		panelBotones.setBorder(new LineBorder(new Color(0, 128, 128)));
 		panelBotones.setBackground(new Color(176, 196, 222));
 		panelBotonera.add(panelBotones, BorderLayout.SOUTH);
-		panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 190, 15));
+		panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 190, 5));
 		
 		btnFiltrar = new JButton("FILTRAR");
 		btnFiltrar.setPreferredSize(new Dimension(150, 30));
@@ -639,198 +645,289 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelBotones.add(btnEstadisticas);
 		
 		panelColumnas = new JPanel();
+		panelColumnas.setBorder(new LineBorder(new Color(0, 128, 128)));
+		panelColumnas.setBackground(new Color(176, 196, 222));
 		panelBotonera.add(panelColumnas, BorderLayout.NORTH);
 		GridBagLayout gbl_panelColumnas = new GridBagLayout();
-		gbl_panelColumnas.columnWidths = new int[] {0, 100, 100, 100, 100, 100, 100, 100, 100};
-		gbl_panelColumnas.rowHeights = new int[] {30, 20, 20, 20, 20, 10};
-		gbl_panelColumnas.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		gbl_panelColumnas.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelColumnas.columnWidths = new int[] {30, 100, 100, 100, 100, 100, 100, 100, 100, 10};
+		gbl_panelColumnas.rowHeights = new int[] {10, 30, 10, 20, 20, 20, 10};
+		gbl_panelColumnas.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0};
+		gbl_panelColumnas.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelColumnas.setLayout(gbl_panelColumnas);
 		
-		lblNewLabel_2 = new JLabel("New label");
+		lblNewLabel_2 = new JLabel("OCULTAR COLUMNAS");
+		lblNewLabel_2.setBorder(new MatteBorder(0, 0, 2, 0, (Color) new Color(0, 0, 0)));
+		lblNewLabel_2.setFont(new Font("Cambria", Font.BOLD, 15));
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2.fill = GridBagConstraints.BOTH;
+		gbc_lblNewLabel_2.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel_2.fill = GridBagConstraints.VERTICAL;
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_2.gridx = 0;
+		gbc_lblNewLabel_2.gridx = 1;
 		gbc_lblNewLabel_2.gridy = 1;
 		panelColumnas.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
-		chckbxNewCheckBox_5 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_5 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_5.fill = GridBagConstraints.BOTH;
-		gbc_chckbxNewCheckBox_5.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox_5.gridx = 0;
-		gbc_chckbxNewCheckBox_5.gridy = 2;
-		panelColumnas.add(chckbxNewCheckBox_5, gbc_chckbxNewCheckBox_5);
+		chckbxELS = new JCheckBox("ELS");
+		chckbxELS.setOpaque(false);
+		chckbxELS.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxELS.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxELS = new GridBagConstraints();
+		gbc_chckbxELS.anchor = GridBagConstraints.WEST;
+		gbc_chckbxELS.fill = GridBagConstraints.VERTICAL;
+		gbc_chckbxELS.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxELS.gridx = 1;
+		gbc_chckbxELS.gridy = 3;
+		panelColumnas.add(chckbxELS, gbc_chckbxELS);
 		
-		chckbxNewCheckBox = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
-		gbc_chckbxNewCheckBox.fill = GridBagConstraints.BOTH;
-		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox.gridx = 1;
-		gbc_chckbxNewCheckBox.gridy = 2;
-		panelColumnas.add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
+		chckbxSucursal = new JCheckBox("SUCURSAL");
+		chckbxSucursal.setOpaque(false);
+		chckbxSucursal.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxSucursal.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxSucursal = new GridBagConstraints();
+		gbc_chckbxSucursal.anchor = GridBagConstraints.WEST;
+		gbc_chckbxSucursal.fill = GridBagConstraints.VERTICAL;
+		gbc_chckbxSucursal.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxSucursal.gridx = 2;
+		gbc_chckbxSucursal.gridy = 3;
+		panelColumnas.add(chckbxSucursal, gbc_chckbxSucursal);
 		
-		chckbxNewCheckBox_1 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_1 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_1.fill = GridBagConstraints.BOTH;
-		gbc_chckbxNewCheckBox_1.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox_1.gridx = 2;
-		gbc_chckbxNewCheckBox_1.gridy = 2;
-		panelColumnas.add(chckbxNewCheckBox_1, gbc_chckbxNewCheckBox_1);
+		chckbxModelo = new JCheckBox("MODELO");
+		chckbxModelo.setOpaque(false);
+		chckbxModelo.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxModelo.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxModelo = new GridBagConstraints();
+		gbc_chckbxModelo.anchor = GridBagConstraints.WEST;
+		gbc_chckbxModelo.fill = GridBagConstraints.VERTICAL;
+		gbc_chckbxModelo.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxModelo.gridx = 3;
+		gbc_chckbxModelo.gridy = 3;
+		panelColumnas.add(chckbxModelo, gbc_chckbxModelo);
 		
-		chckbxNewCheckBox_2 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_2 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_2.fill = GridBagConstraints.BOTH;
-		gbc_chckbxNewCheckBox_2.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox_2.gridx = 3;
-		gbc_chckbxNewCheckBox_2.gridy = 2;
-		panelColumnas.add(chckbxNewCheckBox_2, gbc_chckbxNewCheckBox_2);
+		chckbxRevisión = new JCheckBox("REVISIÓN");
+		chckbxRevisión.setOpaque(false);
+		chckbxRevisión.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxRevisión.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxRevisión = new GridBagConstraints();
+		gbc_chckbxRevisión.anchor = GridBagConstraints.WEST;
+		gbc_chckbxRevisión.fill = GridBagConstraints.VERTICAL;
+		gbc_chckbxRevisión.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxRevisión.gridx = 4;
+		gbc_chckbxRevisión.gridy = 3;
+		panelColumnas.add(chckbxRevisión, gbc_chckbxRevisión);
 		
-		chckbxNewCheckBox_12 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_12 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_12.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox_12.gridx = 4;
-		gbc_chckbxNewCheckBox_12.gridy = 2;
-		panelColumnas.add(chckbxNewCheckBox_12, gbc_chckbxNewCheckBox_12);
+		chckbxEstadoCom = new JCheckBox("ESTADO COMERCIAL");
+		chckbxEstadoCom.setOpaque(false);
+		chckbxEstadoCom.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxEstadoCom.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxEstadoCom = new GridBagConstraints();
+		gbc_chckbxEstadoCom.anchor = GridBagConstraints.WEST;
+		gbc_chckbxEstadoCom.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxEstadoCom.gridx = 5;
+		gbc_chckbxEstadoCom.gridy = 3;
+		panelColumnas.add(chckbxEstadoCom, gbc_chckbxEstadoCom);
 		
-		chckbxNewCheckBox_15 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_15 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_15.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox_15.gridx = 5;
-		gbc_chckbxNewCheckBox_15.gridy = 2;
-		panelColumnas.add(chckbxNewCheckBox_15, gbc_chckbxNewCheckBox_15);
+		chckbxUbicacionRemito = new JCheckBox("UBICACIÓN REMITO");
+		chckbxUbicacionRemito.setOpaque(false);
+		chckbxUbicacionRemito.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxUbicacionRemito.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxUbicacionRemito = new GridBagConstraints();
+		gbc_chckbxUbicacionRemito.anchor = GridBagConstraints.WEST;
+		gbc_chckbxUbicacionRemito.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxUbicacionRemito.gridx = 6;
+		gbc_chckbxUbicacionRemito.gridy = 3;
+		panelColumnas.add(chckbxUbicacionRemito, gbc_chckbxUbicacionRemito);
 		
-		chckbxNewCheckBox_18 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_18 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_18.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox_18.gridx = 6;
-		gbc_chckbxNewCheckBox_18.gridy = 2;
-		panelColumnas.add(chckbxNewCheckBox_18, gbc_chckbxNewCheckBox_18);
+		chckbxPresupúestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENVIADO");
+		chckbxPresupúestoEnviadoColumna.setOpaque(false);
+		chckbxPresupúestoEnviadoColumna.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxPresupúestoEnviadoColumna.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxPresupúestoEnviadoColumna = new GridBagConstraints();
+		gbc_chckbxPresupúestoEnviadoColumna.anchor = GridBagConstraints.WEST;
+		gbc_chckbxPresupúestoEnviadoColumna.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxPresupúestoEnviadoColumna.gridx = 7;
+		gbc_chckbxPresupúestoEnviadoColumna.gridy = 3;
+		panelColumnas.add(chckbxPresupúestoEnviadoColumna, gbc_chckbxPresupúestoEnviadoColumna);
 		
-		chckbxNewCheckBox_19 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_19 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_19.insets = new Insets(0, 0, 5, 0);
-		gbc_chckbxNewCheckBox_19.gridx = 7;
-		gbc_chckbxNewCheckBox_19.gridy = 2;
-		panelColumnas.add(chckbxNewCheckBox_19, gbc_chckbxNewCheckBox_19);
+		chckbxPago = new JCheckBox("PAGO");
+		chckbxPago.setOpaque(false);
+		chckbxPago.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxPago.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxPago = new GridBagConstraints();
+		gbc_chckbxPago.anchor = GridBagConstraints.WEST;
+		gbc_chckbxPago.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxPago.gridx = 8;
+		gbc_chckbxPago.gridy = 3;
+		panelColumnas.add(chckbxPago, gbc_chckbxPago);
 		
-		chckbxNewCheckBox_3 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_3 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_3.fill = GridBagConstraints.BOTH;
-		gbc_chckbxNewCheckBox_3.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox_3.gridx = 0;
-		gbc_chckbxNewCheckBox_3.gridy = 3;
-		panelColumnas.add(chckbxNewCheckBox_3, gbc_chckbxNewCheckBox_3);
+		lblNewLabel_3 = new JLabel("     ");
+		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+		gbc_lblNewLabel_3.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNewLabel_3.gridx = 9;
+		gbc_lblNewLabel_3.gridy = 3;
+		panelColumnas.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
-		chckbxNewCheckBox_4 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_4 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_4.fill = GridBagConstraints.BOTH;
-		gbc_chckbxNewCheckBox_4.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox_4.gridx = 1;
-		gbc_chckbxNewCheckBox_4.gridy = 3;
-		panelColumnas.add(chckbxNewCheckBox_4, gbc_chckbxNewCheckBox_4);
+		chckbxEntrada = new JCheckBox("ENTRADA");
+		chckbxEntrada.setOpaque(false);
+		chckbxEntrada.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxEntrada.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxEntrada = new GridBagConstraints();
+		gbc_chckbxEntrada.anchor = GridBagConstraints.WEST;
+		gbc_chckbxEntrada.fill = GridBagConstraints.VERTICAL;
+		gbc_chckbxEntrada.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxEntrada.gridx = 1;
+		gbc_chckbxEntrada.gridy = 4;
+		panelColumnas.add(chckbxEntrada, gbc_chckbxEntrada);
 		
-		chckbxNewCheckBox_10 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_10 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_10.fill = GridBagConstraints.BOTH;
-		gbc_chckbxNewCheckBox_10.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox_10.gridx = 2;
-		gbc_chckbxNewCheckBox_10.gridy = 3;
-		panelColumnas.add(chckbxNewCheckBox_10, gbc_chckbxNewCheckBox_10);
+		chckbxEquipo = new JCheckBox("EQUIPO");
+		chckbxEquipo.setOpaque(false);
+		chckbxEquipo.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxEquipo.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxEquipo = new GridBagConstraints();
+		gbc_chckbxEquipo.anchor = GridBagConstraints.WEST;
+		gbc_chckbxEquipo.fill = GridBagConstraints.VERTICAL;
+		gbc_chckbxEquipo.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxEquipo.gridx = 2;
+		gbc_chckbxEquipo.gridy = 4;
+		panelColumnas.add(chckbxEquipo, gbc_chckbxEquipo);
 		
-		chckbxNewCheckBox_6 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_6 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_6.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox_6.fill = GridBagConstraints.BOTH;
-		gbc_chckbxNewCheckBox_6.gridx = 3;
-		gbc_chckbxNewCheckBox_6.gridy = 3;
-		panelColumnas.add(chckbxNewCheckBox_6, gbc_chckbxNewCheckBox_6);
+		chckbxSerie = new JCheckBox("SERIE");
+		chckbxSerie.setOpaque(false);
+		chckbxSerie.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxSerie.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxSerie = new GridBagConstraints();
+		gbc_chckbxSerie.anchor = GridBagConstraints.WEST;
+		gbc_chckbxSerie.fill = GridBagConstraints.VERTICAL;
+		gbc_chckbxSerie.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxSerie.gridx = 3;
+		gbc_chckbxSerie.gridy = 4;
+		panelColumnas.add(chckbxSerie, gbc_chckbxSerie);
 		
-		chckbxNewCheckBox_13 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_13 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_13.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox_13.gridx = 4;
-		gbc_chckbxNewCheckBox_13.gridy = 3;
-		panelColumnas.add(chckbxNewCheckBox_13, gbc_chckbxNewCheckBox_13);
+		chckbxClienteCliente = new JCheckBox("CLIENTE/CLIENTE");
+		chckbxClienteCliente.setOpaque(false);
+		chckbxClienteCliente.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxClienteCliente.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxClienteCliente = new GridBagConstraints();
+		gbc_chckbxClienteCliente.anchor = GridBagConstraints.WEST;
+		gbc_chckbxClienteCliente.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxClienteCliente.fill = GridBagConstraints.VERTICAL;
+		gbc_chckbxClienteCliente.gridx = 4;
+		gbc_chckbxClienteCliente.gridy = 4;
+		panelColumnas.add(chckbxClienteCliente, gbc_chckbxClienteCliente);
 		
-		chckbxNewCheckBox_16 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_16 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_16.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox_16.gridx = 5;
-		gbc_chckbxNewCheckBox_16.gridy = 3;
-		panelColumnas.add(chckbxNewCheckBox_16, gbc_chckbxNewCheckBox_16);
+		chckbxEstadoFis = new JCheckBox("ESTADO FÍSICO");
+		chckbxEstadoFis.setOpaque(false);
+		chckbxEstadoFis.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxEstadoFis.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxEstadoFis = new GridBagConstraints();
+		gbc_chckbxEstadoFis.anchor = GridBagConstraints.WEST;
+		gbc_chckbxEstadoFis.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxEstadoFis.gridx = 5;
+		gbc_chckbxEstadoFis.gridy = 4;
+		panelColumnas.add(chckbxEstadoFis, gbc_chckbxEstadoFis);
 		
-		chckbxNewCheckBox_20 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_20 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_20.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox_20.gridx = 6;
-		gbc_chckbxNewCheckBox_20.gridy = 3;
-		panelColumnas.add(chckbxNewCheckBox_20, gbc_chckbxNewCheckBox_20);
+		chckbxNumeroRemito = new JCheckBox("NÚMERO REMITO");
+		chckbxNumeroRemito.setOpaque(false);
+		chckbxNumeroRemito.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxNumeroRemito.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxNumeroRemito = new GridBagConstraints();
+		gbc_chckbxNumeroRemito.anchor = GridBagConstraints.WEST;
+		gbc_chckbxNumeroRemito.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNumeroRemito.gridx = 6;
+		gbc_chckbxNumeroRemito.gridy = 4;
+		panelColumnas.add(chckbxNumeroRemito, gbc_chckbxNumeroRemito);
 		
-		chckbxNewCheckBox_22 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_22 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_22.insets = new Insets(0, 0, 5, 0);
-		gbc_chckbxNewCheckBox_22.gridx = 7;
-		gbc_chckbxNewCheckBox_22.gridy = 3;
-		panelColumnas.add(chckbxNewCheckBox_22, gbc_chckbxNewCheckBox_22);
+		chckbxPrecioPeso = new JCheckBox("PRECIO PESO");
+		chckbxPrecioPeso.setOpaque(false);
+		chckbxPrecioPeso.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxPrecioPeso.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxPrecioPeso = new GridBagConstraints();
+		gbc_chckbxPrecioPeso.anchor = GridBagConstraints.WEST;
+		gbc_chckbxPrecioPeso.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxPrecioPeso.gridx = 7;
+		gbc_chckbxPrecioPeso.gridy = 4;
+		panelColumnas.add(chckbxPrecioPeso, gbc_chckbxPrecioPeso);
 		
-		chckbxNewCheckBox_7 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_7 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_7.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxNewCheckBox_7.gridx = 0;
-		gbc_chckbxNewCheckBox_7.gridy = 4;
-		panelColumnas.add(chckbxNewCheckBox_7, gbc_chckbxNewCheckBox_7);
+		chckbxCliente = new JCheckBox("CLIENTE");
+		chckbxCliente.setOpaque(false);
+		chckbxCliente.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxCliente.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxCliente = new GridBagConstraints();
+		gbc_chckbxCliente.anchor = GridBagConstraints.WEST;
+		gbc_chckbxCliente.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxCliente.gridx = 1;
+		gbc_chckbxCliente.gridy = 5;
+		panelColumnas.add(chckbxCliente, gbc_chckbxCliente);
 		
-		chckbxNewCheckBox_8 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_8 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_8.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxNewCheckBox_8.gridx = 1;
-		gbc_chckbxNewCheckBox_8.gridy = 4;
-		panelColumnas.add(chckbxNewCheckBox_8, gbc_chckbxNewCheckBox_8);
+		chckbxMarca = new JCheckBox("MARCA");
+		chckbxMarca.setOpaque(false);
+		chckbxMarca.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxMarca.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxMarca = new GridBagConstraints();
+		gbc_chckbxMarca.anchor = GridBagConstraints.WEST;
+		gbc_chckbxMarca.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxMarca.gridx = 2;
+		gbc_chckbxMarca.gridy = 5;
+		panelColumnas.add(chckbxMarca, gbc_chckbxMarca);
 		
-		chckbxNewCheckBox_9 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_9 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_9.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxNewCheckBox_9.gridx = 2;
-		gbc_chckbxNewCheckBox_9.gridy = 4;
-		panelColumnas.add(chckbxNewCheckBox_9, gbc_chckbxNewCheckBox_9);
+		chckbxAviso = new JCheckBox("AVISO");
+		chckbxAviso.setOpaque(false);
+		chckbxAviso.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxAviso.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxAviso = new GridBagConstraints();
+		gbc_chckbxAviso.anchor = GridBagConstraints.WEST;
+		gbc_chckbxAviso.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxAviso.gridx = 3;
+		gbc_chckbxAviso.gridy = 5;
+		panelColumnas.add(chckbxAviso, gbc_chckbxAviso);
 		
-		chckbxNewCheckBox_11 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_11 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_11.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxNewCheckBox_11.gridx = 3;
-		gbc_chckbxNewCheckBox_11.gridy = 4;
-		panelColumnas.add(chckbxNewCheckBox_11, gbc_chckbxNewCheckBox_11);
+		chckbxEstadoTec = new JCheckBox("ESTADO TÉCNICO");
+		chckbxEstadoTec.setOpaque(false);
+		chckbxEstadoTec.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxEstadoTec.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxEstadoTec = new GridBagConstraints();
+		gbc_chckbxEstadoTec.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+		gbc_chckbxEstadoTec.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxEstadoTec.gridx = 4;
+		gbc_chckbxEstadoTec.gridy = 5;
+		panelColumnas.add(chckbxEstadoTec, gbc_chckbxEstadoTec);
 		
-		chckbxNewCheckBox_14 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_14 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_14.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxNewCheckBox_14.gridx = 4;
-		gbc_chckbxNewCheckBox_14.gridy = 4;
-		panelColumnas.add(chckbxNewCheckBox_14, gbc_chckbxNewCheckBox_14);
+		chckbxTecnico = new JCheckBox("TÉCNICO");
+		chckbxTecnico.setOpaque(false);
+		chckbxTecnico.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxTecnico.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxTecnico = new GridBagConstraints();
+		gbc_chckbxTecnico.anchor = GridBagConstraints.WEST;
+		gbc_chckbxTecnico.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxTecnico.gridx = 5;
+		gbc_chckbxTecnico.gridy = 5;
+		panelColumnas.add(chckbxTecnico, gbc_chckbxTecnico);
 		
-		chckbxNewCheckBox_17 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_17 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_17.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxNewCheckBox_17.gridx = 5;
-		gbc_chckbxNewCheckBox_17.gridy = 4;
-		panelColumnas.add(chckbxNewCheckBox_17, gbc_chckbxNewCheckBox_17);
+		chckbxPresupuestoGeneradoColumna = new JCheckBox("PRESUPUESTO GENERADO");
+		chckbxPresupuestoGeneradoColumna.setOpaque(false);
+		chckbxPresupuestoGeneradoColumna.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxPresupuestoGeneradoColumna.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxPresupuestoGeneradoColumna = new GridBagConstraints();
+		gbc_chckbxPresupuestoGeneradoColumna.anchor = GridBagConstraints.WEST;
+		gbc_chckbxPresupuestoGeneradoColumna.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxPresupuestoGeneradoColumna.gridx = 6;
+		gbc_chckbxPresupuestoGeneradoColumna.gridy = 5;
+		panelColumnas.add(chckbxPresupuestoGeneradoColumna, gbc_chckbxPresupuestoGeneradoColumna);
 		
-		chckbxNewCheckBox_21 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_21 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_21.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxNewCheckBox_21.gridx = 6;
-		gbc_chckbxNewCheckBox_21.gridy = 4;
-		panelColumnas.add(chckbxNewCheckBox_21, gbc_chckbxNewCheckBox_21);
-		
-		chckbxNewCheckBox_23 = new JCheckBox("New check box");
-		GridBagConstraints gbc_chckbxNewCheckBox_23 = new GridBagConstraints();
-		gbc_chckbxNewCheckBox_23.gridx = 7;
-		gbc_chckbxNewCheckBox_23.gridy = 4;
-		panelColumnas.add(chckbxNewCheckBox_23, gbc_chckbxNewCheckBox_23);
+		chckbxPrecioDolar = new JCheckBox("PRECIO DOLAR");
+		chckbxPrecioDolar.setOpaque(false);
+		chckbxPrecioDolar.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxPrecioDolar.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxPrecioDolar = new GridBagConstraints();
+		gbc_chckbxPrecioDolar.anchor = GridBagConstraints.WEST;
+		gbc_chckbxPrecioDolar.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxPrecioDolar.gridx = 7;
+		gbc_chckbxPrecioDolar.gridy = 5;
+		panelColumnas.add(chckbxPrecioDolar, gbc_chckbxPrecioDolar);
 
 		panelInferior = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panelInferior.getLayout();
+		flowLayout.setHgap(0);
+		flowLayout.setVgap(0);
 		panelInferior.setBackground(new Color(176, 196, 222));
 		panelPrincipal.add(panelInferior, BorderLayout.SOUTH);
 
@@ -843,6 +940,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelCentral.setLayout(new BorderLayout(0, 0));
 
 		scrollPane = new JScrollPane();
+		scrollPane.setBorder(new LineBorder(new Color(0, 128, 128), 2));
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		panelCentral.add(scrollPane, BorderLayout.CENTER);
 
@@ -925,6 +1023,15 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		tblListado.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		tblListado.setAutoCreateColumnsFromModel(false);
+		
+		lblNewLabel_6 = new JLabel("        ");
+		panelCentral.add(lblNewLabel_6, BorderLayout.NORTH);
+		
+		lblNewLabel_5 = new JLabel("        ");
+		panelCentral.add(lblNewLabel_5, BorderLayout.EAST);
+		
+		lblNewLabel_4 = new JLabel("        ");
+		panelCentral.add(lblNewLabel_4, BorderLayout.WEST);
 
 		tblListado.getTableHeader().setReorderingAllowed(false);
 
@@ -1242,6 +1349,182 @@ public class VentanaListadoReparaciones extends JFrame {
 
 	public void setBtnEstadisticas(JButton btnEstadisticas) {
 		this.btnEstadisticas = btnEstadisticas;
+	}
+
+	public JCheckBox getChckbxSucursal() {
+		return chckbxSucursal;
+	}
+
+	public void setChckbxSucursal(JCheckBox chckbxSucursal) {
+		this.chckbxSucursal = chckbxSucursal;
+	}
+
+	public JCheckBox getChckbxModelo() {
+		return chckbxModelo;
+	}
+
+	public void setChckbxModelo(JCheckBox chckbxModelo) {
+		this.chckbxModelo = chckbxModelo;
+	}
+
+	public JCheckBox getChckbxRevisión() {
+		return chckbxRevisión;
+	}
+
+	public void setChckbxRevisión(JCheckBox chckbxRevisión) {
+		this.chckbxRevisión = chckbxRevisión;
+	}
+
+	public JCheckBox getChckbxEntrada() {
+		return chckbxEntrada;
+	}
+
+	public void setChckbxEntrada(JCheckBox chckbxEntrada) {
+		this.chckbxEntrada = chckbxEntrada;
+	}
+
+	public JCheckBox getChckbxEquipo() {
+		return chckbxEquipo;
+	}
+
+	public void setChckbxEquipo(JCheckBox chckbxEquipo) {
+		this.chckbxEquipo = chckbxEquipo;
+	}
+
+	public JCheckBox getChckbxELS() {
+		return chckbxELS;
+	}
+
+	public void setChckbxELS(JCheckBox chckbxELS) {
+		this.chckbxELS = chckbxELS;
+	}
+
+	public JCheckBox getChckbxClienteCliente() {
+		return chckbxClienteCliente;
+	}
+
+	public void setChckbxClienteCliente(JCheckBox chckbxClienteCliente) {
+		this.chckbxClienteCliente = chckbxClienteCliente;
+	}
+
+	public JCheckBox getChckbxSerie() {
+		return chckbxSerie;
+	}
+
+	public void setChckbxSerie(JCheckBox chckbxSerie) {
+		this.chckbxSerie = chckbxSerie;
+	}
+
+	public JCheckBox getChckbxCliente() {
+		return chckbxCliente;
+	}
+
+	public void setChckbxCliente(JCheckBox chckbxCliente) {
+		this.chckbxCliente = chckbxCliente;
+	}
+
+	public JCheckBox getChckbxMarca() {
+		return chckbxMarca;
+	}
+
+	public void setChckbxMarca(JCheckBox chckbxMarca) {
+		this.chckbxMarca = chckbxMarca;
+	}
+
+	public JCheckBox getChckbxAviso() {
+		return chckbxAviso;
+	}
+
+	public void setChckbxAviso(JCheckBox chckbxAviso) {
+		this.chckbxAviso = chckbxAviso;
+	}
+
+	public JCheckBox getChckbxEstadoTec() {
+		return chckbxEstadoTec;
+	}
+
+	public void setChckbxEstadoTec(JCheckBox chckbxEstadoTec) {
+		this.chckbxEstadoTec = chckbxEstadoTec;
+	}
+
+	public JCheckBox getChckbxEstadoCom() {
+		return chckbxEstadoCom;
+	}
+
+	public void setChckbxEstadoCom(JCheckBox chckbxEstadoCom) {
+		this.chckbxEstadoCom = chckbxEstadoCom;
+	}
+
+	public JCheckBox getChckbxEstadoFis() {
+		return chckbxEstadoFis;
+	}
+
+	public void setChckbxEstadoFis(JCheckBox chckbxEstadoFis) {
+		this.chckbxEstadoFis = chckbxEstadoFis;
+	}
+
+	public JCheckBox getChckbxTecnico() {
+		return chckbxTecnico;
+	}
+
+	public void setChckbxTecnico(JCheckBox chckbxTecnico) {
+		this.chckbxTecnico = chckbxTecnico;
+	}
+
+	public JCheckBox getChckbxUbicacionRemito() {
+		return chckbxUbicacionRemito;
+	}
+
+	public void setChckbxUbicacionRemito(JCheckBox chckbxUbicacionRemito) {
+		this.chckbxUbicacionRemito = chckbxUbicacionRemito;
+	}
+
+	public JCheckBox getChckbxNumeroRemito() {
+		return chckbxNumeroRemito;
+	}
+
+	public void setChckbxNumeroRemito(JCheckBox chckbxNumeroRemito) {
+		this.chckbxNumeroRemito = chckbxNumeroRemito;
+	}
+
+	public JCheckBox getChckbxPresupuestoGeneradoColumna() {
+		return chckbxPresupuestoGeneradoColumna;
+	}
+
+	public void setChckbxPresupuestoGeneradoColumna(JCheckBox chckbxPresupuestoGeneradoColumna) {
+		this.chckbxPresupuestoGeneradoColumna = chckbxPresupuestoGeneradoColumna;
+	}
+
+	public JCheckBox getChckbxPresupúestoEnviadoColumna() {
+		return chckbxPresupúestoEnviadoColumna;
+	}
+
+	public void setChckbxPresupúestoEnviadoColumna(JCheckBox chckbxPresupúestoEnviadoColumna) {
+		this.chckbxPresupúestoEnviadoColumna = chckbxPresupúestoEnviadoColumna;
+	}
+
+	public JCheckBox getChckbxPago() {
+		return chckbxPago;
+	}
+
+	public void setChckbxPago(JCheckBox chckbxPago) {
+		this.chckbxPago = chckbxPago;
+	}
+
+	public JCheckBox getChckbxPrecioPeso() {
+		return chckbxPrecioPeso;
+	}
+
+	public void setChckbxPrecioPeso(JCheckBox chckbxPrecioPeso) {
+		this.chckbxPrecioPeso = chckbxPrecioPeso;
+	}
+
+	public JCheckBox getChckbxPrecioDolar() {
+		return chckbxPrecioDolar;
+	}
+
+	public void setChckbxPrecioDolar(JCheckBox chckbxPrecioDolar) {
+		this.chckbxPrecioDolar = chckbxPrecioDolar;
 	}
 	
 	

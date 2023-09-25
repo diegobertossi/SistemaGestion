@@ -831,6 +831,25 @@ public class ControladorListados
 				}
 
 			}
+			
+			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxELS()) {
+				if (this.ventanaListadoReparaciones.getChckbxELS().isSelected())
+
+					this.ventanaListadoReparaciones.getModelReparaciones();
+				
+				
+				else {
+					this.ventanaListadoReparaciones.getChckbxPresupuestoGenerado().setEnabled(false);
+					ventanaListadoReparaciones.getChckbxPresupuestoGenerado().setSelected(false);
+				}
+
+			}
+			
+			
+			
+			
+			
+			
 
 		}
 
@@ -865,25 +884,6 @@ public class ControladorListados
 
 		}
 
-//		if (e.getSource() == this.ventanaListadoReparaciones.getBtnMax()) {
-//
-//			if (clickMax % 2 != 0) {
-//
-//				ventanaListadoReparaciones.setExtendedState(max);
-//				this.ventanaListadoReparaciones.getBtnMax()
-//						.setIcon(new ImageIcon(this.getClass().getResource("/minimizar.png")));
-//				ventanaListadoReparaciones.setVisible(true);
-//
-//			} else {
-//
-//				ventanaListadoReparaciones.setExtendedState(min);
-//				this.ventanaListadoReparaciones.getBtnMax()
-//						.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
-//				ventanaListadoReparaciones.setVisible(true);
-//
-//			}
-//			clickMax++;
-//		}
 	}
 
 }
