@@ -103,6 +103,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 	private JCheckBox chckbxPresupuestoGenerado;
 	private JCheckBox chckbxPresupuestoEnviado;
+	private int anchoCombosfiltros = 150; // Ancho fijo en píxeles
 
 	Dimension DimScrollPane;
 	Dimension DimPanel;
@@ -171,6 +172,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroCliente.setEnabled(false);
 		comboFiltroCliente.setBackground(new Color(176, 196, 222));
 		comboFiltroCliente.setFont(new Font("Cambria", Font.BOLD, 13));
+		comboFiltroCliente.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroCliente.getPreferredSize().height));
 		GridBagConstraints gbc_comboFiltroCliente = new GridBagConstraints();
 		gbc_comboFiltroCliente.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroCliente.fill = GridBagConstraints.HORIZONTAL;
@@ -201,7 +203,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroEquipo = new JComboBox<Object>();
 		comboFiltroEquipo.setEnabled(false);
 		comboFiltroEquipo.setBackground(new Color(176, 196, 222));
-		comboFiltroEquipo.setFont(new Font("Cambria", Font.BOLD, 13));
+		comboFiltroEquipo.setFont(new Font("Cambria", Font.BOLD, 13));		
+		comboFiltroEquipo.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroEquipo.getPreferredSize().height));
 		GridBagConstraints gbc_comboFiltroEquipo = new GridBagConstraints();
 		gbc_comboFiltroEquipo.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroEquipo.fill = GridBagConstraints.HORIZONTAL;
@@ -234,6 +237,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroEstadoCom.setEnabled(false);
 		comboFiltroEstadoCom.setBackground(new Color(176, 196, 222));
 		comboFiltroEstadoCom.setFont(new Font("Cambria", Font.BOLD, 13));
+		comboFiltroEstadoCom.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroEstadoCom.getPreferredSize().height));
 		GridBagConstraints gbc_comboFiltroEstadoCom = new GridBagConstraints();
 		gbc_comboFiltroEstadoCom.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroEstadoCom.fill = GridBagConstraints.HORIZONTAL;
@@ -288,6 +292,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroSucursal.setEnabled(false);
 		comboFiltroSucursal.setBackground(new Color(176, 196, 222));
 		comboFiltroSucursal.setFont(new Font("Cambria", Font.BOLD, 13));
+		comboFiltroSucursal.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroSucursal.getPreferredSize().height));
 		GridBagConstraints gbc_comboFiltroSucursal = new GridBagConstraints();
 		gbc_comboFiltroSucursal.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroSucursal.fill = GridBagConstraints.HORIZONTAL;
@@ -321,6 +326,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroMarca.setEnabled(false);
 		comboFiltroMarca.setBackground(new Color(176, 196, 222));
 		comboFiltroMarca.setFont(new Font("Cambria", Font.BOLD, 13));
+		comboFiltroMarca.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroMarca.getPreferredSize().height));
 		GridBagConstraints gbc_comboFiltroMarca = new GridBagConstraints();
 		gbc_comboFiltroMarca.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroMarca.fill = GridBagConstraints.HORIZONTAL;
@@ -353,6 +359,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroEstadoTec.setEnabled(false);
 		comboFiltroEstadoTec.setBackground(new Color(176, 196, 222));
 		comboFiltroEstadoTec.setFont(new Font("Cambria", Font.BOLD, 13));
+		comboFiltroEstadoTec.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroEstadoTec.getPreferredSize().height));
 		GridBagConstraints gbc_comboFiltroEstadoTec = new GridBagConstraints();
 		gbc_comboFiltroEstadoTec.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroEstadoTec.fill = GridBagConstraints.HORIZONTAL;
@@ -407,6 +414,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroELS.setEnabled(false);
 		comboFiltroELS.setBackground(new Color(176, 196, 222));
 		comboFiltroELS.setFont(new Font("Cambria", Font.BOLD, 13));
+		comboFiltroELS.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroELS.getPreferredSize().height));
 		GridBagConstraints gbc_comboFiltroELS = new GridBagConstraints();
 		gbc_comboFiltroELS.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroELS.fill = GridBagConstraints.HORIZONTAL;
@@ -439,6 +447,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroTecnico.setEnabled(false);
 		comboFiltroTecnico.setBackground(new Color(176, 196, 222));
 		comboFiltroTecnico.setFont(new Font("Cambria", Font.BOLD, 13));
+		comboFiltroTecnico.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroTecnico.getPreferredSize().height));
 		GridBagConstraints gbc_comboFiltroTecnico = new GridBagConstraints();
 		gbc_comboFiltroTecnico.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroTecnico.fill = GridBagConstraints.HORIZONTAL;
@@ -471,6 +480,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroEstadoFis.setEnabled(false);
 		comboFiltroEstadoFis.setBackground(new Color(176, 196, 222));
 		comboFiltroEstadoFis.setFont(new Font("Cambria", Font.BOLD, 13));
+		comboFiltroEstadoFis.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroEstadoFis.getPreferredSize().height));
 		GridBagConstraints gbc_comboFiltroEstadoFis = new GridBagConstraints();
 		gbc_comboFiltroEstadoFis.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroEstadoFis.fill = GridBagConstraints.HORIZONTAL;
@@ -503,6 +513,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroAviso.setEnabled(false);
 		comboFiltroAviso.setBackground(new Color(176, 196, 222));
 		comboFiltroAviso.setFont(new Font("Cambria", Font.BOLD, 13));
+		comboFiltroAviso.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroAviso.getPreferredSize().height));
 		GridBagConstraints gbc_comboFiltroAviso = new GridBagConstraints();
 		gbc_comboFiltroAviso.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroAviso.fill = GridBagConstraints.HORIZONTAL;
@@ -535,6 +546,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroModelo.setEnabled(false);
 		comboFiltroModelo.setBackground(new Color(176, 196, 222));
 		comboFiltroModelo.setFont(new Font("Cambria", Font.BOLD, 13));
+		comboFiltroModelo.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroModelo.getPreferredSize().height));
 		GridBagConstraints gbc_comboFiltroModelo = new GridBagConstraints();
 		gbc_comboFiltroModelo.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroModelo.fill = GridBagConstraints.HORIZONTAL;
@@ -555,10 +567,12 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelTitulo = new JPanel();
 		panelTitulo.setBackground(new Color(176, 196, 222));
 		panelSuperior.add(panelTitulo, BorderLayout.NORTH);
-		FlowLayout fl_panelTitulo = new FlowLayout(FlowLayout.CENTER, 400, 15);
+		FlowLayout fl_panelTitulo = new FlowLayout(FlowLayout.LEFT, 15, 15);
 		panelTitulo.setLayout(fl_panelTitulo);
 
 		JLabel lbTitulo_1 = new JLabel("LISTADO DE EQUIPOS");
+		lbTitulo_1.setHorizontalTextPosition(SwingConstants.CENTER);
+		lbTitulo_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lbTitulo_1.setFont(new Font("Cambria", Font.BOLD, 30));
 		panelTitulo.add(lbTitulo_1 );
 		
