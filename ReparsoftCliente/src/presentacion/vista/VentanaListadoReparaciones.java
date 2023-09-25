@@ -57,10 +57,6 @@ public class VentanaListadoReparaciones extends JFrame {
 	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
 			"N° SERIE", "AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
 			"UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO" };
-
-	private JButton btnFiltrar;
-	private JButton btnMostrarTodo;
-	private JButton btnEstadisticas;
 	private JButton btnMax;
 	public static int est;
 
@@ -68,7 +64,6 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JPanel panelFiltros;
 	private JPanel panelSuperior;
 	private JPanel panelTitulo;
-	private JPanel panelBotones;
 	private JPanel panelInferior;
 	private JPanel panelCentral;
 	private JScrollPane scrollPane;
@@ -109,6 +104,37 @@ public class VentanaListadoReparaciones extends JFrame {
 	Dimension DimPanel;
 	Dimension DimContentPane;
 	Dimension DimTblReparaciones;
+	private JPanel panelBotonera;
+	private JPanel panelBotones;
+	private JButton btnFiltrar;
+	private JButton btnMostrarTodo;
+	private JButton btnEstadisticas;
+	private JPanel panelColumnas;
+	private JCheckBox chckbxNewCheckBox;
+	private JCheckBox chckbxNewCheckBox_1;
+	private JCheckBox chckbxNewCheckBox_2;
+	private JCheckBox chckbxNewCheckBox_3;
+	private JCheckBox chckbxNewCheckBox_4;
+	private JCheckBox chckbxNewCheckBox_5;
+	private JCheckBox chckbxNewCheckBox_6;
+	private JCheckBox chckbxNewCheckBox_10;
+	private JLabel lblNewLabel_2;
+	private JCheckBox chckbxNewCheckBox_7;
+	private JCheckBox chckbxNewCheckBox_8;
+	private JCheckBox chckbxNewCheckBox_9;
+	private JCheckBox chckbxNewCheckBox_11;
+	private JCheckBox chckbxNewCheckBox_12;
+	private JCheckBox chckbxNewCheckBox_13;
+	private JCheckBox chckbxNewCheckBox_14;
+	private JCheckBox chckbxNewCheckBox_15;
+	private JCheckBox chckbxNewCheckBox_16;
+	private JCheckBox chckbxNewCheckBox_17;
+	private JCheckBox chckbxNewCheckBox_18;
+	private JCheckBox chckbxNewCheckBox_19;
+	private JCheckBox chckbxNewCheckBox_20;
+	private JCheckBox chckbxNewCheckBox_21;
+	private JCheckBox chckbxNewCheckBox_22;
+	private JCheckBox chckbxNewCheckBox_23;
 
 
 	protected void this_windowOpened(WindowEvent e) {
@@ -144,6 +170,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelSuperior.setLayout(new BorderLayout(0, 0));
 
 		panelFiltros = new JPanel();
+		panelFiltros.setFont(new Font("Cambria", Font.PLAIN, 10));
 		panelFiltros.setBackground(new Color(176, 196, 222));
 		panelFiltros.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 
@@ -151,16 +178,17 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelSuperior.add(panelFiltros, BorderLayout.CENTER);
 		GridBagLayout gbl_panelFiltros = new GridBagLayout();
 		gbl_panelFiltros.columnWidths = new int[] { 30, 50, 150, 50, 50, 150, 50, 80, 150, 50, 90, 50, 30 };
-		gbl_panelFiltros.rowHeights = new int[] { 5, 0, 23, 0, 0, 5, 0 };
+		gbl_panelFiltros.rowHeights = new int[] {10, 10, 10, 10, 10, 10};
 		gbl_panelFiltros.columnWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
 				0.0 };
-		gbl_panelFiltros.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
+		
+		gbl_panelFiltros.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		panelFiltros.setLayout(gbl_panelFiltros);
 
 		JLabel lblNewLabel_1 = new JLabel("CLIENTE");
 		lblNewLabel_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_1.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_1.anchor = GridBagConstraints.WEST;
@@ -171,8 +199,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroCliente = new JComboBox<Object>();
 		comboFiltroCliente.setEnabled(false);
 		comboFiltroCliente.setBackground(new Color(176, 196, 222));
-		comboFiltroCliente.setFont(new Font("Cambria", Font.BOLD, 13));
-		comboFiltroCliente.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroCliente.getPreferredSize().height));
+		comboFiltroCliente.setFont(new Font("Cambria", Font.PLAIN, 12));
+		comboFiltroCliente.setPreferredSize(new Dimension(150, 20));
 		GridBagConstraints gbc_comboFiltroCliente = new GridBagConstraints();
 		gbc_comboFiltroCliente.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroCliente.fill = GridBagConstraints.HORIZONTAL;
@@ -182,7 +210,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		radioButtonCliente = new JRadioButton("");
 		radioButtonCliente.setBackground(new Color(176, 196, 222));
-		radioButtonCliente.setFont(new Font("Cambria", Font.BOLD, 13));
+		radioButtonCliente.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_radioButtonCliente = new GridBagConstraints();
 		gbc_radioButtonCliente.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonCliente.insets = new Insets(0, 0, 5, 5);
@@ -192,7 +220,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		JLabel lblNewLabel_4_1 = new JLabel("EQUIPO");
 		lblNewLabel_4_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_4_1.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_4_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_lblNewLabel_4_1 = new GridBagConstraints();
 		gbc_lblNewLabel_4_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_4_1.anchor = GridBagConstraints.WEST;
@@ -203,8 +231,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroEquipo = new JComboBox<Object>();
 		comboFiltroEquipo.setEnabled(false);
 		comboFiltroEquipo.setBackground(new Color(176, 196, 222));
-		comboFiltroEquipo.setFont(new Font("Cambria", Font.BOLD, 13));		
-		comboFiltroEquipo.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroEquipo.getPreferredSize().height));
+		comboFiltroEquipo.setFont(new Font("Cambria", Font.PLAIN, 12));		
+		comboFiltroEquipo.setPreferredSize(new Dimension(150, 20));
 		GridBagConstraints gbc_comboFiltroEquipo = new GridBagConstraints();
 		gbc_comboFiltroEquipo.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroEquipo.fill = GridBagConstraints.HORIZONTAL;
@@ -214,7 +242,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		radioButtonEquipo = new JRadioButton("");
 		radioButtonEquipo.setBackground(new Color(176, 196, 222));
-		radioButtonEquipo.setFont(new Font("Cambria", Font.BOLD, 13));
+		radioButtonEquipo.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_radioButtonEquipo = new GridBagConstraints();
 		gbc_radioButtonEquipo.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonEquipo.fill = GridBagConstraints.VERTICAL;
@@ -225,7 +253,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		JLabel lblNewLabel_9_1 = new JLabel("ESTADO COM");
 		lblNewLabel_9_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_9_1.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_9_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_lblNewLabel_9_1 = new GridBagConstraints();
 		gbc_lblNewLabel_9_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_9_1.anchor = GridBagConstraints.WEST;
@@ -236,8 +264,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroEstadoCom = new JComboBox<Object>();
 		comboFiltroEstadoCom.setEnabled(false);
 		comboFiltroEstadoCom.setBackground(new Color(176, 196, 222));
-		comboFiltroEstadoCom.setFont(new Font("Cambria", Font.BOLD, 13));
-		comboFiltroEstadoCom.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroEstadoCom.getPreferredSize().height));
+		comboFiltroEstadoCom.setFont(new Font("Cambria", Font.PLAIN, 12));
+		comboFiltroEstadoCom.setPreferredSize(new Dimension(150, 20));
 		GridBagConstraints gbc_comboFiltroEstadoCom = new GridBagConstraints();
 		gbc_comboFiltroEstadoCom.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroEstadoCom.fill = GridBagConstraints.HORIZONTAL;
@@ -247,7 +275,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		radioButtonEstadoCom = new JRadioButton("");
 		radioButtonEstadoCom.setBackground(new Color(176, 196, 222));
-		radioButtonEstadoCom.setFont(new Font("Cambria", Font.BOLD, 13));
+		radioButtonEstadoCom.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_radioButtonEstadoCom = new GridBagConstraints();
 		gbc_radioButtonEstadoCom.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonEstadoCom.fill = GridBagConstraints.VERTICAL;
@@ -257,9 +285,10 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonEstadoCom, gbc_radioButtonEstadoCom);
 
 		chckbxPresupuestoEnviado = new JCheckBox("PRESUPUESTO ENVIADO");
+		chckbxPresupuestoEnviado.setPreferredSize(new Dimension(170, 20));
 		chckbxPresupuestoEnviado.setEnabled(false);
 		chckbxPresupuestoEnviado.setBackground(new Color(176, 196, 222));
-		chckbxPresupuestoEnviado.setFont(new Font("Cambria", Font.BOLD, 13));
+		chckbxPresupuestoEnviado.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_chckbxPresupuestoEnviado = new GridBagConstraints();
 		gbc_chckbxPresupuestoEnviado.anchor = GridBagConstraints.WEST;
 		gbc_chckbxPresupuestoEnviado.insets = new Insets(0, 0, 5, 5);
@@ -269,7 +298,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		radioButtonPresupEnviado = new JRadioButton("");
 		radioButtonPresupEnviado.setBackground(new Color(176, 196, 222));
-		radioButtonPresupEnviado.setFont(new Font("Cambria", Font.BOLD, 13));
+		radioButtonPresupEnviado.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_radioButtonPresupEnviado = new GridBagConstraints();
 		gbc_radioButtonPresupEnviado.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonPresupEnviado.insets = new Insets(0, 0, 5, 5);
@@ -280,7 +309,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		JLabel lblNewLabel_1_1 = new JLabel("SUCURSAL");
 		lblNewLabel_1_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_1_1.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_1_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_lblNewLabel_1_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_1_1.anchor = GridBagConstraints.WEST;
@@ -291,8 +320,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroSucursal = new JComboBox<Object>();
 		comboFiltroSucursal.setEnabled(false);
 		comboFiltroSucursal.setBackground(new Color(176, 196, 222));
-		comboFiltroSucursal.setFont(new Font("Cambria", Font.BOLD, 13));
-		comboFiltroSucursal.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroSucursal.getPreferredSize().height));
+		comboFiltroSucursal.setFont(new Font("Cambria", Font.PLAIN, 12));
+		comboFiltroSucursal.setPreferredSize(new Dimension(150, 20));
 		GridBagConstraints gbc_comboFiltroSucursal = new GridBagConstraints();
 		gbc_comboFiltroSucursal.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroSucursal.fill = GridBagConstraints.HORIZONTAL;
@@ -302,7 +331,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		radioButtonSucursal = new JRadioButton("");
 		radioButtonSucursal.setBackground(new Color(176, 196, 222));
-		radioButtonSucursal.setFont(new Font("Cambria", Font.BOLD, 13));
+		radioButtonSucursal.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_radioButtonSucursal = new GridBagConstraints();
 		gbc_radioButtonSucursal.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonSucursal.fill = GridBagConstraints.VERTICAL;
@@ -314,7 +343,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		JLabel lblNewLabel_2_1 = new JLabel("MARCA");
 		lblNewLabel_2_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_2_1.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_2_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_lblNewLabel_2_1 = new GridBagConstraints();
 		gbc_lblNewLabel_2_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_2_1.anchor = GridBagConstraints.WEST;
@@ -325,8 +354,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroMarca = new JComboBox<Object>();
 		comboFiltroMarca.setEnabled(false);
 		comboFiltroMarca.setBackground(new Color(176, 196, 222));
-		comboFiltroMarca.setFont(new Font("Cambria", Font.BOLD, 13));
-		comboFiltroMarca.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroMarca.getPreferredSize().height));
+		comboFiltroMarca.setFont(new Font("Cambria", Font.PLAIN, 12));
+		comboFiltroMarca.setPreferredSize(new Dimension(150, 20));
 		GridBagConstraints gbc_comboFiltroMarca = new GridBagConstraints();
 		gbc_comboFiltroMarca.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroMarca.fill = GridBagConstraints.HORIZONTAL;
@@ -336,7 +365,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		radioButtonMarca = new JRadioButton("");
 		radioButtonMarca.setBackground(new Color(176, 196, 222));
-		radioButtonMarca.setFont(new Font("Cambria", Font.BOLD, 13));
+		radioButtonMarca.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_radioButtonMarca = new GridBagConstraints();
 		gbc_radioButtonMarca.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonMarca.fill = GridBagConstraints.VERTICAL;
@@ -347,7 +376,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		JLabel lblNewLabel_8_1 = new JLabel("ESTADO TEC");
 		lblNewLabel_8_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_8_1.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_8_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_lblNewLabel_8_1 = new GridBagConstraints();
 		gbc_lblNewLabel_8_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_8_1.anchor = GridBagConstraints.WEST;
@@ -358,8 +387,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroEstadoTec = new JComboBox<Object>();
 		comboFiltroEstadoTec.setEnabled(false);
 		comboFiltroEstadoTec.setBackground(new Color(176, 196, 222));
-		comboFiltroEstadoTec.setFont(new Font("Cambria", Font.BOLD, 13));
-		comboFiltroEstadoTec.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroEstadoTec.getPreferredSize().height));
+		comboFiltroEstadoTec.setFont(new Font("Cambria", Font.PLAIN, 12));
+		comboFiltroEstadoTec.setPreferredSize(new Dimension(150, 20));
 		GridBagConstraints gbc_comboFiltroEstadoTec = new GridBagConstraints();
 		gbc_comboFiltroEstadoTec.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroEstadoTec.fill = GridBagConstraints.HORIZONTAL;
@@ -369,7 +398,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		radioButtonEstadoTec = new JRadioButton("");
 		radioButtonEstadoTec.setBackground(new Color(176, 196, 222));
-		radioButtonEstadoTec.setFont(new Font("Cambria", Font.BOLD, 13));
+		radioButtonEstadoTec.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_radioButtonEstadoTec = new GridBagConstraints();
 		gbc_radioButtonEstadoTec.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonEstadoTec.fill = GridBagConstraints.VERTICAL;
@@ -379,9 +408,10 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.add(radioButtonEstadoTec, gbc_radioButtonEstadoTec);
 
 		chckbxPresupuestoGenerado = new JCheckBox("PRESUPUESTO GENERADO");
+		chckbxPresupuestoGenerado.setPreferredSize(new Dimension(170, 20));
 		chckbxPresupuestoGenerado.setEnabled(false);
 		chckbxPresupuestoGenerado.setBackground(new Color(176, 196, 222));
-		chckbxPresupuestoGenerado.setFont(new Font("Cambria", Font.BOLD, 13));
+		chckbxPresupuestoGenerado.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_chckbxPresupuestoGenerado = new GridBagConstraints();
 		gbc_chckbxPresupuestoGenerado.anchor = GridBagConstraints.WEST;
 		gbc_chckbxPresupuestoGenerado.insets = new Insets(0, 0, 5, 5);
@@ -391,7 +421,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		radioButtonPresupGenerado = new JRadioButton("");
 		radioButtonPresupGenerado.setBackground(new Color(176, 196, 222));
-		radioButtonPresupGenerado.setFont(new Font("Cambria", Font.BOLD, 13));
+		radioButtonPresupGenerado.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_radioButtonPresupGenerado = new GridBagConstraints();
 		gbc_radioButtonPresupGenerado.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonPresupGenerado.insets = new Insets(0, 0, 5, 5);
@@ -402,7 +432,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		JLabel lblNewLabel_3_1 = new JLabel("ELS");
 		lblNewLabel_3_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_3_1.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_3_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_lblNewLabel_3_1 = new GridBagConstraints();
 		gbc_lblNewLabel_3_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_3_1.anchor = GridBagConstraints.WEST;
@@ -413,8 +443,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroELS = new JComboBox<Object>();
 		comboFiltroELS.setEnabled(false);
 		comboFiltroELS.setBackground(new Color(176, 196, 222));
-		comboFiltroELS.setFont(new Font("Cambria", Font.BOLD, 13));
-		comboFiltroELS.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroELS.getPreferredSize().height));
+		comboFiltroELS.setFont(new Font("Cambria", Font.PLAIN, 12));
+		comboFiltroELS.setPreferredSize(new Dimension(150, 20));
 		GridBagConstraints gbc_comboFiltroELS = new GridBagConstraints();
 		gbc_comboFiltroELS.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroELS.fill = GridBagConstraints.HORIZONTAL;
@@ -424,7 +454,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		radioButtonELS = new JRadioButton("");
 		radioButtonELS.setBackground(new Color(176, 196, 222));
-		radioButtonELS.setFont(new Font("Cambria", Font.BOLD, 13));
+		radioButtonELS.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_radioButtonELS = new GridBagConstraints();
 		gbc_radioButtonELS.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonELS.insets = new Insets(0, 0, 5, 5);
@@ -435,7 +465,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		JLabel lblNewLabel_7_1 = new JLabel("TÉCNICO");
 		lblNewLabel_7_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_7_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_7_1.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_7_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_lblNewLabel_7_1 = new GridBagConstraints();
 		gbc_lblNewLabel_7_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_7_1.anchor = GridBagConstraints.WEST;
@@ -446,8 +476,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroTecnico = new JComboBox<Object>();
 		comboFiltroTecnico.setEnabled(false);
 		comboFiltroTecnico.setBackground(new Color(176, 196, 222));
-		comboFiltroTecnico.setFont(new Font("Cambria", Font.BOLD, 13));
-		comboFiltroTecnico.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroTecnico.getPreferredSize().height));
+		comboFiltroTecnico.setFont(new Font("Cambria", Font.PLAIN, 12));
+		comboFiltroTecnico.setPreferredSize(new Dimension(150, 20));
 		GridBagConstraints gbc_comboFiltroTecnico = new GridBagConstraints();
 		gbc_comboFiltroTecnico.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroTecnico.fill = GridBagConstraints.HORIZONTAL;
@@ -457,7 +487,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		radioButtonTecnico = new JRadioButton("");
 		radioButtonTecnico.setBackground(new Color(176, 196, 222));
-		radioButtonTecnico.setFont(new Font("Cambria", Font.BOLD, 13));
+		radioButtonTecnico.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_radioButtonTecnico = new GridBagConstraints();
 		gbc_radioButtonTecnico.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonTecnico.fill = GridBagConstraints.VERTICAL;
@@ -468,7 +498,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		JLabel lblNewLabel_10_1 = new JLabel("ESTADO FIS");
 		lblNewLabel_10_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_10_1.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_10_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_lblNewLabel_10_1 = new GridBagConstraints();
 		gbc_lblNewLabel_10_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_10_1.anchor = GridBagConstraints.WEST;
@@ -479,8 +509,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroEstadoFis = new JComboBox<Object>();
 		comboFiltroEstadoFis.setEnabled(false);
 		comboFiltroEstadoFis.setBackground(new Color(176, 196, 222));
-		comboFiltroEstadoFis.setFont(new Font("Cambria", Font.BOLD, 13));
-		comboFiltroEstadoFis.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroEstadoFis.getPreferredSize().height));
+		comboFiltroEstadoFis.setFont(new Font("Cambria", Font.PLAIN, 12));
+		comboFiltroEstadoFis.setPreferredSize(new Dimension(150, 20));
 		GridBagConstraints gbc_comboFiltroEstadoFis = new GridBagConstraints();
 		gbc_comboFiltroEstadoFis.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroEstadoFis.fill = GridBagConstraints.HORIZONTAL;
@@ -490,7 +520,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		radioButtonEstadoFis = new JRadioButton("");
 		radioButtonEstadoFis.setBackground(new Color(176, 196, 222));
-		radioButtonEstadoFis.setFont(new Font("Cambria", Font.BOLD, 13));
+		radioButtonEstadoFis.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_radioButtonEstadoFis = new GridBagConstraints();
 		gbc_radioButtonEstadoFis.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonEstadoFis.insets = new Insets(0, 0, 5, 5);
@@ -501,7 +531,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		JLabel lblNewLabel_6_1 = new JLabel("AVISO");
 		lblNewLabel_6_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_6_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_6_1.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_6_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_lblNewLabel_6_1 = new GridBagConstraints();
 		gbc_lblNewLabel_6_1.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel_6_1.insets = new Insets(0, 0, 5, 5);
@@ -512,8 +542,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroAviso = new JComboBox<Object>();
 		comboFiltroAviso.setEnabled(false);
 		comboFiltroAviso.setBackground(new Color(176, 196, 222));
-		comboFiltroAviso.setFont(new Font("Cambria", Font.BOLD, 13));
-		comboFiltroAviso.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroAviso.getPreferredSize().height));
+		comboFiltroAviso.setFont(new Font("Cambria", Font.PLAIN, 12));
+		comboFiltroAviso.setPreferredSize(new Dimension(150, 20));
 		GridBagConstraints gbc_comboFiltroAviso = new GridBagConstraints();
 		gbc_comboFiltroAviso.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroAviso.fill = GridBagConstraints.HORIZONTAL;
@@ -523,7 +553,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		radioButtonAviso = new JRadioButton("");
 		radioButtonAviso.setBackground(new Color(176, 196, 222));
-		radioButtonAviso.setFont(new Font("Cambria", Font.BOLD, 13));
+		radioButtonAviso.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_radioButtonAviso = new GridBagConstraints();
 		gbc_radioButtonAviso.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonAviso.insets = new Insets(0, 0, 5, 5);
@@ -534,7 +564,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		JLabel lblNewLabel_5_1 = new JLabel("MODELO");
 		lblNewLabel_5_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_5_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_5_1.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_5_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_lblNewLabel_5_1 = new GridBagConstraints();
 		gbc_lblNewLabel_5_1.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel_5_1.insets = new Insets(0, 0, 5, 5);
@@ -545,8 +575,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		comboFiltroModelo = new JComboBox<Object>();
 		comboFiltroModelo.setEnabled(false);
 		comboFiltroModelo.setBackground(new Color(176, 196, 222));
-		comboFiltroModelo.setFont(new Font("Cambria", Font.BOLD, 13));
-		comboFiltroModelo.setPreferredSize(new Dimension(anchoCombosfiltros, comboFiltroModelo.getPreferredSize().height));
+		comboFiltroModelo.setFont(new Font("Cambria", Font.PLAIN, 12));
+		comboFiltroModelo.setPreferredSize(new Dimension(150, 20));
 		GridBagConstraints gbc_comboFiltroModelo = new GridBagConstraints();
 		gbc_comboFiltroModelo.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroModelo.fill = GridBagConstraints.HORIZONTAL;
@@ -556,7 +586,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		radioButtonModelo = new JRadioButton("");
 		radioButtonModelo.setBackground(new Color(176, 196, 222));
-		radioButtonModelo.setFont(new Font("Cambria", Font.BOLD, 13));
+		radioButtonModelo.setFont(new Font("Cambria", Font.BOLD, 12));
 		GridBagConstraints gbc_radioButtonModelo = new GridBagConstraints();
 		gbc_radioButtonModelo.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonModelo.insets = new Insets(0, 0, 5, 5);
@@ -584,27 +614,221 @@ public class VentanaListadoReparaciones extends JFrame {
 		btnMax.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
 		panelTitulo.add(btnMax );
 		
+		panelBotonera = new JPanel();
+		panelSuperior.add(panelBotonera, BorderLayout.SOUTH);
+		panelBotonera.setLayout(new BorderLayout(0, 0));
+		
 		panelBotones = new JPanel();
 		panelBotones.setBackground(new Color(176, 196, 222));
-		panelSuperior.add(panelBotones, BorderLayout.SOUTH);
-		FlowLayout fl_panelBotones = new FlowLayout(FlowLayout.CENTER, 190, 15);
-		panelBotones.setLayout(fl_panelBotones);
-				
+		panelBotonera.add(panelBotones, BorderLayout.SOUTH);
+		panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 190, 15));
+		
 		btnFiltrar = new JButton("FILTRAR");
 		btnFiltrar.setPreferredSize(new Dimension(150, 30));
 		btnFiltrar.setFont(new Font("Cambria", Font.BOLD, 14));
-
 		panelBotones.add(btnFiltrar);
-
+		
 		btnMostrarTodo = new JButton("MOSTRAR TODO");
-		btnMostrarTodo.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnMostrarTodo.setPreferredSize(new Dimension(150, 30));
+		btnMostrarTodo.setFont(new Font("Cambria", Font.BOLD, 14));
 		panelBotones.add(btnMostrarTodo);
-
+		
 		btnEstadisticas = new JButton("ESTADÍSTICAS");
-		btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnEstadisticas.setPreferredSize(new Dimension(150, 30));
+		btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 14));
 		panelBotones.add(btnEstadisticas);
+		
+		panelColumnas = new JPanel();
+		panelBotonera.add(panelColumnas, BorderLayout.NORTH);
+		GridBagLayout gbl_panelColumnas = new GridBagLayout();
+		gbl_panelColumnas.columnWidths = new int[] {0, 100, 100, 100, 100, 100, 100, 100, 100};
+		gbl_panelColumnas.rowHeights = new int[] {30, 20, 20, 20, 20, 10};
+		gbl_panelColumnas.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_panelColumnas.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panelColumnas.setLayout(gbl_panelColumnas);
+		
+		lblNewLabel_2 = new JLabel("New label");
+		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+		gbc_lblNewLabel_2.fill = GridBagConstraints.BOTH;
+		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_2.gridx = 0;
+		gbc_lblNewLabel_2.gridy = 1;
+		panelColumnas.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		
+		chckbxNewCheckBox_5 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_5 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_5.fill = GridBagConstraints.BOTH;
+		gbc_chckbxNewCheckBox_5.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox_5.gridx = 0;
+		gbc_chckbxNewCheckBox_5.gridy = 2;
+		panelColumnas.add(chckbxNewCheckBox_5, gbc_chckbxNewCheckBox_5);
+		
+		chckbxNewCheckBox = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
+		gbc_chckbxNewCheckBox.fill = GridBagConstraints.BOTH;
+		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox.gridx = 1;
+		gbc_chckbxNewCheckBox.gridy = 2;
+		panelColumnas.add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
+		
+		chckbxNewCheckBox_1 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_1 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_1.fill = GridBagConstraints.BOTH;
+		gbc_chckbxNewCheckBox_1.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox_1.gridx = 2;
+		gbc_chckbxNewCheckBox_1.gridy = 2;
+		panelColumnas.add(chckbxNewCheckBox_1, gbc_chckbxNewCheckBox_1);
+		
+		chckbxNewCheckBox_2 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_2 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_2.fill = GridBagConstraints.BOTH;
+		gbc_chckbxNewCheckBox_2.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox_2.gridx = 3;
+		gbc_chckbxNewCheckBox_2.gridy = 2;
+		panelColumnas.add(chckbxNewCheckBox_2, gbc_chckbxNewCheckBox_2);
+		
+		chckbxNewCheckBox_12 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_12 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_12.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox_12.gridx = 4;
+		gbc_chckbxNewCheckBox_12.gridy = 2;
+		panelColumnas.add(chckbxNewCheckBox_12, gbc_chckbxNewCheckBox_12);
+		
+		chckbxNewCheckBox_15 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_15 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_15.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox_15.gridx = 5;
+		gbc_chckbxNewCheckBox_15.gridy = 2;
+		panelColumnas.add(chckbxNewCheckBox_15, gbc_chckbxNewCheckBox_15);
+		
+		chckbxNewCheckBox_18 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_18 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_18.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox_18.gridx = 6;
+		gbc_chckbxNewCheckBox_18.gridy = 2;
+		panelColumnas.add(chckbxNewCheckBox_18, gbc_chckbxNewCheckBox_18);
+		
+		chckbxNewCheckBox_19 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_19 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_19.insets = new Insets(0, 0, 5, 0);
+		gbc_chckbxNewCheckBox_19.gridx = 7;
+		gbc_chckbxNewCheckBox_19.gridy = 2;
+		panelColumnas.add(chckbxNewCheckBox_19, gbc_chckbxNewCheckBox_19);
+		
+		chckbxNewCheckBox_3 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_3 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_3.fill = GridBagConstraints.BOTH;
+		gbc_chckbxNewCheckBox_3.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox_3.gridx = 0;
+		gbc_chckbxNewCheckBox_3.gridy = 3;
+		panelColumnas.add(chckbxNewCheckBox_3, gbc_chckbxNewCheckBox_3);
+		
+		chckbxNewCheckBox_4 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_4 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_4.fill = GridBagConstraints.BOTH;
+		gbc_chckbxNewCheckBox_4.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox_4.gridx = 1;
+		gbc_chckbxNewCheckBox_4.gridy = 3;
+		panelColumnas.add(chckbxNewCheckBox_4, gbc_chckbxNewCheckBox_4);
+		
+		chckbxNewCheckBox_10 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_10 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_10.fill = GridBagConstraints.BOTH;
+		gbc_chckbxNewCheckBox_10.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox_10.gridx = 2;
+		gbc_chckbxNewCheckBox_10.gridy = 3;
+		panelColumnas.add(chckbxNewCheckBox_10, gbc_chckbxNewCheckBox_10);
+		
+		chckbxNewCheckBox_6 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_6 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_6.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox_6.fill = GridBagConstraints.BOTH;
+		gbc_chckbxNewCheckBox_6.gridx = 3;
+		gbc_chckbxNewCheckBox_6.gridy = 3;
+		panelColumnas.add(chckbxNewCheckBox_6, gbc_chckbxNewCheckBox_6);
+		
+		chckbxNewCheckBox_13 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_13 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_13.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox_13.gridx = 4;
+		gbc_chckbxNewCheckBox_13.gridy = 3;
+		panelColumnas.add(chckbxNewCheckBox_13, gbc_chckbxNewCheckBox_13);
+		
+		chckbxNewCheckBox_16 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_16 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_16.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox_16.gridx = 5;
+		gbc_chckbxNewCheckBox_16.gridy = 3;
+		panelColumnas.add(chckbxNewCheckBox_16, gbc_chckbxNewCheckBox_16);
+		
+		chckbxNewCheckBox_20 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_20 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_20.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNewCheckBox_20.gridx = 6;
+		gbc_chckbxNewCheckBox_20.gridy = 3;
+		panelColumnas.add(chckbxNewCheckBox_20, gbc_chckbxNewCheckBox_20);
+		
+		chckbxNewCheckBox_22 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_22 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_22.insets = new Insets(0, 0, 5, 0);
+		gbc_chckbxNewCheckBox_22.gridx = 7;
+		gbc_chckbxNewCheckBox_22.gridy = 3;
+		panelColumnas.add(chckbxNewCheckBox_22, gbc_chckbxNewCheckBox_22);
+		
+		chckbxNewCheckBox_7 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_7 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_7.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxNewCheckBox_7.gridx = 0;
+		gbc_chckbxNewCheckBox_7.gridy = 4;
+		panelColumnas.add(chckbxNewCheckBox_7, gbc_chckbxNewCheckBox_7);
+		
+		chckbxNewCheckBox_8 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_8 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_8.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxNewCheckBox_8.gridx = 1;
+		gbc_chckbxNewCheckBox_8.gridy = 4;
+		panelColumnas.add(chckbxNewCheckBox_8, gbc_chckbxNewCheckBox_8);
+		
+		chckbxNewCheckBox_9 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_9 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_9.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxNewCheckBox_9.gridx = 2;
+		gbc_chckbxNewCheckBox_9.gridy = 4;
+		panelColumnas.add(chckbxNewCheckBox_9, gbc_chckbxNewCheckBox_9);
+		
+		chckbxNewCheckBox_11 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_11 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_11.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxNewCheckBox_11.gridx = 3;
+		gbc_chckbxNewCheckBox_11.gridy = 4;
+		panelColumnas.add(chckbxNewCheckBox_11, gbc_chckbxNewCheckBox_11);
+		
+		chckbxNewCheckBox_14 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_14 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_14.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxNewCheckBox_14.gridx = 4;
+		gbc_chckbxNewCheckBox_14.gridy = 4;
+		panelColumnas.add(chckbxNewCheckBox_14, gbc_chckbxNewCheckBox_14);
+		
+		chckbxNewCheckBox_17 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_17 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_17.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxNewCheckBox_17.gridx = 5;
+		gbc_chckbxNewCheckBox_17.gridy = 4;
+		panelColumnas.add(chckbxNewCheckBox_17, gbc_chckbxNewCheckBox_17);
+		
+		chckbxNewCheckBox_21 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_21 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_21.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxNewCheckBox_21.gridx = 6;
+		gbc_chckbxNewCheckBox_21.gridy = 4;
+		panelColumnas.add(chckbxNewCheckBox_21, gbc_chckbxNewCheckBox_21);
+		
+		chckbxNewCheckBox_23 = new JCheckBox("New check box");
+		GridBagConstraints gbc_chckbxNewCheckBox_23 = new GridBagConstraints();
+		gbc_chckbxNewCheckBox_23.gridx = 7;
+		gbc_chckbxNewCheckBox_23.gridy = 4;
+		panelColumnas.add(chckbxNewCheckBox_23, gbc_chckbxNewCheckBox_23);
 
 		panelInferior = new JPanel();
 		panelInferior.setBackground(new Color(176, 196, 222));
