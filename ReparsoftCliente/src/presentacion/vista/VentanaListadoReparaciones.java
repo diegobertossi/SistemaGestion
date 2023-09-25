@@ -569,6 +569,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelSuperior.add(panelTitulo, BorderLayout.NORTH);
 		FlowLayout fl_panelTitulo = new FlowLayout(FlowLayout.LEFT, 15, 15);
 		panelTitulo.setLayout(fl_panelTitulo);
+		
+		System.out.println("s");
 
 		JLabel lbTitulo_1 = new JLabel("LISTADO DE EQUIPOS");
 		lbTitulo_1.setHorizontalTextPosition(SwingConstants.CENTER);
