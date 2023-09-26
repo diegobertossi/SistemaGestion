@@ -120,7 +120,6 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JCheckBox chckbxELS;
 	private JCheckBox chckbxClienteCliente;
 	private JCheckBox chckbxSerie;
-	private JLabel lblNewLabel_2;
 	private JCheckBox chckbxCliente;
 	private JCheckBox chckbxMarca;
 	private JCheckBox chckbxAviso;
@@ -139,6 +138,8 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
+	private JLabel lblNewLabel_2;
+	private JLabel lblNewLabel_7;
 
 
 	protected void this_windowOpened(WindowEvent e) {
@@ -158,7 +159,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.controlador = controlador;
 
 		this.this_windowOpened(null);
-		setSize(1250, 601);
+		setSize(1200, 680);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 
@@ -649,280 +650,278 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelColumnas.setBackground(new Color(176, 196, 222));
 		panelBotonera.add(panelColumnas, BorderLayout.NORTH);
 		GridBagLayout gbl_panelColumnas = new GridBagLayout();
-		gbl_panelColumnas.columnWidths = new int[] {30, 100, 100, 100, 100, 100, 100, 100, 100, 10};
-		gbl_panelColumnas.rowHeights = new int[] {10, 30, 10, 20, 20, 20, 10};
-		gbl_panelColumnas.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0};
-		gbl_panelColumnas.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelColumnas.columnWidths = new int[] {30, 100, 100, 100, 100, 100, 100, 10};
+		gbl_panelColumnas.rowHeights = new int[] {10, 10, 10, 10, 10};
+		gbl_panelColumnas.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0};
+		gbl_panelColumnas.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelColumnas.setLayout(gbl_panelColumnas);
-		
-		lblNewLabel_2 = new JLabel("OCULTAR COLUMNAS");
-		lblNewLabel_2.setBorder(new MatteBorder(0, 0, 2, 0, (Color) new Color(0, 0, 0)));
-		lblNewLabel_2.setFont(new Font("Cambria", Font.BOLD, 15));
-		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_2.fill = GridBagConstraints.VERTICAL;
-		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_2.gridx = 1;
-		gbc_lblNewLabel_2.gridy = 1;
-		panelColumnas.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
 		chckbxELS = new JCheckBox("ELS");
 		chckbxELS.setOpaque(false);
-		chckbxELS.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxELS.setFont(new Font("Cambria", Font.PLAIN, 10));
 		chckbxELS.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxELS = new GridBagConstraints();
+		gbc_chckbxELS.insets = new Insets(5, 5, 0, 5);
 		gbc_chckbxELS.anchor = GridBagConstraints.WEST;
-		gbc_chckbxELS.fill = GridBagConstraints.VERTICAL;
-		gbc_chckbxELS.insets = new Insets(0, 0, 5, 5);
 		gbc_chckbxELS.gridx = 1;
-		gbc_chckbxELS.gridy = 3;
+		gbc_chckbxELS.gridy = 0;
 		panelColumnas.add(chckbxELS, gbc_chckbxELS);
 		
-		chckbxSucursal = new JCheckBox("SUCURSAL");
-		chckbxSucursal.setOpaque(false);
-		chckbxSucursal.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxSucursal.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxSucursal = new GridBagConstraints();
-		gbc_chckbxSucursal.anchor = GridBagConstraints.WEST;
-		gbc_chckbxSucursal.fill = GridBagConstraints.VERTICAL;
-		gbc_chckbxSucursal.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxSucursal.gridx = 2;
-		gbc_chckbxSucursal.gridy = 3;
-		panelColumnas.add(chckbxSucursal, gbc_chckbxSucursal);
-		
-		chckbxModelo = new JCheckBox("MODELO");
-		chckbxModelo.setOpaque(false);
-		chckbxModelo.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxModelo.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxModelo = new GridBagConstraints();
-		gbc_chckbxModelo.anchor = GridBagConstraints.WEST;
-		gbc_chckbxModelo.fill = GridBagConstraints.VERTICAL;
-		gbc_chckbxModelo.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxModelo.gridx = 3;
-		gbc_chckbxModelo.gridy = 3;
-		panelColumnas.add(chckbxModelo, gbc_chckbxModelo);
+		chckbxEquipo = new JCheckBox("EQUIPO");
+		chckbxEquipo.setOpaque(false);
+		chckbxEquipo.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxEquipo.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxEquipo = new GridBagConstraints();
+		gbc_chckbxEquipo.insets = new Insets(5, 5, 0, 5);
+		gbc_chckbxEquipo.anchor = GridBagConstraints.WEST;
+		gbc_chckbxEquipo.gridx = 2;
+		gbc_chckbxEquipo.gridy = 0;
+		panelColumnas.add(chckbxEquipo, gbc_chckbxEquipo);
 		
 		chckbxRevisión = new JCheckBox("REVISIÓN");
 		chckbxRevisión.setOpaque(false);
-		chckbxRevisión.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxRevisión.setFont(new Font("Cambria", Font.PLAIN, 10));
 		chckbxRevisión.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxRevisión = new GridBagConstraints();
+		gbc_chckbxRevisión.insets = new Insets(5, 5, 0, 5);
 		gbc_chckbxRevisión.anchor = GridBagConstraints.WEST;
-		gbc_chckbxRevisión.fill = GridBagConstraints.VERTICAL;
-		gbc_chckbxRevisión.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxRevisión.gridx = 4;
-		gbc_chckbxRevisión.gridy = 3;
+		gbc_chckbxRevisión.gridx = 3;
+		gbc_chckbxRevisión.gridy = 0;
 		panelColumnas.add(chckbxRevisión, gbc_chckbxRevisión);
+		
+		chckbxEstadoFis = new JCheckBox("ESTADO FÍSICO");
+		chckbxEstadoFis.setOpaque(false);
+		chckbxEstadoFis.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxEstadoFis.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxEstadoFis = new GridBagConstraints();
+		gbc_chckbxEstadoFis.insets = new Insets(5, 5, 0, 5);
+		gbc_chckbxEstadoFis.anchor = GridBagConstraints.WEST;
+		gbc_chckbxEstadoFis.gridx = 4;
+		gbc_chckbxEstadoFis.gridy = 0;
+		panelColumnas.add(chckbxEstadoFis, gbc_chckbxEstadoFis);
+		
+		chckbxNumeroRemito = new JCheckBox("NÚMERO REMITO");
+		chckbxNumeroRemito.setOpaque(false);
+		chckbxNumeroRemito.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxNumeroRemito.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxNumeroRemito = new GridBagConstraints();
+		gbc_chckbxNumeroRemito.insets = new Insets(5, 5, 0, 5);
+		gbc_chckbxNumeroRemito.anchor = GridBagConstraints.WEST;
+		gbc_chckbxNumeroRemito.gridx = 5;
+		gbc_chckbxNumeroRemito.gridy = 0;
+		panelColumnas.add(chckbxNumeroRemito, gbc_chckbxNumeroRemito);
+		
+		chckbxPrecioDolar = new JCheckBox("PRECIO DOLAR");
+		chckbxPrecioDolar.setOpaque(false);
+		chckbxPrecioDolar.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxPrecioDolar.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxPrecioDolar = new GridBagConstraints();
+		gbc_chckbxPrecioDolar.insets = new Insets(5, 5, 0, 5);
+		gbc_chckbxPrecioDolar.anchor = GridBagConstraints.WEST;
+		gbc_chckbxPrecioDolar.gridx = 6;
+		gbc_chckbxPrecioDolar.gridy = 0;
+		panelColumnas.add(chckbxPrecioDolar, gbc_chckbxPrecioDolar);
+		
+		lblNewLabel_3 = new JLabel("     ");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+		gbc_lblNewLabel_3.insets = new Insets(5, 5, 0, 5);
+		gbc_lblNewLabel_3.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel_3.gridx = 7;
+		gbc_lblNewLabel_3.gridy = 0;
+		panelColumnas.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		
+		lblNewLabel_2 = new JLabel("OCULTAR");
+		lblNewLabel_2.setFont(new Font("Cambria", Font.BOLD, 14));
+		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+		gbc_lblNewLabel_2.insets = new Insets(0, 20, 0, 20);
+		gbc_lblNewLabel_2.gridx = 0;
+		gbc_lblNewLabel_2.gridy = 1;
+		panelColumnas.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		
+		chckbxEntrada = new JCheckBox("ENTRADA");
+		chckbxEntrada.setOpaque(false);
+		chckbxEntrada.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxEntrada.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxEntrada = new GridBagConstraints();
+		gbc_chckbxEntrada.insets = new Insets(0, 5, 0, 5);
+		gbc_chckbxEntrada.anchor = GridBagConstraints.WEST;
+		gbc_chckbxEntrada.gridx = 1;
+		gbc_chckbxEntrada.gridy = 1;
+		panelColumnas.add(chckbxEntrada, gbc_chckbxEntrada);
+		
+		chckbxMarca = new JCheckBox("MARCA");
+		chckbxMarca.setOpaque(false);
+		chckbxMarca.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxMarca.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxMarca = new GridBagConstraints();
+		gbc_chckbxMarca.insets = new Insets(0, 5, 0, 5);
+		gbc_chckbxMarca.anchor = GridBagConstraints.WEST;
+		gbc_chckbxMarca.gridx = 2;
+		gbc_chckbxMarca.gridy = 1;
+		panelColumnas.add(chckbxMarca, gbc_chckbxMarca);
+		
+		chckbxClienteCliente = new JCheckBox("CLIENTE/CLIENTE");
+		chckbxClienteCliente.setOpaque(false);
+		chckbxClienteCliente.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxClienteCliente.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxClienteCliente = new GridBagConstraints();
+		gbc_chckbxClienteCliente.insets = new Insets(0, 5, 0, 5);
+		gbc_chckbxClienteCliente.anchor = GridBagConstraints.WEST;
+		gbc_chckbxClienteCliente.gridx = 3;
+		gbc_chckbxClienteCliente.gridy = 1;
+		panelColumnas.add(chckbxClienteCliente, gbc_chckbxClienteCliente);
+		
+		chckbxEstadoTec = new JCheckBox("ESTADO TÉCNICO");
+		chckbxEstadoTec.setOpaque(false);
+		chckbxEstadoTec.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxEstadoTec.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxEstadoTec = new GridBagConstraints();
+		gbc_chckbxEstadoTec.insets = new Insets(0, 5, 0, 5);
+		gbc_chckbxEstadoTec.anchor = GridBagConstraints.WEST;
+		gbc_chckbxEstadoTec.gridx = 4;
+		gbc_chckbxEstadoTec.gridy = 1;
+		panelColumnas.add(chckbxEstadoTec, gbc_chckbxEstadoTec);
+		
+		chckbxPresupuestoGeneradoColumna = new JCheckBox("PRESUPUESTO GENERADO");
+		chckbxPresupuestoGeneradoColumna.setOpaque(false);
+		chckbxPresupuestoGeneradoColumna.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxPresupuestoGeneradoColumna.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxPresupuestoGeneradoColumna = new GridBagConstraints();
+		gbc_chckbxPresupuestoGeneradoColumna.insets = new Insets(0, 5, 0, 5);
+		gbc_chckbxPresupuestoGeneradoColumna.anchor = GridBagConstraints.WEST;
+		gbc_chckbxPresupuestoGeneradoColumna.gridx = 5;
+		gbc_chckbxPresupuestoGeneradoColumna.gridy = 1;
+		panelColumnas.add(chckbxPresupuestoGeneradoColumna, gbc_chckbxPresupuestoGeneradoColumna);
+		
+		chckbxPago = new JCheckBox("PAGO");
+		chckbxPago.setOpaque(false);
+		chckbxPago.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxPago.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxPago = new GridBagConstraints();
+		gbc_chckbxPago.insets = new Insets(0, 5, 0, 5);
+		gbc_chckbxPago.anchor = GridBagConstraints.WEST;
+		gbc_chckbxPago.gridx = 6;
+		gbc_chckbxPago.gridy = 1;
+		panelColumnas.add(chckbxPago, gbc_chckbxPago);
+		
+		lblNewLabel_7 = new JLabel("COLUMNAS");
+		lblNewLabel_7.setFont(new Font("Cambria", Font.BOLD, 14));
+		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
+		gbc_lblNewLabel_7.insets = new Insets(0, 20, 0, 20);
+		gbc_lblNewLabel_7.gridx = 0;
+		gbc_lblNewLabel_7.gridy = 2;
+		panelColumnas.add(lblNewLabel_7, gbc_lblNewLabel_7);
+		
+		chckbxCliente = new JCheckBox("CLIENTE");
+		chckbxCliente.setOpaque(false);
+		chckbxCliente.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxCliente.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxCliente = new GridBagConstraints();
+		gbc_chckbxCliente.insets = new Insets(0, 5, 0, 5);
+		gbc_chckbxCliente.anchor = GridBagConstraints.WEST;
+		gbc_chckbxCliente.gridx = 1;
+		gbc_chckbxCliente.gridy = 2;
+		panelColumnas.add(chckbxCliente, gbc_chckbxCliente);
+		
+		chckbxModelo = new JCheckBox("MODELO");
+		chckbxModelo.setOpaque(false);
+		chckbxModelo.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxModelo.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxModelo = new GridBagConstraints();
+		gbc_chckbxModelo.insets = new Insets(0, 5, 0, 5);
+		gbc_chckbxModelo.anchor = GridBagConstraints.WEST;
+		gbc_chckbxModelo.gridx = 2;
+		gbc_chckbxModelo.gridy = 2;
+		panelColumnas.add(chckbxModelo, gbc_chckbxModelo);
+		
+		chckbxAviso = new JCheckBox("AVISO");
+		chckbxAviso.setOpaque(false);
+		chckbxAviso.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxAviso.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxAviso = new GridBagConstraints();
+		gbc_chckbxAviso.insets = new Insets(0, 5, 0, 5);
+		gbc_chckbxAviso.anchor = GridBagConstraints.WEST;
+		gbc_chckbxAviso.gridx = 3;
+		gbc_chckbxAviso.gridy = 2;
+		panelColumnas.add(chckbxAviso, gbc_chckbxAviso);
+		
+		chckbxTecnico = new JCheckBox("TÉCNICO");
+		chckbxTecnico.setOpaque(false);
+		chckbxTecnico.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxTecnico.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxTecnico = new GridBagConstraints();
+		gbc_chckbxTecnico.insets = new Insets(0, 5, 0, 5);
+		gbc_chckbxTecnico.anchor = GridBagConstraints.WEST;
+		gbc_chckbxTecnico.gridx = 4;
+		gbc_chckbxTecnico.gridy = 2;
+		panelColumnas.add(chckbxTecnico, gbc_chckbxTecnico);
+		
+		chckbxPresupuestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENVIADO");
+		chckbxPresupuestoEnviadoColumna.setOpaque(false);
+		chckbxPresupuestoEnviadoColumna.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxPresupuestoEnviadoColumna.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxPresupúestoEnviadoColumna = new GridBagConstraints();
+		gbc_chckbxPresupúestoEnviadoColumna.insets = new Insets(0, 5, 0, 5);
+		gbc_chckbxPresupúestoEnviadoColumna.anchor = GridBagConstraints.WEST;
+		gbc_chckbxPresupúestoEnviadoColumna.gridx = 5;
+		gbc_chckbxPresupúestoEnviadoColumna.gridy = 2;
+		panelColumnas.add(chckbxPresupuestoEnviadoColumna, gbc_chckbxPresupúestoEnviadoColumna);
+		
+		chckbxSucursal = new JCheckBox("SUCURSAL");
+		chckbxSucursal.setOpaque(false);
+		chckbxSucursal.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxSucursal.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxSucursal = new GridBagConstraints();
+		gbc_chckbxSucursal.insets = new Insets(0, 5, 0, 5);
+		gbc_chckbxSucursal.anchor = GridBagConstraints.WEST;
+		gbc_chckbxSucursal.gridx = 1;
+		gbc_chckbxSucursal.gridy = 3;
+		panelColumnas.add(chckbxSucursal, gbc_chckbxSucursal);
+		
+		chckbxSerie = new JCheckBox("SERIE");
+		chckbxSerie.setOpaque(false);
+		chckbxSerie.setFont(new Font("Cambria", Font.PLAIN, 10));
+		chckbxSerie.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxSerie = new GridBagConstraints();
+		gbc_chckbxSerie.insets = new Insets(0, 5, 0, 5);
+		gbc_chckbxSerie.anchor = GridBagConstraints.WEST;
+		gbc_chckbxSerie.gridx = 2;
+		gbc_chckbxSerie.gridy = 3;
+		panelColumnas.add(chckbxSerie, gbc_chckbxSerie);
 		
 		chckbxEstadoCom = new JCheckBox("ESTADO COMERCIAL");
 		chckbxEstadoCom.setOpaque(false);
-		chckbxEstadoCom.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxEstadoCom.setFont(new Font("Cambria", Font.PLAIN, 10));
 		chckbxEstadoCom.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxEstadoCom = new GridBagConstraints();
+		gbc_chckbxEstadoCom.insets = new Insets(0, 5, 0, 5);
 		gbc_chckbxEstadoCom.anchor = GridBagConstraints.WEST;
-		gbc_chckbxEstadoCom.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxEstadoCom.gridx = 5;
+		gbc_chckbxEstadoCom.gridx = 3;
 		gbc_chckbxEstadoCom.gridy = 3;
 		panelColumnas.add(chckbxEstadoCom, gbc_chckbxEstadoCom);
 		
 		chckbxUbicacionRemito = new JCheckBox("UBICACIÓN REMITO");
 		chckbxUbicacionRemito.setOpaque(false);
-		chckbxUbicacionRemito.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxUbicacionRemito.setFont(new Font("Cambria", Font.PLAIN, 10));
 		chckbxUbicacionRemito.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxUbicacionRemito = new GridBagConstraints();
+		gbc_chckbxUbicacionRemito.insets = new Insets(0, 5, 0, 5);
 		gbc_chckbxUbicacionRemito.anchor = GridBagConstraints.WEST;
-		gbc_chckbxUbicacionRemito.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxUbicacionRemito.gridx = 6;
+		gbc_chckbxUbicacionRemito.gridx = 4;
 		gbc_chckbxUbicacionRemito.gridy = 3;
 		panelColumnas.add(chckbxUbicacionRemito, gbc_chckbxUbicacionRemito);
 		
-		chckbxPresupuestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENVIADO");
-		chckbxPresupuestoEnviadoColumna.setOpaque(false);
-		chckbxPresupuestoEnviadoColumna.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxPresupuestoEnviadoColumna.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxPresupúestoEnviadoColumna = new GridBagConstraints();
-		gbc_chckbxPresupúestoEnviadoColumna.anchor = GridBagConstraints.WEST;
-		gbc_chckbxPresupúestoEnviadoColumna.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxPresupúestoEnviadoColumna.gridx = 7;
-		gbc_chckbxPresupúestoEnviadoColumna.gridy = 3;
-		panelColumnas.add(chckbxPresupuestoEnviadoColumna, gbc_chckbxPresupúestoEnviadoColumna);
-		
-		chckbxPago = new JCheckBox("PAGO");
-		chckbxPago.setOpaque(false);
-		chckbxPago.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxPago.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxPago = new GridBagConstraints();
-		gbc_chckbxPago.anchor = GridBagConstraints.WEST;
-		gbc_chckbxPago.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxPago.gridx = 8;
-		gbc_chckbxPago.gridy = 3;
-		panelColumnas.add(chckbxPago, gbc_chckbxPago);
-		
-		lblNewLabel_3 = new JLabel("     ");
-		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-		gbc_lblNewLabel_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel_3.gridx = 9;
-		gbc_lblNewLabel_3.gridy = 3;
-		panelColumnas.add(lblNewLabel_3, gbc_lblNewLabel_3);
-		
-		chckbxEntrada = new JCheckBox("ENTRADA");
-		chckbxEntrada.setOpaque(false);
-		chckbxEntrada.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxEntrada.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxEntrada = new GridBagConstraints();
-		gbc_chckbxEntrada.anchor = GridBagConstraints.WEST;
-		gbc_chckbxEntrada.fill = GridBagConstraints.VERTICAL;
-		gbc_chckbxEntrada.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxEntrada.gridx = 1;
-		gbc_chckbxEntrada.gridy = 4;
-		panelColumnas.add(chckbxEntrada, gbc_chckbxEntrada);
-		
-		chckbxEquipo = new JCheckBox("EQUIPO");
-		chckbxEquipo.setOpaque(false);
-		chckbxEquipo.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxEquipo.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxEquipo = new GridBagConstraints();
-		gbc_chckbxEquipo.anchor = GridBagConstraints.WEST;
-		gbc_chckbxEquipo.fill = GridBagConstraints.VERTICAL;
-		gbc_chckbxEquipo.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxEquipo.gridx = 2;
-		gbc_chckbxEquipo.gridy = 4;
-		panelColumnas.add(chckbxEquipo, gbc_chckbxEquipo);
-		
-		chckbxSerie = new JCheckBox("SERIE");
-		chckbxSerie.setOpaque(false);
-		chckbxSerie.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxSerie.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxSerie = new GridBagConstraints();
-		gbc_chckbxSerie.anchor = GridBagConstraints.WEST;
-		gbc_chckbxSerie.fill = GridBagConstraints.VERTICAL;
-		gbc_chckbxSerie.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxSerie.gridx = 3;
-		gbc_chckbxSerie.gridy = 4;
-		panelColumnas.add(chckbxSerie, gbc_chckbxSerie);
-		
-		chckbxClienteCliente = new JCheckBox("CLIENTE/CLIENTE");
-		chckbxClienteCliente.setOpaque(false);
-		chckbxClienteCliente.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxClienteCliente.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxClienteCliente = new GridBagConstraints();
-		gbc_chckbxClienteCliente.anchor = GridBagConstraints.WEST;
-		gbc_chckbxClienteCliente.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxClienteCliente.fill = GridBagConstraints.VERTICAL;
-		gbc_chckbxClienteCliente.gridx = 4;
-		gbc_chckbxClienteCliente.gridy = 4;
-		panelColumnas.add(chckbxClienteCliente, gbc_chckbxClienteCliente);
-		
-		chckbxEstadoFis = new JCheckBox("ESTADO FÍSICO");
-		chckbxEstadoFis.setOpaque(false);
-		chckbxEstadoFis.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxEstadoFis.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxEstadoFis = new GridBagConstraints();
-		gbc_chckbxEstadoFis.anchor = GridBagConstraints.WEST;
-		gbc_chckbxEstadoFis.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxEstadoFis.gridx = 5;
-		gbc_chckbxEstadoFis.gridy = 4;
-		panelColumnas.add(chckbxEstadoFis, gbc_chckbxEstadoFis);
-		
-		chckbxNumeroRemito = new JCheckBox("NÚMERO REMITO");
-		chckbxNumeroRemito.setOpaque(false);
-		chckbxNumeroRemito.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxNumeroRemito.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxNumeroRemito = new GridBagConstraints();
-		gbc_chckbxNumeroRemito.anchor = GridBagConstraints.WEST;
-		gbc_chckbxNumeroRemito.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNumeroRemito.gridx = 6;
-		gbc_chckbxNumeroRemito.gridy = 4;
-		panelColumnas.add(chckbxNumeroRemito, gbc_chckbxNumeroRemito);
-		
 		chckbxPrecioPeso = new JCheckBox("PRECIO PESO");
 		chckbxPrecioPeso.setOpaque(false);
-		chckbxPrecioPeso.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckbxPrecioPeso.setFont(new Font("Cambria", Font.PLAIN, 10));
 		chckbxPrecioPeso.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxPrecioPeso = new GridBagConstraints();
+		gbc_chckbxPrecioPeso.insets = new Insets(0, 5, 0, 5);
 		gbc_chckbxPrecioPeso.anchor = GridBagConstraints.WEST;
-		gbc_chckbxPrecioPeso.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxPrecioPeso.gridx = 7;
-		gbc_chckbxPrecioPeso.gridy = 4;
+		gbc_chckbxPrecioPeso.gridx = 5;
+		gbc_chckbxPrecioPeso.gridy = 3;
 		panelColumnas.add(chckbxPrecioPeso, gbc_chckbxPrecioPeso);
-		
-		chckbxCliente = new JCheckBox("CLIENTE");
-		chckbxCliente.setOpaque(false);
-		chckbxCliente.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxCliente.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxCliente = new GridBagConstraints();
-		gbc_chckbxCliente.anchor = GridBagConstraints.WEST;
-		gbc_chckbxCliente.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxCliente.gridx = 1;
-		gbc_chckbxCliente.gridy = 5;
-		panelColumnas.add(chckbxCliente, gbc_chckbxCliente);
-		
-		chckbxMarca = new JCheckBox("MARCA");
-		chckbxMarca.setOpaque(false);
-		chckbxMarca.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxMarca.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxMarca = new GridBagConstraints();
-		gbc_chckbxMarca.anchor = GridBagConstraints.WEST;
-		gbc_chckbxMarca.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxMarca.gridx = 2;
-		gbc_chckbxMarca.gridy = 5;
-		panelColumnas.add(chckbxMarca, gbc_chckbxMarca);
-		
-		chckbxAviso = new JCheckBox("AVISO");
-		chckbxAviso.setOpaque(false);
-		chckbxAviso.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxAviso.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxAviso = new GridBagConstraints();
-		gbc_chckbxAviso.anchor = GridBagConstraints.WEST;
-		gbc_chckbxAviso.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxAviso.gridx = 3;
-		gbc_chckbxAviso.gridy = 5;
-		panelColumnas.add(chckbxAviso, gbc_chckbxAviso);
-		
-		chckbxEstadoTec = new JCheckBox("ESTADO TÉCNICO");
-		chckbxEstadoTec.setOpaque(false);
-		chckbxEstadoTec.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxEstadoTec.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxEstadoTec = new GridBagConstraints();
-		gbc_chckbxEstadoTec.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
-		gbc_chckbxEstadoTec.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxEstadoTec.gridx = 4;
-		gbc_chckbxEstadoTec.gridy = 5;
-		panelColumnas.add(chckbxEstadoTec, gbc_chckbxEstadoTec);
-		
-		chckbxTecnico = new JCheckBox("TÉCNICO");
-		chckbxTecnico.setOpaque(false);
-		chckbxTecnico.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxTecnico.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxTecnico = new GridBagConstraints();
-		gbc_chckbxTecnico.anchor = GridBagConstraints.WEST;
-		gbc_chckbxTecnico.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxTecnico.gridx = 5;
-		gbc_chckbxTecnico.gridy = 5;
-		panelColumnas.add(chckbxTecnico, gbc_chckbxTecnico);
-		
-		chckbxPresupuestoGeneradoColumna = new JCheckBox("PRESUPUESTO GENERADO");
-		chckbxPresupuestoGeneradoColumna.setOpaque(false);
-		chckbxPresupuestoGeneradoColumna.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxPresupuestoGeneradoColumna.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxPresupuestoGeneradoColumna = new GridBagConstraints();
-		gbc_chckbxPresupuestoGeneradoColumna.anchor = GridBagConstraints.WEST;
-		gbc_chckbxPresupuestoGeneradoColumna.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxPresupuestoGeneradoColumna.gridx = 6;
-		gbc_chckbxPresupuestoGeneradoColumna.gridy = 5;
-		panelColumnas.add(chckbxPresupuestoGeneradoColumna, gbc_chckbxPresupuestoGeneradoColumna);
-		
-		chckbxPrecioDolar = new JCheckBox("PRECIO DOLAR");
-		chckbxPrecioDolar.setOpaque(false);
-		chckbxPrecioDolar.setFont(new Font("Cambria", Font.PLAIN, 12));
-		chckbxPrecioDolar.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxPrecioDolar = new GridBagConstraints();
-		gbc_chckbxPrecioDolar.anchor = GridBagConstraints.WEST;
-		gbc_chckbxPrecioDolar.insets = new Insets(0, 0, 0, 5);
-		gbc_chckbxPrecioDolar.gridx = 7;
-		gbc_chckbxPrecioDolar.gridy = 5;
-		panelColumnas.add(chckbxPrecioDolar, gbc_chckbxPrecioDolar);
 
 		panelInferior = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panelInferior.getLayout();
@@ -935,6 +934,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelInferior.add(lblNewLabel);
 
 		panelCentral = new JPanel();
+		panelCentral.setBorder(new MatteBorder(1, 1, 0, 1, (Color) new Color(0, 128, 128)));
 		panelCentral.setBackground(new Color(176, 196, 222));
 		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
 		panelCentral.setLayout(new BorderLayout(0, 0));
