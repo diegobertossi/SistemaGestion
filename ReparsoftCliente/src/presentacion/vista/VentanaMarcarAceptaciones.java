@@ -33,6 +33,9 @@ import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
+import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class VentanaMarcarAceptaciones extends JFrame {
 
@@ -82,7 +85,6 @@ public class VentanaMarcarAceptaciones extends JFrame {
 	private JLabel lblseMuestranLos;
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_7;
-	private JPanel panel_1;
 
 	protected void this_windowOpened(WindowEvent e) {
 		centrarVentana();
@@ -115,16 +117,18 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		panelSuperior.setLayout(new BorderLayout(0, 0));
 
 		panelFiltros = new JPanel();
+		panelFiltros.setPreferredSize(new Dimension(600, 160));
+		panelFiltros.setMaximumSize(new Dimension(600, 160));
 		panelFiltros.setFont(new Font("Cambria", Font.PLAIN, 10));
 		panelFiltros.setBackground(new Color(176, 196, 222));
-		panelFiltros.setBorder(new MatteBorder(2, 2, 2, 0, (Color) new Color(0, 128, 128)));
+		panelFiltros.setBorder(new MatteBorder(2, 2, 0, 0, (Color) new Color(0, 128, 128)));
 
 		panelFiltros.setBounds(35, 50, 994, 134);
 		panelSuperior.add(panelFiltros, BorderLayout.CENTER);
 		GridBagLayout gbl_panelFiltros = new GridBagLayout();
-		gbl_panelFiltros.columnWidths = new int[] { 30, 50, 150, 50, 50 };
+		gbl_panelFiltros.columnWidths = new int[] { 50, 50, 350, 50, 184, 32 };
 		gbl_panelFiltros.rowHeights = new int[] { 10, 10, 10, 10, 10, 10 };
-		gbl_panelFiltros.columnWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 0.0 };
+		gbl_panelFiltros.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
 
 		gbl_panelFiltros.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		panelFiltros.setLayout(gbl_panelFiltros);
@@ -144,7 +148,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		comboFiltroCliente.setEnabled(false);
 		comboFiltroCliente.setBackground(new Color(176, 196, 222));
 		comboFiltroCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
-		comboFiltroCliente.setPreferredSize(new Dimension(150, 20));
+		comboFiltroCliente.setPreferredSize(new Dimension(350, 20));
 		GridBagConstraints gbc_comboFiltroCliente = new GridBagConstraints();
 		gbc_comboFiltroCliente.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroCliente.fill = GridBagConstraints.HORIZONTAL;
@@ -157,10 +161,22 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		radioButtonCliente.setFont(new Font("Cambria", Font.BOLD, 14));
 		GridBagConstraints gbc_radioButtonCliente = new GridBagConstraints();
 		gbc_radioButtonCliente.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonCliente.insets = new Insets(0, 0, 5, 5);
+		gbc_radioButtonCliente.insets = new Insets(0, 0, 5, 100);
 		gbc_radioButtonCliente.gridx = 3;
 		gbc_radioButtonCliente.gridy = 1;
 		panelFiltros.add(radioButtonCliente, gbc_radioButtonCliente);
+		
+				btnFiltrar = new JButton("FILTRAR");
+				GridBagConstraints gbc_btnFiltrar = new GridBagConstraints();
+				gbc_btnFiltrar.insets = new Insets(0, 0, 5, 5);
+				gbc_btnFiltrar.gridx = 4;
+				gbc_btnFiltrar.gridy = 1;
+				panelFiltros.add(btnFiltrar, gbc_btnFiltrar);
+				btnFiltrar.setSize(new Dimension(150, 30));
+				btnFiltrar.setMinimumSize(new Dimension(170, 30));
+				btnFiltrar.setMaximumSize(new Dimension(170, 30));
+				btnFiltrar.setPreferredSize(new Dimension(170, 30));
+				btnFiltrar.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		JLabel lblNewLabel_1_1 = new JLabel("SUCURSAL");
 		lblNewLabel_1_1.setBackground(new Color(176, 196, 222));
@@ -177,7 +193,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		comboFiltroSucursal.setEnabled(false);
 		comboFiltroSucursal.setBackground(new Color(176, 196, 222));
 		comboFiltroSucursal.setFont(new Font("Cambria", Font.PLAIN, 14));
-		comboFiltroSucursal.setPreferredSize(new Dimension(150, 20));
+		comboFiltroSucursal.setPreferredSize(new Dimension(350, 20));
 		GridBagConstraints gbc_comboFiltroSucursal = new GridBagConstraints();
 		gbc_comboFiltroSucursal.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroSucursal.fill = GridBagConstraints.HORIZONTAL;
@@ -191,10 +207,22 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		GridBagConstraints gbc_radioButtonSucursal = new GridBagConstraints();
 		gbc_radioButtonSucursal.anchor = GridBagConstraints.WEST;
 		gbc_radioButtonSucursal.fill = GridBagConstraints.VERTICAL;
-		gbc_radioButtonSucursal.insets = new Insets(0, 0, 5, 5);
+		gbc_radioButtonSucursal.insets = new Insets(0, 0, 5, 100);
 		gbc_radioButtonSucursal.gridx = 3;
 		gbc_radioButtonSucursal.gridy = 2;
 		panelFiltros.add(radioButtonSucursal, gbc_radioButtonSucursal);
+		
+				btnMostrarTodo = new JButton("MOSTRAR TODO");
+				GridBagConstraints gbc_btnMostrarTodo = new GridBagConstraints();
+				gbc_btnMostrarTodo.insets = new Insets(0, 0, 5, 5);
+				gbc_btnMostrarTodo.gridx = 4;
+				gbc_btnMostrarTodo.gridy = 2;
+				panelFiltros.add(btnMostrarTodo, gbc_btnMostrarTodo);
+				btnMostrarTodo.setSize(new Dimension(170, 30));
+				btnMostrarTodo.setMinimumSize(new Dimension(170, 30));
+				btnMostrarTodo.setMaximumSize(new Dimension(170, 30));
+				btnMostrarTodo.setPreferredSize(new Dimension(170, 30));
+				btnMostrarTodo.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		JLabel lblNewLabel_3_1 = new JLabel("ELS");
 		lblNewLabel_3_1.setBackground(new Color(176, 196, 222));
@@ -211,7 +239,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		comboFiltroELS.setEnabled(false);
 		comboFiltroELS.setBackground(new Color(176, 196, 222));
 		comboFiltroELS.setFont(new Font("Cambria", Font.PLAIN, 14));
-		comboFiltroELS.setPreferredSize(new Dimension(150, 20));
+		comboFiltroELS.setPreferredSize(new Dimension(350, 20));
 		GridBagConstraints gbc_comboFiltroELS = new GridBagConstraints();
 		gbc_comboFiltroELS.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroELS.fill = GridBagConstraints.HORIZONTAL;
@@ -224,10 +252,26 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		radioButtonELS.setFont(new Font("Cambria", Font.BOLD, 14));
 		GridBagConstraints gbc_radioButtonELS = new GridBagConstraints();
 		gbc_radioButtonELS.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonELS.insets = new Insets(0, 0, 5, 5);
+		gbc_radioButtonELS.insets = new Insets(0, 0, 5, 100);
 		gbc_radioButtonELS.gridx = 3;
 		gbc_radioButtonELS.gridy = 3;
 		panelFiltros.add(radioButtonELS, gbc_radioButtonELS);
+		
+				btnGrardarCambios = new JButton("GUARDAR CAMBIOS");
+				btnGrardarCambios.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					}
+				});
+				GridBagConstraints gbc_btnGrardarCambios = new GridBagConstraints();
+				gbc_btnGrardarCambios.insets = new Insets(0, 0, 5, 5);
+				gbc_btnGrardarCambios.gridx = 4;
+				gbc_btnGrardarCambios.gridy = 3;
+				panelFiltros.add(btnGrardarCambios, gbc_btnGrardarCambios);
+				btnGrardarCambios.setSize(new Dimension(170, 30));
+				btnGrardarCambios.setMinimumSize(new Dimension(170, 30));
+				btnGrardarCambios.setMaximumSize(new Dimension(170, 30));
+				btnGrardarCambios.setPreferredSize(new Dimension(170, 30));
+				btnGrardarCambios.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		JLabel lblNewLabel_6_1 = new JLabel("AVISO");
 		lblNewLabel_6_1.setBackground(new Color(176, 196, 222));
@@ -244,7 +288,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		comboFiltroAviso.setEnabled(false);
 		comboFiltroAviso.setBackground(new Color(176, 196, 222));
 		comboFiltroAviso.setFont(new Font("Cambria", Font.PLAIN, 14));
-		comboFiltroAviso.setPreferredSize(new Dimension(150, 20));
+		comboFiltroAviso.setPreferredSize(new Dimension(350, 20));
 		GridBagConstraints gbc_comboFiltroAviso = new GridBagConstraints();
 		gbc_comboFiltroAviso.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroAviso.fill = GridBagConstraints.HORIZONTAL;
@@ -257,19 +301,17 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		radioButtonAviso.setFont(new Font("Cambria", Font.BOLD, 14));
 		GridBagConstraints gbc_radioButtonAviso = new GridBagConstraints();
 		gbc_radioButtonAviso.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonAviso.insets = new Insets(0, 0, 5, 5);
+		gbc_radioButtonAviso.insets = new Insets(0, 0, 5, 100);
 		gbc_radioButtonAviso.gridx = 3;
 		gbc_radioButtonAviso.gridy = 4;
 		panelFiltros.add(radioButtonAviso, gbc_radioButtonAviso);
 
 		panelTitulo = new JPanel();
-		panelTitulo.setBorder(new LineBorder(new Color(0, 128, 128)));
+		panelTitulo.setBorder(new MatteBorder(2, 2, 0, 2, (Color) new Color(0, 128, 128)));
 		panelTitulo.setBackground(new Color(176, 196, 222));
 		panelSuperior.add(panelTitulo, BorderLayout.NORTH);
 		FlowLayout fl_panelTitulo = new FlowLayout(FlowLayout.LEFT, 25, 10);
 		panelTitulo.setLayout(fl_panelTitulo);
-
-		System.out.println("s");
 
 		JLabel lbTitulo_1 = new JLabel("LISTADO DE EQUIPOS");
 		lbTitulo_1.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -288,19 +330,10 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		panelBotonera.setLayout(new BorderLayout(0, 0));
 
 		panelColumnas = new JPanel();
-		panelColumnas.setBorder(new MatteBorder(0, 2, 2, 2, (Color) new Color(0, 128, 128)));
+		panelColumnas.setBorder(new MatteBorder(2, 2, 0, 2, (Color) new Color(0, 128, 128)));
 		panelColumnas.setBackground(new Color(176, 196, 222));
 		panelBotonera.add(panelColumnas, BorderLayout.NORTH);
 		panelColumnas.setLayout(new BorderLayout(0, 0));
-
-		lblseMuestranLos = new JLabel(
-				"<html><center>SE MUESTRAN LOS EQUIPOS CUYOS PRESUPUESTOS FUERON ENVIADOS Y ESTÁN PENDIENTES DE RESPUESTA<html>");
-		lblseMuestranLos.setHorizontalAlignment(SwingConstants.CENTER);
-		lblseMuestranLos.setForeground(new Color(0, 0, 128));
-		lblseMuestranLos.setFont(new Font("Cambria", Font.BOLD, 14));
-		lblseMuestranLos.setBorder(null);
-		lblseMuestranLos.setBackground(Color.WHITE);
-		panelColumnas.add(lblseMuestranLos, BorderLayout.CENTER);
 
 		lblNewLabel_3 = new JLabel("      ");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 40));
@@ -309,31 +342,15 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		lblNewLabel_7 = new JLabel("      ");
 		lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		panelColumnas.add(lblNewLabel_7, BorderLayout.EAST);
-
-		panel_1 = new JPanel();
-		panel_1.setBorder(new MatteBorder(2, 0, 2, 2, (Color) new Color(0, 128, 128)));
-		panel_1.setBackground(new Color(176, 196, 222));
-		panelSuperior.add(panel_1, BorderLayout.EAST);
-		panel_1.setLayout(null);
-		panel_1.setPreferredSize(new Dimension(700, 50));
-
-		btnGrardarCambios = new JButton("GUARDAR CAMBIOS");
-		btnGrardarCambios.setBounds(316, 64, 166, 30);
-		panel_1.add(btnGrardarCambios);
-		btnGrardarCambios.setPreferredSize(new Dimension(150, 30));
-		btnGrardarCambios.setFont(new Font("Cambria", Font.BOLD, 14));
-
-		btnFiltrar = new JButton("FILTRAR");
-		btnFiltrar.setBounds(5, 46, 150, 30);
-		panel_1.add(btnFiltrar);
-		btnFiltrar.setPreferredSize(new Dimension(150, 30));
-		btnFiltrar.setFont(new Font("Cambria", Font.BOLD, 14));
-
-		btnMostrarTodo = new JButton("MOSTRAR TODO");
-		btnMostrarTodo.setBounds(5, 87, 150, 30);
-		panel_1.add(btnMostrarTodo);
-		btnMostrarTodo.setPreferredSize(new Dimension(150, 30));
-		btnMostrarTodo.setFont(new Font("Cambria", Font.BOLD, 14));
+		
+				lblseMuestranLos = new JLabel(
+						"<html><center>SE MUESTRAN LOS EQUIPOS CUYOS PRESUPUESTOS FUERON ENVIADOS Y ESTÁN PENDIENTES DE RESPUESTA<html>");
+				panelColumnas.add(lblseMuestranLos, BorderLayout.CENTER);
+				lblseMuestranLos.setHorizontalAlignment(SwingConstants.CENTER);
+				lblseMuestranLos.setForeground(new Color(0, 0, 128));
+				lblseMuestranLos.setFont(new Font("Cambria", Font.BOLD, 14));
+				lblseMuestranLos.setBorder(null);
+				lblseMuestranLos.setBackground(Color.WHITE);
 
 		panelInferior = new JPanel();
 		panelInferior.setBorder(new MatteBorder(0, 2, 2, 2, (Color) new Color(0, 128, 128)));
@@ -347,7 +364,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		panelInferior.add(lblNewLabel);
 
 		panelCentral = new JPanel();
-		panelCentral.setBorder(new MatteBorder(0, 2, 0, 2, (Color) new Color(0, 128, 128)));
+		panelCentral.setBorder(new MatteBorder(2, 2, 0, 2, (Color) new Color(0, 128, 128)));
 		panelCentral.setBackground(new Color(176, 196, 222));
 		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
 		panelCentral.setLayout(new BorderLayout(0, 0));
@@ -599,5 +616,4 @@ public class VentanaMarcarAceptaciones extends JFrame {
 	public void setBtnGuardarCambios(JButton btnGrardarCambios) {
 		this.btnGrardarCambios = btnGrardarCambios;
 	}
-
 }

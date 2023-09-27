@@ -16,6 +16,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -195,12 +197,12 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		else if (ventanaPresupuestos != null && e.getSource() == this.ventanaPresupuestos.getBtnmarcarAceptaciones()) {
 
 			ventanaMarcarAceptaciones = new VentanaMarcarAceptaciones(this);
+			cerraVentanaMarcarAceptaciones();
 			agregarListenerAMarcarAceptaciones();
 			llenarComboAviso();
 			llenarComboCliente();
 			llenarComboELS();
 			llenarComboSucursales();
-
 			cargarTablaMarcarAceptaciones();
 			initCheckboxListeners();
 
@@ -246,10 +248,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					TomarDatosDeTablas();
 
 					agregarListenersVentanaGenerarPresupuesto();
-					
-					
-					
-					
 
 				}
 			}
@@ -865,10 +863,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			for (int i = 0; i < filas; i++) {
 
 				estadoComercial = this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 7).toString();
-				if (estadoComercial.compareTo("A la Espera de Aceptación") > 0 ) {
-					
-					//System.out.println(estadoComercial);
+				if (estadoComercial.compareTo("A la Espera de Aceptación") > 0) {
 
+				
 					ReparacionDTO reparacionAeditar = TomarDatosVentanaMarcarAceptaciones(i);
 					this.agenda.editarReparacionR(reparacionAeditar);
 
@@ -881,6 +878,26 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			mostrarTodo();
 
 		}
+	}
+
+	public void cerraVentanaMarcarAceptaciones() {
+
+		this.ventanaMarcarAceptaciones.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				int opcion = JOptionPane.showConfirmDialog(ventanaMarcarAceptaciones,
+						"¿Desea salir de la ventana 'LISTADO'?", "Aviso", JOptionPane.YES_NO_OPTION);
+
+				if (opcion == JOptionPane.YES_OPTION) {
+
+					ventanaMarcarAceptaciones.dispose();
+					ventanaMarcarAceptaciones = null;
+
+				}
+
+			}
+
+		});
+
 	}
 
 	private void abrirSelectorImagen(JTextField txtRutaImagen_1, JTextField txtRutaImagen_2,
@@ -1111,8 +1128,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		ventanaGenerarPresupuesto.getGuardarPresupuestoPDF().addActionListener(this);
 		ventanaGenerarPresupuesto.getVisualizarPresupuestoPDF().addActionListener(this);
-		
-				
+
 		ventanaGenerarPresupuesto.getTextPrecioPeso().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1132,53 +1148,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			}
 		});
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	//	this.ventanaGenerarPresupuesto.getTextPrecioPeso().addKeyListener(this);
-
-//		this.ventanaGenerarPresupuesto.getTextPrecioPeso().addActionListener(this);
-//		this.ventanaGenerarPresupuesto.getTextPrecioPeso().addFocusListener(new FocusListener() {
-//			public void focusLost(FocusEvent e) {
-//
-//				if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().isEmpty()) {
-//
-//					ventanaGenerarPresupuesto.getTextPrecioPeso().setText("0.0");
-//				}
-//
-//			}
-//
-//			@Override
-//			public void focusGained(FocusEvent arg0) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//		});
-//
-//		this.ventanaGenerarPresupuesto.getTextPrecioDolar().addKeyListener(this);
-//		this.ventanaGenerarPresupuesto.getTextPrecioDolar().addFocusListener(new FocusListener() {
-//			public void focusLost(FocusEvent e) {
-//
-//				if (ventanaGenerarPresupuesto.getTextPrecioDolar().getText().isEmpty()) {
-//
-//					ventanaGenerarPresupuesto.getTextPrecioDolar().setText("0.0");
-//				}
-//
-//			}
-//
-//			@Override
-//			public void focusGained(FocusEvent arg0) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//		});
 
 		this.ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens().addActionListener(this);
 
@@ -1359,8 +1328,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			ventanaGenerarPresupuesto.getTextRemCliente().setText(RemitoCliente);
 
 			ventanaGenerarPresupuesto.getTextInforme().setText(Informe);
-			
-			
+
 			ventanaGenerarPresupuesto.getTextPrecioPeso().setText(monedaFormatter.formatPeso(PrecioPeso.toString()));
 			ventanaGenerarPresupuesto.getTextPrecioDolar().setText(monedaFormatter.formatDolar(PrecioDolar.toString()));
 
@@ -1401,7 +1369,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	}
 
 	public void TomarDatosDeTablasParaVisualizacion(int numeroELS) {
-		
+
 		monedaFormatter = new MonedaFormatter();
 
 		ventanaGenerarPresupuesto = new VentanaGenerarPresupuesto(this);
@@ -1485,8 +1453,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			if (arg0.getSource() == this.ventanaMarcarAceptaciones.getBtnMax()) {
 
-				System.out.println("max");
-
 				if (clickMax % 2 != 0) {
 
 					ventanaMarcarAceptaciones.setExtendedState(max);
@@ -1527,31 +1493,31 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		int ELS = Integer.parseInt(this.ventanaGenerarPresupuesto.getTextELS().getText());
 		String informeCliente = this.ventanaGenerarPresupuesto.getTextInforme().getText();
-		
+
 		double PrecioPeso;
 		double PrecioDolar;
-		
-	
+
 		if (monedaFormatter.tieneFormato(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText())) {
 
-			PrecioPeso = monedaFormatter.parseAmountGuardar(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
+			PrecioPeso = monedaFormatter
+					.parseAmountGuardar(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
 
 		} else {
 
 			PrecioPeso = monedaFormatter.parseAmount(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
 
 		}
-		
+
 		if (monedaFormatter.tieneFormato(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText())) {
 
-			PrecioDolar = monedaFormatter.parseAmountGuardar(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
+			PrecioDolar = monedaFormatter
+					.parseAmountGuardar(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
 
 		} else {
 
 			PrecioDolar = monedaFormatter.parseAmount(this.ventanaIngresoDePago.getTextPrecioDolar().getText());
 
 		}
-
 
 		presupuestoEnviado = ventanaGenerarPresupuesto.getChckPDFEnviado();
 		presupuestoGenerado = ventanaGenerarPresupuesto.getChckPDFGenerado();
@@ -1572,7 +1538,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		double PrecioPeso;
 		double PrecioDolar;
 		double pago;
-		
+
 		String EstadoComercial;
 
 		if (monedaFormatter.tieneFormato(this.ventanaIngresoDePago.getTextPrecioPeso().getText())) {
@@ -1584,7 +1550,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			PrecioPeso = monedaFormatter.parseAmount(this.ventanaIngresoDePago.getTextPrecioPeso().getText());
 
 		}
-		
+
 		if (monedaFormatter.tieneFormato(this.ventanaIngresoDePago.getTextPrecioDolar().getText())) {
 
 			PrecioDolar = monedaFormatter.parseAmountGuardar(this.ventanaIngresoDePago.getTextPrecioDolar().getText());
@@ -1605,7 +1571,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			pago = monedaFormatter.parseAmount(this.ventanaIngresoDePago.gettextIngresoPago().getText());
 
 		}
-		
+
 		EstadoComercial = ventanaIngresoDePago.getTextEstadoComercial().getText();
 
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, PrecioPeso, PrecioDolar, pago, EstadoComercial);
@@ -1634,30 +1600,30 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		String CondicionesPago = this.ventanaGenerarPresupuesto.getTextcondicionesPago().getText();
 		String plazoEntrega = this.ventanaGenerarPresupuesto.getTextPlazoEntrega().getText();
 
-		
 		double PrecioPeso;
 		double PrecioDolar;
-		
+
 		if (monedaFormatter.tieneFormato(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText())) {
 
-			PrecioPeso = monedaFormatter.parseAmountGuardar(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
+			PrecioPeso = monedaFormatter
+					.parseAmountGuardar(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
 
 		} else {
 
 			PrecioPeso = monedaFormatter.parseAmount(this.ventanaGenerarPresupuesto.getTextPrecioPeso().getText());
 
 		}
-		
+
 		if (monedaFormatter.tieneFormato(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText())) {
 
-			PrecioDolar = monedaFormatter.parseAmountGuardar(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
+			PrecioDolar = monedaFormatter
+					.parseAmountGuardar(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
 
 		} else {
 
 			PrecioDolar = monedaFormatter.parseAmount(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
 
 		}
-
 
 		RegistroPresupuestoDTO nuevoPresupuesto = new RegistroPresupuestoDTO(ELS, InformeCliente, RemitoCLiente,
 				PrecioPeso, PrecioDolar, NombreEquipo, Modelo, Marca, Serie, ClienteCliente, aviso, Sucursal, Cliente,
@@ -1669,21 +1635,17 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	private ReparacionDTO TomarDatosVentanaMarcarAceptaciones(int i) {
 
-		
 		int ELS = Integer.parseInt(this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 0).toString());
 		String estadoComercial;
 		String fechaAceptacion;
-	
-		
-		
+
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-		
-		
+
 		fechaAceptacion = dtf.format(LocalDateTime.now());
-				
+
 		estadoComercial = this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 7).toString();
 
-		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS,fechaAceptacion, estadoComercial );
+		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, fechaAceptacion, estadoComercial);
 
 		return reparacionAeditar;
 
