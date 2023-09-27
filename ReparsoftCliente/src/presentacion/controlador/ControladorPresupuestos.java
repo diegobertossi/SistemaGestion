@@ -857,7 +857,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 
 		else if (ventanaMarcarAceptaciones != null
-				&& e.getSource() == this.ventanaMarcarAceptaciones.getBtnActualizar()) {
+				&& e.getSource() == this.ventanaMarcarAceptaciones.getBtnGrardarCambios()) {
 
 			String estadoComercial;
 			int filas = this.ventanaMarcarAceptaciones.getModelReparaciones().getRowCount();
@@ -1034,7 +1034,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaMarcarAceptaciones.getBtnFiltrar().addActionListener(this);
 		ventanaMarcarAceptaciones.getBtnMax().addActionListener(this);
 		ventanaMarcarAceptaciones.getBtnMostrarTodo().addActionListener(this);
-		ventanaMarcarAceptaciones.getBtnActualizar().addActionListener(this);
+		ventanaMarcarAceptaciones.getBtnGrardarCambios().addActionListener(this);
 
 		ventanaMarcarAceptaciones.getComboFiltroAviso().addActionListener(this);
 		ventanaMarcarAceptaciones.getComboFiltroELS().addActionListener(this);
@@ -1057,7 +1057,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaMarcarAceptaciones.getRadioButtonSucursal().addItemListener(this);
 
 		ventanaMarcarAceptaciones.getBtnMax().addMouseListener(this);
-		ventanaMarcarAceptaciones.getBtnActualizar().addMouseListener(this);
+		ventanaMarcarAceptaciones.getBtnGrardarCambios().addMouseListener(this);
 		ventanaMarcarAceptaciones.getBtnFiltrar().addMouseListener(this);
 		ventanaMarcarAceptaciones.getBtnMostrarTodo().addMouseListener(this);
 
