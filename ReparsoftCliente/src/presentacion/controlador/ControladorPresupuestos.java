@@ -2,14 +2,9 @@ package presentacion.controlador;
 
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -19,28 +14,17 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import java.io.InputStream;
-//import java.util.Date;
-import java.sql.Date;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -48,30 +32,14 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFPicture;
-import org.apache.poi.xwpf.usermodel.XWPFPictureData;
-import org.apache.commons.io.IOUtils;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.List;
-
-import java.text.SimpleDateFormat;
-import java.io.ByteArrayOutputStream;
-
-import org.apache.poi.xwpf.usermodel.XWPFPicture;
-import org.apache.poi.util.Units;
-
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-import org.openxmlformats.schemas.drawingml.x2006.main.CTBlip;
-
 import com.inet.jortho.SpellChecker;
 
 import modelo.Agenda;
 import presentacion.reportes.ReportePresupuesto;
-import presentacion.vista.VentanaAgregarEquipo;
 import presentacion.vista.VentanaAgregarImagenes;
 import presentacion.vista.VentanaEmail;
 import presentacion.vista.VentanaGenerarPresupuesto;
@@ -79,26 +47,9 @@ import presentacion.vista.VentanaIngresoDePago;
 import presentacion.vista.VentanaMarcarAceptaciones;
 import presentacion.vista.VentanaPresupuestos;
 import presentacion.vista.VentanaSeleccionarELS;
-import presentacion.vista.VentanaVisualizarEquipos;
 import tiposPropios.MonedaFormatter;
-import tiposPropios.MonedaFormatterbis;
 import dto.RegistroPresupuestoDTO;
 import dto.ReparacionDTO;
-
-import org.apache.poi.util.Units;
-import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
-import org.apache.poi.xwpf.usermodel.BreakType;
-import org.apache.poi.xwpf.usermodel.Document;
-import org.apache.poi.xwpf.usermodel.IBodyElement;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFFooter;
-import org.apache.poi.xwpf.usermodel.XWPFHeader;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFPicture;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -106,14 +57,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
-import javax.swing.text.MaskFormatter;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class ControladorPresupuestos implements ActionListener, MouseListener, ItemListener, KeyListener {
 
@@ -150,7 +94,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private int min = Frame.NORMAL;
 
 	private int clickMax = 1;
-	private int clickMin = 1;
+	//private int clickMin = 1;
 
 	private MonedaFormatter monedaFormatter;
 
@@ -569,7 +513,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yy");
 			String fechaHoyString = fechaHoy.format(formato);
 
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+			//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
 
 			String els = ventanaGenerarPresupuesto.getTextELS().getText();
 			String aviso = ventanaGenerarPresupuesto.getTextAviso().getText();
@@ -1176,7 +1120,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		ventanaMarcarAceptaciones.setCellRender(this.ventanaMarcarAceptaciones.getTblReparaciones());
 
-		this.ventanaMarcarAceptaciones.show();
+		this.ventanaMarcarAceptaciones.setVisible(true);;
 
 		marcarPorDefault();
 
@@ -1746,7 +1690,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		char c = e.getKeyChar();
+		//char c = e.getKeyChar();
 
 		if (this.ventanaGenerarPresupuesto != null) {
 

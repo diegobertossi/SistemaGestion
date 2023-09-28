@@ -20,7 +20,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import VistaPropias.CellRendererTablaMarcarAceptaciones;
-import presentacion.controlador.ControladorListados;
 import presentacion.controlador.ControladorPresupuestos;
 
 import java.awt.Color;
@@ -33,7 +32,6 @@ import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
-import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -43,10 +41,9 @@ public class VentanaMarcarAceptaciones extends JFrame {
 	private JTable tblmarcarAceptaciones;
 	private DefaultTableModel modelReparaciones;
 
-	private String[] nombreColumnas = { "ELS","AVISO", "CLIENTE", "SUCURSAL", "EQUIPO","MODELO",
-			"ESTADO TEC", "ESTADO COM", "ACEP", "NO ACEP","GTÍA","PEND" };
-	
-	
+	private String[] nombreColumnas = { "ELS", "AVISO", "CLIENTE", "SUCURSAL", "EQUIPO", "MODELO", "ESTADO TEC",
+			"ESTADO COM", "ACEP", "NO ACEP", "GTÍA", "PEND" };
+
 	private JButton btnMax;
 	public static int est;
 
@@ -57,10 +54,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 	private JPanel panelInferior;
 	private JPanel panelCentral;
 	private JScrollPane scrollPane;
-	private ControladorPresupuestos controladorPresupuestos;
 
-	@SuppressWarnings("unused")
-	private ControladorListados controlador;
 	private JComboBox<?> comboFiltroCliente;
 	private JComboBox<?> comboFiltroSucursal;
 	private JComboBox<?> comboFiltroELS;
@@ -85,6 +79,9 @@ public class VentanaMarcarAceptaciones extends JFrame {
 	private JLabel lblseMuestranLos;
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_7;
+
+	@SuppressWarnings("unused")
+	private ControladorPresupuestos controladorPresupuestos;
 
 	protected void this_windowOpened(WindowEvent e) {
 		centrarVentana();
@@ -165,18 +162,18 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		gbc_radioButtonCliente.gridx = 3;
 		gbc_radioButtonCliente.gridy = 1;
 		panelFiltros.add(radioButtonCliente, gbc_radioButtonCliente);
-		
-				btnFiltrar = new JButton("FILTRAR");
-				GridBagConstraints gbc_btnFiltrar = new GridBagConstraints();
-				gbc_btnFiltrar.insets = new Insets(0, 0, 5, 5);
-				gbc_btnFiltrar.gridx = 4;
-				gbc_btnFiltrar.gridy = 1;
-				panelFiltros.add(btnFiltrar, gbc_btnFiltrar);
-				btnFiltrar.setSize(new Dimension(150, 30));
-				btnFiltrar.setMinimumSize(new Dimension(170, 30));
-				btnFiltrar.setMaximumSize(new Dimension(170, 30));
-				btnFiltrar.setPreferredSize(new Dimension(170, 30));
-				btnFiltrar.setFont(new Font("Cambria", Font.BOLD, 14));
+
+		btnFiltrar = new JButton("FILTRAR");
+		GridBagConstraints gbc_btnFiltrar = new GridBagConstraints();
+		gbc_btnFiltrar.insets = new Insets(0, 0, 5, 5);
+		gbc_btnFiltrar.gridx = 4;
+		gbc_btnFiltrar.gridy = 1;
+		panelFiltros.add(btnFiltrar, gbc_btnFiltrar);
+		btnFiltrar.setSize(new Dimension(150, 30));
+		btnFiltrar.setMinimumSize(new Dimension(170, 30));
+		btnFiltrar.setMaximumSize(new Dimension(170, 30));
+		btnFiltrar.setPreferredSize(new Dimension(170, 30));
+		btnFiltrar.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		JLabel lblNewLabel_1_1 = new JLabel("SUCURSAL");
 		lblNewLabel_1_1.setBackground(new Color(176, 196, 222));
@@ -211,18 +208,18 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		gbc_radioButtonSucursal.gridx = 3;
 		gbc_radioButtonSucursal.gridy = 2;
 		panelFiltros.add(radioButtonSucursal, gbc_radioButtonSucursal);
-		
-				btnMostrarTodo = new JButton("MOSTRAR TODO");
-				GridBagConstraints gbc_btnMostrarTodo = new GridBagConstraints();
-				gbc_btnMostrarTodo.insets = new Insets(0, 0, 5, 5);
-				gbc_btnMostrarTodo.gridx = 4;
-				gbc_btnMostrarTodo.gridy = 2;
-				panelFiltros.add(btnMostrarTodo, gbc_btnMostrarTodo);
-				btnMostrarTodo.setSize(new Dimension(170, 30));
-				btnMostrarTodo.setMinimumSize(new Dimension(170, 30));
-				btnMostrarTodo.setMaximumSize(new Dimension(170, 30));
-				btnMostrarTodo.setPreferredSize(new Dimension(170, 30));
-				btnMostrarTodo.setFont(new Font("Cambria", Font.BOLD, 14));
+
+		btnMostrarTodo = new JButton("MOSTRAR TODO");
+		GridBagConstraints gbc_btnMostrarTodo = new GridBagConstraints();
+		gbc_btnMostrarTodo.insets = new Insets(0, 0, 5, 5);
+		gbc_btnMostrarTodo.gridx = 4;
+		gbc_btnMostrarTodo.gridy = 2;
+		panelFiltros.add(btnMostrarTodo, gbc_btnMostrarTodo);
+		btnMostrarTodo.setSize(new Dimension(170, 30));
+		btnMostrarTodo.setMinimumSize(new Dimension(170, 30));
+		btnMostrarTodo.setMaximumSize(new Dimension(170, 30));
+		btnMostrarTodo.setPreferredSize(new Dimension(170, 30));
+		btnMostrarTodo.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		JLabel lblNewLabel_3_1 = new JLabel("ELS");
 		lblNewLabel_3_1.setBackground(new Color(176, 196, 222));
@@ -256,22 +253,22 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		gbc_radioButtonELS.gridx = 3;
 		gbc_radioButtonELS.gridy = 3;
 		panelFiltros.add(radioButtonELS, gbc_radioButtonELS);
-		
-				btnGrardarCambios = new JButton("GUARDAR CAMBIOS");
-				btnGrardarCambios.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-					}
-				});
-				GridBagConstraints gbc_btnGrardarCambios = new GridBagConstraints();
-				gbc_btnGrardarCambios.insets = new Insets(0, 0, 5, 5);
-				gbc_btnGrardarCambios.gridx = 4;
-				gbc_btnGrardarCambios.gridy = 3;
-				panelFiltros.add(btnGrardarCambios, gbc_btnGrardarCambios);
-				btnGrardarCambios.setSize(new Dimension(170, 30));
-				btnGrardarCambios.setMinimumSize(new Dimension(170, 30));
-				btnGrardarCambios.setMaximumSize(new Dimension(170, 30));
-				btnGrardarCambios.setPreferredSize(new Dimension(170, 30));
-				btnGrardarCambios.setFont(new Font("Cambria", Font.BOLD, 14));
+
+		btnGrardarCambios = new JButton("GUARDAR CAMBIOS");
+		btnGrardarCambios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		GridBagConstraints gbc_btnGrardarCambios = new GridBagConstraints();
+		gbc_btnGrardarCambios.insets = new Insets(0, 0, 5, 5);
+		gbc_btnGrardarCambios.gridx = 4;
+		gbc_btnGrardarCambios.gridy = 3;
+		panelFiltros.add(btnGrardarCambios, gbc_btnGrardarCambios);
+		btnGrardarCambios.setSize(new Dimension(170, 30));
+		btnGrardarCambios.setMinimumSize(new Dimension(170, 30));
+		btnGrardarCambios.setMaximumSize(new Dimension(170, 30));
+		btnGrardarCambios.setPreferredSize(new Dimension(170, 30));
+		btnGrardarCambios.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		JLabel lblNewLabel_6_1 = new JLabel("AVISO");
 		lblNewLabel_6_1.setBackground(new Color(176, 196, 222));
@@ -342,15 +339,15 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		lblNewLabel_7 = new JLabel("      ");
 		lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		panelColumnas.add(lblNewLabel_7, BorderLayout.EAST);
-		
-				lblseMuestranLos = new JLabel(
-						"<html><center>SE MUESTRAN LOS EQUIPOS CUYOS PRESUPUESTOS FUERON ENVIADOS Y ESTÁN PENDIENTES DE RESPUESTA<html>");
-				panelColumnas.add(lblseMuestranLos, BorderLayout.CENTER);
-				lblseMuestranLos.setHorizontalAlignment(SwingConstants.CENTER);
-				lblseMuestranLos.setForeground(new Color(0, 0, 128));
-				lblseMuestranLos.setFont(new Font("Cambria", Font.BOLD, 14));
-				lblseMuestranLos.setBorder(null);
-				lblseMuestranLos.setBackground(Color.WHITE);
+
+		lblseMuestranLos = new JLabel(
+				"<html><center>SE MUESTRAN LOS EQUIPOS CUYOS PRESUPUESTOS FUERON ENVIADOS Y ESTÁN PENDIENTES DE RESPUESTA<html>");
+		panelColumnas.add(lblseMuestranLos, BorderLayout.CENTER);
+		lblseMuestranLos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblseMuestranLos.setForeground(new Color(0, 0, 128));
+		lblseMuestranLos.setFont(new Font("Cambria", Font.BOLD, 14));
+		lblseMuestranLos.setBorder(null);
+		lblseMuestranLos.setBackground(Color.WHITE);
 
 		panelInferior = new JPanel();
 		panelInferior.setBorder(new MatteBorder(0, 2, 2, 2, (Color) new Color(0, 128, 128)));
@@ -378,15 +375,16 @@ public class VentanaMarcarAceptaciones extends JFrame {
 
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
-			Class[] columnTypes = new Class[] { Integer.class, Integer.class, String.class, String.class,
-					String.class, String.class, String.class, String.class,Boolean.class,Boolean.class,Boolean.class,Boolean.class };
+			Class[] columnTypes = new Class[] { Integer.class, Integer.class, String.class, String.class, String.class,
+					String.class, String.class, String.class, Boolean.class, Boolean.class, Boolean.class,
+					Boolean.class };
 
 			public Class<?> getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 
-			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false,
-					false,true,true,true,false };
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, true,
+					true, true, false };
 
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -395,7 +393,6 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		};
 
 		tblmarcarAceptaciones = new JTable(modelReparaciones);
-		
 
 		try {
 			// UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
@@ -451,25 +448,21 @@ public class VentanaMarcarAceptaciones extends JFrame {
 
 		tblmarcarAceptaciones.getTableHeader().setReorderingAllowed(false);
 
-		int[] anchos = { 65, 65, 130, 130, 195, 130, 90, 90, 70,70,70,70};
+		int[] anchos = { 65, 65, 130, 130, 195, 130, 90, 90, 70, 70, 70, 70 };
 
 		for (int i = 0; i < tblmarcarAceptaciones.getColumnCount(); i++) {
 
 			tblmarcarAceptaciones.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
 
 		}
-		
-			
+
 		for (int i = tblmarcarAceptaciones.getColumnCount() - 4; i < tblmarcarAceptaciones.getColumnCount(); i++) {
-			tblmarcarAceptaciones.getColumnModel().getColumn(i).setCellRenderer(new CellRendererTablaMarcarAceptaciones());
-        }
+			tblmarcarAceptaciones.getColumnModel().getColumn(i)
+					.setCellRenderer(new CellRendererTablaMarcarAceptaciones());
+		}
 
+		this.setVisible(true);
 
-
-		this.setVisible(true);		
-		
-		
-		
 	}
 
 	public void setCellRender(JTable table) {
@@ -599,7 +592,6 @@ public class VentanaMarcarAceptaciones extends JFrame {
 	public void setBtnMax(JButton btnMax) {
 		this.btnMax = btnMax;
 	}
-
 
 	public JScrollPane getScrollPane() {
 		return scrollPane;

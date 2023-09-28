@@ -1,12 +1,8 @@
 package presentacion.controlador;
 
-import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -17,59 +13,21 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Vector;
 import java.util.regex.Pattern;
-
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.RowFilter;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-
-import com.inet.jortho.FileUserDictionary;
-import com.inet.jortho.SpellChecker;
-
-import VistaPropias.CellRenderer;
-import VistaPropias.Resaltador;
-import dto.ClienteDTO;
-import dto.PermisoDTO;
 import dto.ReparacionDTO;
-import dto.RepuestosDTO;
-import dto.SucursalDTO;
 import modelo.Agenda;
-import modelo.Permisos;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import presentacion.vista.VistaPrincipal;
-import tiposPropios.MonedaFormatter;
-import presentacion.vista.VentanaAgregarCliente;
-import presentacion.vista.VentanaClientes;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaListadoReparaciones;
-import presentacion.vista.VentanaLogin;
-import presentacion.vista.VentanaRolesUsuarios;
-import presentacion.vista.VentanaSalidas;
-import presentacion.vista.VentanaVisualizarEquipos;
-import presentacion.vista.VentanaClientes;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 
 public class ControladorListados
 		implements ActionListener, MouseListener, KeyListener, ItemListener, MouseMotionListener {
@@ -77,33 +35,23 @@ public class ControladorListados
 	private Agenda modelo;
 
 	private VentanaListadoReparaciones ventanaListadoReparaciones;
-
-	private ClienteDTO Cliente;
-
+	
 	private ControladorReparacion controladorReparacion;
 	private VentanaEquipos ventanaEquipos;
-	private ControladorUsuLogin controladorUsuLogin;
+	//private int max = Frame.MAXIMIZED_BOTH;
+	//private int min = Frame.NORMAL;
 
-//	private SucursalDTO Sucursal;
-//	private String Marca;
-//	private String NombreEq = "";
-//	private int idCli;
-//	private String Modelo;
-	private int max = Frame.MAXIMIZED_BOTH;
-	private int min = Frame.NORMAL;
-//	private int maxHorizontal = Frame.MAXIMIZED_HORIZ;
-//	private int maxVertical = Frame.MAXIMIZED_VERT;
-
-	private int clickMax = 1;
+	//private int clickMax = 1;
 	// private int clickMin = 1;
 
 	public int NumeroELSSeleccionado;
-	// private ReparacionDTO reparacion;
-	// private List<RepuestosDTO> Repuestos_en_tabla;
 
-	private TableRowSorter<DefaultTableModel> sorter;
+	//private TableRowSorter<DefaultTableModel> sorter;
 
 	private List<ReparacionDTO> Reparaciones_en_tabla;
+	
+	@SuppressWarnings("unused")
+	private ControladorUsuLogin controladorUsuLogin;
 
 	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
@@ -143,7 +91,7 @@ public class ControladorListados
 			@Override
 			public void mouseMoved(MouseEvent e) {
 
-				int row = ventanaListadoReparaciones.getTblReparaciones().rowAtPoint(e.getPoint());
+				//int row = ventanaListadoReparaciones.getTblReparaciones().rowAtPoint(e.getPoint());
 				int column = ventanaListadoReparaciones.getTblReparaciones().columnAtPoint(e.getPoint());
 
 				// Verificar si el mouse est� sobre la celda deseada
@@ -382,7 +330,7 @@ public class ControladorListados
 
 		ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTblReparaciones());
 
-		this.ventanaListadoReparaciones.show();
+		this.ventanaListadoReparaciones.setVisible(true);;
 
 	}
 
