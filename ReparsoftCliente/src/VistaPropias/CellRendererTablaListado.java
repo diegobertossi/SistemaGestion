@@ -54,8 +54,15 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 		// establecemos el fondo blanco o vac�o
 		setBackground(null);
 		// COnstructor de la clase DefaultTableCellRenderer
-		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
+		
+		if (value != null) {
+			if (c instanceof JComponent) {
+				((JComponent) c).setToolTipText(value.toString()); // Muestra el valor completo al pasar el cursor
+																	// sobre la celda.
+			}
+		}
 		// Establecemos las filas que queremos cambiar el color. == 0 para pares
 		// y != 0 para impares
 		boolean oddRow = (row % 2 == 0);

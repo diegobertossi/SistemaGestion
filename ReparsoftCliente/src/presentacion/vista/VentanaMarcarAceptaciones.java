@@ -124,7 +124,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		panelSuperior.add(panelFiltros, BorderLayout.CENTER);
 		GridBagLayout gbl_panelFiltros = new GridBagLayout();
 		gbl_panelFiltros.columnWidths = new int[] { 50, 50, 350, 50, 184, 32 };
-		gbl_panelFiltros.rowHeights = new int[] { 10, 10, 10, 10, 10, 10 };
+		gbl_panelFiltros.rowHeights = new int[] { 10, 20, 10, 10, 10, 10 };
 		gbl_panelFiltros.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
 
 		gbl_panelFiltros.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -440,21 +440,26 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		lblNewLabel_6 = new JLabel("        ");
 		panelCentral.add(lblNewLabel_6, BorderLayout.NORTH);
 
-		lblNewLabel_5 = new JLabel("        ");
+		lblNewLabel_5 = new JLabel("   ");
 		panelCentral.add(lblNewLabel_5, BorderLayout.EAST);
 
-		lblNewLabel_4 = new JLabel("        ");
+		lblNewLabel_4 = new JLabel("   ");
 		panelCentral.add(lblNewLabel_4, BorderLayout.WEST);
 
 		tblmarcarAceptaciones.getTableHeader().setReorderingAllowed(false);
 
-		int[] anchos = { 65, 65, 130, 130, 195, 130, 90, 90, 70, 70, 70, 70 };
+		int[] anchos = { 65, 65, 130, 130, 195, 130, 90, 90, 60, 60, 60, 60};
+		int[] anchoMinimo= {20,20,20,20,20,20,20,20,20,20,20,20};
+		
 
 		for (int i = 0; i < tblmarcarAceptaciones.getColumnCount(); i++) {
 
 			tblmarcarAceptaciones.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+			tblmarcarAceptaciones.getColumnModel().getColumn(i).setMinWidth(anchoMinimo[i]);
+			tblmarcarAceptaciones.getColumnModel().getColumn(i).setMaxWidth(anchos[i]);
 
 		}
+
 
 		for (int i = tblmarcarAceptaciones.getColumnCount() - 4; i < tblmarcarAceptaciones.getColumnCount(); i++) {
 			tblmarcarAceptaciones.getColumnModel().getColumn(i)

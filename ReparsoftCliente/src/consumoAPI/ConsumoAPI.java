@@ -8,6 +8,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONString;
@@ -32,7 +34,7 @@ public class ConsumoAPI {
 			int responseCode = conn.getResponseCode();
 			if (responseCode != 200) {
 
-				throw new RuntimeException("Ocurri� un error " + responseCode);
+				throw new RuntimeException("Ocurrió un error " + responseCode);
 
 			} else {
 
@@ -66,7 +68,10 @@ public class ConsumoAPI {
 
 		} catch (Exception e) {
 
-			e.printStackTrace();
+			
+			Object mje = "No se puede conectar a internet.";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+			//e.printStackTrace();
 			double[] valuesOnError = { -1.0, -1.0 }; // Valores de reemplazo en caso de error
 	        return valuesOnError;
 			
