@@ -145,7 +145,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		comboFiltroCliente.setEnabled(false);
 		comboFiltroCliente.setBackground(new Color(176, 196, 222));
 		comboFiltroCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
-		comboFiltroCliente.setPreferredSize(new Dimension(350, 20));
+		comboFiltroCliente.setPreferredSize(new Dimension(350, 22));
 		GridBagConstraints gbc_comboFiltroCliente = new GridBagConstraints();
 		gbc_comboFiltroCliente.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroCliente.fill = GridBagConstraints.HORIZONTAL;
@@ -190,7 +190,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		comboFiltroSucursal.setEnabled(false);
 		comboFiltroSucursal.setBackground(new Color(176, 196, 222));
 		comboFiltroSucursal.setFont(new Font("Cambria", Font.PLAIN, 14));
-		comboFiltroSucursal.setPreferredSize(new Dimension(350, 20));
+		comboFiltroSucursal.setPreferredSize(new Dimension(350, 22));
 		GridBagConstraints gbc_comboFiltroSucursal = new GridBagConstraints();
 		gbc_comboFiltroSucursal.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroSucursal.fill = GridBagConstraints.HORIZONTAL;
@@ -236,7 +236,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		comboFiltroELS.setEnabled(false);
 		comboFiltroELS.setBackground(new Color(176, 196, 222));
 		comboFiltroELS.setFont(new Font("Cambria", Font.PLAIN, 14));
-		comboFiltroELS.setPreferredSize(new Dimension(350, 20));
+		comboFiltroELS.setPreferredSize(new Dimension(350, 22));
 		GridBagConstraints gbc_comboFiltroELS = new GridBagConstraints();
 		gbc_comboFiltroELS.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroELS.fill = GridBagConstraints.HORIZONTAL;
@@ -254,22 +254,6 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		gbc_radioButtonELS.gridy = 3;
 		panelFiltros.add(radioButtonELS, gbc_radioButtonELS);
 
-		btnGrardarCambios = new JButton("GUARDAR CAMBIOS");
-		btnGrardarCambios.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		GridBagConstraints gbc_btnGrardarCambios = new GridBagConstraints();
-		gbc_btnGrardarCambios.insets = new Insets(0, 0, 5, 5);
-		gbc_btnGrardarCambios.gridx = 4;
-		gbc_btnGrardarCambios.gridy = 3;
-		panelFiltros.add(btnGrardarCambios, gbc_btnGrardarCambios);
-		btnGrardarCambios.setSize(new Dimension(170, 30));
-		btnGrardarCambios.setMinimumSize(new Dimension(170, 30));
-		btnGrardarCambios.setMaximumSize(new Dimension(170, 30));
-		btnGrardarCambios.setPreferredSize(new Dimension(170, 30));
-		btnGrardarCambios.setFont(new Font("Cambria", Font.BOLD, 14));
-
 		JLabel lblNewLabel_6_1 = new JLabel("AVISO");
 		lblNewLabel_6_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_6_1.setHorizontalAlignment(SwingConstants.LEFT);
@@ -285,7 +269,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		comboFiltroAviso.setEnabled(false);
 		comboFiltroAviso.setBackground(new Color(176, 196, 222));
 		comboFiltroAviso.setFont(new Font("Cambria", Font.PLAIN, 14));
-		comboFiltroAviso.setPreferredSize(new Dimension(350, 20));
+		comboFiltroAviso.setPreferredSize(new Dimension(350, 22));
 		GridBagConstraints gbc_comboFiltroAviso = new GridBagConstraints();
 		gbc_comboFiltroAviso.insets = new Insets(0, 0, 5, 5);
 		gbc_comboFiltroAviso.fill = GridBagConstraints.HORIZONTAL;
@@ -302,6 +286,22 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		gbc_radioButtonAviso.gridx = 3;
 		gbc_radioButtonAviso.gridy = 4;
 		panelFiltros.add(radioButtonAviso, gbc_radioButtonAviso);
+		
+				btnGrardarCambios = new JButton("GUARDAR CAMBIOS");
+				btnGrardarCambios.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					}
+				});
+				GridBagConstraints gbc_btnGrardarCambios = new GridBagConstraints();
+				gbc_btnGrardarCambios.insets = new Insets(0, 0, 5, 5);
+				gbc_btnGrardarCambios.gridx = 4;
+				gbc_btnGrardarCambios.gridy = 4;
+				panelFiltros.add(btnGrardarCambios, gbc_btnGrardarCambios);
+				btnGrardarCambios.setSize(new Dimension(170, 30));
+				btnGrardarCambios.setMinimumSize(new Dimension(170, 30));
+				btnGrardarCambios.setMaximumSize(new Dimension(170, 30));
+				btnGrardarCambios.setPreferredSize(new Dimension(170, 30));
+				btnGrardarCambios.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		panelTitulo = new JPanel();
 		panelTitulo.setBorder(new MatteBorder(2, 2, 0, 2, (Color) new Color(0, 128, 128)));

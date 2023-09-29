@@ -229,7 +229,11 @@ public class ControladorBackup implements ActionListener, MouseListener {
 			irs.close();
 			br.close();
 
-			JOptionPane.showMessageDialog(null, "Archivo generado", "Verificar", JOptionPane.INFORMATION_MESSAGE);
+			
+			Object mje = "<html><center>Archivo generado<html>";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+			
+			//JOptionPane.showMessageDialog(null, "Archivo generado", "Verificar", JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null,
 					"Error no se genero el archivo por el siguiente motivo:" + e.getMessage(), "Verificar",
