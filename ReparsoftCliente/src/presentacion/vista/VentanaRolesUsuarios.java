@@ -75,6 +75,7 @@ public class VentanaRolesUsuarios extends JFrame {
 
 	private ControladorUsuarios controlador;
 	private JPanel panel_1;
+	private JTextField textRol;
 
 	public VentanaRolesUsuarios(ControladorUsuarios controlador) {
 
@@ -83,7 +84,7 @@ public class VentanaRolesUsuarios extends JFrame {
 		this.controlador = controlador;
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 582, 474);
+		setBounds(100, 100, 581, 496);
 		this.setLocationRelativeTo(null);
 
 		contentPane = new JPanel();
@@ -98,7 +99,7 @@ public class VentanaRolesUsuarios extends JFrame {
 		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.setBounds(0, 0, 566, 436);
+		panel.setBounds(0, 0, 566, 457);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -332,6 +333,18 @@ public class VentanaRolesUsuarios extends JFrame {
 		lblPass.setFont(new Font("Cambria", Font.BOLD, 12));
 		lblPass.setBounds(21, 393, 76, 14);
 		panel.add(lblPass);
+		
+		JLabel lblRol1 = new JLabel("Rol");
+		lblRol1.setFont(new Font("Cambria", Font.BOLD, 12));
+		lblRol1.setBounds(21, 414, 76, 14);
+		panel.add(lblRol1);
+		
+		textRol = new JTextField();
+		textRol.setFont(new Font("Cambria", Font.PLAIN, 12));
+		textRol.setEditable(false);
+		textRol.setColumns(10);
+		textRol.setBounds(107, 411, 198, 20);
+		panel.add(textRol);
 
 		this.setVisible(true);
 	}
@@ -454,5 +467,13 @@ public class VentanaRolesUsuarios extends JFrame {
 
 	public void setBtnCancelarNuevo(JButton btnCancelarNuevo) {
 		this.btnCancelarNuevo = btnCancelarNuevo;
+	}
+
+	public JTextField getTextRol() {
+		return textRol;
+	}
+
+	public void setTextRol(JTextField textRol) {
+		this.textRol = textRol;
 	}
 }

@@ -93,6 +93,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		this.ventanaRolesUsuarios.getBtnEliminarUsuario().addActionListener(this);
 		this.ventanaRolesUsuarios.getBtnPermisosXrol().addActionListener(this);
 
+		
+		
 		llenarComboRoles();
 		llenarTablaUsuarios();
 
@@ -200,6 +202,10 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getTxtEmailUsuario().setText("");
 				this.ventanaRolesUsuarios.getTxtLogin().setText("");
 				this.ventanaRolesUsuarios.getTxtPass().setText("");
+				this.ventanaRolesUsuarios.getTextRol().setText("");
+				
+				
+				
 				usuarioElegido = null;
 				rolElegido = null;
 
@@ -212,6 +218,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setEditable(true);
 				this.ventanaRolesUsuarios.getComboRoles().setEnabled(true);
 				this.ventanaRolesUsuarios.getComboRoles().setForeground(Color.BLACK);
+				this.ventanaRolesUsuarios.getComboRoles().setSelectedIndex(-1);
 
 				this.ventanaRolesUsuarios.getTxtNombreUsuario().requestFocus();
 
@@ -586,6 +593,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		this.ventanaRolesUsuarios.getComboRoles().removeAllItems();
 
 		this.roles_en_tabla = agenda.obtenerRoles();
+		
+		//this.ventanaRolesUsuarios.getComboRoles().addItem("");
 
 		for (int i = 0; i < this.roles_en_tabla.size(); i++) {
 

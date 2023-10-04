@@ -69,21 +69,21 @@ public class VentanaBackUp extends JFrame
 		
 		
 		btnGenerarB = new JButton("<html><center>GENERAR BACKUP</html>");
-		btnGenerarB.setForeground(new Color(0, 0, 255));
+		btnGenerarB.setForeground(new Color(0, 0, 0));
 		btnGenerarB.setBackground(SystemColor.menu);
 		btnGenerarB.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnGenerarB.setBounds(65, 61, 104, 55);
 		panel.add(btnGenerarB);
 		
 		btnImportarB = new JButton("<html><center>IMPORTAR BACKUP</html>");
-		btnImportarB.setForeground(new Color(0, 0, 255));
+		btnImportarB.setForeground(new Color(0, 0, 0));
 		btnImportarB.setBackground(SystemColor.menu);
 		btnImportarB.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnImportarB.setBounds(199, 61, 104, 55);
 		panel.add(btnImportarB);
 		
 		JLabel lblBackUp = new JLabel("BACKUP");
-		lblBackUp.setForeground(new Color(0, 0, 255));
+		lblBackUp.setForeground(new Color(0, 0, 0));
 		lblBackUp.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBackUp.setFont(new Font("Cambria", Font.BOLD, 22));
 		lblBackUp.setBounds(135, 11, 104, 40);

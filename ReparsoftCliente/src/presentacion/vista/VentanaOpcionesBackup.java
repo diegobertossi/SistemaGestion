@@ -48,14 +48,14 @@ public class VentanaOpcionesBackup extends JFrame {
 		btnAceptar = new JButton("ACEPTAR");
 		btnAceptar.setBounds(98, 268, 120, 29);
 		panel.add(btnAceptar);
-		btnAceptar.setForeground(new Color(0, 0, 128));
-		btnAceptar.setFont(new Font("Roboto Black", Font.PLAIN, 12));
+		btnAceptar.setForeground(new Color(0, 0, 0));
+		btnAceptar.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		btnCancelar = new JButton("CANCELAR");
 		btnCancelar.setBounds(316, 268, 120, 29);
 		panel.add(btnCancelar);
-		btnCancelar.setForeground(new Color(0, 0, 128));
-		btnCancelar.setFont(new Font("Roboto Black", Font.PLAIN, 12));
+		btnCancelar.setForeground(new Color(0, 0, 0));
+		btnCancelar.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		txtNombreArchivo = new JTextField();
 		txtNombreArchivo.setEditable(false);
@@ -63,7 +63,7 @@ public class VentanaOpcionesBackup extends JFrame {
 		panel.add(txtNombreArchivo);
 		txtNombreArchivo.setBackground(new Color(0, 102, 153));
 		txtNombreArchivo.setForeground(new Color(255, 255, 255));
-		txtNombreArchivo.setFont(new Font("Roboto", Font.BOLD, 12));
+		txtNombreArchivo.setFont(new Font("Cambria Math", Font.PLAIN, 12));
 
 		txtRutaArchivo = new JTextField();
 		txtRutaArchivo.setEditable(false);
@@ -71,26 +71,26 @@ public class VentanaOpcionesBackup extends JFrame {
 		panel.add(txtRutaArchivo);
 		txtRutaArchivo.setBackground(new Color(0, 102, 153));
 		txtRutaArchivo.setForeground(new Color(255, 255, 255));
-		txtRutaArchivo.setFont(new Font("Roboto", Font.BOLD, 12));
+		txtRutaArchivo.setFont(new Font("Cambria Math", Font.PLAIN, 12));
 
 		JLabel lblNewLabel = new JLabel("Se generará el siguiente archivo de backup:");
 		lblNewLabel.setBounds(27, 106, 275, 20);
 		panel.add(lblNewLabel);
-		lblNewLabel.setForeground(new Color(0, 0, 128));
-		lblNewLabel.setFont(new Font("Roboto Light", Font.PLAIN, 14));
+		lblNewLabel.setForeground(new Color(0, 0, 0));
+		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		JLabel lblNewLabel_1 = new JLabel("Se guardará en el siguiente destino:");
 		lblNewLabel_1.setBounds(27, 176, 295, 20);
 		panel.add(lblNewLabel_1);
-		lblNewLabel_1.setForeground(new Color(0, 0, 128));
-		lblNewLabel_1.setFont(new Font("Roboto Light", Font.PLAIN, 14));
+		lblNewLabel_1.setForeground(new Color(0, 0, 0));
+		lblNewLabel_1.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		JLabel lblBackupSistema = new JLabel("BACKUP DEL SISTEMA");
 		lblBackupSistema.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBackupSistema.setBounds(114, 35, 319, 29);
+		lblBackupSistema.setBounds(114, 23, 319, 29);
 		panel.add(lblBackupSistema);
 		lblBackupSistema.setForeground(new Color(0, 0, 139));
-		lblBackupSistema.setFont(new Font("Roboto Black", Font.BOLD, 26));
+		lblBackupSistema.setFont(new Font("Cambria", Font.BOLD, 26));
 
 		JLabel img = new JLabel("");
 		img.setBounds(40, 7, 70, 73);
@@ -98,8 +98,8 @@ public class VentanaOpcionesBackup extends JFrame {
 		img.setIcon(new ImageIcon(this.getClass().getResource("/data-backup.png")));
 
 		btnCambiarNombre = new JButton("<html><center>CAMBIAR NOMBRE Y DESTINO</html>");
-		btnCambiarNombre.setForeground(new Color(0, 0, 128));
-		btnCambiarNombre.setFont(new Font("Roboto Black", Font.PLAIN, 12));
+		btnCambiarNombre.setForeground(new Color(0, 0, 0));
+		btnCambiarNombre.setFont(new Font("Cambria", Font.BOLD, 12));
 		btnCambiarNombre.setBounds(418, 112, 106, 60);
 		panel.add(btnCambiarNombre);
 
@@ -117,8 +117,8 @@ public class VentanaOpcionesBackup extends JFrame {
 		img_1.setIcon(new ImageIcon(this.getClass().getResource("/data-backup.png")));
 		
 		btnResetDatos = new JButton("<html><center>RESET DATOS</html>");
-		btnResetDatos.setForeground(new Color(0, 0, 128));
-		btnResetDatos.setFont(new Font("Roboto Black", Font.PLAIN, 12));
+		btnResetDatos.setForeground(new Color(0, 0, 0));
+		btnResetDatos.setFont(new Font("Cambria", Font.BOLD, 12));
 		btnResetDatos.setBounds(418, 183, 106, 60);
 		panel.add(btnResetDatos);
 		
