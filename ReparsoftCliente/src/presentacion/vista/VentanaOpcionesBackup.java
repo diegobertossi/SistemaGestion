@@ -58,16 +58,20 @@ public class VentanaOpcionesBackup extends JFrame {
 		btnCancelar.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		txtNombreArchivo = new JTextField();
+		txtNombreArchivo.setBorder(new LineBorder(new Color(0, 128, 128)));
+		txtNombreArchivo.setHorizontalAlignment(SwingConstants.LEFT);
 		txtNombreArchivo.setEditable(false);
-		txtNombreArchivo.setBounds(25, 128, 383, 29);
+		txtNombreArchivo.setBounds(25, 128, 383, 25);
 		panel.add(txtNombreArchivo);
 		txtNombreArchivo.setBackground(new Color(0, 102, 153));
 		txtNombreArchivo.setForeground(new Color(255, 255, 255));
 		txtNombreArchivo.setFont(new Font("Cambria Math", Font.PLAIN, 12));
 
 		txtRutaArchivo = new JTextField();
+		txtRutaArchivo.setBorder(new LineBorder(new Color(0, 128, 128)));
+		txtRutaArchivo.setHorizontalAlignment(SwingConstants.LEFT);
 		txtRutaArchivo.setEditable(false);
-		txtRutaArchivo.setBounds(25, 199, 383, 29);
+		txtRutaArchivo.setBounds(25, 199, 383, 25);
 		panel.add(txtRutaArchivo);
 		txtRutaArchivo.setBackground(new Color(0, 102, 153));
 		txtRutaArchivo.setForeground(new Color(255, 255, 255));
@@ -100,7 +104,7 @@ public class VentanaOpcionesBackup extends JFrame {
 		btnCambiarNombre = new JButton("<html><center>CAMBIAR NOMBRE Y DESTINO</html>");
 		btnCambiarNombre.setForeground(new Color(0, 0, 0));
 		btnCambiarNombre.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnCambiarNombre.setBounds(418, 112, 106, 60);
+		btnCambiarNombre.setBounds(418, 108, 106, 60);
 		panel.add(btnCambiarNombre);
 
 		JSeparator separator_1 = new JSeparator();
@@ -119,7 +123,7 @@ public class VentanaOpcionesBackup extends JFrame {
 		btnResetDatos = new JButton("<html><center>RESET DATOS</html>");
 		btnResetDatos.setForeground(new Color(0, 0, 0));
 		btnResetDatos.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnResetDatos.setBounds(418, 183, 106, 60);
+		btnResetDatos.setBounds(418, 179, 106, 60);
 		panel.add(btnResetDatos);
 		
 		setLocationCenter();
