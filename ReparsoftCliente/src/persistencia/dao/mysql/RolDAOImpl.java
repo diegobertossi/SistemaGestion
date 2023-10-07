@@ -82,7 +82,7 @@ public class RolDAOImpl implements RolDAO {
 
 			while (resultSet.next()) {
 				roles.add(new RolDTO(resultSet.getInt("idRol"), resultSet.getString("nombre")));
-				System.out.println(resultSet.getInt("idRol") + " " + resultSet.getString("nombre"));
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -95,7 +95,7 @@ public class RolDAOImpl implements RolDAO {
 
 	@Override
 	public String readAllxid(int id) {
-		
+
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
 		String nombre = "";
@@ -116,9 +116,6 @@ public class RolDAOImpl implements RolDAO {
 		}
 
 		return nombre;
-		
-		
-		
 
 	}
 

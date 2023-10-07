@@ -46,6 +46,7 @@ import presentacion.controlador.ControladorUsuLogin;
 import presentacion.controlador.ControladorUsuarios;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.border.LineBorder;
 
 public class VentanaRolesUsuarios extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -74,8 +75,8 @@ public class VentanaRolesUsuarios extends JFrame {
 	private JButton btnPermisosXrol;
 
 	private ControladorUsuarios controlador;
-	private JPanel panel_1;
 	private JTextField textRol;
+	private JPanel panel_1;
 
 	public VentanaRolesUsuarios(ControladorUsuarios controlador) {
 
@@ -107,7 +108,7 @@ public class VentanaRolesUsuarios extends JFrame {
 
 		JScrollPane spUsuarios = new JScrollPane();
 		spUsuarios.setBackground(Color.WHITE);
-		spUsuarios.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		spUsuarios.setBorder(new LineBorder(new Color(0, 128, 128)));
 		spUsuarios.setFont(new Font("Cambria", Font.PLAIN, 11));
 		spUsuarios.setBounds(21, 67, 322, 170);
 		panel.add(spUsuarios);
@@ -178,77 +179,45 @@ public class VentanaRolesUsuarios extends JFrame {
 		lblUsuarios.setBounds(21, 32, 94, 14);
 		panel.add(lblUsuarios);
 
-		panel_1 = new JPanel();
-		panel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_1.setBackground(new Color(100, 149, 237));
-		panel_1.setBounds(369, 67, 162, 170);
-		panel.add(panel_1);
-		panel_1.setLayout(null);
-
-		btnAgregarUsuario = new JButton("Agregar");
-		btnAgregarUsuario.setBounds(36, 16, 101, 23);
-		panel_1.add(btnAgregarUsuario);
-		btnAgregarUsuario.setBackground(new Color(152, 251, 152));
-		btnAgregarUsuario.setFont(new Font("Cambria", Font.BOLD, 14));
-
-		btnEditarUsuario = new JButton("Editar");
-		btnEditarUsuario.setBounds(36, 48, 101, 23);
-		panel_1.add(btnEditarUsuario);
-		btnEditarUsuario.setBackground(new Color(240, 230, 140));
-		btnEditarUsuario.setFont(new Font("Cambria", Font.BOLD, 14));
-
-		btnEliminarUsuario = new JButton("Eliminar");
-		btnEliminarUsuario.setBounds(36, 82, 101, 23);
-		panel_1.add(btnEliminarUsuario);
-		btnEliminarUsuario.setBackground(new Color(255, 0, 0));
-		btnEliminarUsuario.setFont(new Font("Cambria", Font.BOLD, 14));
-
-		btnPermisosXrol = new JButton("<html><center>PERMISOS POR ROL<html>");
-		btnPermisosXrol.setBounds(36, 116, 101, 43);
-		panel_1.add(btnPermisosXrol);
-		btnPermisosXrol.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnPermisosXrol.setAlignmentX(SwingConstants.CENTER);
-		btnPermisosXrol.setAlignmentY(SwingConstants.CENTER);
-
 		btnGuardarEdicion = new JButton("<html><center>Guardar Edición</html>");
 		btnGuardarEdicion.setVisible(false);
-		btnGuardarEdicion.setBackground(new Color(152, 251, 152));
+		btnGuardarEdicion.setBackground(new Color(240, 240, 240));
 		btnGuardarEdicion.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnGuardarEdicion.setBounds(335, 369, 99, 43);
+		btnGuardarEdicion.setBounds(358, 388, 99, 43);
 		panel.add(btnGuardarEdicion);
 
 		btnCancelarEdicion = new JButton("<html><center>Cancelar Edición</html>");
 		btnCancelarEdicion.setVisible(false);
-		btnCancelarEdicion.setBackground(new Color(255, 0, 0));
+		btnCancelarEdicion.setBackground(new Color(240, 240, 240));
 		btnCancelarEdicion.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnCancelarEdicion.setBounds(456, 369, 89, 43);
+		btnCancelarEdicion.setBounds(467, 388, 89, 43);
 		panel.add(btnCancelarEdicion);
 
 		btnGuardarNuevo = new JButton("<html><p>Guardar</p></html>");
 		btnGuardarNuevo.setVisible(false);
-		btnGuardarNuevo.setBackground(new Color(152, 251, 152));
+		btnGuardarNuevo.setBackground(new Color(240, 240, 240));
 		btnGuardarNuevo.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnGuardarNuevo.setBounds(335, 369, 99, 43);
+		btnGuardarNuevo.setBounds(358, 388, 99, 43);
 		panel.add(btnGuardarNuevo);
 
 		btnCancelarNuevo = new JButton("<html><p>Cancelar</p></html>");
 		btnCancelarNuevo.setVisible(false);
-		btnCancelarNuevo.setBackground(new Color(255, 0, 0));
+		btnCancelarNuevo.setBackground(new Color(240, 240, 240));
 		btnCancelarNuevo.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnCancelarNuevo.setBounds(456, 369, 89, 43);
+		btnCancelarNuevo.setBounds(467, 388, 89, 43);
 		panel.add(btnCancelarNuevo);
 
 		txtNombreUsuario = new JTextField();
 		txtNombreUsuario.setEditable(false);
 		txtNombreUsuario.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtNombreUsuario.setBounds(107, 264, 198, 20);
+		txtNombreUsuario.setBounds(107, 264, 236, 20);
 		panel.add(txtNombreUsuario);
 		txtNombreUsuario.setColumns(10);
 
 		txtTelefonoUsuario = new JTextNum(14);
 		txtTelefonoUsuario.setEditable(false);
 		txtTelefonoUsuario.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtTelefonoUsuario.setBounds(107, 327, 198, 20);
+		txtTelefonoUsuario.setBounds(107, 327, 236, 20);
 		panel.add(txtTelefonoUsuario);
 		txtTelefonoUsuario.setColumns(10);
 
@@ -270,7 +239,7 @@ public class VentanaRolesUsuarios extends JFrame {
 		txtApellidoUsuario = new JTextField();
 		txtApellidoUsuario.setEditable(false);
 		txtApellidoUsuario.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtApellidoUsuario.setBounds(107, 285, 198, 20);
+		txtApellidoUsuario.setBounds(107, 285, 236, 20);
 		panel.add(txtApellidoUsuario);
 		txtApellidoUsuario.setColumns(10);
 
@@ -282,14 +251,14 @@ public class VentanaRolesUsuarios extends JFrame {
 		txtEmailUsuario = new JTextField();
 		txtEmailUsuario.setEditable(false);
 		txtEmailUsuario.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtEmailUsuario.setBounds(107, 348, 198, 20);
+		txtEmailUsuario.setBounds(107, 348, 236, 20);
 		panel.add(txtEmailUsuario);
 		txtEmailUsuario.setColumns(10);
 
 		txtDNI = new JTextNum(8);
 		txtDNI.setEditable(false);
 		txtDNI.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtDNI.setBounds(107, 306, 198, 20);
+		txtDNI.setBounds(107, 306, 236, 20);
 		panel.add(txtDNI);
 		txtDNI.setColumns(10);
 
@@ -303,13 +272,13 @@ public class VentanaRolesUsuarios extends JFrame {
 		comboRoles.setForeground(new Color(0, 0, 0));
 		comboRoles.setEnabled(false);
 		comboRoles.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboRoles.setBounds(107, 411, 198, 20);
+		comboRoles.setBounds(107, 411, 236, 20);
 		panel.add(comboRoles);
 
 		txtLogin = new JTextField();
 		txtLogin.setEditable(false);
 		txtLogin.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtLogin.setBounds(107, 369, 198, 20);
+		txtLogin.setBounds(107, 369, 236, 20);
 		panel.add(txtLogin);
 		txtLogin.setColumns(10);
 
@@ -321,7 +290,7 @@ public class VentanaRolesUsuarios extends JFrame {
 		txtPass = new JTextField();
 		txtPass.setEditable(false);
 		txtPass.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtPass.setBounds(107, 390, 198, 20);
+		txtPass.setBounds(107, 390, 236, 20);
 		panel.add(txtPass);
 		txtPass.setColumns(10);
 
@@ -336,11 +305,44 @@ public class VentanaRolesUsuarios extends JFrame {
 		panel.add(lblRol1);
 		
 		textRol = new JTextField();
+		textRol.setHorizontalAlignment(SwingConstants.LEFT);
 		textRol.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textRol.setEditable(false);
 		textRol.setColumns(10);
-		textRol.setBounds(107, 411, 198, 20);
+		textRol.setBounds(107, 411, 236, 20);
 		panel.add(textRol);
+		
+				btnPermisosXrol = new JButton("<html><center>PERMISOS POR ROL<html>");
+				btnPermisosXrol.setBounds(411, 304, 101, 43);
+				panel.add(btnPermisosXrol);
+				btnPermisosXrol.setFont(new Font("Cambria", Font.BOLD, 14));
+				btnPermisosXrol.setAlignmentX(SwingConstants.CENTER);
+				btnPermisosXrol.setAlignmentY(SwingConstants.CENTER);
+						
+						panel_1 = new JPanel();
+						panel_1.setBorder(new LineBorder(new Color(0, 128, 128)));
+						panel_1.setBackground(new Color(176, 196, 222));
+						panel_1.setBounds(374, 67, 150, 170);
+						panel.add(panel_1);
+						panel_1.setLayout(null);
+				
+						btnEliminarUsuario = new JButton("Eliminar");
+						btnEliminarUsuario.setBounds(24, 121, 101, 23);
+						panel_1.add(btnEliminarUsuario);
+						btnEliminarUsuario.setBackground(new Color(240, 240, 240));
+						btnEliminarUsuario.setFont(new Font("Cambria", Font.BOLD, 14));
+						
+								btnEditarUsuario = new JButton("Editar");
+								btnEditarUsuario.setBounds(24, 73, 101, 23);
+								panel_1.add(btnEditarUsuario);
+								btnEditarUsuario.setBackground(new Color(240, 240, 240));
+								btnEditarUsuario.setFont(new Font("Cambria", Font.BOLD, 14));
+								
+										btnAgregarUsuario = new JButton("Agregar");
+										btnAgregarUsuario.setBounds(24, 25, 101, 23);
+										panel_1.add(btnAgregarUsuario);
+										btnAgregarUsuario.setBackground(new Color(240, 240, 240));
+										btnAgregarUsuario.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		this.setVisible(true);
 	}

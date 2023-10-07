@@ -51,20 +51,17 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	private VentanaPermisos ventanaPermisos;
 	private Permisos permisos;
 	private VentanaRolesUsuarios ventanaRolesUsuarios;
-	//private List<UsuarioDTO> profesionales_en_tabla;
+	// private List<UsuarioDTO> profesionales_en_tabla;
 	private List<PermisoDTO> permisos_en_tabla;
 	private List<PermisoDTO> permisosFaltantes_en_tabla;
 	private List<RolDTO> roles_en_tabla;
 	private List<UsuarioDTO> usuarios_en_tabla;
 	private Agenda agenda;
-	//private UsuarioDTO user;
+	// private UsuarioDTO user;
 	private RolDTO rolElegido;
 	private UsuarioDTO usuarioElegido;
 	private List<ReparacionDTO> Reparaciones;
-	
-	
-	
-	
+
 //	private final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 //			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[com]{2,})$";
 
@@ -75,7 +72,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 		this.agenda = agenda;
 		this.permisos = new Permisos();
-		//this.user = null;
+		// this.user = null;
 		this.rolElegido = null;
 		this.usuarioElegido = null;
 
@@ -109,18 +106,18 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (ventanaRolesUsuarios != null) {
-			
-			
+
 			if (e.getSource() == this.ventanaRolesUsuarios.getComboRoles()) {
-				int i = this.ventanaRolesUsuarios.getComboRoles().getSelectedIndex();
+				
+				int i = this.ventanaRolesUsuarios.getComboRoles().getSelectedIndex()+1;
 				rolElegido = roles_en_tabla.get(i);
-				System.out.println("ID rol elegido: " + rolElegido.getIdRol() + "  Nombre rol elegido: " + rolElegido.getNombre());
+				
 			}
-			
+
 			else if (e.getSource() == this.ventanaRolesUsuarios.getBtnGuardarNuevo()) {
 				usuarioElegido = null;
 
-				if (rolElegido == null) {
+				if (rolElegido == null || rolElegido.getIdRol() ==  1) {
 					this.ventanaRolesUsuarios.getErrorMsj("Seleccione un rol");
 				} else if (this.ventanaRolesUsuarios.getTxtNombreUsuario().getText().equals("")
 						|| this.ventanaRolesUsuarios.getTxtApellidoUsuario().getText().equals("")
@@ -138,8 +135,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 							"Los campos, DNI, Login no pueden estar repetidos con otro usuario", "El dni ya existe",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					
-					
+
 					UsuarioDTO nuevoUsuario = new UsuarioDTO(0, rolElegido.getIdRol(),
 							Integer.parseInt(this.ventanaRolesUsuarios.getTxtDNI().getText()),
 							this.ventanaRolesUsuarios.getTxtNombreUsuario().getText(),
@@ -159,6 +155,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 					this.ventanaRolesUsuarios.getTxtLogin().setText("");
 					this.ventanaRolesUsuarios.getTxtPass().setText("");
 					this.ventanaRolesUsuarios.getTextRol().setText("");
+					this.ventanaRolesUsuarios.getComboRoles().setVisible(false);
 					usuarioElegido = null;
 					rolElegido = null;
 				}
@@ -210,9 +207,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getTxtLogin().setText("");
 				this.ventanaRolesUsuarios.getTxtPass().setText("");
 				this.ventanaRolesUsuarios.getTextRol().setText("");
-				
-				
-				
+
 				usuarioElegido = null;
 				rolElegido = null;
 
@@ -225,11 +220,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setEditable(true);
 				this.ventanaRolesUsuarios.getComboRoles().setEnabled(true);
 				this.ventanaRolesUsuarios.getComboRoles().setVisible(true);
-//				this.ventanaRolesUsuarios.getComboRoles().setForeground(Color.BLACK);
-//				this.ventanaRolesUsuarios.getComboRoles().setSelectedIndex(0);
-				
-				
-				
+				this.ventanaRolesUsuarios.getComboRoles().setSelectedItem(null);
+
 				this.ventanaRolesUsuarios.getTxtNombreUsuario().requestFocus();
 
 			}
@@ -261,7 +253,6 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						usuarioElegido.setEmail(this.ventanaRolesUsuarios.getTxtEmailUsuario().getText());
 						usuarioElegido.setLogin(this.ventanaRolesUsuarios.getTxtLogin().getText());
 						usuarioElegido.setPass(this.ventanaRolesUsuarios.getTxtPass().getText());
-						
 
 						agenda.editarUsuario(usuarioElegido);
 						llenarTablaUsuarios();
@@ -275,13 +266,17 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						this.ventanaRolesUsuarios.getTxtLogin().setEditable(false);
 						this.ventanaRolesUsuarios.getTxtPass().setEditable(false);
 						this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setEditable(false);
+						String nombreRol = this.ventanaRolesUsuarios.getComboRoles().getSelectedItem().toString();
+						this.ventanaRolesUsuarios.getTextRol().setText(nombreRol);
+						this.ventanaRolesUsuarios.getTextRol().setEditable(false);
 						this.ventanaRolesUsuarios.getComboRoles().setEnabled(false);
+						this.ventanaRolesUsuarios.getComboRoles().setVisible(false);
 
 						this.ventanaRolesUsuarios.getBtnEliminarUsuario().setEnabled(true);
 						this.ventanaRolesUsuarios.getBtnEditarUsuario().setEnabled(true);
-//						
-//						JOptionPane.showMessageDialog(null, "<html><p>Usuario Editado</p></html>", "Edici�n Exitosa",
-//								JOptionPane.INFORMATION_MESSAGE);
+						
+						usuarioElegido = null;
+						rolElegido = null;
 
 						JOptionPane.showMessageDialog(null, new JLabel("Usuario Editado"), "Edición Exitosa",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -309,7 +304,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 					this.ventanaRolesUsuarios.getComboRoles().setVisible(true);
 					this.ventanaRolesUsuarios.getComboRoles().setEnabled(true);
 					this.ventanaRolesUsuarios.getComboRoles().setForeground(Color.BLACK);
-					this.ventanaRolesUsuarios.getComboRoles().setSelectedIndex(usuarioElegido.getIdRol()-1);
+					this.ventanaRolesUsuarios.getComboRoles().setSelectedIndex(usuarioElegido.getIdRol() - 2);
 
 					this.ventanaRolesUsuarios.getBtnGuardarEdicion().setVisible(true);
 					this.ventanaRolesUsuarios.getBtnCancelarEdicion().setVisible(true);
@@ -330,6 +325,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getTxtPass().setEditable(false);
 				this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setEditable(false);
 				this.ventanaRolesUsuarios.getComboRoles().setEnabled(false);
+				this.ventanaRolesUsuarios.getComboRoles().setVisible(false);
 
 				this.ventanaRolesUsuarios.getBtnEliminarUsuario().setEnabled(true);
 				this.ventanaRolesUsuarios.getBtnAgregarUsuario().setEnabled(true);
@@ -341,7 +337,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 					this.ventanaRolesUsuarios.getErrorMsj("Seleccione un usuario");
 				}
 
-				else if (usuarioElegido.getIdRol() == 2) {
+				else if (usuarioElegido.getIdRol() == 1) {
 
 					JOptionPane.showMessageDialog(null,
 							"No se puede eliminar al usuario cliente 'Administrador Programador'", "Error de edición",
@@ -355,14 +351,13 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 						int[] filas_seleccionadas = this.ventanaRolesUsuarios.getTablaUsuarios().getSelectedRows();
 						for (int fila : filas_seleccionadas) {
-							
+
 							int idTecnico = usuarios_en_tabla.get(fila).getIdUsuario();
-							
+
 							editarReparacionesSinTecnico(idTecnico);
 							agenda.borrarUsuario(usuarios_en_tabla.get(fila));
-							
 
-									}
+						}
 
 						llenarTablaUsuarios();
 						this.ventanaRolesUsuarios.getTxtNombreUsuario().setText("");
@@ -414,31 +409,24 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 	}
 
-
 	private void editarReparacionesSinTecnico(int idTecnico) {
-		
-		
+
 		this.Reparaciones = (List<ReparacionDTO>) agenda.obtenerReparacion();
 
 		for (int i = 0; i < this.Reparaciones.size(); i++) {
-			
+
 			if (Reparaciones.get(i).getidUsuario() == idTecnico) {
-				
+
 				int ELS = Reparaciones.get(i).getELS();
 				int idUsuarioBorrado = 1;
-				
-				ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS,idUsuarioBorrado);
+
+				ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, idUsuarioBorrado);
 				this.agenda.editarReparacionR(reparacionAeditar);
 
-				
 			}
-			
-			
+
 		}
 
-		
-		
-		
 	}
 
 	private void borrarPermiso() {
@@ -503,10 +491,10 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		ventanaPermisos.getCmbRoles().removeAllItems();
 		roles_en_tabla = agenda.obtenerRoles();
 		for (RolDTO rol : roles_en_tabla) {
+
 			ventanaPermisos.getCmbRoles().addItem(rol.getNombre());
-			
+
 		}
-		
 
 	}
 
@@ -559,17 +547,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 			else if (usuarios_en_tabla.get(i).getLogin().equals(this.ventanaRolesUsuarios.getTxtLogin().getText()))
 				return true;
 		}
-		// else if (usuarioElegido != null && usuarios_en_tabla.contains(new
-		// UsuarioDTO(usuarioElegido.getIdUsuario(),0,dni,"","","",ventanaAdministrarRolesUsuarios.getTxtEmailUsuario().getText(),ventanaAdministrarRolesUsuarios.getTxtLogin().getText(),"")))
-		// {
-		// return true;
-		// }
-		// else if (usuarios_en_tabla.contains(new
-		// UsuarioDTO(0,0,dni,"","","",ventanaAdministrarRolesUsuarios.getTxtEmailUsuario().getText(),ventanaAdministrarRolesUsuarios.getTxtLogin().getText(),""))
-		// )
-		// {
-		// return true;
-		// }
+
 		return false;
 
 	}
@@ -608,17 +586,15 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		this.ventanaRolesUsuarios.getComboRoles().removeAllItems();
 
 		this.roles_en_tabla = agenda.obtenerRoles();
-		
-		//this.ventanaRolesUsuarios.getComboRoles().addItem("");
 
 		for (int i = 0; i < this.roles_en_tabla.size(); i++) {
 
-			this.ventanaRolesUsuarios.getComboRoles().addItem(this.roles_en_tabla.get(i).getNombre());
-			System.out.println(this.roles_en_tabla.get(i).getNombre());
+			if (roles_en_tabla.get(i).getIdRol() != 1) {
 
+				this.ventanaRolesUsuarios.getComboRoles().addItem(this.roles_en_tabla.get(i).getNombre());
+
+			}
 		}
-		
-		
 
 	}
 
@@ -658,9 +634,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 					if (!usuarios_en_tabla.isEmpty()) {
 						usuarioElegido = usuarios_en_tabla.get(i);
 						int indiceRol = usuarioElegido.getIdRol();
-						
+
 						this.ventanaRolesUsuarios.getComboRoles().setVisible(false);
-						//this.ventanaRolesUsuarios.getComboRoles().setSelectedIndex(indiceRol);
 						this.ventanaRolesUsuarios.getTxtNombreUsuario().setText(usuarioElegido.getNombre());
 						this.ventanaRolesUsuarios.getTxtApellidoUsuario().setText(usuarioElegido.getApellido());
 						this.ventanaRolesUsuarios.getTxtDNI().setText("" + usuarioElegido.getDni());
@@ -669,8 +644,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						this.ventanaRolesUsuarios.getTxtLogin().setText(usuarioElegido.getLogin());
 						this.ventanaRolesUsuarios.getTxtPass().setText(usuarioElegido.getPass());
 						this.ventanaRolesUsuarios.getTextRol().setText(agenda.obtenerRolXid(indiceRol));
-						
-						
+
 						this.ventanaRolesUsuarios.getBtnGuardarEdicion().setVisible(false);
 						this.ventanaRolesUsuarios.getBtnCancelarEdicion().setVisible(false);
 						this.ventanaRolesUsuarios.getBtnGuardarNuevo().setVisible(false);
@@ -687,7 +661,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						this.ventanaRolesUsuarios.getTxtLogin().setEditable(false);
 						this.ventanaRolesUsuarios.getTxtPass().setEditable(false);
 						this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setEditable(false);
-						//this.ventanaRolesUsuarios.getComboRoles().setEnabled(false);
+
 					}
 				}
 			}
