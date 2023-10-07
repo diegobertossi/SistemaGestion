@@ -172,7 +172,7 @@ nombre 		VARCHAR(50),
 PRIMARY KEY (idRol)
 );
 
-INSERT INTO rol SELECT 0,'Default';
+INSERT INTO rol SELECT 0,'Seleccione un ROL';
 INSERT INTO rol SELECT 0,'Administrador Programador';
 INSERT INTO rol SELECT 0,'Tecnico';
 INSERT INTO rol SELECT 0,'Contable';

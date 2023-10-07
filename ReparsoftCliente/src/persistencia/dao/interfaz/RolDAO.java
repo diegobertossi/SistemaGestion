@@ -13,4 +13,6 @@ public interface RolDAO
 	public boolean edit(RolDTO rol_a_editar);
 	
 	public List<RolDTO> readAll();
+
+	public String readAllxid(int id);
 }

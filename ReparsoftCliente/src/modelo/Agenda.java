@@ -103,6 +103,11 @@ public class Agenda {
 		return rol.readAll();
 	}
 
+	
+	public String  obtenerRolXid(int id) {
+		return rol.readAllxid(id);
+	}
+	
 	// CLIENTES
 	public void agregarClientes(ClienteDTO nuevoCliente) {
 		Cliente.insert(nuevoCliente);

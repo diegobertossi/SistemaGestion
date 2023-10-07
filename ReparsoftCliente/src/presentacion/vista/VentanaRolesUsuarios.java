@@ -298,16 +298,12 @@ public class VentanaRolesUsuarios extends JFrame {
 		lblDni.setBounds(21, 308, 76, 14);
 		panel.add(lblDni);
 
-		JLabel lblRol = new JLabel("ROL : ");
-		lblRol.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblRol.setBounds(315, 267, 45, 14);
-		panel.add(lblRol);
-
 		comboRoles = new JComboBox();
+		comboRoles.setVisible(false);
 		comboRoles.setForeground(new Color(0, 0, 0));
 		comboRoles.setEnabled(false);
 		comboRoles.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboRoles.setBounds(360, 264, 185, 20);
+		comboRoles.setBounds(107, 411, 198, 20);
 		panel.add(comboRoles);
 
 		txtLogin = new JTextField();

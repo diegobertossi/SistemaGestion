@@ -153,6 +153,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 					this.ventanaRolesUsuarios.getTxtEmailUsuario().setText("");
 					this.ventanaRolesUsuarios.getTxtLogin().setText("");
 					this.ventanaRolesUsuarios.getTxtPass().setText("");
+					this.ventanaRolesUsuarios.getTextRol().setText("");
 					usuarioElegido = null;
 					rolElegido = null;
 				}
@@ -167,6 +168,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getTxtEmailUsuario().setText("");
 				this.ventanaRolesUsuarios.getTxtLogin().setText("");
 				this.ventanaRolesUsuarios.getTxtPass().setText("");
+				this.ventanaRolesUsuarios.getTextRol().setText("");
 				usuarioElegido = null;
 				rolElegido = null;
 
@@ -184,7 +186,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getTxtLogin().setEditable(false);
 				this.ventanaRolesUsuarios.getTxtPass().setEditable(false);
 				this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setEditable(false);
-				this.ventanaRolesUsuarios.getComboRoles().setEnabled(false);
+				this.ventanaRolesUsuarios.getComboRoles().setVisible(false);
 
 			}
 
@@ -217,9 +219,12 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getTxtPass().setEditable(true);
 				this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setEditable(true);
 				this.ventanaRolesUsuarios.getComboRoles().setEnabled(true);
-				this.ventanaRolesUsuarios.getComboRoles().setForeground(Color.BLACK);
-				this.ventanaRolesUsuarios.getComboRoles().setSelectedIndex(-1);
-
+				this.ventanaRolesUsuarios.getComboRoles().setVisible(true);
+//				this.ventanaRolesUsuarios.getComboRoles().setForeground(Color.BLACK);
+//				this.ventanaRolesUsuarios.getComboRoles().setSelectedIndex(0);
+				
+				
+				
 				this.ventanaRolesUsuarios.getTxtNombreUsuario().requestFocus();
 
 			}
@@ -251,6 +256,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						usuarioElegido.setEmail(this.ventanaRolesUsuarios.getTxtEmailUsuario().getText());
 						usuarioElegido.setLogin(this.ventanaRolesUsuarios.getTxtLogin().getText());
 						usuarioElegido.setPass(this.ventanaRolesUsuarios.getTxtPass().getText());
+						
 
 						agenda.editarUsuario(usuarioElegido);
 						llenarTablaUsuarios();
@@ -491,7 +497,9 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		roles_en_tabla = agenda.obtenerRoles();
 		for (RolDTO rol : roles_en_tabla) {
 			ventanaPermisos.getCmbRoles().addItem(rol.getNombre());
+			
 		}
+		
 
 	}
 
@@ -599,8 +607,11 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		for (int i = 0; i < this.roles_en_tabla.size(); i++) {
 
 			this.ventanaRolesUsuarios.getComboRoles().addItem(this.roles_en_tabla.get(i).getNombre());
+			System.out.println(this.roles_en_tabla.get(i).getNombre());
 
 		}
+		
+		
 
 	}
 
@@ -639,8 +650,10 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				if (i != -1) {
 					if (!usuarios_en_tabla.isEmpty()) {
 						usuarioElegido = usuarios_en_tabla.get(i);
-						int indiceRol = usuarioElegido.getIdRol() - 2;
-						this.ventanaRolesUsuarios.getComboRoles().setSelectedIndex(indiceRol);
+						int indiceRol = usuarioElegido.getIdRol() - 1;
+						
+						this.ventanaRolesUsuarios.getComboRoles().setVisible(false);
+						//this.ventanaRolesUsuarios.getComboRoles().setSelectedIndex(indiceRol);
 						this.ventanaRolesUsuarios.getTxtNombreUsuario().setText(usuarioElegido.getNombre());
 						this.ventanaRolesUsuarios.getTxtApellidoUsuario().setText(usuarioElegido.getApellido());
 						this.ventanaRolesUsuarios.getTxtDNI().setText("" + usuarioElegido.getDni());
@@ -648,7 +661,9 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						this.ventanaRolesUsuarios.getTxtEmailUsuario().setText(usuarioElegido.getEmail());
 						this.ventanaRolesUsuarios.getTxtLogin().setText(usuarioElegido.getLogin());
 						this.ventanaRolesUsuarios.getTxtPass().setText(usuarioElegido.getPass());
-
+						this.ventanaRolesUsuarios.getTextRol().setText(agenda.obtenerRolXid(indiceRol));
+						
+						
 						this.ventanaRolesUsuarios.getBtnGuardarEdicion().setVisible(false);
 						this.ventanaRolesUsuarios.getBtnCancelarEdicion().setVisible(false);
 						this.ventanaRolesUsuarios.getBtnGuardarNuevo().setVisible(false);
@@ -665,7 +680,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						this.ventanaRolesUsuarios.getTxtLogin().setEditable(false);
 						this.ventanaRolesUsuarios.getTxtPass().setEditable(false);
 						this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setEditable(false);
-						this.ventanaRolesUsuarios.getComboRoles().setEnabled(false);
+						//this.ventanaRolesUsuarios.getComboRoles().setEnabled(false);
 					}
 				}
 			}
