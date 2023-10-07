@@ -17,7 +17,7 @@ import persistencia.dao.interfaz.UsuarioDAO;
 public class UsuarioDAOImpl implements UsuarioDAO {
 	private static final String insert = "INSERT INTO usuario(idUsuario, idRol, dni, nombre, apellido, telefono, email,login,pass) VALUES(?, ?, ?, ?, ?, ?, ?,?,?)";
 	private static final String delete = "DELETE FROM usuario WHERE idUsuario = ?";
-	private static final String readall = "SELECT * FROM usuario where idRol !=1 ";
+	private static final String readall = "SELECT * FROM usuario ";
 	private static final String readLogin = "SELECT * FROM usuario where login = ? AND pass = ? ";
 	private static final String readallTecnico = "SELECT usuario.nombre FROM usuario group by usuario.nombre";
 	private static final String IDporNombre = "Select idUsuario from usuario where nombre =?";
@@ -37,7 +37,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			statement.setString(8, user.getLogin());
 			statement.setString(9, user.getPass());
 
-			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
+			if (statement.executeUpdate() > 0) // Si se ejecutï¿½ devuelvo true
 				return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -55,7 +55,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			statement = conexion.getSQLConexion().prepareStatement(delete);
 			statement.setString(1, Integer.toString(user_a_eliminar.getIdUsuario()));
 			chequeoUpdate = statement.executeUpdate();
-			if (chequeoUpdate > 0) // Si se ejecutó devuelvo true
+			if (chequeoUpdate > 0) // Si se ejecutï¿½ devuelvo true
 				return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -78,7 +78,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 							+ "' ," + " pass = '" + user_a_editar.getPass() + "' " + " WHERE idUsuario = "
 							+ user_a_editar.getIdUsuario() + "");
 
-			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
+			if (statement.executeUpdate() > 0) // Si se ejecutï¿½ devuelvo true
 				return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

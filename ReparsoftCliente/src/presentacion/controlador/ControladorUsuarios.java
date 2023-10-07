@@ -51,13 +51,13 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	private VentanaPermisos ventanaPermisos;
 	private Permisos permisos;
 	private VentanaRolesUsuarios ventanaRolesUsuarios;
-	private List<UsuarioDTO> profesionales_en_tabla;
+	//private List<UsuarioDTO> profesionales_en_tabla;
 	private List<PermisoDTO> permisos_en_tabla;
 	private List<PermisoDTO> permisosFaltantes_en_tabla;
 	private List<RolDTO> roles_en_tabla;
 	private List<UsuarioDTO> usuarios_en_tabla;
 	private Agenda agenda;
-	private UsuarioDTO user;
+	//private UsuarioDTO user;
 	private RolDTO rolElegido;
 	private UsuarioDTO usuarioElegido;
 	private List<ReparacionDTO> Reparaciones;
@@ -75,7 +75,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 		this.agenda = agenda;
 		this.permisos = new Permisos();
-		this.user = null;
+		//this.user = null;
 		this.rolElegido = null;
 		this.usuarioElegido = null;
 
@@ -93,8 +93,6 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		this.ventanaRolesUsuarios.getBtnEliminarUsuario().addActionListener(this);
 		this.ventanaRolesUsuarios.getBtnPermisosXrol().addActionListener(this);
 
-		
-		
 		llenarComboRoles();
 		llenarTablaUsuarios();
 
@@ -111,10 +109,15 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (ventanaRolesUsuarios != null) {
+			
+			
 			if (e.getSource() == this.ventanaRolesUsuarios.getComboRoles()) {
 				int i = this.ventanaRolesUsuarios.getComboRoles().getSelectedIndex();
 				rolElegido = roles_en_tabla.get(i);
-			} else if (e.getSource() == this.ventanaRolesUsuarios.getBtnGuardarNuevo()) {
+				System.out.println("ID rol elegido: " + rolElegido.getIdRol() + "  Nombre rol elegido: " + rolElegido.getNombre());
+			}
+			
+			else if (e.getSource() == this.ventanaRolesUsuarios.getBtnGuardarNuevo()) {
 				usuarioElegido = null;
 
 				if (rolElegido == null) {
@@ -135,6 +138,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 							"Los campos, DNI, Login no pueden estar repetidos con otro usuario", "El dni ya existe",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
+					
+					
 					UsuarioDTO nuevoUsuario = new UsuarioDTO(0, rolElegido.getIdRol(),
 							Integer.parseInt(this.ventanaRolesUsuarios.getTxtDNI().getText()),
 							this.ventanaRolesUsuarios.getTxtNombreUsuario().getText(),
@@ -287,7 +292,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 				if (usuarioElegido == null) {
 					this.ventanaRolesUsuarios.getErrorMsj("Seleccione un usuario");
-				} else if (usuarioElegido.getIdRol() == 2) {
+				} else if (usuarioElegido.getIdRol() == 1) {
 
 					JOptionPane.showMessageDialog(null,
 							"No se puede Editar al usuario cliente 'Administrador Programador'", "Error de edición",
@@ -301,8 +306,10 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 					this.ventanaRolesUsuarios.getTxtLogin().setEditable(true);
 					this.ventanaRolesUsuarios.getTxtPass().setEditable(true);
 					this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setEditable(true);
+					this.ventanaRolesUsuarios.getComboRoles().setVisible(true);
 					this.ventanaRolesUsuarios.getComboRoles().setEnabled(true);
 					this.ventanaRolesUsuarios.getComboRoles().setForeground(Color.BLACK);
+					this.ventanaRolesUsuarios.getComboRoles().setSelectedIndex(usuarioElegido.getIdRol()-1);
 
 					this.ventanaRolesUsuarios.getBtnGuardarEdicion().setVisible(true);
 					this.ventanaRolesUsuarios.getBtnCancelarEdicion().setVisible(true);
@@ -650,7 +657,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				if (i != -1) {
 					if (!usuarios_en_tabla.isEmpty()) {
 						usuarioElegido = usuarios_en_tabla.get(i);
-						int indiceRol = usuarioElegido.getIdRol() - 1;
+						int indiceRol = usuarioElegido.getIdRol();
 						
 						this.ventanaRolesUsuarios.getComboRoles().setVisible(false);
 						//this.ventanaRolesUsuarios.getComboRoles().setSelectedIndex(indiceRol);
