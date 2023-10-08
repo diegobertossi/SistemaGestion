@@ -31,7 +31,8 @@ public class CellRendererTablaClientes extends DefaultTableCellRenderer implemen
 	private VentanaListadoReparaciones ventanaListadoReparaciones;
 
 	private JCheckBox check = new JCheckBox();
-	Font fuenteELS = new Font("Cambria", Font.BOLD, 12);
+	Font fuenteNombre = new Font("Cambria", Font.BOLD, 12);
+	Font fuenteDNI = new Font("Cambria", Font.PLAIN, 12);
 
 	/** Constructor de clase */
 	public CellRendererTablaClientes() {
@@ -69,13 +70,15 @@ public class CellRendererTablaClientes extends DefaultTableCellRenderer implemen
 
 		if (column == 0) {
 
-			setFont(fuenteELS);
+			setFont(fuenteNombre);
 
 		}
 
 		if (column == 1) {
 
 			setHorizontalAlignment(SwingConstants.CENTER);
+			setFont(fuenteDNI);
+			
 		}
 
 		return this;
