@@ -17,7 +17,7 @@ import persistencia.dao.interfaz.UsuarioDAO;
 public class UsuarioDAOImpl implements UsuarioDAO {
 	private static final String insert = "INSERT INTO usuario(idUsuario, idRol, dni, nombre, apellido, telefono, email,login,pass) VALUES(?, ?, ?, ?, ?, ?, ?,?,?)";
 	private static final String delete = "DELETE FROM usuario WHERE idUsuario = ?";
-	private static final String readall = "SELECT * FROM usuario ";
+	private static final String readall = "SELECT * FROM usuario WHERE dni <> 0 ";
 	private static final String readLogin = "SELECT * FROM usuario where login = ? AND pass = ? ";
 	private static final String readallTecnico = "SELECT usuario.nombre FROM usuario group by usuario.nombre";
 	private static final String IDporNombre = "Select idUsuario from usuario where nombre =?";

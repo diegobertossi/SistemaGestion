@@ -565,6 +565,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 
 		FechaEntrada = new JDateChooser();
+		FechaEntrada.setDateFormatString("dd/MM/yyyy");
 		FechaEntrada.setForeground(new Color(0, 0, 0));
 		FechaEntrada.setEnabled(false);
 		((JTextFieldDateEditor) FechaEntrada.getDateEditor()).setDisabledTextColor(Color.darkGray);

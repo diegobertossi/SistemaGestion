@@ -365,6 +365,10 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						this.ventanaRolesUsuarios.getTxtDNI().setText("");
 						this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setText("");
 						this.ventanaRolesUsuarios.getTxtEmailUsuario().setText("");
+						this.ventanaRolesUsuarios.getTextRol().setText("");
+						this.ventanaRolesUsuarios.getTxtLogin().setText("");
+						this.ventanaRolesUsuarios.getTxtPass().setText("");
+												
 						usuarioElegido = null;
 						rolElegido = null;
 					}

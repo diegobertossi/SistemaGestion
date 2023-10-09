@@ -1,4 +1,3 @@
-
 Drop DATABASE if exists `ordenesbrc`;
 
 CREATE DATABASE IF NOT EXISTS `ordenesbrc`;
@@ -371,4 +370,4 @@ insert into pantalla select 0,null,'Configuracion' ;
 #insert into pantalla select 0,(select idPantalla from pantalla where nombre = 'Tecnico'),'Listados' ;
 #insert into pantalla select 0,(select idPantalla from pantalla where nombre = 'Tecnico'),'Busquedas' ;
 #insert into pantalla select 0,(select idPantalla from pantalla where nombre = 'Tecnico'),'Clientes' ;
-insert into permisos select 0,2,idPantalla from pantalla ;
+insert into permisos select 0,1,idPantalla from pantalla ;
