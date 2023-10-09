@@ -118,7 +118,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		panelFiltros.setMaximumSize(new Dimension(600, 160));
 		panelFiltros.setFont(new Font("Cambria", Font.PLAIN, 10));
 		panelFiltros.setBackground(new Color(176, 196, 222));
-		panelFiltros.setBorder(new MatteBorder(2, 2, 0, 0, (Color) new Color(0, 128, 128)));
+		panelFiltros.setBorder(new MatteBorder(2, 2, 0, 2, (Color) new Color(0, 128, 128)));
 
 		panelFiltros.setBounds(35, 50, 994, 134);
 		panelSuperior.add(panelFiltros, BorderLayout.CENTER);
