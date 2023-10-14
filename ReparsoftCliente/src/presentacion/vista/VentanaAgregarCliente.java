@@ -1,32 +1,18 @@
 package presentacion.vista;
 
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import com.toedter.calendar.JDateChooser;
-
-import VistaPropias.JTextNum;
 import presentacion.controlador.ControladorCliente;
-import presentacion.controlador.ControladorUsuarios;
-
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.ActionEvent;
 import java.awt.Component;
 import javax.swing.Box;
-import javax.swing.JSeparator;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.Color;
@@ -42,7 +28,6 @@ public class VentanaAgregarCliente extends JFrame
 	private JTextField txtTelefonoEmpresa;
 	private JTextField txtEmail;
 	private JTextField txtTelefonoContacto;
-	private ControladorCliente controlador;
 	private JButton btnAgregarCliente;
 	private JButton btnCancelar;
 	private JLabel lblContacto;
@@ -53,10 +38,8 @@ public class VentanaAgregarCliente extends JFrame
 	{
 		super();
 		setResizable(false);
-		this.controlador = controlador;
-		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 544, 326);
+		setBounds(100, 100, 544, 311);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -65,7 +48,7 @@ public class VentanaAgregarCliente extends JFrame
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.inactiveCaption);
-		panel.setBounds(0, 0, 528, 287);
+		panel.setBounds(0, 0, 528, 276);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -90,7 +73,7 @@ public class VentanaAgregarCliente extends JFrame
 		panel.add(lblTelefonoEMpresa);
 		
 		txtCUIT = new JTextField();
-		txtCUIT.setBackground(SystemColor.inactiveCaptionBorder);
+		txtCUIT.setBackground(new Color(220, 220, 220));
 		txtCUIT.setFont(new Font("Cambria", Font.PLAIN, 14));
 		txtCUIT.setBounds(162, 79, 340, 20);
 		panel.add(txtCUIT);
@@ -99,7 +82,7 @@ public class VentanaAgregarCliente extends JFrame
 		
 		
 		txtNombre = new JTextField();
-		txtNombre.setBackground(SystemColor.inactiveCaptionBorder);
+		txtNombre.setBackground(new Color(220, 220, 220));
 		txtNombre.setFont(new Font("Cambria", Font.BOLD, 14));
 		txtNombre.setBounds(162, 56, 340, 20);
 		panel.add(txtNombre);
@@ -107,21 +90,21 @@ public class VentanaAgregarCliente extends JFrame
 		//soloLetras(txtNombre);
 		
 		txtDireccion = new JTextField();
-		txtDireccion.setBackground(SystemColor.inactiveCaptionBorder);
+		txtDireccion.setBackground(new Color(220, 220, 220));
 		txtDireccion.setFont(new Font("Cambria", Font.PLAIN, 14));
 		txtDireccion.setBounds(162, 102, 340, 20);
 		panel.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		
-		btnAgregarCliente = new JButton("Agregar");
+		btnAgregarCliente = new JButton("AGREGAR");
 		btnAgregarCliente.setBackground(new Color(152, 251, 152));
 		btnAgregarCliente.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnAgregarCliente.setBounds(314, 239, 89, 23);
+		btnAgregarCliente.setBounds(276, 238, 108, 23);
 			
 		panel.add(btnAgregarCliente);		
 		
 		txtEmail = new JTextField();
-		txtEmail.setBackground(SystemColor.inactiveCaptionBorder);
+		txtEmail.setBackground(new Color(220, 220, 220));
 		txtEmail.setFont(new Font("Cambria", Font.PLAIN, 14));
 		txtEmail.setBounds(162, 149, 340, 20);
 		panel.add(txtEmail);
@@ -138,7 +121,7 @@ public class VentanaAgregarCliente extends JFrame
 		panel.add(lblTelefonoContacto);
 		
 		txtTelefonoEmpresa = new JTextField();
-		txtTelefonoEmpresa.setBackground(SystemColor.inactiveCaptionBorder);
+		txtTelefonoEmpresa.setBackground(new Color(220, 220, 220));
 		txtTelefonoEmpresa.setFont(new Font("Cambria", Font.PLAIN, 14));
 		txtTelefonoEmpresa.setColumns(10);
 		txtTelefonoEmpresa.setBounds(162, 196, 340, 20);
@@ -146,7 +129,7 @@ public class VentanaAgregarCliente extends JFrame
 		soloNumeros(txtTelefonoEmpresa);
 		
 		txtTelefonoContacto = new JTextField();
-		txtTelefonoContacto.setBackground(SystemColor.inactiveCaptionBorder);
+		txtTelefonoContacto.setBackground(new Color(220, 220, 220));
 		txtTelefonoContacto.setFont(new Font("Cambria", Font.PLAIN, 14));
 		txtTelefonoContacto.setColumns(10);
 		txtTelefonoContacto.setBounds(162, 173, 340, 20);
@@ -163,7 +146,7 @@ public class VentanaAgregarCliente extends JFrame
 		panel.add(lblContacto);
 		
 		txtContacto = new JTextField();
-		txtContacto.setBackground(SystemColor.inactiveCaptionBorder);
+		txtContacto.setBackground(new Color(220, 220, 220));
 		txtContacto.setFont(new Font("Cambria", Font.PLAIN, 14));
 		txtContacto.setColumns(10);
 		txtContacto.setBounds(162, 125, 340, 20);
@@ -174,10 +157,10 @@ public class VentanaAgregarCliente extends JFrame
 		lblNuevoCliente.setBounds(20, 11, 144, 23);
 		panel.add(lblNuevoCliente);
 		
-		btnCancelar = new JButton("Cancelar");
+		btnCancelar = new JButton("CANCELAR");
 		btnCancelar.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnCancelar.setBackground(new Color(255, 0, 0));
-		btnCancelar.setBounds(413, 240, 89, 23);
+		btnCancelar.setBounds(394, 239, 108, 23);
 		panel.add(btnCancelar);
 
 	

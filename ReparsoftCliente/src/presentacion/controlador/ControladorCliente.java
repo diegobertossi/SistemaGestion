@@ -13,13 +13,11 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 import modelo.Agenda;
-import presentacion.reportes.ReporteAgenda;
 import presentacion.vista.VentanaAgregarCliente;
 import presentacion.vista.VentanaAgregarSucursal;
 import presentacion.vista.VentanaClientes;
 import presentacion.vista.VentanaSucursales;
 import dto.ClienteDTO;
-import dto.ReparacionDTO;
 import dto.SucursalDTO;
 
 public class ControladorCliente implements ActionListener, MouseListener {
@@ -34,7 +32,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	private Agenda agenda;
 	private ClienteDTO clienteElegido;
 	private SucursalDTO SucursalesEncliente;
-	private ReparacionDTO reparacion;
 
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
@@ -68,7 +65,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		}
 
 		ventanaClientes.setCellRender(this.ventanaClientes.getTablaClientes());
-		this.ventanaClientes.show();
+		this.ventanaClientes.setVisible(true);
 	}
 
 	private void llenarTablaSucursales(int idCliente) {
@@ -84,7 +81,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 			Object[] fila = { this.Sucursales_en_tabla.get(i).getNombreSucursal() };
 			this.ventanaSucursales.getModelSucursales().addRow(fila);
 		}
-		this.ventanaSucursales.show();
+		this.ventanaSucursales.setVisible(true);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -134,7 +131,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 						if (SucursalesEncliente.getNombreSucursal().compareTo("") == 0) {
 
 							int seleccion = JOptionPane.showConfirmDialog(ventanaClientes,
-									"�Est� seguro Eliminar este Cliente?", "Confirmaci�n", JOptionPane.YES_NO_OPTION,
+									"Está seguro Eliminar este Cliente?", "Confirmación", JOptionPane.YES_NO_OPTION,
 									JOptionPane.QUESTION_MESSAGE);
 
 							if (seleccion == JOptionPane.YES_OPTION) {
@@ -176,7 +173,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				} else {
 					JOptionPane.showMessageDialog(null,
 							"Este Cliente Posee reparaciones asociadas. No es posible Eliminarlo ",
-							"Error al Eliminar Cliete", JOptionPane.INFORMATION_MESSAGE);
+							"Error al Eliminar Cliente", JOptionPane.INFORMATION_MESSAGE);
 				}
 			} else {
 				JOptionPane.showMessageDialog(null, "No hay ningun Cliente seleccionado", "Error al modificar Cliente",
@@ -578,7 +575,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 	}
 
-	
 	public void agregarListenersVentanaCliente() {
 
 		this.ventanaClientes.getBtnAgregar().addActionListener(this);
@@ -588,25 +584,8 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		this.ventanaClientes.getBtnGenerarSucursales().addActionListener(this);
 		this.ventanaClientes.getBtnVisualizarSucursales().addActionListener(this);
 
-
 	}
-//	public void agregarListenersVentanaClienteEnEquipo() {
-//
-//		
-//		ventanaClientes = new VentanaClientes(this);
-//		this.ventanaClientes.getBtnAgregar().addActionListener(this);
-//		this.ventanaClientes.getBtnBorrar().addActionListener(this);
-//		this.ventanaClientes.getBtnEditar().addActionListener(this);
-//		this.ventanaClientes.getTablaClientes().addMouseListener(this);
-//		this.ventanaClientes.getBtnGenerarSucursales().addActionListener(this);
-//		this.ventanaClientes.getBtnVisualizarSucursales().addActionListener(this);
-//		
-//
-//
-//	}
-	
-	
-	
+
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		if (this.ventanaClientes != null) {

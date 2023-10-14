@@ -58,20 +58,22 @@ public class VentanaOpcionesBackup extends JFrame {
 		btnCancelar.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		txtNombreArchivo = new JTextField();
+		txtNombreArchivo.setAlignmentY(Component.TOP_ALIGNMENT);
 		txtNombreArchivo.setBorder(new LineBorder(new Color(0, 128, 128)));
 		txtNombreArchivo.setHorizontalAlignment(SwingConstants.LEFT);
 		txtNombreArchivo.setEditable(false);
-		txtNombreArchivo.setBounds(25, 128, 383, 25);
+		txtNombreArchivo.setBounds(25, 128, 383, 20);
 		panel.add(txtNombreArchivo);
 		txtNombreArchivo.setBackground(new Color(0, 102, 153));
 		txtNombreArchivo.setForeground(new Color(255, 255, 255));
 		txtNombreArchivo.setFont(new Font("Cambria Math", Font.PLAIN, 12));
 
 		txtRutaArchivo = new JTextField();
+		txtRutaArchivo.setAlignmentY(Component.TOP_ALIGNMENT);
 		txtRutaArchivo.setBorder(new LineBorder(new Color(0, 128, 128)));
 		txtRutaArchivo.setHorizontalAlignment(SwingConstants.LEFT);
 		txtRutaArchivo.setEditable(false);
-		txtRutaArchivo.setBounds(25, 199, 383, 25);
+		txtRutaArchivo.setBounds(25, 199, 383, 20);
 		panel.add(txtRutaArchivo);
 		txtRutaArchivo.setBackground(new Color(0, 102, 153));
 		txtRutaArchivo.setForeground(new Color(255, 255, 255));
