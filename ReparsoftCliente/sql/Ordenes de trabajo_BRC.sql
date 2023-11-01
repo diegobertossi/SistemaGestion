@@ -166,12 +166,12 @@ INSERT INTO `Remitos` (`idRemito`, `NumeroRemitoSalida`, `IdUbicacion`) VALUES (
 DROP TABLE IF EXISTS `rol`;
 
 create table rol(
-idRol 		INT NOT NULL AUTO_INCREMENT,
+idRol 		INT NOT NULL DEFAULT 0,
 nombre 		VARCHAR(50),
 PRIMARY KEY (idRol)
 );
 
-#INSERT INTO rol SELECT 0,'Default';
+INSERT INTO rol SELECT 0,'Default';
 INSERT INTO rol SELECT 1,'Administrador Programador';
 INSERT INTO rol SELECT 2,'Tecnico';
 INSERT INTO rol SELECT 3,'Contable';
@@ -197,7 +197,7 @@ PRIMARY KEY (idUsuario)
 ) ;
 
 
-#INSERT INTO usuario SELECT 0,1,0,'','','','','','';
+INSERT INTO usuario SELECT 0,1,0,'','','','','','';
 INSERT INTO usuario SELECT 0,1,30925503,'Diego','Bertossi','1137688372','diego.bertossi@elsweb.com.ar','diego','1234';
 # INSERT INTO usuario SELECT 0,3,30925501,'Juan','Perez','1137688372','diego.bertossi@elsweb.com.ar','juan','0000';
 # INSERT INTO usuario SELECT 0,4,30925505,'Pedro','Zerez','1137688372','diego.bertossi@elsweb.com.ar','pedro','0000';
