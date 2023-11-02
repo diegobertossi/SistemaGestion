@@ -117,7 +117,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 			else if (e.getSource() == this.ventanaRolesUsuarios.getBtnGuardarNuevo()) {
 				usuarioElegido = null;
 
-				if (rolElegido == null || rolElegido.getIdRol() ==  1) {
+				if (rolElegido == null ) {
 					this.ventanaRolesUsuarios.getErrorMsj("Seleccione un rol");
 				} else if (this.ventanaRolesUsuarios.getTxtNombreUsuario().getText().equals("")
 						|| this.ventanaRolesUsuarios.getTxtApellidoUsuario().getText().equals("")
@@ -136,7 +136,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 
-					UsuarioDTO nuevoUsuario = new UsuarioDTO(0, rolElegido.getIdRol(),
+					UsuarioDTO nuevoUsuario = new UsuarioDTO(0, rolElegido.getIdRol()+1,
 							Integer.parseInt(this.ventanaRolesUsuarios.getTxtDNI().getText()),
 							this.ventanaRolesUsuarios.getTxtNombreUsuario().getText(),
 							this.ventanaRolesUsuarios.getTxtApellidoUsuario().getText(),
@@ -245,7 +245,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					if (usuarioElegido != null) {
-						usuarioElegido.setIdRol(rolElegido.getIdRol());
+						usuarioElegido.setIdRol(rolElegido.getIdRol()+1);
 						usuarioElegido.setNombre(this.ventanaRolesUsuarios.getTxtNombreUsuario().getText());
 						usuarioElegido.setApellido(this.ventanaRolesUsuarios.getTxtApellidoUsuario().getText());
 						usuarioElegido.setDni(Integer.parseInt(this.ventanaRolesUsuarios.getTxtDNI().getText()));
@@ -585,6 +585,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public void llenarComboRoles() {
 
 		this.ventanaRolesUsuarios.getComboRoles().removeAllItems();
@@ -593,7 +594,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 		for (int i = 0; i < this.roles_en_tabla.size(); i++) {
 
-			if (roles_en_tabla.get(i).getIdRol() != 1) {
+			if (roles_en_tabla.get(i).getIdRol() != 0 && roles_en_tabla.get(i).getIdRol() != 1 ) {
 
 				this.ventanaRolesUsuarios.getComboRoles().addItem(this.roles_en_tabla.get(i).getNombre());
 
