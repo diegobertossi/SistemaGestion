@@ -103,7 +103,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	boolean guardado = true;
 
 	private Agenda agenda;
-	private int ELSinicial = 1;
+	private int ELSinicial = 988; // poner en 1 para arrancar los ELS desde el número 1 //
 	private int ELS = 1;
 
 	private ReparacionDTO reparacion;
