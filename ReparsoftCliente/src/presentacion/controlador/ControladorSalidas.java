@@ -986,6 +986,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 	private String tomarNumeroRemito(String ubicacion) {
 		int numero;
+		int numero2024 ;
 
 		int codigo;
 
@@ -996,21 +997,30 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		// System.out.println(part1);
 		// System.out.println(part2);
 
+		
 		codigo = Integer.parseInt(part1);
-
+				
 		numero = agenda.obtenerNumeroRemito(codigo) + 1;
+		
+		if (codigo == 3000) {
+				numero2024 = numero + 668;				
+		}
+		
+		else 
+			numero2024 = numero;
+		
+		
+		if (numero2024 < 10) {
+			numeros = "0000000" + numero2024;
 
-		if (numero < 10) {
-			numeros = "0000000" + numero;
+		} else if (numero2024 >= 10 && numero2024 < 100) {
+			numeros = "000000" + numero2024;
 
-		} else if (numero >= 10 && numero < 100) {
-			numeros = "000000" + numero;
+		} else if (numero2024 >= 100 && numero2024 < 1000) {
+			numeros = "00000" + numero2024;
 
-		} else if (numero >= 100 && numero < 1000) {
-			numeros = "00000" + numero;
-
-		} else if (numero >= 1000 && numero < 10000) {
-			numeros = "0000" + numero;
+		} else if (numero2024 >= 1000 && numero2024 < 10000) {
+			numeros = "0000" + numero2024;
 
 		}
 

@@ -104,6 +104,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private Agenda agenda;
 	private int ELSinicial = 988; // poner en 1 para arrancar los ELS desde el número 1 //
+	
 	private int ELS = 1;
 
 	private ReparacionDTO reparacion;
@@ -198,6 +199,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			new ArrayList<>();
 			Calendar c2 = new GregorianCalendar();
 			ventanaAgregarEquipo.getFechaEntrada().setCalendar(c2);
+			
 			ELS = DameNumeroELS();
 
 			agregarListenersVentanaAgregarEquipos();
@@ -221,7 +223,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				int tam = agenda.obtenerReparacion().size();
 
-				if (ELSinicial < tam) {
+				if (ELSinicial < tam + 987) {
 					ELSinicial = ELSinicial + 1;
 					try {
 						TomarDatosDeTablas();
@@ -251,7 +253,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 			if (eleccion == JOptionPane.YES_OPTION) {
 
-				if (ELSinicial > 1) {
+				if (ELSinicial > 988) {
 					ELSinicial = ELSinicial - 1;
 					try {
 						TomarDatosDeTablas();
@@ -280,7 +282,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 			if (eleccion == JOptionPane.YES_OPTION) {
 
-				ELSinicial = agenda.obtenerReparacion().size();
+				ELSinicial = agenda.obtenerReparacion().size() + 987;
 				try {
 					TomarDatosDeTablas();
 				} catch (ParseException e1) {
@@ -306,7 +308,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 			if (eleccion == JOptionPane.YES_OPTION) {
 
-				ELSinicial = 1;
+				ELSinicial = 988;
 				try {
 					TomarDatosDeTablas();
 				} catch (ParseException e1) {

@@ -77,7 +77,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	// where Equipos.Marca = ? group by Equipos.Modelo";
 
 	private static final String readallxIDremito = "SELECT * FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
-			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente) And ((Sucursal.IdSucursal)=Equipos.idSucursal) and ((usuario.IdUsuario)=reparaciones.idUsuario) and Remitos.idRemito = ?";
+			+ " WHERE ((Cliente.idCliente)=Equipos.idCliente) And ((Sucursal.IdSucursal)=Equipos.idSucursal) and ((usuario.IdUsuario)=reparaciones.idUsuario) and Remitos.idRemito = ?";
 
 	private static final String maximoELS = "Select MAX(ELS) from reparaciones";
 
@@ -313,6 +313,11 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 				ELS = resultSet.getInt("MAX(ELS)");
 
 			}
+			if (ELS==0) {
+				
+				ELS=987;
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
