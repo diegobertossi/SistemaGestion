@@ -104,7 +104,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private Agenda agenda;
 	private int ELSinicial = 988; // poner en 1 para arrancar los ELS desde el número 1 //
-	
+
 	private int ELS = 1;
 
 	private ReparacionDTO reparacion;
@@ -199,7 +199,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			new ArrayList<>();
 			Calendar c2 = new GregorianCalendar();
 			ventanaAgregarEquipo.getFechaEntrada().setCalendar(c2);
-			
+
 			ELS = DameNumeroELS();
 
 			agregarListenersVentanaAgregarEquipos();
@@ -1485,6 +1485,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getBotonRefrescarPantalla().addActionListener(this);
 
 		this.ventanaVisualizarEquipos.getTextPresupuesto().addKeyListener(this);
+		this.ventanaVisualizarEquipos.getTextPresupuestoDolar().addKeyListener(this);
 		this.ventanaVisualizarEquipos.getBtnBuscarELS().addActionListener(this);
 		this.ventanaVisualizarEquipos.getComboELS().addActionListener(this);
 		llenarComboELSvisualizacion();
@@ -1499,6 +1500,19 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			public void focusGained(FocusEvent arg0) {
 				SwingUtilities.invokeLater(() -> {
 					ventanaVisualizarEquipos.getTextPresupuesto().selectAll();
+				});
+			}
+		});
+		
+		this.ventanaVisualizarEquipos.getTextPresupuestoDolar().addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+
+			}
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				SwingUtilities.invokeLater(() -> {
+					ventanaVisualizarEquipos.getTextPresupuestoDolar().selectAll();
 				});
 			}
 		});
@@ -1519,8 +1533,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		});
 
-		
-		
 //		ventanaVisualizarEquipos.getTextPresupuesto().addKeyListener(new KeyAdapter() {
 //            @Override
 //            public void keyPressed(KeyEvent e) {
@@ -1531,9 +1543,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 //                });
 //            }
 //        });
-		
-		
-		
+
 		ventanaVisualizarEquipos.getTextPresupuesto().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1555,13 +1565,26 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		});
+		
+		
+		ventanaVisualizarEquipos.getTextPresupuestoDolar().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				String presupuestoDolar = ventanaVisualizarEquipos.getTextPresupuestoDolar().getText();
+				ventanaVisualizarEquipos.getTextPresupuestoDolar().setText(monedaFormatter.formatDolar(presupuestoDolar));
+				verificarPresupuestoEditado();
+
+			}
+		});
+		
 
 	}
 
 	public void agregarListenersVentanaVisualizarEquiposListado() {
 
 		agregarListenersVentanaVisualizarEquipos();
-		
+
 		this.ventanaVisualizarEquipos.getBotonAnterior().removeActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonSiguiente().removeActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonUltimo().removeActionListener(this);
@@ -1673,9 +1696,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
 
 		String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
+		String presupuestoDolar = monedaFormatter.formatDolar(reparacion.getPrecioDolar().toString());
 		String pagoPeso = monedaFormatter.formatPeso(reparacion.getPago().toString());
 
 		ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);
+		ventanaVisualizarEquipos.setTextPresupuestoDolar(presupuestoDolar);
+
 		ventanaVisualizarEquipos.setTextPago(pagoPeso);
 
 		ventanaVisualizarEquipos.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
@@ -1763,12 +1789,15 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		llenarTablaRepuestos();
 		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
-		
+
 		String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
+		String presupuestoDolar = monedaFormatter.formatDolar(reparacion.getPrecioDolar().toString());
 		String pagoPeso = monedaFormatter.formatPeso(reparacion.getPago().toString());
 
 		ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);
+		ventanaVisualizarEquipos.setTextPresupuestoDolar(presupuestoDolar);
 		ventanaVisualizarEquipos.setTextPago(pagoPeso);
+
 //
 //		ventanaVisualizarEquipos.setTextPresupuesto(reparacion.getPrecioPeso().toString());
 //		ventanaVisualizarEquipos.setTextPago(reparacion.getPago().toString());
@@ -1791,7 +1820,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		cerraVentanaVisualizarEquipo();
 
 		monedaFormatter = new MonedaFormatter();
-		
+
 		controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
 
 		SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
@@ -1859,12 +1888,15 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		llenarTablaRepuestos();
 		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
-		
+
 		String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
+		String presupuestoDolar = monedaFormatter.formatDolar(reparacion.getPrecioDolar().toString());
 		String pagoPeso = monedaFormatter.formatPeso(reparacion.getPago().toString());
 
 		ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);
+		ventanaVisualizarEquipos.setTextPresupuestoDolar(presupuestoDolar);
 		ventanaVisualizarEquipos.setTextPago(pagoPeso);
+
 //
 //		ventanaVisualizarEquipos.setTextPresupuesto(reparacion.getPrecioPeso().toString());
 //		ventanaVisualizarEquipos.setTextPago(reparacion.getPago().toString());
@@ -2072,6 +2104,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(EquipoPagado);
 				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(EquipoPagado);
 				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(EquipoPagado);
+				ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(EquipoPagado);
 				ventanaVisualizarEquipos.getTextPago().setBackground(EquipoPagado);
 
 			} else if (reparacion.getPrecioPeso().compareTo(reparacion.getPago()) > 0
@@ -2082,6 +2115,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(CyanClaro);
 				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(CyanClaro);
 				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(CyanClaro);
+				ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(CyanClaro);
 				ventanaVisualizarEquipos.getTextPago().setBackground(CyanClaro);
 
 			} else if (reparacion.getPago().compareTo(PresupuestoDefault) == 0) {
@@ -2091,6 +2125,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(FaltaPago);
 				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(FaltaPago);
 				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(FaltaPago);
+				ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(FaltaPago);
 				ventanaVisualizarEquipos.getTextPago().setBackground(FaltaPago);
 
 			}
@@ -2101,6 +2136,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(AzulClaro);
 			ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(AzulClaro);
 			ventanaVisualizarEquipos.getTextPresupuesto().setBackground(AzulClaro);
+			ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(AzulClaro);
 			ventanaVisualizarEquipos.getTextPago().setBackground(AzulClaro);
 
 		}
@@ -2134,6 +2170,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(EquipoPagado);
 				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(EquipoPagado);
 				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(EquipoPagado);
+				ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(EquipoPagado);
 				ventanaVisualizarEquipos.getTextPago().setBackground(EquipoPagado);
 				ventanaVisualizarEquipos.setChckPDFGenerado(true);
 
@@ -2144,6 +2181,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(CyanClaro);
 				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(CyanClaro);
 				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(CyanClaro);
+				ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(CyanClaro);
 				ventanaVisualizarEquipos.getTextPago().setBackground(CyanClaro);
 
 			} else if (diferencia == presupuesto) {
@@ -2153,6 +2191,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(FaltaPago);
 				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(FaltaPago);
 				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(FaltaPago);
+				ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(FaltaPago);
 				ventanaVisualizarEquipos.getTextPago().setBackground(FaltaPago);
 				ventanaVisualizarEquipos.setChckPDFGenerado(true);
 
@@ -2164,6 +2203,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(AzulClaro);
 			ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(AzulClaro);
 			ventanaVisualizarEquipos.getTextPresupuesto().setBackground(AzulClaro);
+			ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(AzulClaro);
 			ventanaVisualizarEquipos.getTextPago().setBackground(AzulClaro);
 			ventanaVisualizarEquipos.setChckPDFGenerado(false);
 
@@ -2184,6 +2224,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getTextFalla().setEditable(false);
 		this.ventanaVisualizarEquipos.getTextOC().setEditable(false);
 		this.ventanaVisualizarEquipos.getTextPresupuesto().setEditable(false);
+		this.ventanaVisualizarEquipos.getTextPresupuestoDolar().setEditable(false);
 		this.ventanaVisualizarEquipos.getTextPago().setEditable(false);
 
 		this.ventanaVisualizarEquipos.getTextNombreTecnico().setEditable(false);
@@ -2220,6 +2261,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getTextFalla().setEditable(true);
 		this.ventanaVisualizarEquipos.getTextOC().setEditable(true);
 		this.ventanaVisualizarEquipos.getTextPresupuesto().setEditable(true);
+		this.ventanaVisualizarEquipos.getTextPresupuestoDolar().setEditable(true);
 		this.ventanaVisualizarEquipos.getTextPago().setEditable(true);
 
 		this.ventanaVisualizarEquipos.getTextNombreTecnico().setEditable(true);
@@ -2268,11 +2310,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private int IDUsuarioPorNombre(String nombreTecnico) {
 
-		
-		
 		return agenda.idUsuarioporNombre(nombreTecnico);
-		
-	
+
 	}
 
 	private void llenarComboClienteV() {
@@ -2509,10 +2548,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		int idCliente = IDClientePorNombre(Cliente);
 		int idSucursal = IDSucursalPorNombre(Sucursal, idCliente);
-		
-		
+
 		int idUsuario = IDUsuarioPorNombre(nombreTecnico);
-		
 
 		String estadoFisico = this.ventanaVisualizarEquipos.getTextEstadoFisico().getText();
 		String estadoTecnico = this.ventanaVisualizarEquipos.getTextEstadoTecnico().getText();
@@ -2562,6 +2599,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			enviado = true;
 
 		double presupuesto;
+		double presupuestoDolar;
 		double pago;
 
 		if (monedaFormatter.tieneFormato(this.ventanaVisualizarEquipos.getTextPresupuesto().getText())) {
@@ -2581,14 +2619,36 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					.setText(monedaFormatter.formatPeso(this.ventanaVisualizarEquipos.getTextPago().getText()));
 
 		}
+		
+		
+		
+		if (monedaFormatter.tieneFormato(this.ventanaVisualizarEquipos.getTextPresupuestoDolar().getText())) {
+
+			presupuestoDolar = monedaFormatter
+					.parseAmountGuardar(this.ventanaVisualizarEquipos.getTextPresupuestoDolar().getText());
+			
+
+		} else {
+
+			presupuestoDolar = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPresupuestoDolar().getText());
+		
+			ventanaVisualizarEquipos.getTextPresupuestoDolar()
+					.setText(monedaFormatter.formatDolar(this.ventanaVisualizarEquipos.getTextPresupuestoDolar().getText()));
+			
+		}
+
+		
+		
+		
+		
 
 		String OrdenDeCompra = this.ventanaVisualizarEquipos.getTextOC().getText();
 
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, fechaentradavisual, fechareparacionvisual, falla,
 				solucion, informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo,
 				Cliente, Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
-				idCliente, idSucursal, fechafabrvisual, idUsuario,nombreTecnico, enviado, presupuesto, pago, presupuestoGenerado,
-				avisoEnviado, presupuestoEnviado, OrdenDeCompra);
+				idCliente, idSucursal, fechafabrvisual, idUsuario, nombreTecnico, enviado, presupuesto, pago,
+				presupuestoGenerado, avisoEnviado, presupuestoEnviado, OrdenDeCompra);
 
 		return reparacionAeditar;
 
@@ -2836,13 +2896,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	
-	
-	
-	
-	
-	
-	
 	public void cerraVentanaVisualizarEquipo() {
 
 		this.ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
