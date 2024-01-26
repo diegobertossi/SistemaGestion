@@ -95,7 +95,7 @@ public class VentanaRemitos extends JFrame {
 	private JButton btnVisualizarRemito;
 	private JButton  btnGuardarRemito;
 	private JButton  btnImprimirRemito;
-	
+	private JButton btnCambiarN;
 	
 	private JFormattedTextField txtNumeroRemito;
 	
@@ -293,6 +293,7 @@ public class VentanaRemitos extends JFrame {
 		panel_1.add(comboUbicacion);
 		
 		txtNumeroRemito = new JFormattedTextField(mascara());
+		txtNumeroRemito.setEditable(false);
 		txtNumeroRemito.setForeground(new Color(51, 102, 204));
 		txtNumeroRemito.setFont(new Font("Cambria", Font.BOLD, 14));
 		txtNumeroRemito.setBounds(131, 40, 140, 20);
@@ -348,6 +349,11 @@ public class VentanaRemitos extends JFrame {
 		panel_2.add(lblRemitoConformado);
 		lblRemitoConformado.setForeground(new Color(51, 102, 204));
 		lblRemitoConformado.setFont(new Font("Cambria", Font.BOLD, 14));
+		
+		btnCambiarN = new JButton("CAMBIAR N°");
+		btnCambiarN.setFont(new Font("Cambria", Font.BOLD, 12));
+		btnCambiarN.setBounds(395, 455, 107, 28);
+		panel.add(btnCambiarN);
 		
 		
 
@@ -516,7 +522,12 @@ public class VentanaRemitos extends JFrame {
 	public void setBtnImprimirRemito(JButton btnImprimirRemito) {
 		this.btnImprimirRemito = btnImprimirRemito;
 	}
-	
-   
 
+	public JButton getBtnCambiarN() {
+		return btnCambiarN;
+	}
+
+	public void setBtnCambiarN(JButton btnCambiarN) {
+		this.btnCambiarN = btnCambiarN;
+	}
 }

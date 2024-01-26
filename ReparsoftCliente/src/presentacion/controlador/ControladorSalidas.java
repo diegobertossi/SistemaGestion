@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -30,7 +32,7 @@ import dto.ClienteDTO;
 import dto.RemitoDTO;
 import dto.ReparacionDTO;
 
-public class ControladorSalidas implements ActionListener, MouseListener, ItemListener {
+public class ControladorSalidas implements ActionListener, MouseListener, ItemListener,KeyListener {
 	private VentanaSalidas ventanaSalidas;
 	private VentanaSeleccionarCliente ventanaSeleccionarCliente;
 	private VentanaSeleccionarRemito ventanaSeleccionarRemito;
@@ -588,11 +590,17 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				this.ventanaRemitos.getBtnGuardarRemito().setEnabled(false);
 				this.ventanaRemitos.getTextCantBultos().setEnabled(false);
 				this.ventanaRemitos.getTblEquiposParaRemito().setEnabled(false);
+				this.ventanaRemitos.getBtnCambiarN().setEnabled(false);
 
 			}
 
 		}
 
+		else if (ventanaRemitos != null && e.getSource() == this.ventanaRemitos.getBtnCambiarN()) {
+
+			this.ventanaRemitos.getTxtNumeroRemito().setEditable(true);
+
+		}
 	}
 
 	public void agregarListenersVentanaRemitos() {
@@ -603,6 +611,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		this.ventanaRemitos.getTxtNumeroRemito().addActionListener(this);
 		this.ventanaRemitos.getBtnVisualizarRemito().addActionListener(this);
 		this.ventanaRemitos.getBtnGuardarRemito().addActionListener(this);
+		this.ventanaRemitos.getBtnCambiarN().addActionListener(this);
+		this.ventanaRemitos.getTxtNumeroRemito().addKeyListener(this);
 
 	}
 
@@ -782,7 +792,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 	}
 
 	private RemitoDTO TomarDatosParaTabla() {
-		
+
 		Integer IdUbicacion = IDdeUbicacion();
 		Integer codigoUbicacion = CodigoDeUbicacion(ventanaRemitos.getTextRemitoConformado().getText());
 		Integer IdRemito = this.agenda.dameIDRemito() + 1;
@@ -825,13 +835,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 	public void cargarRemitoVisualizacion(int els) {
 
-		
-		
 		ventanaRemitos = new VentanaRemitos(this);
-		
-		
-		
-		
+
 		this.ventanaRemitos.getModelEquiposParaRemito().setRowCount(0); // Para
 		// vaciar
 		// tabla
@@ -848,15 +853,13 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 		ventanaRemitos.setCellRender(this.ventanaRemitos.getTblEquiposParaRemito());
 
-		
 		String Cliente = this.reparacion.getCliente();
 		String Sucursal = this.reparacion.getSucursal();
 
 		ventanaRemitos.getTxtCliente().setText(Cliente + " " + "(" + Sucursal + ")");
-		
-		
+
 		this.ventanaRemitos.show();
-		
+
 		llenarComboUbicacion();
 
 	}
@@ -986,7 +989,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 	private String tomarNumeroRemito(String ubicacion) {
 		int numero;
-		int numero2024 ;
+		int numero2024;
 
 		int codigo;
 
@@ -997,19 +1000,17 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		// System.out.println(part1);
 		// System.out.println(part2);
 
-		
 		codigo = Integer.parseInt(part1);
-				
+
 		numero = agenda.obtenerNumeroRemito(codigo) + 1;
-		
-		if (codigo == 3000) {
-				numero2024 = numero + 668;				
-		}
-		
-		else 
-			numero2024 = numero;
-		
-		
+
+//		if (codigo == 3000) {
+//				numero2024 = numero + 668;				
+//		}
+//		
+//		else 
+		numero2024 = numero;
+
 		if (numero2024 < 10) {
 			numeros = "0000000" + numero2024;
 
@@ -1076,6 +1077,30 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 		}
 
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			
+			
+			ventanaRemitos.getTextRemitoConformado().setText(part1 + " - " + numeros);
+			
+		}
+		
 	}
 
 }
