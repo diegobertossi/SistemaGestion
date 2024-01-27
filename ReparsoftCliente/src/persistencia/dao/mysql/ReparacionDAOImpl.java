@@ -460,6 +460,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "EstadoFisico = '"
 						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
 						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
+						+ "' ," + "PrecioDolar = '" + reparacion_a_editar.getPrecioDolar()
 						+ "' ," + "PrecioPeso = '" + reparacion_a_editar.getPrecioPeso() + "' ," + "EstadoComercial = '"
 						+ reparacion_a_editar.getEstadoComercial() + "' ," + "RemitoCliente = '"
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "PresupuestoGenerado = '" + PresupGenerado

@@ -994,11 +994,11 @@ public class VentanaVisualizarEquipos extends JFrame {
 //		textPresupuesto.setColumns(10);
 		textPresupuesto = new JTextField(10);
 		textPresupuesto.setForeground(SystemColor.desktop);
-		textPresupuesto.setHorizontalAlignment(SwingConstants.LEFT);
+		textPresupuesto.setHorizontalAlignment(SwingConstants.RIGHT);
 		textPresupuesto.setFont(new Font("Cambria", Font.BOLD, 12));
 		textPresupuesto.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
 		textPresupuesto.setBackground(SystemColor.inactiveCaption);
-		textPresupuesto.setBounds(100, 7, 103, 15);
+		textPresupuesto.setBounds(97, 7, 113, 15);
 		panel_MontoPresupuesto.add(textPresupuesto);
 		textPresupuesto.setColumns(10);
 
@@ -1012,11 +1012,11 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 		textPago = new JTextField(10);
 		textPago.setForeground(SystemColor.desktop);
-		textPago.setHorizontalAlignment(SwingConstants.LEFT);
+		textPago.setHorizontalAlignment(SwingConstants.RIGHT);
 		textPago.setFont(new Font("Cambria", Font.BOLD, 12));
 		textPago.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
 		textPago.setBackground(SystemColor.inactiveCaption);
-		textPago.setBounds(100, 53, 97, 15);
+		textPago.setBounds(97, 53, 113, 15);
 		panel_MontoPresupuesto.add(textPago);
 		textPago.setColumns(10);
 
@@ -1049,12 +1049,12 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_MontoPresupuesto.add(lblPresupuestoUs);
 
 		textPresupuestoDolar = new JTextField(10);
-		textPresupuestoDolar.setHorizontalAlignment(SwingConstants.LEFT);
+		textPresupuestoDolar.setHorizontalAlignment(SwingConstants.RIGHT);
 		textPresupuestoDolar.setForeground(SystemColor.desktop);
 		textPresupuestoDolar.setFont(new Font("Cambria", Font.BOLD, 12));
 		textPresupuestoDolar.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
 		textPresupuestoDolar.setBackground(SystemColor.inactiveCaption);
-		textPresupuestoDolar.setBounds(110, 30, 93, 15);
+		textPresupuestoDolar.setBounds(97, 30, 113, 15);
 		panel_MontoPresupuesto.add(textPresupuestoDolar);
 
 		JLabel lblPresupuestoGenerado = new JLabel("PRESUPUESTO GENERADO");
