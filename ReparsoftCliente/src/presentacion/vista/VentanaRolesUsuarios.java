@@ -203,7 +203,7 @@ public class VentanaRolesUsuarios extends JFrame {
 		btnGuardarNuevo.setBackground(new Color(240, 240, 240));
 		btnGuardarNuevo.setFont(new Font("Cambria", Font.BOLD, 14));
 
-		btnCancelarNuevo = new JButton("<html><p>Cancelar</p></html>");
+		btnCancelarNuevo = new JButton("<html><p>CANCELAR</p></html>");
 		btnCancelarNuevo.setBounds(401, 144, 108, 43);
 		panel_2.add(btnCancelarNuevo);
 		btnCancelarNuevo.setVisible(false);

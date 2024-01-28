@@ -157,6 +157,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 					this.ventanaRolesUsuarios.getTxtPass().setText("");
 					this.ventanaRolesUsuarios.getTextRol().setText("");
 					this.ventanaRolesUsuarios.getComboRoles().setVisible(false);
+					this.ventanaRolesUsuarios.getBtnAgregarUsuario().setEnabled(true);
 					usuarioElegido = null;
 					rolElegido = null;
 				}
@@ -178,7 +179,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getBtnGuardarNuevo().setVisible(false);
 				this.ventanaRolesUsuarios.getBtnPermisosXrol().setVisible(true);
 				this.ventanaRolesUsuarios.getBtnCancelarNuevo().setVisible(false);
-
+				
 				this.ventanaRolesUsuarios.getBtnEliminarUsuario().setEnabled(true);
 				this.ventanaRolesUsuarios.getBtnAgregarUsuario().setEnabled(true);
 				this.ventanaRolesUsuarios.getBtnEditarUsuario().setEnabled(true);
@@ -201,6 +202,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getBtnPermisosXrol().setVisible(false);
 				this.ventanaRolesUsuarios.getBtnEliminarUsuario().setEnabled(false);
 				this.ventanaRolesUsuarios.getBtnEditarUsuario().setEnabled(false);
+				this.ventanaRolesUsuarios.getBtnAgregarUsuario().setEnabled(false);
+
 
 				this.ventanaRolesUsuarios.getTxtNombreUsuario().setText("");
 				this.ventanaRolesUsuarios.getTxtApellidoUsuario().setText("");

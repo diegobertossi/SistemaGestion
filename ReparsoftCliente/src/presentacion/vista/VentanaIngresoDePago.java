@@ -376,6 +376,7 @@ public class VentanaIngresoDePago extends JFrame {
 		panel_4_1.add(textIngresoPago);
 		
 		JPanel panel_4_1_1 = new JPanel();
+		panel_4_1_1.setVisible(false);
 		panel_4_1_1.setLayout(null);
 		panel_4_1_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
 		panel_4_1_1.setBackground(Color.LIGHT_GRAY);
@@ -383,12 +384,14 @@ public class VentanaIngresoDePago extends JFrame {
 		panel_2.add(panel_4_1_1);
 		
 		JLabel lblPagoEnDolares = new JLabel("PAGO EN DOLARES:");
+		lblPagoEnDolares.setVisible(false);
 		lblPagoEnDolares.setFont(new Font("Cambria", Font.PLAIN, 16));
 		lblPagoEnDolares.setBorder(null);
 		lblPagoEnDolares.setBounds(10, 11, 146, 30);
 		panel_4_1_1.add(lblPagoEnDolares);
 		
 		textIngresoPagoDolar = new JTextField(10);
+		textIngresoPagoDolar.setVisible(false);
 		textIngresoPagoDolar.setHorizontalAlignment(SwingConstants.RIGHT);
 		textIngresoPagoDolar.setFont(new Font("Cambria", Font.PLAIN, 16));
 		textIngresoPagoDolar.setBorder(null);

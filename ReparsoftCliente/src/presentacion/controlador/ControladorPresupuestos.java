@@ -94,7 +94,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private int min = Frame.NORMAL;
 
 	private int clickMax = 1;
-	//private int clickMin = 1;
+	// private int clickMin = 1;
 
 	private MonedaFormatter monedaFormatter;
 
@@ -513,7 +513,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yy");
 			String fechaHoyString = fechaHoy.format(formato);
 
-			//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+			// SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
 
 			String els = ventanaGenerarPresupuesto.getTextELS().getText();
 			String aviso = ventanaGenerarPresupuesto.getTextAviso().getText();
@@ -809,7 +809,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				estadoComercial = this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 7).toString();
 				if (estadoComercial.compareTo("A la Espera de Aceptación") > 0) {
 
-				
 					ReparacionDTO reparacionAeditar = TomarDatosVentanaMarcarAceptaciones(i);
 					this.agenda.editarReparacionR(reparacionAeditar);
 
@@ -1120,7 +1119,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		ventanaMarcarAceptaciones.setCellRender(this.ventanaMarcarAceptaciones.getTblReparaciones());
 
-		this.ventanaMarcarAceptaciones.setVisible(true);;
+		this.ventanaMarcarAceptaciones.setVisible(true);
+		;
 
 		marcarPorDefault();
 
@@ -1299,7 +1299,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			ventanaIngresoDePago.getTextEstadoFisico().setText(EstadoFisico);
 
 			ventanaIngresoDePago.getTextPrecioPeso().setText(monedaFormatter.formatPeso(PrecioPeso.toString()));
-			ventanaIngresoDePago.getTextPrecioDolar().setText(monedaFormatter.formatPeso(PrecioDolar.toString()));
+			ventanaIngresoDePago.getTextPrecioDolar().setText(monedaFormatter.formatDolar(PrecioDolar.toString()));
 			ventanaIngresoDePago.gettextIngresoPago().setText(monedaFormatter.formatPeso(pago.toString()));
 
 		}
@@ -1690,7 +1690,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//char c = e.getKeyChar();
+		// char c = e.getKeyChar();
 
 		if (this.ventanaGenerarPresupuesto != null) {
 
