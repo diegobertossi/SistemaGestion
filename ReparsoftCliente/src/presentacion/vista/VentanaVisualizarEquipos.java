@@ -207,7 +207,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		this.controladorReparacion = controladorReparacion;
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 1195, 679);
+		setBounds(100, 100, 1195, 701);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setAutoscrolls(true);
@@ -221,7 +221,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.setBounds(0, 0, 1188, 654);
+		panel.setBounds(0, 0, 1188, 664);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -232,7 +232,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_5 = new JPanel();
 		panel_5.setBackground(SystemColor.activeCaption);
 		panel_5.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		panel_5.setBounds(834, 491, 346, 152);
+		panel_5.setBounds(834, 491, 346, 167);
 		panel.add(panel_5);
 		panel_5.setLayout(null);
 
@@ -328,7 +328,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_1 = new JPanel();
 		panel_1.setBackground(SystemColor.activeCaption);
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		panel_1.setBounds(11, 110, 355, 341);
+		panel_1.setBounds(11, 110, 355, 353);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 
@@ -436,7 +436,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textNSerie.setColumns(10);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(60, 297, 286, 33);
+		scrollPane.setBounds(60, 297, 286, 45);
 		panel_1.add(scrollPane);
 
 		textFalla = new JTextArea();
@@ -444,7 +444,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		scrollPane.setViewportView(textFalla);
 		textFalla.setAlignmentY(Component.TOP_ALIGNMENT);
 		textFalla.setAlignmentX(Component.LEFT_ALIGNMENT);
-		textFalla.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textFalla.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textFalla.setEditable(false);
 		textFalla.setLineWrap(true);
 		textFalla.setWrapStyleWord(true);
@@ -602,7 +602,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_2 = new JPanel();
 		panel_2.setBackground(SystemColor.activeCaption);
 		panel_2.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		panel_2.setBounds(11, 462, 355, 181);
+		panel_2.setBounds(11, 474, 355, 184);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 
@@ -699,17 +699,17 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.activeCaption);
 		panel_3.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		panel_3.setBounds(396, 110, 411, 533);
+		panel_3.setBounds(396, 110, 411, 548);
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 
 		comboTecnico = new JComboBox();
-		comboTecnico.setBounds(81, 16, 139, 20);
+		comboTecnico.setBounds(80, 8, 139, 20);
 		comboTecnico.setFont(new Font("Cambria", Font.PLAIN, 14));
 		panel_3.add(comboTecnico);
 
 		textNombreTecnico = new JTextField();
-		textNombreTecnico.setBounds(81, 16, 139, 20);
+		textNombreTecnico.setBounds(80, 8, 139, 20);
 		panel_3.add(textNombreTecnico);
 		textNombreTecnico.setHorizontalAlignment(SwingConstants.LEFT);
 		textNombreTecnico.setFont(new Font("Cambria", Font.PLAIN, 14));
@@ -717,12 +717,12 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textNombreTecnico.setColumns(10);
 
 		lblNombreTecnico = new JLabel("Técnico: ");
-		lblNombreTecnico.setBounds(10, 19, 61, 14);
+		lblNombreTecnico.setBounds(9, 11, 61, 14);
 		panel_3.add(lblNombreTecnico);
 		lblNombreTecnico.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblDiagnostico = new JLabel("Diagnóstico: ");
-		lblDiagnostico.setBounds(10, 38, 89, 20);
+		lblDiagnostico.setBounds(9, 31, 89, 20);
 		panel_3.add(lblDiagnostico);
 		lblDiagnostico.setFont(new Font("Cambria", Font.BOLD, 14));
 
@@ -739,7 +739,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setAutoscrolls(true);
 		scrollPane_1.setPreferredSize(new Dimension(5, 5));
-		scrollPane_1.setBounds(10, 59, 385, 110);
+		scrollPane_1.setBounds(9, 52, 385, 125);
 		panel_3.add(scrollPane_1);
 
 		textDiagnostico = new JTextArea();
@@ -753,7 +753,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 				.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 
 		scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(10, 353, 385, 110);
+		scrollPane_2.setBounds(10, 353, 385, 125);
 		panel_3.add(scrollPane_2);
 
 		textInformeCliente = new JTextArea();
@@ -822,7 +822,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnEliminarRepuesto.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		panel_8 = new JPanel();
-		panel_8.setBounds(77, 473, 257, 54);
+		panel_8.setBounds(77, 483, 257, 54);
 		panel_3.add(panel_8);
 		panel_8.setBackground(SystemColor.inactiveCaption);
 		panel_8.setBorder(new BevelBorder(BevelBorder.RAISED, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE));
