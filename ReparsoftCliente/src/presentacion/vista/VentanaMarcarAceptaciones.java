@@ -341,7 +341,7 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		panelColumnas.add(lblNewLabel_7, BorderLayout.EAST);
 
 		lblseMuestranLos = new JLabel(
-				"<html><center>SE MUESTRAN LOS EQUIPOS CUYOS PRESUPUESTOS FUERON ENVIADOS Y ESTÁN PENDIENTES DE RESPUESTA<html>");
+				"<html><center>SE MUESTRAN LOS EQUIPOS CUYOS PRESUPUESTOS FUERON GENERADOS Y ESTÁN PENDIENTES DE RESPUESTA<html>");
 		panelColumnas.add(lblseMuestranLos, BorderLayout.CENTER);
 		lblseMuestranLos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblseMuestranLos.setForeground(new Color(0, 0, 128));

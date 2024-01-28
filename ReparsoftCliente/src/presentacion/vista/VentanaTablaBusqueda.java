@@ -192,6 +192,7 @@ public class VentanaTablaBusqueda extends JFrame {
 		DimTblReparaciones = tblReparaciones.getSize();
 
 		btnMax = new JButton("");
+		btnMax.setVisible(false);
 		btnMax.setBounds(999, 14, 30, 25);
 		btnMax.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
 		panel.add(btnMax);

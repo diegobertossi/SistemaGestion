@@ -183,28 +183,28 @@ public class VentanaRolesUsuarios extends JFrame {
 		panel_2.setLayout(null);
 		
 				btnGuardarEdicion = new JButton("<html><center>GUARDAR EDICIÓN</html>");
-				btnGuardarEdicion.setBounds(352, 144, 88, 43);
+				btnGuardarEdicion.setBounds(401, 83, 108, 43);
 				panel_2.add(btnGuardarEdicion);
 				btnGuardarEdicion.setVisible(false);
 		btnGuardarEdicion.setBackground(new Color(240, 240, 240));
 		btnGuardarEdicion.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnCancelarEdicion = new JButton("<html><center>CANCELAR EDICIÓN</html>");
-		btnCancelarEdicion.setBounds(451, 144, 88, 43);
+		btnCancelarEdicion.setBounds(401, 144, 108, 43);
 		panel_2.add(btnCancelarEdicion);
 		btnCancelarEdicion.setVisible(false);
 		btnCancelarEdicion.setBackground(new Color(240, 240, 240));
 		btnCancelarEdicion.setFont(new Font("Cambria", Font.BOLD, 14));
 
-		btnGuardarNuevo = new JButton("<html><p>Guardar</p></html>");
-		btnGuardarNuevo.setBounds(352, 144, 88, 43);
+		btnGuardarNuevo = new JButton("<html><p>GUARDAR</p></html>");
+		btnGuardarNuevo.setBounds(401, 83, 108, 43);
 		panel_2.add(btnGuardarNuevo);
 		btnGuardarNuevo.setVisible(false);
 		btnGuardarNuevo.setBackground(new Color(240, 240, 240));
 		btnGuardarNuevo.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnCancelarNuevo = new JButton("<html><p>Cancelar</p></html>");
-		btnCancelarNuevo.setBounds(451, 144, 88, 43);
+		btnCancelarNuevo.setBounds(401, 144, 108, 43);
 		panel_2.add(btnCancelarNuevo);
 		btnCancelarNuevo.setVisible(false);
 		btnCancelarNuevo.setBackground(new Color(240, 240, 240));
@@ -324,7 +324,7 @@ public class VentanaRolesUsuarios extends JFrame {
 		textRol.setColumns(10);
 		
 				btnPermisosXrol = new JButton("<html><center>PERMISOS POR ROL<html>");
-				btnPermisosXrol.setBounds(352, 89, 187, 23);
+				btnPermisosXrol.setBounds(401, 20, 108, 43);
 				panel_2.add(btnPermisosXrol);
 				btnPermisosXrol.setFont(new Font("Cambria", Font.BOLD, 14));
 				btnPermisosXrol.setAlignmentX(SwingConstants.CENTER);

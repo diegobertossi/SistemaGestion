@@ -148,16 +148,19 @@ public class ControladorUsuLogin {
 				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso).setMaxWidth(0);
 				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso).setMinWidth(0);
 				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso).setPreferredWidth(0);
-				
+				ventanaListadoReparaciones.getChckbxPrecioPeso().setVisible(false);
+								
 				
 				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar).setMaxWidth(0);
 				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar).setMinWidth(0);
 				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar).setPreferredWidth(0);
+				ventanaListadoReparaciones.getChckbxPrecioDolar().setVisible(false);
 				
 				
 				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago).setMaxWidth(0);
 				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago).setMinWidth(0);
 				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago).setPreferredWidth(0);
+				ventanaListadoReparaciones.getChckbxPago().setVisible(false);
 				
 				
 				modelo.fireTableStructureChanged();

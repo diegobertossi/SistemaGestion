@@ -595,6 +595,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelTitulo.add(lbTitulo_1);
 
 		btnMax = new JButton("");
+		btnMax.setVisible(false);
 		btnMax.setPreferredSize(new Dimension(50, 30));
 		btnMax.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnMax.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));

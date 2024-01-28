@@ -96,7 +96,7 @@ public class VentanaEstados extends JFrame
 		rdbtnMDQ.setBounds(6, 31, 109, 23);
 		panel_2.add(rdbtnMDQ);
 		
-		rdbtnDesguace = new JRadioButton("DESGUACE");
+		rdbtnDesguace = new JRadioButton("Desgüace");
 		rdbtnDesguace.setBackground(SystemColor.activeCaption);
 		rdbtnDesguace.setFont(new Font("Cambria", Font.PLAIN, 12));
 		rdbtnDesguace.setBounds(6, 112, 109, 23);
@@ -108,7 +108,7 @@ public class VentanaEstados extends JFrame
 		rdbtnBRC.setBounds(6, 58, 109, 23);
 		panel_2.add(rdbtnBRC);
 		
-		rdbtnENVIADO = new JRadioButton("ENVIADO");
+		rdbtnENVIADO = new JRadioButton("Enviado");
 		rdbtnENVIADO.setBackground(SystemColor.activeCaption);
 		rdbtnENVIADO.setFont(new Font("Cambria", Font.PLAIN, 12));
 		rdbtnENVIADO.setBounds(6, 85, 109, 23);

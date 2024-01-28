@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import java.awt.Component;
 import java.awt.SystemColor;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.Color;
@@ -60,7 +61,7 @@ public class VentanaPermisos extends JFrame {
 		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.setBounds(0, 0, 1141, 599);
+		panel.setBounds(0, 0, 936, 527);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -134,15 +135,17 @@ public class VentanaPermisos extends JFrame {
 		lblRol.setBounds(78, 66, 46, 14);
 		panel.add(lblRol);
 		
-		btnAgregar = new JButton(">");
-		btnAgregar.setBackground(new Color(152, 251, 152));
-		btnAgregar.setBounds(446, 247, 46, 23);
+		btnAgregar = new JButton("");
+		btnAgregar.setBackground(new Color(60, 179, 113));
+		btnAgregar.setBounds(446, 239, 46, 33);
+		btnAgregar.setIcon(new ImageIcon(this.getClass().getResource("/siguiente.png")));
 		panel.add(btnAgregar);
 		
-		btnRemover = new JButton("<");
+		btnRemover = new JButton("");
 		btnRemover.setForeground(new Color(255, 255, 255));
-		btnRemover.setBackground(new Color(255, 0, 0));
-		btnRemover.setBounds(446, 291, 46, 23);
+		btnRemover.setBackground(new Color(255, 99, 71));
+		btnRemover.setBounds(446, 281, 46, 33);
+		btnRemover.setIcon(new ImageIcon(this.getClass().getResource("/anterior.png")));
 		panel.add(btnRemover);
 		
 		JLabel lblPermisosPorRol = new JLabel("PERMISOS POR ROL");

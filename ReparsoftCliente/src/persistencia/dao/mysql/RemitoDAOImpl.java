@@ -93,7 +93,7 @@ public class RemitoDAOImpl implements RemitoDAO {
 			value = new DefaultComboBoxModel();
 			box.setModel(value);
 
-			value.addElement("--Seleccionar Ubicación--");
+			value.addElement("--Seleccionar UbicaciÃ³n--");
 			
 			while (resultSet.next()) {
 
