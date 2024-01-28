@@ -1503,7 +1503,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				});
 			}
 		});
-		
+
 		this.ventanaVisualizarEquipos.getTextPresupuestoDolar().addFocusListener(new FocusListener() {
 			public void focusLost(FocusEvent e) {
 
@@ -1565,19 +1565,18 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		});
-		
-		
+
 		ventanaVisualizarEquipos.getTextPresupuestoDolar().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				String presupuestoDolar = ventanaVisualizarEquipos.getTextPresupuestoDolar().getText();
-				ventanaVisualizarEquipos.getTextPresupuestoDolar().setText(monedaFormatter.formatDolar(presupuestoDolar));
+				ventanaVisualizarEquipos.getTextPresupuestoDolar()
+						.setText(monedaFormatter.formatDolar(presupuestoDolar));
 				verificarPresupuestoEditado();
 
 			}
 		});
-		
 
 	}
 
@@ -2549,7 +2548,18 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		int idCliente = IDClientePorNombre(Cliente);
 		int idSucursal = IDSucursalPorNombre(Sucursal, idCliente);
 
-		int idUsuario = IDUsuarioPorNombre(nombreTecnico);
+		int idUsuario;
+		int idUsuarioAux = IDUsuarioPorNombre(nombreTecnico);
+
+		if (idUsuarioAux == 0) {
+
+			idUsuario = 1;
+		}
+
+		else {
+			idUsuario = idUsuarioAux;
+
+		}
 
 		String estadoFisico = this.ventanaVisualizarEquipos.getTextEstadoFisico().getText();
 		String estadoTecnico = this.ventanaVisualizarEquipos.getTextEstadoTecnico().getText();
@@ -2619,36 +2629,29 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					.setText(monedaFormatter.formatPeso(this.ventanaVisualizarEquipos.getTextPago().getText()));
 
 		}
-		
-		
-		
+
 		if (monedaFormatter.tieneFormato(this.ventanaVisualizarEquipos.getTextPresupuestoDolar().getText())) {
 
 			presupuestoDolar = monedaFormatter
 					.parseAmountGuardar(this.ventanaVisualizarEquipos.getTextPresupuestoDolar().getText());
-			
 
 		} else {
 
-			presupuestoDolar = monedaFormatter.parseAmount(this.ventanaVisualizarEquipos.getTextPresupuestoDolar().getText());
-		
-			ventanaVisualizarEquipos.getTextPresupuestoDolar()
-					.setText(monedaFormatter.formatDolar(this.ventanaVisualizarEquipos.getTextPresupuestoDolar().getText()));
-			
-		}
+			presupuestoDolar = monedaFormatter
+					.parseAmount(this.ventanaVisualizarEquipos.getTextPresupuestoDolar().getText());
 
-		
-		
-		
-		
+			ventanaVisualizarEquipos.getTextPresupuestoDolar().setText(
+					monedaFormatter.formatDolar(this.ventanaVisualizarEquipos.getTextPresupuestoDolar().getText()));
+
+		}
 
 		String OrdenDeCompra = this.ventanaVisualizarEquipos.getTextOC().getText();
 
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, fechaentradavisual, fechareparacionvisual, falla,
 				solucion, informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo,
 				Cliente, Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
-				idCliente, idSucursal, fechafabrvisual, idUsuario, nombreTecnico, enviado, presupuesto,presupuestoDolar, pago,
-				presupuestoGenerado, avisoEnviado, presupuestoEnviado, OrdenDeCompra);
+				idCliente, idSucursal, fechafabrvisual, idUsuario, nombreTecnico, enviado, presupuesto,
+				presupuestoDolar, pago, presupuestoGenerado, avisoEnviado, presupuestoEnviado, OrdenDeCompra);
 
 		return reparacionAeditar;
 
