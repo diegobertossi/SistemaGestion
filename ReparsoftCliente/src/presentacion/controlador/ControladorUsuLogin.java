@@ -19,10 +19,9 @@ public class ControladorUsuLogin {
 	private Permisos permisos;
 	private UsuarioDTO usu_login;
 	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
-	
-	private DefaultTableModel modelReparaciones;
-	private TableColumn columna ; 
 
+	private DefaultTableModel modelReparaciones;
+	private TableColumn columna;
 
 	public ControladorUsuLogin(Permisos permisos) {
 		this.permisos = permisos;
@@ -33,7 +32,7 @@ public class ControladorUsuLogin {
 
 		usu_login = permisos.dameUsuario(vistaLogin.getTxtUsuLogin().getText(), vistaLogin.getTxtUsuPass().getText());
 
-		if (usu_login == null) {
+		if (usu_login == null || usu_login.getIdUsuario() == 1) {
 			vistaLogin.getTxtUsuLogin().setText("");
 			vistaLogin.getTxtUsuPass().setText("");
 			vistaLogin.getTxtUsuLogin().requestFocus();
@@ -41,6 +40,7 @@ public class ControladorUsuLogin {
 
 			return false;
 		} else {
+
 			vistaPrincipal.getPanel().setEnabled(true);
 			vistaPrincipal.getBotonEquipos().setEnabled(true);
 			vistaPrincipal.getBotonBusquedas().setEnabled(true);
@@ -139,37 +139,42 @@ public class ControladorUsuLogin {
 			List<PermisoDTO> permisos_principal = permisos.damePermisosPadres(usu_login.getIdRol());
 
 			if (!permisos_principal.contains(new PermisoDTO(0, 0, 0, "Presupuestos"))) {
-				
+
 				DefaultTableModel modelo = (DefaultTableModel) ventanaListadoReparaciones.getModelReparaciones();
 				int columnaPrecioPeso = 19;
 				int columnaPrecioDolar = 20;
 				int columnaPrecioPago = 21;
-				
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso).setMaxWidth(0);
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso).setMinWidth(0);
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso).setPreferredWidth(0);
+
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso)
+						.setMaxWidth(0);
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso)
+						.setMinWidth(0);
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso)
+						.setPreferredWidth(0);
 				ventanaListadoReparaciones.getChckbxPrecioPeso().setVisible(false);
-								
-				
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar).setMaxWidth(0);
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar).setMinWidth(0);
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar).setPreferredWidth(0);
+
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar)
+						.setMaxWidth(0);
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar)
+						.setMinWidth(0);
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar)
+						.setPreferredWidth(0);
 				ventanaListadoReparaciones.getChckbxPrecioDolar().setVisible(false);
-				
-				
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago).setMaxWidth(0);
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago).setMinWidth(0);
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago).setPreferredWidth(0);
+
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago)
+						.setMaxWidth(0);
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago)
+						.setMinWidth(0);
+				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago)
+						.setPreferredWidth(0);
 				ventanaListadoReparaciones.getChckbxPago().setVisible(false);
-				
-				
+
 				modelo.fireTableStructureChanged();
-					}
+			}
 
 		}
 	}
-	
-	
+
 	// public void verificarPermisosInternacion(VistaInternaciones vista)
 	// {
 	// if(usu_login != null)

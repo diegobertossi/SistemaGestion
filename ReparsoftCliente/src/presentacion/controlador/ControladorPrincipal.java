@@ -37,7 +37,6 @@ import javax.swing.table.TableRowSorter;
 import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.SpellChecker;
 
-
 import VistaPropias.CellRenderer;
 import VistaPropias.Resaltador;
 import dto.ClienteDTO;
@@ -165,13 +164,26 @@ public class ControladorPrincipal implements ActionListener {
 			vistaLogin = new VentanaLogin();
 			vistaLogin.getBtnAceptar().addActionListener(this);
 			vistaLogin.getBtnCancelar().addActionListener(this);
+			
+			
+			vistaLogin.getTxtUsuPass().addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+
+					controladorUsuLogin.validarSesion(vistaLogin, vistaPrincipal);
+					controladorUsuLogin.verificarPermisosMenu(vistaPrincipal);
+
+
+				}
+			});
+			
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-
+		
 		if (arg0.getSource() == vistaLogin.getBtnAceptar()) {
 			controladorUsuLogin.validarSesion(vistaLogin, this.vistaPrincipal);
 			controladorUsuLogin.verificarPermisosMenu(vistaPrincipal);
@@ -253,7 +265,7 @@ public class ControladorPrincipal implements ActionListener {
 			controladorCliente = new ControladorCliente(ventanaClientes, modelo);
 
 			ventanaListadoReparaciones = new VentanaListadoReparaciones(controladorListados);
-			
+
 			controladorUsuLogin.verificarPermisosVentanaListados(ventanaListadoReparaciones);
 
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);

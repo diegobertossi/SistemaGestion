@@ -9,8 +9,8 @@ public class UsuarioDTO
 	private String apellido;
 	private String telefono;
 	private String email;
-	private String login = "";
-	private String pass = "";
+	private String login;
+	private String pass;
 
 	public UsuarioDTO(int idUsuario, int idRol, int dni,String nombre, String apellido, String telefono, String email)
 	{

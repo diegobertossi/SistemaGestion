@@ -1578,7 +1578,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		});
 
-	}
+	} 	
 
 	public void agregarListenersVentanaVisualizarEquiposListado() {
 
