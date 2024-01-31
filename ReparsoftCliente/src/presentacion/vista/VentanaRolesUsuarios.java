@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -28,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import java.awt.Font;
@@ -70,7 +72,9 @@ public class VentanaRolesUsuarios extends JFrame {
 	private JLabel lblDni;
 	private JComboBox comboRoles;
 	private JTextField txtLogin;
-	private JTextField txtPass;
+	//private JTextField txtPass;
+	
+	private JPasswordField txtPass;
 
 	private JButton btnPermisosXrol;
 
@@ -296,7 +300,7 @@ public class VentanaRolesUsuarios extends JFrame {
 		panel_2.add(lblLogin);
 		lblLogin.setFont(new Font("Cambria", Font.BOLD, 12));
 
-		txtPass = new JTextField();
+		txtPass = new JPasswordField();
 		txtPass.setBounds(101, 146, 221, 20);
 		panel_2.add(txtPass);
 		txtPass.setEditable(false);
@@ -329,6 +333,11 @@ public class VentanaRolesUsuarios extends JFrame {
 				btnPermisosXrol.setFont(new Font("Cambria", Font.BOLD, 14));
 				btnPermisosXrol.setAlignmentX(SwingConstants.CENTER);
 				btnPermisosXrol.setAlignmentY(SwingConstants.CENTER);
+				
+				JButton btnMostrarContraseña = new JButton("");
+				btnMostrarContraseña.setBounds(332, 146, 32, 20);
+				panel_2.add(btnMostrarContraseña);
+				btnMostrarContraseña.setIcon(new ImageIcon(this.getClass().getResource("/mostrar-contraseña-2.png")));
 						
 						panel_1 = new JPanel();
 						panel_1.setBorder(new LineBorder(new Color(0, 128, 128)));
@@ -390,13 +399,13 @@ public class VentanaRolesUsuarios extends JFrame {
 		this.btnPermisosXrol = btnPermisosXrol;
 	}
 
-	public JTextField getTxtPass() {
-		return txtPass;
-	}
-
-	public void setTxtPass(JTextField txtPass) {
-		this.txtPass = txtPass;
-	}
+//	public JTextField getTxtPass() {
+//		return txtPass;
+//	}
+//
+//	public void setTxtPass(JTextField txtPass) {
+//		this.txtPass = txtPass;
+//	}
 
 	public DefaultTableModel getModelUsuarios() {
 		return modelUsuarios;
@@ -484,5 +493,13 @@ public class VentanaRolesUsuarios extends JFrame {
 
 	public void setTextRol(JTextField textRol) {
 		this.textRol = textRol;
+	}
+
+	public JPasswordField getTxtPass() {
+		return txtPass;
+	}
+
+	public void setTxtPass(JPasswordField txtPass) {
+		this.txtPass = txtPass;
 	}
 }
