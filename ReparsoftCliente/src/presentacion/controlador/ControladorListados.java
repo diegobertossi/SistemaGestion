@@ -171,7 +171,7 @@ public class ControladorListados
 				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 6)); // (?i) para ignorar
 																								// mayúsculas/minúsculas
 			}
-
+		
 			if (ventanaListadoReparaciones.getRadioButtonAviso().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroAviso().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroAviso().getSelectedItem().toString() != null) {

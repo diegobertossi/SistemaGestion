@@ -1,6 +1,7 @@
 package presentacion.controlador;
 
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,11 +32,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
-
+import javax.swing.Action;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.text.JTextComponent;
+import javax.swing.undo.UndoManager;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
@@ -1577,6 +1582,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		});
+		
+		
+		configureUndoManager(ventanaVisualizarEquipos.getTextDiagnostico());
+		configureUndoManager(ventanaVisualizarEquipos.getTextInformeCliente());
+
+		
+		
 
 	} 	
 
@@ -2898,6 +2910,36 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 	}
+	
+	
+	
+	
+	
+	
+	// Método para configurar UndoManager en un componente de texto
+    private static void configureUndoManager(JTextComponent textComponent) {
+        UndoManager undoManager = new UndoManager();
+        textComponent.getDocument().addUndoableEditListener(undoManager);
+
+        // Crear una acción de deshacer
+        AbstractAction undoAction = new AbstractAction("Deshacer") {
+            public void actionPerformed(ActionEvent e) {
+                if (undoManager.canUndo()) {
+                    undoManager.undo();
+                }
+            }
+        };
+
+        // Asignar la tecla de acceso directo (Ctrl + Z) para la acción de deshacer
+        undoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+
+        // Agregar la acción de deshacer al componente
+        textComponent.getActionMap().put("Undo", undoAction);
+        textComponent.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
+    }
+
+	
+	
 
 	public void cerraVentanaVisualizarEquipo() {
 

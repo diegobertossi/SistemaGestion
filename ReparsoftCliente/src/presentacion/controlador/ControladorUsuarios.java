@@ -61,6 +61,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	private RolDTO rolElegido;
 	private UsuarioDTO usuarioElegido;
 	private List<ReparacionDTO> Reparaciones;
+	private boolean passwordVisible = false;
 
 //	private final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 //			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[com]{2,})$";
@@ -89,6 +90,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		this.ventanaRolesUsuarios.getComboRoles().addActionListener(this);
 		this.ventanaRolesUsuarios.getBtnEliminarUsuario().addActionListener(this);
 		this.ventanaRolesUsuarios.getBtnPermisosXrol().addActionListener(this);
+		this.ventanaRolesUsuarios.getBtnMostrarContraseña().addActionListener(this);
 
 		llenarComboRoles();
 		llenarTablaUsuarios();
@@ -108,16 +110,16 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		if (ventanaRolesUsuarios != null) {
 
 			if (e.getSource() == this.ventanaRolesUsuarios.getComboRoles()) {
-				
-				int i = this.ventanaRolesUsuarios.getComboRoles().getSelectedIndex()+1;
+
+				int i = this.ventanaRolesUsuarios.getComboRoles().getSelectedIndex() + 1;
 				rolElegido = roles_en_tabla.get(i);
-				
+
 			}
 
 			else if (e.getSource() == this.ventanaRolesUsuarios.getBtnGuardarNuevo()) {
 				usuarioElegido = null;
 
-				if (rolElegido == null ) {
+				if (rolElegido == null) {
 					this.ventanaRolesUsuarios.getErrorMsj("Seleccione un rol");
 				} else if (this.ventanaRolesUsuarios.getTxtNombreUsuario().getText().equals("")
 						|| this.ventanaRolesUsuarios.getTxtApellidoUsuario().getText().equals("")
@@ -136,7 +138,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 
-					UsuarioDTO nuevoUsuario = new UsuarioDTO(0, rolElegido.getIdRol()+1,
+					UsuarioDTO nuevoUsuario = new UsuarioDTO(0, rolElegido.getIdRol() + 1,
 							Integer.parseInt(this.ventanaRolesUsuarios.getTxtDNI().getText()),
 							this.ventanaRolesUsuarios.getTxtNombreUsuario().getText(),
 							this.ventanaRolesUsuarios.getTxtApellidoUsuario().getText(),
@@ -179,7 +181,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getBtnGuardarNuevo().setVisible(false);
 				this.ventanaRolesUsuarios.getBtnPermisosXrol().setVisible(true);
 				this.ventanaRolesUsuarios.getBtnCancelarNuevo().setVisible(false);
-				
+
 				this.ventanaRolesUsuarios.getBtnEliminarUsuario().setEnabled(true);
 				this.ventanaRolesUsuarios.getBtnAgregarUsuario().setEnabled(true);
 				this.ventanaRolesUsuarios.getBtnEditarUsuario().setEnabled(true);
@@ -203,7 +205,6 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getBtnEliminarUsuario().setEnabled(false);
 				this.ventanaRolesUsuarios.getBtnEditarUsuario().setEnabled(false);
 				this.ventanaRolesUsuarios.getBtnAgregarUsuario().setEnabled(false);
-
 
 				this.ventanaRolesUsuarios.getTxtNombreUsuario().setText("");
 				this.ventanaRolesUsuarios.getTxtApellidoUsuario().setText("");
@@ -251,7 +252,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					if (usuarioElegido != null) {
-						usuarioElegido.setIdRol(rolElegido.getIdRol()+1);
+						usuarioElegido.setIdRol(rolElegido.getIdRol() + 1);
 						usuarioElegido.setNombre(this.ventanaRolesUsuarios.getTxtNombreUsuario().getText());
 						usuarioElegido.setApellido(this.ventanaRolesUsuarios.getTxtApellidoUsuario().getText());
 						usuarioElegido.setDni(Integer.parseInt(this.ventanaRolesUsuarios.getTxtDNI().getText()));
@@ -282,7 +283,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 						this.ventanaRolesUsuarios.getBtnEliminarUsuario().setEnabled(true);
 						this.ventanaRolesUsuarios.getBtnEditarUsuario().setEnabled(true);
-						
+
 						usuarioElegido = null;
 						rolElegido = null;
 
@@ -378,7 +379,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						this.ventanaRolesUsuarios.getTextRol().setText("");
 						this.ventanaRolesUsuarios.getTxtLogin().setText("");
 						this.ventanaRolesUsuarios.getTxtPass().setText("");
-												
+
 						usuarioElegido = null;
 						rolElegido = null;
 					}
@@ -407,6 +408,25 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				llenarCombosRoles();
 
 			}
+
+			else if (e.getSource() == this.ventanaRolesUsuarios.getBtnMostrarContraseña()) {
+
+				
+
+				if (passwordVisible) {
+					// Si la contraseña es visible, ocultarla
+					ventanaRolesUsuarios.getTxtPass().setEchoChar('\u2022');
+					passwordVisible = false;
+
+				} else {
+					// Si la contraseña está oculta, mostrarla
+					ventanaRolesUsuarios.getTxtPass().setEchoChar((char) 0);
+					passwordVisible = true;
+				}
+
+
+			}
+
 			if (ventanaPermisos != null) {
 				if (e.getSource() == ventanaPermisos.getCmbRoles()) {
 
@@ -604,7 +624,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 		for (int i = 0; i < this.roles_en_tabla.size(); i++) {
 
-			if (roles_en_tabla.get(i).getIdRol() != 0 && roles_en_tabla.get(i).getIdRol() != 1 ) {
+			if (roles_en_tabla.get(i).getIdRol() != 0 && roles_en_tabla.get(i).getIdRol() != 1) {
 
 				this.ventanaRolesUsuarios.getComboRoles().addItem(this.roles_en_tabla.get(i).getNombre());
 

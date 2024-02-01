@@ -64,6 +64,7 @@ public class VentanaRolesUsuarios extends JFrame {
 	private JButton btnGuardarNuevo;
 	private JButton btnCancelarNuevo;
 	private JButton btnCancelarEdicion;
+	private JButton btnMostrarContraseña;
 	private JTextField txtNombreUsuario;
 	private JTextNum txtTelefonoUsuario;
 	private JTextField txtApellidoUsuario;
@@ -334,8 +335,8 @@ public class VentanaRolesUsuarios extends JFrame {
 				btnPermisosXrol.setAlignmentX(SwingConstants.CENTER);
 				btnPermisosXrol.setAlignmentY(SwingConstants.CENTER);
 				
-				JButton btnMostrarContraseña = new JButton("");
-				btnMostrarContraseña.setBounds(332, 146, 32, 20);
+				btnMostrarContraseña = new JButton("");
+				btnMostrarContraseña.setBounds(332, 146, 32, 18);
 				panel_2.add(btnMostrarContraseña);
 				btnMostrarContraseña.setIcon(new ImageIcon(this.getClass().getResource("/mostrar-contraseña-2.png")));
 						
@@ -502,4 +503,13 @@ public class VentanaRolesUsuarios extends JFrame {
 	public void setTxtPass(JPasswordField txtPass) {
 		this.txtPass = txtPass;
 	}
+
+	public JButton getBtnMostrarContraseña() {
+		return btnMostrarContraseña;
+	}
+
+	public void setBtnMostrarContraseña(JButton btnMostrarContraseña) {
+		this.btnMostrarContraseña = btnMostrarContraseña;
+	}
+
 }
