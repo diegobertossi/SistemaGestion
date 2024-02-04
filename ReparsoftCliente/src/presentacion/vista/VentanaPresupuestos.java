@@ -17,12 +17,10 @@ public class VentanaPresupuestos extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JButton btnEnviarPresupuestos;
 	private JButton btnPresupuestoPorELS;
 	
 	private JButton btningresarPago;
 	private JButton btnmarcarAceptaciones;
-	private JButton btnenviarInformesSiemens;
 	
 	
 	private ControladorReparacion controlador;
@@ -34,7 +32,7 @@ public class VentanaPresupuestos extends JFrame
 		this.controlador = controlador;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 504, 213);
+		setBounds(100, 100, 504, 153);
 
 		this.setLocationRelativeTo(null);
 
@@ -50,11 +48,6 @@ public class VentanaPresupuestos extends JFrame
 			contentPane.add(btnPresupuestoPorELS);
 			btnPresupuestoPorELS.setFont(new Font("Cambria", Font.BOLD, 14));
 			
-			btnEnviarPresupuestos = new JButton("<html><center>ENVIAR PRESUPUESTOS</html>");
-			btnEnviarPresupuestos.setBounds(62, 107, 151, 60);
-			contentPane.add(btnEnviarPresupuestos);
-			btnEnviarPresupuestos.setFont(new Font("Cambria", Font.BOLD, 14));
-			
 			btningresarPago = new JButton("<html><center>INGRESAR PAGOS</html>");
 			btningresarPago.setFont(new Font("Cambria", Font.BOLD, 14));
 			btningresarPago.setBounds(326, 29, 151, 60);
@@ -64,24 +57,12 @@ public class VentanaPresupuestos extends JFrame
 			btnmarcarAceptaciones.setFont(new Font("Cambria", Font.BOLD, 14));
 			btnmarcarAceptaciones.setBounds(167, 29, 151, 60);
 			contentPane.add(btnmarcarAceptaciones);
-			
-			btnenviarInformesSiemens = new JButton("<html><center>ENVIAR INFORMES SIEMENS</html>");
-			btnenviarInformesSiemens.setFont(new Font("Cambria", Font.BOLD, 14));
-			btnenviarInformesSiemens.setBounds(275, 107, 151, 60);
-			contentPane.add(btnenviarInformesSiemens);
 
 		
 		
 		this.setVisible(true);
 	}
 
-	public JButton getBtnEnviarPresupuestos() {
-		return btnEnviarPresupuestos;
-	}
-
-	public void setBtnEnviarPresupuestos(JButton btnEnviarPresupuestos) {
-		this.btnEnviarPresupuestos = btnEnviarPresupuestos;
-	}
 
 	public JButton getBtnPresupuestoPorELS() {
 		return btnPresupuestoPorELS;
@@ -105,14 +86,6 @@ public class VentanaPresupuestos extends JFrame
 
 	public void setBtnmarcarAceptaciones(JButton btnmarcarAceptaciones) {
 		this.btnmarcarAceptaciones = btnmarcarAceptaciones;
-	}
-
-	public JButton getBtnenviarInformesSiemens() {
-		return btnenviarInformesSiemens;
-	}
-
-	public void setBtnenviarInformesSiemens(JButton btnenviarInformesSiemens) {
-		this.btnenviarInformesSiemens = btnenviarInformesSiemens;
 	}
 
 	

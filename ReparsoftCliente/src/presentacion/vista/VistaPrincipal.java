@@ -36,6 +36,7 @@ import java.awt.Toolkit;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 import java.awt.Rectangle;
+import javax.swing.border.EtchedBorder;
 
 public class VistaPrincipal extends JFrame {
 
@@ -191,14 +192,14 @@ public class VistaPrincipal extends JFrame {
 		lblNewLabel.setForeground(Color.WHITE);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 30));
-		lblNewLabel.setBounds(81, 39, 467, 49);
+		lblNewLabel.setBounds(81, 61, 467, 36);
 		getContentPane().add(lblNewLabel);
 
 		JLabel lblReparacionesEls = new JLabel("REPARSOFT");
 		lblReparacionesEls.setForeground(Color.WHITE);
 		lblReparacionesEls.setHorizontalAlignment(SwingConstants.CENTER);
 		lblReparacionesEls.setFont(new Font("Cambria", Font.BOLD, 30));
-		lblReparacionesEls.setBounds(81, 88, 467, 49);
+		lblReparacionesEls.setBounds(81, 93, 467, 36);
 		getContentPane().add(lblReparacionesEls);
 
 		textUsuario = new JTextField();
@@ -208,7 +209,7 @@ public class VistaPrincipal extends JFrame {
 		textUsuario.setBackground(SystemColor.activeCaption);
 		textUsuario.setForeground(Color.WHITE);
 		textUsuario.setFont(new Font("Cambria", Font.BOLD, 14));
-		textUsuario.setBounds(466, 11, 198, 27);
+		textUsuario.setBounds(466, 25, 198, 27);
 		getContentPane().add(textUsuario);
 		textUsuario.setColumns(10);
 
@@ -238,20 +239,22 @@ public class VistaPrincipal extends JFrame {
 		btnSalir.setForeground(new Color(255, 0, 51));
 		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSalir.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnSalir.setBounds(552, 61, 109, 49);
+		btnSalir.setBounds(555, 61, 109, 49);
 		btnSalir.setToolTipText("Salir del Sistema");
 		btnSalir.setIcon(new ImageIcon(this.getClass().getResource("/logout.png")));
 		getContentPane().add(btnSalir);
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBorderPainted(false);
-		menuBar.setOpaque(false);
-		menuBar.setBackground(new Color(0, 0, 0));
+		menuBar.setBorder(UIManager.getBorder("MenuBar.border"));
+		menuBar.setFont(new Font("Cambria", Font.BOLD, 12));
+		menuBar.setBackground(SystemColor.activeCaption);
 		JMenu mnMenu = new JMenu("Inicio");
+		mnMenu.setBorderPainted(true);
 		mnMenu.setForeground(new Color(0, 0, 0));
 		mnMenu.setFont(new Font("Cambria", Font.BOLD, 13));
-		mnMenu.setBackground(new Color(0, 153, 204));
-		menuBar.setBounds(0, 0, 45, 22);
+		mnMenu.setBackground(SystemColor.controlShadow);
+		menuBar.setBounds(0, 0, 686, 22);
 		mnMenu.setBounds(0, 0, 101, 22);
 		getContentPane().add(menuBar);
 		menuBar.add(mnMenu);

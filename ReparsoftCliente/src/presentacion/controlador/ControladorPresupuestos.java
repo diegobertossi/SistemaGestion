@@ -102,8 +102,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		this.ventanaPresupuestos = ventanaPresupuestos;
 
-		this.ventanaPresupuestos.getBtnenviarInformesSiemens().addActionListener(this);
-		this.ventanaPresupuestos.getBtnEnviarPresupuestos().addActionListener(this);
 		this.ventanaPresupuestos.getBtningresarPago().addActionListener(this);
 		this.ventanaPresupuestos.getBtnmarcarAceptaciones().addActionListener(this);
 		this.ventanaPresupuestos.getBtnPresupuestoPorELS().addActionListener(this);
@@ -114,15 +112,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	public void actionPerformed(ActionEvent e) {
 
-		if (ventanaPresupuestos != null && e.getSource() == this.ventanaPresupuestos.getBtnenviarInformesSiemens()) {
 
-		}
-
-		else if (ventanaPresupuestos != null && e.getSource() == this.ventanaPresupuestos.getBtnEnviarPresupuestos()) {
-
-		}
-
-		else if (ventanaPresupuestos != null && e.getSource() == this.ventanaPresupuestos.getBtningresarPago()) {
+		if (ventanaPresupuestos != null && e.getSource() == this.ventanaPresupuestos.getBtningresarPago()) {
 
 			btnPresupuestoxELS = false;
 			btnpago = true;
