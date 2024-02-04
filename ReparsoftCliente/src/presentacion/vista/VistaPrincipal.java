@@ -22,6 +22,8 @@ import java.awt.Frame;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -31,6 +33,9 @@ import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
+import javax.swing.JSeparator;
+import javax.swing.border.EmptyBorder;
+import java.awt.Rectangle;
 
 public class VistaPrincipal extends JFrame {
 
@@ -52,6 +57,14 @@ public class VistaPrincipal extends JFrame {
 	private JTextField textUsuario;
 	private JTextField textVersionSoft;
 	private JTextField textProgramador;
+	
+	private JMenuItem  btnCerrarSesion;
+	private JMenuItem  btnConfiguracion;
+	private JMenuItem  btnAcercaDe;
+	private JMenuItem  btnAyuda;
+	private JSeparator separator;
+	
+	
 
 	public VistaPrincipal() {
 		super();
@@ -229,6 +242,52 @@ public class VistaPrincipal extends JFrame {
 		btnSalir.setToolTipText("Salir del Sistema");
 		btnSalir.setIcon(new ImageIcon(this.getClass().getResource("/logout.png")));
 		getContentPane().add(btnSalir);
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBorderPainted(false);
+		menuBar.setOpaque(false);
+		menuBar.setBackground(new Color(0, 0, 0));
+		JMenu mnMenu = new JMenu("Inicio");
+		mnMenu.setForeground(new Color(0, 0, 0));
+		mnMenu.setFont(new Font("Cambria", Font.BOLD, 13));
+		mnMenu.setBackground(new Color(0, 153, 204));
+		menuBar.setBounds(0, 0, 45, 22);
+		mnMenu.setBounds(0, 0, 101, 22);
+		getContentPane().add(menuBar);
+		menuBar.add(mnMenu);
+		
+
+		btnCerrarSesion = new JMenuItem("Cerrar Sesion");
+		btnCerrarSesion.setFont(new Font("Cambria", Font.PLAIN, 12));
+		btnConfiguracion = new JMenuItem("Configuración");
+		btnConfiguracion.setFont(new Font("Cambria", Font.PLAIN, 12));
+		separator = new JSeparator();
+		separator.setBounds(new Rectangle(0, 0, 0, 3));
+		separator.setBorder(new EmptyBorder(10, 0, 10, 0));
+		btnAcercaDe = new JMenuItem("Acerca de...");
+		btnAcercaDe.setFont(new Font("Cambria", Font.PLAIN, 12));
+		btnAyuda = new JMenuItem("Ayuda");
+		btnAyuda.setFont(new Font("Cambria", Font.PLAIN, 12));
+		
+		
+		
+	
+		mnMenu.add(btnCerrarSesion);
+		
+		mnMenu.add(btnConfiguracion);
+		
+		mnMenu.add(separator);
+		
+		mnMenu.add(btnAcercaDe);
+		
+		mnMenu.add(btnAyuda);
+		
+		
+		
+		
+		
+		
+		
 
 		setLocationCenter();
 		setVisible(true);
@@ -391,4 +450,35 @@ public class VistaPrincipal extends JFrame {
 		this.btnSalir = btnSalir;
 	}
 
+	public JMenuItem getBtnCerrarSesion() {
+		return btnCerrarSesion;
+	}
+
+	public void setBtnCerrarSesion(JMenuItem btnCerrarSesion) {
+		this.btnCerrarSesion = btnCerrarSesion;
+	}
+
+	public JMenuItem getBtnConfiguracion() {
+		return btnConfiguracion;
+	}
+
+	public void setBtnConfiguracion(JMenuItem btnConfiguracion) {
+		this.btnConfiguracion = btnConfiguracion;
+	}
+
+	public JMenuItem getBtnAcercaDe() {
+		return btnAcercaDe;
+	}
+
+	public void setBtnAcercaDe(JMenuItem btnAcercaDe) {
+		this.btnAcercaDe = btnAcercaDe;
+	}
+
+	public JMenuItem getBtnAyuda() {
+		return btnAyuda;
+	}
+
+	public void setBtnAyuda(JMenuItem btnAyuda) {
+		this.btnAyuda = btnAyuda;
+	}
 }

@@ -117,6 +117,11 @@ public class ControladorPrincipal implements ActionListener {
 
 		this.vistaPrincipal = v;
 		this.modelo = new Agenda();
+		this.vistaPrincipal.getBtnCerrarSesion().addActionListener(this);
+		this.vistaPrincipal.getBtnAcercaDe().addActionListener(this);
+		this.vistaPrincipal.getBtnAyuda().addActionListener(this);
+		this.vistaPrincipal.getBtnConfiguracion().addActionListener(this);
+
 		this.vistaPrincipal.getBotonEquipos().addActionListener(this);
 		this.vistaPrincipal.getBtnSalir().addActionListener(this);
 		this.vistaPrincipal.getBotonClientes().addActionListener(this);
@@ -164,8 +169,7 @@ public class ControladorPrincipal implements ActionListener {
 			vistaLogin = new VentanaLogin();
 			vistaLogin.getBtnAceptar().addActionListener(this);
 			vistaLogin.getBtnCancelar().addActionListener(this);
-			
-			
+
 			vistaLogin.getTxtUsuPass().addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -173,17 +177,16 @@ public class ControladorPrincipal implements ActionListener {
 					controladorUsuLogin.validarSesion(vistaLogin, vistaPrincipal);
 					controladorUsuLogin.verificarPermisosMenu(vistaPrincipal);
 
-
 				}
 			});
-			
+
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 		if (arg0.getSource() == vistaLogin.getBtnAceptar()) {
 			controladorUsuLogin.validarSesion(vistaLogin, this.vistaPrincipal);
 			controladorUsuLogin.verificarPermisosMenu(vistaPrincipal);
@@ -221,6 +224,14 @@ public class ControladorPrincipal implements ActionListener {
 
 			ventanaRolesUsuarios = new VentanaRolesUsuarios(controladoUsuario);
 			controladoUsuario = new ControladorUsuarios(ventanaRolesUsuarios, new Agenda());
+
+		}
+
+		else if (arg0.getSource() == this.vistaPrincipal.getBtnCerrarSesion()) {
+
+			
+			this.controladorUsuLogin.cerrarSesion();
+			inicializar();
 
 		}
 
