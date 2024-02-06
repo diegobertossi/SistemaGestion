@@ -131,8 +131,7 @@ public class ControladorPrincipal implements ActionListener {
 		this.vistaPrincipal.getBotonListados().addActionListener(this);
 		this.vistaPrincipal.getBotonBackUp().addActionListener(this);
 		this.vistaPrincipal.getBotonPresupuestos().addActionListener(this);
-		this.vistaPrincipal.getBotonConfiguracion().addActionListener(this);
-
+		
 		controladorUsuLogin = new ControladorUsuLogin(new Permisos());
 
 	}
