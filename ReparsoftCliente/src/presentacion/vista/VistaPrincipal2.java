@@ -38,7 +38,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Rectangle;
 import javax.swing.border.EtchedBorder;
 
-public class VistaPrincipal extends JFrame {
+public class VistaPrincipal2 extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JMenuItem btnTecnicos;
@@ -66,7 +66,7 @@ public class VistaPrincipal extends JFrame {
 	
 	
 
-	public VistaPrincipal() {
+	public VistaPrincipal2() {
 		super();
 		setResizable(false);
 		this.setLocationRelativeTo(null);
@@ -100,7 +100,7 @@ public class VistaPrincipal extends JFrame {
 		});
 		botonEquipos.setBounds(11, 24, 143, 49);
 		botonEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonEquipos.setFont(new Font("Cambria", Font.BOLD, 13));
+		botonEquipos.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		botonEquipos.setToolTipText("Ingreso y visualización de equipos al Sistema");
 		
@@ -111,7 +111,7 @@ public class VistaPrincipal extends JFrame {
 		botonSalidas.setForeground(new Color(0, 0, 128));
 		botonSalidas.setBounds(160, 24, 143, 49);
 		botonSalidas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonSalidas.setFont(new Font("Cambria", Font.BOLD, 13));
+		botonSalidas.setFont(new Font("Cambria", Font.BOLD, 14));
 		botonSalidas.setToolTipText("Egreso de equipos y generación de Remitos");
 		botonSalidas.setIcon(new ImageIcon(this.getClass().getResource("/Salida.png")));
 		panelDeControl.add(botonSalidas);
@@ -120,7 +120,7 @@ public class VistaPrincipal extends JFrame {
 		botonBusquedas.setForeground(new Color(0, 0, 128));
 		botonBusquedas.setBounds(11, 84, 143, 49);
 		botonBusquedas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonBusquedas.setFont(new Font("Cambria", Font.BOLD, 13));
+		botonBusquedas.setFont(new Font("Cambria", Font.BOLD, 14));
 		botonBusquedas.setToolTipText("Busqueda de equipos, por ELS, Cliente o Tecnico.");
 		botonBusquedas.setIcon(new ImageIcon(this.getClass().getResource("/Buscar.png")));
 		panelDeControl.add(botonBusquedas);
@@ -129,7 +129,7 @@ public class VistaPrincipal extends JFrame {
 		botonListados.setForeground(new Color(0, 0, 128));
 		botonListados.setBounds(309, 24, 143, 49);
 		botonListados.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonListados.setFont(new Font("Cambria", Font.BOLD, 13));
+		botonListados.setFont(new Font("Cambria", Font.BOLD, 14));
 		botonListados.setToolTipText("Listados de equipos.");
 		botonListados.setIcon(new ImageIcon(this.getClass().getResource("/Listado.png")));
 		panelDeControl.add(botonListados);
@@ -138,7 +138,7 @@ public class VistaPrincipal extends JFrame {
 		botonClientes.setForeground(new Color(0, 0, 128));
 		botonClientes.setBounds(160, 84, 143, 49);
 		botonClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonClientes.setFont(new Font("Cambria", Font.BOLD, 13));
+		botonClientes.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		botonClientes.setToolTipText("Visualización y alta de Clientes");
 
@@ -146,7 +146,6 @@ public class VistaPrincipal extends JFrame {
 		panelDeControl.add(botonClientes);
 
 		botonPresupuestos = new JButton("PRESUPUESTOS");
-		botonPresupuestos.setHorizontalAlignment(SwingConstants.LEFT);
 		botonPresupuestos.setForeground(new Color(0, 0, 128));
 		botonPresupuestos.setBounds(309, 84, 143, 49);
 		botonPresupuestos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -154,14 +153,14 @@ public class VistaPrincipal extends JFrame {
 
 		botonPresupuestos.setToolTipText("Generación de Presupuestos, pendientes e Ingreso de Pagos.");
 
-		botonPresupuestos.setIcon(new ImageIcon(this.getClass().getResource("/Presupuestos.png")));
+		botonPresupuestos.setIcon(new ImageIcon(this.getClass().getResource("/presupuestos.png")));
 		panelDeControl.add(botonPresupuestos);
 
 		botonUsuarios = new JButton("USUARIOS");
 		botonUsuarios.setForeground(new Color(0, 0, 128));
 		botonUsuarios.setBounds(160, 144, 143, 49);
 		botonUsuarios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonUsuarios.setFont(new Font("Cambria", Font.BOLD, 13));
+		botonUsuarios.setFont(new Font("Cambria", Font.BOLD, 14));
 		botonUsuarios.setToolTipText("Gestión de los Usuarios del Sistema.");
 		botonUsuarios.setIcon(new ImageIcon(this.getClass().getResource("/Usuarios.png")));
 		panelDeControl.add(botonUsuarios);
@@ -170,7 +169,7 @@ public class VistaPrincipal extends JFrame {
 		botonBackUp.setForeground(new Color(0, 0, 128));
 		botonBackUp.setBounds(11, 144, 143, 49);
 		botonBackUp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonBackUp.setFont(new Font("Cambria", Font.BOLD, 13));
+		botonBackUp.setFont(new Font("Cambria", Font.BOLD, 14));
 		botonBackUp.setToolTipText("Backup del Sistema.");
 		botonBackUp.setIcon(new ImageIcon(this.getClass().getResource("/Backup.png")));
 		panelDeControl.add(botonBackUp);
@@ -194,7 +193,7 @@ public class VistaPrincipal extends JFrame {
 		textUsuario = new JTextField();
 		textUsuario.setEditable(false);
 		textUsuario.setBorder(null);
-		textUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+		textUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
 		textUsuario.setBackground(SystemColor.activeCaption);
 		textUsuario.setForeground(Color.WHITE);
 		textUsuario.setFont(new Font("Cambria", Font.BOLD, 14));
