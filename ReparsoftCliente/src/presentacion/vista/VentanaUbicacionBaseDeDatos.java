@@ -6,8 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import presentacion.controlador.ControladorPrincipal;
-import presentacion.controlador.ControladorReparacion;
 import java.awt.SystemColor;
 import java.awt.Font;
 import javax.swing.JLabel;
@@ -18,8 +16,7 @@ public class VentanaUbicacionBaseDeDatos extends JFrame
 	private JPanel contentPane;
 	private JButton btnBuenosAires;
 	private JButton btnBariloche;
-	private ControladorPrincipal controlador;
-
+	
 	public VentanaUbicacionBaseDeDatos() 
 	{
 		super();

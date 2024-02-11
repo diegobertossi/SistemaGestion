@@ -110,19 +110,18 @@ public class ControladorPrincipal implements ActionListener {
 
 	private int clickMax = 1;
 	private int clickMin = 1;
-	private String ubicacionBase;
+	private String ubicacionDeBase;
 
 	private TableRowSorter<DefaultTableModel> sorter;
 
 	private List<ReparacionDTO> Reparaciones_en_tabla;
 
-	public ControladorPrincipal(VistaPrincipal v) {
+	public ControladorPrincipal(VistaPrincipal v, String ubicacionBase) {
 
-
-		
 		this.vistaPrincipal = v;
 		this.modelo = new Agenda(ubicacionBase);
-		
+		this.ubicacionDeBase = ubicacionBase;
+
 		this.vistaPrincipal.getBtnCerrarSesion().addActionListener(this);
 		this.vistaPrincipal.getBtnAcercaDe().addActionListener(this);
 		this.vistaPrincipal.getBtnAyuda().addActionListener(this);
@@ -137,7 +136,7 @@ public class ControladorPrincipal implements ActionListener {
 		this.vistaPrincipal.getBotonListados().addActionListener(this);
 		this.vistaPrincipal.getBotonBackUp().addActionListener(this);
 		this.vistaPrincipal.getBotonPresupuestos().addActionListener(this);
-		
+
 		controladorUsuLogin = new ControladorUsuLogin(new Permisos(ubicacionBase));
 
 	}
@@ -168,7 +167,7 @@ public class ControladorPrincipal implements ActionListener {
 		});
 
 	}
-	
+
 	private void pedirInicioDeSesion() {
 		if (controladorUsuLogin.getUsu_login() == null) {
 			vistaLogin = new VentanaLogin();
@@ -192,25 +191,7 @@ public class ControladorPrincipal implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 
-		
-		
-		if (arg0.getSource() == ventanaUbicacionBaseDeDatos.getBtnBariloche()) {
-			
-			ubicacionBase = "Bariloche";
-			ventanaUbicacionBaseDeDatos.dispose();
-			ventanaUbicacionBaseDeDatos = null;
-			
-		}
-		
-		else if(arg0.getSource() == ventanaUbicacionBaseDeDatos.getBtnBuenosAires()) {
-			
-			ubicacionBase = "Buenos Aires";
-			ventanaUbicacionBaseDeDatos.dispose();
-			ventanaUbicacionBaseDeDatos = null;
-			
-		}
-		
-		else if (arg0.getSource() == vistaLogin.getBtnAceptar()) {
+		if (arg0.getSource() == vistaLogin.getBtnAceptar()) {
 			controladorUsuLogin.validarSesion(vistaLogin, this.vistaPrincipal);
 			controladorUsuLogin.verificarPermisosMenu(vistaPrincipal);
 
@@ -246,13 +227,12 @@ public class ControladorPrincipal implements ActionListener {
 		} else if (arg0.getSource() == vistaPrincipal.getBotonUsuarios()) {
 
 			ventanaRolesUsuarios = new VentanaRolesUsuarios(controladoUsuario);
-			controladoUsuario = new ControladorUsuarios(ventanaRolesUsuarios, new Agenda(ubicacionBase));
+			controladoUsuario = new ControladorUsuarios(ventanaRolesUsuarios, new Agenda(ubicacionDeBase));
 
 		}
 
 		else if (arg0.getSource() == this.vistaPrincipal.getBtnCerrarSesion()) {
 
-			
 			this.controladorUsuLogin.cerrarSesion();
 			inicializar();
 
@@ -282,14 +262,14 @@ public class ControladorPrincipal implements ActionListener {
 		else if (arg0.getSource() == vistaPrincipal.getBotonSalidas()) {
 
 			ventanaSalidas = new VentanaSalidas(controladorSalidas);
-			controladorSalidas = new ControladorSalidas(ventanaSalidas, new Agenda(ubicacionBase));
+			controladorSalidas = new ControladorSalidas(ventanaSalidas, new Agenda(ubicacionDeBase));
 
 		}
 
 		else if (arg0.getSource() == vistaPrincipal.getBotonClientes()) {
 
 			ventanaClientes = new VentanaClientes(controladorCliente);
-			controladorCliente = new ControladorCliente(ventanaClientes, new Agenda(ubicacionBase));
+			controladorCliente = new ControladorCliente(ventanaClientes, new Agenda(ubicacionDeBase));
 
 		}
 
@@ -335,7 +315,7 @@ public class ControladorPrincipal implements ActionListener {
 		else if (arg0.getSource() == vistaPrincipal.getBotonBusquedas()) {
 
 			ventanaBusqueda = new VentanaBusqueda(controladorBusqueda);
-			controladorBusqueda = new ControladorBusquedas(ventanaBusqueda, new Agenda(ubicacionBase));
+			controladorBusqueda = new ControladorBusquedas(ventanaBusqueda, new Agenda(ubicacionDeBase));
 
 		}
 

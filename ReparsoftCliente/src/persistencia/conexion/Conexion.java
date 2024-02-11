@@ -55,7 +55,6 @@ public class Conexion {
 
 	public static Conexion getConexion(String ubicacion) {
 		
-		System.out.println(ubicacion);
 		if (instancia == null) {
 			instancia = new Conexion(ubicacion);
 		}

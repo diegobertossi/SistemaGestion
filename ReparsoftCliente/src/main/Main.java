@@ -3,9 +3,8 @@ package main;
 import javax.swing.UIManager;
 
 
-import presentacion.controlador.ControladorPrincipal;
+import presentacion.controlador.ControladorUbicacionBase;
 import presentacion.vista.VentanaUbicacionBaseDeDatos;
-import presentacion.vista.VistaPrincipal;
 
 public class Main {
 
@@ -32,15 +31,13 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		VistaPrincipal vista = new VistaPrincipal();
 
-		ControladorPrincipal controlador = new ControladorPrincipal(vista);
 		
 		VentanaUbicacionBaseDeDatos ventanaUbicacionBaseDeDatos = new VentanaUbicacionBaseDeDatos();
+		ControladorUbicacionBase controlador = new ControladorUbicacionBase(ventanaUbicacionBaseDeDatos);
 		
 	
 
-		controlador.inicializar();
 
 	}
 }
