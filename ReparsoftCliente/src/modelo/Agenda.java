@@ -40,18 +40,22 @@ public class Agenda {
 	private UsuarioDAO usuario;
 	private RolDAO rol;
 	private RemitoDAO remito;
+	private String ubicacionBase;
 
-	public Agenda() {
-
-		Cliente = new ClienteDAOImpl();
-		ReparacionR = new ReparacionDAOImpl();
-		Repuestos = new RepuestosDAOImpl();
-		Sucursal = new SucursalDAOImpl();
-		usuario = new UsuarioDAOImpl();
-		rol = new RolDAOImpl();
-		remito = new RemitoDAOImpl();
-		ClienteWSP = new ClienteWSPDAOImpl();
-
+	public Agenda(String ubicacionDeBase) {
+		
+		this.ubicacionBase = ubicacionDeBase;
+		Cliente = new ClienteDAOImpl(ubicacionDeBase);
+		ReparacionR = new ReparacionDAOImpl(ubicacionDeBase);
+		Repuestos = new RepuestosDAOImpl(ubicacionDeBase);
+		Sucursal = new SucursalDAOImpl(ubicacionDeBase);
+		usuario = new UsuarioDAOImpl(ubicacionDeBase);
+		rol = new RolDAOImpl(ubicacionDeBase);
+		remito = new RemitoDAOImpl(ubicacionDeBase);
+		ClienteWSP = new ClienteWSPDAOImpl(ubicacionDeBase);
+		
+		
+		
 	}
 
 	// USUARIOS
@@ -109,6 +113,8 @@ public class Agenda {
 	}
 	
 	// CLIENTES
+	
+	
 	public void agregarClientes(ClienteDTO nuevoCliente) {
 		Cliente.insert(nuevoCliente);
 	}
@@ -162,6 +168,14 @@ public class Agenda {
 		return Cliente.obtenerEmailPorCliente(nombreCliente);
 	}
 
+	public String dameUbucacionBase() {
+		
+		return ubicacionBase;
+	}
+	
+	
+	
+	
 	// SUCURSALES
 	public void agregarSucursal(SucursalDTO nuevaSucursal) {
 		Sucursal.insert(nuevaSucursal);
@@ -457,6 +471,14 @@ public class Agenda {
 	public void eliminarRemito(int IDRemito) {
 		
 		remito.delete(IDRemito);
+	}
+
+	public String getUbicacionBase() {
+		return ubicacionBase;
+	}
+
+	public void setUbicacionBase(String ubicacionBase) {
+		this.ubicacionBase = ubicacionBase;
 	}
 
 

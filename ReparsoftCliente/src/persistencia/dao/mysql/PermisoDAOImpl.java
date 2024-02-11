@@ -26,7 +26,33 @@ public class PermisoDAOImpl implements PermisoDAO{
 			+ " inner join pantalla pd on pd.idPantalla = ph.idPantPadre "
 			+ " WHERE permisos.idRol = ? AND pd.nombre = ?";
 	
-	private static final Conexion conexion = Conexion.getConexion();
+	public static String ubicacion;
+	private Conexion conexion;
+	
+	public PermisoDAOImpl(String ubicacionBase) {
+		
+		final String insert = "INSERT INTO permisos(idPermiso,idRol,idPantalla) VALUES(0,?,?)";	
+		final String delete = "DELETE FROM permisos WHERE idPermiso = ?";
+		final String readall = "SELECT permisos.*,ph.nombre,IFNULL(pd.nombre,'Menu Principal') as padre FROM permisos inner join rol on rol.idRol = permisos.idRol inner join pantalla ph on ph.idPantalla = permisos.idPantalla  left join pantalla pd on pd.idPantalla = ph.idPantPadre"
+				+ " WHERE permisos.idRol = ? ";
+		
+		final String readFaltantes = "SELECT ph.idPantalla,ph.nombre,IFNULL(pd.nombre,'Menu Principal') as padre FROM pantalla  ph left join pantalla pd on pd.idPantalla = ph.idPantPadre WHERE ph.idPantalla not in (SELECT DISTINCT permisos.idPantalla FROM permisos INNER JOIN rol ON rol.idRol = permisos.idRol where rol.idRol = ?) ";
+		
+		final String readallPadres = "SELECT permisos.*,pantalla.nombre FROM permisos inner join rol on rol.idRol = permisos.idRol inner join pantalla on pantalla.idPantalla = permisos.idPantalla "
+				+ " WHERE permisos.idRol = ? AND IFNULL(pantalla.idPantPadre,0) = 0 ";
+		final String readallHijos= "SELECT permisos.*,ph.nombre FROM permisos inner join rol on rol.idRol = permisos.idRol inner join pantalla ph on ph.idPantalla = permisos.idPantalla "
+				+ " inner join pantalla pd on pd.idPantalla = ph.idPantPadre "
+				+ " WHERE permisos.idRol = ? AND pd.nombre = ?";
+		
+		ubicacion = ubicacionBase;
+		conexion = Conexion.getConexion(ubicacion);
+		
+		
+		
+	}
+	
+	
+
 
 	@Override
 	public boolean insert(PermisoDTO permiso) {
@@ -39,7 +65,7 @@ public class PermisoDAOImpl implements PermisoDAO{
 
 
 	
-			if(statement.executeUpdate() > 0) //Si se ejecutó devuelvo true
+			if(statement.executeUpdate() > 0) //Si se ejecutï¿½ devuelvo true
 				return true;
 		} 
 		catch (SQLException e) 
@@ -63,7 +89,7 @@ public class PermisoDAOImpl implements PermisoDAO{
 					//statement.setInt(1, newAgenda.getIdAgenda());
 					statement.setInt(1, permiso_a_eliminar.getIdPermiso());
 					
-					if(statement.executeUpdate() > 0) //Si se ejecutó devuelvo true
+					if(statement.executeUpdate() > 0) //Si se ejecutï¿½ devuelvo true
 						return true;
 				} 
 				catch (SQLException e) 

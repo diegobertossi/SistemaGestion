@@ -30,8 +30,35 @@ public class SucursalDAOImpl implements SucursalDAO {
 	private static final String readallSucursal = "SELECT Sucursal.NombreSucursal FROM Sucursal group by Sucursal.NombreSucursal";
 
 	private static final String IDporNombre = "Select IdSucursal from Sucursal where NombreSucursal =? and idCliente=? ";
+	
+	public static String ubicacion;
+	private Conexion conexion;
+	
+	
+	public SucursalDAOImpl(String ubicacionBase) {
+		// TODO Auto-generated constructor stub
+	
+	final String insert = "INSERT INTO Sucursal(IdSucursal,NombreSucursal,idCliente,DomicilioSucursal,ContactoSucursal,TelefonoSucursal,CorreoElectronico) VALUES(? , ? , ? , ? , ? , ? , ? )";
+	final String delete = "DELETE FROM Sucursal WHERE IdSucursal = ?";
+	final String readall = "SELECT * FROM Sucursal";
+	final String maximoIDsucursal = "Select MAX(idsucursal) from Sucursal";
+	final String cantidadSucxCliente = "Select count(*) as total from Sucursal where idCliente = ?";
 
-	private static final Conexion conexion = Conexion.getConexion();
+	final String cantidadReparacionesxSuc = "Select count(*) as total from Sucursal INNER JOIN Equipos ON Sucursal.idsucursal = Equipos.IdSucursal where Sucursal.idsucursal = ?";
+
+	final String readallxCliente = "SELECT * FROM Sucursal where idCliente = ?";
+	final String readallSucursal = "SELECT Sucursal.NombreSucursal FROM Sucursal group by Sucursal.NombreSucursal";
+
+	final String IDporNombre = "Select IdSucursal from Sucursal where NombreSucursal =? and idCliente=? ";
+	ubicacion = ubicacionBase;
+	conexion = Conexion.getConexion(ubicacion);
+	
+	
+	
+	}
+
+
+
 
 	public boolean insert(SucursalDTO Sucursal) {
 		PreparedStatement statement;
@@ -222,7 +249,7 @@ public class SucursalDAOImpl implements SucursalDAO {
 
 							+ " WHERE IdSucursal = " + Sucursal_a_editar.getIdSucursal() + "");
 
-			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
+			if (statement.executeUpdate() > 0) // Si se ejecutï¿½ devuelvo true
 				return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

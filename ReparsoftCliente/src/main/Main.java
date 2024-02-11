@@ -4,6 +4,7 @@ import javax.swing.UIManager;
 
 
 import presentacion.controlador.ControladorPrincipal;
+import presentacion.vista.VentanaUbicacionBaseDeDatos;
 import presentacion.vista.VistaPrincipal;
 
 public class Main {
@@ -34,6 +35,11 @@ public class Main {
 		VistaPrincipal vista = new VistaPrincipal();
 
 		ControladorPrincipal controlador = new ControladorPrincipal(vista);
+		
+		VentanaUbicacionBaseDeDatos ventanaUbicacionBaseDeDatos = new VentanaUbicacionBaseDeDatos();
+		
+	
+
 		controlador.inicializar();
 
 	}

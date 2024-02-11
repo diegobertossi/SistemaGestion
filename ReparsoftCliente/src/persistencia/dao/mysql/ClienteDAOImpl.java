@@ -12,22 +12,51 @@ import javax.swing.JComboBox;
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.ClienteDAO;
 import dto.ClienteDTO;
-import dto.UsuarioDTO;
+
 
 public class ClienteDAOImpl implements ClienteDAO {
-	private static final String insert = "INSERT INTO Cliente(idCliente,nombre, CUIT,Domicilio,TelefonoEmpresa,Contacto,TelefonoContacto,CorreoElectronico) VALUES(? , ? , ? , ? , ? , ? , ? , ?)";
-	private static final String delete = "DELETE FROM Cliente WHERE idCliente = ?";
-	private static final String readall = "SELECT * FROM Cliente";
-	private static final String maximoIDcliente = "Select MAX(idCliente) from Cliente";
-	private static final String IDporNombre = "Select idCliente from Cliente where nombre =? ";
-	private static final String ContactoPorNombre = "Select Contacto from Cliente where nombre =? ";
-	private static final String EmailPorNombre = "Select CorreoElectronico from Cliente where nombre =? ";
-	private static final String TelefonolPorNombre = "Select TelefonoContacto from Cliente where nombre =? ";
 	
 	
-	private static final String cantidadReparacionesxCliente = "Select count(*) as total from Cliente INNER JOIN Equipos ON Cliente.idCliente = Equipos.idCliente where Cliente.idCliente = ?";
+	
+	private static String insert = "";
+	private static String delete = "";
+	private static String readall = "";
+	private static String maximoIDcliente = "";
+	private static String IDporNombre = "";
+	private static String ContactoPorNombre = "";
+	private static String EmailPorNombre = "";
+	private static String TelefonolPorNombre = "";
+	private static String cantidadReparacionesxCliente = ""; 
+	public static String ubicacion;
+	private Conexion conexion;
+	
+	
+	
+	public ClienteDAOImpl(String ubicacionBase) {
+		// TODO Auto-generated constructor stub
+		
+		insert = "INSERT INTO Cliente(idCliente,nombre, CUIT,Domicilio,TelefonoEmpresa,Contacto,TelefonoContacto,CorreoElectronico) VALUES(? , ? , ? , ? , ? , ? , ? , ?)";
+		delete = "DELETE FROM Cliente WHERE idCliente = ?";
+		readall = "SELECT * FROM Cliente";
+		maximoIDcliente = "Select MAX(idCliente) from Cliente";
+		IDporNombre = "Select idCliente from Cliente where nombre =? ";
+		ContactoPorNombre = "Select Contacto from Cliente where nombre =? ";
+		EmailPorNombre = "Select CorreoElectronico from Cliente where nombre =? ";
+		TelefonolPorNombre = "Select TelefonoContacto from Cliente where nombre =? ";
+		cantidadReparacionesxCliente = "Select count(*) as total from Cliente INNER JOIN Equipos ON Cliente.idCliente = Equipos.idCliente where Cliente.idCliente = ?";
+				
+		ubicacion = ubicacionBase;
+		conexion = Conexion.getConexion(ubicacion);
+	
+		
+	}	
+	
+	
+	
+	
+	
 
-	private static final Conexion conexion = Conexion.getConexion();
+
 
 	public boolean insert(ClienteDTO Cliente) {
 		PreparedStatement statement;
@@ -133,7 +162,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 
 							+ " WHERE idCliente = " + Cliente_a_editar.getId() + "");
 
-			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
+			if (statement.executeUpdate() > 0) // Si se ejecutï¿½ devuelvo true
 				return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -302,5 +331,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 
 		return telefono;
 	}
+
+
 
 }

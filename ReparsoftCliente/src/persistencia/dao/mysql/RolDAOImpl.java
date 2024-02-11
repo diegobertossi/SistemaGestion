@@ -16,8 +16,24 @@ public class RolDAOImpl implements RolDAO {
 	private static final String delete = "DELETE FROM rol WHERE idRol = ?";
 	private static final String readall = "SELECT * FROM rol";
 	private static final String readallxid = "SELECT nombre FROM rol WHERE idRol = ?";
-	private static final Conexion conexion = Conexion.getConexion();
+	public static String ubicacion;
+	private Conexion conexion;
+	
 
+	public RolDAOImpl(String ubicacionBase) {
+		final String insert = "INSERT INTO rol(idRol, nombre) VALUES(?, ?)";
+		final String delete = "DELETE FROM rol WHERE idRol = ?";
+		final String readall = "SELECT * FROM rol";
+		final String readallxid = "SELECT nombre FROM rol WHERE idRol = ?";
+		ubicacion = ubicacionBase;
+		conexion = Conexion.getConexion(ubicacion);
+		
+	}
+
+	
+	
+	
+	
 	public boolean insert(RolDTO rol) {
 		PreparedStatement statement;
 		try {

@@ -17,10 +17,12 @@ public class Permisos {
 	private UsuarioDAO usuario;
 	
 	
-	public Permisos()
+	
+	public Permisos(String Ubicacion)
 	{
-		permiso = new PermisoDAOImpl();
-		usuario = new UsuarioDAOImpl();
+	
+		permiso = new PermisoDAOImpl(Ubicacion);
+		usuario = new UsuarioDAOImpl(Ubicacion);
 	}
 	
 	public List<PermisoDTO> damePermisosPadres(Integer idRol)

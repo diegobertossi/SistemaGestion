@@ -57,6 +57,7 @@ import presentacion.vista.VentanaLogin;
 import presentacion.vista.VentanaPresupuestos;
 import presentacion.vista.VentanaRolesUsuarios;
 import presentacion.vista.VentanaSalidas;
+import presentacion.vista.VentanaUbicacionBaseDeDatos;
 import presentacion.vista.VentanaVisualizarEquipos;
 import presentacion.vista.VentanaClientes;
 import presentacion.vista.VentanaBusqueda;
@@ -67,6 +68,7 @@ public class ControladorPrincipal implements ActionListener {
 	private Agenda modelo;
 
 	private VentanaEquipos ventanaEquipos;
+	private VentanaUbicacionBaseDeDatos ventanaUbicacionBaseDeDatos;
 	private VentanaClientes ventanaClientes;
 	private VentanaSalidas ventanaSalidas;
 	private VentanaListadoReparaciones ventanaListadoReparaciones;
@@ -108,6 +110,7 @@ public class ControladorPrincipal implements ActionListener {
 
 	private int clickMax = 1;
 	private int clickMin = 1;
+	private String ubicacionBase;
 
 	private TableRowSorter<DefaultTableModel> sorter;
 
@@ -115,8 +118,11 @@ public class ControladorPrincipal implements ActionListener {
 
 	public ControladorPrincipal(VistaPrincipal v) {
 
+
+		
 		this.vistaPrincipal = v;
-		this.modelo = new Agenda();
+		this.modelo = new Agenda(ubicacionBase);
+		
 		this.vistaPrincipal.getBtnCerrarSesion().addActionListener(this);
 		this.vistaPrincipal.getBtnAcercaDe().addActionListener(this);
 		this.vistaPrincipal.getBtnAyuda().addActionListener(this);
@@ -132,7 +138,7 @@ public class ControladorPrincipal implements ActionListener {
 		this.vistaPrincipal.getBotonBackUp().addActionListener(this);
 		this.vistaPrincipal.getBotonPresupuestos().addActionListener(this);
 		
-		controladorUsuLogin = new ControladorUsuLogin(new Permisos());
+		controladorUsuLogin = new ControladorUsuLogin(new Permisos(ubicacionBase));
 
 	}
 
@@ -162,7 +168,7 @@ public class ControladorPrincipal implements ActionListener {
 		});
 
 	}
-
+	
 	private void pedirInicioDeSesion() {
 		if (controladorUsuLogin.getUsu_login() == null) {
 			vistaLogin = new VentanaLogin();
@@ -186,7 +192,25 @@ public class ControladorPrincipal implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 
-		if (arg0.getSource() == vistaLogin.getBtnAceptar()) {
+		
+		
+		if (arg0.getSource() == ventanaUbicacionBaseDeDatos.getBtnBariloche()) {
+			
+			ubicacionBase = "Bariloche";
+			ventanaUbicacionBaseDeDatos.dispose();
+			ventanaUbicacionBaseDeDatos = null;
+			
+		}
+		
+		else if(arg0.getSource() == ventanaUbicacionBaseDeDatos.getBtnBuenosAires()) {
+			
+			ubicacionBase = "Buenos Aires";
+			ventanaUbicacionBaseDeDatos.dispose();
+			ventanaUbicacionBaseDeDatos = null;
+			
+		}
+		
+		else if (arg0.getSource() == vistaLogin.getBtnAceptar()) {
 			controladorUsuLogin.validarSesion(vistaLogin, this.vistaPrincipal);
 			controladorUsuLogin.verificarPermisosMenu(vistaPrincipal);
 
@@ -222,7 +246,7 @@ public class ControladorPrincipal implements ActionListener {
 		} else if (arg0.getSource() == vistaPrincipal.getBotonUsuarios()) {
 
 			ventanaRolesUsuarios = new VentanaRolesUsuarios(controladoUsuario);
-			controladoUsuario = new ControladorUsuarios(ventanaRolesUsuarios, new Agenda());
+			controladoUsuario = new ControladorUsuarios(ventanaRolesUsuarios, new Agenda(ubicacionBase));
 
 		}
 
@@ -258,14 +282,14 @@ public class ControladorPrincipal implements ActionListener {
 		else if (arg0.getSource() == vistaPrincipal.getBotonSalidas()) {
 
 			ventanaSalidas = new VentanaSalidas(controladorSalidas);
-			controladorSalidas = new ControladorSalidas(ventanaSalidas, new Agenda());
+			controladorSalidas = new ControladorSalidas(ventanaSalidas, new Agenda(ubicacionBase));
 
 		}
 
 		else if (arg0.getSource() == vistaPrincipal.getBotonClientes()) {
 
 			ventanaClientes = new VentanaClientes(controladorCliente);
-			controladorCliente = new ControladorCliente(ventanaClientes, new Agenda());
+			controladorCliente = new ControladorCliente(ventanaClientes, new Agenda(ubicacionBase));
 
 		}
 
@@ -311,7 +335,7 @@ public class ControladorPrincipal implements ActionListener {
 		else if (arg0.getSource() == vistaPrincipal.getBotonBusquedas()) {
 
 			ventanaBusqueda = new VentanaBusqueda(controladorBusqueda);
-			controladorBusqueda = new ControladorBusquedas(ventanaBusqueda, new Agenda());
+			controladorBusqueda = new ControladorBusquedas(ventanaBusqueda, new Agenda(ubicacionBase));
 
 		}
 

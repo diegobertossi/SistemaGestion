@@ -15,15 +15,40 @@ import dto.ClienteDTO;
 import dto.RepuestosDTO;
 
 public class RepuestosDAOImpl implements RepuestoDAO {
+	
+	
+	public static String ubicacion;
+	private Conexion conexion;
+	
 	private static final String insert = "INSERT INTO reemplazos(ELS,ref, original,reemplazo,notas) VALUES(? , ? , ? , ? , ?)";
 	private static final String delete = "DELETE FROM reemplazos where idReemplazos = ?";
 	private static final String readall = "SELECT * FROM reemplazos";
 	private static final String readallxELS = "SELECT reemplazos.idReemplazos, reemplazos.ELS, reemplazos.ref, reemplazos.original, reemplazos.reemplazo,reemplazos.notas FROM reemplazos WHERE ELS = ?";
-	private static final Conexion conexion = Conexion.getConexion();
+	
 	
 	private static final String readallOriginal = "SELECT distinct * FROM reemplazos group by reemplazos.original";
 	private static final String readallReemplazo = "SELECT distinct * FROM reemplazos group by reemplazos.reemplazo";
 
+	
+	
+	public RepuestosDAOImpl(String ubicacionBase) {
+		
+		
+		final String insert = "INSERT INTO reemplazos(ELS,ref, original,reemplazo,notas) VALUES(? , ? , ? , ? , ?)";
+		final String delete = "DELETE FROM reemplazos where idReemplazos = ?";
+		final String readall = "SELECT * FROM reemplazos";
+		final String readallxELS = "SELECT reemplazos.idReemplazos, reemplazos.ELS, reemplazos.ref, reemplazos.original, reemplazos.reemplazo,reemplazos.notas FROM reemplazos WHERE ELS = ?";
+		
+		
+		final String readallOriginal = "SELECT distinct * FROM reemplazos group by reemplazos.original";
+		final String readallReemplazo = "SELECT distinct * FROM reemplazos group by reemplazos.reemplazo";
+		ubicacion = ubicacionBase;
+		conexion = Conexion.getConexion(ubicacion);
+		
+	}
+
+	
+	
 	public boolean insert(RepuestosDTO Repuestos) {
 		PreparedStatement statement;
 		try {
@@ -123,7 +148,7 @@ public class RepuestosDAOImpl implements RepuestoDAO {
 							+ repuesto_a_editar.getNotas() + "'" + " WHERE idReemplazos = "
 							+ repuesto_a_editar.getIdRepuesto() + "");
 
-			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
+			if (statement.executeUpdate() > 0) // Si se ejecutï¿½ devuelvo true
 				return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

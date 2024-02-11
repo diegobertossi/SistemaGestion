@@ -72,7 +72,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		this.ventanaRolesUsuarios = ventanaRolesUsuarios;
 
 		this.agenda = agenda;
-		this.permisos = new Permisos();
+		this.permisos = new Permisos(agenda.getUbicacionBase());
 		// this.user = null;
 		this.rolElegido = null;
 		this.usuarioElegido = null;

@@ -34,9 +34,31 @@ public class ClienteWSPDAOImpl implements ClienteWSPDAO {
 	// where nombre =? ";
 	// private static final String EmailPorNombre = "Select CorreoElectronico from
 	// Cliente where nombre =? ";
+	
+	private static  String ubicacion;
+	private Conexion conexion;
 
-	private static final Conexion conexion = Conexion.getConexion();
+	
 
+	public ClienteWSPDAOImpl(String ubicacionBase) {
+		final String insert = "INSERT INTO ClienteWSP(idClienteWSP,organizacion, nombreWSP,TelefonoWSP) VALUES(? , ? , ? , ? )";
+		final String delete = "DELETE FROM ClienteWSP WHERE idClienteWSP = ?";
+		final String readall = "SELECT * FROM ClienteWSP";
+		final String maximoIDcliente = "Select MAX(idClienteWSP) from ClienteWSP";
+		final String IDporNombre = "Select idClienteWSP from ClienteWSP where nombre =? ";
+		final String readallContactoXorganizacion = "Select nombreWSP from ClienteWSP where organizacion =? ";
+		final String readallTelefonoXContacto = "Select TelefonoWSP from ClienteWSP where nombreWSP =? ";
+		final String readallSinRepetidos = "SELECT DISTINCTROW  organizacion FROM ClienteWSP";
+		ubicacion = ubicacionBase;
+		conexion = Conexion.getConexion(ubicacion);
+		
+	}
+
+	
+	
+
+	
+	
 	@Override
 	public boolean insert(ClienteWSPDTO ClienteWSP) {
 		PreparedStatement statement;

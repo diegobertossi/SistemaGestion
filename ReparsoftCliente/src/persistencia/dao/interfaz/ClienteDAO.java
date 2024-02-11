@@ -31,6 +31,5 @@ public interface ClienteDAO
 	public boolean obtenerReparacionxIDCliente(int idCliente);
 	
 	public String obtenerTelefonoPorCliente(String Cliente);
-	
 
 }

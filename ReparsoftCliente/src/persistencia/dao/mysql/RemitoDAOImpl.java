@@ -30,8 +30,34 @@ public class RemitoDAOImpl implements RemitoDAO {
 	private static final String buscarIDdRemitoXubicacionNumero = "SELECT * FROM Remitos where IdUbicacion = ? and NumeroRemitoSalida = ?";
 	
 	private static final String readallxUbicacion = "SELECT * FROM Remitos where IdUbicacion = ?";
+	public static String ubicacion;
+	private Conexion conexion;
+	
+	
 
-	private static final Conexion conexion = Conexion.getConexion();
+	
+
+	public RemitoDAOImpl(String ubicacionBase) {
+		
+		
+		final String insert = "INSERT INTO Remitos(idRemito,NumeroRemitoSalida, IdUbicacion) VALUES(? , ? , ? )";
+		// private static final String delete = "DELETE FROM Cliente WHERE idCliente =
+		// ?";
+		final String readall = "SELECT * FROM Remitos";
+		final String readallUbicacion = "SELECT Codigo, Ubicacion FROM UbicacionRemitos order by Codigo";
+		final String numeroRemito = "SELECT MAX(Remitos.NumeroRemitoSalida) FROM Remitos join UbicacionRemitos on UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion where UbicacionRemitos.Codigo=?";
+		final String maximoIDremito = "Select MAX(idRemito) from Remitos";
+		final String delete = "DELETE FROM Remitos WHERE idRemito = ?";
+
+		final String buscarIDdRemitoXubicacionNumero = "SELECT * FROM Remitos where IdUbicacion = ? and NumeroRemitoSalida = ?";
+		
+		final String readallxUbicacion = "SELECT * FROM Remitos where IdUbicacion = ?";
+		ubicacion = ubicacionBase;
+		conexion = Conexion.getConexion(ubicacion);
+		
+	}
+	
+	
 
 	public boolean insert(RemitoDTO Remito) {
 		PreparedStatement statement;

@@ -21,7 +21,30 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	private static final String readLogin = "SELECT * FROM usuario where login = ? AND pass = ? ";
 	private static final String readallTecnico = "SELECT usuario.nombre FROM usuario group by usuario.nombre";
 	private static final String IDporNombre = "Select idUsuario from usuario where nombre =?";
-	private static final Conexion conexion = Conexion.getConexion();
+	public static String ubicacion;
+	private Conexion conexion;;
+	
+	
+	
+	public UsuarioDAOImpl(String ubicacionBase) {
+		
+		
+		final String insert = "INSERT INTO usuario(idUsuario, idRol, dni, nombre, apellido, telefono, email,login,pass) VALUES(?, ?, ?, ?, ?, ?, ?,?,?)";
+		final String delete = "DELETE FROM usuario WHERE idUsuario = ?";
+		final String readall = "SELECT * FROM usuario WHERE dni <> 0 ";
+		final String readLogin = "SELECT * FROM usuario where login = ? AND pass = ? ";
+		final String readallTecnico = "SELECT usuario.nombre FROM usuario group by usuario.nombre";
+		final String IDporNombre = "Select idUsuario from usuario where nombre =?";
+		ubicacion = ubicacionBase;
+		conexion = Conexion.getConexion(ubicacion);
+	}
+	
+	
+	
+	
+	
+
+	
 
 	public boolean insert(UsuarioDTO user) {
 		PreparedStatement statement;
