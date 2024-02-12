@@ -109,6 +109,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private Agenda agenda;
 	private int ELSinicial = 988; // poner en 1 para arrancar los ELS desde el número 1 //
+	private int ELSinicialBSAS = 1;
 
 	private int ELS = 1;
 
@@ -226,20 +227,44 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 			if (eleccion == JOptionPane.YES_OPTION) {
 
+				String ubicacionDeBase = agenda.getUbicacionBase();
+
 				int tam = agenda.obtenerReparacion().size();
 
-				if (ELSinicial < tam + 987) {
-					ELSinicial = ELSinicial + 1;
-					try {
-						TomarDatosDeTablas();
+				if (ubicacionDeBase.compareTo("Bariloche") == 0) {
 
-					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					if (ELSinicial < tam + 987) {
+						ELSinicial = ELSinicial + 1;
+						try {
+							TomarDatosDeTablas();
+
+						} catch (ParseException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					} else {
+						Object mje = "No hay más reparaciones ";
+						JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
+								JOptionPane.INFORMATION_MESSAGE);
 					}
-				} else {
-					Object mje = "No hay más reparaciones ";
-					JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+
+				} else if (ubicacionDeBase.compareTo("Buenos Aires") == 0) {
+
+					if (ELSinicialBSAS < tam) {
+						ELSinicialBSAS = ELSinicialBSAS + 1;
+						try {
+							TomarDatosDeTablas();
+
+						} catch (ParseException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					} else {
+						Object mje = "No hay más reparaciones ";
+						JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+
 				}
 
 				guardado = true;
@@ -1582,15 +1607,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		});
-		
-		
+
 		configureUndoManager(ventanaVisualizarEquipos.getTextDiagnostico());
 		configureUndoManager(ventanaVisualizarEquipos.getTextInformeCliente());
 
-		
-		
-
-	} 	
+	}
 
 	public void agregarListenersVentanaVisualizarEquiposListado() {
 
@@ -1644,7 +1665,16 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
-		ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicial));
+		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
+
+			ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicial));
+
+		} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
+
+			ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicialBSAS));
+
+		}
+
 		NumeroELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS().toString());
 		reparacion = agenda.dameReparacionXels(NumeroELS);
 
@@ -2910,36 +2940,29 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 	}
-	
-	
-	
-	
-	
-	
+
 	// Método para configurar UndoManager en un componente de texto
-    private static void configureUndoManager(JTextComponent textComponent) {
-        UndoManager undoManager = new UndoManager();
-        textComponent.getDocument().addUndoableEditListener(undoManager);
+	private static void configureUndoManager(JTextComponent textComponent) {
+		UndoManager undoManager = new UndoManager();
+		textComponent.getDocument().addUndoableEditListener(undoManager);
 
-        // Crear una acción de deshacer
-        AbstractAction undoAction = new AbstractAction("Deshacer") {
-            public void actionPerformed(ActionEvent e) {
-                if (undoManager.canUndo()) {
-                    undoManager.undo();
-                }
-            }
-        };
+		// Crear una acción de deshacer
+		AbstractAction undoAction = new AbstractAction("Deshacer") {
+			public void actionPerformed(ActionEvent e) {
+				if (undoManager.canUndo()) {
+					undoManager.undo();
+				}
+			}
+		};
 
-        // Asignar la tecla de acceso directo (Ctrl + Z) para la acción de deshacer
-        undoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		// Asignar la tecla de acceso directo (Ctrl + Z) para la acción de deshacer
+		undoAction.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-        // Agregar la acción de deshacer al componente
-        textComponent.getActionMap().put("Undo", undoAction);
-        textComponent.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
-    }
-
-	
-	
+		// Agregar la acción de deshacer al componente
+		textComponent.getActionMap().put("Undo", undoAction);
+		textComponent.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
+	}
 
 	public void cerraVentanaVisualizarEquipo() {
 
