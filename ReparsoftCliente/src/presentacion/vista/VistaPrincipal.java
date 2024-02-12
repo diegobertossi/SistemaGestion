@@ -27,6 +27,10 @@ import java.awt.Toolkit;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 import java.awt.Rectangle;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.SoftBevelBorder;
 
 public class VistaPrincipal extends JFrame {
 
@@ -53,6 +57,7 @@ public class VistaPrincipal extends JFrame {
 	private JMenuItem  btnAcercaDe;
 	private JMenuItem  btnAyuda;
 	private JSeparator separator;
+	private JPanel panel_1;
 	
 	
 
@@ -60,7 +65,7 @@ public class VistaPrincipal extends JFrame {
 		super();
 		setResizable(false);
 		this.setLocationRelativeTo(null);
-		getContentPane().setBackground(SystemColor.activeCaption);
+		getContentPane().setBackground(new Color(176, 196, 222));
 		setMinimumSize(new Dimension(500, 400));
 		initialize();
 
@@ -68,15 +73,14 @@ public class VistaPrincipal extends JFrame {
 
 	private void initialize() {
 
-		setBounds(100, 10, 500, 425);
+		setBounds(100, 10, 500, 440);
 		// this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		getContentPane().setLayout(null);
 
 		panelDeControl = new JPanel();
-		panelDeControl.setBackground(SystemColor.inactiveCaption);
-		panelDeControl.setBorder(new BevelBorder(BevelBorder.LOWERED, SystemColor.activeCaption,
-				SystemColor.inactiveCaption, null, null));
+		panelDeControl.setBackground(new Color(112, 128, 144));
+		panelDeControl.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 
 		panelDeControl.setBounds(11, 149, 462, 210);
 		getContentPane().add(panelDeControl);
@@ -164,24 +168,34 @@ public class VistaPrincipal extends JFrame {
 		botonBackUp.setToolTipText("Backup del Sistema.");
 		botonBackUp.setIcon(new ImageIcon(this.getClass().getResource("/Backup.png")));
 		panelDeControl.add(botonBackUp);
+		
+		panel_1 = new JPanel();
+		panel_1.setOpaque(false);
+		panel_1.setBackground(new Color(153, 153, 255));
+		panel_1.setBorder(null);
+		panel_1.setBounds(11, 47, 462, 83);
+		getContentPane().add(panel_1);
+		panel_1.setLayout(null);
 
 
 		JLabel lblNewLabel = new JLabel("SISTEMA DE GESTIÓN");
+		lblNewLabel.setBounds(68, 2, 325, 36);
+		panel_1.add(lblNewLabel);
 
-		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 30));
-		lblNewLabel.setBounds(71, 59, 341, 36);
-		getContentPane().add(lblNewLabel);
+		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 25));
 
 		JLabel lblReparacionesEls = new JLabel("REPARSOFT");
-		lblReparacionesEls.setForeground(Color.WHITE);
+		lblReparacionesEls.setBackground(new Color(119, 136, 153));
+		lblReparacionesEls.setBounds(90, 41, 282, 36);
+		panel_1.add(lblReparacionesEls);
+		lblReparacionesEls.setForeground(new Color(105, 105, 105));
 		lblReparacionesEls.setHorizontalAlignment(SwingConstants.CENTER);
-		lblReparacionesEls.setFont(new Font("Cambria", Font.BOLD, 30));
-		lblReparacionesEls.setBounds(71, 89, 341, 36);
-		getContentPane().add(lblReparacionesEls);
+		lblReparacionesEls.setFont(new Font("Wide Latin", Font.BOLD, 22));
 
 		textUsuario = new JTextField();
+		textUsuario.setOpaque(false);
 		textUsuario.setEditable(false);
 		textUsuario.setBorder(null);
 		textUsuario.setHorizontalAlignment(SwingConstants.CENTER);
@@ -193,6 +207,7 @@ public class VistaPrincipal extends JFrame {
 		textUsuario.setColumns(10);
 
 		textVersionSoft = new JTextField();
+		textVersionSoft.setOpaque(false);
 		textVersionSoft.setHorizontalAlignment(SwingConstants.RIGHT);
 		textVersionSoft.setForeground(Color.WHITE);
 		textVersionSoft.setFont(new Font("Cambria", Font.PLAIN, 12));
@@ -200,10 +215,11 @@ public class VistaPrincipal extends JFrame {
 		textVersionSoft.setColumns(10);
 		textVersionSoft.setBorder(null);
 		textVersionSoft.setBackground(SystemColor.activeCaption);
-		textVersionSoft.setBounds(308, 360, 166, 16);
+		textVersionSoft.setBounds(308, 383, 166, 16);
 		getContentPane().add(textVersionSoft);
 
 		textProgramador = new JTextField();
+		textProgramador.setOpaque(false);
 		textProgramador.setHorizontalAlignment(SwingConstants.RIGHT);
 		textProgramador.setForeground(Color.WHITE);
 		textProgramador.setFont(new Font("Cambria", Font.PLAIN, 12));
@@ -211,19 +227,20 @@ public class VistaPrincipal extends JFrame {
 		textProgramador.setColumns(10);
 		textProgramador.setBorder(null);
 		textProgramador.setBackground(SystemColor.activeCaption);
-		textProgramador.setBounds(11, 360, 166, 16);
+		textProgramador.setBounds(11, 383, 166, 16);
 		getContentPane().add(textProgramador);
 
 		btnSalir = new JButton("SALIR");
 		btnSalir.setForeground(new Color(255, 0, 51));
 		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSalir.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnSalir.setBounds(374, 1, 109, 36);
+		btnSalir.setBounds(376, 1, 107, 36);
 		btnSalir.setToolTipText("Salir del Sistema");
 		btnSalir.setIcon(new ImageIcon(this.getClass().getResource("/logout.png")));
 		getContentPane().add(btnSalir);
 		
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.setOpaque(false);
 		menuBar.setBorderPainted(false);
 		menuBar.setBorder(UIManager.getBorder("MenuBar.border"));
 		menuBar.setFont(new Font("Cambria", Font.BOLD, 12));
@@ -236,7 +253,7 @@ public class VistaPrincipal extends JFrame {
 		mnMenu.setBorderPainted(true);
 		mnMenu.setForeground(new Color(0, 0, 0));
 		mnMenu.setFont(new Font("Cambria", Font.BOLD, 13));
-		mnMenu.setBackground(SystemColor.controlShadow);
+		mnMenu.setBackground(new Color(192, 192, 192));
 		menuBar.setBounds(0, 0, 40, 22);
 		mnMenu.setBounds(0, 0, 101, 22);
 		getContentPane().add(menuBar);
@@ -267,6 +284,22 @@ public class VistaPrincipal extends JFrame {
 		mnMenu.add(btnAcercaDe);
 		
 		mnMenu.add(btnAyuda);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(85, 132, 314, 2);
+		getContentPane().add(separator_1);
+		
+		JSeparator separator_1_1 = new JSeparator();
+		separator_1_1.setBounds(85, 136, 314, 2);
+		getContentPane().add(separator_1_1);
+		
+		JSeparator separator_1_1_1 = new JSeparator();
+		separator_1_1_1.setBounds(85, 374, 314, 2);
+		getContentPane().add(separator_1_1_1);
+		
+		JSeparator separator_1_2 = new JSeparator();
+		separator_1_2.setBounds(85, 370, 314, 2);
+		getContentPane().add(separator_1_2);
 		
 		
 		
