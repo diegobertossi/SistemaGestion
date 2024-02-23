@@ -13,7 +13,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -94,6 +93,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private ControladorSalidas controladorSalidas;
 	private ControladorCliente controladorCliente;
 
+	@SuppressWarnings("unused")
 	private int NumeroELSSeleccionado;
 
 	private List<RepuestosDTO> Repuestos_en_tabla;
@@ -127,8 +127,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private String ContactoWSP = "";
 	private String nombreBuscado = "";
 
+	@SuppressWarnings("unused")
 	private String numeros = "";
+	@SuppressWarnings("unused")
 	private String part1;
+	@SuppressWarnings("unused")
 	private String part2;
 
 	private int idCli;
@@ -158,6 +161,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
+	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == this.ventanaEquipos.getBtnVisualizarEquipos()) {
@@ -480,7 +484,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			ventanaEstados = new VentanaEstados(this);
 
-			Enumeration elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
+			Enumeration<?> elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
 
 			while (elementsF.hasMoreElements()) {
 				AbstractButton button = (AbstractButton) elementsF.nextElement();
@@ -492,7 +496,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				}
 			}
 
-			Enumeration elementsT = ventanaEstados.getGrupoEstadoTecnico().getElements();
+			Enumeration<?> elementsT = ventanaEstados.getGrupoEstadoTecnico().getElements();
 
 			while (elementsT.hasMoreElements()) {
 				AbstractButton button = (AbstractButton) elementsT.nextElement();
@@ -504,7 +508,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				}
 			}
 
-			Enumeration elementsC = ventanaEstados.getGrupoEstadoComercial().getElements();
+			Enumeration<?> elementsC = ventanaEstados.getGrupoEstadoComercial().getElements();
 
 			while (elementsC.hasMoreElements()) {
 				AbstractButton button = (AbstractButton) elementsC.nextElement();
@@ -528,7 +532,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			Boolean cambioDeEstadoBoolean = false;
 
-			Enumeration elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
+			Enumeration<?> elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
 
 			while (elementsF.hasMoreElements()) {
 				AbstractButton button = (AbstractButton) elementsF.nextElement();
@@ -539,7 +543,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				}
 			}
 
-			Enumeration elementsT = ventanaEstados.getGrupoEstadoTecnico().getElements();
+			Enumeration<?> elementsT = ventanaEstados.getGrupoEstadoTecnico().getElements();
 
 			while (elementsT.hasMoreElements()) {
 				AbstractButton button = (AbstractButton) elementsT.nextElement();
@@ -550,7 +554,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				}
 			}
 
-			Enumeration elementsC = ventanaEstados.getGrupoEstadoComercial().getElements();
+			Enumeration<?> elementsC = ventanaEstados.getGrupoEstadoComercial().getElements();
 
 			while (elementsC.hasMoreElements()) {
 				AbstractButton button = (AbstractButton) elementsC.nextElement();
@@ -1953,6 +1957,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public void llenarTablaClientesWSP() {
 
 		ventanaClientesWSP.getModelClientesWSP().setRowCount(0); // Para
@@ -2064,7 +2069,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			fechaentrada = dateFormat.format(fechaEntrada);
 		}
 
-		Enumeration elements = ventanaAgregarEquipo.getGrupoEstadoFisico().getElements();
+		Enumeration<?> elements = ventanaAgregarEquipo.getGrupoEstadoFisico().getElements();
 
 		while (elements.hasMoreElements()) {
 			AbstractButton button = (AbstractButton) elements.nextElement();
@@ -2107,6 +2112,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
+	@SuppressWarnings("deprecation")
 	private void llenarTablaRepuestos() {
 		this.ventanaVisualizarEquipos.getModelRepuestos().setRowCount(0); // Para
 																			// vaciar
@@ -2185,6 +2191,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
+	@SuppressWarnings("unused")
 	public void verificarPresupuestoEditado() {
 
 		Color EquipoPagado = new Color(130, 224, 170);
@@ -2286,6 +2293,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getComboTecnico().setVisible(false);
 	}
 
+	@SuppressWarnings("unused")
 	private void habilitarCampos() {
 
 		String nombreCliente = "";
@@ -2535,7 +2543,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			java.util.Date fechaFabr = this.ventanaAgregarEquipo.getTextFechafabricacion().getDate();
 			fechaFarbricacion = dateFormat.format(fechaFabr);
 		}
-		Enumeration elements = ventanaAgregarEquipo.getGrupoEstadoFisico().getElements();
+		Enumeration<?> elements = ventanaAgregarEquipo.getGrupoEstadoFisico().getElements();
 
 		while (elements.hasMoreElements()) {
 			AbstractButton button = (AbstractButton) elements.nextElement();
@@ -2727,6 +2735,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		return nuevoReparacion;
 	}
 
+	@SuppressWarnings("unused")
 	public void mouseClicked(MouseEvent arg0) {
 
 		if (this.ventanaVisualizarEquipos != null) {
@@ -2871,6 +2880,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char c = e.getKeyChar();
@@ -2942,6 +2952,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	// Método para configurar UndoManager en un componente de texto
+	@SuppressWarnings({ "serial", "deprecation" })
 	private static void configureUndoManager(JTextComponent textComponent) {
 		UndoManager undoManager = new UndoManager();
 		textComponent.getDocument().addUndoableEditListener(undoManager);

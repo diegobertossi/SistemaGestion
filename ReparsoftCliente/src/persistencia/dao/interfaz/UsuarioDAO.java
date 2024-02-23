@@ -28,7 +28,7 @@ public interface UsuarioDAO
 
 	public UsuarioDTO readUsuLogin(String login, String pass);
 
-	public void comboFiltroTecnicos(JComboBox comboFiltroTecnico);
+	public void comboFiltroTecnicos(JComboBox<?> comboFiltroTecnico);
 
 	public int obtenerIDporNombre(String nombreTecnico);
 }

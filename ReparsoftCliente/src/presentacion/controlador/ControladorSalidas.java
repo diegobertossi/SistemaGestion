@@ -41,11 +41,17 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 	private VentanaEliminarRemito ventanaEliminarRemito;
 	private Agenda agenda;
 	private ClienteDTO Cliente;
+	@SuppressWarnings("unused")
 	private RemitoDTO Ubicacion;
+	@SuppressWarnings("unused")
 	private int idCli;
+	@SuppressWarnings("unused")
 	private int idSuc;
+	@SuppressWarnings("unused")
 	private int idUbicacion;
+	@SuppressWarnings("unused")
 	private String clienteSeleccionado;
+	@SuppressWarnings("unused")
 	private String sucursalSeleccionada;
 	private String ubicacionRemitoSeleccionado;
 	private String numeroRemitoSeleccionado;
@@ -54,11 +60,16 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 	private ReparacionDTO reparacion;
 
+	@SuppressWarnings("unused")
 	private int clickMax = 1;
+	@SuppressWarnings("unused")
 	private int clickMin = 1;
+	@SuppressWarnings("unused")
 	private int max = Frame.MAXIMIZED_BOTH;
+	@SuppressWarnings("unused")
 	private int min = Frame.NORMAL;
 	private String part1;
+	@SuppressWarnings("unused")
 	private String part2;
 	String numeros = "";
 	boolean guardado = false;
@@ -639,6 +650,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 	}
 
+	@SuppressWarnings("deprecation")
 	private void cargarTablaReparacionesEnRemito(int IDremito) {
 
 		if (btnMarcarEnviados && !btnDesvincularRemito) {
@@ -791,6 +803,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		return nuevoRemito;
 	}
 
+	@SuppressWarnings("unused")
 	private RemitoDTO TomarDatosParaTabla() {
 
 		Integer IdUbicacion = IDdeUbicacion();
@@ -803,6 +816,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		return nuevoRemito;
 	}
 
+	@SuppressWarnings("deprecation")
 	private void cargarTablaEquiposParaRemito(int idCliente, int idSucursal) {
 
 		this.ventanaRemitos.getModelEquiposParaRemito().setRowCount(0); // Para
@@ -833,6 +847,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public void cargarRemitoVisualizacion(int els) {
 
 		ventanaRemitos = new VentanaRemitos(this);
@@ -899,6 +914,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 	}
 
+	@SuppressWarnings("unused")
 	private int NumeroRemito(String ubicacion) {
 
 		int numero;
@@ -920,6 +936,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 	}
 
+	@SuppressWarnings("unused")
 	private int CodigoDeUbicacion(String ubicacion) {
 
 		int numero;

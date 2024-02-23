@@ -11,7 +11,6 @@ import javax.swing.JComboBox;
 
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.RepuestoDAO;
-import dto.ClienteDTO;
 import dto.RepuestosDTO;
 
 public class RepuestosDAOImpl implements RepuestoDAO {
@@ -31,6 +30,7 @@ public class RepuestosDAOImpl implements RepuestoDAO {
 
 	
 	
+	@SuppressWarnings("unused")
 	public RepuestosDAOImpl(String ubicacionBase) {
 		
 		
@@ -159,6 +159,7 @@ public class RepuestosDAOImpl implements RepuestoDAO {
 		return false;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void ListarRepuestos(JComboBox box) {
 
@@ -189,6 +190,7 @@ public class RepuestosDAOImpl implements RepuestoDAO {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void ListarRepuestosReemplazo(JComboBox comboCompReemplazo) {
 		DefaultComboBoxModel value;

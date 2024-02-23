@@ -10,11 +10,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
 import persistencia.conexion.Conexion;
-import persistencia.dao.interfaz.ClienteDAO;
 import persistencia.dao.interfaz.SucursalDAO;
-import dto.ClienteDTO;
 import dto.ReparacionDTO;
-import dto.RepuestosDTO;
 import dto.SucursalDTO;
 
 public class SucursalDAOImpl implements SucursalDAO {
@@ -35,6 +32,7 @@ public class SucursalDAOImpl implements SucursalDAO {
 	private Conexion conexion;
 	
 	
+	@SuppressWarnings("unused")
 	public SucursalDAOImpl(String ubicacionBase) {
 		// TODO Auto-generated constructor stub
 	
@@ -176,6 +174,7 @@ public class SucursalDAOImpl implements SucursalDAO {
 		return idsucursal;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 	public void ListarSucursalesxCliente(JComboBox box, int id) {
 		DefaultComboBoxModel value;
 
@@ -317,6 +316,7 @@ public class SucursalDAOImpl implements SucursalDAO {
 		return idsucursal;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void ListarSucursales(JComboBox ComboSucursales) {
 		DefaultComboBoxModel value;

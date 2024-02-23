@@ -8,23 +8,21 @@ import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JTextField;
+
 
 //import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import persistencia.conexion.Conexion;
-import persistencia.dao.interfaz.ClienteDAO;
 import persistencia.dao.interfaz.ClienteWSPDAO;
-import dto.ClienteDTO;
 import dto.ClienteWSPDTO;
-import dto.ReparacionDTO;
-import dto.UsuarioDTO;
 
 public class ClienteWSPDAOImpl implements ClienteWSPDAO {
 	private static final String insert = "INSERT INTO ClienteWSP(idClienteWSP,organizacion, nombreWSP,TelefonoWSP) VALUES(? , ? , ? , ? )";
 	private static final String delete = "DELETE FROM ClienteWSP WHERE idClienteWSP = ?";
 	private static final String readall = "SELECT * FROM ClienteWSP";
+	@SuppressWarnings("unused")
 	private static final String maximoIDcliente = "Select MAX(idClienteWSP) from ClienteWSP";
+	@SuppressWarnings("unused")
 	private static final String IDporNombre = "Select idClienteWSP from ClienteWSP where nombre =? ";
 	private static final String readallContactoXorganizacion = "Select nombreWSP from ClienteWSP where organizacion =? ";
 	private static final String readallTelefonoXContacto = "Select TelefonoWSP from ClienteWSP where nombreWSP =? ";
@@ -40,6 +38,7 @@ public class ClienteWSPDAOImpl implements ClienteWSPDAO {
 
 	
 
+	@SuppressWarnings("unused")
 	public ClienteWSPDAOImpl(String ubicacionBase) {
 		final String insert = "INSERT INTO ClienteWSP(idClienteWSP,organizacion, nombreWSP,TelefonoWSP) VALUES(? , ? , ? , ? )";
 		final String delete = "DELETE FROM ClienteWSP WHERE idClienteWSP = ?";
@@ -145,6 +144,7 @@ public class ClienteWSPDAOImpl implements ClienteWSPDAO {
 		return ClientesWSP;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 	@Override
 	public void ListarClientesWSP(JComboBox box) {
 		DefaultComboBoxModel value;
@@ -193,6 +193,7 @@ public class ClienteWSPDAOImpl implements ClienteWSPDAO {
 		return null;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void ListarContactoxOrganizacion(JComboBox comboNombreBuscado, String organizacionWSP) {
 

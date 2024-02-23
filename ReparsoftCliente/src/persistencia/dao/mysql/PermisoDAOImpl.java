@@ -29,6 +29,7 @@ public class PermisoDAOImpl implements PermisoDAO{
 	public static String ubicacion;
 	private Conexion conexion;
 	
+	@SuppressWarnings("unused")
 	public PermisoDAOImpl(String ubicacionBase) {
 		
 		final String insert = "INSERT INTO permisos(idPermiso,idRol,idPantalla) VALUES(0,?,?)";	
@@ -109,6 +110,7 @@ public class PermisoDAOImpl implements PermisoDAO{
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public List<PermisoDTO> readAll(Integer idRol) {
 		PreparedStatement statement;
@@ -137,6 +139,7 @@ public class PermisoDAOImpl implements PermisoDAO{
 		return obrasSociales;	
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public List<PermisoDTO> readAllPadres(Integer idRol) {
 		PreparedStatement statement;
@@ -165,6 +168,7 @@ public class PermisoDAOImpl implements PermisoDAO{
 		return obrasSociales;	
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public List<PermisoDTO> readAllHijos(Integer idRol, String nombrePantallaPadre) {
 		PreparedStatement statement;
@@ -194,6 +198,7 @@ public class PermisoDAOImpl implements PermisoDAO{
 		return obrasSociales;	
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public List<PermisoDTO> readFaltantes(int idRol) {
 		PreparedStatement statement;

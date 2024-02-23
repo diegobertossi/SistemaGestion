@@ -1,8 +1,6 @@
 package mails;
 
 import java.util.Properties;
-import java.util.Vector;
-
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.BodyPart;
@@ -17,7 +15,6 @@ import javax.swing.JOptionPane;
 
 //import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeBodyPart;
 
-import presentacion.vista.VentanaVisualizarEquipos;
 
 public class EnviarMail {
 

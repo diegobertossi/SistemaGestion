@@ -1,9 +1,5 @@
 package dto;
 
-import java.util.Date;
-
-import javax.xml.crypto.NoSuchMechanismException;
-
 public class ReparacionDTO {
 	// private int Id;
 	private int ELS;

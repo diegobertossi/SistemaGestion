@@ -1,15 +1,10 @@
 package presentacion.reportes;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.swing.JOptionPane;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
@@ -21,13 +16,9 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import persistencia.conexion.Conexion;
-import presentacion.vista.VentanaRemitos;
-import dto.RegistroPresupuestoDTO;
-import dto.RegistroEntradaReporteDTO;
-import dto.ReparacionDTO;
 import dto.RemitoDTO;
 
+@SuppressWarnings("deprecation")
 public class ReporteRemitoSalida {
 	private static JasperReport reporte;
 	private static JasperViewer reporteViewer;
@@ -70,6 +61,7 @@ public class ReporteRemitoSalida {
 		ReporteRemitoSalida.reporteViewer.setVisible(true);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void guardar() {
 
 		nombreArchivoPDF = NumeroRemito + "_" + Cliente + "_" + fecha + ".pdf";

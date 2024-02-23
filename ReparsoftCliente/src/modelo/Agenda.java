@@ -3,8 +3,6 @@ package modelo;
 import java.util.List;
 
 import javax.swing.JComboBox;
-import javax.swing.JTextField;
-
 import dto.ClienteDTO;
 import dto.ClienteWSPDTO;
 import dto.RemitoDTO;
@@ -79,7 +77,7 @@ public class Agenda {
 		return usuario.readAllXRol(idRol);
 	}
 
-	public void ListarTecnicos(JComboBox comboFiltroTecnico) {
+	public void ListarTecnicos(JComboBox<?> comboFiltroTecnico) {
 		usuario.comboFiltroTecnicos(comboFiltroTecnico);
 
 	}
@@ -131,7 +129,7 @@ public class Agenda {
 		return Cliente.readAll();
 	}
 
-	public void ListarCliente(JComboBox box) {
+	public void ListarCliente(JComboBox<?> box) {
 
 		Cliente.ListarClientes(box);
 	}
@@ -194,12 +192,12 @@ public class Agenda {
 		return Sucursal.obtenerSucursalXidCliente(idCliente);
 	}
 
-	public void ListarSucursalesxCliente(JComboBox box, int id) {
+	public void ListarSucursalesxCliente(JComboBox<?> box, int id) {
 
 		Sucursal.ListarSucursalesxCliente(box, id);
 	}
 
-	public void ListarSucursales(JComboBox box) {
+	public void ListarSucursales(JComboBox<?> box) {
 
 		Sucursal.ListarSucursales(box);
 	}
@@ -231,14 +229,14 @@ public class Agenda {
 	
 	
 	
-	public void ListarOrganizacionWSP(JComboBox comboOrganizacion) {
+	public void ListarOrganizacionWSP(JComboBox<?> comboOrganizacion) {
 				
 		ClienteWSP.ListarClientesWSP(comboOrganizacion);
 		
 	}
 	
 	
-	public void ListarContactoxOrganizacion(JComboBox comboNombreBuscado, String organizacionWSP) {
+	public void ListarContactoxOrganizacion(JComboBox<?> comboNombreBuscado, String organizacionWSP) {
 		
 		ClienteWSP.ListarContactoxOrganizacion(comboNombreBuscado, organizacionWSP);
 		
@@ -278,34 +276,34 @@ public class Agenda {
 	
 
 	// EQUIPOS
-	public void ListarEquipo(JComboBox box) {
+	public void ListarEquipo(JComboBox<?> box) {
 
 		ReparacionR.ListarEquipo(box);
 
 	}
 
-	public void ListarModelos(JComboBox box) {
+	public void ListarModelos(JComboBox<?> box) {
 
 		ReparacionR.ListarModelos(box);
 
 	}
 
-	public void ListarMarca(JComboBox comboMarca) {
+	public void ListarMarca(JComboBox<?> comboMarca) {
 		ReparacionR.ListarMarca(comboMarca);
 
 	}
 
-	public void ListarModelosxMarca(JComboBox comboModelos, String marca) {
+	public void ListarModelosxMarca(JComboBox<?> comboModelos, String marca) {
 		ReparacionR.ListarModelosxMarca(comboModelos, marca);
 
 	}
 
-	public void ListarSeriexModelo(JComboBox comboSerie, String modelo) {
+	public void ListarSeriexModelo(JComboBox<?> comboSerie, String modelo) {
 		ReparacionR.ListarSeriexModelo(comboSerie, modelo);
 
 	}
 	
-	public void ListarSerie(JComboBox comboSerie) {
+	public void ListarSerie(JComboBox<?> comboSerie) {
 		ReparacionR.comboSerie(comboSerie);
 
 	}
@@ -393,12 +391,12 @@ public class Agenda {
 		return Repuestos.readAll();
 	}
 
-	public void ListarRepuestos(JComboBox box) {
+	public void ListarRepuestos(JComboBox<?> box) {
 
 		Repuestos.ListarRepuestos(box);
 	}
 	
-	public void ListarRepuestosReemplazo(JComboBox comboCompReemplazo) {
+	public void ListarRepuestosReemplazo(JComboBox<?> comboCompReemplazo) {
 
 		Repuestos.ListarRepuestosReemplazo(comboCompReemplazo);
 		
@@ -409,27 +407,27 @@ public class Agenda {
 		return Repuestos.obtenerRepuestosXels(i);
 	}
 
-	public void ListarEstadoCom(JComboBox comboFiltroEstadoCom) {
+	public void ListarEstadoCom(JComboBox<?> comboFiltroEstadoCom) {
 		ReparacionR.ListarEstadoCom(comboFiltroEstadoCom);
 
 	}
 
-	public void ListarEstadoFis(JComboBox comboFiltroEstadoFis) {
+	public void ListarEstadoFis(JComboBox<?> comboFiltroEstadoFis) {
 		ReparacionR.ListarEstadoFis(comboFiltroEstadoFis);
 
 	}
 
-	public void ListarEstadoTec(JComboBox comboFiltroEstadoTec) {
+	public void ListarEstadoTec(JComboBox<?> comboFiltroEstadoTec) {
 		ReparacionR.comboFiltroEstadoTec(comboFiltroEstadoTec);
 
 	}
 
-	public void ListarAvisos(JComboBox comboFiltroAviso) {
+	public void ListarAvisos(JComboBox<?> comboFiltroAviso) {
 		ReparacionR.comboFiltroAviso(comboFiltroAviso);
 
 	}
 
-	public void ListarELS(JComboBox comboFiltroELS) {
+	public void ListarELS(JComboBox<?> comboFiltroELS) {
 		ReparacionR.comboFiltroELS(comboFiltroELS);
 
 	}
@@ -440,12 +438,12 @@ public class Agenda {
 		remito.insert(nuevoRemito);
 	}
 
-	public void ListarUbicacion(JComboBox comboUbicacion) {
+	public void ListarUbicacion(JComboBox<?> comboUbicacion) {
 		remito.ListarUbicacion(comboUbicacion);
 
 	}
 	
-	public void ListarRemitoPorUbicacion(JComboBox box, int id) {		
+	public void ListarRemitoPorUbicacion(JComboBox<?> box, int id) {		
 		
 		remito.ListarRemitoPorUbicacion(box, id);
 

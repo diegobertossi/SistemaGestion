@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -19,13 +18,10 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import persistencia.conexion.Conexion;
 import dto.RegistroPresupuestoDTO;
-import dto.RegistroEntradaReporteDTO;
-import dto.ReparacionDTO;
-//import com.lowagie.text.pdf.FopGlyphProcessor;
 
 
+@SuppressWarnings("deprecation")
 public class ReportePresupuesto {
 	private static JasperReport reporte;
 	private static JasperViewer reporteViewer;
@@ -65,6 +61,7 @@ public class ReportePresupuesto {
 		ReportePresupuesto.reporteViewer.setVisible(true);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void guardar() {
 
 		nombreArchivoPDF = "Presupuesto ELS_" + ELS + "_" + Cliente + ".pdf";

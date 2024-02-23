@@ -8,6 +8,7 @@ import presentacion.vista.VentanaUbicacionBaseDeDatos;
 
 public class Main {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		try {
 			// Correcion hecha por Chuster Boy ;)

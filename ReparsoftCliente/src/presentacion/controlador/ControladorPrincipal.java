@@ -1,50 +1,15 @@
 package presentacion.controlador;
 
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Vector;
-import java.util.regex.Pattern;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.RowFilter;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-
 import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.SpellChecker;
 
-import VistaPropias.CellRenderer;
-import VistaPropias.Resaltador;
-import dto.ClienteDTO;
-import dto.PermisoDTO;
-import dto.ReparacionDTO;
-import dto.RepuestosDTO;
-import dto.SucursalDTO;
-import dto.UsuarioDTO;
 import modelo.Agenda;
 import modelo.Permisos;
 import presentacion.vista.VistaPrincipal;
@@ -57,9 +22,6 @@ import presentacion.vista.VentanaLogin;
 import presentacion.vista.VentanaPresupuestos;
 import presentacion.vista.VentanaRolesUsuarios;
 import presentacion.vista.VentanaSalidas;
-import presentacion.vista.VentanaUbicacionBaseDeDatos;
-import presentacion.vista.VentanaVisualizarEquipos;
-import presentacion.vista.VentanaClientes;
 import presentacion.vista.VentanaBusqueda;
 
 public class ControladorPrincipal implements ActionListener {
@@ -68,14 +30,12 @@ public class ControladorPrincipal implements ActionListener {
 	private Agenda modelo;
 
 	private VentanaEquipos ventanaEquipos;
-	private VentanaUbicacionBaseDeDatos ventanaUbicacionBaseDeDatos;
 	private VentanaClientes ventanaClientes;
 	private VentanaSalidas ventanaSalidas;
 	private VentanaListadoReparaciones ventanaListadoReparaciones;
 
 	private VentanaBackUp ventanaBackUp;
 	private VentanaBusqueda ventanaBusqueda;
-	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
 	private VentanaPresupuestos ventanaPresupuestos;
 
 	private VentanaRolesUsuarios ventanaRolesUsuarios;
@@ -92,29 +52,7 @@ public class ControladorPrincipal implements ActionListener {
 
 	private VentanaLogin vistaLogin;
 
-	private ClienteDTO Cliente;
-
-	private SucursalDTO Sucursal;
-
-	private Permisos permisos;
-	private UsuarioDTO usu_login;
-
-	private String Marca;
-	private String NombreEq = "";
-	private int idCli;
-	private String Modelo;
-	private int max = Frame.MAXIMIZED_BOTH;
-	private int min = Frame.NORMAL;
-	private int maxHorizontal = Frame.MAXIMIZED_HORIZ;
-	private int maxVertical = Frame.MAXIMIZED_VERT;
-
-	private int clickMax = 1;
-	private int clickMin = 1;
 	private String ubicacionDeBase;
-
-	private TableRowSorter<DefaultTableModel> sorter;
-
-	private List<ReparacionDTO> Reparaciones_en_tabla;
 
 	public ControladorPrincipal(VistaPrincipal v, String ubicacionBase) {
 

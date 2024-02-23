@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 
-import dto.ClienteDTO;
-import dto.ReparacionDTO;
 import dto.RepuestosDTO;
 
 
@@ -22,9 +20,9 @@ public interface RepuestoDAO
 	
 	public boolean edit(RepuestosDTO Repuesto);
 
-	public void ListarRepuestos(JComboBox box);
+	public void ListarRepuestos(JComboBox<?> box);
 
-	public void ListarRepuestosReemplazo(JComboBox comboCompReemplazo);
+	public void ListarRepuestosReemplazo(JComboBox<?> comboCompReemplazo);
 	
 	
 }

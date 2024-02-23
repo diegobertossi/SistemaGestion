@@ -26,6 +26,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	
 	
 	
+	@SuppressWarnings("unused")
 	public UsuarioDAOImpl(String ubicacionBase) {
 		
 		
@@ -306,6 +307,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		return usuarios;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void comboFiltroTecnicos(JComboBox comboFiltroTecnico) {
 

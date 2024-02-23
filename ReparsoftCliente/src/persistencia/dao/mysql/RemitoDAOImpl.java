@@ -10,17 +10,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
 import persistencia.conexion.Conexion;
-import persistencia.dao.interfaz.ClienteDAO;
 import persistencia.dao.interfaz.RemitoDAO;
-import dto.ClienteDTO;
 import dto.RemitoDTO;
-import dto.SucursalDTO;
-import dto.UsuarioDTO;
 
 public class RemitoDAOImpl implements RemitoDAO {
 	private static final String insert = "INSERT INTO Remitos(idRemito,NumeroRemitoSalida, IdUbicacion) VALUES(? , ? , ? )";
 	// private static final String delete = "DELETE FROM Cliente WHERE idCliente =
 	// ?";
+	@SuppressWarnings("unused")
 	private static final String readall = "SELECT * FROM Remitos";
 	private static final String readallUbicacion = "SELECT Codigo, Ubicacion FROM UbicacionRemitos order by Codigo";
 	private static final String numeroRemito = "SELECT MAX(Remitos.NumeroRemitoSalida) FROM Remitos join UbicacionRemitos on UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion where UbicacionRemitos.Codigo=?";
@@ -37,6 +34,7 @@ public class RemitoDAOImpl implements RemitoDAO {
 
 	
 
+	@SuppressWarnings("unused")
 	public RemitoDAOImpl(String ubicacionBase) {
 		
 		
@@ -106,6 +104,7 @@ public class RemitoDAOImpl implements RemitoDAO {
 		return null;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 	@Override
 	public void ListarUbicacion(JComboBox box) {
 		DefaultComboBoxModel value;
@@ -198,6 +197,7 @@ public class RemitoDAOImpl implements RemitoDAO {
 		return idRemito;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
 	@Override
 	public void ListarRemitoPorUbicacion(JComboBox box, int id) {
 

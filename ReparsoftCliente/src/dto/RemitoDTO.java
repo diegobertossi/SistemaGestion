@@ -14,9 +14,7 @@ public class RemitoDTO
 	private String Cliente;
 	private String RemitoConformado;
 	private int cantBultos; 
-	private boolean agregadoAremito;
-
-
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public RemitoDTO(Integer IdUbicacion, Integer codigoUbicacion,Integer IdRemito, Integer numeroRemitoSalida,List descripcion, String Cliente, String RemitoConformado,int cantBultos)
 	{
 		this.IdUbicacion = IdUbicacion;

@@ -5,44 +5,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.security.Permissions;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
 import dto.PermisoDTO;
 import dto.ReparacionDTO;
 import dto.RolDTO;
 import dto.UsuarioDTO;
 import modelo.Agenda;
 import modelo.Permisos;
-import net.sf.jasperreports.components.table.fill.TableReportBaseObjectFactory;
 import presentacion.vista.VentanaRolesUsuarios;
 import presentacion.vista.VentanaPermisos;
 
@@ -105,6 +81,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		return fechas;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void actionPerformed(ActionEvent e) {
 
 		if (ventanaRolesUsuarios != null) {
@@ -519,6 +496,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void llenarCombosRoles() {
 		// TODO Auto-generated method stub
 
@@ -532,6 +510,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 	}
 
+	@SuppressWarnings("unused")
 	private boolean existeRol(String s) {
 
 		if (roles_en_tabla.size() == 0)
@@ -594,6 +573,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		return matcher.matches();
 	}
 
+	@SuppressWarnings("unused")
 	private String carregirFecha(String fechaTurno2) {
 		String fechacorrecta = "";
 		String dia = "";
@@ -633,6 +613,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public void llenarTablaUsuarios() {
 
 		this.ventanaRolesUsuarios.getModelUsuarios().setRowCount(0); // Para
@@ -703,6 +684,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void cargarUsuarios() {
 
 		int y = 0;

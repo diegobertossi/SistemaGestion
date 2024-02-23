@@ -173,6 +173,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 		return false;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes", "unused" })
 	@Override
 	public void ListarClientes(JComboBox box) {
 		DefaultComboBoxModel value;

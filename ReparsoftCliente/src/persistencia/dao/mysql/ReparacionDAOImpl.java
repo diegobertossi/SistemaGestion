@@ -3,7 +3,6 @@ package persistencia.dao.mysql;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +11,7 @@ import javax.swing.JComboBox;
 
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.ReparacionDAO;
-import presentacion.vista.VentanaRemitos;
-import dto.ClienteDTO;
 import dto.ReparacionDTO;
-import dto.SucursalDTO;
 
 public class ReparacionDAOImpl implements ReparacionDAO {
 
@@ -98,6 +94,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	
 	
 
+	@SuppressWarnings("unused")
 	public ReparacionDAOImpl(String ubicacionBase) {
 		
 		final String insert = "INSERT INTO reparaciones(ELS,FechaEntrada,Falla, EstadoFisico, EstadoTecnico,EstadoComercial, RemitoCliente, idEquipo, idUsuario) VALUES( ? , ? ,? , ? , ?,? , ? , ?,?)";
@@ -727,6 +724,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		return false;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void ListarEquipo(JComboBox box) {
 		DefaultComboBoxModel value;
@@ -754,6 +752,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void ListarMarca(JComboBox comboMarca) {
 		DefaultComboBoxModel value;
@@ -781,6 +780,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void ListarModelosxMarca(JComboBox comboModelos, String marca) {
 
@@ -810,6 +810,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void ListarSeriexModelo(JComboBox comboSerie, String modelo) {
 
@@ -846,6 +847,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void ListarModelos(JComboBox comboModelos) {
 
@@ -874,6 +876,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void ListarEstadoCom(JComboBox comboFiltroEstadoCom) {
 		DefaultComboBoxModel value;
@@ -901,6 +904,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void ListarEstadoFis(JComboBox comboFiltroEstadoFis) {
 		DefaultComboBoxModel value;
@@ -928,6 +932,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void comboFiltroEstadoTec(JComboBox comboFiltroEstadoTec) {
 		DefaultComboBoxModel value;
@@ -955,6 +960,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void comboFiltroAviso(JComboBox comboFiltroAviso) {
 		DefaultComboBoxModel value;
@@ -982,6 +988,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void comboFiltroELS(JComboBox comboFiltroELS) {
 		DefaultComboBoxModel value;
@@ -1009,6 +1016,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void comboSerie(JComboBox comboSerie) {
 		DefaultComboBoxModel value;

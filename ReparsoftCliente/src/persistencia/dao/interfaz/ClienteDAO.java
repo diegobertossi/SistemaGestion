@@ -18,7 +18,7 @@ public interface ClienteDAO
 	
 	public List<ClienteDTO> readAll();
 	
-	public void ListarClientes(JComboBox box);
+	public void ListarClientes(@SuppressWarnings("rawtypes") JComboBox box);
 	
 	public int obtenerIDcliente();
 

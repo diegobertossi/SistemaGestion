@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 
-import dto.ClienteDTO;
-import dto.RepuestosDTO;
 import dto.SucursalDTO;
 
 
@@ -20,7 +18,7 @@ public interface SucursalDAO
 	
 	public List<SucursalDTO> obtenerSucursalXidCliente(Integer i);
 	
-	public void ListarSucursalesxCliente(JComboBox box, int id);
+	public void ListarSucursalesxCliente(JComboBox<?> box, int id);
 
 	public int obtenerIDsucursal();
 
@@ -32,7 +30,7 @@ public interface SucursalDAO
 
 	public int obtenerIDporNombre(String nombreSucursal, int IDCliente );
 
-	public void ListarSucursales(JComboBox box);
+	public void ListarSucursales(JComboBox<?> box);
 
 
 	

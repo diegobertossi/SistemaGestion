@@ -18,9 +18,12 @@ public class ControladorUsuLogin {
 
 	private Permisos permisos;
 	private UsuarioDTO usu_login;
+	@SuppressWarnings("unused")
 	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
 
+	@SuppressWarnings("unused")
 	private DefaultTableModel modelReparaciones;
+	@SuppressWarnings("unused")
 	private TableColumn columna;
 
 	public ControladorUsuLogin(Permisos permisos) {
@@ -28,6 +31,7 @@ public class ControladorUsuLogin {
 		this.usu_login = null;
 	}
 
+	@SuppressWarnings("deprecation")
 	public boolean validarSesion(VentanaLogin vistaLogin, VistaPrincipal vistaPrincipal) {
 
 		usu_login = permisos.dameUsuario(vistaLogin.getTxtUsuLogin().getText(), vistaLogin.getTxtUsuPass().getText());
@@ -64,6 +68,7 @@ public class ControladorUsuLogin {
 		this.usu_login = null;
 	}
 
+	@SuppressWarnings("unused")
 	public void verificarPermisosMenu(VistaPrincipal vistaPrincipal) {
 		if (usu_login != null) {
 

@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,10 +11,6 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Date;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -26,13 +20,13 @@ import com.mysql.cj.xdevapi.Statement;
 
 import modelo.Agenda;
 import presentacion.vista.VentanaBackUp;
-import presentacion.vista.VentanaLogin;
 import presentacion.vista.VentanaOpcionesBackup;
 
 public class ControladorBackup implements ActionListener, MouseListener {
 	private VentanaBackUp ventanaBackUp;
 	private VentanaOpcionesBackup ventanaOpcionesBackup;
 
+	@SuppressWarnings("unused")
 	private Agenda agenda;
 
 	public ControladorBackup(VentanaBackUp ventanaBackUp) {
@@ -44,6 +38,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 	}
 
+	@SuppressWarnings({ "deprecation", "unused" })
 	public void actionPerformed(ActionEvent e) {
 
 		Date dia = new Date();
@@ -124,6 +119,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 	}
 
+	@SuppressWarnings({ "unused", "rawtypes" })
 	private void ActualizarBackupMySQL() {
 		// TODO Auto-generated method stub
 		String bd = "ordenesbrc";

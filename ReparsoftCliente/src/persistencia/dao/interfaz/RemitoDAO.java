@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 
-import dto.ClienteDTO;
 import dto.RemitoDTO;
 
 
@@ -19,13 +18,13 @@ public interface RemitoDAO
 	
 	public List<RemitoDAO> readAll();
 	
-	public void ListarUbicacion(JComboBox box);
+	public void ListarUbicacion(JComboBox<?> box);
 
 	public int obtenerNumeroRemito(int codigo);
 	
 	public int obtenerIDRemito();
 
-	public void ListarRemitoPorUbicacion(JComboBox box, int id);
+	public void ListarRemitoPorUbicacion(JComboBox<?> box, int id);
 
 	public int idRemitoXubicacionNumero(int iDubicacion, int numero);
 	

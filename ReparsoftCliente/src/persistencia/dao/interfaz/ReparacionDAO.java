@@ -29,29 +29,29 @@ public interface ReparacionDAO
 	
 	public int obtenerIDequipo();
 
-	public void ListarEquipo(JComboBox box);
+	public void ListarEquipo(JComboBox<?> box);
 
-	public void ListarMarca(JComboBox comboMarca);
+	public void ListarMarca(JComboBox<?> comboMarca);
 
-	public void ListarModelosxMarca(JComboBox comboModelos, String marca);
+	public void ListarModelosxMarca(JComboBox<?> comboModelos, String marca);
 
-	public void ListarSeriexModelo(JComboBox comboSerie, String modelo);
+	public void ListarSeriexModelo(JComboBox<?> comboSerie, String modelo);
 
-	public void ListarModelos(JComboBox box);
+	public void ListarModelos(JComboBox<?> box);
 
-	public void ListarEstadoCom(JComboBox comboFiltroEstadoCom);
+	public void ListarEstadoCom(JComboBox<?> comboFiltroEstadoCom);
 
-	public void ListarEstadoFis(JComboBox comboFiltroEstadoFis);
+	public void ListarEstadoFis(JComboBox<?> comboFiltroEstadoFis);
 
-	public void comboFiltroEstadoTec(JComboBox comboFiltroEstadoTec);
+	public void comboFiltroEstadoTec(JComboBox<?> comboFiltroEstadoTec);
 
-	public void comboFiltroAviso(JComboBox comboFiltroAviso);
+	public void comboFiltroAviso(JComboBox<?> comboFiltroAviso);
 
-	public void comboFiltroELS(JComboBox comboFiltroELS);
+	public void comboFiltroELS(JComboBox<?> comboFiltroELS);
 
 	public List<ReparacionDTO> readAllXIDclienteIDSucursal(Integer IDCliente, Integer IDSucursal);
 
-	public void comboSerie(JComboBox comboSerie);
+	public void comboSerie(JComboBox<?> comboSerie);
 
 	public ReparacionDTO obtenerReparacionXserie(String serie);
 

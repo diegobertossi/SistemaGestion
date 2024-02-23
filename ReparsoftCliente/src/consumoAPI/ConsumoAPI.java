@@ -3,7 +3,6 @@ package consumoAPI;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -11,10 +10,7 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONString;
 
 public class ConsumoAPI {
 

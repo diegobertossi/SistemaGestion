@@ -3,65 +3,18 @@ package presentacion.controlador;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Vector;
-import java.util.regex.Pattern;
-
-import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.RowFilter;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
-import com.inet.jortho.FileUserDictionary;
-import com.inet.jortho.SpellChecker;
-
-
-import VistaPropias.CellRenderer;
-import VistaPropias.Resaltador;
-import dto.ClienteDTO;
-import dto.PermisoDTO;
 import dto.ReparacionDTO;
-import dto.RepuestosDTO;
-import dto.SucursalDTO;
 import modelo.Agenda;
-import modelo.Permisos;
-import presentacion.vista.VistaPrincipal;
-import presentacion.vista.VentanaClientes;
-import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaBusqueda;
-import presentacion.vista.VentanaLogin;
-import presentacion.vista.VentanaRolesUsuarios;
-import presentacion.vista.VentanaSalidas;
 import presentacion.vista.VentanaTablaBusqueda;
-import presentacion.vista.VentanaVisualizarEquipos;
-import presentacion.vista.VentanaClientes;
-import presentacion.vista.VentanaBusqueda;
 
 public class ControladorBusquedas implements ActionListener, MouseListener, KeyListener {
 
@@ -70,14 +23,19 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 	private VentanaBusqueda ventanaBusqueda;
 	private VentanaTablaBusqueda ventanaTablaBusqueda;
 
+	@SuppressWarnings("unused")
 	private ControladorBusquedas controladorBusqueda;
 
 	private int max = Frame.MAXIMIZED_BOTH;
 	private int min = Frame.NORMAL;
+	@SuppressWarnings("unused")
 	private int maxHorizontal = Frame.MAXIMIZED_HORIZ;
+	@SuppressWarnings("unused")
 	private int maxVertical = Frame.MAXIMIZED_VERT;
 	private int clickMax = 1;
+	@SuppressWarnings("unused")
 	private int clickMin = 1;
+	@SuppressWarnings("unused")
 	private String buscarPor;
 
 	private List<ReparacionDTO> Reparaciones_en_tabla;
@@ -98,6 +56,7 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
@@ -171,6 +130,7 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 
 	}
 
+	@SuppressWarnings("deprecation")
 	private void cargarTablaListadoBusqueda(String componente) {
 
 		this.ventanaTablaBusqueda.getModelReparaciones().setRowCount(0); // Para

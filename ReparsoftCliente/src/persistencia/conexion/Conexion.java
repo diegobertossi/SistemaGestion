@@ -9,6 +9,7 @@ public class Conexion {
 	private static Conexion instancia;
 	private Connection conexion;
 
+	@SuppressWarnings("deprecation")
 	private Conexion(String ubicacion)
 
 	{

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dto.RolDTO;
-import dto.UsuarioDTO;
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.RolDAO;
 
@@ -20,6 +19,7 @@ public class RolDAOImpl implements RolDAO {
 	private Conexion conexion;
 	
 
+	@SuppressWarnings("unused")
 	public RolDAOImpl(String ubicacionBase) {
 		final String insert = "INSERT INTO rol(idRol, nombre) VALUES(?, ?)";
 		final String delete = "DELETE FROM rol WHERE idRol = ?";
