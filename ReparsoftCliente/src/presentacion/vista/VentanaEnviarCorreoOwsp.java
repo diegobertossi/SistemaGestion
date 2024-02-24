@@ -5,7 +5,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import presentacion.controlador.ControladorPrincipal;
 import presentacion.controlador.ControladorReparacion;
 import java.awt.SystemColor;
 import java.awt.Font;
@@ -15,6 +14,7 @@ public class VentanaEnviarCorreoOwsp extends JFrame {
 	private JPanel contentPane;
 	private JButton btnEnviarCorreo;
 	private JButton btnEnviarWST;
+	@SuppressWarnings("unused")
 	private ControladorReparacion controlador;
 
 	public VentanaEnviarCorreoOwsp(ControladorReparacion controlador) {

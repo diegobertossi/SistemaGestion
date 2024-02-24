@@ -6,8 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import presentacion.controlador.ControladorPrincipal;
-import presentacion.controlador.ControladorReparacion;
 import presentacion.controlador.ControladorSalidas;
 
 import java.awt.Font;
@@ -20,6 +18,7 @@ public class VentanaSalidas extends JFrame
 	private JButton btnGenerarRemito;
 	private JButton btnDesvincularRemito;
 	private JButton btnMarcarEnviados;
+	@SuppressWarnings("unused")
 	private ControladorSalidas controlador;
 
 	public VentanaSalidas(ControladorSalidas controlador) 

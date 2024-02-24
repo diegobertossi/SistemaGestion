@@ -3,21 +3,13 @@ package presentacion.vista;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.sql.Date;
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -25,31 +17,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.JDayChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
 import tiposPropios.JTextAreaCustom;
-import dto.ClienteDTO;
-import presentacion.controlador.ControladorPrincipal;
 import presentacion.controlador.ControladorReparacion;
-import java.awt.Frame;
-import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.MaskFormatter;
-
-import java.awt.Rectangle;
-import java.awt.ComponentOrientation;
-import javax.swing.DropMode;
-import java.awt.Insets;
-import java.awt.Dimension;
-import javax.swing.JTable;
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 import java.awt.SystemColor;
 import javax.swing.border.MatteBorder;
-import javax.swing.JFormattedTextField;
 
 public class VentanaAgregarEquipo extends JFrame {
 
@@ -67,6 +42,7 @@ public class VentanaAgregarEquipo extends JFrame {
 	
 
 	private JTextField textELS;
+	@SuppressWarnings("unused")
 	private int ELS = 1;
 	private JTextAreaCustom textFalla;
 
@@ -83,12 +59,12 @@ public class VentanaAgregarEquipo extends JFrame {
 
 	private ButtonGroup GrupoEstadoFisico;;
 
-	private JComboBox comboClientes;
-	private JComboBox comboSucursal;
-	private JComboBox comboNombreEquipo;
-	private JComboBox comboMarca;
-	private JComboBox comboModelo;
-	private JComboBox comboSerie;
+	private JComboBox<?> comboClientes;
+	private JComboBox<?> comboSucursal;
+	private JComboBox<?> comboNombreEquipo;
+	private JComboBox<?> comboMarca;
+	private JComboBox<?> comboModelo;
+	private JComboBox<?> comboSerie;
 
 	private JLabel lblEls;
 	private JLabel lblNombreEquipo;
@@ -108,6 +84,7 @@ public class VentanaAgregarEquipo extends JFrame {
 
 	private JPanel panel_1;
 	private JScrollPane scrollPane;
+	@SuppressWarnings("unused")
 	private ControladorReparacion controladorReparacion;
 	private JPanel panel_2;
 	private JPanel panel_3;
@@ -159,28 +136,28 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 
-		comboSerie = new JComboBox();
+		comboSerie = new JComboBox<Object>();
 		comboSerie.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboSerie.setBackground(SystemColor.inactiveCaptionBorder);
 		comboSerie.setEditable(true);
 		comboSerie.setBounds(120, 125, 229, 20);
 		panel_1.add(comboSerie);
 
-		comboModelo = new JComboBox();
+		comboModelo = new JComboBox<Object>();
 		comboModelo.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboModelo.setBackground(SystemColor.inactiveCaptionBorder);
 		comboModelo.setEditable(true);
 		comboModelo.setBounds(120, 103, 229, 20);
 		panel_1.add(comboModelo);
 
-		comboMarca = new JComboBox();
+		comboMarca = new JComboBox<Object>();
 		comboMarca.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboMarca.setBackground(SystemColor.inactiveCaptionBorder);
 		comboMarca.setEditable(true);
 		comboMarca.setBounds(120, 81, 229, 20);
 		panel_1.add(comboMarca);
 
-		comboNombreEquipo = new JComboBox();
+		comboNombreEquipo = new JComboBox<Object>();
 		comboNombreEquipo.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboNombreEquipo.setBackground(SystemColor.inactiveCaptionBorder);
 		comboNombreEquipo.setEditable(true);
@@ -292,13 +269,13 @@ public class VentanaAgregarEquipo extends JFrame {
 		textRemitoCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
 		textRemitoCliente.setColumns(10);
 
-		comboClientes = new JComboBox();
+		comboClientes = new JComboBox<Object>();
 		comboClientes.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboClientes.setBackground(SystemColor.inactiveCaptionBorder);
 		comboClientes.setBounds(120, 15, 229, 20);
 		panel_1.add(comboClientes);
 
-		comboSucursal = new JComboBox();
+		comboSucursal = new JComboBox<Object>();
 		comboSucursal.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboSucursal.setBackground(SystemColor.inactiveCaptionBorder);
 		comboSucursal.setBounds(120, 37, 229, 20);
@@ -532,51 +509,51 @@ public class VentanaAgregarEquipo extends JFrame {
 		this.rdbtnENVIADO = rdbtnENVIADO;
 	}
 
-	public JComboBox getComboClientes() {
+	public JComboBox<?> getComboClientes() {
 		return comboClientes;
 	}
 
-	public void setComboClientes(JComboBox comboClientes) {
+	public void setComboClientes(JComboBox<?> comboClientes) {
 		this.comboClientes = comboClientes;
 	}
 
-	public JComboBox getComboSucursal() {
+	public JComboBox<?> getComboSucursal() {
 		return comboSucursal;
 	}
 
-	public void setComboSucursal(JComboBox comboSucursal) {
+	public void setComboSucursal(JComboBox<?> comboSucursal) {
 		this.comboSucursal = comboSucursal;
 	}
 
-	public JComboBox getComboNombreEquipo() {
+	public JComboBox<?> getComboNombreEquipo() {
 		return comboNombreEquipo;
 	}
 
-	public void setComboNombreEquipo(JComboBox comboNombreEquipo) {
+	public void setComboNombreEquipo(JComboBox<?> comboNombreEquipo) {
 		this.comboNombreEquipo = comboNombreEquipo;
 	}
 
-	public JComboBox getComboMarca() {
+	public JComboBox<?> getComboMarca() {
 		return comboMarca;
 	}
 
-	public void setComboMarca(JComboBox comboMarca) {
+	public void setComboMarca(JComboBox<?> comboMarca) {
 		this.comboMarca = comboMarca;
 	}
 
-	public JComboBox getComboModelo() {
+	public JComboBox<?> getComboModelo() {
 		return comboModelo;
 	}
 
-	public void setComboModelo(JComboBox comboModelo) {
+	public void setComboModelo(JComboBox<?> comboModelo) {
 		this.comboModelo = comboModelo;
 	}
 
-	public JComboBox getComboSerie() {
+	public JComboBox<?> getComboSerie() {
 		return comboSerie;
 	}
 
-	public void setComboSerie(JComboBox comboSerie) {
+	public void setComboSerie(JComboBox<?> comboSerie) {
 		this.comboSerie = comboSerie;
 	}
 

@@ -10,27 +10,21 @@ import javax.swing.table.DefaultTableModel;
 
 import presentacion.controlador.ControladorCliente;
 
-import java.sql.Date;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.SystemColor;
-import java.awt.font.TextAttribute;
-import java.awt.geom.Arc2D.Double;
 import java.awt.Font;
-import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
-import javax.swing.SwingConstants;
 
 public class VentanaSucursales extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private JTable tablaSucursal;
 	private JTable tablaSucursales;
 	private JButton btnAgregar;
@@ -39,7 +33,9 @@ public class VentanaSucursales extends JFrame
 	private DefaultTableModel modelSucursales;
 	private  String[] nombreColumnas = {"Nombre"};
 	//private  String[] nombreColumnas = {"Nombre","CUIT", "Direcci�n","Contacto", "Tel. Cont�cto", "Correo"};
+	@SuppressWarnings("unused")
 	private JPanel panel;
+	@SuppressWarnings("unused")
 	private ControladorCliente controladorSucursal;
 	
 	private JTextField txtNombreSucursal;
@@ -57,6 +53,7 @@ public class VentanaSucursales extends JFrame
 	private JTextField textCliente;
 	
 
+	@SuppressWarnings({ "serial", "unused" })
 	public VentanaSucursales(ControladorCliente controladorSucursal) 
 	{
 		super();
@@ -104,10 +101,12 @@ public class VentanaSucursales extends JFrame
 		}
 	) 
 		{
+		@SuppressWarnings("rawtypes")
 		Class[] columnTypes = new Class[] {
 				String.class
 			//String.class,String.class,String.class,String.class,String.class,String.class 
 		};
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int columnIndex) {
 			return columnTypes[columnIndex];
 		}

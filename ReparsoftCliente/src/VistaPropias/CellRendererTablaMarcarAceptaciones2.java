@@ -16,8 +16,13 @@ import javax.swing.table.TableCellRenderer;
 
 public class CellRendererTablaMarcarAceptaciones2 extends DefaultTableCellRenderer implements TableCellRenderer {
 
-    private Map<Integer, JCheckBox> checkBoxMap = new HashMap<>();
-    private Map<Integer, ButtonGroup> buttonGroupMap = new HashMap<>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Map<Integer, JCheckBox> checkBoxMap = new HashMap<>();
+    @SuppressWarnings("unused")
+	private Map<Integer, ButtonGroup> buttonGroupMap = new HashMap<>();
     private Font fuenteELS = new Font("Cambria", Font.BOLD, 14);
 
     /** Constructor de clase */

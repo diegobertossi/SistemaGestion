@@ -1,11 +1,8 @@
 package presentacion.vista;
 
 import javax.swing.JPanel;
-import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
 import presentacion.controlador.ControladorUsuarios;
 
 import javax.swing.JScrollPane;
@@ -27,13 +24,14 @@ public class VentanaPermisos extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	
-	private JComboBox cmbRoles;
+	private JComboBox<?> cmbRoles;
 	private JTable tblPermisosTenidos;
 	private DefaultTableModel modelPermisosTenidos;
 	private JTable tblPermisosFaltantes;
 	private DefaultTableModel modelPermisosFaltantes;
 	private JButton btnAgregar;
 	private JButton btnRemover;
+	@SuppressWarnings("unused")
 	private ControladorUsuarios controlador;
 	private JLabel lblSinAccesoA;
 	private JLabel lblConAccesoA;
@@ -77,10 +75,15 @@ public class VentanaPermisos extends JFrame {
 			"Sel","Pantalla", "Modulo Padre"
 		}
 				) {
+		/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+		@SuppressWarnings("rawtypes")
 		Class[] columnTypes = new Class[] {
 			Boolean.class,String.class, String.class
 		};
-		public Class getColumnClass(int columnIndex) {
+		public Class<?> getColumnClass(int columnIndex) {
 			return columnTypes[columnIndex];
 		}
 		boolean[] columnEditables = new boolean[] {
@@ -106,10 +109,15 @@ public class VentanaPermisos extends JFrame {
 			"Sel","Pantalla", "Modulo Padre"
 		}
 	) {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		@SuppressWarnings("rawtypes")
 		Class[] columnTypes = new Class[] {
 			Boolean.class,String.class, String.class
 		};
-		public Class getColumnClass(int columnIndex) {
+		public Class<?> getColumnClass(int columnIndex) {
 			return columnTypes[columnIndex];
 		}
 		boolean[] columnEditables = new boolean[] {
@@ -125,7 +133,7 @@ public class VentanaPermisos extends JFrame {
 
 		scrollPane_1.setViewportView(tblPermisosFaltantes);
 		
-		cmbRoles = new JComboBox();
+		cmbRoles = new JComboBox<Object>();
 		cmbRoles.setBounds(126, 64, 215, 20);
 		panel.add(cmbRoles);
 		
@@ -171,6 +179,7 @@ public class VentanaPermisos extends JFrame {
 		
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getCmbRoles() {
 		return cmbRoles;
 	}

@@ -9,8 +9,12 @@ import javax.swing.table.DefaultTableModel;
 
 public class ListaArch  extends JFrame {
 
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 		private DefaultTableModel modelMultiseleccion;
-		private String[] columnas = {"Nombre", "Código","Elegir"};
+		private String[] columnas = {"Nombre", "Cï¿½digo","Elegir"};
 		private JTable grilla;
 		private JButton btnConfirmar;
 		
@@ -30,9 +34,15 @@ public class ListaArch  extends JFrame {
 					}
 				) 
 			{
+					/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+					@SuppressWarnings("rawtypes")
 					Class[] columnTypes = new Class[] {
 						String.class
 					};
+					@SuppressWarnings({ "unchecked", "rawtypes" })
 					public Class getColumnClass(int columnIndex) {
 						return columnTypes[columnIndex];
 					}
@@ -46,6 +56,7 @@ public class ListaArch  extends JFrame {
 			inicialize();
 		}
 
+		@SuppressWarnings("unused")
 		private void inicialize() {
 			// TODO Auto-generated method stub
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

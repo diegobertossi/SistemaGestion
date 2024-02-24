@@ -1,17 +1,19 @@
 package VistaPropias;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JTextArea;
 
 public class VistaPracXHist  extends JFrame {
 
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 		private DefaultTableModel modelMultiseleccion;
-		private String[] columnas = {"Nombre", "Código","Elegir"};
+		private String[] columnas = {"Nombre", "Cï¿½digo","Elegir"};
 		private JTable grilla;
 		private JTextAreaCustom textArea;
 		
@@ -31,9 +33,15 @@ public class VistaPracXHist  extends JFrame {
 					}
 				) 
 			{
+					/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+					@SuppressWarnings("rawtypes")
 					Class[] columnTypes = new Class[] {
 						String.class
 					};
+					@SuppressWarnings({ "unchecked", "rawtypes" })
 					public Class getColumnClass(int columnIndex) {
 						return columnTypes[columnIndex];
 					}
@@ -47,6 +55,7 @@ public class VistaPracXHist  extends JFrame {
 			inicialize();
 		}
 
+		@SuppressWarnings("unused")
 		private void inicialize() {
 			// TODO Auto-generated method stub
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

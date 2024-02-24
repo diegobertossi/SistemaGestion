@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -24,8 +23,6 @@ public class VentanaEstados extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private ControladorReparacion controlador;
-	
 	private JRadioButton rdbtnMDQ;
 	private JRadioButton rdbtnCABA;
 	private JRadioButton rdbtnBRC;
@@ -67,7 +64,6 @@ public class VentanaEstados extends JFrame
 	{
 		super();
 		setResizable(false);
-		this.controlador = controlador;
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 772, 284);

@@ -8,18 +8,11 @@ import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 
 import presentacion.controlador.ControladorBusquedas;
-import presentacion.controlador.ControladorPrincipal;
-import presentacion.controlador.ControladorReparacion;
-
 import java.awt.SystemColor;
 import java.awt.Font;
 import javax.swing.JLabel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.JComboBox;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.BevelBorder;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 
@@ -27,13 +20,14 @@ public class VentanaBusqueda extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
+	@SuppressWarnings("unused")
 	private ControladorBusquedas controlador;
 
 	private JRadioButton rdbComponenteOriginal;
 	private JRadioButton rdbComponenteReemplazado;
 	private ButtonGroup GrupoComponente;
 
-	JComboBox comboBuscador;
+	JComboBox<?> comboBuscador;
 
 	JButton btnBuscar;
 	private JPanel panel;
@@ -89,7 +83,7 @@ public class VentanaBusqueda extends JFrame {
 
 		
 
-		comboBuscador = new JComboBox();
+		comboBuscador = new JComboBox<Object>();
 		comboBuscador.setBounds(340, 56, 239, 23);
 		contentPane.add(comboBuscador);
 
@@ -137,11 +131,11 @@ public class VentanaBusqueda extends JFrame {
 		this.rdbComponenteReemplazado = rdbComponenteReemplazado;
 	}
 
-	public JComboBox getComboBuscador() {
+	public JComboBox<?> getComboBuscador() {
 		return comboBuscador;
 	}
 
-	public void setcomboBuscador(JComboBox comboCompOriginal) {
+	public void setcomboBuscador(JComboBox<?> comboCompOriginal) {
 		this.comboBuscador = comboCompOriginal;
 	}
 

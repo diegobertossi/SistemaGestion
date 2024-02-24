@@ -6,7 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import presentacion.controlador.ControladorPrincipal;
 import presentacion.controlador.ControladorReparacion;
 import java.awt.SystemColor;
 import java.awt.Font;
@@ -17,6 +16,7 @@ public class VentanaEquipos extends JFrame
 	private JPanel contentPane;
 	private JButton btnAgregarEquipos;
 	private JButton btnVisualizarEquipos;
+	@SuppressWarnings("unused")
 	private ControladorReparacion controlador;
 
 	public VentanaEquipos() 

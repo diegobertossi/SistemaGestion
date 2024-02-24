@@ -6,8 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import presentacion.controlador.ControladorPrincipal;
-import presentacion.controlador.ControladorReparacion;
 import presentacion.controlador.ControladorSalidas;
 
 import java.awt.SystemColor;
@@ -21,11 +19,15 @@ public class VentanaSeleccionarCliente extends JFrame
 	private JPanel contentPane;
 	private JButton btnAceptar;
 	private JButton btnCancelar;
+	@SuppressWarnings("unused")
 	private ControladorSalidas controlador;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboCliente;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboSucursal;
 	
 
+	@SuppressWarnings("rawtypes")
 	public VentanaSeleccionarCliente(ControladorSalidas controlador) 
 	{
 		super();
@@ -100,21 +102,25 @@ public class VentanaSeleccionarCliente extends JFrame
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboCliente() {
 		return comboCliente;
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	public void setComboCliente(JComboBox comboCliente) {
 		this.comboCliente = comboCliente;
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboSucursal() {
 		return comboSucursal;
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	public void setComboSucursal(JComboBox comboSucursal) {
 		this.comboSucursal = comboSucursal;
 	}

@@ -1,23 +1,12 @@
 package presentacion.vista;
 
 import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.text.MaskFormatter;
 
-import org.jdesktop.swingx.plaf.UIManagerExt;
-
-import VistaPropias.JTextNum;
 import VistaPropias.CellRenderer;
-import VistaPropias.CellRendererTablaRemitos;
-import presentacion.controlador.ControladorListados;
-import presentacion.controlador.ControladorReparacion;
 import presentacion.controlador.ControladorSalidas;
 
 import javax.swing.JScrollPane;
@@ -27,40 +16,20 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.util.Enumeration;
 import java.awt.Font;
-import javax.swing.JComboBox;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollBar;
-import javax.swing.JCheckBox;
 import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
 import javax.swing.JTextField;
-import java.awt.BorderLayout;
 import javax.swing.ScrollPaneConstants;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.JFormattedTextField;
 import java.awt.Cursor;
 
 public class VentanaRemitoGenerado extends JFrame {
@@ -74,6 +43,7 @@ public class VentanaRemitoGenerado extends JFrame {
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
+	@SuppressWarnings("unused")
 	private ControladorSalidas controlador;
 	private JTextField lblRemito;
 
@@ -149,6 +119,11 @@ public class VentanaRemitoGenerado extends JFrame {
 		modelEquiposParaRemito = new DefaultTableModel(new Object[][] {},
 				new String[] { "ELS", "EQUIPO", "MODELO", "N° SERIE","ENVIADO" }) {
 
+			/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 			public int getColumnCount() {
 				return nombreColumnas.length;
 			}
@@ -162,6 +137,7 @@ public class VentanaRemitoGenerado extends JFrame {
 			 * Este metodo sirve para determinar el editor predeterminado para
 			 * cada columna de celdas
 			 */
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int c) {
 				return getValueAt(0, c).getClass();
 			}
@@ -322,6 +298,7 @@ public class VentanaRemitoGenerado extends JFrame {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private MaskFormatter mascara() {
 		// Inicializamos el objeto
 		MaskFormatter mascara = new MaskFormatter();

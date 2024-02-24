@@ -123,7 +123,8 @@ public class Utils {
      *
      * @return a new JList based on the resource
      */
-    static JList getList() {
+    @SuppressWarnings("rawtypes")
+	static JList getList() {
         CustomUIProvider customProvider = SpellChecker.getCustomUIProvider();
         if( customProvider != null ) {
             return customProvider.getList();
@@ -136,7 +137,8 @@ public class Utils {
      * Set the Icon for an dialog
      * @param dlg the dialog
      */
-    static void setDialogIcon(JDialog dlg) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	static void setDialogIcon(JDialog dlg) {
         try {
             Image image = ImageIO.read( dlg.getClass().getResourceAsStream( "icon.png" ) );
             // setIconImage appeared in Java 6.0 so use reflection to be compatible
@@ -248,7 +250,7 @@ public class Utils {
                 case '\u2019': // RIGHT SINGLE QUOTATION MARK
                 case '\u201a': // SINGLE LOW-9 QUOTATION MARK
                 case '\u201b': // SINGLE HIGH-REVERSED-9 QUOTATION MARK
-                case 'Â': // These last two should probably not be included,
+                case 'ï¿½': // These last two should probably not be included,
                 case '`': // they are not really quotation marks.
                     if( newWord == null ){
                         newWord = word.toCharArray();

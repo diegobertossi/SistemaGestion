@@ -8,6 +8,10 @@ import javax.swing.JTextArea;
 
 public class JTextAreaCustom extends JTextArea{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Integer largo;
 	
 	public JTextAreaCustom(Integer largo){
@@ -24,6 +28,7 @@ public class JTextAreaCustom extends JTextArea{
 	private void addKey(){
 		super.addKeyListener(new KeyListener() {
 			
+			@SuppressWarnings("unused")
 			@Override
 			public void keyTyped(KeyEvent e) {
 

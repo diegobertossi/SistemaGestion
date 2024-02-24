@@ -43,6 +43,11 @@ import javax.swing.JLabel;
 class AboutDialog extends JDialog {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Create a new instance
      * @param parent
      */

@@ -29,7 +29,12 @@ import javax.swing.text.JTextComponent;
 
 public class AddWordAction extends AbstractAction {
 
-    private String         word;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private String         word;
 
     private JTextComponent jText;
 

@@ -31,7 +31,11 @@ import javax.swing.*;
  */
 class CheckerMenu extends JMenu implements HierarchyListener {
     
-    private final CheckerListener listener;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final CheckerListener listener;
 
     CheckerMenu(SpellCheckerOptions options){
         super( Utils.getResource("spelling"));

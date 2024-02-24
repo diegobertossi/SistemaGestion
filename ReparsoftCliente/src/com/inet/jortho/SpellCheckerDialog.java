@@ -31,7 +31,6 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
@@ -42,7 +41,11 @@ import javax.swing.text.*;
  */
 class SpellCheckerDialog extends JDialog implements ActionListener {
 
-    private JTextComponent jText;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JTextComponent jText;
     private Dictionary dictionary;
     private Tokenizer tok;
     private boolean isDictionaryModify;
@@ -51,7 +54,8 @@ class SpellCheckerDialog extends JDialog implements ActionListener {
 
     final private JLabel notFound = Utils.getLabel( null );
     final private JTextField word = Utils.getTextField(); 
-    final private JList suggestionsList = Utils.getList();
+    @SuppressWarnings("rawtypes")
+	final private JList suggestionsList = Utils.getList();
     
     final private JButton ignore      = Utils.getButton( "ignore" );
     final private JButton ignoreAll   = Utils.getButton( "ignoreAll" );
@@ -132,7 +136,12 @@ class SpellCheckerDialog extends JDialog implements ActionListener {
         //ESCAPE Taste
         close.getInputMap( JComponent.WHEN_IN_FOCUSED_WINDOW ).put( KeyStroke.getKeyStroke( KeyEvent.VK_ESCAPE, 0, false ), "ESCAPE" );
         close.getActionMap().put( "ESCAPE", new AbstractAction() {
-            public void actionPerformed( ActionEvent e ) {
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed( ActionEvent e ) {
                 dispose();
             }
         } );
@@ -218,7 +227,8 @@ class SpellCheckerDialog extends JDialog implements ActionListener {
      * ignoreWords and changeWords will handle automatically.
      * @return true, if found a spell error.
      */
-    private boolean searchNext() {
+    @SuppressWarnings("unchecked")
+	private boolean searchNext() {
         String wordStr;
         while( true ) {
             wordStr = tok.nextInvalidWord();

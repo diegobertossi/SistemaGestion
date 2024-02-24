@@ -6,10 +6,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import presentacion.controlador.ControladorPresupuestos;
-import presentacion.controlador.ControladorPrincipal;
-import presentacion.controlador.ControladorReparacion;
-import presentacion.controlador.ControladorSalidas;
-
 import java.awt.SystemColor;
 import java.awt.Font;
 import javax.swing.JComboBox;
@@ -19,7 +15,9 @@ public class VentanaSeleccionarELS extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JButton btnAceptar;
+	@SuppressWarnings("unused")
 	private ControladorPresupuestos controlador;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboELS;
 	private JLabel lblELS;
 	private JLabel labelELS;
@@ -27,6 +25,7 @@ public class VentanaSeleccionarELS extends JFrame {
 	
 	
 
+	@SuppressWarnings("rawtypes")
 	public VentanaSeleccionarELS(ControladorPresupuestos controlador) {
 		super();
 		this.controlador = controlador;
@@ -84,12 +83,14 @@ public class VentanaSeleccionarELS extends JFrame {
 
 
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboELS() {
 		return comboELS;
 	}
 
 
 
+	@SuppressWarnings("rawtypes")
 	public void setComboELS(JComboBox comboELS) {
 		this.comboELS = comboELS;
 	}

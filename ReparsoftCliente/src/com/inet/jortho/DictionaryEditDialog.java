@@ -46,11 +46,17 @@ import javax.swing.*;
  */
 class DictionaryEditDialog extends JDialog{
     
-    private final JList list;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("rawtypes")
+	private final JList list;
     private final JButton delete;
     private boolean isModify;
 
-    DictionaryEditDialog( JDialog parent ){
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	DictionaryEditDialog( JDialog parent ){
         super( parent, Utils.getResource("userDictionary"), true );
         setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
         Container content = getContentPane();
@@ -71,7 +77,12 @@ class DictionaryEditDialog extends JDialog{
         //ESCAPE Key
         getRootPane().getInputMap( JComponent.WHEN_IN_FOCUSED_WINDOW ).put( KeyStroke.getKeyStroke( KeyEvent.VK_ESCAPE, 0, false ), "ESCAPE" );
         getRootPane().getActionMap().put( "ESCAPE", new AbstractAction() {
-            public void actionPerformed( ActionEvent e ) {
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed( ActionEvent e ) {
                 dispose();
             }
         } );
@@ -99,7 +110,8 @@ class DictionaryEditDialog extends JDialog{
      * Load all words from the user dictionary if available
      * @param data
      */
-    private void loadWordList( DefaultListModel data ){
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	private void loadWordList( DefaultListModel data ){
         UserDictionaryProvider provider = SpellChecker.getUserDictionaryProvider();
         if( provider != null ) {
             Iterator<String> userWords = provider.getWords( SpellChecker.getCurrentLocale() );
@@ -122,9 +134,15 @@ class DictionaryEditDialog extends JDialog{
 
     private class DeleteAction extends AbstractAction{
         /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		/**
          * Delete the selected entries. The "Delete" Button it the only Listener.
          */
-        public void actionPerformed(ActionEvent e){
+        @SuppressWarnings("rawtypes")
+		public void actionPerformed(ActionEvent e){
             int[] selected = list.getSelectedIndices();
             Arrays.sort( selected );
             for( int i=selected.length-1; i>=0; i-- ){
@@ -137,7 +155,8 @@ class DictionaryEditDialog extends JDialog{
     /**
      * {@inheritDoc}
      */
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public void dispose(){
         super.dispose();
         if( isModify ) {

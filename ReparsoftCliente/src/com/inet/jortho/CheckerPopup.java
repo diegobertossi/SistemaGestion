@@ -29,7 +29,12 @@ import javax.swing.*;
  */
 class CheckerPopup extends JPopupMenu {
     
-    CheckerPopup(SpellCheckerOptions options){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	CheckerPopup(SpellCheckerOptions options){
         CheckerListener listener = new CheckerListener(this, options);
         super.addPopupMenuListener(listener);
     }

@@ -1,33 +1,15 @@
 package presentacion.vista;
 
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import com.toedter.calendar.JDateChooser;
-
-import VistaPropias.JTextNum;
-import presentacion.controlador.ControladorCliente;
 import presentacion.controlador.ControladorReparacion;
-import presentacion.controlador.ControladorUsuarios;
-
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionEvent;
 import java.awt.Component;
 import javax.swing.Box;
-import javax.swing.JSeparator;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.Color;
@@ -40,6 +22,7 @@ public class VentanaAgregarRepuesto extends JFrame
 	private JTextField txtReferencia;
 	private JTextField txtOriginal;
 	private JTextField txtReemplazo;
+	@SuppressWarnings("unused")
 	private ControladorReparacion controlador;
 	private JButton btnAgregarRepuesto;
 	private JButton btnCancelar;

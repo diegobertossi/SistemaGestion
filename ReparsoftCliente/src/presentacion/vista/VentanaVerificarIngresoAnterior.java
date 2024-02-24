@@ -2,19 +2,12 @@ package presentacion.vista;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-
 import com.toedter.calendar.JTextFieldDateEditor;
 
-import presentacion.controlador.ControladorCliente;
 import presentacion.controlador.ControladorReparacion;
-
-import java.sql.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,17 +17,12 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.SystemColor;
-import java.awt.font.TextAttribute;
-import java.awt.geom.Arc2D.Double;
 import java.awt.Font;
 import java.awt.Insets;
 
-import javax.swing.border.TitledBorder;
-import javax.swing.border.EtchedBorder;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.JSeparator;
-import java.awt.FlowLayout;
 
 public class VentanaVerificarIngresoAnterior extends JFrame
 {
@@ -43,10 +31,14 @@ public class VentanaVerificarIngresoAnterior extends JFrame
 	private JButton btnPorels;
 	private JButton btnPorSerie;
 	private JButton btnVerificar;
+	@SuppressWarnings("unused")
 	private JPanel panel;
+	@SuppressWarnings("unused")
 	private ControladorReparacion controladorRepacion;
 	
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboFiltroELS;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboSerie;
 
 	
@@ -74,6 +66,7 @@ public class VentanaVerificarIngresoAnterior extends JFrame
 	private JPanel panel_3;
 	
 
+	@SuppressWarnings({ "unused", "rawtypes" })
 	public VentanaVerificarIngresoAnterior(ControladorReparacion controladorrepacion) 
 	{
 		super();
@@ -448,20 +441,24 @@ public class VentanaVerificarIngresoAnterior extends JFrame
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboFiltroELS() {
 		return comboFiltroELS;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setComboFiltroELS(JComboBox comboFiltroELS) {
 		this.comboFiltroELS = comboFiltroELS;
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboSerie() {
 		return comboSerie;
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	public void setComboSerie(JComboBox comboSerie) {
 		this.comboSerie = comboSerie;
 	}

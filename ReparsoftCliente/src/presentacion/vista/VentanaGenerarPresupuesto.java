@@ -7,11 +7,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import presentacion.controlador.ControladorPresupuestos;
-import presentacion.controlador.ControladorPrincipal;
 import presentacion.controlador.ControladorReparacion;
 import java.awt.SystemColor;
 import java.sql.Date;
-import java.text.DecimalFormat;
 import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -20,21 +18,14 @@ import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import java.awt.Component;
 import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
-
 import VistaPropias.JTextDouble;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.border.LineBorder;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JSeparator;
 import javax.swing.JCheckBox;
-import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.UIManager;
 
 public class VentanaGenerarPresupuesto extends JFrame {
@@ -43,7 +34,9 @@ public class VentanaGenerarPresupuesto extends JFrame {
 	private JPanel panel_4;
 	private JPanel panel_5;
 
+	@SuppressWarnings("unused")
 	private ControladorReparacion controladorP;
+	@SuppressWarnings("unused")
 	private ControladorPresupuestos controlador;
 	private JTextField textCliente;
 	private JTextField textELS;

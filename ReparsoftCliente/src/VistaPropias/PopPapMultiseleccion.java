@@ -8,14 +8,17 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
-import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class PopPapMultiseleccion extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private DefaultTableModel modelMultiseleccion;
-	private String[] columnas = {"Nombre", "Código","Elegir"};
+	private String[] columnas = {"Nombre", "Cï¿½digo","Elegir"};
 	private JTable grilla;
 	private JButton btnConfirmar;
 	private JTextString txtNombre;
@@ -35,13 +38,19 @@ public class PopPapMultiseleccion extends JFrame {
 				new Object[][]{
 				},			
 				new String[] {
-						"Nombre","Código","Cantidad de sesiones","Elegir"
+						"Nombre","Cï¿½digo","Cantidad de sesiones","Elegir"
 				}
 			) 
 		{
+				/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+				@SuppressWarnings("rawtypes")
 				Class[] columnTypes = new Class[] {
 					Object.class, Object.class,Object.class,Boolean.class
 				};
+				@SuppressWarnings({ "unchecked", "rawtypes" })
 				public Class getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
 				}
@@ -55,6 +64,7 @@ public class PopPapMultiseleccion extends JFrame {
 		inicialize();
 	}
 
+	@SuppressWarnings("unused")
 	private void inicialize() {
 		// TODO Auto-generated method stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

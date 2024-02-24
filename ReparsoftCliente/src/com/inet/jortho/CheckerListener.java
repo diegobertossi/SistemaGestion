@@ -156,7 +156,8 @@ public class CheckerListener implements PopupMenuListener, LanguageChangeListene
      * @throws BadLocationException
      *             should never occur
      */
-    protected int getCursorPosition( JTextComponent jText ) throws BadLocationException {
+    @SuppressWarnings("deprecation")
+	protected int getCursorPosition( JTextComponent jText ) throws BadLocationException {
         Caret caret = jText.getCaret();
         int offs;
         Point p = jText.getMousePosition();

@@ -64,7 +64,8 @@ class LowMemoryArrayList<E> {
      * @param o
      *            element to be appended to this list.
      */
-    public void add( E o ) {
+    @SuppressWarnings("unchecked")
+	public void add( E o ) {
         int size = size();
         Object tempData[] = new Object[size + 1];
         if( size > 0 ) {
@@ -85,7 +86,8 @@ class LowMemoryArrayList<E> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range
      */
-    public void add( int index, E element ) {
+    @SuppressWarnings("unchecked")
+	public void add( int index, E element ) {
         int size = size();
         Object tempData[] = new Object[size + 1];
         if( size > 0 ) {

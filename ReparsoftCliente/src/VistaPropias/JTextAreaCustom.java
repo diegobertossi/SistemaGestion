@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
+@SuppressWarnings("serial")
 public class JTextAreaCustom extends JTextArea{
 
 	Integer largo;
@@ -24,6 +25,7 @@ public class JTextAreaCustom extends JTextArea{
 	private void addKey(){
 		super.addKeyListener(new KeyListener() {
 			
+			@SuppressWarnings("unused")
 			@Override
 			public void keyTyped(KeyEvent e) {
 

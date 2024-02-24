@@ -4,18 +4,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
-import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.border.BevelBorder;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 
-import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JSeparator;
@@ -23,6 +19,10 @@ import javax.swing.SwingConstants;
 
 public class VentanaOpcionesBackup extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton btnAceptar;
 	private JButton btnCancelar;
 	private JTextField txtNombreArchivo;

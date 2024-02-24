@@ -27,10 +27,6 @@ import java.awt.Toolkit;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 import java.awt.Rectangle;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.SoftBevelBorder;
 
 public class VistaPrincipal extends JFrame {
 

@@ -8,6 +8,10 @@ import javax.swing.JTextField;
 
 public class JTextNum extends JTextField{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Integer largo;
 	
 	public JTextNum(Integer largo){
@@ -24,6 +28,7 @@ public class JTextNum extends JTextField{
 	private void addKey(){
 		super.addKeyListener(new KeyListener() {
 			
+			@SuppressWarnings("deprecation")
 			@Override
 			public void keyTyped(KeyEvent e) {
 

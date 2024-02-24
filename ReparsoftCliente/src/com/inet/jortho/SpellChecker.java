@@ -450,7 +450,12 @@ public class SpellChecker {
         if( enable ){
             text.getInputMap().put( KeyStroke.getKeyStroke( KeyEvent.VK_F7, 0 ), "spell-checking" );
             text.getActionMap().put( "spell-checking", new AbstractAction(){
-                public void actionPerformed( ActionEvent e ) {
+                /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				public void actionPerformed( ActionEvent e ) {
                     showSpellCheckerDialog( text, options );
                 }
             });
@@ -681,7 +686,11 @@ public class SpellChecker {
     }
     
     private static class ActionToggleButtonModel extends JToggleButton.ToggleButtonModel{
-        private final AbtsractLanguageAction action;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private final AbtsractLanguageAction action;
         
         ActionToggleButtonModel(AbtsractLanguageAction action){
             this.action = action;
@@ -733,7 +742,11 @@ public class SpellChecker {
      */
     private static abstract class AbtsractLanguageAction extends AbstractAction{
         
-        // the current active (selected) LanguageAction
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		// the current active (selected) LanguageAction
         private static AbtsractLanguageAction currentAction;
         
         public AbtsractLanguageAction( String name ) {
@@ -763,7 +776,11 @@ public class SpellChecker {
      * Action for disable all dictionary language.
      */
     private static class DisableLanguageAction extends AbtsractLanguageAction{
-    	static DisableLanguageAction instance = new DisableLanguageAction();
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		static DisableLanguageAction instance = new DisableLanguageAction();
 
         private DisableLanguageAction() {
             super(Utils.getResource("disable"));
@@ -793,7 +810,11 @@ public class SpellChecker {
      */
     private static class LanguageAction extends AbtsractLanguageAction implements Comparable<LanguageAction>{
         
-        private final URL baseURL;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private final URL baseURL;
         private final Locale locale;
         private String extension;
         

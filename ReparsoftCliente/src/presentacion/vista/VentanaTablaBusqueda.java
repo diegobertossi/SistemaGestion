@@ -1,22 +1,12 @@
 package presentacion.vista;
 
 import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import org.jdesktop.swingx.plaf.UIManagerExt;
-
-import VistaPropias.CellRenderer;
 import VistaPropias.CellRendererTablaBusqueda;
 import presentacion.controlador.ControladorBusquedas;
-import presentacion.controlador.ControladorListados;
-import presentacion.controlador.ControladorReparacion;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -34,23 +24,10 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 import java.util.Enumeration;
 import java.awt.Font;
-import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollBar;
-import javax.swing.JCheckBox;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
 import javax.swing.JTextField;
-import java.awt.BorderLayout;
 import javax.swing.ScrollPaneConstants;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class VentanaTablaBusqueda extends JFrame {
 
@@ -64,6 +41,7 @@ public class VentanaTablaBusqueda extends JFrame {
 	private JPanel panel;
 	private JScrollPane  scrollPane ;
 //
+	@SuppressWarnings("unused")
 	private ControladorBusquedas controlador;
 //
 	Dimension DimScrollPane;
@@ -130,9 +108,15 @@ public class VentanaTablaBusqueda extends JFrame {
 		modelReparaciones = new DefaultTableModel(new Object[][] {},
 				new String[] { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "COMP. ORIGINAL","COMP. REEMPLAZO" }) {
 
+			/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
 					String.class, String.class, String.class, String.class };
 
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -217,6 +201,7 @@ public class VentanaTablaBusqueda extends JFrame {
 		}
 
 		this.addComponentListener(new java.awt.event.ComponentAdapter() {
+			@SuppressWarnings("unused")
 			public void componentResized(ComponentEvent e) {
 
 				Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();

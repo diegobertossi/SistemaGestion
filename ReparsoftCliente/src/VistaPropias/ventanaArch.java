@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
+@SuppressWarnings("serial")
 public class ventanaArch extends JFrame {
 	private JLabel lblIcon;
 	public ventanaArch() {

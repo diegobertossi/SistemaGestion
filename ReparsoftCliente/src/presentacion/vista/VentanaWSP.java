@@ -1,25 +1,18 @@
 package presentacion.vista;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
-import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.border.BevelBorder;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-
 import presentacion.controlador.ControladorReparacion;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
@@ -28,6 +21,7 @@ import javax.swing.JComboBox;
 
 public class VentanaWSP extends JFrame {
 	
+	@SuppressWarnings("unused")
 	private ControladorReparacion controlador;
 	private static final long serialVersionUID = 1L;
 	private JTextField textCliente;
@@ -42,13 +36,16 @@ public class VentanaWSP extends JFrame {
 	private JScrollPane scrollPane;
 	private JPanel panel_1;
 	private JTextField textnumeroContactoBuscado;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboNombreBuscado;
 	private JButton btnUtilizarContactoBuscado;
 	private JButton btnEditarNmero;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboOrganizacion;
 	
 	
 	
+	@SuppressWarnings("rawtypes")
 	public VentanaWSP(ControladorReparacion controlador){
 		
 		super();
@@ -361,11 +358,13 @@ public class VentanaWSP extends JFrame {
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboNombreBuscado() {
 		return comboNombreBuscado;
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	public void setComboNombreBuscado(JComboBox comboNombreBuscado) {
 		this.comboNombreBuscado = comboNombreBuscado;
 	}
@@ -381,11 +380,13 @@ public class VentanaWSP extends JFrame {
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboOrganizacion() {
 		return comboOrganizacion;
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	public void setComboOrganizacion(JComboBox comboOrganizacion) {
 		this.comboOrganizacion = comboOrganizacion;
 	}

@@ -8,23 +8,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import java.awt.Color;
 
 import javax.swing.ImageIcon;
-import java.awt.GridLayout;
 import java.awt.Font;
-import javax.swing.border.LineBorder;
-import java.awt.FlowLayout;
-
-import java.awt.Frame;
-
 import java.awt.Cursor;
 import java.awt.Dimension;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
@@ -36,7 +27,6 @@ import java.awt.Toolkit;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 import java.awt.Rectangle;
-import javax.swing.border.EtchedBorder;
 
 public class VistaPrincipal2 extends JFrame {
 

@@ -10,28 +10,20 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import VistaPropias.CellRenderer;
 import VistaPropias.CellRendererTablaClientes;
-import VistaPropias.CellRendererTablaListado;
 import presentacion.controlador.ControladorCliente;
 
-import java.sql.Date;
 import java.util.Enumeration;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.SystemColor;
-import java.awt.font.TextAttribute;
-import java.awt.geom.Arc2D.Double;
 import java.awt.Font;
-import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.MatteBorder;
@@ -39,6 +31,7 @@ import javax.swing.border.MatteBorder;
 public class VentanaClientes extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private JTable tablaClientes;
 	private JTable tablaClientes_1;
 	private JButton btnAgregar;
@@ -50,7 +43,9 @@ public class VentanaClientes extends JFrame {
 	private String[] nombreColumnas = { "Nombre", "CUIT" };
 	// private String[] nombreColumnas = {"Nombre","CUIT",
 	// "Direcci�n","Contacto", "Tel. Cont�cto", "Correo"};
+	@SuppressWarnings("unused")
 	private JPanel panel;
+	@SuppressWarnings("unused")
 	private ControladorCliente controladorCliente;
 
 	private JTextField txtNombreCliente;
@@ -62,6 +57,7 @@ public class VentanaClientes extends JFrame {
 	private JTextField txtContacto;
 	private JLabel lblContacto;
 	private JTextField txtTelEmpresa;
+	@SuppressWarnings("unused")
 	private JLabel lblTelEmpresa;
 	private JTextField txtTelContacto;
 	private JLabel lblTelContacto;
@@ -69,9 +65,11 @@ public class VentanaClientes extends JFrame {
 	private JLabel lblCorreo;
 	private JPanel panel_1;
 	private JLabel lblSucursales;
+	@SuppressWarnings("unused")
 	private JTextField txtTelEmpr;
 	private JPanel panel_2;
 
+	@SuppressWarnings("unused")
 	public VentanaClientes(ControladorCliente controladorCliente) {
 		super();
 		setResizable(false);
@@ -111,10 +109,16 @@ public class VentanaClientes extends JFrame {
 		modelClientes = new DefaultTableModel(new Object[][] {}, new String[] { "NOMBRE", "CUIT"
 
 		}) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] { String.class, String.class
 
 			};
 
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}

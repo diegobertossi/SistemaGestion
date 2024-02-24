@@ -1,11 +1,6 @@
 package presentacion.vista;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Enumeration;
-import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -20,17 +15,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import com.toedter.calendar.JDateChooser;
-
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Component;
-import javax.swing.Box;
 import javax.swing.ImageIcon;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
 import java.awt.Font;
 import java.awt.SystemColor;
@@ -39,14 +26,9 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.toedter.calendar.JYearChooser;
-
 import VistaPropias.CellRendererTablaClientes;
 import VistaPropias.JTextNum;
-import presentacion.controlador.ControladorReparacion;
-import presentacion.controlador.ControladorUsuLogin;
 import presentacion.controlador.ControladorUsuarios;
-import javax.swing.border.TitledBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.LineBorder;
 
@@ -71,6 +53,7 @@ public class VentanaRolesUsuarios extends JFrame {
 	private JTextField txtEmailUsuario;
 	private JTextNum txtDNI;
 	private JLabel lblDni;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboRoles;
 	private JTextField txtLogin;
 	//private JTextField txtPass;
@@ -79,10 +62,12 @@ public class VentanaRolesUsuarios extends JFrame {
 
 	private JButton btnPermisosXrol;
 
+	@SuppressWarnings("unused")
 	private ControladorUsuarios controlador;
 	private JTextField textRol;
 	private JPanel panel_1;
 
+	@SuppressWarnings({ "serial", "rawtypes", "unused" })
 	public VentanaRolesUsuarios(ControladorUsuarios controlador) {
 
 		super();
@@ -122,6 +107,7 @@ public class VentanaRolesUsuarios extends JFrame {
 		modelUsuarios = new DefaultTableModel(new Object[][] {}, new String[] { "USUARIO", "DNI" }) {
 			Class[] columnTypes = new Class[] { String.class, int.class };
 
+			@SuppressWarnings({ "unchecked" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -456,6 +442,7 @@ public class VentanaRolesUsuarios extends JFrame {
 		return txtDNI;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboRoles() {
 		return comboRoles;
 	}

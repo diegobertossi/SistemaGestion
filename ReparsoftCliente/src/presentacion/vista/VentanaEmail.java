@@ -1,25 +1,18 @@
 package presentacion.vista;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
-import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.border.BevelBorder;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-
 import presentacion.controlador.ControladorReparacion;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
@@ -27,6 +20,7 @@ import javax.swing.JScrollPane;
 
 public class VentanaEmail extends JFrame {
 	
+	@SuppressWarnings("unused")
 	private ControladorReparacion controlador;
 	private static final long serialVersionUID = 1L;
 	private JTextField textCliente;

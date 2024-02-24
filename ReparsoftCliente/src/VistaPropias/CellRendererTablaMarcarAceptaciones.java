@@ -8,36 +8,31 @@ package VistaPropias;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Label;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 //import com.sun.xml.internal.ws.assembler.jaxws.HandlerTubeFactory;
 
-import presentacion.vista.VentanaListadoReparaciones;
 import presentacion.vista.VentanaMarcarAceptaciones;
 
 public class CellRendererTablaMarcarAceptaciones extends DefaultTableCellRenderer implements TableCellRenderer {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@SuppressWarnings("unused")
 	private VentanaMarcarAceptaciones ventanaMarcarAceptaciones;
 
+	@SuppressWarnings("unused")
 	private ButtonGroup buttonGroup = new ButtonGroup();
 	private JCheckBox check = new JCheckBox();
 	Font fuenteELS = new Font("Cambria", Font.BOLD, 14);
@@ -46,6 +41,7 @@ public class CellRendererTablaMarcarAceptaciones extends DefaultTableCellRendere
 	public CellRendererTablaMarcarAceptaciones() {
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {

@@ -9,12 +9,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
 
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-
 public class JTextDouble extends JTextField {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Integer largo;
 	
+	@SuppressWarnings("unused")
 	private NumberFormatter formato;
 	private boolean aceptaNegativo;
 	private final String PATTERN_NUMERICO = "^[0-9]?$";
@@ -56,6 +60,7 @@ public class JTextDouble extends JTextField {
 	private void addKey() {
 		super.addKeyListener(new KeyListener() {
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void keyTyped(KeyEvent e) {
 

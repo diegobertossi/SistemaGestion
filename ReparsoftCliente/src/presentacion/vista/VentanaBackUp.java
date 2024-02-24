@@ -2,29 +2,17 @@ package presentacion.vista;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-
 import presentacion.controlador.ControladorBackup;
-
-import java.sql.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.SystemColor;
-import java.awt.font.TextAttribute;
-import java.awt.geom.Arc2D.Double;
 import java.awt.Font;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.EtchedBorder;
 import javax.swing.SwingConstants;
 
 public class VentanaBackUp extends JFrame
@@ -35,6 +23,7 @@ public class VentanaBackUp extends JFrame
 	private JButton btnGenerarB;
 	private JButton btnImportarB;
 	
+	@SuppressWarnings("unused")
 	private ControladorBackup controladorBackup;
 	
 
@@ -65,6 +54,7 @@ public class VentanaBackUp extends JFrame
 
 		this.setVisible(true);
 
+		@SuppressWarnings("unused")
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
 		
 		

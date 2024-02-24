@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.sql.Date;
-import java.text.ParseException;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,23 +17,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
-import VistaPropias.JTextDouble;
-import presentacion.controlador.ControladorListados;
-import presentacion.controlador.ControladorPrincipal;
 import presentacion.controlador.ControladorReparacion;
-import java.awt.Frame;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.MaskFormatter;
-
-import java.awt.Rectangle;
-import java.awt.ComponentOrientation;
-import javax.swing.DropMode;
 import javax.swing.ImageIcon;
 
 import java.awt.Insets;
@@ -44,25 +30,13 @@ import javax.swing.JTable;
 import javax.swing.border.EtchedBorder;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
-import java.awt.event.WindowEvent;
-
 import javax.swing.border.MatteBorder;
 import javax.swing.JSeparator;
 import javax.swing.border.BevelBorder;
 import javax.swing.JCheckBox;
-import javax.swing.JFormattedTextField;
-import javax.swing.border.CompoundBorder;
 import java.awt.Cursor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.NumberFormatter;
-//import net.sourceforge.jtextfieldformatter.JTextDouble;
 
 public class VentanaVisualizarEquipos extends JFrame {
 
@@ -122,10 +96,14 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JDateChooser FechaRespuesta;
 	private JTextField textOC;
 
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboClientes;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboSucursal;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboTecnico;
 
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboELS;
 
 	private JLabel lblEls;
@@ -160,11 +138,14 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane_2;
+	@SuppressWarnings("unused")
 	private ControladorReparacion controladorReparacion;
 	private JPanel panel_2;
 	private JPanel panel_3;
+	@SuppressWarnings("unused")
 	private JTable tablaRepuestos;
 	private JTable tablaRepuestos_1;
+	@SuppressWarnings("unused")
 	private JScrollPane scrollPane_3;
 
 	private DefaultTableModel modelRepuestos;
@@ -200,6 +181,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JLabel lblInformeSiemensEnviado;
 	private JTextField textPresupuestoDolar;
 
+	@SuppressWarnings({ "rawtypes", "serial" })
 	public VentanaVisualizarEquipos(ControladorReparacion controladorReparacion) {
 
 		super();
@@ -779,6 +761,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 				new String[] { "REFERENCIA", "ORIGINAL", "REEMPLAZO", "NOTA" }) {
 			Class[] columnTypes = new Class[] { String.class, String.class, String.class, String.class };
 
+			@SuppressWarnings("unchecked")
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -1575,18 +1558,22 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboClientes() {
 		return comboClientes;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setComboClientes(JComboBox comboClientes) {
 		this.comboClientes = comboClientes;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboSucursal() {
 		return comboSucursal;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setComboSucursal(JComboBox comboSucursal) {
 		this.comboSucursal = comboSucursal;
 	}
@@ -1691,10 +1678,12 @@ public class VentanaVisualizarEquipos extends JFrame {
 		BotonPresupuestar = botonPresupuestar;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboTecnico() {
 		return comboTecnico;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setComboTecnico(JComboBox comboTecnico) {
 		this.comboTecnico = comboTecnico;
 	}
@@ -1783,10 +1772,12 @@ public class VentanaVisualizarEquipos extends JFrame {
 		this.btnBuscarELS = btnBuscarELS;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboELS() {
 		return comboELS;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setComboELS(JComboBox comboELS) {
 		this.comboELS = comboELS;
 	}

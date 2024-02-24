@@ -1,13 +1,7 @@
 package presentacion.vista;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Enumeration;
-import java.util.List;
-
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,32 +13,19 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import com.toedter.calendar.JDateChooser;
-
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.Box;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
 import java.awt.Font;
 import java.awt.SystemColor;
 
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
-import com.toedter.calendar.JYearChooser;
 
 import VistaPropias.CellRendererTablaClientes;
 import VistaPropias.JTextNum;
 import presentacion.controlador.ControladorReparacion;
-import presentacion.controlador.ControladorUsuLogin;
-import presentacion.controlador.ControladorUsuarios;
-import javax.swing.border.TitledBorder;
 import javax.swing.border.MatteBorder;
 
 public class VentanaClientesWSP extends JFrame {
@@ -65,8 +46,10 @@ public class VentanaClientesWSP extends JFrame {
 	private JTextNum txtTelefono;
 	private JTextField txtOrganizacion;
 
+	@SuppressWarnings("unused")
 	private ControladorReparacion controlador;
 
+	@SuppressWarnings("unused")
 	public VentanaClientesWSP(ControladorReparacion controlador) {
 
 		super();
@@ -104,8 +87,14 @@ public class VentanaClientesWSP extends JFrame {
 
 		// modelUsuarios = new DefaultTableModel(null, nombreColumnasUsuarios);
 		modelClientesWSP = new DefaultTableModel(new Object[][] {}, new String[] { "ORGANIZACIÓN","CONTACTO", "TELÉFONO" }) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 8981972222642830943L;
+			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] { String.class, String.class,String.class };
 
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}

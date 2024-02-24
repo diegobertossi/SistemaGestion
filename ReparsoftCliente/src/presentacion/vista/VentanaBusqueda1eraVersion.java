@@ -6,9 +6,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import presentacion.controlador.ControladorBusquedas;
-import presentacion.controlador.ControladorPrincipal;
-import presentacion.controlador.ControladorReparacion;
-
 import java.awt.SystemColor;
 import java.awt.Font;
 import javax.swing.JLabel;
@@ -31,11 +28,12 @@ public class VentanaBusqueda1eraVersion extends JFrame {
 	
 	
 	
+	@SuppressWarnings("unused")
 	private ControladorBusquedas controlador;
-	private JComboBox comboELS;
-	private JComboBox comboCliente;
-	private JComboBox comboTecnico;
-	private JComboBox comboComponentes;
+	private JComboBox<?> comboELS;
+	private JComboBox<?> comboCliente;
+	private JComboBox<?> comboTecnico;
+	private JComboBox<?> comboComponentes;
 
 	public VentanaBusqueda1eraVersion(ControladorBusquedas controladorBusqueda) {
 		super();
@@ -83,19 +81,19 @@ public class VentanaBusqueda1eraVersion extends JFrame {
 		btnBuscarXcomponente.setBounds(31, 157, 118, 20);
 		contentPane.add(btnBuscarXcomponente);
 		
-		comboELS = new JComboBox();
+		comboELS = new JComboBox<Object>();
 		comboELS.setBounds(180, 62, 102, 20);
 		contentPane.add(comboELS);
 		
-		comboCliente = new JComboBox();
+		comboCliente = new JComboBox<Object>();
 		comboCliente.setBounds(180, 93, 163, 20);
 		contentPane.add(comboCliente);
 		
-		comboTecnico = new JComboBox();
+		comboTecnico = new JComboBox<Object>();
 		comboTecnico.setBounds(180, 126, 163, 20);
 		contentPane.add(comboTecnico);
 		
-		comboComponentes = new JComboBox();
+		comboComponentes = new JComboBox<Object>();
 		comboComponentes.setBounds(180, 157, 163, 20);
 		contentPane.add(comboComponentes);
 		
@@ -182,35 +180,35 @@ public class VentanaBusqueda1eraVersion extends JFrame {
 		this.btnBuscarComponente = btnBuscarComponente;
 	}
 
-	public JComboBox getComboELS() {
+	public JComboBox<?> getComboELS() {
 		return comboELS;
 	}
 
-	public void setComboELS(JComboBox comboELS) {
+	public void setComboELS(JComboBox<?> comboELS) {
 		this.comboELS = comboELS;
 	}
 
-	public JComboBox getComboCliente() {
+	public JComboBox<?> getComboCliente() {
 		return comboCliente;
 	}
 
-	public void setComboCliente(JComboBox comboCliente) {
+	public void setComboCliente(JComboBox<?> comboCliente) {
 		this.comboCliente = comboCliente;
 	}
 
-	public JComboBox getComboTecnico() {
+	public JComboBox<?> getComboTecnico() {
 		return comboTecnico;
 	}
 
-	public void setComboTecnico(JComboBox comboTecnico) {
+	public void setComboTecnico(JComboBox<?> comboTecnico) {
 		this.comboTecnico = comboTecnico;
 	}
 
-	public JComboBox getComboComponentes() {
+	public JComboBox<?> getComboComponentes() {
 		return comboComponentes;
 	}
 
-	public void setComboComponentes(JComboBox comboComponentes) {
+	public void setComboComponentes(JComboBox<?> comboComponentes) {
 		this.comboComponentes = comboComponentes;
 	}
 }

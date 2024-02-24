@@ -64,5 +64,6 @@ public interface CustomUIProvider {
      *
      * @return A JList that can be used by the spell checker
      */
-    JList getList();
+    @SuppressWarnings("rawtypes")
+	JList getList();
 }

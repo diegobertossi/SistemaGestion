@@ -6,10 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import presentacion.controlador.ControladorPrincipal;
 import presentacion.controlador.ControladorReparacion;
-import presentacion.controlador.ControladorSalidas;
-
 import java.awt.Font;
 import java.awt.SystemColor;
 
@@ -23,6 +20,7 @@ public class VentanaPresupuestos extends JFrame
 	private JButton btnmarcarAceptaciones;
 	
 	
+	@SuppressWarnings("unused")
 	private ControladorReparacion controlador;
 
 	public VentanaPresupuestos(ControladorReparacion controlador) 

@@ -9,8 +9,6 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.border.BevelBorder;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -20,6 +18,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JSeparator;
 
+@SuppressWarnings("serial")
 public class VentanaLogin extends JFrame {
 	
 	private JButton btnAceptar;

@@ -9,17 +9,9 @@ package VistaPropias;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Label;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -27,9 +19,14 @@ import javax.swing.table.TableCellRenderer;
 import presentacion.vista.VentanaListadoReparaciones;
 
 public class CellRendererTablaRemitos extends DefaultTableCellRenderer implements TableCellRenderer {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JCheckBox check = new JCheckBox();
 	Font fuenteELS = new Font("Cambria", Font.BOLD, 14);
 
+	@SuppressWarnings("unused")
 	private VentanaListadoReparaciones ventanaListadoReparaciones;
 
 	/** Constructor de clase */

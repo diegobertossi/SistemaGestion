@@ -6,8 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import presentacion.controlador.ControladorPrincipal;
-import presentacion.controlador.ControladorReparacion;
 import presentacion.controlador.ControladorSalidas;
 
 import java.awt.SystemColor;
@@ -21,11 +19,15 @@ public class VentanaSeleccionarRemito extends JFrame
 	private JPanel contentPane;
 	private JButton btnAceptar;
 	private JButton btnCancelar;
+	@SuppressWarnings("unused")
 	private ControladorSalidas controlador;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboUbicacion;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboNumRemito;
 	
 
+	@SuppressWarnings("rawtypes")
 	public VentanaSeleccionarRemito(ControladorSalidas controlador) 
 	{
 		super();
@@ -105,24 +107,28 @@ public class VentanaSeleccionarRemito extends JFrame
 	
 
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboUbicacion() {
 		return comboUbicacion;
 	}
 	
 
 
+	@SuppressWarnings("rawtypes")
 	public void setComboUbicacion(JComboBox comboUbicacion) {
 		this.comboUbicacion = comboUbicacion;
 	}
 	
 
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboNumRemito() {
 		return comboNumRemito;
 	}
 	
 
 
+	@SuppressWarnings("rawtypes")
 	public void setComboNumRemito(JComboBox comboNumRemito) {
 		this.comboNumRemito = comboNumRemito;
 	}
