@@ -23,6 +23,7 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
 import dto.ReparacionDTO;
 import modelo.Agenda;
 import presentacion.vista.VentanaEquipos;
@@ -36,26 +37,29 @@ public class ControladorListados
 	private Agenda modelo;
 
 	private VentanaListadoReparaciones ventanaListadoReparaciones;
-	
+
 	private ControladorReparacion controladorReparacion;
 	private VentanaEquipos ventanaEquipos;
 	@SuppressWarnings("unused")
-	private VentanaEstadisticas ventanaEstadisticas; 
-	//private int max = Frame.MAXIMIZED_BOTH;
-	//private int min = Frame.NORMAL;
+	private VentanaEstadisticas ventanaEstadisticas;
+	// private int max = Frame.MAXIMIZED_BOTH;
+	// private int min = Frame.NORMAL;
 
-	//private int clickMax = 1;
+	// private int clickMax = 1;
 	// private int clickMin = 1;
 
 	public int NumeroELSSeleccionado;
 
-	//private TableRowSorter<DefaultTableModel> sorter;
+	// private TableRowSorter<DefaultTableModel> sorter;
 
 	private List<ReparacionDTO> Reparaciones_en_tabla;
-	
+
 	@SuppressWarnings("unused")
 	private ControladorUsuLogin controladorUsuLogin;
 
+	
+	private int filtro;
+	
 	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
 
@@ -80,6 +84,9 @@ public class ControladorListados
 		llenarComboELS();
 		llenarComboTecnico();
 
+		
+		
+		
 	}
 
 	public void inicializar() {
@@ -94,7 +101,8 @@ public class ControladorListados
 			@Override
 			public void mouseMoved(MouseEvent e) {
 
-				//int row = ventanaListadoReparaciones.getTblReparaciones().rowAtPoint(e.getPoint());
+				// int row =
+				// ventanaListadoReparaciones.getTblReparaciones().rowAtPoint(e.getPoint());
 				int column = ventanaListadoReparaciones.getTblReparaciones().columnAtPoint(e.getPoint());
 
 				// Verificar si el mouse est� sobre la celda deseada
@@ -174,7 +182,7 @@ public class ControladorListados
 				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 6)); // (?i) para ignorar
 																								// mayúsculas/minúsculas
 			}
-		
+
 			if (ventanaListadoReparaciones.getRadioButtonAviso().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroAviso().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroAviso().getSelectedItem().toString() != null) {
@@ -286,11 +294,11 @@ public class ControladorListados
 		else if (this.ventanaListadoReparaciones != null
 				&& arg0.getSource() == this.ventanaListadoReparaciones.getBtnEstadisticas()) {
 
-			
 			ventanaEstadisticas = new VentanaEstadisticas(this);
-			
-			
-			
+			agregarListenerAventanaEstadisticas();
+
+			llenarcomboFiltro();
+
 		}
 
 	}
@@ -337,7 +345,8 @@ public class ControladorListados
 
 		ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTblReparaciones());
 
-		this.ventanaListadoReparaciones.setVisible(true);;
+		this.ventanaListadoReparaciones.setVisible(true);
+		;
 
 	}
 
@@ -607,6 +616,124 @@ public class ControladorListados
 
 		});
 
+	}
+
+	private void agregarListenerAventanaEstadisticas() {
+
+		ventanaEstadisticas.getComboFiltro().addActionListener(this);
+		ventanaEstadisticas.getComboAnio().addActionListener(this);
+		ventanaEstadisticas.getComboTecnico().addActionListener(this);
+		ventanaEstadisticas.getComboMes().addActionListener(this);
+		
+		
+
+	}
+
+	@SuppressWarnings("unchecked")
+	private void llenarcomboFiltro() {
+
+		
+		ventanaEstadisticas.getComboFiltro().addItem("--Seleccionar filtro--");
+		ventanaEstadisticas.getComboFiltro().addItem("POR AÑO");
+		ventanaEstadisticas.getComboFiltro().addItem("POR TÉCNICO");
+		ventanaEstadisticas.getComboFiltro().addItem("POR CLIENTE");
+		
+		
+		for (int i = 2024; i < 2030; i++) {
+
+			ventanaEstadisticas.getComboAnio().addItem(i);
+
+		}
+
+		ventanaEstadisticas.getComboFiltro().addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+
+				if (ventanaEstadisticas.getComboFiltro().getSelectedItem() != null) {
+
+					 
+					filtro = ventanaEstadisticas.getComboFiltro().getSelectedIndex();
+					//System.out.println(ventanaEstadisticas.getComboFiltro().getSelectedIndex());
+
+					switch (filtro) {
+					
+					
+					case 0:
+						
+						ventanaEstadisticas.getLblAnio().setVisible(false);
+						ventanaEstadisticas.getComboAnio().setVisible(false);
+						
+						ventanaEstadisticas.getLblMes().setVisible(false);
+						ventanaEstadisticas.getComboMes().setVisible(false);
+						
+						ventanaEstadisticas.getLblTecnico().setVisible(false);
+						ventanaEstadisticas.getComboTecnico().setVisible(false);
+						
+						ventanaEstadisticas.getComboCliente().setVisible(false);
+										
+					break;
+					
+					case 1:
+						
+						ventanaEstadisticas.getLblAnio().setVisible(true);
+						ventanaEstadisticas.getComboAnio().setSelectedIndex(-1);
+						ventanaEstadisticas.getComboAnio().setVisible(true);
+						
+						ventanaEstadisticas.getLblMes().setVisible(false);
+						ventanaEstadisticas.getComboMes().setVisible(false);
+						
+						ventanaEstadisticas.getLblTecnico().setVisible(false);
+						ventanaEstadisticas.getComboTecnico().setVisible(false);
+						ventanaEstadisticas.getComboCliente().setVisible(false);
+										
+					break;
+
+					case 2:
+						
+						ventanaEstadisticas.getLblAnio().setVisible(true);
+						ventanaEstadisticas.getComboAnio().setSelectedIndex(-1);
+						ventanaEstadisticas.getComboAnio().setVisible(true);
+						
+						ventanaEstadisticas.getLblMes().setVisible(false);
+						ventanaEstadisticas.getComboMes().setVisible(false);
+						
+						ventanaEstadisticas.getLblTecnico().setText("TÉCNICO");
+						ventanaEstadisticas.getLblTecnico().setVisible(true);
+						ventanaEstadisticas.getComboTecnico().setSelectedIndex(-1);
+						ventanaEstadisticas.getComboTecnico().setVisible(true);
+						ventanaEstadisticas.getComboCliente().setVisible(false);
+										
+					break;	
+					case 3:
+						
+						ventanaEstadisticas.getLblAnio().setVisible(true);
+						ventanaEstadisticas.getComboAnio().setVisible(true);
+						ventanaEstadisticas.getComboAnio().setSelectedIndex(-1);
+						ventanaEstadisticas.getComboCliente().setVisible(true);
+						ventanaEstadisticas.getComboCliente().setSelectedIndex(-1);
+						ventanaEstadisticas.getLblTecnico().setText("CLIENTE");
+						ventanaEstadisticas.getLblTecnico().setVisible(true);
+						
+						ventanaEstadisticas.getLblMes().setVisible(false);
+						ventanaEstadisticas.getComboMes().setVisible(false);
+											
+						ventanaEstadisticas.getComboTecnico().setVisible(false);
+						
+						
+										
+
+					break;
+
+					default:
+						break;
+					}
+
+				}
+
+			}
+		});
+
+		
+		
 	}
 
 	@Override
