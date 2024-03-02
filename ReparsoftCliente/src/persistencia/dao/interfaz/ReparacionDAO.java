@@ -63,7 +63,7 @@ public interface ReparacionDAO
 
 	public List<ReparacionDTO> readAllListadoMarcarAceptaciones();
 
-
+	public int ingresosPorAnio(int anio);
 	
 
 }

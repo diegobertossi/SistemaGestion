@@ -372,6 +372,10 @@ public class Agenda {
 		return ReparacionR.readAllxComponenteReemplazo(componente);
 	}
 	
+	
+	public int dameIngresosPorAnio(int anio) {
+		return ReparacionR.ingresosPorAnio(anio);
+	}
 
 	// REPUESTOS
 

@@ -40,7 +40,6 @@ public class ControladorListados
 
 	private ControladorReparacion controladorReparacion;
 	private VentanaEquipos ventanaEquipos;
-	@SuppressWarnings("unused")
 	private VentanaEstadisticas ventanaEstadisticas;
 	// private int max = Frame.MAXIMIZED_BOTH;
 	// private int min = Frame.NORMAL;
@@ -638,12 +637,8 @@ public class ControladorListados
 		ventanaEstadisticas.getComboFiltro().addItem("POR TÉCNICO");
 		ventanaEstadisticas.getComboFiltro().addItem("POR CLIENTE");
 		
+		llenarcomboAnio();
 		
-		for (int i = 2024; i < 2030; i++) {
-
-			ventanaEstadisticas.getComboAnio().addItem(i);
-
-		}
 
 		ventanaEstadisticas.getComboFiltro().addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
@@ -669,6 +664,7 @@ public class ControladorListados
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
 						
 						ventanaEstadisticas.getComboCliente().setVisible(false);
+						ventanaEstadisticas.getPanel_Datos().setVisible(false);
 										
 					break;
 					
@@ -684,6 +680,9 @@ public class ControladorListados
 						ventanaEstadisticas.getLblTecnico().setVisible(false);
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
 						ventanaEstadisticas.getComboCliente().setVisible(false);
+						ventanaEstadisticas.getPanel_Datos().setVisible(false);
+						
+						
 										
 					break;
 
@@ -701,6 +700,7 @@ public class ControladorListados
 						ventanaEstadisticas.getComboTecnico().setSelectedIndex(-1);
 						ventanaEstadisticas.getComboTecnico().setVisible(true);
 						ventanaEstadisticas.getComboCliente().setVisible(false);
+						ventanaEstadisticas.getPanel_Datos().setVisible(false);
 										
 					break;	
 					case 3:
@@ -717,6 +717,7 @@ public class ControladorListados
 						ventanaEstadisticas.getComboMes().setVisible(false);
 											
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
+						ventanaEstadisticas.getPanel_Datos().setVisible(false);
 						
 						
 										
@@ -732,6 +733,43 @@ public class ControladorListados
 			}
 		});
 
+		
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	private void llenarcomboAnio() {
+		
+		for (int i = 2024; i < 2030; i++) {
+
+			ventanaEstadisticas.getComboAnio().addItem(i);
+
+		}		
+		
+		ventanaEstadisticas.getComboAnio().addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+
+				if (ventanaEstadisticas.getComboAnio().getSelectedItem() != null) {
+					
+					
+					ventanaEstadisticas.getLblAnioDatos().setText(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
+					ventanaEstadisticas.getPanel_Datos().setVisible(true);
+					
+					llenarDatosPorAnio();
+					
+				}
+
+			}
+		});
+		
+		
+	}
+
+	protected void llenarDatosPorAnio() {
+		
+		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
+		int cantidadIngresosPorAnio = modelo.dameIngresosPorAnio(anio);
+		ventanaEstadisticas.getTextIngresosTotales().setText(Integer.toString(cantidadIngresosPorAnio));
 		
 		
 	}
