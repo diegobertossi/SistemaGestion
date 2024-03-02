@@ -26,6 +26,7 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import dto.ReparacionDTO;
 import modelo.Agenda;
 import presentacion.vista.VentanaEquipos;
+import presentacion.vista.VentanaEstadisticas;
 import presentacion.vista.VentanaListadoReparaciones;
 import javax.swing.*;
 
@@ -38,6 +39,8 @@ public class ControladorListados
 	
 	private ControladorReparacion controladorReparacion;
 	private VentanaEquipos ventanaEquipos;
+	@SuppressWarnings("unused")
+	private VentanaEstadisticas ventanaEstadisticas; 
 	//private int max = Frame.MAXIMIZED_BOTH;
 	//private int min = Frame.NORMAL;
 
@@ -283,7 +286,11 @@ public class ControladorListados
 		else if (this.ventanaListadoReparaciones != null
 				&& arg0.getSource() == this.ventanaListadoReparaciones.getBtnEstadisticas()) {
 
-			System.out.println("ESTADISTICAS");
+			
+			ventanaEstadisticas = new VentanaEstadisticas(this);
+			
+			
+			
 		}
 
 	}
