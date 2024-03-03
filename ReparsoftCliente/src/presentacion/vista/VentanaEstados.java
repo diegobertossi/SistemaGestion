@@ -217,7 +217,7 @@ public class VentanaEstados extends JFrame
 		rdbtnNoAceptado.setBounds(6, 61, 149, 23);
 		panel_4.add(rdbtnNoAceptado);
 		
-		rdbtnGarantia = new JRadioButton("Garant�a");
+		rdbtnGarantia = new JRadioButton("Garantía");
 		rdbtnGarantia.setBackground(SystemColor.activeCaption);
 		rdbtnGarantia.setFont(new Font("Cambria", Font.PLAIN, 12));
 		rdbtnGarantia.setBounds(6, 89, 149, 23);

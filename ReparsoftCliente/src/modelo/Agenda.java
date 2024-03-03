@@ -376,7 +376,24 @@ public class Agenda {
 	public int dameIngresosPorAnio(int anio) {
 		return ReparacionR.ingresosPorAnio(anio);
 	}
+	
+	public int dameDiagnosticosPorAnio(int anio) {
+		return ReparacionR.diagnosticosPorAnio(anio);
+	}
 
+	public List<Integer> dameIngresosPorAnioPorMes(int anio) {
+		return ReparacionR.ingresosPorAnioPorMes(anio);
+	}
+	
+	
+	public List<Integer> dameDiagnosticosPorAnioPorMes(int anio) {
+		return ReparacionR.diagnosticoPorAnioPorMes(anio);
+	}
+	
+	public List<Integer> dameFacturacionPorAnioPorMes(int anio) {
+		return ReparacionR.facturacionPorAnioPorMes(anio);
+	}
+	
 	// REPUESTOS
 
 	public void agregarRepuesto(RepuestosDTO nuevoRepuesto) {
@@ -482,6 +499,8 @@ public class Agenda {
 	public void setUbicacionBase(String ubicacionBase) {
 		this.ubicacionBase = ubicacionBase;
 	}
+
+
 
 
 	

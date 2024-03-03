@@ -48,8 +48,9 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	private static final String readallModeloxMarca = "SELECT Equipos.Modelo FROM Equipos where Equipos.Marca = ? group by Equipos.Modelo";
 
 	private static final String readallSeriexModelo = "SELECT Equipos.NumeroDeSerie FROM Equipos where Equipos.Modelo = ? group by Equipos.NumeroDeSerie";
-	
-	//	private static final String readallxELS = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
+
+	// private static final String readallxELS = "SELECT Cliente.idCliente,
+	// Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
 //			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado,reparaciones.WordGenerado,reparaciones.WordEnviado, reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.NombreUsuario,reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, reparaciones.Enviado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago"
 //			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario ON reparaciones.idUsuario=usuario.IdUsuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
 //			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente) And ((usuario.IdUsuario)=reparaciones.idUsuario)) and ((Sucursal.IdSucursal)=Equipos.idSucursal) and ELS = ?";
@@ -91,14 +92,16 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	public static String ubicacion;
 	private Conexion conexion;
-	
+
 	private static final String ingresosPorAnio = "select count(*) from reparaciones where YEAR(FechaEntrada) = ?";
-	
-	
+	private static final String diagnosticosPorAnio = "select count(*) from reparaciones where YEAR(FechaEntrada) = ? and reparaciones.EstadoTecnico != 'Sin Revisar'";
+	private static final String ingresosPorAnioxMes = "select count(*) from reparaciones where YEAR(FechaEntrada) = ? group by MONTH(FechaEntrada)";
+	private static final String diagnosticoPorAnioxMes = "select count(*) from reparaciones where YEAR(FechaEntrada) = ? and reparaciones.EstadoTecnico != 'Sin Revisar' group by MONTH(FechaEntrada)";
+	private static final String facturacionoPorAnioxMes = "select SUM(PrecioPeso) from reparaciones where YEAR(FechaEntrada) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion);";
 
 	@SuppressWarnings("unused")
 	public ReparacionDAOImpl(String ubicacionBase) {
-		
+
 		final String insert = "INSERT INTO reparaciones(ELS,FechaEntrada,Falla, EstadoFisico, EstadoTecnico,EstadoComercial, RemitoCliente, idEquipo, idUsuario) VALUES( ? , ? ,? , ? , ?,? , ? , ?,?)";
 
 		final String insertEquipo = "INSERT INTO Equipos (IdEquipo, Nombre, Modelo, Marca, NumeroDeSerie, FechaFabr,Aviso, ClienteCliente, RemitoCliente, idCliente, idSucursal ) VALUES(? , ? ,? , ? , ? , ? , ? , ? , ?, ?,?)";
@@ -173,13 +176,10 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 				+ " FROM (UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion ) INNER JOIN reemplazos ON reparaciones.ELS = reemplazos.ELS"
 				+ " WHERE ((Cliente.idCliente)=Equipos.idCliente) and ((Sucursal.IdSucursal)=Equipos.idSucursal) and ((usuario.IdUsuario)=reparaciones.idUsuario) and reemplazos.reemplazo = ?";
 
-		
 		ubicacion = ubicacionBase;
 		conexion = Conexion.getConexion(ubicacion);
-		
-	}
-	
 
+	}
 
 	public boolean insert(ReparacionDTO Reparaciones) {
 		PreparedStatement statement;
@@ -399,11 +399,11 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 				ELS = resultSet.getInt("MAX(ELS)");
 
 			}
-			if (ELS==0) {
-				
-				ELS=987;
+			if (ELS == 0) {
+
+				ELS = 987;
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
@@ -438,27 +438,21 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		return idEquipo;
 	}
 
-	
 	public int ingresosPorAnio(int anio) {
-	
-		PreparedStatement statement;		
+
+		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
-		
-		
-		
 		int cantEquiposxAnio = 0;
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(ingresosPorAnio);
-			statement.setInt(1,anio);
+			statement.setInt(1, anio);
 			resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
 				cantEquiposxAnio = resultSet.getInt("count(*)");
 
 			}
-			
 
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
@@ -468,9 +462,146 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return cantEquiposxAnio;
 	}
+
+	@Override
+	public int diagnosticosPorAnio(int anio) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantDiagnosticosxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(diagnosticosPorAnio);
+			statement.setInt(1, anio);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantDiagnosticosxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantDiagnosticosxAnio;
+	}
+
+	public List<Integer> ingresosPorAnioPorMes(int anio) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(ingresosPorAnioxMes);
+			statement.setInt(1, anio);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				cantidadPorMes.add(resultSet.getInt(1));
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		if (cantidadPorMes.size() < 12) {
+
+			for (int i = cantidadPorMes.size(); i < 12; i++) {
+				cantidadPorMes.add(0);
+
+			}
+
+		}
+
+		return cantidadPorMes;
+	}
 	
 	
 	
+	public List<Integer> diagnosticoPorAnioPorMes(int anio) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(diagnosticoPorAnioxMes);
+			statement.setInt(1, anio);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				cantidadPorMes.add(resultSet.getInt(1));
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		if (cantidadPorMes.size() < 12) {
+
+			for (int i = cantidadPorMes.size(); i < 12; i++) {
+				cantidadPorMes.add(0);
+
+			}
+
+		}
+
+		return cantidadPorMes;
+	}
+	
+	
+	public List<Integer> facturacionPorAnioPorMes(int anio) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<Integer> sumadPorMes = new ArrayList<Integer>();
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(facturacionoPorAnioxMes);
+			statement.setInt(1, anio);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				sumadPorMes.add(resultSet.getInt(1));
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		if (sumadPorMes.size() < 12) {
+
+			for (int i = sumadPorMes.size(); i < 12; i++) {
+				sumadPorMes.add(0);
+
+			}
+
+		}
+
+		return sumadPorMes;
+	}
+	
+	
+	
+	
+	
+	
+
 	public boolean editEquipo(ReparacionDTO reparacion_a_editar) {
 		PreparedStatement statement;
 		try {
@@ -579,8 +710,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "EstadoFisico = '"
 						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
 						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
-						+ "' ," + "PrecioDolar = '" + reparacion_a_editar.getPrecioDolar()
-						+ "' ," + "PrecioPeso = '" + reparacion_a_editar.getPrecioPeso() + "' ," + "EstadoComercial = '"
+						+ "' ," + "PrecioDolar = '" + reparacion_a_editar.getPrecioDolar() + "' ," + "PrecioPeso = '"
+						+ reparacion_a_editar.getPrecioPeso() + "' ," + "EstadoComercial = '"
 						+ reparacion_a_editar.getEstadoComercial() + "' ," + "RemitoCliente = '"
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "PresupuestoGenerado = '" + PresupGenerado
 						+ "' ," + "OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ,"
@@ -694,21 +825,19 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 				}
 			}
 
-			else if (reparacion_a_editar.getFechAceptacion() != null && reparacion_a_editar.getEstadoComercial() != null) {
+			else if (reparacion_a_editar.getFechAceptacion() != null
+					&& reparacion_a_editar.getEstadoComercial() != null) {
 
 				statement = conexion.getSQLConexion().prepareStatement(
-						
-						
+
 						"UPDATE reparaciones SET EstadoComercial = '" + reparacion_a_editar.getEstadoComercial() + "' ,"
 								+ "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
 								+ reparacion_a_editar.getELS() + "");
 
 				System.out.println("4.9");
-		
-				
+
 			}
-			
-			
+
 			else if (reparacion_a_editar.getAgregadoaremito() == true && reparacion_a_editar.getEnviado() == null
 					&& reparacion_a_editar.getidRemito() != 0) {
 
@@ -743,8 +872,6 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 				System.out.println("7");
 
 			}
-
-			
 
 			if (statement.executeUpdate() > 0) // Si se ejecut� devuelvo true
 

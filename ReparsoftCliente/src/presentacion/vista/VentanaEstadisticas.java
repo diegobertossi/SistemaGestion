@@ -18,6 +18,8 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JSeparator;
+import javax.swing.BoxLayout;
+import javax.swing.border.CompoundBorder;
 
 public class VentanaEstadisticas extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -27,7 +29,6 @@ public class VentanaEstadisticas extends JFrame {
 	private ControladorReparacion controladorP;
 	@SuppressWarnings("unused")
 	private ControladorListados controlador;
-	private JTextField textField_2;
 	private JTextField textIngresosTotales;
 	private JTextField textDiagnosticosTotales;
 	private JTextField textReparados;
@@ -62,17 +63,21 @@ public class VentanaEstadisticas extends JFrame {
 	private JLabel lblAnioDatos;
 	
 	private JPanel panel_Datos;
+	private JPanel panel;
+	private JPanel panel_Ingresos;
+	private JPanel panel_Diagnosticos;
+	private JPanel panel_Facturacion;
 	
 	
 
 	@SuppressWarnings("rawtypes")
 	public VentanaEstadisticas(ControladorListados controlador) {
 		super();
-		setResizable(false);
+		//setResizable(false);
 		this.controlador = controlador;
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1020, 700);
+		setBounds(100, 100, 1235, 711);
 
 		this.setLocationRelativeTo(null);
 
@@ -95,10 +100,6 @@ public class VentanaEstadisticas extends JFrame {
 		contentPane.add(panelCentro, BorderLayout.CENTER);
 		panelCentro.setLayout(new BorderLayout(0, 0));
 		
-		textField_2 = new JTextField();
-		panelCentro.add(textField_2, BorderLayout.CENTER);
-		textField_2.setColumns(10);
-		
 		JPanel panel_Filtros = new JPanel();
 		panel_Filtros.setBorder(new LineBorder(new Color(0, 128, 128)));
 		panel_Filtros.setPreferredSize(new Dimension(500, 50));
@@ -107,57 +108,76 @@ public class VentanaEstadisticas extends JFrame {
 		
 		JLabel lblNewLabel_1_3 = new JLabel("FILTRO: ");
 		lblNewLabel_1_3.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblNewLabel_1_3.setBounds(59, 6, 104, 14);
+		lblNewLabel_1_3.setBounds(102, 6, 104, 14);
 		lblNewLabel_1_3.setPreferredSize(new Dimension(50, 14));
 		panel_Filtros.add(lblNewLabel_1_3);
 		
 		comboFiltro = new JComboBox();
 		comboFiltro.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltro.setBounds(59, 23, 135, 22);
+		comboFiltro.setBounds(102, 23, 135, 22);
 		panel_Filtros.add(comboFiltro);
 		
 		lblAnio = new JLabel("AÑO: ");
 		lblAnio.setVisible(false);
 		lblAnio.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblAnio.setBounds(253, 6, 104, 14);
+		lblAnio.setBounds(339, 6, 104, 14);
 		lblAnio.setPreferredSize(new Dimension(50, 14));
 		panel_Filtros.add(lblAnio);
 		
 		comboAnio = new JComboBox();
 		comboAnio.setVisible(false);
 		comboAnio.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboAnio.setBounds(253, 23, 104, 22);
+		comboAnio.setBounds(339, 23, 104, 22);
 		panel_Filtros.add(comboAnio);
 		
 		comboTecnico = new JComboBox<Object>();
 		comboTecnico.setVisible(false);
 		comboTecnico.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboTecnico.setBounds(416, 23, 104, 22);
+		comboTecnico.setBounds(545, 23, 104, 22);
 		panel_Filtros.add(comboTecnico);
 		
 		lblTecnico = new JLabel("TÉCNICO: ");
 		lblTecnico.setVisible(false);
 		lblTecnico.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblTecnico.setBounds(416, 6, 104, 14);
+		lblTecnico.setBounds(545, 6, 104, 14);
 		panel_Filtros.add(lblTecnico);
 		
 		comboMes = new JComboBox<Object>();
 		comboMes.setVisible(false);
 		comboMes.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboMes.setBounds(579, 23, 104, 22);
+		comboMes.setBounds(751, 23, 104, 22);
 		panel_Filtros.add(comboMes);
 		
 		lblMes = new JLabel("MES: ");
 		lblMes.setVisible(false);
 		lblMes.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblMes.setBounds(579, 6, 104, 14);
+		lblMes.setBounds(751, 6, 104, 14);
 		lblMes.setPreferredSize(new Dimension(50, 14));
 		panel_Filtros.add(lblMes);
 		
 		comboCliente = new JComboBox();
 		comboCliente.setVisible(false);
-		comboCliente.setBounds(416, 23, 104, 22);
+		comboCliente.setBounds(545, 24, 104, 22);
 		panel_Filtros.add(comboCliente);
+		
+		panel = new JPanel();
+		panelCentro.add(panel, BorderLayout.CENTER);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		
+		panel_Ingresos = new JPanel();
+		panel_Ingresos.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new LineBorder(new Color(47, 79, 79))));
+		panel.add(panel_Ingresos);
+		panel_Ingresos.setLayout(new BorderLayout(0, 0));
+		
+		panel_Diagnosticos = new JPanel();
+		panel_Diagnosticos.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new LineBorder(new Color(47, 79, 79))));
+		panel.add(panel_Diagnosticos);
+		panel_Diagnosticos.setLayout(new BorderLayout(0, 0));
+		
+		panel_Facturacion = new JPanel();
+		panel_Facturacion.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new LineBorder(new Color(47, 79, 79))));
+		panel.add(panel_Facturacion);
+		panel_Facturacion.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panelDerecha = new JPanel();
 		panelDerecha.setPreferredSize(new Dimension(250, 10));
@@ -633,5 +653,53 @@ public class VentanaEstadisticas extends JFrame {
 
 	public void setLblAnioDatos(JLabel lblAnioDatos) {
 		this.lblAnioDatos = lblAnioDatos;
+	}
+
+
+
+
+
+	public JPanel getPanel_Ingresos() {
+		return panel_Ingresos;
+	}
+
+
+
+
+
+	public void setPanel_Ingresos(JPanel panel_Ingresos) {
+		this.panel_Ingresos = panel_Ingresos;
+	}
+
+
+
+
+
+	public JPanel getPanel_Diagnosticos() {
+		return panel_Diagnosticos;
+	}
+
+
+
+
+
+	public void setPanel_Diagnosticos(JPanel panel_Diagnosticos) {
+		this.panel_Diagnosticos = panel_Diagnosticos;
+	}
+
+
+
+
+
+	public JPanel getPanel_Facturacion() {
+		return panel_Facturacion;
+	}
+
+
+
+
+
+	public void setPanel_Facturacion(JPanel panel_Facturacion) {
+		this.panel_Facturacion = panel_Facturacion;
 	}
 	}

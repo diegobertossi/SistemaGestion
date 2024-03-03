@@ -1,6 +1,10 @@
 package presentacion.controlador;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.GradientPaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -23,6 +27,13 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import dto.ReparacionDTO;
 import modelo.Agenda;
@@ -756,6 +767,12 @@ public class ControladorListados
 					ventanaEstadisticas.getPanel_Datos().setVisible(true);
 					
 					llenarDatosPorAnio();
+					ventanaEstadisticas.getPanel_Ingresos().removeAll();
+					ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
+					ventanaEstadisticas.getPanel_Facturacion().removeAll();
+					mostrarGraficos();
+					
+
 					
 				}
 
@@ -765,14 +782,127 @@ public class ControladorListados
 		
 	}
 
-	protected void llenarDatosPorAnio() {
+	private void llenarDatosPorAnio() {
 		
 		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
 		int cantidadIngresosPorAnio = modelo.dameIngresosPorAnio(anio);
+		int cantidadDiagnosticosPorAnio = modelo.dameDiagnosticosPorAnio(anio);
+		
+		
+		
 		ventanaEstadisticas.getTextIngresosTotales().setText(Integer.toString(cantidadIngresosPorAnio));
+		ventanaEstadisticas.getTextDiagnosticosTotales().setText(Integer.toString(cantidadDiagnosticosPorAnio));
+		
+	}
+	
+	private void mostrarGraficos(){
+		
+		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
+		
+		List<Integer> listaIngresos = modelo.dameIngresosPorAnioPorMes(anio);
+		List<Integer> listaDiagnosticos = modelo.dameDiagnosticosPorAnioPorMes(anio);
+		List<Integer> listaFacturacion = modelo.dameFacturacionPorAnioPorMes(anio);
+		
+		
+		DefaultCategoryDataset datosIngresos =  new DefaultCategoryDataset();
+		DefaultCategoryDataset datosDiagnosticos =  new DefaultCategoryDataset();
+		DefaultCategoryDataset datosFacturacion =  new DefaultCategoryDataset();
+
+		
+		datosIngresos.setValue(listaIngresos.get(0), "Ingresos", "ENE");
+		datosIngresos.setValue(listaIngresos.get(1), "Ingresos", "FEB");
+		datosIngresos.setValue(listaIngresos.get(2), "Ingresos", "MAR");
+		datosIngresos.setValue(listaIngresos.get(3), "Ingresos", "ABR");
+		datosIngresos.setValue(listaIngresos.get(4), "Ingresos", "MAY");
+		datosIngresos.setValue(listaIngresos.get(5), "Ingresos", "JUN");
+		datosIngresos.setValue(listaIngresos.get(6), "Ingresos", "JUL");
+		datosIngresos.setValue(listaIngresos.get(7), "Ingresos", "AGO");
+		datosIngresos.setValue(listaIngresos.get(8), "Ingresos", "SEP");
+		datosIngresos.setValue(listaIngresos.get(9), "Ingresos", "OCT");
+		datosIngresos.setValue(listaIngresos.get(10), "Ingresos", "NOV");
+		datosIngresos.setValue(listaIngresos.get(11), "Ingresos", "DIC");
+		
+		
+		datosDiagnosticos.setValue(listaDiagnosticos.get(0), "Diagnósticos", "ENE");
+		datosDiagnosticos.setValue(listaDiagnosticos.get(1), "Diagnósticos", "FEB");
+		datosDiagnosticos.setValue(listaDiagnosticos.get(2), "Diagnósticos", "MAR");
+		datosDiagnosticos.setValue(listaDiagnosticos.get(3), "Diagnósticos", "ABR");
+		datosDiagnosticos.setValue(listaDiagnosticos.get(4), "Diagnósticos", "MAY");
+		datosDiagnosticos.setValue(listaDiagnosticos.get(5), "Diagnósticos", "JUN");
+		datosDiagnosticos.setValue(listaDiagnosticos.get(6), "Diagnósticos", "JUL");
+		datosDiagnosticos.setValue(listaDiagnosticos.get(7), "Diagnósticos", "AGO");
+		datosDiagnosticos.setValue(listaDiagnosticos.get(8), "Diagnósticos", "SEP");
+		datosDiagnosticos.setValue(listaDiagnosticos.get(9), "Diagnósticos", "OCT");
+		datosDiagnosticos.setValue(listaDiagnosticos.get(10), "Diagnósticos", "NOV");
+		datosDiagnosticos.setValue(listaDiagnosticos.get(11), "Diagnósticos", "DIC");
+		
+				
+		datosFacturacion.setValue(listaFacturacion.get(0), "Facturación", "ENE");
+		datosFacturacion.setValue(listaFacturacion.get(1), "Facturación", "FEB");
+		datosFacturacion.setValue(listaFacturacion.get(2), "Facturación", "MAR");
+		datosFacturacion.setValue(listaFacturacion.get(3), "Facturación", "ABR");
+		datosFacturacion.setValue(listaFacturacion.get(4), "Facturación", "MAY");
+		datosFacturacion.setValue(listaFacturacion.get(5), "Facturación", "JUN");
+		datosFacturacion.setValue(listaFacturacion.get(6), "Facturación", "JUL");
+		datosFacturacion.setValue(listaFacturacion.get(7), "Facturación", "AGO");
+		datosFacturacion.setValue(listaFacturacion.get(8), "Facturación", "SEP");
+		datosFacturacion.setValue(listaFacturacion.get(9), "Facturación", "OCT");
+		datosFacturacion.setValue(listaFacturacion.get(10), "Facturación", "NOV");
+		datosFacturacion.setValue(listaFacturacion.get(11), "Facturación", "DIC");
+		
+			
+		JFreeChart grafico_ingresos = ChartFactory.createBarChart3D("Ingresos", "Mes", "Cantidad", datosIngresos,PlotOrientation.VERTICAL,false,true,false);
+		JFreeChart grafico_diagnosticos = ChartFactory.createBarChart3D("Diagnósicos", "Mes", "Cantidad", datosDiagnosticos,PlotOrientation.VERTICAL,false,true,false);
+		JFreeChart grafico_facturacion = ChartFactory.createBarChart3D("Facturación", "Mes", "Pesos($)", datosFacturacion,PlotOrientation.VERTICAL,false,true,false);
+		
+				
+		CategoryPlot plot_ingreso =(CategoryPlot) grafico_ingresos.getPlot();
+		CategoryPlot plot_diagnostico =(CategoryPlot) grafico_diagnosticos.getPlot();
+		CategoryPlot plot_facturacion =(CategoryPlot) grafico_facturacion.getPlot();
+		
+		BarRenderer renderer_ingreso = (BarRenderer) plot_ingreso.getRenderer();
+		renderer_ingreso.setDrawBarOutline(false);        
+        GradientPaint gp0= new GradientPaint(0.0f,0.0f,Color.blue,0.0f,0.0f,new Color(0,0,64));
+        renderer_ingreso.setSeriesPaint(0,gp0);
+        
+        BarRenderer renderer_diagnostico = (BarRenderer) plot_diagnostico.getRenderer();
+        renderer_diagnostico.setDrawBarOutline(false);      
+        GradientPaint gp1= new GradientPaint(0.0f,0.0f,Color.green,0.0f,0.0f,new Color(0,64,0));
+        renderer_diagnostico.setSeriesPaint(0,gp1);
+                
+        BarRenderer renderer_facturacion = (BarRenderer) plot_facturacion.getRenderer();
+        renderer_facturacion.setDrawBarOutline(false);      
+        GradientPaint gp2= new GradientPaint(0.0f,0.0f,Color.red,0.0f,0.0f,new Color(64,0,0));
+        renderer_facturacion.setSeriesPaint(0,gp2);
+		
+
+		ChartPanel panelGraficoIngresos= new ChartPanel(grafico_ingresos);
+		panelGraficoIngresos.setMouseWheelEnabled(true);
+		panelGraficoIngresos.setPreferredSize(new Dimension(700,40));
+		
+		ChartPanel panelGraficoDiagnosticos= new ChartPanel(grafico_diagnosticos);
+		panelGraficoDiagnosticos.setMouseWheelEnabled(true);
+		panelGraficoDiagnosticos.setPreferredSize(new Dimension(700,40));
+		
+		ChartPanel panelGraficoIngresosFacturacion= new ChartPanel(grafico_facturacion);
+		panelGraficoIngresosFacturacion.setMouseWheelEnabled(true);
+		panelGraficoIngresosFacturacion.setPreferredSize(new Dimension(700,40));
+				
+		ventanaEstadisticas.getPanel_Ingresos().add(panelGraficoIngresos,BorderLayout.CENTER);
+		ventanaEstadisticas.getPanel_Diagnosticos().add(panelGraficoDiagnosticos,BorderLayout.CENTER);
+		ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoIngresosFacturacion,BorderLayout.CENTER);
+		
+		
+		//ventanaEstadisticas.pack();
+		ventanaEstadisticas.repaint();
+		
+		
 		
 		
 	}
+	
+	
+	
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
