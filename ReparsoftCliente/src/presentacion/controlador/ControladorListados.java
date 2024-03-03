@@ -676,6 +676,11 @@ public class ControladorListados
 						
 						ventanaEstadisticas.getComboCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
+						
+						ventanaEstadisticas.getPanel_Ingresos().removeAll();
+						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
+						ventanaEstadisticas.getPanel_Facturacion().removeAll();
+						ventanaEstadisticas.repaint();
 										
 					break;
 					
@@ -692,6 +697,11 @@ public class ControladorListados
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
 						ventanaEstadisticas.getComboCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
+						
+						ventanaEstadisticas.getPanel_Ingresos().removeAll();
+						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
+						ventanaEstadisticas.getPanel_Facturacion().removeAll();
+						ventanaEstadisticas.repaint();
 						
 						
 										
@@ -712,6 +722,11 @@ public class ControladorListados
 						ventanaEstadisticas.getComboTecnico().setVisible(true);
 						ventanaEstadisticas.getComboCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
+						
+						ventanaEstadisticas.getPanel_Ingresos().removeAll();
+						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
+						ventanaEstadisticas.getPanel_Facturacion().removeAll();
+						ventanaEstadisticas.repaint();
 										
 					break;	
 					case 3:
@@ -730,6 +745,10 @@ public class ControladorListados
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
 						
+						ventanaEstadisticas.getPanel_Ingresos().removeAll();
+						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
+						ventanaEstadisticas.getPanel_Facturacion().removeAll();
+						ventanaEstadisticas.repaint();
 						
 										
 
@@ -851,11 +870,15 @@ public class ControladorListados
 		datosFacturacion.setValue(listaFacturacion.get(11), "Facturación", "DIC");
 		
 			
-		JFreeChart grafico_ingresos = ChartFactory.createBarChart3D("Ingresos", "Mes", "Cantidad", datosIngresos,PlotOrientation.VERTICAL,false,true,false);
-		JFreeChart grafico_diagnosticos = ChartFactory.createBarChart3D("Diagnósicos", "Mes", "Cantidad", datosDiagnosticos,PlotOrientation.VERTICAL,false,true,false);
-		JFreeChart grafico_facturacion = ChartFactory.createBarChart3D("Facturación", "Mes", "Pesos($)", datosFacturacion,PlotOrientation.VERTICAL,false,true,false);
+		JFreeChart grafico_ingresos = ChartFactory.createBarChart("Ingresos", "Mes", "Cantidad", datosIngresos,PlotOrientation.VERTICAL,false,true,false);
+		JFreeChart grafico_diagnosticos = ChartFactory.createBarChart("Diagnósicos", "Mes", "Cantidad", datosDiagnosticos,PlotOrientation.VERTICAL,false,true,false);
+		JFreeChart grafico_facturacion = ChartFactory.createBarChart("Facturación", "Mes", "Pesos($)", datosFacturacion,PlotOrientation.VERTICAL,false,true,false);
 		
-				
+		
+		
+		
+		
+		
 		CategoryPlot plot_ingreso =(CategoryPlot) grafico_ingresos.getPlot();
 		CategoryPlot plot_diagnostico =(CategoryPlot) grafico_diagnosticos.getPlot();
 		CategoryPlot plot_facturacion =(CategoryPlot) grafico_facturacion.getPlot();
