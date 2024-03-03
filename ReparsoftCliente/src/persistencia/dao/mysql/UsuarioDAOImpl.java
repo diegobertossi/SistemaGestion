@@ -9,7 +9,6 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
-import dto.ReparacionDTO;
 import dto.UsuarioDTO;
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.UsuarioDAO;
@@ -19,8 +18,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	private static final String delete = "DELETE FROM usuario WHERE idUsuario = ?";
 	private static final String readall = "SELECT * FROM usuario WHERE dni <> 0 ";
 	private static final String readLogin = "SELECT * FROM usuario where login = ? AND pass = ? ";
-	private static final String readallTecnico = "SELECT usuario.nombre FROM usuario group by usuario.nombre";
-	private static final String IDporNombre = "Select idUsuario from usuario where nombre =?";
+	private static final String readallTecnico = "SELECT usuario.nombre, usuario.apellido FROM usuario group by usuario.apellido";
+	private static final String IDporNombre = "Select idUsuario from usuario where nombre =? and apellido =?";
 	public static String ubicacion;
 	private Conexion conexion;;
 	
@@ -324,7 +323,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 			while (resultSet.next()) {
 
-				value.addElement(new ReparacionDTO(resultSet.getString(1)));
+				value.addElement(new UsuarioDTO(resultSet.getString(1),resultSet.getString(2)));
 
 			}
 		} catch (SQLException e) {
@@ -341,9 +340,16 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
 		int idUsuario = 0;
+		
+		
+		String[] partes = nombreTecnico.split(" ");
+		String nombre = partes[0]; 
+		String apellido = partes[1]; 
+		
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(IDporNombre);
-			statement.setString(1, nombreTecnico);
+			statement.setString(1, nombre);
+			statement.setString(2, apellido);
 			resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {

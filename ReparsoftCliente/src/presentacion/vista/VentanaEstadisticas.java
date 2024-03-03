@@ -133,16 +133,16 @@ public class VentanaEstadisticas extends JFrame {
 		comboTecnico = new JComboBox<Object>();
 		comboTecnico.setVisible(false);
 		comboTecnico.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboTecnico.setBounds(545, 23, 104, 22);
+		comboTecnico.setBounds(483, 23, 166, 22);
 		panel_Filtros.add(comboTecnico);
 		
 		lblTecnico = new JLabel("TÉCNICO: ");
 		lblTecnico.setVisible(false);
 		lblTecnico.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblTecnico.setBounds(545, 6, 104, 14);
+		lblTecnico.setBounds(483, 6, 104, 14);
 		panel_Filtros.add(lblTecnico);
 		
-		comboMes = new JComboBox<Object>();
+		comboMes = new JComboBox();
 		comboMes.setVisible(false);
 		comboMes.setFont(new Font("Cambria", Font.PLAIN, 12));
 		comboMes.setBounds(751, 23, 104, 22);
@@ -157,7 +157,7 @@ public class VentanaEstadisticas extends JFrame {
 		
 		comboCliente = new JComboBox();
 		comboCliente.setVisible(false);
-		comboCliente.setBounds(545, 24, 104, 22);
+		comboCliente.setBounds(483, 23, 166, 22);
 		panel_Filtros.add(comboCliente);
 		
 		panel = new JPanel();
@@ -165,17 +165,17 @@ public class VentanaEstadisticas extends JFrame {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
 		panel_Ingresos = new JPanel();
-		panel_Ingresos.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new LineBorder(new Color(47, 79, 79))));
+		panel_Ingresos.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128), 2), new LineBorder(new Color(0, 0, 0))));
 		panel.add(panel_Ingresos);
 		panel_Ingresos.setLayout(new BorderLayout(0, 0));
 		
 		panel_Diagnosticos = new JPanel();
-		panel_Diagnosticos.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new LineBorder(new Color(47, 79, 79))));
+		panel_Diagnosticos.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128), 2), new LineBorder(new Color(0, 0, 0))));
 		panel.add(panel_Diagnosticos);
 		panel_Diagnosticos.setLayout(new BorderLayout(0, 0));
 		
 		panel_Facturacion = new JPanel();
-		panel_Facturacion.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new LineBorder(new Color(47, 79, 79))));
+		panel_Facturacion.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128), 2), new LineBorder(new Color(0, 0, 0))));
 		panel.add(panel_Facturacion);
 		panel_Facturacion.setLayout(new BorderLayout(0, 0));
 		
@@ -529,7 +529,8 @@ public class VentanaEstadisticas extends JFrame {
 
 
 
-	public JComboBox<?> getComboTecnico() {
+	@SuppressWarnings("rawtypes")
+	public JComboBox getComboTecnico() {
 		return comboTecnico;
 	}
 
@@ -537,7 +538,8 @@ public class VentanaEstadisticas extends JFrame {
 
 
 
-	public void setComboTecnico(JComboBox<?> comboTecnico) {
+	@SuppressWarnings("rawtypes")
+	public void setComboTecnico(JComboBox comboTecnico) {
 		this.comboTecnico = comboTecnico;
 	}
 
@@ -545,7 +547,8 @@ public class VentanaEstadisticas extends JFrame {
 
 
 
-	public JComboBox<?> getComboMes() {
+	@SuppressWarnings("rawtypes")
+	public JComboBox getComboMes() {
 		return comboMes;
 	}
 
@@ -553,7 +556,8 @@ public class VentanaEstadisticas extends JFrame {
 
 
 
-	public void setComboMes(JComboBox<?> comboMes) {
+	@SuppressWarnings("rawtypes")
+	public void setComboMes(JComboBox comboMes) {
 		this.comboMes = comboMes;
 	}
 

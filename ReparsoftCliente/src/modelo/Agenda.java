@@ -77,7 +77,8 @@ public class Agenda {
 		return usuario.readAllXRol(idRol);
 	}
 
-	public void ListarTecnicos(JComboBox<?> comboFiltroTecnico) {
+	@SuppressWarnings("rawtypes")
+	public void ListarTecnicos(JComboBox comboFiltroTecnico) {
 		usuario.comboFiltroTecnicos(comboFiltroTecnico);
 
 	}
@@ -372,7 +373,6 @@ public class Agenda {
 		return ReparacionR.readAllxComponenteReemplazo(componente);
 	}
 	
-	
 	public int dameIngresosPorAnio(int anio) {
 		return ReparacionR.ingresosPorAnio(anio);
 	}
@@ -393,6 +393,22 @@ public class Agenda {
 	public List<Integer> dameFacturacionPorAnioPorMes(int anio) {
 		return ReparacionR.facturacionPorAnioPorMes(anio);
 	}
+	
+	
+	
+	public List<Integer> dameDiagnosticosPorAnioPorTecnico(int anio, int idTecnico) {
+		return ReparacionR.diagnosticoPorAnioPorTecnico(anio, idTecnico);
+	}
+
+	public List<Integer> dameAceptacionesPorAnioPorTecnico(int anio, int idTecnico) {
+		return ReparacionR.aceptacionesPorAnioPorTecnico(anio, idTecnico);
+	}
+
+	public List<Integer> dameFacturacionPorAnioPorTecnico(int anio, int idtecnico) {
+		return ReparacionR.facturacionPorAnioPorTecnico(anio, idtecnico);
+	}
+	
+	
 	
 	// REPUESTOS
 
@@ -499,6 +515,8 @@ public class Agenda {
 	public void setUbicacionBase(String ubicacionBase) {
 		this.ubicacionBase = ubicacionBase;
 	}
+
+
 
 
 

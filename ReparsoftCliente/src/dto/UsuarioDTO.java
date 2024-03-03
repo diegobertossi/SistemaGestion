@@ -36,6 +36,11 @@ public class UsuarioDTO
 		this.pass = pass;
 	}
 
+	public UsuarioDTO(String nombre, String apellido) {
+		this.nombre = nombre;
+		this.apellido = apellido;
+	}
+
 	public int getIdUsuario() {
 		return idUsuario;
 	}
@@ -120,6 +125,12 @@ public class UsuarioDTO
 
 	public void setPass(String pass) {
 		this.pass = pass;
+	}
+	
+	
+	public String toString(){
+		return this.nombre +" "+this.apellido;
+		
 	}
 	
 	

@@ -72,6 +72,12 @@ public interface ReparacionDAO
 	public List<Integer> diagnosticoPorAnioPorMes(int anio);
 	
 	public List<Integer> facturacionPorAnioPorMes(int anio);
+
+	public List<Integer> diagnosticoPorAnioPorTecnico(int anio, int idTecnico);
+
+	public List<Integer> aceptacionesPorAnioPorTecnico(int anio, int idTecnico);
+
+	public List<Integer> facturacionPorAnioPorTecnico(int anio, int idtecnico);
 	
 
 }
