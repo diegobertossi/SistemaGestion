@@ -2424,7 +2424,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private void llenarComboTecnico() {
 
-		agenda.ListarTecnicos(ventanaVisualizarEquipos.getComboTecnico());
+		agenda.ListarTecnicosV(ventanaVisualizarEquipos.getComboTecnico());
 
 	}
 

@@ -32,4 +32,7 @@ public interface UsuarioDAO
 	public void comboFiltroTecnicos(JComboBox comboFiltroTecnico);
 
 	public int obtenerIDporNombre(String nombreTecnico);
+	
+	@SuppressWarnings("rawtypes")
+	public void comboFiltroTecnicosV(JComboBox comboTecnico);
 }

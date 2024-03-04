@@ -82,6 +82,13 @@ public class Agenda {
 		usuario.comboFiltroTecnicos(comboFiltroTecnico);
 
 	}
+	
+	@SuppressWarnings("rawtypes")
+	public void ListarTecnicosV(JComboBox comboTecnico) {
+		usuario.comboFiltroTecnicosV(comboTecnico);
+
+		
+	}
 
 	
 	public int idUsuarioporNombre(String nombreTecnico) {
@@ -274,7 +281,7 @@ public class Agenda {
 		
 	}
 	
-	
+
 
 	// EQUIPOS
 	public void ListarEquipo(JComboBox<?> box) {
@@ -408,6 +415,18 @@ public class Agenda {
 		return ReparacionR.facturacionPorAnioPorTecnico(anio, idtecnico);
 	}
 	
+	public List<Integer> dameIngresosPorAnioPorCliente(int anio, int idCliente) {
+		return ReparacionR.ingresosPorAnioPorCliente(anio, idCliente);
+	}
+
+	public List<Integer> dameFacturacionPorAnioPorCliente(int anio, int idCliente) {
+		return ReparacionR.facturacionPorAnioPorCliente(anio, idCliente);
+	}
+
+	public List<Integer> dameAceptacionesPorAnioPorCliente(int anio, int idCliente) {
+		return ReparacionR.aceptacionesPorAnioPorCliente(anio, idCliente);
+	}
+	
 	
 	
 	// REPUESTOS
@@ -515,6 +534,10 @@ public class Agenda {
 	public void setUbicacionBase(String ubicacionBase) {
 		this.ubicacionBase = ubicacionBase;
 	}
+
+
+
+
 
 
 

@@ -114,50 +114,50 @@ public class VentanaEstadisticas extends JFrame {
 		
 		comboFiltro = new JComboBox();
 		comboFiltro.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltro.setBounds(102, 23, 135, 22);
+		comboFiltro.setBounds(90, 23, 135, 22);
 		panel_Filtros.add(comboFiltro);
 		
 		lblAnio = new JLabel("AÑO: ");
 		lblAnio.setVisible(false);
 		lblAnio.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblAnio.setBounds(339, 6, 104, 14);
+		lblAnio.setBounds(571, 6, 104, 14);
 		lblAnio.setPreferredSize(new Dimension(50, 14));
 		panel_Filtros.add(lblAnio);
 		
 		comboAnio = new JComboBox();
 		comboAnio.setVisible(false);
 		comboAnio.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboAnio.setBounds(339, 23, 104, 22);
+		comboAnio.setBounds(571, 23, 104, 22);
 		panel_Filtros.add(comboAnio);
 		
 		comboTecnico = new JComboBox<Object>();
 		comboTecnico.setVisible(false);
 		comboTecnico.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboTecnico.setBounds(483, 23, 166, 22);
+		comboTecnico.setBounds(315, 23, 166, 22);
 		panel_Filtros.add(comboTecnico);
 		
 		lblTecnico = new JLabel("TÉCNICO: ");
 		lblTecnico.setVisible(false);
 		lblTecnico.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblTecnico.setBounds(483, 6, 104, 14);
+		lblTecnico.setBounds(315, 6, 104, 14);
 		panel_Filtros.add(lblTecnico);
 		
 		comboMes = new JComboBox();
 		comboMes.setVisible(false);
 		comboMes.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboMes.setBounds(751, 23, 104, 22);
+		comboMes.setBounds(765, 23, 104, 22);
 		panel_Filtros.add(comboMes);
 		
 		lblMes = new JLabel("MES: ");
 		lblMes.setVisible(false);
 		lblMes.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblMes.setBounds(751, 6, 104, 14);
+		lblMes.setBounds(765, 6, 104, 14);
 		lblMes.setPreferredSize(new Dimension(50, 14));
 		panel_Filtros.add(lblMes);
 		
 		comboCliente = new JComboBox();
 		comboCliente.setVisible(false);
-		comboCliente.setBounds(483, 23, 166, 22);
+		comboCliente.setBounds(315, 23, 166, 22);
 		panel_Filtros.add(comboCliente);
 		
 		panel = new JPanel();

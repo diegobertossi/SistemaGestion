@@ -18,17 +18,15 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	private static final String delete = "DELETE FROM usuario WHERE idUsuario = ?";
 	private static final String readall = "SELECT * FROM usuario WHERE dni <> 0 ";
 	private static final String readLogin = "SELECT * FROM usuario where login = ? AND pass = ? ";
-	private static final String readallTecnico = "SELECT usuario.nombre, usuario.apellido FROM usuario group by usuario.apellido";
+	private static final String readallTecnico = "SELECT usuario.nombre, usuario.apellido FROM usuario where usuario.idUsuario != '1' group by usuario.apellido";
+	private static final String readallTecnicoVisualizacion = "SELECT usuario.nombre, usuario.apellido FROM usuario group by usuario.apellido";
 	private static final String IDporNombre = "Select idUsuario from usuario where nombre =? and apellido =?";
 	public static String ubicacion;
 	private Conexion conexion;;
-	
-	
-	
+
 	@SuppressWarnings("unused")
 	public UsuarioDAOImpl(String ubicacionBase) {
-		
-		
+
 		final String insert = "INSERT INTO usuario(idUsuario, idRol, dni, nombre, apellido, telefono, email,login,pass) VALUES(?, ?, ?, ?, ?, ?, ?,?,?)";
 		final String delete = "DELETE FROM usuario WHERE idUsuario = ?";
 		final String readall = "SELECT * FROM usuario WHERE dni <> 0 ";
@@ -38,13 +36,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		ubicacion = ubicacionBase;
 		conexion = Conexion.getConexion(ubicacion);
 	}
-	
-	
-	
-	
-	
-
-	
 
 	public boolean insert(UsuarioDTO user) {
 		PreparedStatement statement;
@@ -307,6 +298,34 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void comboFiltroTecnicosV(JComboBox comboFiltroTecnico) {
+
+		DefaultComboBoxModel value;
+
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		// ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(readallTecnicoVisualizacion);
+			resultSet = statement.executeQuery();
+			value = new DefaultComboBoxModel();
+			comboFiltroTecnico.setModel(value);
+
+			while (resultSet.next()) {
+
+				value.addElement(new UsuarioDTO(resultSet.getString(1), resultSet.getString(2)));
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void comboFiltroTecnicos(JComboBox comboFiltroTecnico) {
 
@@ -323,7 +342,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 			while (resultSet.next()) {
 
-				value.addElement(new UsuarioDTO(resultSet.getString(1),resultSet.getString(2)));
+				value.addElement(new UsuarioDTO(resultSet.getString(1), resultSet.getString(2)));
 
 			}
 		} catch (SQLException e) {
@@ -340,28 +359,30 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
 		int idUsuario = 0;
-		
-		
-		String[] partes = nombreTecnico.split(" ");
-		String nombre = partes[0]; 
-		String apellido = partes[1]; 
-		
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(IDporNombre);
-			statement.setString(1, nombre);
-			statement.setString(2, apellido);
-			resultSet = statement.executeQuery();
+				
+		if (nombreTecnico.compareTo("") > 0 &&  nombreTecnico.compareTo(" ") > 0 ) {
+			String[] partes = nombreTecnico.split(" ");
+			String nombre = partes[0];
+			String apellido = partes[1];
 
-			while (resultSet.next()) {
-				idUsuario = resultSet.getInt("idUsuario");
+			try {
+				statement = conexion.getSQLConexion().prepareStatement(IDporNombre);
+				statement.setString(1, nombre);
+				statement.setString(2, apellido);
+				resultSet = statement.executeQuery();
 
+				while (resultSet.next()) {
+					idUsuario = resultSet.getInt("idUsuario");
+
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally // Se ejecuta siempre
+			{
+				conexion.cerrarConexion();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
+		} else
+			idUsuario = 1;
 
 		return idUsuario;
 

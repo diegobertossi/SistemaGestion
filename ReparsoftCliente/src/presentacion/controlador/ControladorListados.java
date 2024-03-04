@@ -792,12 +792,39 @@ public class ControladorListados
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
-						mostrarGraficosPorTecnico();
+						if (ventanaEstadisticas.getComboTecnico() == null
+								|| ventanaEstadisticas.getComboTecnico().getSelectedIndex() == -1) {
+
+							
+							Object mje = "Debe Seleccionar primero al técnico";
+							JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
+									JOptionPane.INFORMATION_MESSAGE);
+							
+						} else {
+							mostrarGraficosPorTecnico();
+						}
 						break;
 					case 3:
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
+						if (ventanaEstadisticas.getComboCliente() == null
+								|| ventanaEstadisticas.getComboCliente().getSelectedIndex() == -1) {
+
+							
+							Object mje = "Debe Seleccionar primero al Cliente";
+							JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
+									JOptionPane.INFORMATION_MESSAGE);
+							
+						} else {
+							mostrarGraficosPorCliente();
+						}
+						
+						
+						
+						
+						
+						
 						break;
 
 					default:
@@ -932,26 +959,25 @@ public class ControladorListados
 		panelGraficoDiagnosticos.setMouseWheelEnabled(true);
 		panelGraficoDiagnosticos.setPreferredSize(new Dimension(700, 40));
 
-		ChartPanel panelGraficoIngresosFacturacion = new ChartPanel(grafico_facturacion);
-		panelGraficoIngresosFacturacion.setMouseWheelEnabled(true);
-		panelGraficoIngresosFacturacion.setPreferredSize(new Dimension(700, 40));
+		ChartPanel panelGraficoFacturacion = new ChartPanel(grafico_facturacion);
+		panelGraficoFacturacion.setMouseWheelEnabled(true);
+		panelGraficoFacturacion.setPreferredSize(new Dimension(700, 40));
 
 		ventanaEstadisticas.getPanel_Ingresos().add(panelGraficoIngresos, BorderLayout.CENTER);
 		ventanaEstadisticas.getPanel_Diagnosticos().add(panelGraficoDiagnosticos, BorderLayout.CENTER);
-		ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoIngresosFacturacion, BorderLayout.CENTER);
+		ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoFacturacion, BorderLayout.CENTER);
 
 		ventanaEstadisticas.repaint();
 
 	}
 
-	
 	private void mostrarGraficosPorTecnico() {
 
 		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
 		String tecnico = ventanaEstadisticas.getComboTecnico().getSelectedItem().toString();
 
 		int idTecnico = modelo.idUsuarioporNombre(tecnico);
-		
+
 		List<Integer> listaDiagnosticos = modelo.dameDiagnosticosPorAnioPorTecnico(anio, idTecnico);
 		List<Integer> listaAceptaciones = modelo.dameAceptacionesPorAnioPorTecnico(anio, idTecnico);
 		List<Integer> listaFacturacion = modelo.dameFacturacionPorAnioPorTecnico(anio, idTecnico);
@@ -960,7 +986,6 @@ public class ControladorListados
 		DefaultCategoryDataset datosAceptaciones = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosFacturacion = new DefaultCategoryDataset();
 
-		
 		datosDiagnosticos.setValue(listaDiagnosticos.get(0), "Diagnósticos", "ENE");
 		datosDiagnosticos.setValue(listaDiagnosticos.get(1), "Diagnósticos", "FEB");
 		datosDiagnosticos.setValue(listaDiagnosticos.get(2), "Diagnósticos", "MAR");
@@ -973,7 +998,7 @@ public class ControladorListados
 		datosDiagnosticos.setValue(listaDiagnosticos.get(9), "Diagnósticos", "OCT");
 		datosDiagnosticos.setValue(listaDiagnosticos.get(10), "Diagnósticos", "NOV");
 		datosDiagnosticos.setValue(listaDiagnosticos.get(11), "Diagnósticos", "DIC");
-		
+
 		datosAceptaciones.setValue(listaAceptaciones.get(0), "Aceptaciones", "ENE");
 		datosAceptaciones.setValue(listaAceptaciones.get(1), "Aceptaciones", "FEB");
 		datosAceptaciones.setValue(listaAceptaciones.get(2), "Aceptaciones", "MAR");
@@ -1000,7 +1025,6 @@ public class ControladorListados
 		datosFacturacion.setValue(listaFacturacion.get(10), "Facturación", "NOV");
 		datosFacturacion.setValue(listaFacturacion.get(11), "Facturación", "DIC");
 
-		
 		JFreeChart grafico_diagnosticos = ChartFactory.createBarChart("DIAGNÓSTICOS", "", "Cantidad", datosDiagnosticos,
 				PlotOrientation.VERTICAL, false, true, false);
 		JFreeChart grafico_aceptaciones = ChartFactory.createBarChart("ACEPTACIONES", "", "Cantidad", datosAceptaciones,
@@ -1008,18 +1032,16 @@ public class ControladorListados
 		JFreeChart grafico_facturacion = ChartFactory.createBarChart("FACTURACIÓN", null, "Pesos($)", datosFacturacion,
 				PlotOrientation.VERTICAL, false, true, false);
 
-		CategoryPlot plot_ingreso = (CategoryPlot) grafico_aceptaciones.getPlot();
+		CategoryPlot plot_aceptaciones = (CategoryPlot) grafico_aceptaciones.getPlot();
 		CategoryPlot plot_diagnostico = (CategoryPlot) grafico_diagnosticos.getPlot();
 		CategoryPlot plot_facturacion = (CategoryPlot) grafico_facturacion.getPlot();
-
-
 
 		BarRenderer renderer_diagnostico = (BarRenderer) plot_diagnostico.getRenderer();
 		renderer_diagnostico.setDrawBarOutline(false);
 		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, new Color(0, 64, 0));
 		renderer_diagnostico.setSeriesPaint(0, gp1);
-		
-		BarRenderer renderer_aceptaciones = (BarRenderer) plot_ingreso.getRenderer();
+
+		BarRenderer renderer_aceptaciones = (BarRenderer) plot_aceptaciones.getRenderer();
 		renderer_aceptaciones.setDrawBarOutline(false);
 		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, new Color(0, 0, 64));
 		renderer_aceptaciones.setSeriesPaint(0, gp0);
@@ -1037,14 +1059,13 @@ public class ControladorListados
 		panelGraficoDiagnosticos.setMouseWheelEnabled(true);
 		panelGraficoDiagnosticos.setPreferredSize(new Dimension(700, 40));
 
-		ChartPanel panelGraficoIngresosFacturacion = new ChartPanel(grafico_facturacion);
-		panelGraficoIngresosFacturacion.setMouseWheelEnabled(true);
-		panelGraficoIngresosFacturacion.setPreferredSize(new Dimension(700, 40));
+		ChartPanel panelGraficoFacturacion = new ChartPanel(grafico_facturacion);
+		panelGraficoFacturacion.setMouseWheelEnabled(true);
+		panelGraficoFacturacion.setPreferredSize(new Dimension(700, 40));
 
-		
 		ventanaEstadisticas.getPanel_Diagnosticos().add(panelGraficoAceptaciones, BorderLayout.CENTER);
 		ventanaEstadisticas.getPanel_Ingresos().add(panelGraficoDiagnosticos, BorderLayout.CENTER);
-		ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoIngresosFacturacion, BorderLayout.CENTER);
+		ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoFacturacion, BorderLayout.CENTER);
 
 		ventanaEstadisticas.repaint();
 
@@ -1053,8 +1074,105 @@ public class ControladorListados
 	
 	
 	
-	
-	
+	private void mostrarGraficosPorCliente() {
+
+		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
+		String cliente = ventanaEstadisticas.getComboCliente().getSelectedItem().toString();
+
+		int idCliente = modelo.idClienteporNombre(cliente);
+
+		List<Integer> listaIngresos = modelo.dameIngresosPorAnioPorCliente(anio, idCliente);
+		List<Integer> listaAceptaciones = modelo.dameAceptacionesPorAnioPorCliente(anio, idCliente);
+		List<Integer> listaFacturacion = modelo.dameFacturacionPorAnioPorCliente(anio, idCliente);
+
+		DefaultCategoryDataset datosIngresos = new DefaultCategoryDataset();
+		DefaultCategoryDataset datosAceptaciones = new DefaultCategoryDataset();
+		DefaultCategoryDataset datosFacturacion = new DefaultCategoryDataset();
+
+		datosIngresos.setValue(listaIngresos.get(0), "Ingresos", "ENE");
+		datosIngresos.setValue(listaIngresos.get(1), "Ingresos", "FEB");
+		datosIngresos.setValue(listaIngresos.get(2), "Ingresos", "MAR");
+		datosIngresos.setValue(listaIngresos.get(3), "Ingresos", "ABR");
+		datosIngresos.setValue(listaIngresos.get(4), "Ingresos", "MAY");
+		datosIngresos.setValue(listaIngresos.get(5), "Ingresos", "JUN");
+		datosIngresos.setValue(listaIngresos.get(6), "Ingresos", "JUL");
+		datosIngresos.setValue(listaIngresos.get(7), "Ingresos", "AGO");
+		datosIngresos.setValue(listaIngresos.get(8), "Ingresos", "SEP");
+		datosIngresos.setValue(listaIngresos.get(9), "Ingresos", "OCT");
+		datosIngresos.setValue(listaIngresos.get(10), "Ingresos", "NOV");
+		datosIngresos.setValue(listaIngresos.get(11), "Ingresos", "DIC");
+
+		datosAceptaciones.setValue(listaAceptaciones.get(0), "Aceptaciones", "ENE");
+		datosAceptaciones.setValue(listaAceptaciones.get(1), "Aceptaciones", "FEB");
+		datosAceptaciones.setValue(listaAceptaciones.get(2), "Aceptaciones", "MAR");
+		datosAceptaciones.setValue(listaAceptaciones.get(3), "Aceptaciones", "ABR");
+		datosAceptaciones.setValue(listaAceptaciones.get(4), "Aceptaciones", "MAY");
+		datosAceptaciones.setValue(listaAceptaciones.get(5), "Aceptaciones", "JUN");
+		datosAceptaciones.setValue(listaAceptaciones.get(6), "Aceptaciones", "JUL");
+		datosAceptaciones.setValue(listaAceptaciones.get(7), "Aceptaciones", "AGO");
+		datosAceptaciones.setValue(listaAceptaciones.get(8), "Aceptaciones", "SEP");
+		datosAceptaciones.setValue(listaAceptaciones.get(9), "Aceptaciones", "OCT");
+		datosAceptaciones.setValue(listaAceptaciones.get(10), "Aceptaciones", "NOV");
+		datosAceptaciones.setValue(listaAceptaciones.get(11), "Aceptaciones", "DIC");
+
+		datosFacturacion.setValue(listaFacturacion.get(0), "Facturación", "ENE");
+		datosFacturacion.setValue(listaFacturacion.get(1), "Facturación", "FEB");
+		datosFacturacion.setValue(listaFacturacion.get(2), "Facturación", "MAR");
+		datosFacturacion.setValue(listaFacturacion.get(3), "Facturación", "ABR");
+		datosFacturacion.setValue(listaFacturacion.get(4), "Facturación", "MAY");
+		datosFacturacion.setValue(listaFacturacion.get(5), "Facturación", "JUN");
+		datosFacturacion.setValue(listaFacturacion.get(6), "Facturación", "JUL");
+		datosFacturacion.setValue(listaFacturacion.get(7), "Facturación", "AGO");
+		datosFacturacion.setValue(listaFacturacion.get(8), "Facturación", "SEP");
+		datosFacturacion.setValue(listaFacturacion.get(9), "Facturación", "OCT");
+		datosFacturacion.setValue(listaFacturacion.get(10), "Facturación", "NOV");
+		datosFacturacion.setValue(listaFacturacion.get(11), "Facturación", "DIC");
+
+		JFreeChart grafico_Ingresos = ChartFactory.createBarChart("INGRESOS", "", "Cantidad", datosIngresos,
+				PlotOrientation.VERTICAL, false, true, false);
+		JFreeChart grafico_aceptaciones = ChartFactory.createBarChart("ACEPTACIONES", "", "Cantidad", datosAceptaciones,
+				PlotOrientation.VERTICAL, false, true, false);
+		JFreeChart grafico_facturacion = ChartFactory.createBarChart("FACTURACIÓN", null, "Pesos($)", datosFacturacion,
+				PlotOrientation.VERTICAL, false, true, false);
+
+		CategoryPlot plot_ingreso = (CategoryPlot) grafico_Ingresos.getPlot();
+		CategoryPlot plot_aceptaciones = (CategoryPlot) grafico_aceptaciones.getPlot();
+		CategoryPlot plot_facturacion = (CategoryPlot) grafico_facturacion.getPlot();
+
+		BarRenderer renderer_ingreso = (BarRenderer) plot_ingreso.getRenderer();
+		renderer_ingreso.setDrawBarOutline(false);
+		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, new Color(0, 64, 0));
+		renderer_ingreso.setSeriesPaint(0, gp1);
+
+		BarRenderer renderer_aceptaciones = (BarRenderer) plot_aceptaciones.getRenderer();
+		renderer_aceptaciones.setDrawBarOutline(false);
+		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, new Color(0, 0, 64));
+		renderer_aceptaciones.setSeriesPaint(0, gp0);
+
+		BarRenderer renderer_facturacion = (BarRenderer) plot_facturacion.getRenderer();
+		renderer_facturacion.setDrawBarOutline(false);
+		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, new Color(64, 0, 0));
+		renderer_facturacion.setSeriesPaint(0, gp2);
+
+		ChartPanel panelGraficoAceptaciones = new ChartPanel(grafico_aceptaciones);
+		panelGraficoAceptaciones.setMouseWheelEnabled(true);
+		panelGraficoAceptaciones.setPreferredSize(new Dimension(700, 40));
+
+		ChartPanel panelGraficoIngresos = new ChartPanel(grafico_Ingresos);
+		panelGraficoIngresos.setMouseWheelEnabled(true);
+		panelGraficoIngresos.setPreferredSize(new Dimension(700, 40));
+
+		ChartPanel panelGraficoFacturacion = new ChartPanel(grafico_facturacion);
+		panelGraficoFacturacion.setMouseWheelEnabled(true);
+		panelGraficoFacturacion.setPreferredSize(new Dimension(700, 40));
+
+		ventanaEstadisticas.getPanel_Ingresos().add(panelGraficoIngresos, BorderLayout.CENTER);
+		ventanaEstadisticas.getPanel_Diagnosticos().add(panelGraficoAceptaciones, BorderLayout.CENTER);
+		ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoFacturacion, BorderLayout.CENTER);
+
+		ventanaEstadisticas.repaint();
+
+	}
 	
 	
 	
