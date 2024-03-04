@@ -629,6 +629,7 @@ public class ControladorListados
 		ventanaEstadisticas.getComboFiltro().addActionListener(this);
 		ventanaEstadisticas.getComboAnio().addActionListener(this);
 		ventanaEstadisticas.getComboTecnico().addActionListener(this);
+		ventanaEstadisticas.getComboCliente().addActionListener(this);
 		ventanaEstadisticas.getComboMes().addActionListener(this);
 
 	}
@@ -795,11 +796,10 @@ public class ControladorListados
 						if (ventanaEstadisticas.getComboTecnico() == null
 								|| ventanaEstadisticas.getComboTecnico().getSelectedIndex() == -1) {
 
-							
 							Object mje = "Debe Seleccionar primero al técnico";
 							JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
 									JOptionPane.INFORMATION_MESSAGE);
-							
+
 						} else {
 							mostrarGraficosPorTecnico();
 						}
@@ -811,20 +811,14 @@ public class ControladorListados
 						if (ventanaEstadisticas.getComboCliente() == null
 								|| ventanaEstadisticas.getComboCliente().getSelectedIndex() == -1) {
 
-							
 							Object mje = "Debe Seleccionar primero al Cliente";
 							JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
 									JOptionPane.INFORMATION_MESSAGE);
-							
+
 						} else {
 							mostrarGraficosPorCliente();
 						}
-						
-						
-						
-						
-						
-						
+
 						break;
 
 					default:
@@ -860,6 +854,41 @@ public class ControladorListados
 	private void llenarcomboClientes() {
 
 		modelo.ListarCliente(ventanaEstadisticas.getComboCliente());
+
+		ventanaEstadisticas.getComboCliente().addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+
+				if (ventanaEstadisticas.getComboCliente().getSelectedItem() != null) {
+
+//					ventanaEstadisticas.getLblAnioDatos()
+//							.setText(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
+//					ventanaEstadisticas.getPanel_Datos().setVisible(true);
+
+//					llenarDatosPorAnio();
+
+					if (ventanaEstadisticas.getComboCliente() == null
+							|| ventanaEstadisticas.getComboCliente().getSelectedIndex() == -1) {
+
+						Object mje = "Debe Seleccionar primero al Cliente";
+						JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
+								JOptionPane.INFORMATION_MESSAGE);
+
+					} else if (ventanaEstadisticas.getComboAnio() == null
+							|| ventanaEstadisticas.getComboAnio().getSelectedIndex() == -1) {
+
+						Object mje = "Debe Seleccionar primero al Cliente";
+						JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
+								JOptionPane.INFORMATION_MESSAGE);
+
+					} else {
+						mostrarGraficosPorCliente();
+					}
+
+				}
+
+			}
+
+		});
 
 	}
 
@@ -1071,9 +1100,6 @@ public class ControladorListados
 
 	}
 
-	
-	
-	
 	private void mostrarGraficosPorCliente() {
 
 		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
@@ -1173,10 +1199,7 @@ public class ControladorListados
 		ventanaEstadisticas.repaint();
 
 	}
-	
-	
-	
-	
+
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
