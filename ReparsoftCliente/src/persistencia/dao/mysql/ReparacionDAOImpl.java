@@ -95,23 +95,19 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	private static final String ingresosPorAnio = "select count(*) from reparaciones where YEAR(FechaEntrada) = ?";
 	private static final String diagnosticosPorAnio = "select count(*) from reparaciones where YEAR(FechaEntrada) = ? and reparaciones.EstadoTecnico != 'Sin Revisar'";
-	private static final String ingresosPorAnioxMes = "select count(*) from reparaciones where YEAR(FechaEntrada) = ? group by MONTH(FechaEntrada)";
-	private static final String diagnosticoPorAnioxMes = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico != 'Sin Revisar' group by MONTH(FechadeDiagnostico)";
-	private static final String facturacionoPorAnioxMes = "select SUM(PrecioPeso) from reparaciones where YEAR(FechAceptacion) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion)";
 
-	private static final String diagnosticoPorAnioxTecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico != 'Sin Revisar' group by MONTH(FechadeDiagnostico)";
-	private static final String facturacionoPorAnioxTecnico= "select SUM(PrecioPeso) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion);";
-	private static final String aceptacionesPorAnioxTecnico = "select count(*) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion)";
-	
+	private static final String ingresosPorAnioxMes = "select MONTH(reparaciones.FechaEntrada), count(*) from reparaciones where YEAR(FechaEntrada) = ? group by MONTH(FechaEntrada)";
+	private static final String diagnosticoPorAnioxMes = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico != 'Sin Revisar' group by MONTH(FechadeDiagnostico)";
+	private static final String facturacionoPorAnioxMes = "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones where YEAR(FechAceptacion) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion)";
+
+	private static final String diagnosticoPorAnioxTecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico != 'Sin Revisar' group by MONTH(FechadeDiagnostico)";
+	private static final String facturacionoPorAnioxTecnico = "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion);";
+	private static final String aceptacionesPorAnioxTecnico = "select MONTH(reparaciones.FechAceptacion), count(*) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion)";
+
 	private static final String ingresosXanioXcliente = "select MONTH(reparaciones.FechaEntrada),count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechaEntrada) = ? and Equipos.idCliente = ? group by MONTH(FechaEntrada)";
-	//select MONTH(reparaciones.FechaEntrada), count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechaEntrada) = 2024 and Equipos.idCliente = 5 group by MONTH(FechaEntrada);
-	private static final String aceptacionesPorAnioxCliente= "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
-	private static final String facturacionoPorAnioxCliente = "select SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
-	
-	
-	
-	
-	
+	private static final String aceptacionesPorAnioxCliente = "select MONTH(reparaciones.FechAceptacion), count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
+	private static final String facturacionoPorAnioxCliente = "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
+
 	@SuppressWarnings("unused")
 	public ReparacionDAOImpl(String ubicacionBase) {
 
@@ -506,6 +502,12 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		ResultSet resultSet; // Guarda el resultado de la query
 		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
 
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
+
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(ingresosPorAnioxMes);
 			statement.setInt(1, anio);
@@ -513,7 +515,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 			while (resultSet.next()) {
 
-				cantidadPorMes.add(resultSet.getInt(1));
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
 
 			}
 
@@ -524,24 +526,19 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			conexion.cerrarConexion();
 		}
 
-		if (cantidadPorMes.size() < 12) {
-
-			for (int i = cantidadPorMes.size(); i < 12; i++) {
-				cantidadPorMes.add(0);
-
-			}
-
-		}
-
 		return cantidadPorMes;
 	}
-	
-	
-	
+
 	public List<Integer> diagnosticoPorAnioPorMes(int anio) {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
 		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
 
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(diagnosticoPorAnioxMes);
@@ -550,7 +547,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 			while (resultSet.next()) {
 
-				cantidadPorMes.add(resultSet.getInt(1));
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
 
 			}
 
@@ -561,23 +558,19 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			conexion.cerrarConexion();
 		}
 
-		if (cantidadPorMes.size() < 12) {
-
-			for (int i = cantidadPorMes.size(); i < 12; i++) {
-				cantidadPorMes.add(0);
-
-			}
-
-		}
-
 		return cantidadPorMes;
 	}
-	
-	
-	public List<Integer> facturacionPorAnioPorMes(int anio) {
+
+	public List<Double> facturacionPorAnioPorMes(int anio) {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> sumadPorMes = new ArrayList<Integer>();
+		ArrayList<Double> sumadPorMes = new ArrayList<Double>();
+
+		for (int i = 0; i < 12; i++) {
+
+			sumadPorMes.add(0.0);
+
+		}
 
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(facturacionoPorAnioxMes);
@@ -586,7 +579,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 			while (resultSet.next()) {
 
-				sumadPorMes.add(resultSet.getInt(1));
+				sumadPorMes.add(resultSet.getInt(1) - 1, resultSet.getDouble(2));
 
 			}
 
@@ -597,26 +590,19 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			conexion.cerrarConexion();
 		}
 
-		if (sumadPorMes.size() < 12) {
-
-			for (int i = sumadPorMes.size(); i < 12; i++) {
-				sumadPorMes.add(0);
-
-			}
-
-		}
-
 		return sumadPorMes;
 	}
-	
-	
-	
-	
-	
+
 	public List<Integer> diagnosticoPorAnioPorTecnico(int anio, int tecnico) {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
 		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
 
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(diagnosticoPorAnioxTecnico);
@@ -626,8 +612,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 			while (resultSet.next()) {
 
-				cantidadPorMes.add(resultSet.getInt(1));
-
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
 			}
 
 		} catch (SQLException e) {
@@ -637,24 +622,19 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			conexion.cerrarConexion();
 		}
 
-		if (cantidadPorMes.size() < 12) {
-
-			for (int i = cantidadPorMes.size(); i < 12; i++) {
-				cantidadPorMes.add(0);
-
-			}
-
-		}
-
 		return cantidadPorMes;
 	}
-	
-	
-	
+
 	public List<Integer> aceptacionesPorAnioPorTecnico(int anio, int tecnico) {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
 		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
 
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(aceptacionesPorAnioxTecnico);
@@ -664,8 +644,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 			while (resultSet.next()) {
 
-				cantidadPorMes.add(resultSet.getInt(1));
-
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
 			}
 
 		} catch (SQLException e) {
@@ -675,22 +654,19 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			conexion.cerrarConexion();
 		}
 
-		if (cantidadPorMes.size() < 12) {
-
-			for (int i = cantidadPorMes.size(); i < 12; i++) {
-				cantidadPorMes.add(0);
-
-			}
-
-		}
-
 		return cantidadPorMes;
 	}
-	
-	public List<Integer> facturacionPorAnioPorTecnico(int anio, int tecnico) {
+
+	public List<Double> facturacionPorAnioPorTecnico(int anio, int tecnico) {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> sumadPorMes = new ArrayList<Integer>();
+		ArrayList<Double> sumadPorMes = new ArrayList<Double>();
+
+		for (int i = 0; i < 12; i++) {
+
+			sumadPorMes.add(0.0);
+
+		}
 
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(facturacionoPorAnioxTecnico);
@@ -700,7 +676,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 			while (resultSet.next()) {
 
-				sumadPorMes.add(resultSet.getInt(1));
+				sumadPorMes.add(resultSet.getInt(1) - 1, resultSet.getDouble(2));
 
 			}
 
@@ -711,31 +687,19 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			conexion.cerrarConexion();
 		}
 
-		if (sumadPorMes.size() < 12) {
-
-			for (int i = sumadPorMes.size(); i < 12; i++) {
-				sumadPorMes.add(0);
-
-			}
-
-		}
-
 		return sumadPorMes;
 	}
-	
-	
-	
-	
+
 	@Override
 	public List<Integer> ingresosPorAnioPorCliente(int anio, int idCliente) {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
 		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-		
-		for (int i=0; i<12; i++) {
-			
+
+		for (int i = 0; i < 12; i++) {
+
 			cantidadPorMes.add(0);
-						
+
 		}
 
 		try {
@@ -743,15 +707,10 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			statement.setInt(1, anio);
 			statement.setInt(2, idCliente);
 			resultSet = statement.executeQuery();
-			
-			
 
 			while (resultSet.next()) {
-				
-				
-				//cantidadPorMes.add(resultSet.getInt(2));
-				
-				cantidadPorMes.add(resultSet.getInt(1)-1,resultSet.getInt(2));
+
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
 
 			}
 
@@ -762,23 +721,20 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			conexion.cerrarConexion();
 		}
 
-//		if (cantidadPorMes.size() < 12) {
-//
-//			for (int i = cantidadPorMes.size(); i < 12; i++) {
-//				cantidadPorMes.add(0);
-//
-//			}
-//
-//		}
-
 		return cantidadPorMes;
 	}
 
 	@Override
-	public List<Integer> facturacionPorAnioPorCliente(int anio, int idCliente) {
+	public List<Double> facturacionPorAnioPorCliente(int anio, int idCliente) {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> sumadPorMes = new ArrayList<Integer>();
+		ArrayList<Double> sumadPorMes = new ArrayList<Double>();
+
+		for (int i = 0; i < 12; i++) {
+
+			sumadPorMes.add(0.0);
+
+		}
 
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(facturacionoPorAnioxCliente);
@@ -788,7 +744,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 			while (resultSet.next()) {
 
-				sumadPorMes.add(resultSet.getInt(1));
+				sumadPorMes.add(resultSet.getInt(1) - 1, resultSet.getDouble(2));
 
 			}
 
@@ -797,15 +753,6 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		} finally // Se ejecuta siempre
 		{
 			conexion.cerrarConexion();
-		}
-
-		if (sumadPorMes.size() < 12) {
-
-			for (int i = sumadPorMes.size(); i < 12; i++) {
-				sumadPorMes.add(0);
-
-			}
-
 		}
 
 		return sumadPorMes;
@@ -817,6 +764,12 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		ResultSet resultSet; // Guarda el resultado de la query
 		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
 
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
+
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(aceptacionesPorAnioxCliente);
 			statement.setInt(1, anio);
@@ -825,7 +778,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 			while (resultSet.next()) {
 
-				cantidadPorMes.add(resultSet.getInt(1));
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
 
 			}
 
@@ -836,32 +789,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			conexion.cerrarConexion();
 		}
 
-		if (cantidadPorMes.size() < 12) {
-
-			for (int i = cantidadPorMes.size(); i < 12; i++) {
-				cantidadPorMes.add(0);
-
-			}
-
-		}
-
 		return cantidadPorMes;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	public boolean editEquipo(ReparacionDTO reparacion_a_editar) {
 		PreparedStatement statement;
@@ -1655,11 +1584,5 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		}
 		return Reparaciones;
 	}
-
-
-
-
-
-
 
 }

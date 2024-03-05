@@ -397,7 +397,7 @@ public class Agenda {
 		return ReparacionR.diagnosticoPorAnioPorMes(anio);
 	}
 	
-	public List<Integer> dameFacturacionPorAnioPorMes(int anio) {
+	public List<Double> dameFacturacionPorAnioPorMes(int anio) {
 		return ReparacionR.facturacionPorAnioPorMes(anio);
 	}
 	
@@ -411,7 +411,7 @@ public class Agenda {
 		return ReparacionR.aceptacionesPorAnioPorTecnico(anio, idTecnico);
 	}
 
-	public List<Integer> dameFacturacionPorAnioPorTecnico(int anio, int idtecnico) {
+	public List<Double> dameFacturacionPorAnioPorTecnico(int anio, int idtecnico) {
 		return ReparacionR.facturacionPorAnioPorTecnico(anio, idtecnico);
 	}
 	
@@ -419,7 +419,7 @@ public class Agenda {
 		return ReparacionR.ingresosPorAnioPorCliente(anio, idCliente);
 	}
 
-	public List<Integer> dameFacturacionPorAnioPorCliente(int anio, int idCliente) {
+	public List<Double> dameFacturacionPorAnioPorCliente(int anio, int idCliente) {
 		return ReparacionR.facturacionPorAnioPorCliente(anio, idCliente);
 	}
 

@@ -860,11 +860,6 @@ public class ControladorListados
 
 				if (ventanaEstadisticas.getComboCliente().getSelectedItem() != null) {
 
-//					ventanaEstadisticas.getLblAnioDatos()
-//							.setText(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
-//					ventanaEstadisticas.getPanel_Datos().setVisible(true);
-
-//					llenarDatosPorAnio();
 
 					if (ventanaEstadisticas.getComboCliente() == null
 							|| ventanaEstadisticas.getComboCliente().getSelectedIndex() == -1) {
@@ -909,7 +904,7 @@ public class ControladorListados
 
 		List<Integer> listaIngresos = modelo.dameIngresosPorAnioPorMes(anio);
 		List<Integer> listaDiagnosticos = modelo.dameDiagnosticosPorAnioPorMes(anio);
-		List<Integer> listaFacturacion = modelo.dameFacturacionPorAnioPorMes(anio);
+		List<Double> listaFacturacion = modelo.dameFacturacionPorAnioPorMes(anio);
 
 		DefaultCategoryDataset datosIngresos = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosDiagnosticos = new DefaultCategoryDataset();
@@ -1009,7 +1004,7 @@ public class ControladorListados
 
 		List<Integer> listaDiagnosticos = modelo.dameDiagnosticosPorAnioPorTecnico(anio, idTecnico);
 		List<Integer> listaAceptaciones = modelo.dameAceptacionesPorAnioPorTecnico(anio, idTecnico);
-		List<Integer> listaFacturacion = modelo.dameFacturacionPorAnioPorTecnico(anio, idTecnico);
+		List<Double> listaFacturacion = modelo.dameFacturacionPorAnioPorTecnico(anio, idTecnico);
 
 		DefaultCategoryDataset datosDiagnosticos = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosAceptaciones = new DefaultCategoryDataset();
@@ -1109,7 +1104,7 @@ public class ControladorListados
 
 		List<Integer> listaIngresos = modelo.dameIngresosPorAnioPorCliente(anio, idCliente);
 		List<Integer> listaAceptaciones = modelo.dameAceptacionesPorAnioPorCliente(anio, idCliente);
-		List<Integer> listaFacturacion = modelo.dameFacturacionPorAnioPorCliente(anio, idCliente);
+		List<Double> listaFacturacion = modelo.dameFacturacionPorAnioPorCliente(anio, idCliente);
 
 		DefaultCategoryDataset datosIngresos = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosAceptaciones = new DefaultCategoryDataset();
