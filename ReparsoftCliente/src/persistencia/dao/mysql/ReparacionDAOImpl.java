@@ -103,7 +103,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	private static final String facturacionoPorAnioxTecnico= "select SUM(PrecioPeso) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion);";
 	private static final String aceptacionesPorAnioxTecnico = "select count(*) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion)";
 	
-	private static final String ingresosXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechaEntrada) = ? and Equipos.idCliente = ? group by MONTH(FechaEntrada)";
+	private static final String ingresosXanioXcliente = "select MONTH(reparaciones.FechaEntrada),count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechaEntrada) = ? and Equipos.idCliente = ? group by MONTH(FechaEntrada)";
 	//select MONTH(reparaciones.FechaEntrada), count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechaEntrada) = 2024 and Equipos.idCliente = 5 group by MONTH(FechaEntrada);
 	private static final String aceptacionesPorAnioxCliente= "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
 	private static final String facturacionoPorAnioxCliente = "select SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
@@ -731,16 +731,27 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
 		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+		
+		for (int i=0; i<12; i++) {
+			
+			cantidadPorMes.add(0);
+						
+		}
 
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(ingresosXanioXcliente);
 			statement.setInt(1, anio);
 			statement.setInt(2, idCliente);
 			resultSet = statement.executeQuery();
+			
+			
 
 			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1));
+				
+				
+				//cantidadPorMes.add(resultSet.getInt(2));
+				
+				cantidadPorMes.add(resultSet.getInt(1)-1,resultSet.getInt(2));
 
 			}
 
@@ -751,14 +762,14 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			conexion.cerrarConexion();
 		}
 
-		if (cantidadPorMes.size() < 12) {
-
-			for (int i = cantidadPorMes.size(); i < 12; i++) {
-				cantidadPorMes.add(0);
-
-			}
-
-		}
+//		if (cantidadPorMes.size() < 12) {
+//
+//			for (int i = cantidadPorMes.size(); i < 12; i++) {
+//				cantidadPorMes.add(0);
+//
+//			}
+//
+//		}
 
 		return cantidadPorMes;
 	}
