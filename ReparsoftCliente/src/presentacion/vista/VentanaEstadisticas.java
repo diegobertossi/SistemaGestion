@@ -77,6 +77,8 @@ public class VentanaEstadisticas extends JFrame {
 	private JTextField textPorcentajeReparadosAceptados;
 	private JTextField textPorcentajeReparadosNoAceptados;
 	private JTextField textPorcentajeRepEspera;
+	private JTextField textFacTotalPesos;
+	private JTextField textFacTotalDolares;
 	
 	
 
@@ -209,13 +211,13 @@ public class VentanaEstadisticas extends JFrame {
 		panel_Datos.setLayout(null);
 		
 		lblAnioDatos = new JLabel("");
-		lblAnioDatos.setFont(new Font("Cambria", Font.BOLD, 16));
-		lblAnioDatos.setBounds(95, 11, 57, 14);
+		lblAnioDatos.setFont(new Font("Cambria", Font.BOLD, 18));
+		lblAnioDatos.setBounds(136, 11, 75, 22);
 		panel_Datos.add(lblAnioDatos);
 		
 		JLabel lblNewLabel_2_1 = new JLabel("INGRESOS TOTALES: ");
 		lblNewLabel_2_1.setFont(new Font("Cambria", Font.PLAIN, 14));
-		lblNewLabel_2_1.setBounds(11, 36, 147, 14);
+		lblNewLabel_2_1.setBounds(11, 44, 147, 14);
 		panel_Datos.add(lblNewLabel_2_1);
 		
 		JLabel lblNewLabel_2_2 = new JLabel("REPARADOS");
@@ -237,13 +239,13 @@ public class VentanaEstadisticas extends JFrame {
 		textIngresosTotales.setHorizontalAlignment(SwingConstants.CENTER);
 		textIngresosTotales.setEditable(false);
 		textIngresosTotales.setFont(new Font("Cambria", Font.PLAIN, 13));
-		textIngresosTotales.setBounds(187, 36, 75, 15);
+		textIngresosTotales.setBounds(262, 44, 75, 15);
 		panel_Datos.add(textIngresosTotales);
 		textIngresosTotales.setColumns(10);
 		
 		JLabel lblNewLabel_2_1_1 = new JLabel("DIAGNÓSTICOS TOTALES: ");
 		lblNewLabel_2_1_1.setFont(new Font("Cambria", Font.PLAIN, 14));
-		lblNewLabel_2_1_1.setBounds(11, 58, 166, 14);
+		lblNewLabel_2_1_1.setBounds(11, 63, 166, 14);
 		panel_Datos.add(lblNewLabel_2_1_1);
 		
 		textDiagnosticosTotales = new JTextField();
@@ -251,7 +253,7 @@ public class VentanaEstadisticas extends JFrame {
 		textDiagnosticosTotales.setEditable(false);
 		textDiagnosticosTotales.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textDiagnosticosTotales.setColumns(10);
-		textDiagnosticosTotales.setBounds(187, 58, 75, 15);
+		textDiagnosticosTotales.setBounds(262, 63, 75, 15);
 		panel_Datos.add(textDiagnosticosTotales);
 		
 		JSeparator separator_1 = new JSeparator();
@@ -466,6 +468,32 @@ public class VentanaEstadisticas extends JFrame {
 		JSeparator separator_2_1_2_1 = new JSeparator();
 		separator_2_1_2_1.setBounds(5, 271, 332, 2);
 		panel_Datos.add(separator_2_1_2_1);
+		
+		JLabel lblFacTotalPesos = new JLabel("FACTURACIÓN TOTAL (PESOS): ");
+		lblFacTotalPesos.setFont(new Font("Cambria", Font.PLAIN, 14));
+		lblFacTotalPesos.setBounds(11, 82, 205, 14);
+		panel_Datos.add(lblFacTotalPesos);
+		
+		textFacTotalPesos = new JTextField();
+		textFacTotalPesos.setHorizontalAlignment(SwingConstants.CENTER);
+		textFacTotalPesos.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textFacTotalPesos.setEditable(false);
+		textFacTotalPesos.setColumns(10);
+		textFacTotalPesos.setBounds(262, 82, 75, 15);
+		panel_Datos.add(textFacTotalPesos);
+		
+		JLabel lblNewLabel_2_1_1_2 = new JLabel("FACTURACIÓN TOTAL (DÓLARES): ");
+		lblNewLabel_2_1_1_2.setFont(new Font("Cambria", Font.PLAIN, 14));
+		lblNewLabel_2_1_1_2.setBounds(11, 102, 224, 14);
+		panel_Datos.add(lblNewLabel_2_1_1_2);
+		
+		textFacTotalDolares = new JTextField();
+		textFacTotalDolares.setHorizontalAlignment(SwingConstants.CENTER);
+		textFacTotalDolares.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textFacTotalDolares.setEditable(false);
+		textFacTotalDolares.setColumns(10);
+		textFacTotalDolares.setBounds(262, 102, 75, 15);
+		panel_Datos.add(textFacTotalDolares);
 
 		
 	
@@ -1042,5 +1070,37 @@ public class VentanaEstadisticas extends JFrame {
 
 	public void setTextPorcentajeRepEspera(JTextField textPorcentajeRepEspera) {
 		this.textPorcentajeRepEspera = textPorcentajeRepEspera;
+	}
+
+
+
+
+
+	public JTextField getTextFacTotalPesos() {
+		return textFacTotalPesos;
+	}
+
+
+
+
+
+	public void setTextFacTotalPesos(JTextField textFacTotalPesos) {
+		this.textFacTotalPesos = textFacTotalPesos;
+	}
+
+
+
+
+
+	public JTextField getTextFacTotalDolares() {
+		return textFacTotalDolares;
+	}
+
+
+
+
+
+	public void setTextFacTotalDolares(JTextField textFacTotalDolares) {
+		this.textFacTotalDolares = textFacTotalDolares;
 	}
 	}

@@ -903,6 +903,9 @@ public class ControladorListados
 		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
 		int cantidadIngresosPorAnio = modelo.dameIngresosPorAnio(anio);
 		int cantidadDiagnosticosPorAnio = modelo.dameDiagnosticosPorAnio(anio);
+		double facturacionPesoPorAnio = modelo.dameFacturacionPesoPorAnio(anio);
+		double facturacionDolarPorAnio = modelo.dameFacturacionDolarPorAnio(anio);
+		
 		int cantidadReparadosPorAnio = modelo.dameReparadosPorAnio(anio);
 		int cantidadSinFallaPorAnio =  modelo.dameSinFallaPorAnio(anio);
 		int cantidadRepEnGtiaPorAnio =  modelo.dameRepEnGtiaPorAnio(anio);
@@ -916,6 +919,8 @@ public class ControladorListados
 
 		ventanaEstadisticas.getTextIngresosTotales().setText(Integer.toString(cantidadIngresosPorAnio));
 		ventanaEstadisticas.getTextDiagnosticosTotales().setText(Integer.toString(cantidadDiagnosticosPorAnio));
+		ventanaEstadisticas.getTextFacTotalPesos().setText(Double.toString(facturacionPesoPorAnio));
+		ventanaEstadisticas.getTextFacTotalDolares().setText(Double.toString(facturacionDolarPorAnio));
 		ventanaEstadisticas.getTextReparados().setText(Integer.toString(cantidadReparadosPorAnio));
 		ventanaEstadisticas.getTextSinFalla().setText(Integer.toString(cantidadSinFallaPorAnio));
 		ventanaEstadisticas.getTextRepEnGtia().setText(Integer.toString(cantidadRepEnGtiaPorAnio));
