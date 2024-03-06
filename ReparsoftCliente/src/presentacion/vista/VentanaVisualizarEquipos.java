@@ -388,7 +388,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textModelo.setBackground(Color.WHITE);
 		textModelo.setAlignmentY(Component.TOP_ALIGNMENT);
 		textModelo.setAlignmentX(Component.LEFT_ALIGNMENT);
-		textModelo.setBounds(133, 96, 211, 20);
+		textModelo.setBounds(133, 124, 211, 20);
 		panel_1.add(textModelo);
 		textModelo.setHorizontalAlignment(SwingConstants.LEFT);
 		textModelo.setFont(new Font("Cambria", Font.PLAIN, 14));
@@ -399,7 +399,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textMarca.setBackground(Color.WHITE);
 		textMarca.setAlignmentY(Component.TOP_ALIGNMENT);
 		textMarca.setAlignmentX(Component.LEFT_ALIGNMENT);
-		textMarca.setBounds(133, 125, 211, 20);
+		textMarca.setBounds(133, 95, 211, 20);
 		panel_1.add(textMarca);
 		textMarca.setHorizontalAlignment(SwingConstants.LEFT);
 		textMarca.setFont(new Font("Cambria", Font.PLAIN, 14));

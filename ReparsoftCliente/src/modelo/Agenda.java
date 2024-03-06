@@ -392,6 +392,43 @@ public class Agenda {
 		return ReparacionR.reparadosPorAnio(anio);
 	}
 
+
+	public int dameSinFallaPorAnio(int anio) {
+		return ReparacionR.sinFallasPorAnio(anio);
+	}
+	
+	public int dameRepEnGtiaPorAnio(int anio) {
+		return ReparacionR.enGtiaPorAnio(anio);
+
+	}
+	
+
+	public int dameEnRepPorAnio(int anio) {
+		return ReparacionR.EnRepPorAnio(anio);
+	}
+
+	
+	public int dameVentasPorAnio(int anio) {
+		return ReparacionR.ventasPorAnio(anio);
+	}
+
+	public int dameSinRepAnio(int anio) {
+		return ReparacionR.SinRepPorAnio(anio);
+	}
+		
+
+	public int dameRepAcepPorAnio(int anio) {
+		return ReparacionR.RepAcepPorAnio(anio);
+	}
+
+	public int dameRepNoAcepPorAnio(int anio) {
+		return ReparacionR.RepNoAcepPorAnio(anio);
+	}
+
+	public int dameRepEsperaPorAnio(int anio) {
+		return ReparacionR.RepEsperaPorAnio(anio);
+	}
+
 	public List<Integer> dameIngresosPorAnioPorMes(int anio) {
 		return ReparacionR.ingresosPorAnioPorMes(anio);
 	}
@@ -542,14 +579,6 @@ public class Agenda {
 
 
 
-
-
-
-
-
-
-
-	
 		
 	
 }

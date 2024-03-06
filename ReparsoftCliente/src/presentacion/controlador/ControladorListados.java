@@ -903,13 +903,70 @@ public class ControladorListados
 		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
 		int cantidadIngresosPorAnio = modelo.dameIngresosPorAnio(anio);
 		int cantidadDiagnosticosPorAnio = modelo.dameDiagnosticosPorAnio(anio);
-		
 		int cantidadReparadosPorAnio = modelo.dameReparadosPorAnio(anio);
+		int cantidadSinFallaPorAnio =  modelo.dameSinFallaPorAnio(anio);
+		int cantidadRepEnGtiaPorAnio =  modelo.dameRepEnGtiaPorAnio(anio);
+		int cantidadEnRepPorAnio =  modelo.dameEnRepPorAnio(anio);
+		int cantidadVentasPorAnio =  modelo.dameVentasPorAnio(anio);
+		int cantidadSinRepAnio =  modelo.dameSinRepAnio(anio);
+		int cantidadReparadosAceptradosPorAnio =  modelo.dameRepAcepPorAnio(anio);
+		int cantidadReparadosNoAceptradosPorAnio =  modelo.dameRepNoAcepPorAnio(anio);
+		int cantidadReparadosAlaEsperaPorAnio =  modelo.dameRepEsperaPorAnio(anio);
+		
 
 		ventanaEstadisticas.getTextIngresosTotales().setText(Integer.toString(cantidadIngresosPorAnio));
 		ventanaEstadisticas.getTextDiagnosticosTotales().setText(Integer.toString(cantidadDiagnosticosPorAnio));
 		ventanaEstadisticas.getTextReparados().setText(Integer.toString(cantidadReparadosPorAnio));
+		ventanaEstadisticas.getTextSinFalla().setText(Integer.toString(cantidadSinFallaPorAnio));
+		ventanaEstadisticas.getTextRepEnGtia().setText(Integer.toString(cantidadRepEnGtiaPorAnio));
+		ventanaEstadisticas.getTextEnReparacion().setText(Integer.toString(cantidadEnRepPorAnio));
+		ventanaEstadisticas.getTextVentas().setText(Integer.toString(cantidadVentasPorAnio));
+		ventanaEstadisticas.getTextSinReparacion().setText(Integer.toString(cantidadSinRepAnio));
+		ventanaEstadisticas.getTextReparadosAceptados().setText(Integer.toString(cantidadReparadosAceptradosPorAnio));
+		ventanaEstadisticas.getTextReparadosNoAceptados().setText(Integer.toString(cantidadReparadosNoAceptradosPorAnio));
+		ventanaEstadisticas.getTextRepEspera().setText(Integer.toString(cantidadReparadosAlaEsperaPorAnio));
+		
+		double porcentajeReparadosPorAnio = ((double)cantidadReparadosPorAnio/cantidadDiagnosticosPorAnio) * 100;
+		String porcentajeReparados = String.format("%.1f %%", porcentajeReparadosPorAnio);
+		ventanaEstadisticas.getTextPorcentajeReparados().setText(porcentajeReparados);
+		
+		double porcentajeRepEnGtiaPorAnio = ((double)cantidadRepEnGtiaPorAnio/cantidadDiagnosticosPorAnio) * 100;
+		String porcentajeEnGtia = String.format("%.1f %%", porcentajeRepEnGtiaPorAnio);
+		ventanaEstadisticas.getTextPorcentajeRepEnGtia().setText(porcentajeEnGtia);
+		
+		double porcentajeSinFallaPorAnio = ((double)cantidadSinFallaPorAnio/cantidadDiagnosticosPorAnio) * 100;
+		String porcentajeSinFalla = String.format("%.1f %%", porcentajeSinFallaPorAnio);
+		ventanaEstadisticas.getTextPorcentajeSinFalla().setText(porcentajeSinFalla);
+		
+		double porcentajeEnRePorAnio = ((double)cantidadEnRepPorAnio/cantidadDiagnosticosPorAnio) * 100;
+		String porcentajeEnRep = String.format("%.1f %%", porcentajeEnRePorAnio);
+		ventanaEstadisticas.getTextPorcentajeEnReparacion().setText(porcentajeEnRep);
+		
+		double porcentajeVentasPorAnio = ((double)cantidadVentasPorAnio/cantidadDiagnosticosPorAnio) * 100;
+		String porcentajeVentas = String.format("%.1f %%", porcentajeVentasPorAnio);
+		ventanaEstadisticas.getTextPorcentajeVentas().setText(porcentajeVentas);
+		
+		double porcentajeSinRepPorAnio = ((double)cantidadSinRepAnio/cantidadDiagnosticosPorAnio) * 100;
+		String porcentajeSinRep = String.format("%.1f %%", porcentajeSinRepPorAnio);
+		ventanaEstadisticas.getTextPorcentajeSinReparacion().setText(porcentajeSinRep);
+		
+		
+		double porcentajeRepAcepPorAnio = ((double)cantidadReparadosAceptradosPorAnio/cantidadReparadosPorAnio) * 100;
+		String porcentajeRepAcep = String.format("%.1f %%", porcentajeRepAcepPorAnio);
+		ventanaEstadisticas.getTextPorcentajeReparadosAceptados().setText(porcentajeRepAcep);
 
+		
+		double porcentajeRepNoAcepPorAnio = ((double)cantidadReparadosNoAceptradosPorAnio/cantidadReparadosPorAnio) * 100;
+		String porcentajeRepNoAcep = String.format("%.1f %%", porcentajeRepNoAcepPorAnio);
+		ventanaEstadisticas.getTextPorcentajeReparadosNoAceptados().setText(porcentajeRepNoAcep);
+		
+		double porcentajeRepEsperaPorAnio = ((double)cantidadReparadosAlaEsperaPorAnio/cantidadReparadosPorAnio) * 100;
+		String porcentajeRepEspera = String.format("%.1f %%", porcentajeRepEsperaPorAnio);
+		ventanaEstadisticas.getTextPorcentajeRepEspera().setText(porcentajeRepEspera);
+		
+		
+		
+		
 	}
 
 	private void mostrarGraficosPorAnio() {

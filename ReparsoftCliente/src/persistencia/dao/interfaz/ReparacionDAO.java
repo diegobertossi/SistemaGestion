@@ -69,6 +69,16 @@ public interface ReparacionDAO
 	
 	public int reparadosPorAnio(int anio);
 	
+	public int sinFallasPorAnio(int anio);
+	
+	public int enGtiaPorAnio(int anio);
+	
+	public int EnRepPorAnio(int anio);
+	
+	public int ventasPorAnio(int anio);
+
+	public int SinRepPorAnio(int anio);
+		
 	public List<Integer> ingresosPorAnioPorMes(int anio);
 	
 	public List<Integer> diagnosticoPorAnioPorMes(int anio);
@@ -87,7 +97,18 @@ public interface ReparacionDAO
 
 	public List<Integer> aceptacionesPorAnioPorCliente(int anio, int idCliente);
 
-	
+	public int RepAcepPorAnio(int anio);
+
+	public int RepNoAcepPorAnio(int anio);
+
+	public int RepEsperaPorAnio(int anio);
+
+
+
+
+
+
+		
 	
 
 }

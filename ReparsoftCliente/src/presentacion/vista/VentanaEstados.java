@@ -36,7 +36,8 @@ public class VentanaEstados extends JFrame
 	private JRadioButton rdbtnReparadoGarantia;
 	private JRadioButton rdbtnVendido;
 	private JRadioButton rdbtnDesguace;
-	private JRadioButton rdbtnNoTieneReparacion;
+	private JRadioButton rdbtnSinFalla;
+	private JRadioButton rdbtnSinReparacion;
 	private JRadioButton rdbtnNoAceptaron;
 	
 	private ButtonGroup GrupoEstadoTecnico;
@@ -162,17 +163,17 @@ public class VentanaEstados extends JFrame
 		rdbtnVendido.setBounds(155, 5, 139, 23);
 		panel_3.add(rdbtnVendido);
 		
-		rdbtnDesguace = new JRadioButton("Desguace");
-		rdbtnDesguace.setBackground(SystemColor.activeCaption);
-		rdbtnDesguace.setFont(new Font("Cambria", Font.PLAIN, 12));
-		rdbtnDesguace.setBounds(155, 33, 139, 23);
-		panel_3.add(rdbtnDesguace);
+		rdbtnSinFalla = new JRadioButton("Sin Falla");
+		rdbtnSinFalla.setBackground(SystemColor.activeCaption);
+		rdbtnSinFalla.setFont(new Font("Cambria", Font.PLAIN, 12));
+		rdbtnSinFalla.setBounds(155, 33, 139, 23);
+		panel_3.add(rdbtnSinFalla);
 		
-		rdbtnNoTieneReparacion = new JRadioButton("No Tiene Reparación");
-		rdbtnNoTieneReparacion.setBackground(SystemColor.activeCaption);
-		rdbtnNoTieneReparacion.setFont(new Font("Cambria", Font.PLAIN, 12));
-		rdbtnNoTieneReparacion.setBounds(155, 61, 139, 23);
-		panel_3.add(rdbtnNoTieneReparacion);
+		rdbtnSinReparacion = new JRadioButton("Sin Reparación");
+		rdbtnSinReparacion.setBackground(SystemColor.activeCaption);
+		rdbtnSinReparacion.setFont(new Font("Cambria", Font.PLAIN, 12));
+		rdbtnSinReparacion.setBounds(155, 61, 139, 23);
+		panel_3.add(rdbtnSinReparacion);
 		
 		rdbtnNoAceptaron = new JRadioButton("No Aceptaron Reparación");
 		rdbtnNoAceptaron.setBackground(SystemColor.activeCaption);
@@ -186,8 +187,8 @@ public class VentanaEstados extends JFrame
 		GrupoEstadoTecnico.add(rdbtnReparado);
 		GrupoEstadoTecnico.add(rdbtnReparadoGarantia);
 		GrupoEstadoTecnico.add(rdbtnVendido);
-		GrupoEstadoTecnico.add(rdbtnDesguace);
-		GrupoEstadoTecnico.add(rdbtnNoTieneReparacion);
+		GrupoEstadoTecnico.add(rdbtnSinFalla);
+		GrupoEstadoTecnico.add(rdbtnSinReparacion);
 		GrupoEstadoTecnico.add(rdbtnNoAceptaron);
 		
 		
@@ -430,19 +431,19 @@ public class VentanaEstados extends JFrame
 	}
 
 	public JRadioButton getRdbtnDesguace() {
-		return rdbtnDesguace;
+		return rdbtnSinFalla;
 	}
 
 	public void setRdbtnDesguace(JRadioButton rdbtnDesguace) {
-		this.rdbtnDesguace = rdbtnDesguace;
+		this.rdbtnSinFalla = rdbtnDesguace;
 	}
 
 	public JRadioButton getRdbtnNoTieneReparacion() {
-		return rdbtnNoTieneReparacion;
+		return rdbtnSinReparacion;
 	}
 
 	public void setRdbtnNoTieneReparacion(JRadioButton rdbtnNoTieneReparacion) {
-		this.rdbtnNoTieneReparacion = rdbtnNoTieneReparacion;
+		this.rdbtnSinReparacion = rdbtnNoTieneReparacion;
 	}
 
 	public JRadioButton getRdbtnNoAceptaron() {
