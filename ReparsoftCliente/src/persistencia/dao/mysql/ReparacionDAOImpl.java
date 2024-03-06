@@ -94,7 +94,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	private Conexion conexion;
 
 	private static final String ingresosPorAnio = "select count(*) from reparaciones where YEAR(FechaEntrada) = ?";
-	private static final String diagnosticosPorAnio = "select count(*) from reparaciones where YEAR(FechaEntrada) = ? and reparaciones.EstadoTecnico != 'Sin Revisar'";
+	private static final String diagnosticosPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico != 'Sin Revisar'";
+	private static final String  reparadosPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ";
 
 	private static final String ingresosPorAnioxMes = "select MONTH(reparaciones.FechaEntrada), count(*) from reparaciones where YEAR(FechaEntrada) = ? group by MONTH(FechaEntrada)";
 	private static final String diagnosticoPorAnioxMes = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico != 'Sin Revisar' group by MONTH(FechadeDiagnostico)";
@@ -496,6 +497,35 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return cantDiagnosticosxAnio;
 	}
+	
+	
+	
+	@Override
+	public int reparadosPorAnio(int anio) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantDiagnosticosxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(reparadosPorAnio);
+			statement.setInt(1, anio);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantDiagnosticosxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantDiagnosticosxAnio;
+	}
+	
+	
 
 	public List<Integer> ingresosPorAnioPorMes(int anio) {
 		PreparedStatement statement;
@@ -1584,5 +1614,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		}
 		return Reparaciones;
 	}
+
+
 
 }

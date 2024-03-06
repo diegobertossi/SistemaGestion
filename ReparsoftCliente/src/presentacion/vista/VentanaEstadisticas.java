@@ -67,6 +67,15 @@ public class VentanaEstadisticas extends JFrame {
 	private JPanel panel_Ingresos;
 	private JPanel panel_Diagnosticos;
 	private JPanel panel_Facturacion;
+	private JTextField textPorcentajeReparados;
+	private JTextField textPorcentajeSinFalla;
+	private JTextField textPorcentajeRepEnGtia;
+	private JTextField textPorcentajeEnReparacion;
+	private JTextField textPorcentajeVentas;
+	private JTextField textPorcentajeSinReparacion;
+	private JTextField textPorcentajeReparadosAceptados;
+	private JTextField textPorcentajeReparadosNoAceptados;
+	private JTextField textPorcentajeRepEspera;
 	
 	
 
@@ -77,7 +86,7 @@ public class VentanaEstadisticas extends JFrame {
 		this.controlador = controlador;
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1235, 711);
+		setBounds(100, 100, 1279, 711);
 
 		this.setLocationRelativeTo(null);
 
@@ -107,57 +116,57 @@ public class VentanaEstadisticas extends JFrame {
 		panel_Filtros.setLayout(null);
 		
 		JLabel lblNewLabel_1_3 = new JLabel("FILTRO: ");
-		lblNewLabel_1_3.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblNewLabel_1_3.setBounds(102, 6, 104, 14);
+		lblNewLabel_1_3.setFont(new Font("Cambria", Font.BOLD, 14));
+		lblNewLabel_1_3.setBounds(78, 6, 104, 14);
 		lblNewLabel_1_3.setPreferredSize(new Dimension(50, 14));
 		panel_Filtros.add(lblNewLabel_1_3);
 		
 		comboFiltro = new JComboBox();
-		comboFiltro.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltro.setBounds(90, 23, 135, 22);
+		comboFiltro.setFont(new Font("Cambria", Font.PLAIN, 14));
+		comboFiltro.setBounds(78, 23, 135, 22);
 		panel_Filtros.add(comboFiltro);
 		
 		lblAnio = new JLabel("AÑO: ");
 		lblAnio.setVisible(false);
-		lblAnio.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblAnio.setBounds(571, 6, 104, 14);
+		lblAnio.setFont(new Font("Cambria", Font.BOLD, 14));
+		lblAnio.setBounds(535, 6, 104, 14);
 		lblAnio.setPreferredSize(new Dimension(50, 14));
 		panel_Filtros.add(lblAnio);
 		
 		comboAnio = new JComboBox();
 		comboAnio.setVisible(false);
-		comboAnio.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboAnio.setBounds(571, 23, 104, 22);
+		comboAnio.setFont(new Font("Cambria", Font.PLAIN, 14));
+		comboAnio.setBounds(535, 23, 104, 22);
 		panel_Filtros.add(comboAnio);
 		
 		comboTecnico = new JComboBox<Object>();
 		comboTecnico.setVisible(false);
-		comboTecnico.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboTecnico.setBounds(315, 23, 166, 22);
+		comboTecnico.setFont(new Font("Cambria", Font.PLAIN, 14));
+		comboTecnico.setBounds(291, 23, 166, 22);
 		panel_Filtros.add(comboTecnico);
 		
 		lblTecnico = new JLabel("TÉCNICO: ");
 		lblTecnico.setVisible(false);
-		lblTecnico.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblTecnico.setBounds(315, 6, 104, 14);
+		lblTecnico.setFont(new Font("Cambria", Font.BOLD, 14));
+		lblTecnico.setBounds(291, 6, 104, 14);
 		panel_Filtros.add(lblTecnico);
 		
 		comboMes = new JComboBox();
 		comboMes.setVisible(false);
-		comboMes.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboMes.setBounds(765, 23, 104, 22);
+		comboMes.setFont(new Font("Cambria", Font.PLAIN, 14));
+		comboMes.setBounds(717, 23, 104, 22);
 		panel_Filtros.add(comboMes);
 		
 		lblMes = new JLabel("MES: ");
 		lblMes.setVisible(false);
-		lblMes.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblMes.setBounds(765, 6, 104, 14);
+		lblMes.setFont(new Font("Cambria", Font.BOLD, 14));
+		lblMes.setBounds(717, 6, 104, 14);
 		lblMes.setPreferredSize(new Dimension(50, 14));
 		panel_Filtros.add(lblMes);
 		
 		comboCliente = new JComboBox();
 		comboCliente.setVisible(false);
-		comboCliente.setBounds(315, 23, 166, 22);
+		comboCliente.setBounds(291, 23, 166, 22);
 		panel_Filtros.add(comboCliente);
 		
 		panel = new JPanel();
@@ -180,7 +189,7 @@ public class VentanaEstadisticas extends JFrame {
 		panel_Facturacion.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panelDerecha = new JPanel();
-		panelDerecha.setPreferredSize(new Dimension(250, 10));
+		panelDerecha.setPreferredSize(new Dimension(350, 10));
 		panelDerecha.setBorder(new LineBorder(new Color(0, 128, 128)));
 		contentPane.add(panelDerecha, BorderLayout.EAST);
 		panelDerecha.setLayout(new BorderLayout(0, 0));
@@ -190,7 +199,7 @@ public class VentanaEstadisticas extends JFrame {
 		panel_Derecha_Inferior.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		btnConfiguracion = new JButton("CONFIGURACIÓN");
-		btnConfiguracion.setFont(new Font("Cambria", Font.PLAIN, 11));
+		btnConfiguracion.setFont(new Font("Cambria", Font.BOLD, 14));
 		panel_Derecha_Inferior.add(btnConfiguracion);
 		
 		panel_Datos = new JPanel();
@@ -369,6 +378,69 @@ public class VentanaEstadisticas extends JFrame {
 		JSeparator separator_2_1 = new JSeparator();
 		separator_2_1.setBounds(11, 299, 218, 2);
 		panel_Datos.add(separator_2_1);
+		
+		textPorcentajeReparados = new JTextField();
+		textPorcentajeReparados.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textPorcentajeReparados.setEditable(false);
+		textPorcentajeReparados.setColumns(10);
+		textPorcentajeReparados.setBounds(260, 122, 52, 14);
+		panel_Datos.add(textPorcentajeReparados);
+		
+		textPorcentajeSinFalla = new JTextField();
+		textPorcentajeSinFalla.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textPorcentajeSinFalla.setEditable(false);
+		textPorcentajeSinFalla.setColumns(10);
+		textPorcentajeSinFalla.setBounds(260, 138, 52, 14);
+		panel_Datos.add(textPorcentajeSinFalla);
+		
+		textPorcentajeRepEnGtia = new JTextField();
+		textPorcentajeRepEnGtia.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textPorcentajeRepEnGtia.setEditable(false);
+		textPorcentajeRepEnGtia.setColumns(10);
+		textPorcentajeRepEnGtia.setBounds(260, 154, 52, 14);
+		panel_Datos.add(textPorcentajeRepEnGtia);
+		
+		textPorcentajeEnReparacion = new JTextField();
+		textPorcentajeEnReparacion.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textPorcentajeEnReparacion.setEditable(false);
+		textPorcentajeEnReparacion.setColumns(10);
+		textPorcentajeEnReparacion.setBounds(260, 170, 52, 14);
+		panel_Datos.add(textPorcentajeEnReparacion);
+		
+		textPorcentajeVentas = new JTextField();
+		textPorcentajeVentas.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textPorcentajeVentas.setEditable(false);
+		textPorcentajeVentas.setColumns(10);
+		textPorcentajeVentas.setBounds(260, 186, 52, 14);
+		panel_Datos.add(textPorcentajeVentas);
+		
+		textPorcentajeSinReparacion = new JTextField();
+		textPorcentajeSinReparacion.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textPorcentajeSinReparacion.setEditable(false);
+		textPorcentajeSinReparacion.setColumns(10);
+		textPorcentajeSinReparacion.setBounds(260, 202, 52, 14);
+		panel_Datos.add(textPorcentajeSinReparacion);
+		
+		textPorcentajeReparadosAceptados = new JTextField();
+		textPorcentajeReparadosAceptados.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textPorcentajeReparadosAceptados.setEditable(false);
+		textPorcentajeReparadosAceptados.setColumns(10);
+		textPorcentajeReparadosAceptados.setBounds(260, 241, 52, 14);
+		panel_Datos.add(textPorcentajeReparadosAceptados);
+		
+		textPorcentajeReparadosNoAceptados = new JTextField();
+		textPorcentajeReparadosNoAceptados.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textPorcentajeReparadosNoAceptados.setEditable(false);
+		textPorcentajeReparadosNoAceptados.setColumns(10);
+		textPorcentajeReparadosNoAceptados.setBounds(260, 257, 52, 14);
+		panel_Datos.add(textPorcentajeReparadosNoAceptados);
+		
+		textPorcentajeRepEspera = new JTextField();
+		textPorcentajeRepEspera.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textPorcentajeRepEspera.setEditable(false);
+		textPorcentajeRepEspera.setColumns(10);
+		textPorcentajeRepEspera.setBounds(260, 273, 52, 14);
+		panel_Datos.add(textPorcentajeRepEspera);
 
 		
 	
@@ -705,5 +777,245 @@ public class VentanaEstadisticas extends JFrame {
 
 	public void setPanel_Facturacion(JPanel panel_Facturacion) {
 		this.panel_Facturacion = panel_Facturacion;
+	}
+
+
+
+
+
+	public JTextField getTextSinFalla() {
+		return textSinFalla;
+	}
+
+
+
+
+
+	public void setTextSinFalla(JTextField textSinFalla) {
+		this.textSinFalla = textSinFalla;
+	}
+
+
+
+
+
+	public JTextField getTextRepEnGtia() {
+		return textRepEnGtia;
+	}
+
+
+
+
+
+	public void setTextRepEnGtia(JTextField textRepEnGtia) {
+		this.textRepEnGtia = textRepEnGtia;
+	}
+
+
+
+
+
+	public JTextField getTextVentas() {
+		return textVentas;
+	}
+
+
+
+
+
+	public void setTextVentas(JTextField textVentas) {
+		this.textVentas = textVentas;
+	}
+
+
+
+
+
+	public JTextField getTextSinReparacion() {
+		return textSinReparacion;
+	}
+
+
+
+
+
+	public void setTextSinReparacion(JTextField textSinReparacion) {
+		this.textSinReparacion = textSinReparacion;
+	}
+
+
+
+
+
+	public JTextField getTextReparadosNoAceptados() {
+		return textReparadosNoAceptados;
+	}
+
+
+
+
+
+	public void setTextReparadosNoAceptados(JTextField textReparadosNoAceptados) {
+		this.textReparadosNoAceptados = textReparadosNoAceptados;
+	}
+
+
+
+
+
+	public JTextField getTextRepEspera() {
+		return textRepEspera;
+	}
+
+
+
+
+
+	public void setTextRepEspera(JTextField textRepEspera) {
+		this.textRepEspera = textRepEspera;
+	}
+
+
+
+
+
+	public JTextField getTextPorcentajeReparados() {
+		return textPorcentajeReparados;
+	}
+
+
+
+
+
+	public void setTextPorcentajeReparados(JTextField textPorcentajeReparados) {
+		this.textPorcentajeReparados = textPorcentajeReparados;
+	}
+
+
+
+
+
+	public JTextField getTextPorcentajeSinFalla() {
+		return textPorcentajeSinFalla;
+	}
+
+
+
+
+
+	public void setTextPorcentajeSinFalla(JTextField textPorcentajeSinFalla) {
+		this.textPorcentajeSinFalla = textPorcentajeSinFalla;
+	}
+
+
+
+
+
+	public JTextField getTextPorcentajeRepEnGtia() {
+		return textPorcentajeRepEnGtia;
+	}
+
+
+
+
+
+	public void setTextPorcentajeRepEnGtia(JTextField textPorcentajeRepEnGtia) {
+		this.textPorcentajeRepEnGtia = textPorcentajeRepEnGtia;
+	}
+
+
+
+
+
+	public JTextField getTextPorcentajeEnReparacion() {
+		return textPorcentajeEnReparacion;
+	}
+
+
+
+
+
+	public void setTextPorcentajeEnReparacion(JTextField textPorcentajeEnReparacion) {
+		this.textPorcentajeEnReparacion = textPorcentajeEnReparacion;
+	}
+
+
+
+
+
+	public JTextField getTextPorcentajeVentas() {
+		return textPorcentajeVentas;
+	}
+
+
+
+
+
+	public void setTextPorcentajeVentas(JTextField textPorcentajeVentas) {
+		this.textPorcentajeVentas = textPorcentajeVentas;
+	}
+
+
+
+
+
+	public JTextField getTextPorcentajeSinReparacion() {
+		return textPorcentajeSinReparacion;
+	}
+
+
+
+
+
+	public void setTextPorcentajeSinReparacion(JTextField textPorcentajeSinReparacion) {
+		this.textPorcentajeSinReparacion = textPorcentajeSinReparacion;
+	}
+
+
+
+
+
+	public JTextField getTextPorcentajeReparadosAceptados() {
+		return textPorcentajeReparadosAceptados;
+	}
+
+
+
+
+
+	public void setTextPorcentajeReparadosAceptados(JTextField textPorcentajeReparadosAceptados) {
+		this.textPorcentajeReparadosAceptados = textPorcentajeReparadosAceptados;
+	}
+
+
+
+
+
+	public JTextField getTextPorcentajeReparadosNoAceptados() {
+		return textPorcentajeReparadosNoAceptados;
+	}
+
+
+
+
+
+	public void setTextPorcentajeReparadosNoAceptados(JTextField textPorcentajeReparadosNoAceptados) {
+		this.textPorcentajeReparadosNoAceptados = textPorcentajeReparadosNoAceptados;
+	}
+
+
+
+
+
+	public JTextField getTextPorcentajeRepEspera() {
+		return textPorcentajeRepEspera;
+	}
+
+
+
+
+
+	public void setTextPorcentajeRepEspera(JTextField textPorcentajeRepEspera) {
+		this.textPorcentajeRepEspera = textPorcentajeRepEspera;
 	}
 	}
