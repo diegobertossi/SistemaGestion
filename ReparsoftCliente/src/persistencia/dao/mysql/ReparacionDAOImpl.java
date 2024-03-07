@@ -95,26 +95,20 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	private static final String ingresosPorAnio = "select count(*) from reparaciones where YEAR(FechaEntrada) = ?";
 	private static final String diagnosticosPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico != 'Sin Revisar'";
-	
+
 	private static final String facturacionPesosPorAnio = "select SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.EstadoComercial = 'Aceptado'";
 	private static final String facturacionDolarPorAnio = "select SUM(PrecioDolar) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.EstadoComercial = 'Aceptado'";
 
+	private static final String reparadosPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ";
+	private static final String sinFallasPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Falla'";
+	private static final String repEnGtiaPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado en Garantía'";
+	private static final String enRepPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'En Reparación'";
+	private static final String ventasPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Vendido'";
+	private static final String sinRepPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Reparación'";
+	private static final String repAcepPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado'";
+	private static final String repNoAcepPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado'";
+	private static final String RepEsperaPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación'";
 
-	
-	private static final String  reparadosPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ";
-	private static final String  sinFallasPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Falla'";
-	private static final String  repEnGtiaPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado en Garantía'";
-	private static final String  enRepPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'En Reparación'";
-	private static final String  ventasPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Vendido'";
-	private static final String  sinRepPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Reparación'";
-	private static final String  repAcepPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado'";
-	private static final String  repNoAcepPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado'";
-	private static final String  RepEsperaPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación'";
-	
-	
-	
-	
-	
 	private static final String ingresosPorAnioxMes = "select MONTH(reparaciones.FechaEntrada), count(*) from reparaciones where YEAR(FechaEntrada) = ? group by MONTH(FechaEntrada)";
 	private static final String diagnosticoPorAnioxMes = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico != 'Sin Revisar' group by MONTH(FechadeDiagnostico)";
 	private static final String facturacionoPorAnioxMes = "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones where YEAR(FechAceptacion) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion)";
@@ -515,8 +509,6 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return cantDiagnosticosxAnio;
 	}
-	
-	
 
 	@Override
 	public double FacturacionPesoPorAnio(int anio) {
@@ -567,10 +559,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return facturacionDolarxAnio;
 	}
-	
-	
-	
-	
+
 	@Override
 	public int reparadosPorAnio(int anio) {
 		PreparedStatement statement;
@@ -595,12 +584,10 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return cantReparadosxAnio;
 	}
-	
-	
-	
+
 	@Override
 	public int sinFallasPorAnio(int anio) {
-		
+
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
 		int cantSinFallasxAnio = 0;
@@ -622,17 +609,12 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		}
 
 		return cantSinFallasxAnio;
-		
-		
-		
+
 	}
-	
-	
 
 	@Override
 	public int enGtiaPorAnio(int anio) {
-		
-		
+
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
 		int cantEnGtiaxAnio = 0;
@@ -654,15 +636,12 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		}
 
 		return cantEnGtiaxAnio;
-		
+
 	}
-	
-	
-	
 
 	@Override
 	public int EnRepPorAnio(int anio) {
-		
+
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
 		int cantEnRepxAnio = 0;
@@ -685,9 +664,6 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return cantEnRepxAnio;
 	}
-
-	
-	
 
 	@Override
 	public int ventasPorAnio(int anio) {
@@ -738,10 +714,6 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return cantSinRepxAnio;
 	}
-
-
-	
-	
 
 	@Override
 	public int RepAcepPorAnio(int anio) {
@@ -817,7 +789,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return cantRepEsperaxAnio;
 	}
-	
+
 	public List<Integer> ingresosPorAnioPorMes(int anio) {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
@@ -1905,13 +1877,5 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		}
 		return Reparaciones;
 	}
-
-
-
-
-
-
-
-
 
 }

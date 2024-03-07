@@ -89,7 +89,7 @@ public class VentanaEstadisticas extends JFrame {
 		this.controlador = controlador;
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1279, 711);
+		setBounds(100, 100, 1279, 721);
 
 		this.setLocationRelativeTo(null);
 
@@ -100,7 +100,8 @@ public class VentanaEstadisticas extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panelNorte = new JPanel();
-		panelNorte.setBorder(new LineBorder(new Color(0, 128, 128)));
+		panelNorte.setBackground(new Color(176, 196, 222));
+		panelNorte.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128), 2), new LineBorder(new Color(0, 0, 0))));
 		contentPane.add(panelNorte, BorderLayout.NORTH);
 		
 		JLabel lblNewLabel = new JLabel("ESTADÍSTICAS");
@@ -113,7 +114,8 @@ public class VentanaEstadisticas extends JFrame {
 		panelCentro.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_Filtros = new JPanel();
-		panel_Filtros.setBorder(new LineBorder(new Color(0, 128, 128)));
+		panel_Filtros.setBackground(new Color(176, 196, 222));
+		panel_Filtros.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128), 2), new LineBorder(new Color(0, 0, 0))));
 		panel_Filtros.setPreferredSize(new Dimension(500, 50));
 		panelCentro.add(panel_Filtros, BorderLayout.NORTH);
 		panel_Filtros.setLayout(null);
@@ -177,47 +179,55 @@ public class VentanaEstadisticas extends JFrame {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
 		panel_Ingresos = new JPanel();
+		panel_Ingresos.setBackground(new Color(176, 196, 222));
 		panel_Ingresos.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128), 2), new LineBorder(new Color(0, 0, 0))));
 		panel.add(panel_Ingresos);
 		panel_Ingresos.setLayout(new BorderLayout(0, 0));
 		
 		panel_Diagnosticos = new JPanel();
+		panel_Diagnosticos.setBackground(new Color(176, 196, 222));
 		panel_Diagnosticos.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128), 2), new LineBorder(new Color(0, 0, 0))));
 		panel.add(panel_Diagnosticos);
 		panel_Diagnosticos.setLayout(new BorderLayout(0, 0));
 		
 		panel_Facturacion = new JPanel();
+		panel_Facturacion.setBackground(new Color(176, 196, 222));
 		panel_Facturacion.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128), 2), new LineBorder(new Color(0, 0, 0))));
 		panel.add(panel_Facturacion);
 		panel_Facturacion.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panelDerecha = new JPanel();
+		panelDerecha.setBackground(new Color(176, 196, 222));
 		panelDerecha.setPreferredSize(new Dimension(350, 10));
-		panelDerecha.setBorder(new LineBorder(new Color(0, 128, 128)));
+		panelDerecha.setBorder(new LineBorder(new Color(0, 128, 128), 2));
 		contentPane.add(panelDerecha, BorderLayout.EAST);
 		panelDerecha.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_Derecha_Inferior = new JPanel();
+		panel_Derecha_Inferior.setBackground(new Color(176, 196, 222));
+		panel_Derecha_Inferior.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128), 2), new LineBorder(new Color(0, 0, 0))));
 		panelDerecha.add(panel_Derecha_Inferior, BorderLayout.SOUTH);
 		panel_Derecha_Inferior.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		btnConfiguracion = new JButton("CONFIGURACIÓN");
-		btnConfiguracion.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnConfiguracion.setFont(new Font("Cambria", Font.BOLD, 16));
 		panel_Derecha_Inferior.add(btnConfiguracion);
 		
 		panel_Datos = new JPanel();
+		panel_Datos.setBackground(new Color(176, 196, 222));
+		panel_Datos.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new LineBorder(new Color(0, 0, 0))));
 		panel_Datos.setVisible(false);
 		panelDerecha.add(panel_Datos, BorderLayout.CENTER);
 		panel_Datos.setLayout(null);
 		
 		lblAnioDatos = new JLabel("");
-		lblAnioDatos.setFont(new Font("Cambria", Font.BOLD, 18));
-		lblAnioDatos.setBounds(136, 11, 75, 22);
+		lblAnioDatos.setFont(new Font("Cambria", Font.BOLD, 20));
+		lblAnioDatos.setBounds(136, 5, 75, 24);
 		panel_Datos.add(lblAnioDatos);
 		
 		JLabel lblNewLabel_2_1 = new JLabel("INGRESOS TOTALES: ");
-		lblNewLabel_2_1.setFont(new Font("Cambria", Font.PLAIN, 14));
-		lblNewLabel_2_1.setBounds(11, 44, 147, 14);
+		lblNewLabel_2_1.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_2_1.setBounds(11, 40, 147, 18);
 		panel_Datos.add(lblNewLabel_2_1);
 		
 		JLabel lblNewLabel_2_2 = new JLabel("REPARADOS");
@@ -236,24 +246,28 @@ public class VentanaEstadisticas extends JFrame {
 		panel_Datos.add(lblNewLabel_2_4);
 		
 		textIngresosTotales = new JTextField();
+		textIngresosTotales.setBorder(null);
+		textIngresosTotales.setOpaque(false);
 		textIngresosTotales.setHorizontalAlignment(SwingConstants.CENTER);
 		textIngresosTotales.setEditable(false);
-		textIngresosTotales.setFont(new Font("Cambria", Font.PLAIN, 13));
-		textIngresosTotales.setBounds(262, 44, 75, 15);
+		textIngresosTotales.setFont(new Font("Cambria", Font.BOLD, 13));
+		textIngresosTotales.setBounds(226, 40, 111, 18);
 		panel_Datos.add(textIngresosTotales);
 		textIngresosTotales.setColumns(10);
 		
 		JLabel lblNewLabel_2_1_1 = new JLabel("DIAGNÓSTICOS TOTALES: ");
-		lblNewLabel_2_1_1.setFont(new Font("Cambria", Font.PLAIN, 14));
-		lblNewLabel_2_1_1.setBounds(11, 63, 166, 14);
+		lblNewLabel_2_1_1.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_2_1_1.setBounds(11, 59, 166, 18);
 		panel_Datos.add(lblNewLabel_2_1_1);
 		
 		textDiagnosticosTotales = new JTextField();
+		textDiagnosticosTotales.setBorder(null);
+		textDiagnosticosTotales.setOpaque(false);
 		textDiagnosticosTotales.setHorizontalAlignment(SwingConstants.CENTER);
 		textDiagnosticosTotales.setEditable(false);
-		textDiagnosticosTotales.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textDiagnosticosTotales.setFont(new Font("Cambria", Font.BOLD, 13));
 		textDiagnosticosTotales.setColumns(10);
-		textDiagnosticosTotales.setBounds(262, 63, 75, 15);
+		textDiagnosticosTotales.setBounds(226, 59, 111, 18);
 		panel_Datos.add(textDiagnosticosTotales);
 		
 		JSeparator separator_1 = new JSeparator();
@@ -276,56 +290,68 @@ public class VentanaEstadisticas extends JFrame {
 		panel_Datos.add(lblNewLabel_2_4_1_1_1);
 		
 		JLabel lblNewLabel_2_5 = new JLabel("RESUMEN ANUAL");
-		lblNewLabel_2_5.setFont(new Font("Cambria", Font.PLAIN, 14));
-		lblNewLabel_2_5.setBounds(112, 141, 123, 14);
+		lblNewLabel_2_5.setFont(new Font("Cambria", Font.PLAIN, 18));
+		lblNewLabel_2_5.setBounds(102, 131, 143, 22);
 		panel_Datos.add(lblNewLabel_2_5);
 		
 		textReparados = new JTextField();
+		textReparados.setBorder(null);
+		textReparados.setOpaque(false);
 		textReparados.setHorizontalAlignment(SwingConstants.CENTER);
 		textReparados.setEditable(false);
 		textReparados.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textReparados.setColumns(10);
-		textReparados.setBounds(181, 166, 75, 15);
+		textReparados.setBounds(181, 166, 75, 16);
 		panel_Datos.add(textReparados);
 		
 		textSinFalla = new JTextField();
+		textSinFalla.setBorder(null);
+		textSinFalla.setOpaque(false);
 		textSinFalla.setHorizontalAlignment(SwingConstants.CENTER);
 		textSinFalla.setEditable(false);
 		textSinFalla.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textSinFalla.setColumns(10);
-		textSinFalla.setBounds(181, 182, 75, 15);
+		textSinFalla.setBounds(181, 182, 75, 16);
 		panel_Datos.add(textSinFalla);
 		
 		textRepEnGtia = new JTextField();
+		textRepEnGtia.setBorder(null);
+		textRepEnGtia.setOpaque(false);
 		textRepEnGtia.setHorizontalAlignment(SwingConstants.CENTER);
 		textRepEnGtia.setEditable(false);
 		textRepEnGtia.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textRepEnGtia.setColumns(10);
-		textRepEnGtia.setBounds(181, 198, 75, 15);
+		textRepEnGtia.setBounds(181, 198, 75, 16);
 		panel_Datos.add(textRepEnGtia);
 		
 		textEnReparacion = new JTextField();
+		textEnReparacion.setBorder(null);
+		textEnReparacion.setOpaque(false);
 		textEnReparacion.setHorizontalAlignment(SwingConstants.CENTER);
 		textEnReparacion.setEditable(false);
 		textEnReparacion.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textEnReparacion.setColumns(10);
-		textEnReparacion.setBounds(181, 214, 75, 15);
+		textEnReparacion.setBounds(181, 214, 75, 16);
 		panel_Datos.add(textEnReparacion);
 		
 		textVentas = new JTextField();
+		textVentas.setBorder(null);
+		textVentas.setOpaque(false);
 		textVentas.setHorizontalAlignment(SwingConstants.CENTER);
 		textVentas.setEditable(false);
 		textVentas.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textVentas.setColumns(10);
-		textVentas.setBounds(181, 230, 75, 15);
+		textVentas.setBounds(181, 228, 75, 16);
 		panel_Datos.add(textVentas);
 		
 		textSinReparacion = new JTextField();
+		textSinReparacion.setBorder(null);
+		textSinReparacion.setOpaque(false);
 		textSinReparacion.setHorizontalAlignment(SwingConstants.CENTER);
 		textSinReparacion.setEditable(false);
 		textSinReparacion.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textSinReparacion.setColumns(10);
-		textSinReparacion.setBounds(181, 246, 75, 15);
+		textSinReparacion.setBounds(181, 244, 75, 16);
 		panel_Datos.add(textSinReparacion);
 		
 		JLabel lblNewLabel_2_2_1 = new JLabel("REPARADOS/ ACEPTADOS");
@@ -344,33 +370,39 @@ public class VentanaEstadisticas extends JFrame {
 		panel_Datos.add(lblNewLabel_2_3_1);
 		
 		textReparadosAceptados = new JTextField();
+		textReparadosAceptados.setBorder(null);
+		textReparadosAceptados.setOpaque(false);
 		textReparadosAceptados.setHorizontalAlignment(SwingConstants.CENTER);
 		textReparadosAceptados.setEditable(false);
 		textReparadosAceptados.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textReparadosAceptados.setColumns(10);
-		textReparadosAceptados.setBounds(181, 285, 75, 15);
+		textReparadosAceptados.setBounds(181, 285, 75, 16);
 		panel_Datos.add(textReparadosAceptados);
 		
 		textReparadosNoAceptados = new JTextField();
+		textReparadosNoAceptados.setBorder(null);
+		textReparadosNoAceptados.setOpaque(false);
 		textReparadosNoAceptados.setHorizontalAlignment(SwingConstants.CENTER);
 		textReparadosNoAceptados.setEditable(false);
 		textReparadosNoAceptados.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textReparadosNoAceptados.setColumns(10);
-		textReparadosNoAceptados.setBounds(181, 301, 75, 15);
+		textReparadosNoAceptados.setBounds(181, 301, 75, 16);
 		panel_Datos.add(textReparadosNoAceptados);
 		
 		textRepEspera = new JTextField();
+		textRepEspera.setBorder(null);
+		textRepEspera.setOpaque(false);
 		textRepEspera.setHorizontalAlignment(SwingConstants.CENTER);
 		textRepEspera.setEditable(false);
 		textRepEspera.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textRepEspera.setColumns(10);
-		textRepEspera.setBounds(181, 317, 75, 15);
+		textRepEspera.setBounds(181, 317, 75, 16);
 		panel_Datos.add(textRepEspera);
 		
 		btnFacturacionPorCliente = new JButton("<html><center>FACTURACIÓN POR CLIENTE</html>");
 		btnFacturacionPorCliente.setVisible(false);
 		btnFacturacionPorCliente.setFont(new Font("Cambria", Font.PLAIN, 11));
-		btnFacturacionPorCliente.setBounds(46, 373, 106, 37);
+		btnFacturacionPorCliente.setBounds(11, 364, 106, 37);
 		panel_Datos.add(btnFacturacionPorCliente);
 		
 		JSeparator separator_2_1 = new JSeparator();
@@ -378,75 +410,93 @@ public class VentanaEstadisticas extends JFrame {
 		panel_Datos.add(separator_2_1);
 		
 		textPorcentajeReparados = new JTextField();
+		textPorcentajeReparados.setBorder(null);
+		textPorcentajeReparados.setOpaque(false);
 		textPorcentajeReparados.setHorizontalAlignment(SwingConstants.CENTER);
 		textPorcentajeReparados.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textPorcentajeReparados.setEditable(false);
 		textPorcentajeReparados.setColumns(10);
-		textPorcentajeReparados.setBounds(262, 166, 75, 15);
+		textPorcentajeReparados.setBounds(262, 166, 75, 16);
 		panel_Datos.add(textPorcentajeReparados);
 		
 		textPorcentajeSinFalla = new JTextField();
+		textPorcentajeSinFalla.setBorder(null);
+		textPorcentajeSinFalla.setOpaque(false);
 		textPorcentajeSinFalla.setHorizontalAlignment(SwingConstants.CENTER);
 		textPorcentajeSinFalla.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textPorcentajeSinFalla.setEditable(false);
 		textPorcentajeSinFalla.setColumns(10);
-		textPorcentajeSinFalla.setBounds(262, 182, 75, 15);
+		textPorcentajeSinFalla.setBounds(262, 182, 75, 16);
 		panel_Datos.add(textPorcentajeSinFalla);
 		
 		textPorcentajeRepEnGtia = new JTextField();
+		textPorcentajeRepEnGtia.setBorder(null);
+		textPorcentajeRepEnGtia.setOpaque(false);
 		textPorcentajeRepEnGtia.setHorizontalAlignment(SwingConstants.CENTER);
 		textPorcentajeRepEnGtia.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textPorcentajeRepEnGtia.setEditable(false);
 		textPorcentajeRepEnGtia.setColumns(10);
-		textPorcentajeRepEnGtia.setBounds(262, 198, 75, 15);
+		textPorcentajeRepEnGtia.setBounds(262, 198, 75, 16);
 		panel_Datos.add(textPorcentajeRepEnGtia);
 		
 		textPorcentajeEnReparacion = new JTextField();
+		textPorcentajeEnReparacion.setBorder(null);
+		textPorcentajeEnReparacion.setOpaque(false);
 		textPorcentajeEnReparacion.setHorizontalAlignment(SwingConstants.CENTER);
 		textPorcentajeEnReparacion.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textPorcentajeEnReparacion.setEditable(false);
 		textPorcentajeEnReparacion.setColumns(10);
-		textPorcentajeEnReparacion.setBounds(262, 214, 75, 15);
+		textPorcentajeEnReparacion.setBounds(262, 214, 75, 16);
 		panel_Datos.add(textPorcentajeEnReparacion);
 		
 		textPorcentajeVentas = new JTextField();
+		textPorcentajeVentas.setBorder(null);
+		textPorcentajeVentas.setOpaque(false);
 		textPorcentajeVentas.setHorizontalAlignment(SwingConstants.CENTER);
 		textPorcentajeVentas.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textPorcentajeVentas.setEditable(false);
 		textPorcentajeVentas.setColumns(10);
-		textPorcentajeVentas.setBounds(262, 230, 75, 15);
+		textPorcentajeVentas.setBounds(262, 228, 75, 16);
 		panel_Datos.add(textPorcentajeVentas);
 		
 		textPorcentajeSinReparacion = new JTextField();
+		textPorcentajeSinReparacion.setBorder(null);
+		textPorcentajeSinReparacion.setOpaque(false);
 		textPorcentajeSinReparacion.setHorizontalAlignment(SwingConstants.CENTER);
 		textPorcentajeSinReparacion.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textPorcentajeSinReparacion.setEditable(false);
 		textPorcentajeSinReparacion.setColumns(10);
-		textPorcentajeSinReparacion.setBounds(262, 246, 75, 15);
+		textPorcentajeSinReparacion.setBounds(262, 244, 75, 16);
 		panel_Datos.add(textPorcentajeSinReparacion);
 		
 		textPorcentajeReparadosAceptados = new JTextField();
+		textPorcentajeReparadosAceptados.setBorder(null);
+		textPorcentajeReparadosAceptados.setOpaque(false);
 		textPorcentajeReparadosAceptados.setHorizontalAlignment(SwingConstants.CENTER);
 		textPorcentajeReparadosAceptados.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textPorcentajeReparadosAceptados.setEditable(false);
 		textPorcentajeReparadosAceptados.setColumns(10);
-		textPorcentajeReparadosAceptados.setBounds(262, 285, 75, 15);
+		textPorcentajeReparadosAceptados.setBounds(262, 285, 75, 16);
 		panel_Datos.add(textPorcentajeReparadosAceptados);
 		
 		textPorcentajeReparadosNoAceptados = new JTextField();
+		textPorcentajeReparadosNoAceptados.setBorder(null);
+		textPorcentajeReparadosNoAceptados.setOpaque(false);
 		textPorcentajeReparadosNoAceptados.setHorizontalAlignment(SwingConstants.CENTER);
 		textPorcentajeReparadosNoAceptados.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textPorcentajeReparadosNoAceptados.setEditable(false);
 		textPorcentajeReparadosNoAceptados.setColumns(10);
-		textPorcentajeReparadosNoAceptados.setBounds(262, 301, 75, 15);
+		textPorcentajeReparadosNoAceptados.setBounds(262, 301, 75, 16);
 		panel_Datos.add(textPorcentajeReparadosNoAceptados);
 		
 		textPorcentajeRepEspera = new JTextField();
+		textPorcentajeRepEspera.setBorder(null);
+		textPorcentajeRepEspera.setOpaque(false);
 		textPorcentajeRepEspera.setHorizontalAlignment(SwingConstants.CENTER);
 		textPorcentajeRepEspera.setFont(new Font("Cambria", Font.PLAIN, 13));
 		textPorcentajeRepEspera.setEditable(false);
 		textPorcentajeRepEspera.setColumns(10);
-		textPorcentajeRepEspera.setBounds(262, 317, 75, 15);
+		textPorcentajeRepEspera.setBounds(262, 317, 75, 16);
 		panel_Datos.add(textPorcentajeRepEspera);
 		
 		JSeparator separator_1_2 = new JSeparator();
@@ -458,11 +508,11 @@ public class VentanaEstadisticas extends JFrame {
 		panel_Datos.add(separator_2_1_1);
 		
 		JSeparator separator_1_1 = new JSeparator();
-		separator_1_1.setBounds(5, 553, 332, 2);
+		separator_1_1.setBounds(5, 530, 332, 2);
 		panel_Datos.add(separator_1_1);
 		
 		JSeparator separator_2_1_2 = new JSeparator();
-		separator_2_1_2.setBounds(5, 551, 332, 2);
+		separator_2_1_2.setBounds(5, 528, 332, 2);
 		panel_Datos.add(separator_2_1_2);
 		
 		JSeparator separator_2_1_2_1 = new JSeparator();
@@ -470,29 +520,33 @@ public class VentanaEstadisticas extends JFrame {
 		panel_Datos.add(separator_2_1_2_1);
 		
 		JLabel lblFacTotalPesos = new JLabel("FACTURACIÓN TOTAL (PESOS): ");
-		lblFacTotalPesos.setFont(new Font("Cambria", Font.PLAIN, 14));
-		lblFacTotalPesos.setBounds(11, 82, 205, 14);
+		lblFacTotalPesos.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblFacTotalPesos.setBounds(11, 78, 205, 18);
 		panel_Datos.add(lblFacTotalPesos);
 		
 		textFacTotalPesos = new JTextField();
-		textFacTotalPesos.setHorizontalAlignment(SwingConstants.CENTER);
-		textFacTotalPesos.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textFacTotalPesos.setBorder(null);
+		textFacTotalPesos.setOpaque(false);
+		textFacTotalPesos.setHorizontalAlignment(SwingConstants.RIGHT);
+		textFacTotalPesos.setFont(new Font("Cambria", Font.BOLD, 13));
 		textFacTotalPesos.setEditable(false);
 		textFacTotalPesos.setColumns(10);
-		textFacTotalPesos.setBounds(262, 82, 75, 15);
+		textFacTotalPesos.setBounds(226, 78, 111, 18);
 		panel_Datos.add(textFacTotalPesos);
 		
 		JLabel lblNewLabel_2_1_1_2 = new JLabel("FACTURACIÓN TOTAL (DÓLARES): ");
-		lblNewLabel_2_1_1_2.setFont(new Font("Cambria", Font.PLAIN, 14));
-		lblNewLabel_2_1_1_2.setBounds(11, 102, 224, 14);
+		lblNewLabel_2_1_1_2.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblNewLabel_2_1_1_2.setBounds(11, 97, 216, 18);
 		panel_Datos.add(lblNewLabel_2_1_1_2);
 		
 		textFacTotalDolares = new JTextField();
-		textFacTotalDolares.setHorizontalAlignment(SwingConstants.CENTER);
-		textFacTotalDolares.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textFacTotalDolares.setBorder(null);
+		textFacTotalDolares.setOpaque(false);
+		textFacTotalDolares.setHorizontalAlignment(SwingConstants.RIGHT);
+		textFacTotalDolares.setFont(new Font("Cambria", Font.BOLD, 13));
 		textFacTotalDolares.setEditable(false);
 		textFacTotalDolares.setColumns(10);
-		textFacTotalDolares.setBounds(262, 102, 75, 15);
+		textFacTotalDolares.setBounds(226, 97, 111, 18);
 		panel_Datos.add(textFacTotalDolares);
 
 		

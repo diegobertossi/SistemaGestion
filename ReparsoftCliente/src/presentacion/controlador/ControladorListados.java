@@ -41,6 +41,8 @@ import modelo.Agenda;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaEstadisticas;
 import presentacion.vista.VentanaListadoReparaciones;
+import tiposPropios.MonedaFormatter;
+
 import javax.swing.*;
 
 public class ControladorListados
@@ -67,6 +69,8 @@ public class ControladorListados
 
 	@SuppressWarnings("unused")
 	private ControladorUsuLogin controladorUsuLogin;
+	
+	private MonedaFormatter monedaFormatter;
 
 	private int filtro;
 
@@ -303,6 +307,7 @@ public class ControladorListados
 
 			ventanaEstadisticas = new VentanaEstadisticas(this);
 			agregarListenerAventanaEstadisticas();
+			monedaFormatter = new MonedaFormatter();
 
 			llenarcomboFiltro();
 
@@ -668,6 +673,7 @@ public class ControladorListados
 
 						ventanaEstadisticas.getComboCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
+						ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(false);
 
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
@@ -689,6 +695,8 @@ public class ControladorListados
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
 						ventanaEstadisticas.getComboCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
+						
+						ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(true);
 
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
@@ -716,6 +724,7 @@ public class ControladorListados
 						ventanaEstadisticas.getComboTecnico().setVisible(true);
 						ventanaEstadisticas.getComboCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
+						ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(false);
 
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
@@ -739,6 +748,7 @@ public class ControladorListados
 
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
+						ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(false);
 
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
@@ -850,19 +860,17 @@ public class ControladorListados
 	private void llenarcomboTecnico() {
 
 		modelo.ListarTecnicos(ventanaEstadisticas.getComboTecnico());
-		
+
 		ventanaEstadisticas.getComboTecnico().addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 
 				if (ventanaEstadisticas.getComboTecnico().getSelectedItem() != null) {
-					
+
 					ventanaEstadisticas.getComboAnio().setSelectedIndex(-1);
 					ventanaEstadisticas.getPanel_Ingresos().removeAll();
 					ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 					ventanaEstadisticas.getPanel_Facturacion().removeAll();
 					ventanaEstadisticas.repaint();
-				
-
 
 				}
 
@@ -880,15 +888,12 @@ public class ControladorListados
 			public void itemStateChanged(ItemEvent e) {
 
 				if (ventanaEstadisticas.getComboCliente().getSelectedItem() != null) {
-					
+
 					ventanaEstadisticas.getComboAnio().setSelectedIndex(-1);
 					ventanaEstadisticas.getPanel_Ingresos().removeAll();
 					ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 					ventanaEstadisticas.getPanel_Facturacion().removeAll();
 					ventanaEstadisticas.repaint();
-					
-
-
 
 				}
 
@@ -905,22 +910,23 @@ public class ControladorListados
 		int cantidadDiagnosticosPorAnio = modelo.dameDiagnosticosPorAnio(anio);
 		double facturacionPesoPorAnio = modelo.dameFacturacionPesoPorAnio(anio);
 		double facturacionDolarPorAnio = modelo.dameFacturacionDolarPorAnio(anio);
-		
+
 		int cantidadReparadosPorAnio = modelo.dameReparadosPorAnio(anio);
-		int cantidadSinFallaPorAnio =  modelo.dameSinFallaPorAnio(anio);
-		int cantidadRepEnGtiaPorAnio =  modelo.dameRepEnGtiaPorAnio(anio);
-		int cantidadEnRepPorAnio =  modelo.dameEnRepPorAnio(anio);
-		int cantidadVentasPorAnio =  modelo.dameVentasPorAnio(anio);
-		int cantidadSinRepAnio =  modelo.dameSinRepAnio(anio);
-		int cantidadReparadosAceptradosPorAnio =  modelo.dameRepAcepPorAnio(anio);
-		int cantidadReparadosNoAceptradosPorAnio =  modelo.dameRepNoAcepPorAnio(anio);
-		int cantidadReparadosAlaEsperaPorAnio =  modelo.dameRepEsperaPorAnio(anio);
-		
+		int cantidadSinFallaPorAnio = modelo.dameSinFallaPorAnio(anio);
+		int cantidadRepEnGtiaPorAnio = modelo.dameRepEnGtiaPorAnio(anio);
+		int cantidadEnRepPorAnio = modelo.dameEnRepPorAnio(anio);
+		int cantidadVentasPorAnio = modelo.dameVentasPorAnio(anio);
+		int cantidadSinRepAnio = modelo.dameSinRepAnio(anio);
+		int cantidadReparadosAceptradosPorAnio = modelo.dameRepAcepPorAnio(anio);
+		int cantidadReparadosNoAceptradosPorAnio = modelo.dameRepNoAcepPorAnio(anio);
+		int cantidadReparadosAlaEsperaPorAnio = modelo.dameRepEsperaPorAnio(anio);
 
 		ventanaEstadisticas.getTextIngresosTotales().setText(Integer.toString(cantidadIngresosPorAnio));
 		ventanaEstadisticas.getTextDiagnosticosTotales().setText(Integer.toString(cantidadDiagnosticosPorAnio));
-		ventanaEstadisticas.getTextFacTotalPesos().setText(Double.toString(facturacionPesoPorAnio));
-		ventanaEstadisticas.getTextFacTotalDolares().setText(Double.toString(facturacionDolarPorAnio));
+		
+		ventanaEstadisticas.getTextFacTotalPesos().setText(monedaFormatter.formatPeso(Double.toString(facturacionPesoPorAnio)));
+		ventanaEstadisticas.getTextFacTotalDolares().setText(monedaFormatter.formatDolar(Double.toString(facturacionDolarPorAnio)));
+		
 		ventanaEstadisticas.getTextReparados().setText(Integer.toString(cantidadReparadosPorAnio));
 		ventanaEstadisticas.getTextSinFalla().setText(Integer.toString(cantidadSinFallaPorAnio));
 		ventanaEstadisticas.getTextRepEnGtia().setText(Integer.toString(cantidadRepEnGtiaPorAnio));
@@ -928,50 +934,49 @@ public class ControladorListados
 		ventanaEstadisticas.getTextVentas().setText(Integer.toString(cantidadVentasPorAnio));
 		ventanaEstadisticas.getTextSinReparacion().setText(Integer.toString(cantidadSinRepAnio));
 		ventanaEstadisticas.getTextReparadosAceptados().setText(Integer.toString(cantidadReparadosAceptradosPorAnio));
-		ventanaEstadisticas.getTextReparadosNoAceptados().setText(Integer.toString(cantidadReparadosNoAceptradosPorAnio));
+		ventanaEstadisticas.getTextReparadosNoAceptados()
+				.setText(Integer.toString(cantidadReparadosNoAceptradosPorAnio));
 		ventanaEstadisticas.getTextRepEspera().setText(Integer.toString(cantidadReparadosAlaEsperaPorAnio));
-		
-		double porcentajeReparadosPorAnio = ((double)cantidadReparadosPorAnio/cantidadDiagnosticosPorAnio) * 100;
+
+		double porcentajeReparadosPorAnio = ((double) cantidadReparadosPorAnio / cantidadDiagnosticosPorAnio) * 100;
 		String porcentajeReparados = String.format("%.1f %%", porcentajeReparadosPorAnio);
 		ventanaEstadisticas.getTextPorcentajeReparados().setText(porcentajeReparados);
-		
-		double porcentajeRepEnGtiaPorAnio = ((double)cantidadRepEnGtiaPorAnio/cantidadDiagnosticosPorAnio) * 100;
+
+		double porcentajeRepEnGtiaPorAnio = ((double) cantidadRepEnGtiaPorAnio / cantidadDiagnosticosPorAnio) * 100;
 		String porcentajeEnGtia = String.format("%.1f %%", porcentajeRepEnGtiaPorAnio);
 		ventanaEstadisticas.getTextPorcentajeRepEnGtia().setText(porcentajeEnGtia);
-		
-		double porcentajeSinFallaPorAnio = ((double)cantidadSinFallaPorAnio/cantidadDiagnosticosPorAnio) * 100;
+
+		double porcentajeSinFallaPorAnio = ((double) cantidadSinFallaPorAnio / cantidadDiagnosticosPorAnio) * 100;
 		String porcentajeSinFalla = String.format("%.1f %%", porcentajeSinFallaPorAnio);
 		ventanaEstadisticas.getTextPorcentajeSinFalla().setText(porcentajeSinFalla);
-		
-		double porcentajeEnRePorAnio = ((double)cantidadEnRepPorAnio/cantidadDiagnosticosPorAnio) * 100;
+
+		double porcentajeEnRePorAnio = ((double) cantidadEnRepPorAnio / cantidadDiagnosticosPorAnio) * 100;
 		String porcentajeEnRep = String.format("%.1f %%", porcentajeEnRePorAnio);
 		ventanaEstadisticas.getTextPorcentajeEnReparacion().setText(porcentajeEnRep);
-		
-		double porcentajeVentasPorAnio = ((double)cantidadVentasPorAnio/cantidadDiagnosticosPorAnio) * 100;
+
+		double porcentajeVentasPorAnio = ((double) cantidadVentasPorAnio / cantidadDiagnosticosPorAnio) * 100;
 		String porcentajeVentas = String.format("%.1f %%", porcentajeVentasPorAnio);
 		ventanaEstadisticas.getTextPorcentajeVentas().setText(porcentajeVentas);
-		
-		double porcentajeSinRepPorAnio = ((double)cantidadSinRepAnio/cantidadDiagnosticosPorAnio) * 100;
+
+		double porcentajeSinRepPorAnio = ((double) cantidadSinRepAnio / cantidadDiagnosticosPorAnio) * 100;
 		String porcentajeSinRep = String.format("%.1f %%", porcentajeSinRepPorAnio);
 		ventanaEstadisticas.getTextPorcentajeSinReparacion().setText(porcentajeSinRep);
-		
-		
-		double porcentajeRepAcepPorAnio = ((double)cantidadReparadosAceptradosPorAnio/cantidadReparadosPorAnio) * 100;
+
+		double porcentajeRepAcepPorAnio = ((double) cantidadReparadosAceptradosPorAnio / cantidadReparadosPorAnio)
+				* 100;
 		String porcentajeRepAcep = String.format("%.1f %%", porcentajeRepAcepPorAnio);
 		ventanaEstadisticas.getTextPorcentajeReparadosAceptados().setText(porcentajeRepAcep);
 
-		
-		double porcentajeRepNoAcepPorAnio = ((double)cantidadReparadosNoAceptradosPorAnio/cantidadReparadosPorAnio) * 100;
+		double porcentajeRepNoAcepPorAnio = ((double) cantidadReparadosNoAceptradosPorAnio / cantidadReparadosPorAnio)
+				* 100;
 		String porcentajeRepNoAcep = String.format("%.1f %%", porcentajeRepNoAcepPorAnio);
 		ventanaEstadisticas.getTextPorcentajeReparadosNoAceptados().setText(porcentajeRepNoAcep);
-		
-		double porcentajeRepEsperaPorAnio = ((double)cantidadReparadosAlaEsperaPorAnio/cantidadReparadosPorAnio) * 100;
+
+		double porcentajeRepEsperaPorAnio = ((double) cantidadReparadosAlaEsperaPorAnio / cantidadReparadosPorAnio)
+				* 100;
 		String porcentajeRepEspera = String.format("%.1f %%", porcentajeRepEsperaPorAnio);
 		ventanaEstadisticas.getTextPorcentajeRepEspera().setText(porcentajeRepEspera);
-		
-		
-		
-		
+
 	}
 
 	private void mostrarGraficosPorAnio() {
@@ -1031,14 +1036,13 @@ public class ControladorListados
 				PlotOrientation.VERTICAL, false, true, false);
 		JFreeChart grafico_facturacion = ChartFactory.createBarChart("FACTURACIÓN", null, "Pesos($)", datosFacturacion,
 				PlotOrientation.VERTICAL, false, true, false);
-		
+
 		NumberAxis yAxisIngresos = (NumberAxis) grafico_ingresos.getCategoryPlot().getRangeAxis();
 		yAxisIngresos.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-		
-        NumberAxis yAxisDiagnosticos = (NumberAxis) grafico_diagnosticos.getCategoryPlot().getRangeAxis();
-        yAxisDiagnosticos.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        
-        
+
+		NumberAxis yAxisDiagnosticos = (NumberAxis) grafico_diagnosticos.getCategoryPlot().getRangeAxis();
+		yAxisDiagnosticos.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
 		CategoryPlot plot_ingreso = (CategoryPlot) grafico_ingresos.getPlot();
 		CategoryPlot plot_diagnostico = (CategoryPlot) grafico_diagnosticos.getPlot();
 		CategoryPlot plot_facturacion = (CategoryPlot) grafico_facturacion.getPlot();
@@ -1138,13 +1142,12 @@ public class ControladorListados
 				PlotOrientation.VERTICAL, false, true, false);
 		JFreeChart grafico_facturacion = ChartFactory.createBarChart("FACTURACIÓN", null, "Pesos($)", datosFacturacion,
 				PlotOrientation.VERTICAL, false, true, false);
-		
-		
+
 		NumberAxis yAxisaceptaciones = (NumberAxis) grafico_aceptaciones.getCategoryPlot().getRangeAxis();
 		yAxisaceptaciones.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-		
-        NumberAxis yAxisDiagnosticos = (NumberAxis) grafico_diagnosticos.getCategoryPlot().getRangeAxis();
-        yAxisDiagnosticos.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+		NumberAxis yAxisDiagnosticos = (NumberAxis) grafico_diagnosticos.getCategoryPlot().getRangeAxis();
+		yAxisDiagnosticos.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
 		CategoryPlot plot_aceptaciones = (CategoryPlot) grafico_aceptaciones.getPlot();
 		CategoryPlot plot_diagnostico = (CategoryPlot) grafico_diagnosticos.getPlot();
@@ -1187,110 +1190,108 @@ public class ControladorListados
 
 	private void mostrarGraficosPorCliente() {
 
-			int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
-			String cliente = ventanaEstadisticas.getComboCliente().getSelectedItem().toString();
+		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
+		String cliente = ventanaEstadisticas.getComboCliente().getSelectedItem().toString();
 
-			int idCliente = modelo.idClienteporNombre(cliente);
+		int idCliente = modelo.idClienteporNombre(cliente);
 
-			List<Integer> listaIngresos = modelo.dameIngresosPorAnioPorCliente(anio, idCliente);
-			List<Integer> listaAceptaciones = modelo.dameAceptacionesPorAnioPorCliente(anio, idCliente);
-			List<Double> listaFacturacion = modelo.dameFacturacionPorAnioPorCliente(anio, idCliente);
+		List<Integer> listaIngresos = modelo.dameIngresosPorAnioPorCliente(anio, idCliente);
+		List<Integer> listaAceptaciones = modelo.dameAceptacionesPorAnioPorCliente(anio, idCliente);
+		List<Double> listaFacturacion = modelo.dameFacturacionPorAnioPorCliente(anio, idCliente);
 
-			DefaultCategoryDataset datosIngresos = new DefaultCategoryDataset();
-			DefaultCategoryDataset datosAceptaciones = new DefaultCategoryDataset();
-			DefaultCategoryDataset datosFacturacion = new DefaultCategoryDataset();
+		DefaultCategoryDataset datosIngresos = new DefaultCategoryDataset();
+		DefaultCategoryDataset datosAceptaciones = new DefaultCategoryDataset();
+		DefaultCategoryDataset datosFacturacion = new DefaultCategoryDataset();
 
-			datosIngresos.setValue(listaIngresos.get(0), "Ingresos", "ENE");
-			datosIngresos.setValue(listaIngresos.get(1), "Ingresos", "FEB");
-			datosIngresos.setValue(listaIngresos.get(2), "Ingresos", "MAR");
-			datosIngresos.setValue(listaIngresos.get(3), "Ingresos", "ABR");
-			datosIngresos.setValue(listaIngresos.get(4), "Ingresos", "MAY");
-			datosIngresos.setValue(listaIngresos.get(5), "Ingresos", "JUN");
-			datosIngresos.setValue(listaIngresos.get(6), "Ingresos", "JUL");
-			datosIngresos.setValue(listaIngresos.get(7), "Ingresos", "AGO");
-			datosIngresos.setValue(listaIngresos.get(8), "Ingresos", "SEP");
-			datosIngresos.setValue(listaIngresos.get(9), "Ingresos", "OCT");
-			datosIngresos.setValue(listaIngresos.get(10), "Ingresos", "NOV");
-			datosIngresos.setValue(listaIngresos.get(11), "Ingresos", "DIC");
+		datosIngresos.setValue(listaIngresos.get(0), "Ingresos", "ENE");
+		datosIngresos.setValue(listaIngresos.get(1), "Ingresos", "FEB");
+		datosIngresos.setValue(listaIngresos.get(2), "Ingresos", "MAR");
+		datosIngresos.setValue(listaIngresos.get(3), "Ingresos", "ABR");
+		datosIngresos.setValue(listaIngresos.get(4), "Ingresos", "MAY");
+		datosIngresos.setValue(listaIngresos.get(5), "Ingresos", "JUN");
+		datosIngresos.setValue(listaIngresos.get(6), "Ingresos", "JUL");
+		datosIngresos.setValue(listaIngresos.get(7), "Ingresos", "AGO");
+		datosIngresos.setValue(listaIngresos.get(8), "Ingresos", "SEP");
+		datosIngresos.setValue(listaIngresos.get(9), "Ingresos", "OCT");
+		datosIngresos.setValue(listaIngresos.get(10), "Ingresos", "NOV");
+		datosIngresos.setValue(listaIngresos.get(11), "Ingresos", "DIC");
 
-			datosAceptaciones.setValue(listaAceptaciones.get(0), "Aceptaciones", "ENE");
-			datosAceptaciones.setValue(listaAceptaciones.get(1), "Aceptaciones", "FEB");
-			datosAceptaciones.setValue(listaAceptaciones.get(2), "Aceptaciones", "MAR");
-			datosAceptaciones.setValue(listaAceptaciones.get(3), "Aceptaciones", "ABR");
-			datosAceptaciones.setValue(listaAceptaciones.get(4), "Aceptaciones", "MAY");
-			datosAceptaciones.setValue(listaAceptaciones.get(5), "Aceptaciones", "JUN");
-			datosAceptaciones.setValue(listaAceptaciones.get(6), "Aceptaciones", "JUL");
-			datosAceptaciones.setValue(listaAceptaciones.get(7), "Aceptaciones", "AGO");
-			datosAceptaciones.setValue(listaAceptaciones.get(8), "Aceptaciones", "SEP");
-			datosAceptaciones.setValue(listaAceptaciones.get(9), "Aceptaciones", "OCT");
-			datosAceptaciones.setValue(listaAceptaciones.get(10), "Aceptaciones", "NOV");
-			datosAceptaciones.setValue(listaAceptaciones.get(11), "Aceptaciones", "DIC");
+		datosAceptaciones.setValue(listaAceptaciones.get(0), "Aceptaciones", "ENE");
+		datosAceptaciones.setValue(listaAceptaciones.get(1), "Aceptaciones", "FEB");
+		datosAceptaciones.setValue(listaAceptaciones.get(2), "Aceptaciones", "MAR");
+		datosAceptaciones.setValue(listaAceptaciones.get(3), "Aceptaciones", "ABR");
+		datosAceptaciones.setValue(listaAceptaciones.get(4), "Aceptaciones", "MAY");
+		datosAceptaciones.setValue(listaAceptaciones.get(5), "Aceptaciones", "JUN");
+		datosAceptaciones.setValue(listaAceptaciones.get(6), "Aceptaciones", "JUL");
+		datosAceptaciones.setValue(listaAceptaciones.get(7), "Aceptaciones", "AGO");
+		datosAceptaciones.setValue(listaAceptaciones.get(8), "Aceptaciones", "SEP");
+		datosAceptaciones.setValue(listaAceptaciones.get(9), "Aceptaciones", "OCT");
+		datosAceptaciones.setValue(listaAceptaciones.get(10), "Aceptaciones", "NOV");
+		datosAceptaciones.setValue(listaAceptaciones.get(11), "Aceptaciones", "DIC");
 
-			datosFacturacion.setValue(listaFacturacion.get(0), "Facturación", "ENE");
-			datosFacturacion.setValue(listaFacturacion.get(1), "Facturación", "FEB");
-			datosFacturacion.setValue(listaFacturacion.get(2), "Facturación", "MAR");
-			datosFacturacion.setValue(listaFacturacion.get(3), "Facturación", "ABR");
-			datosFacturacion.setValue(listaFacturacion.get(4), "Facturación", "MAY");
-			datosFacturacion.setValue(listaFacturacion.get(5), "Facturación", "JUN");
-			datosFacturacion.setValue(listaFacturacion.get(6), "Facturación", "JUL");
-			datosFacturacion.setValue(listaFacturacion.get(7), "Facturación", "AGO");
-			datosFacturacion.setValue(listaFacturacion.get(8), "Facturación", "SEP");
-			datosFacturacion.setValue(listaFacturacion.get(9), "Facturación", "OCT");
-			datosFacturacion.setValue(listaFacturacion.get(10), "Facturación", "NOV");
-			datosFacturacion.setValue(listaFacturacion.get(11), "Facturación", "DIC");
+		datosFacturacion.setValue(listaFacturacion.get(0), "Facturación", "ENE");
+		datosFacturacion.setValue(listaFacturacion.get(1), "Facturación", "FEB");
+		datosFacturacion.setValue(listaFacturacion.get(2), "Facturación", "MAR");
+		datosFacturacion.setValue(listaFacturacion.get(3), "Facturación", "ABR");
+		datosFacturacion.setValue(listaFacturacion.get(4), "Facturación", "MAY");
+		datosFacturacion.setValue(listaFacturacion.get(5), "Facturación", "JUN");
+		datosFacturacion.setValue(listaFacturacion.get(6), "Facturación", "JUL");
+		datosFacturacion.setValue(listaFacturacion.get(7), "Facturación", "AGO");
+		datosFacturacion.setValue(listaFacturacion.get(8), "Facturación", "SEP");
+		datosFacturacion.setValue(listaFacturacion.get(9), "Facturación", "OCT");
+		datosFacturacion.setValue(listaFacturacion.get(10), "Facturación", "NOV");
+		datosFacturacion.setValue(listaFacturacion.get(11), "Facturación", "DIC");
 
-			JFreeChart grafico_Ingresos = ChartFactory.createBarChart("INGRESOS", "", "Cantidad", datosIngresos,
-					PlotOrientation.VERTICAL, false, true, false);
-			JFreeChart grafico_aceptaciones = ChartFactory.createBarChart("ACEPTACIONES", "", "Cantidad",
-					datosAceptaciones, PlotOrientation.VERTICAL, false, true, false);
-			JFreeChart grafico_facturacion = ChartFactory.createBarChart("FACTURACIÓN", null, "Pesos($)",
-					datosFacturacion, PlotOrientation.VERTICAL, false, true, false);
-			
-			NumberAxis yAxisIngresos = (NumberAxis) grafico_Ingresos.getCategoryPlot().getRangeAxis();
-			yAxisIngresos.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-			
-	        NumberAxis yAxisAceptaciones = (NumberAxis) grafico_aceptaciones.getCategoryPlot().getRangeAxis();
-	        yAxisAceptaciones.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-			
-			
+		JFreeChart grafico_Ingresos = ChartFactory.createBarChart("INGRESOS", "", "Cantidad", datosIngresos,
+				PlotOrientation.VERTICAL, false, true, false);
+		JFreeChart grafico_aceptaciones = ChartFactory.createBarChart("ACEPTACIONES", "", "Cantidad", datosAceptaciones,
+				PlotOrientation.VERTICAL, false, true, false);
+		JFreeChart grafico_facturacion = ChartFactory.createBarChart("FACTURACIÓN", null, "Pesos($)", datosFacturacion,
+				PlotOrientation.VERTICAL, false, true, false);
 
-			CategoryPlot plot_ingreso = (CategoryPlot) grafico_Ingresos.getPlot();
-			CategoryPlot plot_aceptaciones = (CategoryPlot) grafico_aceptaciones.getPlot();
-			CategoryPlot plot_facturacion = (CategoryPlot) grafico_facturacion.getPlot();
+		NumberAxis yAxisIngresos = (NumberAxis) grafico_Ingresos.getCategoryPlot().getRangeAxis();
+		yAxisIngresos.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
-			BarRenderer renderer_ingreso = (BarRenderer) plot_ingreso.getRenderer();
-			renderer_ingreso.setDrawBarOutline(false);
-			GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, new Color(0, 64, 0));
-			renderer_ingreso.setSeriesPaint(0, gp1);
+		NumberAxis yAxisAceptaciones = (NumberAxis) grafico_aceptaciones.getCategoryPlot().getRangeAxis();
+		yAxisAceptaciones.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
-			BarRenderer renderer_aceptaciones = (BarRenderer) plot_aceptaciones.getRenderer();
-			renderer_aceptaciones.setDrawBarOutline(false);
-			GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, new Color(0, 0, 64));
-			renderer_aceptaciones.setSeriesPaint(0, gp0);
+		CategoryPlot plot_ingreso = (CategoryPlot) grafico_Ingresos.getPlot();
+		CategoryPlot plot_aceptaciones = (CategoryPlot) grafico_aceptaciones.getPlot();
+		CategoryPlot plot_facturacion = (CategoryPlot) grafico_facturacion.getPlot();
 
-			BarRenderer renderer_facturacion = (BarRenderer) plot_facturacion.getRenderer();
-			renderer_facturacion.setDrawBarOutline(false);
-			GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, new Color(64, 0, 0));
-			renderer_facturacion.setSeriesPaint(0, gp2);
+		BarRenderer renderer_ingreso = (BarRenderer) plot_ingreso.getRenderer();
+		renderer_ingreso.setDrawBarOutline(false);
+		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, new Color(0, 64, 0));
+		renderer_ingreso.setSeriesPaint(0, gp1);
 
-			ChartPanel panelGraficoAceptaciones = new ChartPanel(grafico_aceptaciones);
-			panelGraficoAceptaciones.setMouseWheelEnabled(true);
-			panelGraficoAceptaciones.setPreferredSize(new Dimension(700, 40));
+		BarRenderer renderer_aceptaciones = (BarRenderer) plot_aceptaciones.getRenderer();
+		renderer_aceptaciones.setDrawBarOutline(false);
+		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, new Color(0, 0, 64));
+		renderer_aceptaciones.setSeriesPaint(0, gp0);
 
-			ChartPanel panelGraficoIngresos = new ChartPanel(grafico_Ingresos);
-			panelGraficoIngresos.setMouseWheelEnabled(true);
-			panelGraficoIngresos.setPreferredSize(new Dimension(700, 40));
+		BarRenderer renderer_facturacion = (BarRenderer) plot_facturacion.getRenderer();
+		renderer_facturacion.setDrawBarOutline(false);
+		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, new Color(64, 0, 0));
+		renderer_facturacion.setSeriesPaint(0, gp2);
 
-			ChartPanel panelGraficoFacturacion = new ChartPanel(grafico_facturacion);
-			panelGraficoFacturacion.setMouseWheelEnabled(true);
-			panelGraficoFacturacion.setPreferredSize(new Dimension(700, 40));
+		ChartPanel panelGraficoAceptaciones = new ChartPanel(grafico_aceptaciones);
+		panelGraficoAceptaciones.setMouseWheelEnabled(true);
+		panelGraficoAceptaciones.setPreferredSize(new Dimension(700, 40));
 
-			ventanaEstadisticas.getPanel_Ingresos().add(panelGraficoIngresos, BorderLayout.CENTER);
-			ventanaEstadisticas.getPanel_Diagnosticos().add(panelGraficoAceptaciones, BorderLayout.CENTER);
-			ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoFacturacion, BorderLayout.CENTER);
+		ChartPanel panelGraficoIngresos = new ChartPanel(grafico_Ingresos);
+		panelGraficoIngresos.setMouseWheelEnabled(true);
+		panelGraficoIngresos.setPreferredSize(new Dimension(700, 40));
 
-			ventanaEstadisticas.repaint();
-		
+		ChartPanel panelGraficoFacturacion = new ChartPanel(grafico_facturacion);
+		panelGraficoFacturacion.setMouseWheelEnabled(true);
+		panelGraficoFacturacion.setPreferredSize(new Dimension(700, 40));
+
+		ventanaEstadisticas.getPanel_Ingresos().add(panelGraficoIngresos, BorderLayout.CENTER);
+		ventanaEstadisticas.getPanel_Diagnosticos().add(panelGraficoAceptaciones, BorderLayout.CENTER);
+		ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoFacturacion, BorderLayout.CENTER);
+
+		ventanaEstadisticas.repaint();
+
 	}
 
 	@Override
