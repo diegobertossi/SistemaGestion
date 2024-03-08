@@ -19,7 +19,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -322,8 +321,6 @@ public class ControladorListados
 			ventanaCodigoSeguridad.getBtnAceptar().addActionListener(this);
 			ventanaCodigoSeguridad.getBtnCancelar().addActionListener(this);
 
-			
-			
 			ventanaCodigoSeguridad.getTxtCodigoSeguridad().addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -333,14 +330,11 @@ public class ControladorListados
 					// Convertir el array de caracteres a una cadena de texto
 					String codigo = new String(codigoIngresado);
 
-					if(verificarCodigoSeguridad(codigo)) {
-						
+					if (verificarCodigoSeguridad(codigo)) {
+
 						habitarDetalles();
-						
-						
-						
+
 					}
-					
 
 				}
 			});
@@ -355,12 +349,10 @@ public class ControladorListados
 			// Convertir el array de caracteres a una cadena de texto
 			String codigo = new String(codigoIngresado);
 
-			if(verificarCodigoSeguridad(codigo)) {
-				
+			if (verificarCodigoSeguridad(codigo)) {
+
 				habitarDetalles();
-				
-				
-				
+
 			}
 
 		}
@@ -376,38 +368,39 @@ public class ControladorListados
 	}
 
 	protected void habitarDetalles() {
-		
-		
-		
-		
+
 		ventanaCodigoSeguridad.getRdbtnMostrar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-             
-            	ventanaEstadisticas.getPanel_Facturacion().setVisible(true);
-            	
-            	seleccionDetalleEstadisticas = "MOSTRAR DETALLE";
-            	System.out.println(seleccionDetalleEstadisticas);
-            	
-            }
-        });
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				ventanaEstadisticas.getPanel_Facturacion().setVisible(true);
+				ventanaEstadisticas.getLblFacTotalPesos().setVisible(true);
+				ventanaEstadisticas.getLblFacTotalDolares().setVisible(true);
+				ventanaEstadisticas.getTextFacTotalPesos().setVisible(true);
+				ventanaEstadisticas.getTextFacTotalDolares().setVisible(true);
+				ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(true);
+
+				seleccionDetalleEstadisticas = "MOSTRAR DETALLE";
+
+			}
+		});
 
 		ventanaCodigoSeguridad.getRdbtnOcultar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	
-            	
-            	ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
-              
-            	seleccionDetalleEstadisticas = "OCULTAR DETALLE";
-            	System.out.println(seleccionDetalleEstadisticas);
-            }
-        });
-		
-		
-		
-    			
-		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
+				ventanaEstadisticas.getLblFacTotalPesos().setVisible(false);
+				ventanaEstadisticas.getLblFacTotalDolares().setVisible(false);
+				ventanaEstadisticas.getTextFacTotalPesos().setVisible(false);
+				ventanaEstadisticas.getTextFacTotalDolares().setVisible(false);
+				ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(false);
+
+				seleccionDetalleEstadisticas = "OCULTAR DETALLE";
+
+			}
+		});
+
 	}
 
 	protected boolean verificarCodigoSeguridad(String codigo) {
@@ -416,6 +409,17 @@ public class ControladorListados
 
 			ventanaCodigoSeguridad.getPanelCodigo().setVisible(false);
 			ventanaCodigoSeguridad.getPanelDetalle().setVisible(true);
+
+			if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
+
+				ventanaCodigoSeguridad.getRdbtnMostrar().setSelected(true);
+			}
+
+			else {
+
+				ventanaCodigoSeguridad.getRdbtnOcultar().setSelected(true);
+			}
+
 			return true;
 
 		} else {
@@ -812,8 +816,6 @@ public class ControladorListados
 						ventanaEstadisticas.getComboCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
 
-						ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(true);
-
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
@@ -840,7 +842,7 @@ public class ControladorListados
 						ventanaEstadisticas.getComboTecnico().setVisible(true);
 						ventanaEstadisticas.getComboCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
-						ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(false);
+						
 
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
@@ -864,7 +866,7 @@ public class ControladorListados
 
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
-						ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(false);
+						
 
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();

@@ -31,7 +31,6 @@ public class VentanaCodigoSeguridad extends JFrame {
 	private JPanel panelCodigo;
 	private JRadioButton rdbtnMostrar;
 	private JRadioButton rdbtnOcultar;
-	private JButton btnAceptarDetalle;
 	private ButtonGroup buttonGroupDetalle;
 
 	public VentanaCodigoSeguridad(ControladorListados controlador) {
@@ -89,25 +88,20 @@ public class VentanaCodigoSeguridad extends JFrame {
 		rdbtnMostrar = new JRadioButton("MOSTRAR DETALLE");
 		rdbtnMostrar.setFont(new Font("Cambria", Font.BOLD, 14));
 		rdbtnMostrar.setOpaque(false);
-		rdbtnMostrar.setBounds(55, 18, 159, 23);
+		rdbtnMostrar.setBounds(55, 26, 159, 23);
 		panelDetalle.add(rdbtnMostrar);
 		
 		rdbtnOcultar = new JRadioButton("OCULTAR DETALLE");
 		rdbtnOcultar.setSelected(true);
 		rdbtnOcultar.setFont(new Font("Cambria", Font.BOLD, 14));
 		rdbtnOcultar.setOpaque(false);
-		rdbtnOcultar.setBounds(55, 48, 159, 23);
+		rdbtnOcultar.setBounds(55, 75, 159, 23);
 		panelDetalle.add(rdbtnOcultar);
 		
 		
 		buttonGroupDetalle= new ButtonGroup();
 		buttonGroupDetalle.add(rdbtnMostrar);
 		buttonGroupDetalle.add(rdbtnOcultar);
-		
-		btnAceptarDetalle = new JButton("ACEPTAR");
-		btnAceptarDetalle.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnAceptarDetalle.setBounds(79, 86, 111, 27);
-		panelDetalle.add(btnAceptarDetalle);
 
 		this.setVisible(true);
 
@@ -182,18 +176,6 @@ public class VentanaCodigoSeguridad extends JFrame {
 
 	public void setRdbtnOcultar(JRadioButton rdbtnOcultar) {
 		this.rdbtnOcultar = rdbtnOcultar;
-	}
-
-
-
-
-	public JButton getBtnAceptarDetalle() {
-		return btnAceptarDetalle;
-	}
-
-
-	public void setBtnAceptarDetalle(JButton btnAceptarDetalle) {
-		this.btnAceptarDetalle = btnAceptarDetalle;
 	}
 
 

@@ -59,9 +59,10 @@ public class VentanaEstadisticas extends JFrame {
 	
 	private JLabel lblAnio; 
 	private JLabel lblTecnico;
-	private JLabel lblMes;
-	
+	private JLabel lblMes;	
 	private JLabel lblAnioDatos;
+	private JLabel lblFacTotalDolares;
+	private JLabel lblFacTotalPesos;
 	
 	private JPanel panel_Datos;
 	private JPanel panel;
@@ -79,6 +80,7 @@ public class VentanaEstadisticas extends JFrame {
 	private JTextField textPorcentajeRepEspera;
 	private JTextField textFacTotalPesos;
 	private JTextField textFacTotalDolares;
+	
 	
 	
 
@@ -520,12 +522,14 @@ public class VentanaEstadisticas extends JFrame {
 		separator_2_1_2_1.setBounds(5, 271, 332, 2);
 		panel_Datos.add(separator_2_1_2_1);
 		
-		JLabel lblFacTotalPesos = new JLabel("FACTURACIÓN TOTAL (PESOS): ");
+		lblFacTotalPesos = new JLabel("FACTURACIÓN TOTAL (PESOS): ");
+		lblFacTotalPesos.setVisible(false);
 		lblFacTotalPesos.setFont(new Font("Cambria", Font.BOLD, 13));
 		lblFacTotalPesos.setBounds(11, 78, 205, 18);
 		panel_Datos.add(lblFacTotalPesos);
 		
 		textFacTotalPesos = new JTextField();
+		textFacTotalPesos.setVisible(false);
 		textFacTotalPesos.setBorder(null);
 		textFacTotalPesos.setOpaque(false);
 		textFacTotalPesos.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -535,12 +539,14 @@ public class VentanaEstadisticas extends JFrame {
 		textFacTotalPesos.setBounds(226, 78, 111, 18);
 		panel_Datos.add(textFacTotalPesos);
 		
-		JLabel lblNewLabel_2_1_1_2 = new JLabel("FACTURACIÓN TOTAL (DÓLARES): ");
-		lblNewLabel_2_1_1_2.setFont(new Font("Cambria", Font.BOLD, 13));
-		lblNewLabel_2_1_1_2.setBounds(11, 97, 216, 18);
-		panel_Datos.add(lblNewLabel_2_1_1_2);
+		lblFacTotalDolares = new JLabel("FACTURACIÓN TOTAL (DÓLARES): ");
+		lblFacTotalDolares.setVisible(false);
+		lblFacTotalDolares.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblFacTotalDolares.setBounds(11, 97, 216, 18);
+		panel_Datos.add(lblFacTotalDolares);
 		
 		textFacTotalDolares = new JTextField();
+		textFacTotalDolares.setVisible(false);
 		textFacTotalDolares.setBorder(null);
 		textFacTotalDolares.setOpaque(false);
 		textFacTotalDolares.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -1157,5 +1163,37 @@ public class VentanaEstadisticas extends JFrame {
 
 	public void setTextFacTotalDolares(JTextField textFacTotalDolares) {
 		this.textFacTotalDolares = textFacTotalDolares;
+	}
+
+
+
+
+
+	public JLabel getLblFacTotalDolares() {
+		return lblFacTotalDolares;
+	}
+
+
+
+
+
+	public void setLblFacTotalDolares(JLabel lblFacTotalDolares) {
+		this.lblFacTotalDolares = lblFacTotalDolares;
+	}
+
+
+
+
+
+	public JLabel getLblFacTotalPesos() {
+		return lblFacTotalPesos;
+	}
+
+
+
+
+
+	public void setLblFacTotalPesos(JLabel lblFacTotalPesos) {
+		this.lblFacTotalPesos = lblFacTotalPesos;
 	}
 	}
