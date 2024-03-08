@@ -11,7 +11,6 @@ import java.awt.SystemColor;
 import java.awt.Font;
 import javax.swing.JLabel;
 import java.awt.Color;
-import javax.swing.border.EtchedBorder;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.border.LineBorder;

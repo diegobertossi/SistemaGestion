@@ -208,7 +208,7 @@ public class VentanaEstadisticas extends JFrame {
 		
 		JPanel panel_Derecha_Inferior = new JPanel();
 		panel_Derecha_Inferior.setBackground(new Color(176, 196, 222));
-		panel_Derecha_Inferior.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128), 2), new LineBorder(new Color(0, 0, 0))));
+		panel_Derecha_Inferior.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new LineBorder(new Color(0, 0, 0))));
 		panelDerecha.add(panel_Derecha_Inferior, BorderLayout.SOUTH);
 		panel_Derecha_Inferior.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
@@ -251,7 +251,7 @@ public class VentanaEstadisticas extends JFrame {
 		textIngresosTotales = new JTextField();
 		textIngresosTotales.setBorder(null);
 		textIngresosTotales.setOpaque(false);
-		textIngresosTotales.setHorizontalAlignment(SwingConstants.CENTER);
+		textIngresosTotales.setHorizontalAlignment(SwingConstants.RIGHT);
 		textIngresosTotales.setEditable(false);
 		textIngresosTotales.setFont(new Font("Cambria", Font.BOLD, 13));
 		textIngresosTotales.setBounds(226, 40, 111, 18);
@@ -266,7 +266,7 @@ public class VentanaEstadisticas extends JFrame {
 		textDiagnosticosTotales = new JTextField();
 		textDiagnosticosTotales.setBorder(null);
 		textDiagnosticosTotales.setOpaque(false);
-		textDiagnosticosTotales.setHorizontalAlignment(SwingConstants.CENTER);
+		textDiagnosticosTotales.setHorizontalAlignment(SwingConstants.RIGHT);
 		textDiagnosticosTotales.setEditable(false);
 		textDiagnosticosTotales.setFont(new Font("Cambria", Font.BOLD, 13));
 		textDiagnosticosTotales.setColumns(10);
