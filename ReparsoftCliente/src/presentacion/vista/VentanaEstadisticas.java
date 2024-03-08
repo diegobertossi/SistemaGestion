@@ -191,6 +191,7 @@ public class VentanaEstadisticas extends JFrame {
 		panel_Diagnosticos.setLayout(new BorderLayout(0, 0));
 		
 		panel_Facturacion = new JPanel();
+		panel_Facturacion.setVisible(false);
 		panel_Facturacion.setBackground(new Color(176, 196, 222));
 		panel_Facturacion.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128), 2), new LineBorder(new Color(0, 0, 0))));
 		panel.add(panel_Facturacion);

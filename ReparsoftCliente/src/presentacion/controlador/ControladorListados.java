@@ -19,11 +19,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.RowFilter;
+
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -38,6 +37,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import dto.ReparacionDTO;
 import modelo.Agenda;
+import presentacion.vista.VentanaCodigoSeguridad;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaEstadisticas;
 import presentacion.vista.VentanaListadoReparaciones;
@@ -55,6 +55,7 @@ public class ControladorListados
 	private ControladorReparacion controladorReparacion;
 	private VentanaEquipos ventanaEquipos;
 	private VentanaEstadisticas ventanaEstadisticas;
+	private VentanaCodigoSeguridad ventanaCodigoSeguridad;
 	// private int max = Frame.MAXIMIZED_BOTH;
 	// private int min = Frame.NORMAL;
 
@@ -69,10 +70,11 @@ public class ControladorListados
 
 	@SuppressWarnings("unused")
 	private ControladorUsuLogin controladorUsuLogin;
-	
+
 	private MonedaFormatter monedaFormatter;
 
 	private int filtro;
+	private String seleccionDetalleEstadisticas = "OCULTAR DETALLE";
 
 	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
@@ -313,6 +315,118 @@ public class ControladorListados
 
 		}
 
+		else if (this.ventanaEstadisticas != null
+				&& arg0.getSource() == this.ventanaEstadisticas.getBtnConfiguracion()) {
+
+			ventanaCodigoSeguridad = new VentanaCodigoSeguridad(this);
+			ventanaCodigoSeguridad.getBtnAceptar().addActionListener(this);
+			ventanaCodigoSeguridad.getBtnCancelar().addActionListener(this);
+
+			
+			
+			ventanaCodigoSeguridad.getTxtCodigoSeguridad().addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+
+					char[] codigoIngresado = ventanaCodigoSeguridad.getTxtCodigoSeguridad().getPassword();
+
+					// Convertir el array de caracteres a una cadena de texto
+					String codigo = new String(codigoIngresado);
+
+					if(verificarCodigoSeguridad(codigo)) {
+						
+						habitarDetalles();
+						
+						
+						
+					}
+					
+
+				}
+			});
+
+		}
+
+		else if (this.ventanaCodigoSeguridad != null
+				&& arg0.getSource() == this.ventanaCodigoSeguridad.getBtnAceptar()) {
+
+			char[] codigoIngresado = ventanaCodigoSeguridad.getTxtCodigoSeguridad().getPassword();
+
+			// Convertir el array de caracteres a una cadena de texto
+			String codigo = new String(codigoIngresado);
+
+			if(verificarCodigoSeguridad(codigo)) {
+				
+				habitarDetalles();
+				
+				
+				
+			}
+
+		}
+
+		else if (this.ventanaCodigoSeguridad != null
+				&& arg0.getSource() == this.ventanaCodigoSeguridad.getBtnCancelar()) {
+
+			this.ventanaCodigoSeguridad.dispose();
+			this.ventanaCodigoSeguridad = null;
+
+		}
+
+	}
+
+	protected void habitarDetalles() {
+		
+		
+		
+		
+		ventanaCodigoSeguridad.getRdbtnMostrar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+             
+            	ventanaEstadisticas.getPanel_Facturacion().setVisible(true);
+            	
+            	seleccionDetalleEstadisticas = "MOSTRAR DETALLE";
+            	System.out.println(seleccionDetalleEstadisticas);
+            	
+            }
+        });
+
+		ventanaCodigoSeguridad.getRdbtnOcultar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	
+            	ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
+              
+            	seleccionDetalleEstadisticas = "OCULTAR DETALLE";
+            	System.out.println(seleccionDetalleEstadisticas);
+            }
+        });
+		
+		
+		
+    			
+		
+	}
+
+	protected boolean verificarCodigoSeguridad(String codigo) {
+
+		if (codigo.compareTo("0000") == 0) {
+
+			ventanaCodigoSeguridad.getPanelCodigo().setVisible(false);
+			ventanaCodigoSeguridad.getPanelDetalle().setVisible(true);
+			return true;
+
+		} else {
+
+			JOptionPane.showMessageDialog(null, "Código Incorrecto!", "Acceso denegado",
+					JOptionPane.INFORMATION_MESSAGE);
+			ventanaCodigoSeguridad.getPanelCodigo().setVisible(true);
+			ventanaCodigoSeguridad.getPanelDetalle().setVisible(false);
+			return false;
+
+		}
 	}
 
 	private void cargarTablaListadoReparaciones() {
@@ -637,6 +751,8 @@ public class ControladorListados
 		ventanaEstadisticas.getComboTecnico().addActionListener(this);
 		ventanaEstadisticas.getComboCliente().addActionListener(this);
 		ventanaEstadisticas.getComboMes().addActionListener(this);
+		ventanaEstadisticas.getBtnConfiguracion().addActionListener(this);
+		ventanaEstadisticas.getBtnFacturacionPorCliente().addActionListener(this);
 
 	}
 
@@ -695,7 +811,7 @@ public class ControladorListados
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
 						ventanaEstadisticas.getComboCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
-						
+
 						ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(true);
 
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
@@ -923,10 +1039,12 @@ public class ControladorListados
 
 		ventanaEstadisticas.getTextIngresosTotales().setText(Integer.toString(cantidadIngresosPorAnio));
 		ventanaEstadisticas.getTextDiagnosticosTotales().setText(Integer.toString(cantidadDiagnosticosPorAnio));
-		
-		ventanaEstadisticas.getTextFacTotalPesos().setText(monedaFormatter.formatPeso(Double.toString(facturacionPesoPorAnio)));
-		ventanaEstadisticas.getTextFacTotalDolares().setText(monedaFormatter.formatDolar(Double.toString(facturacionDolarPorAnio)));
-		
+
+		ventanaEstadisticas.getTextFacTotalPesos()
+				.setText(monedaFormatter.formatPeso(Double.toString(facturacionPesoPorAnio)));
+		ventanaEstadisticas.getTextFacTotalDolares()
+				.setText(monedaFormatter.formatDolar(Double.toString(facturacionDolarPorAnio)));
+
 		ventanaEstadisticas.getTextReparados().setText(Integer.toString(cantidadReparadosPorAnio));
 		ventanaEstadisticas.getTextSinFalla().setText(Integer.toString(cantidadSinFallaPorAnio));
 		ventanaEstadisticas.getTextRepEnGtia().setText(Integer.toString(cantidadRepEnGtiaPorAnio));
