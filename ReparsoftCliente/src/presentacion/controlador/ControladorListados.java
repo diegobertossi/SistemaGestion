@@ -74,15 +74,12 @@ public class ControladorListados
 
 	private int filtro;
 	private String seleccionDetalleEstadisticas = "OCULTAR DETALLE";
-	
-	
-	
-	
+
 	private int anio;
 	private int cantidadIngresosPorAnio;
-	private int cantidadDiagnosticosPorAnio; 
+	private int cantidadDiagnosticosPorAnio;
 	private double facturacionPesoPorAnio;
-	private double facturacionDolarPorAnio ;
+	private double facturacionDolarPorAnio;
 
 	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
@@ -318,6 +315,7 @@ public class ControladorListados
 			ventanaEstadisticas = new VentanaEstadisticas(this);
 			agregarListenerAventanaEstadisticas();
 			monedaFormatter = new MonedaFormatter();
+			seleccionDetalleEstadisticas = "OCULTAR DETALLE";
 
 			llenarcomboFiltro();
 
@@ -392,6 +390,7 @@ public class ControladorListados
 
 					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
 					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
+					ventanaEstadisticas.getPanel_facturacionPorTecnico().setVisible(false);
 					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
 
 					break;
@@ -400,6 +399,7 @@ public class ControladorListados
 
 					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
 					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(true);
+					ventanaEstadisticas.getPanel_facturacionPorTecnico().setVisible(false);
 					ventanaEstadisticas.getPanel_Facturacion().setVisible(true);
 
 					break;
@@ -408,6 +408,7 @@ public class ControladorListados
 
 					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
 					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+					ventanaEstadisticas.getPanel_facturacionPorTecnico().setVisible(true);
 					ventanaEstadisticas.getPanel_Facturacion().setVisible(true);
 
 					break;
@@ -416,6 +417,7 @@ public class ControladorListados
 
 					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
 					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(true);
+					ventanaEstadisticas.getPanel_facturacionPorTecnico().setVisible(false);
 					ventanaEstadisticas.getPanel_Facturacion().setVisible(true);
 
 					break;
@@ -437,42 +439,51 @@ public class ControladorListados
 				ventanaEstadisticas.getLblFacTotalDolares().setVisible(false);
 				ventanaEstadisticas.getTextFacTotalPesos().setVisible(false);
 				ventanaEstadisticas.getTextFacTotalDolares().setVisible(false);
+				
+				
+				ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+				ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
+				ventanaEstadisticas.getPanel_facturacionPorTecnico().setVisible(false);
+				ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
+				
+				
+				
 
-				switch (filtro) {
-				case 0:
-
-					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
-					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
-					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
-
-					break;
-
-				case 1:
-
-					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
-					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
-					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
-					break;
-
-				case 2:
-
-					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
-					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
-					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
-
-					break;
-
-				case 3:
-
-					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
-					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
-					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
-
-					break;
-
-				default:
-					break;
-				}
+//				switch (filtro) {
+//				case 0:
+//
+//					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+//					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
+//					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
+//
+//					break;
+//
+//				case 1:
+//
+//					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+//					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
+//					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
+//					break;
+//
+//				case 2:
+//
+//					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+//					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
+//					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
+//
+//					break;
+//
+//				case 3:
+//
+//					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+//					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
+//					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
+//
+//					break;
+//
+//				default:
+//					break;
+//				}
 
 				seleccionDetalleEstadisticas = "OCULTAR DETALLE";
 
@@ -989,28 +1000,42 @@ public class ControladorListados
 
 						ventanaEstadisticas.getPanel_datosPorAnio().setVisible(false);
 						ventanaEstadisticas.getPanel_datosPorCliente().setVisible(false);
+						ventanaEstadisticas.getPanel_datosPorTecnico().setVisible(false);
+
 						ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+						ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
+						ventanaEstadisticas.getPanel_facturacionPorTecnico().setVisible(false);
+
 						break;
 					case 1:
-						
+
 						llenarDatosPorAnio();
+						
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
 
 						ventanaEstadisticas.getPanel_datosPorCliente().setVisible(false);
-						ventanaEstadisticas.getPanel_datosPorAnio().setVisible(true);
 						ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
+
+						ventanaEstadisticas.getPanel_datosPorTecnico().setVisible(false);
+						ventanaEstadisticas.getPanel_facturacionPorTecnico().setVisible(false);
+
+						ventanaEstadisticas.getPanel_datosPorAnio().setVisible(true);
 
 						if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
 
 							ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(true);
 
 						}
+
 						mostrarGraficosPorAnio();
+
 						break;
 
 					case 2:
+
+						llenarDatosPorTecnico();
 						
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
@@ -1021,9 +1046,12 @@ public class ControladorListados
 
 						ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
 						ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
+						
+						ventanaEstadisticas.getPanel_datosPorTecnico().setVisible(true);
 
 						if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
-
+							
+							ventanaEstadisticas.getPanel_facturacionPorTecnico().setVisible(true);
 						}
 
 						if (ventanaEstadisticas.getComboTecnico() == null
@@ -1039,15 +1067,21 @@ public class ControladorListados
 						break;
 
 					case 3:
+						
 						llenarDatosPorCliente();
+						
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
 
 						ventanaEstadisticas.getPanel_datosPorAnio().setVisible(false);
-						ventanaEstadisticas.getPanel_datosPorCliente().setVisible(true);
-
+						ventanaEstadisticas.getPanel_datosPorTecnico().setVisible(false);
+						
 						ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+						ventanaEstadisticas.getPanel_facturacionPorTecnico().setVisible(false);
+						
+						ventanaEstadisticas.getPanel_datosPorCliente().setVisible(true);
+												
 
 						if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
 
@@ -1136,17 +1170,15 @@ public class ControladorListados
 		});
 
 	}
-	
-	private void llenarDatosAnuales(){
-		
+
+	private void llenarDatosAnuales() {
+
 		anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
 		cantidadIngresosPorAnio = modelo.dameIngresosPorAnio(anio);
 		cantidadDiagnosticosPorAnio = modelo.dameDiagnosticosPorAnio(anio);
 		facturacionPesoPorAnio = modelo.dameFacturacionPesoPorAnio(anio);
 		facturacionDolarPorAnio = modelo.dameFacturacionDolarPorAnio(anio);
-		
-		
-		
+
 		ventanaEstadisticas.getTextIngresosTotales().setText(Integer.toString(cantidadIngresosPorAnio));
 		ventanaEstadisticas.getTextDiagnosticosTotales().setText(Integer.toString(cantidadDiagnosticosPorAnio));
 
@@ -1154,11 +1186,11 @@ public class ControladorListados
 				.setText(monedaFormatter.formatPeso(Double.toString(facturacionPesoPorAnio)));
 		ventanaEstadisticas.getTextFacTotalDolares()
 				.setText(monedaFormatter.formatDolar(Double.toString(facturacionDolarPorAnio)));
-		
+
 	}
 
 	private void llenarDatosPorAnio() {
-		
+
 		int cantidadReparadosPorAnio = modelo.dameReparadosPorAnio(anio);
 		int cantidadSinFallaPorAnio = modelo.dameSinFallaPorAnio(anio);
 		int cantidadRepEnGtiaPorAnio = modelo.dameRepEnGtiaPorAnio(anio);
@@ -1168,8 +1200,6 @@ public class ControladorListados
 		int cantidadReparadosAceptradosPorAnio = modelo.dameRepAcepPorAnio(anio);
 		int cantidadReparadosNoAceptradosPorAnio = modelo.dameRepNoAcepPorAnio(anio);
 		int cantidadReparadosAlaEsperaPorAnio = modelo.dameRepEsperaPorAnio(anio);
-
-		
 
 		ventanaEstadisticas.getTextReparados().setText(Integer.toString(cantidadReparadosPorAnio));
 		ventanaEstadisticas.getTextSinFalla().setText(Integer.toString(cantidadSinFallaPorAnio));
@@ -1223,14 +1253,9 @@ public class ControladorListados
 
 	}
 
-	
-	
-	
-	
 	private void llenarDatosPorCliente() {
 
 		String nombreCliente = ventanaEstadisticas.getComboCliente().getSelectedItem().toString();
-		
 
 		ventanaEstadisticas.getTextNombreCliente().setText(nombreCliente);
 //		int cantidadReparadosPorAnio = modelo.dameReparadosPorAnio(anio);
@@ -1303,9 +1328,14 @@ public class ControladorListados
 
 	}
 
-	
-	
-	
+	private void llenarDatosPorTecnico() {
+
+		String nombreTecnico = ventanaEstadisticas.getComboTecnico().getSelectedItem().toString();
+
+		ventanaEstadisticas.getTextNombreTecnico().setText(nombreTecnico);
+
+	}
+
 	private void mostrarGraficosPorAnio() {
 
 		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
