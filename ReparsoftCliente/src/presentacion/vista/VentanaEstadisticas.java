@@ -69,6 +69,11 @@ public class VentanaEstadisticas extends JFrame {
 	private JPanel panel_Ingresos;
 	private JPanel panel_Diagnosticos;
 	private JPanel panel_Facturacion;
+	private JPanel panel_datosPorAnio;
+	private JPanel panel_facturacionPorAnio;
+	private JPanel panel_datosPorCliente;
+	
+	
 	private JTextField textPorcentajeReparados;
 	private JTextField textPorcentajeSinFalla;
 	private JTextField textPorcentajeRepEnGtia;
@@ -80,8 +85,32 @@ public class VentanaEstadisticas extends JFrame {
 	private JTextField textPorcentajeRepEspera;
 	private JTextField textFacTotalPesos;
 	private JTextField textFacTotalDolares;
-	private JPanel panel_datosPorAnio;
-	private JPanel panel_facturacionPorAnio;
+
+	private JTextField textPorcRepPorCliente;
+	private JTextField textPorcSinFallaPorCliente;
+	private JTextField textPorcRepEnGtiaPorCliente;
+	private JTextField textPorcEnRepPorCliente;
+	private JTextField textPorcVentasPorCliente;
+	private JTextField textPorcSinRepPorCliente;
+	private JTextField textPorcRepAcepPorCliente;
+	private JTextField textPorcRepNoAcepPorCliente;
+	private JTextField textPorcRepEsperaPorCliente;
+	private JTextField textReparadosPorCliente;
+	private JTextField textSinFallaPorCliente;
+	private JTextField textRepEnGtiaPorCliente;
+	private JTextField textEnRepPorCLiente;
+	private JTextField textVentasPorCliente;
+	private JTextField textSinRepPorCliente;
+	private JTextField textRepAcepPorCliente;
+	private JTextField textRepNoAcepPorCliente;
+	private JTextField textRepEsperaPorCliente;
+	private JTextField textIngresosPorCliente;
+	private JTextField textPorcIngresosPorCliente;
+	private JPanel panel_facturacionPorCliente;
+	private JLabel lblFacturacionClientePesos;
+	private JLabel lblFacturacionClienteDolar;
+	private JTextField textFactClientePesos;
+	private JTextField textFactClienteDolar;
 	
 	
 	
@@ -227,6 +256,44 @@ public class VentanaEstadisticas extends JFrame {
 		panelDerecha.add(panel_Datos, BorderLayout.CENTER);
 		panel_Datos.setLayout(null);
 		
+		panel_facturacionPorCliente = new JPanel();
+		panel_facturacionPorCliente.setVisible(false);
+		panel_facturacionPorCliente.setLayout(null);
+		panel_facturacionPorCliente.setOpaque(false);
+		panel_facturacionPorCliente.setBorder(null);
+		panel_facturacionPorCliente.setBounds(4, 386, 333, 156);
+		panel_Datos.add(panel_facturacionPorCliente);
+		
+		lblFacturacionClientePesos = new JLabel("FACTURACIÓN CLIENTE (PESOS): ");
+		lblFacturacionClientePesos.setFont(new Font("Cambria", Font.BOLD, 11));
+		lblFacturacionClientePesos.setBounds(10, 13, 169, 14);
+		panel_facturacionPorCliente.add(lblFacturacionClientePesos);
+		
+		lblFacturacionClienteDolar = new JLabel("FACTURACIÓN CLIENTE (DOLARES): ");
+		lblFacturacionClienteDolar.setFont(new Font("Cambria", Font.BOLD, 11));
+		lblFacturacionClienteDolar.setBounds(10, 30, 179, 14);
+		panel_facturacionPorCliente.add(lblFacturacionClienteDolar);
+		
+		textFactClientePesos = new JTextField();
+		textFactClientePesos.setOpaque(false);
+		textFactClientePesos.setHorizontalAlignment(SwingConstants.CENTER);
+		textFactClientePesos.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textFactClientePesos.setEditable(false);
+		textFactClientePesos.setColumns(10);
+		textFactClientePesos.setBorder(null);
+		textFactClientePesos.setBounds(248, 11, 75, 16);
+		panel_facturacionPorCliente.add(textFactClientePesos);
+		
+		textFactClienteDolar = new JTextField();
+		textFactClienteDolar.setOpaque(false);
+		textFactClienteDolar.setHorizontalAlignment(SwingConstants.CENTER);
+		textFactClienteDolar.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textFactClienteDolar.setEditable(false);
+		textFactClienteDolar.setColumns(10);
+		textFactClienteDolar.setBorder(null);
+		textFactClienteDolar.setBounds(248, 28, 75, 16);
+		panel_facturacionPorCliente.add(textFactClienteDolar);
+		
 		lblAnioDatos = new JLabel("");
 		lblAnioDatos.setFont(new Font("Cambria", Font.BOLD, 20));
 		lblAnioDatos.setBounds(133, 5, 75, 24);
@@ -303,7 +370,7 @@ public class VentanaEstadisticas extends JFrame {
 		panel_datosPorAnio.add(separator_2_1);
 		
 		textPorcentajeReparados = new JTextField();
-		textPorcentajeReparados.setBounds(251, 82, 75, 16);
+		textPorcentajeReparados.setBounds(251, 80, 75, 16);
 		panel_datosPorAnio.add(textPorcentajeReparados);
 		textPorcentajeReparados.setBorder(null);
 		textPorcentajeReparados.setOpaque(false);
@@ -313,7 +380,7 @@ public class VentanaEstadisticas extends JFrame {
 		textPorcentajeReparados.setColumns(10);
 		
 		textPorcentajeSinFalla = new JTextField();
-		textPorcentajeSinFalla.setBounds(251, 99, 75, 16);
+		textPorcentajeSinFalla.setBounds(251, 97, 75, 16);
 		panel_datosPorAnio.add(textPorcentajeSinFalla);
 		textPorcentajeSinFalla.setBorder(null);
 		textPorcentajeSinFalla.setOpaque(false);
@@ -323,7 +390,7 @@ public class VentanaEstadisticas extends JFrame {
 		textPorcentajeSinFalla.setColumns(10);
 		
 		textPorcentajeRepEnGtia = new JTextField();
-		textPorcentajeRepEnGtia.setBounds(251, 116, 75, 16);
+		textPorcentajeRepEnGtia.setBounds(251, 114, 75, 16);
 		panel_datosPorAnio.add(textPorcentajeRepEnGtia);
 		textPorcentajeRepEnGtia.setBorder(null);
 		textPorcentajeRepEnGtia.setOpaque(false);
@@ -333,7 +400,7 @@ public class VentanaEstadisticas extends JFrame {
 		textPorcentajeRepEnGtia.setColumns(10);
 		
 		textPorcentajeEnReparacion = new JTextField();
-		textPorcentajeEnReparacion.setBounds(251, 133, 75, 16);
+		textPorcentajeEnReparacion.setBounds(251, 131, 75, 16);
 		panel_datosPorAnio.add(textPorcentajeEnReparacion);
 		textPorcentajeEnReparacion.setBorder(null);
 		textPorcentajeEnReparacion.setOpaque(false);
@@ -343,7 +410,7 @@ public class VentanaEstadisticas extends JFrame {
 		textPorcentajeEnReparacion.setColumns(10);
 		
 		textPorcentajeVentas = new JTextField();
-		textPorcentajeVentas.setBounds(251, 150, 75, 16);
+		textPorcentajeVentas.setBounds(251, 148, 75, 16);
 		panel_datosPorAnio.add(textPorcentajeVentas);
 		textPorcentajeVentas.setBorder(null);
 		textPorcentajeVentas.setOpaque(false);
@@ -353,7 +420,7 @@ public class VentanaEstadisticas extends JFrame {
 		textPorcentajeVentas.setColumns(10);
 		
 		textPorcentajeSinReparacion = new JTextField();
-		textPorcentajeSinReparacion.setBounds(251, 167, 75, 16);
+		textPorcentajeSinReparacion.setBounds(251, 165, 75, 16);
 		panel_datosPorAnio.add(textPorcentajeSinReparacion);
 		textPorcentajeSinReparacion.setBorder(null);
 		textPorcentajeSinReparacion.setOpaque(false);
@@ -405,7 +472,7 @@ public class VentanaEstadisticas extends JFrame {
 		panel_datosPorAnio.add(separator_2_1_2_1);
 		
 		textReparados = new JTextField();
-		textReparados.setBounds(164, 82, 75, 16);
+		textReparados.setBounds(164, 80, 75, 16);
 		panel_datosPorAnio.add(textReparados);
 		textReparados.setBorder(null);
 		textReparados.setOpaque(false);
@@ -415,7 +482,7 @@ public class VentanaEstadisticas extends JFrame {
 		textReparados.setColumns(10);
 		
 		textSinFalla = new JTextField();
-		textSinFalla.setBounds(164, 99, 75, 16);
+		textSinFalla.setBounds(164, 97, 75, 16);
 		panel_datosPorAnio.add(textSinFalla);
 		textSinFalla.setBorder(null);
 		textSinFalla.setOpaque(false);
@@ -425,7 +492,7 @@ public class VentanaEstadisticas extends JFrame {
 		textSinFalla.setColumns(10);
 		
 		textRepEnGtia = new JTextField();
-		textRepEnGtia.setBounds(164, 116, 75, 16);
+		textRepEnGtia.setBounds(164, 114, 75, 16);
 		panel_datosPorAnio.add(textRepEnGtia);
 		textRepEnGtia.setBorder(null);
 		textRepEnGtia.setOpaque(false);
@@ -435,7 +502,7 @@ public class VentanaEstadisticas extends JFrame {
 		textRepEnGtia.setColumns(10);
 		
 		textEnReparacion = new JTextField();
-		textEnReparacion.setBounds(164, 133, 75, 16);
+		textEnReparacion.setBounds(164, 131, 75, 16);
 		panel_datosPorAnio.add(textEnReparacion);
 		textEnReparacion.setBorder(null);
 		textEnReparacion.setOpaque(false);
@@ -445,7 +512,7 @@ public class VentanaEstadisticas extends JFrame {
 		textEnReparacion.setColumns(10);
 		
 		textVentas = new JTextField();
-		textVentas.setBounds(164, 150, 75, 16);
+		textVentas.setBounds(164, 148, 75, 16);
 		panel_datosPorAnio.add(textVentas);
 		textVentas.setBorder(null);
 		textVentas.setOpaque(false);
@@ -455,7 +522,7 @@ public class VentanaEstadisticas extends JFrame {
 		textVentas.setColumns(10);
 		
 		textSinReparacion = new JTextField();
-		textSinReparacion.setBounds(164, 167, 75, 16);
+		textSinReparacion.setBounds(164, 165, 75, 16);
 		panel_datosPorAnio.add(textSinReparacion);
 		textSinReparacion.setBorder(null);
 		textSinReparacion.setOpaque(false);
@@ -573,6 +640,290 @@ public class VentanaEstadisticas extends JFrame {
 		textFacTotalDolares.setColumns(10);
 		textFacTotalDolares.setBounds(217, 97, 111, 18);
 		panel_Datos.add(textFacTotalDolares);
+		
+		
+		panel_datosPorCliente = new JPanel();
+		panel_datosPorCliente.setVisible(false);
+		panel_datosPorCliente.setLayout(null);
+		panel_datosPorCliente.setOpaque(false);
+		panel_datosPorCliente.setBorder(null);
+		panel_datosPorCliente.setBounds(4, 126, 333, 251);
+		panel_Datos.add(panel_datosPorCliente);
+		
+		JLabel lblNewLabel_2_2_2 = new JLabel("REPARADOS");
+		lblNewLabel_2_2_2.setFont(new Font("Cambria", Font.PLAIN, 11));
+		lblNewLabel_2_2_2.setBounds(10, 82, 110, 14);
+		panel_datosPorCliente.add(lblNewLabel_2_2_2);
+		
+		JLabel lblNewLabel_2_3_2 = new JLabel("REPARADOS EN GTÍA");
+		lblNewLabel_2_3_2.setFont(new Font("Cambria", Font.PLAIN, 11));
+		lblNewLabel_2_3_2.setBounds(10, 116, 111, 14);
+		panel_datosPorCliente.add(lblNewLabel_2_3_2);
+		
+		JLabel lblNewLabel_2_4_3 = new JLabel("SIN FALLA");
+		lblNewLabel_2_4_3.setFont(new Font("Cambria", Font.PLAIN, 11));
+		lblNewLabel_2_4_3.setBounds(10, 99, 111, 14);
+		panel_datosPorCliente.add(lblNewLabel_2_4_3);
+		
+		JSeparator separator_1_3 = new JSeparator();
+		separator_1_3.setBounds(3, 244, 332, 2);
+		panel_datosPorCliente.add(separator_1_3);
+		
+		JLabel lblNewLabel_2_4_1_2 = new JLabel("EN REPARACIÓN");
+		lblNewLabel_2_4_1_2.setFont(new Font("Cambria", Font.PLAIN, 11));
+		lblNewLabel_2_4_1_2.setBounds(10, 133, 110, 14);
+		panel_datosPorCliente.add(lblNewLabel_2_4_1_2);
+		
+		JLabel lblNewLabel_2_4_1_1_2 = new JLabel("VENTAS");
+		lblNewLabel_2_4_1_1_2.setFont(new Font("Cambria", Font.PLAIN, 11));
+		lblNewLabel_2_4_1_1_2.setBounds(10, 150, 111, 14);
+		panel_datosPorCliente.add(lblNewLabel_2_4_1_1_2);
+		
+		JLabel lblNewLabel_2_4_1_1_1_1 = new JLabel("SIN REPARACIÓN");
+		lblNewLabel_2_4_1_1_1_1.setFont(new Font("Cambria", Font.PLAIN, 11));
+		lblNewLabel_2_4_1_1_1_1.setBounds(10, 167, 111, 14);
+		panel_datosPorCliente.add(lblNewLabel_2_4_1_1_1_1);
+		
+		JLabel lblNewLabel_2_5_1 = new JLabel("RESUMEN ANUAL");
+		lblNewLabel_2_5_1.setFont(new Font("Cambria", Font.PLAIN, 16));
+		lblNewLabel_2_5_1.setBounds(102, 10, 129, 19);
+		panel_datosPorCliente.add(lblNewLabel_2_5_1);
+		
+		JLabel lblNewLabel_2_2_1_1 = new JLabel("REPARADOS/ ACEPTADOS");
+		lblNewLabel_2_2_1_1.setFont(new Font("Cambria", Font.PLAIN, 11));
+		lblNewLabel_2_2_1_1.setBounds(10, 190, 129, 14);
+		panel_datosPorCliente.add(lblNewLabel_2_2_1_1);
+		
+		JLabel lblNewLabel_2_4_2_1 = new JLabel("REPARADOS/ NO ACEPTADOS");
+		lblNewLabel_2_4_2_1.setFont(new Font("Cambria", Font.PLAIN, 11));
+		lblNewLabel_2_4_2_1.setBounds(10, 207, 144, 14);
+		panel_datosPorCliente.add(lblNewLabel_2_4_2_1);
+		
+		JLabel lblNewLabel_2_3_1_1 = new JLabel("REPARADOS/ A LA ESPERA");
+		lblNewLabel_2_3_1_1.setFont(new Font("Cambria", Font.PLAIN, 11));
+		lblNewLabel_2_3_1_1.setBounds(10, 224, 144, 14);
+		panel_datosPorCliente.add(lblNewLabel_2_3_1_1);
+		
+		JSeparator separator_2_1_3 = new JSeparator();
+		separator_2_1_3.setBounds(3, 242, 332, 2);
+		panel_datosPorCliente.add(separator_2_1_3);
+		
+		textPorcRepPorCliente = new JTextField();
+		textPorcRepPorCliente.setOpaque(false);
+		textPorcRepPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textPorcRepPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textPorcRepPorCliente.setEditable(false);
+		textPorcRepPorCliente.setColumns(10);
+		textPorcRepPorCliente.setBorder(null);
+		textPorcRepPorCliente.setBounds(251, 80, 75, 16);
+		panel_datosPorCliente.add(textPorcRepPorCliente);
+		
+		textPorcSinFallaPorCliente = new JTextField();
+		textPorcSinFallaPorCliente.setOpaque(false);
+		textPorcSinFallaPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textPorcSinFallaPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textPorcSinFallaPorCliente.setEditable(false);
+		textPorcSinFallaPorCliente.setColumns(10);
+		textPorcSinFallaPorCliente.setBorder(null);
+		textPorcSinFallaPorCliente.setBounds(251, 97, 75, 16);
+		panel_datosPorCliente.add(textPorcSinFallaPorCliente);
+		
+		textPorcRepEnGtiaPorCliente = new JTextField();
+		textPorcRepEnGtiaPorCliente.setOpaque(false);
+		textPorcRepEnGtiaPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textPorcRepEnGtiaPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textPorcRepEnGtiaPorCliente.setEditable(false);
+		textPorcRepEnGtiaPorCliente.setColumns(10);
+		textPorcRepEnGtiaPorCliente.setBorder(null);
+		textPorcRepEnGtiaPorCliente.setBounds(251, 114, 75, 16);
+		panel_datosPorCliente.add(textPorcRepEnGtiaPorCliente);
+		
+		textPorcEnRepPorCliente = new JTextField();
+		textPorcEnRepPorCliente.setOpaque(false);
+		textPorcEnRepPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textPorcEnRepPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textPorcEnRepPorCliente.setEditable(false);
+		textPorcEnRepPorCliente.setColumns(10);
+		textPorcEnRepPorCliente.setBorder(null);
+		textPorcEnRepPorCliente.setBounds(251, 131, 75, 16);
+		panel_datosPorCliente.add(textPorcEnRepPorCliente);
+		
+		textPorcVentasPorCliente = new JTextField();
+		textPorcVentasPorCliente.setOpaque(false);
+		textPorcVentasPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textPorcVentasPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textPorcVentasPorCliente.setEditable(false);
+		textPorcVentasPorCliente.setColumns(10);
+		textPorcVentasPorCliente.setBorder(null);
+		textPorcVentasPorCliente.setBounds(251, 148, 75, 16);
+		panel_datosPorCliente.add(textPorcVentasPorCliente);
+		
+		textPorcSinRepPorCliente = new JTextField();
+		textPorcSinRepPorCliente.setOpaque(false);
+		textPorcSinRepPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textPorcSinRepPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textPorcSinRepPorCliente.setEditable(false);
+		textPorcSinRepPorCliente.setColumns(10);
+		textPorcSinRepPorCliente.setBorder(null);
+		textPorcSinRepPorCliente.setBounds(251, 165, 75, 16);
+		panel_datosPorCliente.add(textPorcSinRepPorCliente);
+		
+		textPorcRepAcepPorCliente = new JTextField();
+		textPorcRepAcepPorCliente.setOpaque(false);
+		textPorcRepAcepPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textPorcRepAcepPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textPorcRepAcepPorCliente.setEditable(false);
+		textPorcRepAcepPorCliente.setColumns(10);
+		textPorcRepAcepPorCliente.setBorder(null);
+		textPorcRepAcepPorCliente.setBounds(251, 190, 75, 16);
+		panel_datosPorCliente.add(textPorcRepAcepPorCliente);
+		
+		textPorcRepNoAcepPorCliente = new JTextField();
+		textPorcRepNoAcepPorCliente.setOpaque(false);
+		textPorcRepNoAcepPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textPorcRepNoAcepPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textPorcRepNoAcepPorCliente.setEditable(false);
+		textPorcRepNoAcepPorCliente.setColumns(10);
+		textPorcRepNoAcepPorCliente.setBorder(null);
+		textPorcRepNoAcepPorCliente.setBounds(251, 207, 75, 16);
+		panel_datosPorCliente.add(textPorcRepNoAcepPorCliente);
+		
+		textPorcRepEsperaPorCliente = new JTextField();
+		textPorcRepEsperaPorCliente.setOpaque(false);
+		textPorcRepEsperaPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textPorcRepEsperaPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textPorcRepEsperaPorCliente.setEditable(false);
+		textPorcRepEsperaPorCliente.setColumns(10);
+		textPorcRepEsperaPorCliente.setBorder(null);
+		textPorcRepEsperaPorCliente.setBounds(251, 224, 75, 16);
+		panel_datosPorCliente.add(textPorcRepEsperaPorCliente);
+		
+		JSeparator separator_1_2_1 = new JSeparator();
+		separator_1_2_1.setBounds(0, 2, 332, 2);
+		panel_datosPorCliente.add(separator_1_2_1);
+		
+		JSeparator separator_2_1_1_1 = new JSeparator();
+		separator_2_1_1_1.setBounds(0, 0, 332, 2);
+		panel_datosPorCliente.add(separator_2_1_1_1);
+		
+		JSeparator separator_2_1_2_1_1 = new JSeparator();
+		separator_2_1_2_1_1.setBounds(3, 185, 332, 2);
+		panel_datosPorCliente.add(separator_2_1_2_1_1);
+		
+		textReparadosPorCliente = new JTextField();
+		textReparadosPorCliente.setOpaque(false);
+		textReparadosPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textReparadosPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textReparadosPorCliente.setEditable(false);
+		textReparadosPorCliente.setColumns(10);
+		textReparadosPorCliente.setBorder(null);
+		textReparadosPorCliente.setBounds(164, 80, 75, 16);
+		panel_datosPorCliente.add(textReparadosPorCliente);
+		
+		textSinFallaPorCliente = new JTextField();
+		textSinFallaPorCliente.setOpaque(false);
+		textSinFallaPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textSinFallaPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textSinFallaPorCliente.setEditable(false);
+		textSinFallaPorCliente.setColumns(10);
+		textSinFallaPorCliente.setBorder(null);
+		textSinFallaPorCliente.setBounds(164, 97, 75, 16);
+		panel_datosPorCliente.add(textSinFallaPorCliente);
+		
+		textRepEnGtiaPorCliente = new JTextField();
+		textRepEnGtiaPorCliente.setOpaque(false);
+		textRepEnGtiaPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textRepEnGtiaPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textRepEnGtiaPorCliente.setEditable(false);
+		textRepEnGtiaPorCliente.setColumns(10);
+		textRepEnGtiaPorCliente.setBorder(null);
+		textRepEnGtiaPorCliente.setBounds(164, 114, 75, 16);
+		panel_datosPorCliente.add(textRepEnGtiaPorCliente);
+		
+		textEnRepPorCLiente = new JTextField();
+		textEnRepPorCLiente.setOpaque(false);
+		textEnRepPorCLiente.setHorizontalAlignment(SwingConstants.CENTER);
+		textEnRepPorCLiente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textEnRepPorCLiente.setEditable(false);
+		textEnRepPorCLiente.setColumns(10);
+		textEnRepPorCLiente.setBorder(null);
+		textEnRepPorCLiente.setBounds(164, 131, 75, 16);
+		panel_datosPorCliente.add(textEnRepPorCLiente);
+		
+		textVentasPorCliente = new JTextField();
+		textVentasPorCliente.setOpaque(false);
+		textVentasPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textVentasPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textVentasPorCliente.setEditable(false);
+		textVentasPorCliente.setColumns(10);
+		textVentasPorCliente.setBorder(null);
+		textVentasPorCliente.setBounds(164, 148, 75, 16);
+		panel_datosPorCliente.add(textVentasPorCliente);
+		
+		textSinRepPorCliente = new JTextField();
+		textSinRepPorCliente.setOpaque(false);
+		textSinRepPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textSinRepPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textSinRepPorCliente.setEditable(false);
+		textSinRepPorCliente.setColumns(10);
+		textSinRepPorCliente.setBorder(null);
+		textSinRepPorCliente.setBounds(164, 165, 75, 16);
+		panel_datosPorCliente.add(textSinRepPorCliente);
+		
+		textRepAcepPorCliente = new JTextField();
+		textRepAcepPorCliente.setOpaque(false);
+		textRepAcepPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textRepAcepPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textRepAcepPorCliente.setEditable(false);
+		textRepAcepPorCliente.setColumns(10);
+		textRepAcepPorCliente.setBorder(null);
+		textRepAcepPorCliente.setBounds(164, 190, 75, 16);
+		panel_datosPorCliente.add(textRepAcepPorCliente);
+		
+		textRepNoAcepPorCliente = new JTextField();
+		textRepNoAcepPorCliente.setOpaque(false);
+		textRepNoAcepPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textRepNoAcepPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textRepNoAcepPorCliente.setEditable(false);
+		textRepNoAcepPorCliente.setColumns(10);
+		textRepNoAcepPorCliente.setBorder(null);
+		textRepNoAcepPorCliente.setBounds(164, 207, 75, 16);
+		panel_datosPorCliente.add(textRepNoAcepPorCliente);
+		
+		textRepEsperaPorCliente = new JTextField();
+		textRepEsperaPorCliente.setOpaque(false);
+		textRepEsperaPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textRepEsperaPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textRepEsperaPorCliente.setEditable(false);
+		textRepEsperaPorCliente.setColumns(10);
+		textRepEsperaPorCliente.setBorder(null);
+		textRepEsperaPorCliente.setBounds(164, 224, 75, 16);
+		panel_datosPorCliente.add(textRepEsperaPorCliente);
+		
+		JLabel lblIngresosdelCliente = new JLabel("INGRESOS DEL CLIENTE");
+		lblIngresosdelCliente.setFont(new Font("Cambria", Font.BOLD, 11));
+		lblIngresosdelCliente.setBounds(10, 57, 129, 14);
+		panel_datosPorCliente.add(lblIngresosdelCliente);
+		
+		textIngresosPorCliente = new JTextField();
+		textIngresosPorCliente.setOpaque(false);
+		textIngresosPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textIngresosPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textIngresosPorCliente.setEditable(false);
+		textIngresosPorCliente.setColumns(10);
+		textIngresosPorCliente.setBorder(null);
+		textIngresosPorCliente.setBounds(164, 56, 75, 16);
+		panel_datosPorCliente.add(textIngresosPorCliente);
+		
+		textPorcIngresosPorCliente = new JTextField();
+		textPorcIngresosPorCliente.setOpaque(false);
+		textPorcIngresosPorCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		textPorcIngresosPorCliente.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textPorcIngresosPorCliente.setEditable(false);
+		textPorcIngresosPorCliente.setColumns(10);
+		textPorcIngresosPorCliente.setBorder(null);
+		textPorcIngresosPorCliente.setBounds(251, 54, 75, 16);
+		panel_datosPorCliente.add(textPorcIngresosPorCliente);
 
 		
 	
@@ -1245,5 +1596,421 @@ public class VentanaEstadisticas extends JFrame {
 
 	public void setPanel_facturacionPorAnio(JPanel panel_facturacionPorAnio) {
 		this.panel_facturacionPorAnio = panel_facturacionPorAnio;
+	}
+
+
+
+
+
+	public JPanel getPanel_datosPorCliente() {
+		return panel_datosPorCliente;
+	}
+
+
+
+
+
+	public void setPanel_datosPorCliente(JPanel panel_datosPorCliente) {
+		this.panel_datosPorCliente = panel_datosPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextPorcRepPorCliente() {
+		return textPorcRepPorCliente;
+	}
+
+
+
+
+
+	public void setTextPorcRepPorCliente(JTextField textPorcRepPorCliente) {
+		this.textPorcRepPorCliente = textPorcRepPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextPorcSinFallaPorCliente() {
+		return textPorcSinFallaPorCliente;
+	}
+
+
+
+
+
+	public void setTextPorcSinFallaPorCliente(JTextField textPorcSinFallaPorCliente) {
+		this.textPorcSinFallaPorCliente = textPorcSinFallaPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextPorcRepEnGtiaPorCliente() {
+		return textPorcRepEnGtiaPorCliente;
+	}
+
+
+
+
+
+	public void setTextPorcRepEnGtiaPorCliente(JTextField textPorcRepEnGtiaPorCliente) {
+		this.textPorcRepEnGtiaPorCliente = textPorcRepEnGtiaPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextPorcEnRepPorCliente() {
+		return textPorcEnRepPorCliente;
+	}
+
+
+
+
+
+	public void setTextPorcEnRepPorCliente(JTextField textPorcEnRepPorCliente) {
+		this.textPorcEnRepPorCliente = textPorcEnRepPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextPorcVentasPorCliente() {
+		return textPorcVentasPorCliente;
+	}
+
+
+
+
+
+	public void setTextPorcVentasPorCliente(JTextField textPorcVentasPorCliente) {
+		this.textPorcVentasPorCliente = textPorcVentasPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextPorcSinRepPorCliente() {
+		return textPorcSinRepPorCliente;
+	}
+
+
+
+
+
+	public void setTextPorcSinRepPorCliente(JTextField textPorcSinRepPorCliente) {
+		this.textPorcSinRepPorCliente = textPorcSinRepPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextPorcRepAcepPorCliente() {
+		return textPorcRepAcepPorCliente;
+	}
+
+
+
+
+
+	public void setTextPorcRepAcepPorCliente(JTextField textPorcRepAcepPorCliente) {
+		this.textPorcRepAcepPorCliente = textPorcRepAcepPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextPorcRepNoAcepPorCliente() {
+		return textPorcRepNoAcepPorCliente;
+	}
+
+
+
+
+
+	public void setTextPorcRepNoAcepPorCliente(JTextField textPorcRepNoAcepPorCliente) {
+		this.textPorcRepNoAcepPorCliente = textPorcRepNoAcepPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextPorcRepEsperaPorCliente() {
+		return textPorcRepEsperaPorCliente;
+	}
+
+
+
+
+
+	public void setTextPorcRepEsperaPorCliente(JTextField textPorcRepEsperaPorCliente) {
+		this.textPorcRepEsperaPorCliente = textPorcRepEsperaPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextReparadosPorCliente() {
+		return textReparadosPorCliente;
+	}
+
+
+
+
+
+	public void setTextReparadosPorCliente(JTextField textReparadosPorCliente) {
+		this.textReparadosPorCliente = textReparadosPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextSinFallaPorCliente() {
+		return textSinFallaPorCliente;
+	}
+
+
+
+
+
+	public void setTextSinFallaPorCliente(JTextField textSinFallaPorCliente) {
+		this.textSinFallaPorCliente = textSinFallaPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextRepEnGtiaPorCliente() {
+		return textRepEnGtiaPorCliente;
+	}
+
+
+
+
+
+	public void setTextRepEnGtiaPorCliente(JTextField textRepEnGtiaPorCliente) {
+		this.textRepEnGtiaPorCliente = textRepEnGtiaPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextEnRepPorCLiente() {
+		return textEnRepPorCLiente;
+	}
+
+
+
+
+
+	public void setTextEnRepPorCLiente(JTextField textEnRepPorCLiente) {
+		this.textEnRepPorCLiente = textEnRepPorCLiente;
+	}
+
+
+
+
+
+	public JTextField getTextVentasPorCliente() {
+		return textVentasPorCliente;
+	}
+
+
+
+
+
+	public void setTextVentasPorCliente(JTextField textVentasPorCliente) {
+		this.textVentasPorCliente = textVentasPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextSinRepPorCliente() {
+		return textSinRepPorCliente;
+	}
+
+
+
+
+
+	public void setTextSinRepPorCliente(JTextField textSinRepPorCliente) {
+		this.textSinRepPorCliente = textSinRepPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextRepAcepPorCliente() {
+		return textRepAcepPorCliente;
+	}
+
+
+
+
+
+	public void setTextRepAcepPorCliente(JTextField textRepAcepPorCliente) {
+		this.textRepAcepPorCliente = textRepAcepPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextRepNoAcepPorCliente() {
+		return textRepNoAcepPorCliente;
+	}
+
+
+
+
+
+	public void setTextRepNoAcepPorCliente(JTextField textRepNoAcepPorCliente) {
+		this.textRepNoAcepPorCliente = textRepNoAcepPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextRepEsperaPorCliente() {
+		return textRepEsperaPorCliente;
+	}
+
+
+
+
+
+	public void setTextRepEsperaPorCliente(JTextField textRepEsperaPorCliente) {
+		this.textRepEsperaPorCliente = textRepEsperaPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextIngresosPorCliente() {
+		return textIngresosPorCliente;
+	}
+
+
+
+
+
+	public void setTextIngresosPorCliente(JTextField textIngresosPorCliente) {
+		this.textIngresosPorCliente = textIngresosPorCliente;
+	}
+
+
+
+
+
+	public JTextField getTextPorcIngresosPorCliente() {
+		return textPorcIngresosPorCliente;
+	}
+
+
+
+
+
+	public void setTextPorcIngresosPorCliente(JTextField textPorcIngresosPorCliente) {
+		this.textPorcIngresosPorCliente = textPorcIngresosPorCliente;
+	}
+
+
+
+
+
+	public JPanel getPanel_facturacionPorCliente() {
+		return panel_facturacionPorCliente;
+	}
+
+
+
+
+
+	public void setPanel_facturacionPorCliente(JPanel panel_facturacionPorCliente) {
+		this.panel_facturacionPorCliente = panel_facturacionPorCliente;
+	}
+
+
+
+
+
+	public JLabel getLblFacturacionClientePesos() {
+		return lblFacturacionClientePesos;
+	}
+
+
+
+
+
+	public void setLblFacturacionClientePesos(JLabel lblFacturacionClientePesos) {
+		this.lblFacturacionClientePesos = lblFacturacionClientePesos;
+	}
+
+
+
+
+
+	public JLabel getLblFacturacionClienteDolar() {
+		return lblFacturacionClienteDolar;
+	}
+
+
+
+
+
+	public void setLblFacturacionClienteDolar(JLabel lblFacturacionClienteDolar) {
+		this.lblFacturacionClienteDolar = lblFacturacionClienteDolar;
+	}
+
+
+
+
+
+	public JTextField getTextFactClientePesos() {
+		return textFactClientePesos;
+	}
+
+
+
+
+
+	public void setTextFactClientePesos(JTextField textFactClientePesos) {
+		this.textFactClientePesos = textFactClientePesos;
+	}
+
+
+
+
+
+	public JTextField getTextFactClienteDolar() {
+		return textFactClienteDolar;
+	}
+
+
+
+
+
+	public void setTextFactClienteDolar(JTextField textFactClienteDolar) {
+		this.textFactClienteDolar = textFactClienteDolar;
 	}
 	}

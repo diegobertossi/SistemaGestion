@@ -382,27 +382,32 @@ public class ControladorListados
 				case 0:
 
 					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
 					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
 
 					break;
 
 				case 1:
 
+					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
 					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(true);
 					ventanaEstadisticas.getPanel_Facturacion().setVisible(true);
+
 					break;
 
 				case 2:
 
+					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
 					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
-					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
+					ventanaEstadisticas.getPanel_Facturacion().setVisible(true);
 
 					break;
 
 				case 3:
 
 					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
-					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
+					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(true);
+					ventanaEstadisticas.getPanel_Facturacion().setVisible(true);
 
 					break;
 
@@ -428,6 +433,7 @@ public class ControladorListados
 				case 0:
 
 					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
 					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
 
 					break;
@@ -435,12 +441,14 @@ public class ControladorListados
 				case 1:
 
 					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
 					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
 					break;
 
 				case 2:
 
 					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
 					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
 
 					break;
@@ -448,6 +456,7 @@ public class ControladorListados
 				case 3:
 
 					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
 					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
 
 					break;
@@ -853,7 +862,6 @@ public class ControladorListados
 
 						ventanaEstadisticas.getComboCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
-						ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(false);
 
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
@@ -969,13 +977,25 @@ public class ControladorListados
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
+
+						ventanaEstadisticas.getPanel_datosPorAnio().setVisible(false);
+						ventanaEstadisticas.getPanel_datosPorCliente().setVisible(false);
+						ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
 						break;
 					case 1:
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
+
+						ventanaEstadisticas.getPanel_datosPorCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_datosPorAnio().setVisible(true);
-						ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(true);
+						ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
+
+						if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
+
+							ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(true);
+
+						}
 						mostrarGraficosPorAnio();
 						break;
 
@@ -983,8 +1003,17 @@ public class ControladorListados
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
+
+						ventanaEstadisticas.getPanel_datosPorCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_datosPorAnio().setVisible(false);
-						ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(false);
+
+						ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+						ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
+
+						if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
+
+						}
+
 						if (ventanaEstadisticas.getComboTecnico() == null
 								|| ventanaEstadisticas.getComboTecnico().getSelectedIndex() == -1) {
 
@@ -1001,8 +1030,18 @@ public class ControladorListados
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
+
 						ventanaEstadisticas.getPanel_datosPorAnio().setVisible(false);
-						ventanaEstadisticas.getBtnFacturacionPorCliente().setVisible(false);
+						ventanaEstadisticas.getPanel_datosPorCliente().setVisible(true);
+
+						ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
+
+						if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
+
+							ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(true);
+
+						}
+
 						if (ventanaEstadisticas.getComboCliente() == null
 								|| ventanaEstadisticas.getComboCliente().getSelectedIndex() == -1) {
 
@@ -1267,12 +1306,11 @@ public class ControladorListados
 			ventanaEstadisticas.getPanel_Facturacion().setVisible(true);
 
 		} else {
-			
+
 			ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
-		
+
 		}
-		
-		
+
 		ventanaEstadisticas.repaint();
 
 	}
