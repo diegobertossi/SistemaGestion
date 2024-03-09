@@ -74,6 +74,15 @@ public class ControladorListados
 
 	private int filtro;
 	private String seleccionDetalleEstadisticas = "OCULTAR DETALLE";
+	
+	
+	
+	
+	private int anio;
+	private int cantidadIngresosPorAnio;
+	private int cantidadDiagnosticosPorAnio; 
+	private double facturacionPesoPorAnio;
+	private double facturacionDolarPorAnio ;
 
 	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
@@ -970,7 +979,7 @@ public class ControladorListados
 							.setText(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
 					ventanaEstadisticas.getPanel_Datos().setVisible(true);
 
-					llenarDatosPorAnio();
+					llenarDatosAnuales();
 
 					switch (filtro) {
 					case 0:
@@ -983,6 +992,8 @@ public class ControladorListados
 						ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
 						break;
 					case 1:
+						
+						llenarDatosPorAnio();
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
@@ -1000,6 +1011,7 @@ public class ControladorListados
 						break;
 
 					case 2:
+						
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
@@ -1027,6 +1039,7 @@ public class ControladorListados
 						break;
 
 					case 3:
+						llenarDatosPorCliente();
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
@@ -1123,15 +1136,29 @@ public class ControladorListados
 		});
 
 	}
+	
+	private void llenarDatosAnuales(){
+		
+		anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
+		cantidadIngresosPorAnio = modelo.dameIngresosPorAnio(anio);
+		cantidadDiagnosticosPorAnio = modelo.dameDiagnosticosPorAnio(anio);
+		facturacionPesoPorAnio = modelo.dameFacturacionPesoPorAnio(anio);
+		facturacionDolarPorAnio = modelo.dameFacturacionDolarPorAnio(anio);
+		
+		
+		
+		ventanaEstadisticas.getTextIngresosTotales().setText(Integer.toString(cantidadIngresosPorAnio));
+		ventanaEstadisticas.getTextDiagnosticosTotales().setText(Integer.toString(cantidadDiagnosticosPorAnio));
+
+		ventanaEstadisticas.getTextFacTotalPesos()
+				.setText(monedaFormatter.formatPeso(Double.toString(facturacionPesoPorAnio)));
+		ventanaEstadisticas.getTextFacTotalDolares()
+				.setText(monedaFormatter.formatDolar(Double.toString(facturacionDolarPorAnio)));
+		
+	}
 
 	private void llenarDatosPorAnio() {
-
-		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
-		int cantidadIngresosPorAnio = modelo.dameIngresosPorAnio(anio);
-		int cantidadDiagnosticosPorAnio = modelo.dameDiagnosticosPorAnio(anio);
-		double facturacionPesoPorAnio = modelo.dameFacturacionPesoPorAnio(anio);
-		double facturacionDolarPorAnio = modelo.dameFacturacionDolarPorAnio(anio);
-
+		
 		int cantidadReparadosPorAnio = modelo.dameReparadosPorAnio(anio);
 		int cantidadSinFallaPorAnio = modelo.dameSinFallaPorAnio(anio);
 		int cantidadRepEnGtiaPorAnio = modelo.dameRepEnGtiaPorAnio(anio);
@@ -1142,13 +1169,7 @@ public class ControladorListados
 		int cantidadReparadosNoAceptradosPorAnio = modelo.dameRepNoAcepPorAnio(anio);
 		int cantidadReparadosAlaEsperaPorAnio = modelo.dameRepEsperaPorAnio(anio);
 
-		ventanaEstadisticas.getTextIngresosTotales().setText(Integer.toString(cantidadIngresosPorAnio));
-		ventanaEstadisticas.getTextDiagnosticosTotales().setText(Integer.toString(cantidadDiagnosticosPorAnio));
-
-		ventanaEstadisticas.getTextFacTotalPesos()
-				.setText(monedaFormatter.formatPeso(Double.toString(facturacionPesoPorAnio)));
-		ventanaEstadisticas.getTextFacTotalDolares()
-				.setText(monedaFormatter.formatDolar(Double.toString(facturacionDolarPorAnio)));
+		
 
 		ventanaEstadisticas.getTextReparados().setText(Integer.toString(cantidadReparadosPorAnio));
 		ventanaEstadisticas.getTextSinFalla().setText(Integer.toString(cantidadSinFallaPorAnio));
@@ -1202,6 +1223,89 @@ public class ControladorListados
 
 	}
 
+	
+	
+	
+	
+	private void llenarDatosPorCliente() {
+
+		String nombreCliente = ventanaEstadisticas.getComboCliente().getSelectedItem().toString();
+		
+
+		ventanaEstadisticas.getTextNombreCliente().setText(nombreCliente);
+//		int cantidadReparadosPorAnio = modelo.dameReparadosPorAnio(anio);
+//		int cantidadSinFallaPorAnio = modelo.dameSinFallaPorAnio(anio);
+//		int cantidadRepEnGtiaPorAnio = modelo.dameRepEnGtiaPorAnio(anio);
+//		int cantidadEnRepPorAnio = modelo.dameEnRepPorAnio(anio);
+//		int cantidadVentasPorAnio = modelo.dameVentasPorAnio(anio);
+//		int cantidadSinRepAnio = modelo.dameSinRepAnio(anio);
+//		int cantidadReparadosAceptradosPorAnio = modelo.dameRepAcepPorAnio(anio);
+//		int cantidadReparadosNoAceptradosPorAnio = modelo.dameRepNoAcepPorAnio(anio);
+//		int cantidadReparadosAlaEsperaPorAnio = modelo.dameRepEsperaPorAnio(anio);
+//
+//		ventanaEstadisticas.getTextIngresosTotales().setText(Integer.toString(cantidadIngresosPorAnio));
+//		ventanaEstadisticas.getTextDiagnosticosTotales().setText(Integer.toString(cantidadDiagnosticosPorAnio));
+//
+//		ventanaEstadisticas.getTextFacTotalPesos()
+//				.setText(monedaFormatter.formatPeso(Double.toString(facturacionPesoPorAnio)));
+//		ventanaEstadisticas.getTextFacTotalDolares()
+//				.setText(monedaFormatter.formatDolar(Double.toString(facturacionDolarPorAnio)));
+//
+//		ventanaEstadisticas.getTextReparados().setText(Integer.toString(cantidadReparadosPorAnio));
+//		ventanaEstadisticas.getTextSinFalla().setText(Integer.toString(cantidadSinFallaPorAnio));
+//		ventanaEstadisticas.getTextRepEnGtia().setText(Integer.toString(cantidadRepEnGtiaPorAnio));
+//		ventanaEstadisticas.getTextEnReparacion().setText(Integer.toString(cantidadEnRepPorAnio));
+//		ventanaEstadisticas.getTextVentas().setText(Integer.toString(cantidadVentasPorAnio));
+//		ventanaEstadisticas.getTextSinReparacion().setText(Integer.toString(cantidadSinRepAnio));
+//		ventanaEstadisticas.getTextReparadosAceptados().setText(Integer.toString(cantidadReparadosAceptradosPorAnio));
+//		ventanaEstadisticas.getTextReparadosNoAceptados()
+//				.setText(Integer.toString(cantidadReparadosNoAceptradosPorAnio));
+//		ventanaEstadisticas.getTextRepEspera().setText(Integer.toString(cantidadReparadosAlaEsperaPorAnio));
+//
+//		double porcentajeReparadosPorAnio = ((double) cantidadReparadosPorAnio / cantidadDiagnosticosPorAnio) * 100;
+//		String porcentajeReparados = String.format("%.1f %%", porcentajeReparadosPorAnio);
+//		ventanaEstadisticas.getTextPorcentajeReparados().setText(porcentajeReparados);
+//
+//		double porcentajeRepEnGtiaPorAnio = ((double) cantidadRepEnGtiaPorAnio / cantidadDiagnosticosPorAnio) * 100;
+//		String porcentajeEnGtia = String.format("%.1f %%", porcentajeRepEnGtiaPorAnio);
+//		ventanaEstadisticas.getTextPorcentajeRepEnGtia().setText(porcentajeEnGtia);
+//
+//		double porcentajeSinFallaPorAnio = ((double) cantidadSinFallaPorAnio / cantidadDiagnosticosPorAnio) * 100;
+//		String porcentajeSinFalla = String.format("%.1f %%", porcentajeSinFallaPorAnio);
+//		ventanaEstadisticas.getTextPorcentajeSinFalla().setText(porcentajeSinFalla);
+//
+//		double porcentajeEnRePorAnio = ((double) cantidadEnRepPorAnio / cantidadDiagnosticosPorAnio) * 100;
+//		String porcentajeEnRep = String.format("%.1f %%", porcentajeEnRePorAnio);
+//		ventanaEstadisticas.getTextPorcentajeEnReparacion().setText(porcentajeEnRep);
+//
+//		double porcentajeVentasPorAnio = ((double) cantidadVentasPorAnio / cantidadDiagnosticosPorAnio) * 100;
+//		String porcentajeVentas = String.format("%.1f %%", porcentajeVentasPorAnio);
+//		ventanaEstadisticas.getTextPorcentajeVentas().setText(porcentajeVentas);
+//
+//		double porcentajeSinRepPorAnio = ((double) cantidadSinRepAnio / cantidadDiagnosticosPorAnio) * 100;
+//		String porcentajeSinRep = String.format("%.1f %%", porcentajeSinRepPorAnio);
+//		ventanaEstadisticas.getTextPorcentajeSinReparacion().setText(porcentajeSinRep);
+//
+//		double porcentajeRepAcepPorAnio = ((double) cantidadReparadosAceptradosPorAnio / cantidadReparadosPorAnio)
+//				* 100;
+//		String porcentajeRepAcep = String.format("%.1f %%", porcentajeRepAcepPorAnio);
+//		ventanaEstadisticas.getTextPorcentajeReparadosAceptados().setText(porcentajeRepAcep);
+//
+//		double porcentajeRepNoAcepPorAnio = ((double) cantidadReparadosNoAceptradosPorAnio / cantidadReparadosPorAnio)
+//				* 100;
+//		String porcentajeRepNoAcep = String.format("%.1f %%", porcentajeRepNoAcepPorAnio);
+//		ventanaEstadisticas.getTextPorcentajeReparadosNoAceptados().setText(porcentajeRepNoAcep);
+//
+//		double porcentajeRepEsperaPorAnio = ((double) cantidadReparadosAlaEsperaPorAnio / cantidadReparadosPorAnio)
+//				* 100;
+//		String porcentajeRepEspera = String.format("%.1f %%", porcentajeRepEsperaPorAnio);
+//		ventanaEstadisticas.getTextPorcentajeRepEspera().setText(porcentajeRepEspera);
+
+	}
+
+	
+	
+	
 	private void mostrarGraficosPorAnio() {
 
 		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
