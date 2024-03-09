@@ -81,7 +81,7 @@ public class VentanaEstadisticas extends JFrame {
 	private JTextField textFacTotalPesos;
 	private JTextField textFacTotalDolares;
 	private JPanel panel_datosPorAnio;
-	private JPanel panel_;
+	private JPanel panel_facturacionPorAnio;
 	
 	
 	
@@ -519,17 +519,17 @@ public class VentanaEstadisticas extends JFrame {
 		textDiagnosticosTotales.setBounds(217, 59, 111, 18);
 		panel_Datos.add(textDiagnosticosTotales);
 		
-		panel_ = new JPanel();
-		panel_.setOpaque(false);
-		panel_.setBorder(null);
-		panel_.setBounds(4, 386, 333, 156);
-		panel_Datos.add(panel_);
-		panel_.setLayout(null);
+		panel_facturacionPorAnio = new JPanel();
+		panel_facturacionPorAnio.setVisible(false);
+		panel_facturacionPorAnio.setOpaque(false);
+		panel_facturacionPorAnio.setBorder(null);
+		panel_facturacionPorAnio.setBounds(4, 386, 333, 156);
+		panel_Datos.add(panel_facturacionPorAnio);
+		panel_facturacionPorAnio.setLayout(null);
 		
 		btnFacturacionPorCliente = new JButton("<html><center>FACTURACIÓN POR CLIENTE</html>");
 		btnFacturacionPorCliente.setBounds(113, 59, 106, 37);
-		panel_.add(btnFacturacionPorCliente);
-		btnFacturacionPorCliente.setVisible(false);
+		panel_facturacionPorAnio.add(btnFacturacionPorCliente);
 		btnFacturacionPorCliente.setFont(new Font("Cambria", Font.BOLD, 12));
 		
 		JSeparator separator_1_1 = new JSeparator();
@@ -1213,5 +1213,37 @@ public class VentanaEstadisticas extends JFrame {
 
 	public void setLblFacTotalPesos(JLabel lblFacTotalPesos) {
 		this.lblFacTotalPesos = lblFacTotalPesos;
+	}
+
+
+
+
+
+	public JPanel getPanel_datosPorAnio() {
+		return panel_datosPorAnio;
+	}
+
+
+
+
+
+	public void setPanel_datosPorAnio(JPanel panel_datosPorAnio) {
+		this.panel_datosPorAnio = panel_datosPorAnio;
+	}
+
+
+
+
+
+	public JPanel getPanel_facturacionPorAnio() {
+		return panel_facturacionPorAnio;
+	}
+
+
+
+
+
+	public void setPanel_facturacionPorAnio(JPanel panel_facturacionPorAnio) {
+		this.panel_facturacionPorAnio = panel_facturacionPorAnio;
 	}
 	}
