@@ -1288,45 +1288,49 @@ public class ControladorListados
 		ventanaEstadisticas.getTextRepNoAcepPorCliente().setText(Integer.toString(TotalReparadosNoAceptradosXcliente));
 		ventanaEstadisticas.getTextRepEsperaPorCliente().setText(Integer.toString(TotalReparadosAlaEsperaXcliente));
 
-//
-//		double porcentajeReparadosPorAnio = ((double) cantidadReparadosPorAnio / cantidadDiagnosticosPorAnio) * 100;
-//		String porcentajeReparados = String.format("%.1f %%", porcentajeReparadosPorAnio);
-//		ventanaEstadisticas.getTextPorcentajeReparados().setText(porcentajeReparados);
-//
-//		double porcentajeRepEnGtiaPorAnio = ((double) cantidadRepEnGtiaPorAnio / cantidadDiagnosticosPorAnio) * 100;
-//		String porcentajeEnGtia = String.format("%.1f %%", porcentajeRepEnGtiaPorAnio);
-//		ventanaEstadisticas.getTextPorcentajeRepEnGtia().setText(porcentajeEnGtia);
-//
-//		double porcentajeSinFallaPorAnio = ((double) cantidadSinFallaPorAnio / cantidadDiagnosticosPorAnio) * 100;
-//		String porcentajeSinFalla = String.format("%.1f %%", porcentajeSinFallaPorAnio);
-//		ventanaEstadisticas.getTextPorcentajeSinFalla().setText(porcentajeSinFalla);
-//
-//		double porcentajeEnRePorAnio = ((double) cantidadEnRepPorAnio / cantidadDiagnosticosPorAnio) * 100;
-//		String porcentajeEnRep = String.format("%.1f %%", porcentajeEnRePorAnio);
-//		ventanaEstadisticas.getTextPorcentajeEnReparacion().setText(porcentajeEnRep);
-//
-//		double porcentajeVentasPorAnio = ((double) cantidadVentasPorAnio / cantidadDiagnosticosPorAnio) * 100;
-//		String porcentajeVentas = String.format("%.1f %%", porcentajeVentasPorAnio);
-//		ventanaEstadisticas.getTextPorcentajeVentas().setText(porcentajeVentas);
-//
-//		double porcentajeSinRepPorAnio = ((double) cantidadSinRepAnio / cantidadDiagnosticosPorAnio) * 100;
-//		String porcentajeSinRep = String.format("%.1f %%", porcentajeSinRepPorAnio);
-//		ventanaEstadisticas.getTextPorcentajeSinReparacion().setText(porcentajeSinRep);
-//
-//		double porcentajeRepAcepPorAnio = ((double) cantidadReparadosAceptradosPorAnio / cantidadReparadosPorAnio)
-//				* 100;
-//		String porcentajeRepAcep = String.format("%.1f %%", porcentajeRepAcepPorAnio);
-//		ventanaEstadisticas.getTextPorcentajeReparadosAceptados().setText(porcentajeRepAcep);
-//
-//		double porcentajeRepNoAcepPorAnio = ((double) cantidadReparadosNoAceptradosPorAnio / cantidadReparadosPorAnio)
-//				* 100;
-//		String porcentajeRepNoAcep = String.format("%.1f %%", porcentajeRepNoAcepPorAnio);
-//		ventanaEstadisticas.getTextPorcentajeReparadosNoAceptados().setText(porcentajeRepNoAcep);
-//
-//		double porcentajeRepEsperaPorAnio = ((double) cantidadReparadosAlaEsperaPorAnio / cantidadReparadosPorAnio)
-//				* 100;
-//		String porcentajeRepEspera = String.format("%.1f %%", porcentajeRepEsperaPorAnio);
-//		ventanaEstadisticas.getTextPorcentajeRepEspera().setText(porcentajeRepEspera);
+
+		double porcentajeIngresosPorCliente = ((double) totalIngresosXanioXcliente / cantidadIngresosPorAnio) * 100;
+		String porcentajeIngresos = String.format("%.1f %%", porcentajeIngresosPorCliente);
+		ventanaEstadisticas.getTextPorcIngresosPorCliente().setText(porcentajeIngresos);
+		
+		double porcentajeReparadosPorCliente = ((double) totalReparadosXanioXcliente / totalIngresosXanioXcliente) * 100;
+		String porcentajeReparados = String.format("%.1f %%", porcentajeReparadosPorCliente);
+		ventanaEstadisticas.getTextPorcRepPorCliente().setText(porcentajeReparados);
+
+		double porcentajeRepEnGtiaPorCliente = ((double) totalGtiaXanioXcliente / totalIngresosXanioXcliente) * 100;
+		String porcentajeEnGtia = String.format("%.1f %%", porcentajeRepEnGtiaPorCliente);
+		ventanaEstadisticas.getTextPorcRepEnGtiaPorCliente().setText(porcentajeEnGtia);
+
+		double porcentajeSinFallaPorCliente = ((double) totalSinFallaXanioXcliente / totalIngresosXanioXcliente) * 100;
+		String porcentajeSinFalla = String.format("%.1f %%", porcentajeSinFallaPorCliente);
+		ventanaEstadisticas.getTextPorcSinFallaPorCliente().setText(porcentajeSinFalla);
+
+		double porcentajeEnRePorCliente = ((double) totalEnRepXanioXcliente / totalIngresosXanioXcliente) * 100;
+		String porcentajeEnRep = String.format("%.1f %%", porcentajeEnRePorCliente);
+		ventanaEstadisticas.getTextPorcEnRepPorCliente().setText(porcentajeEnRep);
+
+		double porcentajeVentasPorCliente = ((double) totalVentaXanioXcliente / totalIngresosXanioXcliente) * 100;
+		String porcentajeVentas = String.format("%.1f %%", porcentajeVentasPorCliente);
+		ventanaEstadisticas.getTextPorcVentasPorCliente().setText(porcentajeVentas);
+
+		double porcentajeSinRepPorCliente = ((double) totalSinRepXanioXcliente / totalIngresosXanioXcliente) * 100;
+		String porcentajeSinRep = String.format("%.1f %%", porcentajeSinRepPorCliente);
+		ventanaEstadisticas.getTextPorcSinRepPorCliente().setText(porcentajeSinRep);
+
+		double porcentajeRepAcepPorCliente = ((double) TotalReparadosAceptradosXcliente / totalReparadosXanioXcliente)
+				* 100;
+		String porcentajeRepAcep = String.format("%.1f %%", porcentajeRepAcepPorCliente);
+		ventanaEstadisticas.getTextPorcRepAcepPorCliente().setText(porcentajeRepAcep);
+
+		double porcentajeRepNoAcepPorCliente = ((double) TotalReparadosNoAceptradosXcliente / totalReparadosXanioXcliente)
+				* 100;
+		String porcentajeRepNoAcep = String.format("%.1f %%", porcentajeRepNoAcepPorCliente);
+		ventanaEstadisticas.getTextPorcRepNoAcepPorCliente().setText(porcentajeRepNoAcep);
+
+		double porcentajeRepEsperaPorCliente = ((double) TotalReparadosAlaEsperaXcliente / totalReparadosXanioXcliente)
+				* 100;
+		String porcentajeRepEspera = String.format("%.1f %%", porcentajeRepEsperaPorCliente);
+		ventanaEstadisticas.getTextPorcRepEsperaPorCliente().setText(porcentajeRepEspera);
 
 	}
 
