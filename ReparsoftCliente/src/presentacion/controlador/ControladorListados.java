@@ -1254,38 +1254,40 @@ public class ControladorListados
 	}
 
 	private void llenarDatosPorCliente() {
+		
+		String cliente = ventanaEstadisticas.getComboCliente().getSelectedItem().toString();
 
-		String nombreCliente = ventanaEstadisticas.getComboCliente().getSelectedItem().toString();
+		int idCliente = modelo.idClienteporNombre(cliente);
 
-		ventanaEstadisticas.getTextNombreCliente().setText(nombreCliente);
-//		int cantidadReparadosPorAnio = modelo.dameReparadosPorAnio(anio);
-//		int cantidadSinFallaPorAnio = modelo.dameSinFallaPorAnio(anio);
-//		int cantidadRepEnGtiaPorAnio = modelo.dameRepEnGtiaPorAnio(anio);
-//		int cantidadEnRepPorAnio = modelo.dameEnRepPorAnio(anio);
-//		int cantidadVentasPorAnio = modelo.dameVentasPorAnio(anio);
-//		int cantidadSinRepAnio = modelo.dameSinRepAnio(anio);
-//		int cantidadReparadosAceptradosPorAnio = modelo.dameRepAcepPorAnio(anio);
-//		int cantidadReparadosNoAceptradosPorAnio = modelo.dameRepNoAcepPorAnio(anio);
-//		int cantidadReparadosAlaEsperaPorAnio = modelo.dameRepEsperaPorAnio(anio);
-//
-//		ventanaEstadisticas.getTextIngresosTotales().setText(Integer.toString(cantidadIngresosPorAnio));
-//		ventanaEstadisticas.getTextDiagnosticosTotales().setText(Integer.toString(cantidadDiagnosticosPorAnio));
-//
-//		ventanaEstadisticas.getTextFacTotalPesos()
-//				.setText(monedaFormatter.formatPeso(Double.toString(facturacionPesoPorAnio)));
-//		ventanaEstadisticas.getTextFacTotalDolares()
-//				.setText(monedaFormatter.formatDolar(Double.toString(facturacionDolarPorAnio)));
-//
-//		ventanaEstadisticas.getTextReparados().setText(Integer.toString(cantidadReparadosPorAnio));
-//		ventanaEstadisticas.getTextSinFalla().setText(Integer.toString(cantidadSinFallaPorAnio));
-//		ventanaEstadisticas.getTextRepEnGtia().setText(Integer.toString(cantidadRepEnGtiaPorAnio));
-//		ventanaEstadisticas.getTextEnReparacion().setText(Integer.toString(cantidadEnRepPorAnio));
-//		ventanaEstadisticas.getTextVentas().setText(Integer.toString(cantidadVentasPorAnio));
-//		ventanaEstadisticas.getTextSinReparacion().setText(Integer.toString(cantidadSinRepAnio));
-//		ventanaEstadisticas.getTextReparadosAceptados().setText(Integer.toString(cantidadReparadosAceptradosPorAnio));
-//		ventanaEstadisticas.getTextReparadosNoAceptados()
-//				.setText(Integer.toString(cantidadReparadosNoAceptradosPorAnio));
-//		ventanaEstadisticas.getTextRepEspera().setText(Integer.toString(cantidadReparadosAlaEsperaPorAnio));
+		ventanaEstadisticas.getTextNombreCliente().setText(cliente);
+		
+		int totalIngresosXanioXcliente = modelo.dameTotalIngresosXanioXcliente(anio, idCliente);
+		int totalReparadosXanioXcliente = modelo.dameTotalReparadosXanioXcliente(anio, idCliente);
+		int totalSinFallaXanioXcliente = modelo.dameTotalSinFallaXanioXcliente(anio, idCliente);
+		int totalGtiaXanioXcliente = modelo.dameTotalGtiaXanioXcliente(anio, idCliente);
+		int totalEnRepXanioXcliente = modelo.dameTotalEnRepXanioXclientecliente(anio, idCliente);
+		int totalVentaXanioXcliente = modelo.dameTotalVentasXanioXcliente(anio, idCliente);
+		int totalSinRepXanioXcliente = modelo.dameTotalSinRepXanioXcliente(anio, idCliente);
+		
+		int TotalReparadosAceptradosXcliente = modelo.dameTotalRepAcepXcliente(anio, idCliente);
+		int TotalReparadosNoAceptradosXcliente = modelo.dameTotalRepNoAcepXcliente(anio, idCliente);
+		int TotalReparadosAlaEsperaXcliente = modelo.dameTotalRepEsperaXcliente(anio, idCliente);
+
+		
+
+		ventanaEstadisticas.getTextIngresosPorCliente().setText(Integer.toString(totalIngresosXanioXcliente));
+
+		ventanaEstadisticas.getTextReparadosPorCliente().setText(Integer.toString(totalReparadosXanioXcliente));
+		ventanaEstadisticas.getTextSinFallaPorCliente().setText(Integer.toString(totalSinFallaXanioXcliente));
+		ventanaEstadisticas.getTextRepEnGtiaPorCliente().setText(Integer.toString(totalGtiaXanioXcliente));
+		ventanaEstadisticas.getTextEnRepPorCLiente().setText(Integer.toString(totalEnRepXanioXcliente));
+		ventanaEstadisticas.getTextVentasPorCliente().setText(Integer.toString(totalVentaXanioXcliente));
+		ventanaEstadisticas.getTextSinRepPorCliente().setText(Integer.toString(totalSinRepXanioXcliente));
+		
+		ventanaEstadisticas.getTextRepAcepPorCliente().setText(Integer.toString(TotalReparadosAceptradosXcliente));
+		ventanaEstadisticas.getTextRepNoAcepPorCliente().setText(Integer.toString(TotalReparadosNoAceptradosXcliente));
+		ventanaEstadisticas.getTextRepEsperaPorCliente().setText(Integer.toString(TotalReparadosAlaEsperaXcliente));
+
 //
 //		double porcentajeReparadosPorAnio = ((double) cantidadReparadosPorAnio / cantidadDiagnosticosPorAnio) * 100;
 //		String porcentajeReparados = String.format("%.1f %%", porcentajeReparadosPorAnio);

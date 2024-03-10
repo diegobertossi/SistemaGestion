@@ -430,13 +430,54 @@ public class Agenda {
 	}
 	
 	
-	
 	public double dameFacturacionPesoPorAnio(int anio) {
 		return ReparacionR.FacturacionPesoPorAnio(anio);
 	}
 
 	public double dameFacturacionDolarPorAnio(int anio) {
 		return ReparacionR.FacturacionDolarPorAnio(anio);
+	}
+	
+	
+	public int dameTotalIngresosXanioXcliente(int anio, int idCliente) {
+		
+		return ReparacionR.IngresosXanioXcliente(anio, idCliente);
+	}
+
+	public int dameTotalReparadosXanioXcliente(int anio, int idCliente) {
+		return ReparacionR.ReparadosXanioXcliente(anio, idCliente);
+	}
+
+	public int dameTotalSinFallaXanioXcliente(int anio, int idCliente) {
+		return ReparacionR.SinFallaXanioXcliente(anio, idCliente);
+	}
+
+	public int dameTotalGtiaXanioXcliente(int anio, int idCliente) {
+		return ReparacionR.GtiaXanioXcliente(anio, idCliente);
+	}
+
+	public int dameTotalEnRepXanioXclientecliente(int anio, int idCliente) {
+		return ReparacionR.EnRepXanioXclientecliente(anio, idCliente);
+	}
+
+	public int dameTotalVentasXanioXcliente(int anio, int idCliente) {
+		return ReparacionR.VentasXanioXcliente(anio, idCliente);
+	}
+
+	public int dameTotalSinRepXanioXcliente(int anio, int idCliente) {
+		return ReparacionR.SinRepXanioXcliente(anio, idCliente);
+	}
+
+	public int dameTotalRepAcepXcliente(int anio, int idCliente) {
+		return ReparacionR.RepAcepXcliente(anio, idCliente);
+	}
+
+	public int dameTotalRepNoAcepXcliente(int anio, int idCliente) {
+		return ReparacionR.RepNoAcepXcliente(anio, idCliente);
+	}
+
+	public int dameTotalRepEsperaXcliente(int anio, int idCliente) {
+		return ReparacionR.RepEsperaXcliente(anio, idCliente);
 	}
 
 
@@ -478,6 +519,7 @@ public class Agenda {
 		return ReparacionR.aceptacionesPorAnioPorCliente(anio, idCliente);
 	}
 	
+
 
 	
 	// REPUESTOS
@@ -585,6 +627,12 @@ public class Agenda {
 	public void setUbicacionBase(String ubicacionBase) {
 		this.ubicacionBase = ubicacionBase;
 	}
+
+
+
+
+
+
 
 
 

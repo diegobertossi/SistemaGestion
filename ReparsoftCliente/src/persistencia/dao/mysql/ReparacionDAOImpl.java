@@ -121,6 +121,21 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	private static final String aceptacionesPorAnioxCliente = "select MONTH(reparaciones.FechAceptacion), count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
 	private static final String facturacionoPorAnioxCliente = "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
 
+	
+	private static final String totalIngresosXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechaEntrada) = ? and Equipos.idCliente = ?";
+	private static final String totalReparadosXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación') and Equipos.idCliente = ?";
+	private static final String totalRepEnGtiaXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado en Garantía' and Equipos.idCliente = ?";
+	private static final String totalSinFallaXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Falla' and Equipos.idCliente = ?";
+	private static final String totalEnRepXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'En Reparación' and Equipos.idCliente = ?";
+	private static final String totalVentasXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Vendido' and Equipos.idCliente = ?";
+	private static final String totalSinRepXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Reparación' and Equipos.idCliente = ?";
+	private static final String totalRepAcepXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado' and Equipos.idCliente = ?";
+	private static final String totalRepNoAcepXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado' and Equipos.idCliente = ?";
+	private static final String totalRepEsperaXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación' and Equipos.idCliente = ?";
+
+	
+	
+	
 	@SuppressWarnings("unused")
 	public ReparacionDAOImpl(String ubicacionBase) {
 
@@ -789,6 +804,277 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return cantRepEsperaxAnio;
 	}
+	
+	
+	
+	@Override
+	public int IngresosXanioXcliente(int anio, int idCliente) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantIngresosxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalIngresosXanioXcliente);
+			statement.setInt(1, anio);
+			statement.setInt(2, idCliente);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantIngresosxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantIngresosxAnio;
+	}
+
+	@Override
+	public int ReparadosXanioXcliente(int anio, int idCliente) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantReparadosxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalReparadosXanioXcliente);
+			statement.setInt(1, anio);
+			statement.setInt(2, idCliente);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantReparadosxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantReparadosxAnio;
+	}
+
+		
+	
+	@Override
+	public int SinFallaXanioXcliente(int anio, int idCliente) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantSinFallasxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalSinFallaXanioXcliente);
+			statement.setInt(1, anio);
+			statement.setInt(2, idCliente);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantSinFallasxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantSinFallasxAnio;
+	}
+
+	@Override
+	public int GtiaXanioXcliente(int anio, int idCliente) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantGtiaxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalRepEnGtiaXanioXcliente);
+			statement.setInt(1, anio);
+			statement.setInt(2, idCliente);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantGtiaxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantGtiaxAnio;
+	}
+
+	@Override
+	public int EnRepXanioXclientecliente(int anio, int idCliente) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantEnRepxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalEnRepXanioXcliente);
+			statement.setInt(1, anio);
+			statement.setInt(2, idCliente);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantEnRepxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantEnRepxAnio;
+	}
+
+	@Override
+	public int VentasXanioXcliente(int anio, int idCliente) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantVentasxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalVentasXanioXcliente);
+			statement.setInt(1, anio);
+			statement.setInt(2, idCliente);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantVentasxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantVentasxAnio;
+	}
+
+	@Override
+	public int SinRepXanioXcliente(int anio, int idCliente) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantSinRepxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalSinRepXanioXcliente);
+			statement.setInt(1, anio);
+			statement.setInt(2, idCliente);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantSinRepxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantSinRepxAnio;
+	}
+
+	@Override
+	public int RepAcepXcliente(int anio, int idCliente) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantAcepxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalRepAcepXanioXcliente);
+			statement.setInt(1, anio);
+			statement.setInt(2, idCliente);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantAcepxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantAcepxAnio;
+	}
+
+	
+	@Override
+	public int RepNoAcepXcliente(int anio, int idCliente) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantReoNoAcepxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalRepNoAcepXanioXcliente);
+			statement.setInt(1, anio);
+			statement.setInt(2, idCliente);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantReoNoAcepxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantReoNoAcepxAnio;
+	}
+	
+	@Override
+	public int RepEsperaXcliente(int anio, int idCliente) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantEsperaxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalRepEsperaXanioXcliente);
+			statement.setInt(1, anio);
+			statement.setInt(2, idCliente);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantEsperaxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantEsperaxAnio;
+	}
+	
+	
+	
+		
+
+	
 
 	public List<Integer> ingresosPorAnioPorMes(int anio) {
 		PreparedStatement statement;
@@ -1877,5 +2163,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		}
 		return Reparaciones;
 	}
+
+
 
 }
