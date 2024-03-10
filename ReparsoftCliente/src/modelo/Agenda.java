@@ -521,6 +521,14 @@ public class Agenda {
 	
 
 
+	public double dameFacturacionPesoPorAnioPorCliente(int anio, int idCliente) {
+		return ReparacionR.FacturacionPesoPorAnioPorCliente(anio,idCliente );
+	}
+
+	public double dameFacturacionDolarPorAnioPorCliente(int anio, int idCliente) {
+		return ReparacionR.FacturacionDolarPorAnioPorCliente(anio, idCliente);
+	}
+
 	
 	// REPUESTOS
 
@@ -627,6 +635,7 @@ public class Agenda {
 	public void setUbicacionBase(String ubicacionBase) {
 		this.ubicacionBase = ubicacionBase;
 	}
+
 
 
 

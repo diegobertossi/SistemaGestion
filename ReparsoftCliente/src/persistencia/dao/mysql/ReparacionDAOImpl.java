@@ -133,7 +133,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	private static final String totalRepNoAcepXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado' and Equipos.idCliente = ?";
 	private static final String totalRepEsperaXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación' and Equipos.idCliente = ?";
 
-	
+	private static final String facturacionPesoPorAnioPorCliente = "select SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado'";
+	private static final String facturacionDolarPorAnioPorCliente ="select SUM(PrecioDolar) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' ";
 	
 	
 	@SuppressWarnings("unused")
@@ -574,6 +575,60 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return facturacionDolarxAnio;
 	}
+	
+	
+	@Override
+	public double FacturacionPesoPorAnioPorCliente(int anio, int idCliente) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		double facturacionDolarxAnioPorCliente = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(facturacionPesoPorAnioPorCliente);
+			statement.setInt(1, anio);
+			statement.setInt(2, idCliente);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				facturacionDolarxAnioPorCliente = resultSet.getInt(1);
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return facturacionDolarxAnioPorCliente;
+	}
+
+	@Override
+	public double FacturacionDolarPorAnioPorCliente(int anio, int idCliente) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		double facturacionDolarxAnioPorCliente = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(facturacionDolarPorAnioPorCliente);
+			statement.setInt(1, anio);
+			statement.setInt(2, idCliente);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				facturacionDolarxAnioPorCliente = resultSet.getInt(1);
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return facturacionDolarxAnioPorCliente;
+	}
+	
 
 	@Override
 	public int reparadosPorAnio(int anio) {
@@ -2163,6 +2218,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		}
 		return Reparaciones;
 	}
+
+
 
 
 

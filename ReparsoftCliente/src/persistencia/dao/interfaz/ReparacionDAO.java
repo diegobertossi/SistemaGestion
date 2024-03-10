@@ -109,7 +109,11 @@ public interface ReparacionDAO
 
 	public double FacturacionDolarPorAnio(int anio);
 
-		
+	public double FacturacionPesoPorAnioPorCliente(int anio, int idCliente);
+
+	public double FacturacionDolarPorAnioPorCliente(int anio, int idCliente);
+
+	
 	public List<Integer> ingresosPorAnioPorMes(int anio);
 	
 	public List<Integer> diagnosticoPorAnioPorMes(int anio);
@@ -127,6 +131,7 @@ public interface ReparacionDAO
 	public List<Double> facturacionPorAnioPorCliente(int anio, int idCliente);
 
 	public List<Integer> aceptacionesPorAnioPorCliente(int anio, int idCliente);
+
 
 
 

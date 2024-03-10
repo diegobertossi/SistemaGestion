@@ -439,51 +439,11 @@ public class ControladorListados
 				ventanaEstadisticas.getLblFacTotalDolares().setVisible(false);
 				ventanaEstadisticas.getTextFacTotalPesos().setVisible(false);
 				ventanaEstadisticas.getTextFacTotalDolares().setVisible(false);
-				
-				
+
 				ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
 				ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
 				ventanaEstadisticas.getPanel_facturacionPorTecnico().setVisible(false);
 				ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
-				
-				
-				
-
-//				switch (filtro) {
-//				case 0:
-//
-//					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
-//					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
-//					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
-//
-//					break;
-//
-//				case 1:
-//
-//					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
-//					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
-//					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
-//					break;
-//
-//				case 2:
-//
-//					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
-//					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
-//					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
-//
-//					break;
-//
-//				case 3:
-//
-//					ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
-//					ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
-//					ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
-//
-//					break;
-//
-//				default:
-//					break;
-//				}
 
 				seleccionDetalleEstadisticas = "OCULTAR DETALLE";
 
@@ -1010,7 +970,7 @@ public class ControladorListados
 					case 1:
 
 						llenarDatosPorAnio();
-						
+
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
@@ -1036,7 +996,7 @@ public class ControladorListados
 					case 2:
 
 						llenarDatosPorTecnico();
-						
+
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
@@ -1046,11 +1006,11 @@ public class ControladorListados
 
 						ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
 						ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
-						
+
 						ventanaEstadisticas.getPanel_datosPorTecnico().setVisible(true);
 
 						if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
-							
+
 							ventanaEstadisticas.getPanel_facturacionPorTecnico().setVisible(true);
 						}
 
@@ -1067,21 +1027,20 @@ public class ControladorListados
 						break;
 
 					case 3:
-						
+
 						llenarDatosPorCliente();
-						
+
 						ventanaEstadisticas.getPanel_Ingresos().removeAll();
 						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
 						ventanaEstadisticas.getPanel_Facturacion().removeAll();
 
 						ventanaEstadisticas.getPanel_datosPorAnio().setVisible(false);
 						ventanaEstadisticas.getPanel_datosPorTecnico().setVisible(false);
-						
+
 						ventanaEstadisticas.getPanel_facturacionPorAnio().setVisible(false);
 						ventanaEstadisticas.getPanel_facturacionPorTecnico().setVisible(false);
-						
+
 						ventanaEstadisticas.getPanel_datosPorCliente().setVisible(true);
-												
 
 						if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
 
@@ -1254,13 +1213,13 @@ public class ControladorListados
 	}
 
 	private void llenarDatosPorCliente() {
-		
+
 		String cliente = ventanaEstadisticas.getComboCliente().getSelectedItem().toString();
 
 		int idCliente = modelo.idClienteporNombre(cliente);
 
 		ventanaEstadisticas.getTextNombreCliente().setText(cliente);
-		
+
 		int totalIngresosXanioXcliente = modelo.dameTotalIngresosXanioXcliente(anio, idCliente);
 		int totalReparadosXanioXcliente = modelo.dameTotalReparadosXanioXcliente(anio, idCliente);
 		int totalSinFallaXanioXcliente = modelo.dameTotalSinFallaXanioXcliente(anio, idCliente);
@@ -1268,12 +1227,13 @@ public class ControladorListados
 		int totalEnRepXanioXcliente = modelo.dameTotalEnRepXanioXclientecliente(anio, idCliente);
 		int totalVentaXanioXcliente = modelo.dameTotalVentasXanioXcliente(anio, idCliente);
 		int totalSinRepXanioXcliente = modelo.dameTotalSinRepXanioXcliente(anio, idCliente);
-		
+
 		int TotalReparadosAceptradosXcliente = modelo.dameTotalRepAcepXcliente(anio, idCliente);
 		int TotalReparadosNoAceptradosXcliente = modelo.dameTotalRepNoAcepXcliente(anio, idCliente);
 		int TotalReparadosAlaEsperaXcliente = modelo.dameTotalRepEsperaXcliente(anio, idCliente);
 
-		
+		double facturacionPesoPorAnioPorCliente = modelo.dameFacturacionPesoPorAnioPorCliente(anio, idCliente);
+		double facturacionDolarPorAnioPorCliente = modelo.dameFacturacionDolarPorAnioPorCliente(anio, idCliente);
 
 		ventanaEstadisticas.getTextIngresosPorCliente().setText(Integer.toString(totalIngresosXanioXcliente));
 
@@ -1283,17 +1243,17 @@ public class ControladorListados
 		ventanaEstadisticas.getTextEnRepPorCLiente().setText(Integer.toString(totalEnRepXanioXcliente));
 		ventanaEstadisticas.getTextVentasPorCliente().setText(Integer.toString(totalVentaXanioXcliente));
 		ventanaEstadisticas.getTextSinRepPorCliente().setText(Integer.toString(totalSinRepXanioXcliente));
-		
+
 		ventanaEstadisticas.getTextRepAcepPorCliente().setText(Integer.toString(TotalReparadosAceptradosXcliente));
 		ventanaEstadisticas.getTextRepNoAcepPorCliente().setText(Integer.toString(TotalReparadosNoAceptradosXcliente));
 		ventanaEstadisticas.getTextRepEsperaPorCliente().setText(Integer.toString(TotalReparadosAlaEsperaXcliente));
 
-
 		double porcentajeIngresosPorCliente = ((double) totalIngresosXanioXcliente / cantidadIngresosPorAnio) * 100;
 		String porcentajeIngresos = String.format("%.1f %%", porcentajeIngresosPorCliente);
 		ventanaEstadisticas.getTextPorcIngresosPorCliente().setText(porcentajeIngresos);
-		
-		double porcentajeReparadosPorCliente = ((double) totalReparadosXanioXcliente / totalIngresosXanioXcliente) * 100;
+
+		double porcentajeReparadosPorCliente = ((double) totalReparadosXanioXcliente / totalIngresosXanioXcliente)
+				* 100;
 		String porcentajeReparados = String.format("%.1f %%", porcentajeReparadosPorCliente);
 		ventanaEstadisticas.getTextPorcRepPorCliente().setText(porcentajeReparados);
 
@@ -1322,8 +1282,8 @@ public class ControladorListados
 		String porcentajeRepAcep = String.format("%.1f %%", porcentajeRepAcepPorCliente);
 		ventanaEstadisticas.getTextPorcRepAcepPorCliente().setText(porcentajeRepAcep);
 
-		double porcentajeRepNoAcepPorCliente = ((double) TotalReparadosNoAceptradosXcliente / totalReparadosXanioXcliente)
-				* 100;
+		double porcentajeRepNoAcepPorCliente = ((double) TotalReparadosNoAceptradosXcliente
+				/ totalReparadosXanioXcliente) * 100;
 		String porcentajeRepNoAcep = String.format("%.1f %%", porcentajeRepNoAcepPorCliente);
 		ventanaEstadisticas.getTextPorcRepNoAcepPorCliente().setText(porcentajeRepNoAcep);
 
@@ -1331,6 +1291,23 @@ public class ControladorListados
 				* 100;
 		String porcentajeRepEspera = String.format("%.1f %%", porcentajeRepEsperaPorCliente);
 		ventanaEstadisticas.getTextPorcRepEsperaPorCliente().setText(porcentajeRepEspera);
+
+		ventanaEstadisticas.getTextFactClientePesos()
+				.setText(monedaFormatter.formatPeso(Double.toString(facturacionPesoPorAnioPorCliente)));
+		ventanaEstadisticas.getTextFactClienteDolar()
+				.setText(monedaFormatter.formatDolar(Double.toString(facturacionDolarPorAnioPorCliente)));
+		
+		
+		double porcentaFacturacionPesoPorCliente = (facturacionPesoPorAnioPorCliente / facturacionPesoPorAnio)
+				* 100;
+		String porcentaFacturacionpeso = String.format("%.1f %%", porcentaFacturacionPesoPorCliente);
+		ventanaEstadisticas.getTextPorcFacturacionPesoCliente().setText(porcentaFacturacionpeso);
+		
+		double porcentaFacturacionDolarPorCliente = (facturacionDolarPorAnioPorCliente / facturacionDolarPorAnio)
+				* 100;
+		String porcentaFacturacionDolar = String.format("%.1f %%", porcentaFacturacionDolarPorCliente);
+		ventanaEstadisticas.getTextPorcFacturacionDolarCliente().setText(porcentaFacturacionDolar);
+		
 
 	}
 
