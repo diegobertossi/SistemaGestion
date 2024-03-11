@@ -112,6 +112,30 @@ public interface ReparacionDAO
 	public double FacturacionPesoPorAnioPorCliente(int anio, int idCliente);
 
 	public double FacturacionDolarPorAnioPorCliente(int anio, int idCliente);
+	
+	public int DiagnosticosXanioXtecnico(int anio, int idTecnico);
+
+	public int ReparadosXanioXtecnico(int anio, int idTecnico);
+
+	public int SinFallaXanioXtecnico(int anio, int idTecnico);
+
+	public int GtiaXanioXtecnico(int anio, int idTecnico);
+
+	public int EnRepXanioXtecnico(int anio, int idTecnico);
+
+	public int VentasXanioXtecnico(int anio, int idTecnico);
+
+	public int SinRepXanioXtecnico(int anio, int idTecnico);
+
+	public int RepAcepXtecnico(int anio, int idTecnico);
+
+	public int RepNoAcepXtecnico(int anio, int idTecnico);
+
+	public int RepEsperaXtecnico(int anio, int idTecnico);
+
+	public double FacturacionPesoPorAnioPorTecnico(int anio, int idTecnico);
+
+	public double FacturacionDolarPorAnioPorTecnico(int anio, int idTecnico);
 
 	
 	public List<Integer> ingresosPorAnioPorMes(int anio);
@@ -131,6 +155,8 @@ public interface ReparacionDAO
 	public List<Double> facturacionPorAnioPorCliente(int anio, int idCliente);
 
 	public List<Integer> aceptacionesPorAnioPorCliente(int anio, int idCliente);
+
+
 
 
 

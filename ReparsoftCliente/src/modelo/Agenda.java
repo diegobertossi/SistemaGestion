@@ -528,6 +528,58 @@ public class Agenda {
 	public double dameFacturacionDolarPorAnioPorCliente(int anio, int idCliente) {
 		return ReparacionR.FacturacionDolarPorAnioPorCliente(anio, idCliente);
 	}
+	
+	
+	
+	public int dameTotalDiagnosticosXanioXtecnico(int anio, int idTecnico) {
+		return ReparacionR.DiagnosticosXanioXtecnico(anio, idTecnico);
+	}
+
+	public int dameTotalReparadosXanioXtecnico(int anio, int idTecnico) {
+		return ReparacionR.ReparadosXanioXtecnico(anio, idTecnico);
+	}
+
+	public int dameTotalSinFallaXanioXtecnico(int anio, int idTecnico) {
+		return ReparacionR.SinFallaXanioXtecnico(anio, idTecnico);
+	}
+
+	public int dameTotalGtiaXanioXtecnico(int anio, int idTecnico) {
+		return ReparacionR.GtiaXanioXtecnico(anio, idTecnico);
+	}
+
+	public int dameTotalEnRepXanioXtecnico(int anio, int idTecnico) {
+		return ReparacionR.EnRepXanioXtecnico(anio, idTecnico);
+	}
+
+	public int dameTotalVentasXanioXtecnico(int anio, int idTecnico) {
+		return ReparacionR.VentasXanioXtecnico(anio, idTecnico);
+	}
+
+	public int dameTotalSinRepXanioXtecnico(int anio, int idTecnico) {
+		return ReparacionR.SinRepXanioXtecnico(anio, idTecnico);
+	}
+
+	public int dameTotalRepAcepXtecnico(int anio, int idTecnico) {
+		return ReparacionR.RepAcepXtecnico(anio, idTecnico);
+	}
+
+	public int dameTotalRepNoAcepXtecnico(int anio, int idTecnico) {
+		return ReparacionR.RepNoAcepXtecnico(anio, idTecnico);
+	}
+
+	public int dameTotalRepEsperaXtecnico(int anio, int idTecnico) {
+		return ReparacionR.RepEsperaXtecnico(anio, idTecnico);
+	}
+
+	public double dameFacturacionPesoPorAnioPorTecnico(int anio, int idTecnico) {
+		return ReparacionR.FacturacionPesoPorAnioPorTecnico(anio, idTecnico);
+	}
+
+	public double dameFacturacionDolarPorAnioPorTecnico(int anio, int idTecnico) {
+		return ReparacionR.FacturacionDolarPorAnioPorTecnico(anio, idTecnico);
+	}
+	
+	
 
 	
 	// REPUESTOS
@@ -635,6 +687,8 @@ public class Agenda {
 	public void setUbicacionBase(String ubicacionBase) {
 		this.ubicacionBase = ubicacionBase;
 	}
+
+
 
 
 

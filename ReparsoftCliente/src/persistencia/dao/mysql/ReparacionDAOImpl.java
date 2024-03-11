@@ -1127,6 +1127,90 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	
 	
 	
+	
+	@Override
+	public int DiagnosticosXanioXtecnico(int anio, int idTecnico) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int ReparadosXanioXtecnico(int anio, int idTecnico) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int SinFallaXanioXtecnico(int anio, int idTecnico) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int GtiaXanioXtecnico(int anio, int idTecnico) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int EnRepXanioXtecnico(int anio, int idTecnico) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int VentasXanioXtecnico(int anio, int idTecnico) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int SinRepXanioXtecnico(int anio, int idTecnico) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int RepAcepXtecnico(int anio, int idTecnico) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int RepNoAcepXtecnico(int anio, int idTecnico) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int RepEsperaXtecnico(int anio, int idTecnico) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double FacturacionPesoPorAnioPorTecnico(int anio, int idTecnico) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double FacturacionDolarPorAnioPorTecnico(int anio, int idTecnico) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		
 
 	
@@ -2218,6 +2302,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		}
 		return Reparaciones;
 	}
+
+
 
 
 
