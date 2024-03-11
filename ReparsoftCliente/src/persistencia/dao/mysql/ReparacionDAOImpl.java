@@ -121,7 +121,6 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	private static final String aceptacionesPorAnioxCliente = "select MONTH(reparaciones.FechAceptacion), count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
 	private static final String facturacionoPorAnioxCliente = "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
 
-	
 	private static final String totalIngresosXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechaEntrada) = ? and Equipos.idCliente = ?";
 	private static final String totalReparadosXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación') and Equipos.idCliente = ?";
 	private static final String totalRepEnGtiaXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado en Garantía' and Equipos.idCliente = ?";
@@ -134,9 +133,22 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	private static final String totalRepEsperaXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación' and Equipos.idCliente = ?";
 
 	private static final String facturacionPesoPorAnioPorCliente = "select SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado'";
-	private static final String facturacionDolarPorAnioPorCliente ="select SUM(PrecioDolar) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' ";
+	private static final String facturacionDolarPorAnioPorCliente = "select SUM(PrecioDolar) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' ";
+
+	private static final String facturacionDolarPorAnioPorTecnico = "select SUM(PrecioDolar) from reparaciones where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.idUsuario =?  and reparaciones.EstadoComercial = 'Aceptado'";
+	private static final String facturacionPesoPorAnioPorTecnico = "select SUM(PrecioPeso) from reparaciones where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.idUsuario =?  and reparaciones.EstadoComercial = 'Aceptado'";
 	
-	
+	private static final String totalRepEsperaXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación'";
+	private static final String totalRepNoAcepXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado'";
+	private static final String totalRepAcepXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado'";
+	private static final String totalSinRepXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Reparación'";
+	private static final String totalVentasXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Vendido'";
+	private static final String totalEnRepXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'En Reparación'";
+	private static final String totalRepEnGtiaXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado en Garantía'";
+	private static final String totalSinFallaXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Falla'";
+	private static final String totalReparadosXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación')";
+	private static final String totalDiagnosticosXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico != 'Sin Revisar'";
+
 	@SuppressWarnings("unused")
 	public ReparacionDAOImpl(String ubicacionBase) {
 
@@ -575,8 +587,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return facturacionDolarxAnio;
 	}
-	
-	
+
 	@Override
 	public double FacturacionPesoPorAnioPorCliente(int anio, int idCliente) {
 		PreparedStatement statement;
@@ -628,7 +639,6 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return facturacionDolarxAnioPorCliente;
 	}
-	
 
 	@Override
 	public int reparadosPorAnio(int anio) {
@@ -859,9 +869,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return cantRepEsperaxAnio;
 	}
-	
-	
-	
+
 	@Override
 	public int IngresosXanioXcliente(int anio, int idCliente) {
 		PreparedStatement statement;
@@ -914,8 +922,6 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		return cantReparadosxAnio;
 	}
 
-		
-	
 	@Override
 	public int SinFallaXanioXcliente(int anio, int idCliente) {
 		PreparedStatement statement;
@@ -1072,7 +1078,6 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		return cantAcepxAnio;
 	}
 
-	
 	@Override
 	public int RepNoAcepXcliente(int anio, int idCliente) {
 		PreparedStatement statement;
@@ -1098,7 +1103,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return cantReoNoAcepxAnio;
 	}
-	
+
 	@Override
 	public int RepEsperaXcliente(int anio, int idCliente) {
 		PreparedStatement statement;
@@ -1124,96 +1129,319 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 		return cantEsperaxAnio;
 	}
-	
-	
-	
-	
+
 	@Override
 	public int DiagnosticosXanioXtecnico(int anio, int idTecnico) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantDiagnosticosxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalDiagnosticosXanioXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantDiagnosticosxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantDiagnosticosxAnio;
 	}
 
 	@Override
 	public int ReparadosXanioXtecnico(int anio, int idTecnico) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantReparadosxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalReparadosXanioXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantReparadosxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantReparadosxAnio;
 	}
 
 	@Override
 	public int SinFallaXanioXtecnico(int anio, int idTecnico) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantSinFallasxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalSinFallaXanioXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantSinFallasxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantSinFallasxAnio;
 	}
 
 	@Override
 	public int GtiaXanioXtecnico(int anio, int idTecnico) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantGtiaxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalRepEnGtiaXanioXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantGtiaxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantGtiaxAnio;
 	}
 
 	@Override
 	public int EnRepXanioXtecnico(int anio, int idTecnico) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantEnRepxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalEnRepXanioXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantEnRepxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantEnRepxAnio;
 	}
 
 	@Override
 	public int VentasXanioXtecnico(int anio, int idTecnico) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantVentasxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalVentasXanioXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantVentasxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantVentasxAnio;
 	}
 
 	@Override
 	public int SinRepXanioXtecnico(int anio, int idTecnico) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantSinRepxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalSinRepXanioXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantSinRepxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantSinRepxAnio;
 	}
 
 	@Override
 	public int RepAcepXtecnico(int anio, int idTecnico) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantAcepxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalRepAcepXanioXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantAcepxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantAcepxAnio;
 	}
 
 	@Override
 	public int RepNoAcepXtecnico(int anio, int idTecnico) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantReoNoAcepxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalRepNoAcepXanioXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantReoNoAcepxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantReoNoAcepxAnio;
 	}
 
 	@Override
 	public int RepEsperaXtecnico(int anio, int idTecnico) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int cantEsperaxAnio = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(totalRepEsperaXanioXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cantEsperaxAnio = resultSet.getInt("count(*)");
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantEsperaxAnio;
 	}
 
 	@Override
 	public double FacturacionPesoPorAnioPorTecnico(int anio, int idTecnico) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		double facturacionPesoxAnioPorTecnico = 0;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(facturacionPesoPorAnioPorTecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				facturacionPesoxAnioPorTecnico = resultSet.getInt(1);
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return facturacionPesoxAnioPorTecnico;
 	}
 
 	@Override
 	public double FacturacionDolarPorAnioPorTecnico(int anio, int idTecnico) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		double facturacionDolarxAnioPorTecnico = 0;
+		try {
 
-	
+			statement = conexion.getSQLConexion().prepareStatement(facturacionDolarPorAnioPorTecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				facturacionDolarxAnioPorTecnico = resultSet.getInt(1);
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return facturacionDolarxAnioPorTecnico;
+	}
 
 	public List<Integer> ingresosPorAnioPorMes(int anio) {
 		PreparedStatement statement;
@@ -2302,11 +2530,5 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		}
 		return Reparaciones;
 	}
-
-
-
-
-
-
 
 }

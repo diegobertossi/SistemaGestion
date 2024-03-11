@@ -2795,7 +2795,7 @@ public class VentanaEstadisticas extends JFrame {
 
 
 
-	public JTextField getTextReparadosXTecnico() {
+	public JTextField XTecnico() {
 		return textReparadosXTecnico;
 	}
 
@@ -2965,5 +2965,13 @@ public class VentanaEstadisticas extends JFrame {
 
 	public void setTextPorcFacturacionTecnicoPesos(JTextField textPorcFacturacionTecnicoPesos) {
 		this.textPorcFacturacionTecnicoPesos = textPorcFacturacionTecnicoPesos;
+	}
+
+
+
+
+
+	public JTextField getTextReparadosXTecnico() {
+		return textReparadosXTecnico;
 	}
 	}
