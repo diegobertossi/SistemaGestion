@@ -40,6 +40,7 @@ import presentacion.vista.VentanaCodigoSeguridad;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaEstadisticas;
 import presentacion.vista.VentanaListadoReparaciones;
+import presentacion.vista.VentanaResumenMensualTecnico;
 import tiposPropios.MonedaFormatter;
 
 import javax.swing.*;
@@ -55,6 +56,7 @@ public class ControladorListados
 	private VentanaEquipos ventanaEquipos;
 	private VentanaEstadisticas ventanaEstadisticas;
 	private VentanaCodigoSeguridad ventanaCodigoSeguridad;
+	private VentanaResumenMensualTecnico ventanaResumenMensualTecnico;
 	// private int max = Frame.MAXIMIZED_BOTH;
 	// private int min = Frame.NORMAL;
 
@@ -369,6 +371,32 @@ public class ControladorListados
 
 			this.ventanaCodigoSeguridad.dispose();
 			this.ventanaCodigoSeguridad = null;
+
+		}
+
+		else if (this.ventanaEstadisticas != null
+				&& arg0.getSource() == this.ventanaEstadisticas.getBtnResumenMensualTecnico()) {
+
+			ventanaResumenMensualTecnico = new VentanaResumenMensualTecnico(this);
+
+			String nombreTecnicoYanio = ventanaEstadisticas.getTextNombreTecnico().getText() + " - "
+					+ ventanaEstadisticas.getLblAnioDatos().getText();
+			ventanaResumenMensualTecnico.getTextTecnicoAnio().setText(nombreTecnicoYanio);
+			// ventanaResumenMensualTecnico.getComboMes().addActionListener(this);
+			llenarcomboMesResumen();
+
+			ventanaResumenMensualTecnico.getComboMes().addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent e) {
+
+					if (ventanaResumenMensualTecnico.getComboMes().getSelectedItem() != null) {
+
+						String mes = ventanaResumenMensualTecnico.getComboMes().getSelectedItem().toString();
+
+						ventanaResumenMensualTecnico.getLblMes().setText(mes);
+
+					}
+				}
+			});
 
 		}
 
@@ -806,7 +834,8 @@ public class ControladorListados
 		ventanaEstadisticas.getComboMes().addActionListener(this);
 		ventanaEstadisticas.getBtnConfiguracion().addActionListener(this);
 		ventanaEstadisticas.getBtnFacturacionPorCliente().addActionListener(this);
-
+		ventanaEstadisticas.getBtnResumenAnualTecnico().addActionListener(this);
+		ventanaEstadisticas.getBtnResumenMensualTecnico().addActionListener(this);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1082,6 +1111,21 @@ public class ControladorListados
 			ventanaEstadisticas.getComboMes().addItem(meses[i]);
 
 		}
+	}
+
+	@SuppressWarnings({ "unchecked", "unused" })
+	private void llenarcomboMesResumen() {
+
+		String[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre",
+				"Octubre", "Noviembre", "Diciembre" };
+
+		for (int i = 0; i < 12; i++) {
+
+			ventanaResumenMensualTecnico.getComboMes().addItem(meses[i]);
+
+		}
+
+		ventanaResumenMensualTecnico.getComboMes().setSelectedIndex(-1);
 	}
 
 	private void llenarcomboTecnico() {
