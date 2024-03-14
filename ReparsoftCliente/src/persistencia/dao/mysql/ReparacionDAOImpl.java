@@ -160,7 +160,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	private static final String repNoAcepXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico),count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado' group by MONTH(FechadeDiagnostico)";
 	private static final String repAcepXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(FechadeDiagnostico)";
 
-		
+	private static final String facturacionDolarPorAnioxTecnicoXmes = "select MONTH(reparaciones.FechAceptacion), SUM(PrecioDolar) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion);";
+
 	
 	@SuppressWarnings("unused")
 	public ReparacionDAOImpl(String ubicacionBase) {
@@ -1650,6 +1651,41 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	}
 
 	
+
+	@Override
+	public List<Double> FacturacionDolaresPorAnioPorTecnico(int anio, int idTecnico) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<Double> sumadPorMes = new ArrayList<Double>();
+
+		for (int i = 0; i < 12; i++) {
+
+			sumadPorMes.add(0.0);
+
+		}
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(facturacionDolarPorAnioxTecnicoXmes);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				sumadPorMes.add(resultSet.getInt(1) - 1, resultSet.getDouble(2));
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return sumadPorMes;
+	}
+	
 	@Override
 	public List<Integer> ReparadosXmesXtecnico(int anio, int idTecnico) {
 		PreparedStatement statement;
@@ -2050,6 +2086,12 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		return cantidadPorMes;
 	}
 
+	
+	
+
+
+	
+	
 	public boolean editEquipo(ReparacionDTO reparacion_a_editar) {
 		PreparedStatement statement;
 		try {

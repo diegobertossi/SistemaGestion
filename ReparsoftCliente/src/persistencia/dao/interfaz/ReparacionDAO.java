@@ -174,6 +174,8 @@ public interface ReparacionDAO
 
 	public List<Integer> EsperaRepXmesXtecnico(int anio, int idTecnico);
 
+	public List<Double> FacturacionDolaresPorAnioPorTecnico(int anio, int idTecnico);
+
 
 
 

@@ -558,6 +558,9 @@ public class Agenda {
 	}
 	
 
+	public List<Double> dameFacturacionDolaresPorAnioPorTecnico(int anio, int idTecnico) {
+		return ReparacionR.FacturacionDolaresPorAnioPorTecnico(anio, idTecnico);
+	}
 	public double dameFacturacionPesoPorAnioPorCliente(int anio, int idCliente) {
 		return ReparacionR.FacturacionPesoPorAnioPorCliente(anio,idCliente );
 	}
@@ -724,6 +727,8 @@ public class Agenda {
 	public void setUbicacionBase(String ubicacionBase) {
 		this.ubicacionBase = ubicacionBase;
 	}
+
+
 
 
 

@@ -8,6 +8,7 @@ import java.util.Locale;
 public class MonedaFormatter {
     private NumberFormat pesoFormatter;
     private NumberFormat dolarFormatter;
+    private NumberFormat porcentajeFormat;
 
     public MonedaFormatter() {
         // Configura el formato de moneda argentina con el símbolo "$" seguido de un espacio
@@ -21,6 +22,12 @@ public class MonedaFormatter {
         dolarSymbols.setCurrencySymbol("U$S");
         String currencySymbolD = "U$S ";
         dolarFormatter = new DecimalFormat(currencySymbolD + "#,##0.00", dolarSymbols);
+        
+        DecimalFormatSymbols PorcentajeSymbols = new DecimalFormatSymbols(Locale.US);
+        PorcentajeSymbols.setCurrencySymbol("%");
+        String currencySymbolPorcentaje = " %";
+        porcentajeFormat = new DecimalFormat(currencySymbolPorcentaje + "#.#", PorcentajeSymbols);
+        
     }
 
     public String formatPeso(String amount) {
@@ -51,6 +58,22 @@ public class MonedaFormatter {
         }
     }
 
+    
+    public String formatPorcentaje(String amount) {
+        if (amount == null || amount.trim().isEmpty() || amount.equals("0")) {
+            return "0.0 %";
+        }
+
+        try {
+            double parsedAmount = parseAmountGuardar(amount);
+            // Formatea el número en dólares estadounidenses y lo devuelve como una cadena
+            return porcentajeFormat.format(parsedAmount);
+        } catch (NumberFormatException e) {
+            return "Formato de número inválido";
+        }
+    }
+    
+    
     public double parseAmount(String amount) {
         // Elimina todos los caracteres no numéricos, excepto comas y puntos
         String cleanedAmount = amount.replaceAll("[^0-9,.]", "");

@@ -40,13 +40,10 @@ public class VentanaResumenMensualTecnico extends JFrame {
 	private JTextField textAceptadosDelMes;
 	private JTextField textFacturacionPesos;
 	private JTextField textFacturacionDolar;
-	private JTextField textFactTotalPesos;
-	private JTextField textFactTotalDolar;
 	private JTextField textPorcComisiones;
 	private JTextField textTotalComicionesPesos;
 	private JButton btnCalcularComiciones;
 	private JButton btnMostrarResumen;
-	private JButton btnImprimirResumen;
 	
 	@SuppressWarnings("rawtypes")
 	public VentanaResumenMensualTecnico(ControladorListados controlador) {
@@ -313,28 +310,37 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		panel_1.add(lblNewLabel_2_2_1);
 		lblNewLabel_2_2_1.setFont(new Font("Cambria", Font.PLAIN, 10));
 		
-		JLabel lblNewLabel_3 = new JLabel("TOTAL FACTURACIÓN: ");
-		lblNewLabel_3.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblNewLabel_3.setBounds(10, 149, 134, 14);
-		panel_1.add(lblNewLabel_3);
+		JLabel lblNewLabel_3_1 = new JLabel("PORCENTAJE COMISIONES: ");
+		lblNewLabel_3_1.setBounds(10, 126, 150, 14);
+		panel_1.add(lblNewLabel_3_1);
+		lblNewLabel_3_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		
-		textFactTotalPesos = new JTextField();
-		textFactTotalPesos.setHorizontalAlignment(SwingConstants.CENTER);
-		textFactTotalPesos.setEditable(false);
-		textFactTotalPesos.setOpaque(false);
-		textFactTotalPesos.setFont(new Font("Cambria", Font.BOLD, 12));
-		textFactTotalPesos.setBounds(143, 147, 124, 20);
-		panel_1.add(textFactTotalPesos);
-		textFactTotalPesos.setColumns(10);
+		textPorcComisiones = new JTextField();
+		textPorcComisiones.setBounds(170, 125, 90, 16);
+		panel_1.add(textPorcComisiones);
+		textPorcComisiones.setOpaque(false);
+		textPorcComisiones.setHorizontalAlignment(SwingConstants.CENTER);
+		textPorcComisiones.setFont(new Font("Cambria", Font.PLAIN, 12));
+		textPorcComisiones.setColumns(10);
 		
-		textFactTotalDolar = new JTextField();
-		textFactTotalDolar.setHorizontalAlignment(SwingConstants.CENTER);
-		textFactTotalDolar.setEditable(false);
-		textFactTotalDolar.setOpaque(false);
-		textFactTotalDolar.setFont(new Font("Cambria", Font.BOLD, 12));
-		textFactTotalDolar.setColumns(10);
-		textFactTotalDolar.setBounds(287, 147, 124, 20);
-		panel_1.add(textFactTotalDolar);
+		btnCalcularComiciones = new JButton("<html><center>CALCULAR COMICIÓN</html>");
+		btnCalcularComiciones.setBounds(279, 124, 98, 35);
+		panel_1.add(btnCalcularComiciones);
+		btnCalcularComiciones.setFont(new Font("Cambria", Font.BOLD, 11));
+		
+		JLabel lblNewLabel_3_1_1 = new JLabel("TOTAL COMISIONES: ");
+		lblNewLabel_3_1_1.setBounds(10, 148, 123, 14);
+		panel_1.add(lblNewLabel_3_1_1);
+		lblNewLabel_3_1_1.setFont(new Font("Cambria", Font.BOLD, 12));
+		
+		textTotalComicionesPesos = new JTextField();
+		textTotalComicionesPesos.setBounds(136, 147, 124, 16);
+		panel_1.add(textTotalComicionesPesos);
+		textTotalComicionesPesos.setEditable(false);
+		textTotalComicionesPesos.setOpaque(false);
+		textTotalComicionesPesos.setHorizontalAlignment(SwingConstants.CENTER);
+		textTotalComicionesPesos.setFont(new Font("Cambria", Font.PLAIN, 12));
+		textTotalComicionesPesos.setColumns(10);
 		
 		JPanel panel_NombreTecnico = new JPanel();
 		panel_NombreTecnico.setOpaque(false);
@@ -373,47 +379,10 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		contentPane.add(panel_Facturacion);
 		panel_Facturacion.setLayout(null);
 		
-		JLabel lblNewLabel_3_1 = new JLabel("PORCENTAJE COMISIONES: ");
-		lblNewLabel_3_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblNewLabel_3_1.setBounds(17, 16, 150, 14);
-		panel_Facturacion.add(lblNewLabel_3_1);
-		
-		textPorcComisiones = new JTextField();
-		textPorcComisiones.setOpaque(false);
-		textPorcComisiones.setHorizontalAlignment(SwingConstants.CENTER);
-		textPorcComisiones.setFont(new Font("Cambria", Font.PLAIN, 12));
-		textPorcComisiones.setColumns(10);
-		textPorcComisiones.setBounds(177, 15, 90, 16);
-		panel_Facturacion.add(textPorcComisiones);
-		
-		btnCalcularComiciones = new JButton("<html><center>CALCULAR COMICIÓN</html>");
-		btnCalcularComiciones.setFont(new Font("Cambria", Font.BOLD, 11));
-		btnCalcularComiciones.setBounds(286, 14, 98, 35);
-		panel_Facturacion.add(btnCalcularComiciones);
-		
-		JLabel lblNewLabel_3_1_1 = new JLabel("TOTAL COMISIONES: ");
-		lblNewLabel_3_1_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblNewLabel_3_1_1.setBounds(17, 38, 123, 14);
-		panel_Facturacion.add(lblNewLabel_3_1_1);
-		
-		textTotalComicionesPesos = new JTextField();
-		textTotalComicionesPesos.setEditable(false);
-		textTotalComicionesPesos.setOpaque(false);
-		textTotalComicionesPesos.setHorizontalAlignment(SwingConstants.CENTER);
-		textTotalComicionesPesos.setFont(new Font("Cambria", Font.PLAIN, 12));
-		textTotalComicionesPesos.setColumns(10);
-		textTotalComicionesPesos.setBounds(143, 37, 124, 16);
-		panel_Facturacion.add(textTotalComicionesPesos);
-		
-		btnMostrarResumen = new JButton("<html><center>MOSTRAR RESUMEN PARA EL TÉCNICO</html>");
+		btnMostrarResumen = new JButton("<html><center>RESUMEN PARA EL TÉCNICO</html>");
 		btnMostrarResumen.setFont(new Font("Cambria", Font.BOLD, 11));
-		btnMostrarResumen.setBounds(464, 14, 158, 35);
+		btnMostrarResumen.setBounds(291, 12, 272, 39);
 		panel_Facturacion.add(btnMostrarResumen);
-		
-		btnImprimirResumen = new JButton("<html><center>IMPRIMIR RESUMEN PARA EL TÉCNICO</html>");
-		btnImprimirResumen.setFont(new Font("Cambria", Font.BOLD, 11));
-		btnImprimirResumen.setBounds(646, 14, 158, 35);
-		panel_Facturacion.add(btnImprimirResumen);
 		
 	
 
@@ -568,13 +537,6 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		this.btnMostrarResumen = btnMostrarResumen;
 	}
 
-	public JButton getBtnImprimirResumen() {
-		return btnImprimirResumen;
-	}
-
-	public void setBtnImprimirResumen(JButton btnImprimirResumen) {
-		this.btnImprimirResumen = btnImprimirResumen;
-	}
 
 	public JTextField getTextRepGtia() {
 		return textRepGtia;
@@ -584,19 +546,5 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		this.textRepGtia = textRepGtia;
 	}
 
-	public JTextField getTextFactTotalPesos() {
-		return textFactTotalPesos;
-	}
 
-	public void setTextFactTotalPesos(JTextField textFactTotalPesos) {
-		this.textFactTotalPesos = textFactTotalPesos;
-	}
-
-	public JTextField getTextFactTotalDolar() {
-		return textFactTotalDolar;
-	}
-
-	public void setTextFactTotalDolar(JTextField textFactTotalDolar) {
-		this.textFactTotalDolar = textFactTotalDolar;
-	}
 }
