@@ -674,7 +674,7 @@ public class VentanaEstadisticas extends JFrame {
 		textNombreTecnico.setEditable(false);
 		textNombreTecnico.setColumns(10);
 		textNombreTecnico.setBorder(null);
-		textNombreTecnico.setBounds(3, 29, 327, 16);
+		textNombreTecnico.setBounds(3, 29, 327, 18);
 		panel_datosPorTecnico.add(textNombreTecnico);
 		panel_facturacionPorCliente.setLayout(null);
 		panel_facturacionPorCliente.setOpaque(false);

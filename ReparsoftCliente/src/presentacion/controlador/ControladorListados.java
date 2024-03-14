@@ -78,6 +78,7 @@ public class ControladorListados
 	private String seleccionDetalleEstadisticas = "OCULTAR DETALLE";
 
 	private int anio;
+	private int mes;
 	private int cantidadIngresosPorAnio;
 	private int cantidadDiagnosticosPorAnio;
 	private double facturacionPesoPorAnio;
@@ -388,12 +389,82 @@ public class ControladorListados
 			ventanaResumenMensualTecnico.getComboMes().addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
 
+					String nombreTecnico = ventanaEstadisticas.getTextNombreTecnico().getText();
+					int idTecnico = modelo.idUsuarioporNombre(nombreTecnico);
+					mes = ventanaResumenMensualTecnico.getComboMes().getSelectedIndex();
+					
+					
+					int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
+	
+					List<Integer> listaDiagnosticos = modelo.dameDiagnosticosPorAnioPorTecnico(anio, idTecnico);
+					List<Integer> listaAceptaciones = modelo.dameAceptacionesPorAnioPorTecnico(anio, idTecnico);
+					List<Double> listaFacturacion = modelo.dameFacturacionPorAnioPorTecnico(anio, idTecnico);
+					
+					List<Integer> listaReparadosXmesXtecnico = modelo.dameReparadosXmesXtecnico(anio, idTecnico);
+					List<Integer> listaRepEnGtiaXmesXtecnico = modelo.dameRepEnGtiaXmesXtecnico(anio, idTecnico);
+					List<Integer> listaSinFallaXmesXtecnico = modelo.dameSinFallaXmesXtecnico(anio, idTecnico);
+					List<Integer> listaEnRepXmesXtecnico = modelo.dameEnRepXmesXtecnico(anio, idTecnico);
+					List<Integer> listaVentasXmesXtecnico = modelo.dameVentasXmesXtecnico(anio, idTecnico);
+					List<Integer> listaSinRepXmesXtecnico = modelo.dameSinRepXmesXtecnico(anio, idTecnico);
+					List<Integer> listaRepAcepXmesXtecnico = modelo.dameRepAcepXmesXtecnico(anio, idTecnico);
+					List<Integer> listaRepNoAcepXmesXtecnico = modelo.dameRepNoAcepXmesXtecnico(anio, idTecnico);
+					List<Integer> listaRepEsperaXmesXtecnico = modelo.dameEsperaXmesXtecnico(anio, idTecnico);
+					
+					
+					String revisados = Integer.toString(listaDiagnosticos.get(mes));
+					String aceptadosDelMes = Integer.toString(listaAceptaciones.get(mes));
+					String facturacionPesos = Double.toString(listaFacturacion.get(mes));
+					String reparados = Integer.toString(listaReparadosXmesXtecnico.get(mes));
+					String repEnGtia = Integer.toString(listaRepEnGtiaXmesXtecnico.get(mes));
+					String sinFalla = Integer.toString(listaSinFallaXmesXtecnico.get(mes));
+					String enRep = Integer.toString(listaEnRepXmesXtecnico.get(mes));
+					String ventas = Integer.toString(listaVentasXmesXtecnico.get(mes));
+					String sinRep = Integer.toString(listaSinRepXmesXtecnico.get(mes));
+					
+					String repAcep = Integer.toString(listaRepAcepXmesXtecnico.get(mes));
+					String repNoAcep = Integer.toString(listaRepNoAcepXmesXtecnico.get(mes));
+					String repEspera = Integer.toString(listaRepEsperaXmesXtecnico.get(mes));
+					
+					ventanaResumenMensualTecnico.getTextRevisados().setText(revisados);
+					ventanaResumenMensualTecnico.getTextAceptadosDelMes().setText(aceptadosDelMes);
+					ventanaResumenMensualTecnico.getTextFactTotalPesos().setText(monedaFormatter.formatPeso(facturacionPesos));
+					ventanaResumenMensualTecnico.getTextReparados().setText(reparados);
+					ventanaResumenMensualTecnico.getTextRepGtia().setText(repEnGtia);
+					ventanaResumenMensualTecnico.getTextSinFalla().setText(sinFalla);
+					ventanaResumenMensualTecnico.getTextEnRep().setText(enRep);
+					ventanaResumenMensualTecnico.getTextVentas().setText(ventas);
+					ventanaResumenMensualTecnico.getTextSinRep().setText(sinRep);
+					ventanaResumenMensualTecnico.getTextRepAcep().setText(repAcep);
+					ventanaResumenMensualTecnico.getTextRepNoAcep().setText(repNoAcep);
+					ventanaResumenMensualTecnico.getTextRepEspera().setText(repEspera);
+
+					
+					
+//					anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
+//					int totalDiagnosticosXmesXtecnico = modelo.dameTotalDiagnosticosXmesXtecnico(mes, idTecnico);
+//
+//					int totalReparadosXmesXtecnico = modelo.dameTotalReparadosXmesXtecnico(mes, idTecnico);
+//					int totalSinFallaXmesXtecnico = modelo.dameTotalSinFallaXmesXtecnico(mes, idTecnico);
+//					int totalGtiaXmesXtecnico = modelo.dameTotalGtiaXmesXtecnico(mes, idTecnico);
+//					int totalEnRepXmesXtecnico = modelo.dameTotalEnRepXmesXtecnico(mes, idTecnico);
+//					int totalVentaXmesXtecnico = modelo.dameTotalVentasXmesXtecnico(mes, idTecnico);
+//					int totalSinRepXmesXtecnico = modelo.dameTotalSinRepXmesXtecnico(mes, idTecnico);
+//
+//					int TotalReparadosAceptradosXtecnico = modelo.dameTotalRepAcepXtecnicoXmes(mes, idTecnico);
+//					int TotalReparadosNoAceptradosXtecnico = modelo.dameTotalRepNoAcepXtecnicoXmes(mes, idTecnico);
+//					int TotalReparadosAlaEsperaXtecnico = modelo.dameTotalRepEsperaXtecnicoXmes(mes, idTecnico);
+//
+//					double facturacionPesoPorMesPorTecnico = modelo.dameFacturacionPesoPorMesPorTecnico(mes, idTecnico);
+//					double facturacionDolarPorMesPorTecnico = modelo.dameFacturacionDolarPorMesPorTecnico(mes, idTecnico);
+					
+					
+					
+					
 					if (ventanaResumenMensualTecnico.getComboMes().getSelectedItem() != null) {
-
-						String mes = ventanaResumenMensualTecnico.getComboMes().getSelectedItem().toString();
-
-						ventanaResumenMensualTecnico.getLblMes().setText(mes);
-
+					
+						
+						
+	
 					}
 				}
 			});

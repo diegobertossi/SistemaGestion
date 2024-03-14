@@ -148,7 +148,20 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	private static final String totalSinFallaXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Falla'";
 	private static final String totalReparadosXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación')";
 	private static final String totalDiagnosticosXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico != 'Sin Revisar'";
+	
+	private static final String reparadosXmesXtecnico="select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) group by MONTH(FechadeDiagnostico)";
+	private static final String sinRepXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Reparación' group by MONTH(FechadeDiagnostico)";
+	private static final String ventasXmesXtecnico= "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Vendido' group by MONTH(FechadeDiagnostico)";
+	private static final String enRepXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'En Reparación' group by MONTH(FechadeDiagnostico)";
+	private static final String sinFallaXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Falla' group by MONTH(FechadeDiagnostico)";
+	private static final String enGtiaXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado en Garantía' group by MONTH(FechadeDiagnostico)";
+	
+	private static final String repEsperaXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico),count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación' group by MONTH(FechadeDiagnostico)";
+	private static final String repNoAcepXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico),count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado' group by MONTH(FechadeDiagnostico)";
+	private static final String repAcepXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(FechadeDiagnostico)";
 
+		
+	
 	@SuppressWarnings("unused")
 	public ReparacionDAOImpl(String ubicacionBase) {
 
@@ -1636,6 +1649,305 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		return sumadPorMes;
 	}
 
+	
+	@Override
+	public List<Integer> ReparadosXmesXtecnico(int anio, int idTecnico) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(reparadosXmesXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantidadPorMes;
+	}
+	
+	@Override
+	public List<Integer> EnGtiaXmesXtecnico(int anio, int idTecnico) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(enGtiaXmesXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantidadPorMes;
+	}
+
+	@Override
+	public List<Integer> SinFallaXmesXtecnico(int anio, int idTecnico) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(sinFallaXmesXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantidadPorMes;
+	}
+
+	@Override
+	public List<Integer> EnRepXmesXtecnico(int anio, int idTecnico) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(enRepXmesXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantidadPorMes;
+	}
+
+	@Override
+	public List<Integer> VentasXmesXtecnico(int anio, int idTecnico) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(ventasXmesXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantidadPorMes;
+	}
+
+	@Override
+	public List<Integer> SinRepXmesXtecnico(int anio, int idTecnico) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(sinRepXmesXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantidadPorMes;
+	}
+	
+	
+	@Override
+	public List<Integer> RepAcepXmesXtecnico(int anio, int idTecnico) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(repAcepXmesXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantidadPorMes;
+	}
+
+	@Override
+	public List<Integer> RepNoAcepXmesXtecnico(int anio, int idTecnico) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(repNoAcepXmesXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantidadPorMes;
+	}
+
+	@Override
+	public List<Integer> EsperaRepXmesXtecnico(int anio, int idTecnico) {
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
+
+		for (int i = 0; i < 12; i++) {
+
+			cantidadPorMes.add(0);
+
+		}
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(repEsperaXmesXtecnico);
+			statement.setInt(1, anio);
+			statement.setInt(2, idTecnico);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return cantidadPorMes;
+	}
+	
 	@Override
 	public List<Integer> ingresosPorAnioPorCliente(int anio, int idCliente) {
 		PreparedStatement statement;
@@ -2530,5 +2842,11 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		}
 		return Reparaciones;
 	}
+
+
+
+
+
+
 
 }

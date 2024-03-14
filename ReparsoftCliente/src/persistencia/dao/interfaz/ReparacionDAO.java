@@ -156,6 +156,24 @@ public interface ReparacionDAO
 
 	public List<Integer> aceptacionesPorAnioPorCliente(int anio, int idCliente);
 
+	public List<Integer> ReparadosXmesXtecnico(int anio, int idTecnico);
+
+	public List<Integer> EnGtiaXmesXtecnico(int anio, int idTecnico);
+
+	public List<Integer> SinFallaXmesXtecnico(int anio, int idTecnico);
+
+	public List<Integer> EnRepXmesXtecnico(int anio, int idTecnico);
+
+	public List<Integer> VentasXmesXtecnico(int anio, int idTecnico);
+
+	public List<Integer> SinRepXmesXtecnico(int anio, int idTecnico);
+
+	public List<Integer> RepAcepXmesXtecnico(int anio, int idTecnico);
+
+	public List<Integer> RepNoAcepXmesXtecnico(int anio, int idTecnico);
+
+	public List<Integer> EsperaRepXmesXtecnico(int anio, int idTecnico);
+
 
 
 

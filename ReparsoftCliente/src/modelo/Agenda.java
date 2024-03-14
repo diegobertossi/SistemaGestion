@@ -520,6 +520,43 @@ public class Agenda {
 	}
 	
 
+	public List<Integer> dameReparadosXmesXtecnico(int anio, int idTecnico) {
+		return ReparacionR.ReparadosXmesXtecnico(anio, idTecnico);
+	}
+
+	
+	public List<Integer> dameRepEnGtiaXmesXtecnico(int anio, int idTecnico) {
+		return ReparacionR.EnGtiaXmesXtecnico(anio, idTecnico);
+	}
+
+	public List<Integer> dameSinFallaXmesXtecnico(int anio, int idTecnico) {
+		return ReparacionR.SinFallaXmesXtecnico(anio, idTecnico);
+	}
+
+	public List<Integer> dameEnRepXmesXtecnico(int anio, int idTecnico) {
+		return ReparacionR.EnRepXmesXtecnico(anio, idTecnico);
+	}
+
+	public List<Integer> dameVentasXmesXtecnico(int anio, int idTecnico) {
+		return ReparacionR.VentasXmesXtecnico(anio, idTecnico);
+	}
+
+	public List<Integer> dameSinRepXmesXtecnico(int anio, int idTecnico) {
+		return ReparacionR.SinRepXmesXtecnico(anio, idTecnico);
+	}
+	
+	public List<Integer> dameRepAcepXmesXtecnico(int anio, int idTecnico) {
+		return ReparacionR.RepAcepXmesXtecnico(anio, idTecnico);
+	}
+
+	public List<Integer> dameRepNoAcepXmesXtecnico(int anio, int idTecnico) {
+		return ReparacionR.RepNoAcepXmesXtecnico(anio, idTecnico);
+	}
+
+	public List<Integer> dameEsperaXmesXtecnico(int anio, int idTecnico) {
+		return ReparacionR.EsperaRepXmesXtecnico(anio, idTecnico);
+	}
+	
 
 	public double dameFacturacionPesoPorAnioPorCliente(int anio, int idCliente) {
 		return ReparacionR.FacturacionPesoPorAnioPorCliente(anio,idCliente );
@@ -687,13 +724,6 @@ public class Agenda {
 	public void setUbicacionBase(String ubicacionBase) {
 		this.ubicacionBase = ubicacionBase;
 	}
-
-
-
-
-
-
-
 
 
 
