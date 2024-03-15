@@ -50,11 +50,23 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
 
+		
+		
+		
+		
 		// establecemos el fondo blanco o vac�o
 		setBackground(null);
 		// COnstructor de la clase DefaultTableCellRenderer
 		Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
+		
+		
+			
+		    
+		
+		
+		
+		
 		
 		if (value != null) {
 			if (c instanceof JComponent) {
@@ -149,6 +161,9 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 			setText((value.toString() == null) ? "" : formatter.format(fechaDate));
 
 		}
+		
+			
+		
 
 		return this;
 	}

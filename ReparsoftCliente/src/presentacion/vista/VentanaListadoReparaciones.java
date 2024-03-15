@@ -17,6 +17,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JComboBox;
 import javax.swing.border.LineBorder;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -29,14 +30,17 @@ import java.util.Enumeration;
 import java.awt.Dimension;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.ListSelectionEvent;
 
 public class VentanaListadoReparaciones extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JTable tblListado;
+	private JTable tblListado, tablaELS;
 	private DefaultTableModel modelReparaciones;
 
 	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
@@ -586,7 +590,6 @@ public class VentanaListadoReparaciones extends JFrame {
 		FlowLayout fl_panelTitulo = new FlowLayout(FlowLayout.LEFT, 25, 10);
 		panelTitulo.setLayout(fl_panelTitulo);
 
-		
 		JLabel lbTitulo_1 = new JLabel("LISTADO DE EQUIPOS");
 		lbTitulo_1.setHorizontalTextPosition(SwingConstants.CENTER);
 		lbTitulo_1.setHorizontalAlignment(SwingConstants.LEFT);
@@ -921,8 +924,6 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBorder(new LineBorder(new Color(0, 128, 128), 2));
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		panelCentral.add(scrollPane, BorderLayout.CENTER);
 
 		modelReparaciones = new DefaultTableModel(new Object[][] {}, nombreColumnas) {
 
@@ -943,17 +944,75 @@ public class VentanaListadoReparaciones extends JFrame {
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
+			
+
 
 		};
 
-		tblListado = new JTable(modelReparaciones);
+		AbstractTableModel fixedModel = new AbstractTableModel() {
+			public int getColumnCount() {
+				return 1;
+			}
+
+			public int getRowCount() {
+				return tblListado.getRowCount();
+			}
+
+			public String getColumnName(int col) {
+				return (String) tblListado.getColumnName(col);
+			}
+
+			public Object getValueAt(int row, int col) {
+				return tblListado.getValueAt(row, col);
+			}
+		};
+
+
+//		AbstractTableModel model = new AbstractTableModel() {
+//			public int getColumnCount() {
+//				return nombreColumnas.length - 1;
+//			}
+//
+//			public int getRowCount() {
+//				return tblListado.getRowCount();
+//			}
+//
+//			public String getColumnName(int col) {
+//				return (String) tblListado.getColumnName(col + 1);
+//			}
+//
+//			public Object getValueAt(int row, int col) {
+//				return tblListado.getValueAt(row, col + 1);
+//			}
+//
+//			public void setValueAt(Object obj, int row, int col) {
+//				tblListado.setValueAt(fixedModel, row, col + 1);
+//			}
+//
+//			public boolean CellEditable(int row, int col) {
+//				return true;
+//			}
+//		};
+//		
+
+		tblListado = new JTable(modelReparaciones) {
+			public void valueChanged(ListSelectionEvent e) {
+				super.valueChanged(e);
+				checkSelection(false);
+			}
+		};
+
+		tablaELS = new JTable(fixedModel) {
+			public void valueChanged(ListSelectionEvent e) {
+				super.valueChanged(e);
+				checkSelection(true);
+			}
+		};
+		;
 
 		try {
-			// UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
@@ -961,10 +1020,6 @@ public class VentanaListadoReparaciones extends JFrame {
 			e.printStackTrace();
 		}
 
-//		Font fuenteCabecera = new Font("Cambria", Font.BOLD, 12);
-//		Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 12);
-
-		tblListado = new JTable(modelReparaciones);
 		tblListado.setGridColor(new Color(105, 105, 105));
 		tblListado.setBackground(new Color(176, 196, 222));
 		tblListado.setOpaque(false);
@@ -977,8 +1032,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		tblListado.setShowGrid(true);
 		tblListado.setCellSelectionEnabled(true);
 
-		scrollPane.setViewportView(tblListado);
-
+		
 		try {
 			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
 
@@ -988,8 +1042,10 @@ public class VentanaListadoReparaciones extends JFrame {
 			e.printStackTrace();
 		}
 
+		tablaELS.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		tblListado.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		tblListado.setAutoCreateColumnsFromModel(false);
+		tablaELS.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tblListado.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		lblNewLabel_6 = new JLabel("        ");
 		panelCentral.add(lblNewLabel_6, BorderLayout.NORTH);
@@ -1011,8 +1067,29 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		}
 
+		JViewport viewport = new JViewport();
+		viewport.setView(tablaELS);
+		viewport.setPreferredSize(tablaELS.getPreferredSize());
+		scrollPane.setRowHeaderView(viewport);
+		scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, tablaELS.getTableHeader());
+
+		panelCentral.add(scrollPane, BorderLayout.CENTER);
+		scrollPane.setViewportView(tblListado);
+
 		this.setVisible(true);
 
+	}
+
+	private void checkSelection(boolean isFixedTable) {
+		int fixedSelectedIndex = tablaELS.getSelectedRow();
+		int selectedIndex = tblListado.getSelectedRow();
+		if (fixedSelectedIndex != selectedIndex) {
+			if (isFixedTable) {
+				tblListado.setRowSelectionInterval(fixedSelectedIndex, fixedSelectedIndex);
+			} else {
+				tablaELS.setRowSelectionInterval(selectedIndex, selectedIndex);
+			}
+		}
 	}
 
 	public void setCellRender(JTable table) {

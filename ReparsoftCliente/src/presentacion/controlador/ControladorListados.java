@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -138,6 +139,11 @@ public class ControladorListados
 				}
 			}
 		});
+		
+		
+		
+
+		
 
 		if (arg0.getSource() == this.ventanaListadoReparaciones.getBtnFiltrar()) {
 
