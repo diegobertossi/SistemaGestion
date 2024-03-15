@@ -17,6 +17,7 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.BevelBorder;
 
 public class VentanaResumenMensualTecnico extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -71,7 +72,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		panel_DatosDelMes.setLayout(null);
 		
 		comboMes = new JComboBox();
-		comboMes.setOpaque(false);
+		comboMes.setBackground(new Color(204, 204, 255));
 		comboMes.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboMes.setBounds(184, 11, 110, 23);
 		panel_DatosDelMes.add(comboMes);
@@ -324,37 +325,44 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		panel_1.add(lblNewLabel_2_2_1);
 		lblNewLabel_2_2_1.setFont(new Font("Cambria", Font.PLAIN, 10));
 		
+		JPanel panel_2 = new JPanel();
+		panel_2.setOpaque(false);
+		panel_2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel_2.setBounds(10, 106, 403, 61);
+		panel_1.add(panel_2);
+		panel_2.setLayout(null);
+		
 		JLabel lblNewLabel_3_1 = new JLabel("PORCENTAJE COMISIONES: ");
-		lblNewLabel_3_1.setBounds(10, 126, 150, 18);
-		panel_1.add(lblNewLabel_3_1);
+		lblNewLabel_3_1.setBounds(10, 11, 150, 18);
+		panel_2.add(lblNewLabel_3_1);
 		lblNewLabel_3_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		
 		textPorcComisiones = new JTextField();
-		textPorcComisiones.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(0, 153, 153), null));
-		textPorcComisiones.setBounds(170, 126, 90, 18);
-		panel_1.add(textPorcComisiones);
-		textPorcComisiones.setOpaque(false);
+		textPorcComisiones.setBackground(new Color(204, 204, 255));
+		textPorcComisiones.setBounds(170, 11, 90, 18);
+		panel_2.add(textPorcComisiones);
+		textPorcComisiones.setBorder(new LineBorder(new Color(0, 153, 153)));
 		textPorcComisiones.setHorizontalAlignment(SwingConstants.CENTER);
 		textPorcComisiones.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textPorcComisiones.setColumns(10);
 		
 		btnCalcularComiciones = new JButton("<html><center>CALCULAR COMICIÓN</html>");
-		btnCalcularComiciones.setBounds(279, 125, 98, 38);
-		panel_1.add(btnCalcularComiciones);
+		btnCalcularComiciones.setBounds(285, 12, 98, 38);
+		panel_2.add(btnCalcularComiciones);
 		btnCalcularComiciones.setFont(new Font("Cambria", Font.BOLD, 11));
 		
 		JLabel lblNewLabel_3_1_1 = new JLabel("TOTAL COMISIONES: ");
-		lblNewLabel_3_1_1.setBounds(10, 148, 123, 18);
-		panel_1.add(lblNewLabel_3_1_1);
+		lblNewLabel_3_1_1.setBounds(10, 33, 123, 18);
+		panel_2.add(lblNewLabel_3_1_1);
 		lblNewLabel_3_1_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		
 		textTotalComicionesPesos = new JTextField();
-		textTotalComicionesPesos.setBorder(null);
-		textTotalComicionesPesos.setBounds(136, 148, 124, 18);
-		panel_1.add(textTotalComicionesPesos);
+		textTotalComicionesPesos.setBackground(new Color(204, 204, 255));
+		textTotalComicionesPesos.setBounds(170, 33, 90, 18);
+		panel_2.add(textTotalComicionesPesos);
+		textTotalComicionesPesos.setBorder(new LineBorder(new Color(0, 153, 153)));
 		textTotalComicionesPesos.setEditable(false);
-		textTotalComicionesPesos.setOpaque(false);
-		textTotalComicionesPesos.setHorizontalAlignment(SwingConstants.RIGHT);
+		textTotalComicionesPesos.setHorizontalAlignment(SwingConstants.CENTER);
 		textTotalComicionesPesos.setFont(new Font("Cambria", Font.BOLD, 12));
 		textTotalComicionesPesos.setColumns(10);
 		

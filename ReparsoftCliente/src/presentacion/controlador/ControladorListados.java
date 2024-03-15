@@ -924,7 +924,6 @@ public class ControladorListados
 		ventanaEstadisticas.getComboAnio().addActionListener(this);
 		ventanaEstadisticas.getComboTecnico().addActionListener(this);
 		ventanaEstadisticas.getComboCliente().addActionListener(this);
-		ventanaEstadisticas.getComboMes().addActionListener(this);
 		ventanaEstadisticas.getBtnConfiguracion().addActionListener(this);
 		ventanaEstadisticas.getBtnFacturacionPorCliente().addActionListener(this);
 		ventanaEstadisticas.getBtnResumenAnualTecnico().addActionListener(this);
@@ -956,9 +955,6 @@ public class ControladorListados
 						ventanaEstadisticas.getLblAnio().setVisible(false);
 						ventanaEstadisticas.getComboAnio().setVisible(false);
 
-						ventanaEstadisticas.getLblMes().setVisible(false);
-						ventanaEstadisticas.getComboMes().setVisible(false);
-
 						ventanaEstadisticas.getLblTecnico().setVisible(false);
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
 
@@ -978,9 +974,6 @@ public class ControladorListados
 						ventanaEstadisticas.getComboAnio().setSelectedIndex(-1);
 						ventanaEstadisticas.getComboAnio().setVisible(true);
 
-						ventanaEstadisticas.getLblMes().setVisible(false);
-						ventanaEstadisticas.getComboMes().setVisible(false);
-
 						ventanaEstadisticas.getLblTecnico().setVisible(false);
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
 						ventanaEstadisticas.getComboCliente().setVisible(false);
@@ -999,11 +992,7 @@ public class ControladorListados
 						ventanaEstadisticas.getComboAnio().setSelectedIndex(-1);
 						ventanaEstadisticas.getComboAnio().setVisible(true);
 
-						ventanaEstadisticas.getLblMes().setVisible(true);
-						ventanaEstadisticas.getComboMes().setVisible(true);
-						llenarcomboMes();
 						llenarcomboTecnico();
-						ventanaEstadisticas.getComboMes().setSelectedIndex(-1);
 						ventanaEstadisticas.getComboTecnico().setSelectedIndex(-1);
 
 						ventanaEstadisticas.getLblTecnico().setText("TÉCNICO");
@@ -1029,9 +1018,6 @@ public class ControladorListados
 
 						ventanaEstadisticas.getLblTecnico().setText("CLIENTE");
 						ventanaEstadisticas.getLblTecnico().setVisible(true);
-
-						ventanaEstadisticas.getLblMes().setVisible(false);
-						ventanaEstadisticas.getComboMes().setVisible(false);
 
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
@@ -1193,18 +1179,6 @@ public class ControladorListados
 
 	}
 
-	@SuppressWarnings("unchecked")
-	private void llenarcomboMes() {
-
-		String[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre",
-				"Octubre", "Noviembre", "Diciembre" };
-
-		for (int i = 0; i < 12; i++) {
-
-			ventanaEstadisticas.getComboMes().addItem(meses[i]);
-
-		}
-	}
 
 	@SuppressWarnings({ "unchecked", "unused" })
 	private void llenarcomboMesResumen() {
