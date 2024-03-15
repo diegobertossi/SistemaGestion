@@ -16,6 +16,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
+import javax.swing.border.EtchedBorder;
 
 public class VentanaResumenMensualTecnico extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -123,6 +124,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		lblNewLabel_1_4_1_1_1.setFont(new Font("Cambria", Font.PLAIN, 12));
 		
 		textRevisados = new JTextField();
+		textRevisados.setBorder(null);
 		textRevisados.setEditable(false);
 		textRevisados.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textRevisados.setHorizontalAlignment(SwingConstants.CENTER);
@@ -132,6 +134,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		textRevisados.setColumns(10);
 		
 		textReparados = new JTextField();
+		textReparados.setBorder(null);
 		textReparados.setEditable(false);
 		textReparados.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textReparados.setHorizontalAlignment(SwingConstants.CENTER);
@@ -141,6 +144,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		panel.add(textReparados);
 		
 		textRepGtia = new JTextField();
+		textRepGtia.setBorder(null);
 		textRepGtia.setEditable(false);
 		textRepGtia.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textRepGtia.setHorizontalAlignment(SwingConstants.CENTER);
@@ -150,6 +154,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		panel.add(textRepGtia);
 		
 		textSinFalla = new JTextField();
+		textSinFalla.setBorder(null);
 		textSinFalla.setEditable(false);
 		textSinFalla.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textSinFalla.setHorizontalAlignment(SwingConstants.CENTER);
@@ -159,6 +164,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		panel.add(textSinFalla);
 		
 		textEnRep = new JTextField();
+		textEnRep.setBorder(null);
 		textEnRep.setEditable(false);
 		textEnRep.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textEnRep.setHorizontalAlignment(SwingConstants.CENTER);
@@ -168,6 +174,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		panel.add(textEnRep);
 		
 		textVentas = new JTextField();
+		textVentas.setBorder(null);
 		textVentas.setEditable(false);
 		textVentas.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textVentas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -177,6 +184,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		panel.add(textVentas);
 		
 		textSinRep = new JTextField();
+		textSinRep.setBorder(null);
 		textSinRep.setEditable(false);
 		textSinRep.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textSinRep.setHorizontalAlignment(SwingConstants.CENTER);
@@ -186,6 +194,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		panel.add(textSinRep);
 		
 		textRepAcep = new JTextField();
+		textRepAcep.setBorder(null);
 		textRepAcep.setEditable(false);
 		textRepAcep.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textRepAcep.setHorizontalAlignment(SwingConstants.CENTER);
@@ -195,6 +204,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		panel.add(textRepAcep);
 		
 		textRepNoAcep = new JTextField();
+		textRepNoAcep.setBorder(null);
 		textRepNoAcep.setEditable(false);
 		textRepNoAcep.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textRepNoAcep.setHorizontalAlignment(SwingConstants.CENTER);
@@ -204,6 +214,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		panel.add(textRepNoAcep);
 		
 		textRepEspera = new JTextField();
+		textRepEspera.setBorder(null);
 		textRepEspera.setEditable(false);
 		textRepEspera.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textRepEspera.setHorizontalAlignment(SwingConstants.CENTER);
@@ -278,6 +289,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		lblNewLabel_2_3_2.setFont(new Font("Cambria", Font.BOLD, 12));
 		
 		textAceptadosDelMes = new JTextField();
+		textAceptadosDelMes.setBorder(null);
 		textAceptadosDelMes.setEditable(false);
 		textAceptadosDelMes.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textAceptadosDelMes.setHorizontalAlignment(SwingConstants.CENTER);
@@ -287,6 +299,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		textAceptadosDelMes.setColumns(10);
 		
 		textFacturacionPesos = new JTextField();
+		textFacturacionPesos.setBorder(null);
 		textFacturacionPesos.setEditable(false);
 		textFacturacionPesos.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textFacturacionPesos.setHorizontalAlignment(SwingConstants.CENTER);
@@ -296,6 +309,7 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		textFacturacionPesos.setColumns(10);
 		
 		textFacturacionDolar = new JTextField();
+		textFacturacionDolar.setBorder(null);
 		textFacturacionDolar.setEditable(false);
 		textFacturacionDolar.setFont(new Font("Cambria", Font.PLAIN, 12));
 		textFacturacionDolar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -311,12 +325,13 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		lblNewLabel_2_2_1.setFont(new Font("Cambria", Font.PLAIN, 10));
 		
 		JLabel lblNewLabel_3_1 = new JLabel("PORCENTAJE COMISIONES: ");
-		lblNewLabel_3_1.setBounds(10, 126, 150, 14);
+		lblNewLabel_3_1.setBounds(10, 126, 150, 18);
 		panel_1.add(lblNewLabel_3_1);
 		lblNewLabel_3_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		
 		textPorcComisiones = new JTextField();
-		textPorcComisiones.setBounds(170, 125, 90, 16);
+		textPorcComisiones.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(0, 153, 153), null));
+		textPorcComisiones.setBounds(170, 126, 90, 18);
 		panel_1.add(textPorcComisiones);
 		textPorcComisiones.setOpaque(false);
 		textPorcComisiones.setHorizontalAlignment(SwingConstants.CENTER);
@@ -324,22 +339,23 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		textPorcComisiones.setColumns(10);
 		
 		btnCalcularComiciones = new JButton("<html><center>CALCULAR COMICIÓN</html>");
-		btnCalcularComiciones.setBounds(279, 124, 98, 35);
+		btnCalcularComiciones.setBounds(279, 125, 98, 38);
 		panel_1.add(btnCalcularComiciones);
 		btnCalcularComiciones.setFont(new Font("Cambria", Font.BOLD, 11));
 		
 		JLabel lblNewLabel_3_1_1 = new JLabel("TOTAL COMISIONES: ");
-		lblNewLabel_3_1_1.setBounds(10, 148, 123, 14);
+		lblNewLabel_3_1_1.setBounds(10, 148, 123, 18);
 		panel_1.add(lblNewLabel_3_1_1);
 		lblNewLabel_3_1_1.setFont(new Font("Cambria", Font.BOLD, 12));
 		
 		textTotalComicionesPesos = new JTextField();
-		textTotalComicionesPesos.setBounds(136, 147, 124, 16);
+		textTotalComicionesPesos.setBorder(null);
+		textTotalComicionesPesos.setBounds(136, 148, 124, 18);
 		panel_1.add(textTotalComicionesPesos);
 		textTotalComicionesPesos.setEditable(false);
 		textTotalComicionesPesos.setOpaque(false);
-		textTotalComicionesPesos.setHorizontalAlignment(SwingConstants.CENTER);
-		textTotalComicionesPesos.setFont(new Font("Cambria", Font.PLAIN, 12));
+		textTotalComicionesPesos.setHorizontalAlignment(SwingConstants.RIGHT);
+		textTotalComicionesPesos.setFont(new Font("Cambria", Font.BOLD, 12));
 		textTotalComicionesPesos.setColumns(10);
 		
 		JPanel panel_NombreTecnico = new JPanel();
@@ -513,19 +529,19 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		this.textPorcComisiones = textPorcComisiones;
 	}
 
-	public JTextField getTextTotalComicionesPesos() {
+	public JTextField getTextTotalComisionesPesos() {
 		return textTotalComicionesPesos;
 	}
 
-	public void setTextTotalComicionesPesos(JTextField textTotalComicionesPesos) {
+	public void setTextTotalComisionesPesos(JTextField textTotalComicionesPesos) {
 		this.textTotalComicionesPesos = textTotalComicionesPesos;
 	}
 
-	public JButton getBtnCalcularComiciones() {
+	public JButton getBtnCalcularComisiones() {
 		return btnCalcularComiciones;
 	}
 
-	public void setBtnCalcularComiciones(JButton btnCalcularComiciones) {
+	public void setBtnCalcularComisiones(JButton btnCalcularComiciones) {
 		this.btnCalcularComiciones = btnCalcularComiciones;
 	}
 

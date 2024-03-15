@@ -84,6 +84,9 @@ public class ControladorListados
 	private double facturacionPesoPorAnio;
 	private double facturacionDolarPorAnio;
 
+	private double porcentaje;
+	private double facturacion;
+
 	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
 
@@ -379,23 +382,33 @@ public class ControladorListados
 				&& arg0.getSource() == this.ventanaEstadisticas.getBtnResumenMensualTecnico()) {
 
 			ventanaResumenMensualTecnico = new VentanaResumenMensualTecnico(this);
-			this.ventanaResumenMensualTecnico.getBtnCalcularComiciones().addActionListener(this);
+			this.ventanaResumenMensualTecnico.getBtnCalcularComisiones().addActionListener(this);
 			this.ventanaResumenMensualTecnico.getBtnMostrarResumen().addActionListener(this);
 
 			String nombreTecnicoYanio = ventanaEstadisticas.getTextNombreTecnico().getText() + " - "
 					+ ventanaEstadisticas.getLblAnioDatos().getText();
 			ventanaResumenMensualTecnico.getTextTecnicoAnio().setText(nombreTecnicoYanio);
-			
+
 			ventanaResumenMensualTecnico.getTextPorcComisiones().addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 
-					String porcentaje = ventanaResumenMensualTecnico.getTextPorcComisiones().getText();
-					ventanaResumenMensualTecnico.getTextPorcComisiones().setText(monedaFormatter.formatPorcentaje(porcentaje));
+					try {
+						porcentaje = Double.parseDouble(ventanaResumenMensualTecnico.getTextPorcComisiones().getText());
+						String porsentajeformateado = String.format("%.1f %%", porcentaje);
+						ventanaResumenMensualTecnico.getTextPorcComisiones().setText((porsentajeformateado));
+					} catch (NumberFormatException ex) {
+
+						JOptionPane.showMessageDialog(null, "Ingrese un número válido", "Solo Numeros",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					
+					calcularComisiones();
 
 				}
 			});
-			// ventanaResumenMensualTecnico.getComboMes().addActionListener(this);
+
 			llenarcomboMesResumen();
 
 			ventanaResumenMensualTecnico.getComboMes().addItemListener(new ItemListener() {
@@ -453,31 +466,31 @@ public class ControladorListados
 					ventanaResumenMensualTecnico.getTextSinRep().setText(sinRep);
 					ventanaResumenMensualTecnico.getTextRepAcep().setText(repAcep);
 					ventanaResumenMensualTecnico.getTextRepNoAcep().setText(repNoAcep);
-					ventanaResumenMensualTecnico.getTextRepEspera().setText(repEspera);					
-					
+					ventanaResumenMensualTecnico.getTextRepEspera().setText(repEspera);
 
-			
 				}
 			});
 
 		}
-		
-		
+
 		else if (this.ventanaResumenMensualTecnico != null
-				&& arg0.getSource() == this.ventanaResumenMensualTecnico.getBtnCalcularComiciones()) {
+				&& arg0.getSource() == this.ventanaResumenMensualTecnico.getBtnCalcularComisiones()) {
+
 			
-			
-			System.out.println("comiciones");
+			calcularComisiones();
 			
 			
 		}
-		
+
 		else if (this.ventanaResumenMensualTecnico != null
 				&& arg0.getSource() == this.ventanaResumenMensualTecnico.getBtnMostrarResumen()) {
+
+			
+			
+			
 			
 			System.out.println("resumen");
-			
-			
+
 		}
 
 	}
@@ -1852,6 +1865,33 @@ public class ControladorListados
 
 	}
 
+	
+	
+	
+	private void calcularComisiones() {
+		
+		if (monedaFormatter.tieneFormato(ventanaResumenMensualTecnico.getTextFacturacionPesos().getText())) {
+
+			facturacion = monedaFormatter
+					.parseAmountGuardar(ventanaResumenMensualTecnico.getTextFacturacionPesos().getText());
+
+		} else {
+
+			facturacion = monedaFormatter
+					.parseAmount(ventanaResumenMensualTecnico.getTextFacturacionPesos().getText());
+
+		}
+
+		double porcentajeNumero = porcentaje / 100;
+
+		double totalComisiones = facturacion * porcentajeNumero;
+		ventanaResumenMensualTecnico.getTextTotalComisionesPesos()
+				.setText(monedaFormatter.formatPeso(String.valueOf(totalComisiones)));
+
+		
+		
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
