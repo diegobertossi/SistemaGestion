@@ -2221,7 +2221,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ "' ," + "OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ," + "idUsuario = '"
 						+ reparacion_a_editar.getidUsuario() + "' ," + "NombreUsuario = '"
 						+ reparacion_a_editar.getNombreUsuario() + "' ," + "Enviado = '" + enviado + "' ,"
-						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "PrecioPeso = '"
+						+ "Informecliente = '" + reparacion_a_editar.getInformecliente()+"' ," + "PrecioDolar = '" + reparacion_a_editar.getPrecioDolar() + "' ," + "PrecioPeso = '"
 						+ reparacion_a_editar.getPrecioPeso() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
 						+ "' ," + "PresupuestoGenerado = '" + PresupGenerado + "' ," + "EstadoFisico = '"
 						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"

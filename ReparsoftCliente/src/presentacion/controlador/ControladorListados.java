@@ -330,27 +330,37 @@ public class ControladorListados
 		else if (this.ventanaEstadisticas != null
 				&& arg0.getSource() == this.ventanaEstadisticas.getBtnConfiguracion()) {
 
-			ventanaCodigoSeguridad = new VentanaCodigoSeguridad(this);
-			ventanaCodigoSeguridad.getBtnAceptar().addActionListener(this);
-			ventanaCodigoSeguridad.getBtnCancelar().addActionListener(this);
+			if (filtro == 0) {
+				
+				JOptionPane.showMessageDialog(null, "Debe seleccionar un FILTRO antes de setear la configuraración", "SELECCIONAR FILTRO",
+						JOptionPane.INFORMATION_MESSAGE);
 
-			ventanaCodigoSeguridad.getTxtCodigoSeguridad().addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
+			}
 
-					char[] codigoIngresado = ventanaCodigoSeguridad.getTxtCodigoSeguridad().getPassword();
+			else {
 
-					// Convertir el array de caracteres a una cadena de texto
-					String codigo = new String(codigoIngresado);
+				ventanaCodigoSeguridad = new VentanaCodigoSeguridad(this);
+				ventanaCodigoSeguridad.getBtnAceptar().addActionListener(this);
+				ventanaCodigoSeguridad.getBtnCancelar().addActionListener(this);
 
-					if (verificarCodigoSeguridad(codigo)) {
+				ventanaCodigoSeguridad.getTxtCodigoSeguridad().addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
 
-						habitarDetalles();
+						char[] codigoIngresado = ventanaCodigoSeguridad.getTxtCodigoSeguridad().getPassword();
+
+						// Convertir el array de caracteres a una cadena de texto
+						String codigo = new String(codigoIngresado);
+
+						if (verificarCodigoSeguridad(codigo)) {
+
+							habitarDetalles();
+
+						}
 
 					}
-
-				}
-			});
+				});
+			}
 
 		}
 
@@ -402,8 +412,7 @@ public class ControladorListados
 						JOptionPane.showMessageDialog(null, "Ingrese un número válido", "Solo Numeros",
 								JOptionPane.INFORMATION_MESSAGE);
 					}
-					
-					
+
 					calcularComisiones();
 
 				}
@@ -476,19 +485,13 @@ public class ControladorListados
 		else if (this.ventanaResumenMensualTecnico != null
 				&& arg0.getSource() == this.ventanaResumenMensualTecnico.getBtnCalcularComisiones()) {
 
-			
 			calcularComisiones();
-			
-			
+
 		}
 
 		else if (this.ventanaResumenMensualTecnico != null
 				&& arg0.getSource() == this.ventanaResumenMensualTecnico.getBtnMostrarResumen()) {
 
-			
-			
-			
-			
 			System.out.println("resumen");
 
 		}
@@ -1179,7 +1182,6 @@ public class ControladorListados
 
 	}
 
-
 	@SuppressWarnings({ "unchecked", "unused" })
 	private void llenarcomboMesResumen() {
 
@@ -1839,11 +1841,8 @@ public class ControladorListados
 
 	}
 
-	
-	
-	
 	private void calcularComisiones() {
-		
+
 		if (monedaFormatter.tieneFormato(ventanaResumenMensualTecnico.getTextFacturacionPesos().getText())) {
 
 			facturacion = monedaFormatter
@@ -1851,8 +1850,7 @@ public class ControladorListados
 
 		} else {
 
-			facturacion = monedaFormatter
-					.parseAmount(ventanaResumenMensualTecnico.getTextFacturacionPesos().getText());
+			facturacion = monedaFormatter.parseAmount(ventanaResumenMensualTecnico.getTextFacturacionPesos().getText());
 
 		}
 
@@ -1862,10 +1860,8 @@ public class ControladorListados
 		ventanaResumenMensualTecnico.getTextTotalComisionesPesos()
 				.setText(monedaFormatter.formatPeso(String.valueOf(totalComisiones)));
 
-		
-		
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
