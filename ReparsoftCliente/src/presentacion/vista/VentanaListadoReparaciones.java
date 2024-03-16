@@ -945,6 +945,32 @@ public class VentanaListadoReparaciones extends JFrame {
 				return columnEditables[column];
 			}
 			
+			public int getColumnCount() {
+				return nombreColumnas.length - 1;
+			}
+
+			public int getRowCount() {
+				return nombreColumnas.length;
+			}
+
+			public String getColumnName(int col) {
+				return (String) nombreColumnas[col + 1];
+			}
+
+			public Object getValueAt(int row, int col) {
+				//return data[row][col + 1];
+				return tblListado.getValueAt(row, col + 1);
+			}
+
+			public void setValueAt(Object obj, int row, int col) {
+				//data[row][col + 1] = obj;
+				tblListado.setValueAt(obj, row, col +1);
+			}
+
+			public boolean CellEditable(int row, int col) {
+				return true;
+			}
+			
 
 
 		};

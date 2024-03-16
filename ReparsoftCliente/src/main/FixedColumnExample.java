@@ -21,10 +21,12 @@ import javax.swing.table.DefaultTableModel;
 public class FixedColumnExample extends JFrame {
 	Object[][] data;
 
-	Object[] column;
+	//Object[] column;
 
 	JTable fixedTable, table;
-
+	
+	private String[] column; 
+	
 	public FixedColumnExample() {
 		super("Fixed Column Example");
 		setSize(400, 150);
@@ -32,7 +34,9 @@ public class FixedColumnExample extends JFrame {
 		data = new Object[][] { { "1", "11", "A", "", "", "", "", "" }, { "2", "22", "", "B", "", "", "", "" },
 				{ "3", "33", "", "", "C", "", "", "" }, { "4", "44", "", "", "", "D", "", "" },
 				{ "5", "55", "", "", "", "", "E", "" }, { "6", "66", "", "", "", "", "", "F" } };
-		column = new Object[] { "fixed 1", "fixed 2", "a", "b", "c", "d", "e", "f" };
+		//column = new Object[] { "fixed 1", "fixed 2", "a", "b", "c", "d", "e", "f" };
+		column = new String[]{ "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
+				"N° SERIE" };	
 
 		DefaultTableModel fixedModel = new DefaultTableModel() {
 			public int getColumnCount() {
@@ -51,7 +55,23 @@ public class FixedColumnExample extends JFrame {
 				return data[row][col];
 			}
 		};
-		DefaultTableModel model = new DefaultTableModel() {
+		DefaultTableModel model = new DefaultTableModel(new Object[][] {}, column) {
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
+					String.class, String.class, String.class };
+
+			public Class<?> getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false};
+
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+			
+			
 			public int getColumnCount() {
 				return column.length - 1;
 			}
@@ -75,6 +95,7 @@ public class FixedColumnExample extends JFrame {
 			public boolean CellEditable(int row, int col) {
 				return true;
 			}
+			
 		};
 
 		fixedTable = new JTable(fixedModel) {
