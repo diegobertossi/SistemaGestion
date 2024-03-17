@@ -43,6 +43,7 @@ import presentacion.reportes.ReportePresupuesto;
 import presentacion.vista.VentanaCodigoSeguridad;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaEstadisticas;
+import presentacion.vista.VentanaFacturacionXcliente;
 import presentacion.vista.VentanaListadoReparaciones;
 import presentacion.vista.VentanaResumenMensualTecnico;
 import tiposPropios.MonedaFormatter;
@@ -62,6 +63,8 @@ public class ControladorListados
 	private VentanaEstadisticas ventanaEstadisticas;
 	private VentanaCodigoSeguridad ventanaCodigoSeguridad;
 	private VentanaResumenMensualTecnico ventanaResumenMensualTecnico;
+	
+	private VentanaFacturacionXcliente ventanaFacturacionXcliente;
 	// private int max = Frame.MAXIMIZED_BOTH;
 	// private int min = Frame.NORMAL;
 
@@ -486,6 +489,20 @@ public class ControladorListados
 			});
 
 		}
+		
+		else if (this.ventanaEstadisticas != null
+				&& arg0.getSource() == this.ventanaEstadisticas.getBtnFacturacionPorCliente()) {
+			
+			
+			ventanaFacturacionXcliente = new VentanaFacturacionXcliente(this);
+			cargarTablaFacturacionCliente();
+			
+			
+			
+			
+			
+			
+		}
 
 		else if (this.ventanaResumenMensualTecnico != null
 				&& arg0.getSource() == this.ventanaResumenMensualTecnico.getBtnCalcularComisiones()) {
@@ -870,6 +887,53 @@ public class ControladorListados
 		AutoCompleteDecorator.decorate(ventanaListadoReparaciones.getComboFiltroTecnico());
 
 	}
+	
+	private void cargarTablaFacturacionCliente() {
+
+		this.ventanaFacturacionXcliente.getModelFacturacionClientes().setRowCount(0); // Para
+		// vaciar
+		// tabla
+		this.ventanaFacturacionXcliente.getModelFacturacionClientes().setColumnCount(0);
+		this.ventanaFacturacionXcliente.getModelFacturacionClientes()
+				.setColumnIdentifiers(this.ventanaFacturacionXcliente.getNombreColumnas());
+
+//		this.Clientes_en_tabla = (List<ReparacionDTO>) modelo.obtenerReparacion();
+//
+//		for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
+//
+//			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
+//					this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
+//					this.Reparaciones_en_tabla.get(i).getCliente(), this.Reparaciones_en_tabla.get(i).getSucursal(),
+//					this.Reparaciones_en_tabla.get(i).getNombreEquipo(), this.Reparaciones_en_tabla.get(i).getMarca(),
+//					this.Reparaciones_en_tabla.get(i).getModelo(), this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
+//					this.Reparaciones_en_tabla.get(i).getAviso(),
+//					this.Reparaciones_en_tabla.get(i).getFechadereparacion(),
+//					this.Reparaciones_en_tabla.get(i).getClienteCliente(),
+//					this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
+//					this.Reparaciones_en_tabla.get(i).getEstadoComercial(),
+//					this.Reparaciones_en_tabla.get(i).getEstadoFisico(),
+//					this.Reparaciones_en_tabla.get(i).getNombreUsuario(), this.Reparaciones_en_tabla.get(i).getCodigo(),
+//					this.Reparaciones_en_tabla.get(i).getNumeroRemitoSalida(),
+//					this.Reparaciones_en_tabla.get(i).getPresupuestoGenerado(),
+//					this.Reparaciones_en_tabla.get(i).getPresupuestoEnviado(),
+//					this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
+//					this.Reparaciones_en_tabla.get(i).getPrecioDolar(), this.Reparaciones_en_tabla.get(i).getPago(), };
+//
+//			this.ventanaListadoReparaciones.getModelReparaciones().addRow(fila);
+//
+////			String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
+////			String pagoPeso = monedaFormatter.formatPeso(reparacion.getPago().toString());
+////
+////			ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);
+////			ventanaVisualizarEquipos.setTextPago(pagoPeso);
+//
+//		}
+//
+//		ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTblReparaciones());
+//
+//		this.ventanaListadoReparaciones.setVisible(true);
+
+	}
 
 	private void llenarComboCliente() {
 
@@ -991,7 +1055,6 @@ public class ControladorListados
 		ventanaEstadisticas.getComboCliente().addActionListener(this);
 		ventanaEstadisticas.getBtnConfiguracion().addActionListener(this);
 		ventanaEstadisticas.getBtnFacturacionPorCliente().addActionListener(this);
-		ventanaEstadisticas.getBtnResumenAnualTecnico().addActionListener(this);
 		ventanaEstadisticas.getBtnResumenMensualTecnico().addActionListener(this);
 	}
 

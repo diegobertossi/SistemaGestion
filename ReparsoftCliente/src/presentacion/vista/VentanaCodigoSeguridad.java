@@ -87,14 +87,14 @@ public class VentanaCodigoSeguridad extends JFrame {
 		rdbtnMostrar = new JRadioButton("MOSTRAR DETALLE");
 		rdbtnMostrar.setFont(new Font("Cambria", Font.BOLD, 14));
 		rdbtnMostrar.setOpaque(false);
-		rdbtnMostrar.setBounds(55, 26, 159, 23);
+		rdbtnMostrar.setBounds(55, 35, 159, 23);
 		panelDetalle.add(rdbtnMostrar);
 		
 		rdbtnOcultar = new JRadioButton("OCULTAR DETALLE");
 		rdbtnOcultar.setSelected(true);
 		rdbtnOcultar.setFont(new Font("Cambria", Font.BOLD, 14));
 		rdbtnOcultar.setOpaque(false);
-		rdbtnOcultar.setBounds(55, 75, 159, 23);
+		rdbtnOcultar.setBounds(55, 63, 159, 23);
 		panelDetalle.add(rdbtnOcultar);
 		
 		
