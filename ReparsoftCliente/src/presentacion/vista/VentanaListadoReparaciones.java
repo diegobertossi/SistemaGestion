@@ -40,7 +40,7 @@ import javax.swing.event.ListSelectionEvent;
 public class VentanaListadoReparaciones extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JTable tblListado, tablaELS;
+	private JTable tblListado;
 	private DefaultTableModel modelReparaciones;
 
 	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
@@ -924,7 +924,6 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelCentral.setLayout(new BorderLayout(0, 0));
 
 		
-		
 		modelReparaciones = new DefaultTableModel(new Object[][] {}, nombreColumnas) {
 
 			private static final long serialVersionUID = 1L;
@@ -945,90 +944,22 @@ public class VentanaListadoReparaciones extends JFrame {
 				return columnEditables[column];
 			}
 			
-			public int getColumnCount() {
-				return nombreColumnas.length - 1;
-			}
-
-			public int getRowCount() {
-				return nombreColumnas.length;
-			}
-
-			public String getColumnName(int col) {
-				return (String) nombreColumnas[col + 1];
-			}
-
-			public Object getValueAt(int row, int col) {
-				//return data[row][col + 1];
-				return tblListado.getValueAt(row, col + 1);
-			}
-
-			public void setValueAt(Object obj, int row, int col) {
-				//data[row][col + 1] = obj;
-				tblListado.setValueAt(obj, row, col +1);
-			}
-
-			public boolean CellEditable(int row, int col) {
-				return true;
-			}
-			
 
 
 		};
 
-		AbstractTableModel fixedModel = new AbstractTableModel() {
-			public int getColumnCount() {
-				return 1;
-			}
-
-			public int getRowCount() {
-				return tblListado.getRowCount();
-			}
-
-			public String getColumnName(int col) {
-				return (String) tblListado.getColumnName(col);
-			}
-
-			public Object getValueAt(int row, int col) {
-				return tblListado.getValueAt(row, col);
-			}
-		};
 
 
-		tblListado = new JTable(modelReparaciones) {
-			public void valueChanged(ListSelectionEvent e) {
-				super.valueChanged(e);
-				checkSelection(false);
-			}
-		};
+		tblListado = new JTable(modelReparaciones) {};
 
-		tablaELS = new JTable(fixedModel) {
-			public void valueChanged(ListSelectionEvent e) {
-				super.valueChanged(e);
-				checkSelection(true);
-			}
-		};
-
-		tablaELS.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		tblListado.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+				tblListado.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 				
 		
 		scrollPane = new JScrollPane(tblListado);
-		JViewport viewport = new JViewport();
-		viewport.setView(tablaELS);
-		viewport.setPreferredSize(tablaELS.getPreferredSize());
-		scrollPane.setRowHeaderView(viewport);
-		scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, tablaELS.getTableHeader());
 		
-		
-		
-		//scrollPane.setBorder(new LineBorder(new Color(0, 128, 128), 2));
-		
-
-		
-		
-
 				
-
+		scrollPane.setBorder(new LineBorder(new Color(0, 128, 128), 2));
+		
 		try {
 
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
@@ -1050,23 +981,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		tblListado.setShowGrid(true);
 		tblListado.setCellSelectionEnabled(true);
-		
-
-
-		
-		
-		tablaELS.setGridColor(new Color(105, 105, 105));
-		tablaELS.setBackground(new Color(176, 196, 222));
-		tablaELS.setOpaque(false);
-		tablaELS.setRowMargin(3);
-		tablaELS.setRowHeight(18);
-
-		((DefaultTableCellRenderer) tablaELS.getTableHeader().getDefaultRenderer())
-				.setHorizontalAlignment(JLabel.CENTER);
-
-		tablaELS.setShowGrid(true);
-		tablaELS.setCellSelectionEnabled(true);
-
+	
 		
 		try {
 			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
@@ -1076,10 +991,6 @@ public class VentanaListadoReparaciones extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
-//		tablaELS.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//		tblListado.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		lblNewLabel_6 = new JLabel("        ");
 		panelCentral.add(lblNewLabel_6, BorderLayout.NORTH);
@@ -1091,8 +1002,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelCentral.add(lblNewLabel_4, BorderLayout.WEST);
 
 		tblListado.getTableHeader().setReorderingAllowed(false);
-		tablaELS.getTableHeader().setReorderingAllowed(false);
-		
+				
 
 		int[] anchos = { 60, 80, 150, 150, 200, 100, 150, 100, 100, 80, 110, 120, 150, 100, 100, 100, 100, 80, 80, 100,
 				100, 100 };
@@ -1108,19 +1018,8 @@ public class VentanaListadoReparaciones extends JFrame {
 
 	}
 
-	private void checkSelection(boolean isFixedTable) {
-		int fixedSelectedIndex = tablaELS.getSelectedRow();
-		int selectedIndex = tblListado.getSelectedRow();
-		if (fixedSelectedIndex != selectedIndex) {
-			if (isFixedTable) {
-				tblListado.setRowSelectionInterval(fixedSelectedIndex, fixedSelectedIndex);
-			} else {
-				tablaELS.setRowSelectionInterval(selectedIndex, selectedIndex);
-			}
-		}
-	}
-	
 
+	
 	public void setCellRender(JTable table) {
 		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
 		while (en.hasMoreElements()) {
@@ -1601,12 +1500,5 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.tblListado = tblListado;
 	}
 
-	public JTable getTablaELS() {
-		return tablaELS;
-	}
-
-	public void setTablaELS(JTable tablaELS) {
-		this.tablaELS = tablaELS;
-	}
 
 }

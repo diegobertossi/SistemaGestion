@@ -141,27 +141,6 @@ public class ControladorListados
 		});
 		
 		
-		ventanaListadoReparaciones.getTablaELS().addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseMoved(MouseEvent e) {
-
-				// int row =
-				// ventanaListadoReparaciones.getTblReparaciones().rowAtPoint(e.getPoint());
-				int column = ventanaListadoReparaciones.getTablaELS().columnAtPoint(e.getPoint());
-
-				// Verificar si el mouse est� sobre la celda deseada
-				if (column == 0) {
-					ventanaListadoReparaciones.getTablaELS()
-							.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				} else {
-					ventanaListadoReparaciones.getTablaELS().setCursor(Cursor.getDefaultCursor());
-				}
-			}
-		});
-		
-		
-
-		
 
 		if (arg0.getSource() == this.ventanaListadoReparaciones.getBtnFiltrar()) {
 
@@ -643,7 +622,7 @@ public class ControladorListados
 
 		for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
 
-			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
+			Object[] fila = {this.Reparaciones_en_tabla.get(i).getELS(),
 					this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
 					this.Reparaciones_en_tabla.get(i).getCliente(), this.Reparaciones_en_tabla.get(i).getSucursal(),
 					this.Reparaciones_en_tabla.get(i).getNombreEquipo(), this.Reparaciones_en_tabla.get(i).getMarca(),
@@ -660,6 +639,8 @@ public class ControladorListados
 					this.Reparaciones_en_tabla.get(i).getPresupuestoEnviado(),
 					this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
 					this.Reparaciones_en_tabla.get(i).getPrecioDolar(), this.Reparaciones_en_tabla.get(i).getPago(), };
+			
+			
 			this.ventanaListadoReparaciones.getModelReparaciones().addRow(fila);
 
 //			String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
@@ -671,7 +652,7 @@ public class ControladorListados
 		}
 
 		ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTblReparaciones());
-		ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTablaELS());				
+					
 
 		this.ventanaListadoReparaciones.setVisible(true);
 		
@@ -734,9 +715,6 @@ public class ControladorListados
 		this.ventanaListadoReparaciones.getRadioButtonPresupGenerado().addItemListener(this);
 		this.ventanaListadoReparaciones.getTblReparaciones().addMouseListener(this);
 		this.ventanaListadoReparaciones.getTblReparaciones().addMouseMotionListener(this);
-		
-		this.ventanaListadoReparaciones.getTablaELS().addMouseListener(this);
-		this.ventanaListadoReparaciones.getTablaELS().addMouseMotionListener(this);
 
 		this.ventanaListadoReparaciones.getChckbxELS().addActionListener(this);
 		this.ventanaListadoReparaciones.getChckbxELS().addItemListener(this);
@@ -1944,35 +1922,7 @@ public class ControladorListados
 			}
 			
 			
-			if (arg0.getSource() == this.ventanaListadoReparaciones.getTablaELS()) {
-
-				int row = this.ventanaListadoReparaciones.getTablaELS().getSelectedRow();
-				int col = this.ventanaListadoReparaciones.getTablaELS().getSelectedColumn();
-
-				int els = 0;
-				if (col == 0)
-
-					els = Integer.parseInt(
-							this.ventanaListadoReparaciones.getTablaELS().getValueAt(row, col).toString());
-
-				NumeroELSSeleccionado = els;
-
-				if (NumeroELSSeleccionado != 0) {
-
-					try {
-						controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado);
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
-
-				}
-
-			}
-
-
+			
 			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxELS()) {
 				if (this.ventanaListadoReparaciones.getChckbxELS().isSelected()) {
 
@@ -3430,36 +3380,6 @@ public class ControladorListados
 
 		}
 		
-		if (this.ventanaListadoReparaciones != null) {
-			if (e.getSource() == this.ventanaListadoReparaciones.getTablaELS()) {
-
-				int row = this.ventanaListadoReparaciones.getTablaELS().getSelectedRow();
-				int col = this.ventanaListadoReparaciones.getTablaELS().getSelectedColumn();
-
-				int els = 0;
-				if (col == 0)
-
-					els = Integer.parseInt(
-							this.ventanaListadoReparaciones.getTablaELS().getValueAt(row, col).toString());
-
-				NumeroELSSeleccionado = els;
-
-				if (NumeroELSSeleccionado != 0) {
-
-					try {
-						controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado);
-					} catch (ParseException error) {
-						// TODO Auto-generated catch block
-						error.printStackTrace();
-					}
-
-					controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
-
-				}
-
-			}
-
-		}
 
 	}
 

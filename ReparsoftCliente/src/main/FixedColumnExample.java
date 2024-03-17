@@ -55,6 +55,7 @@ public class FixedColumnExample extends JFrame {
 				return data[row][col];
 			}
 		};
+		
 		DefaultTableModel model = new DefaultTableModel(new Object[][] {}, column) {
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
