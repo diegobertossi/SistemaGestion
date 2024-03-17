@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#EEEFF0"/>
+		</conditionalStyle>
+	</style>
+	<style name="Table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#CACED0">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#D8D8D8"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="tableDataset" uuid="f13e6d36-5148-4ecc-bbe3-3035def80980">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="nombreTecnico" class="java.lang.String">
+		<fieldDescription><![CDATA[nombreTecnico]]></fieldDescription>
+	</field>
+	<field name="anio" class="java.lang.String">
+		<fieldDescription><![CDATA[anio]]></fieldDescription>
+	</field>
+	<field name="reparadosEngtiaAnio" class="java.lang.String">
+		<fieldDescription><![CDATA[reparadosEngtiaAnio]]></fieldDescription>
+	</field>
+	<field name="reparadosAnio" class="java.lang.String">
+		<fieldDescription><![CDATA[reparadosAnio]]></fieldDescription>
+	</field>
+	<field name="sinReparacionAnio" class="java.lang.String">
+		<fieldDescription><![CDATA[sinReparacionAnio]]></fieldDescription>
+	</field>
+	<field name="revisadosAnio" class="java.lang.String">
+		<fieldDescription><![CDATA[revisadosAnio]]></fieldDescription>
+	</field>
+	<field name="sinFallaAnio" class="java.lang.String">
+		<fieldDescription><![CDATA[sinFallaAnio]]></fieldDescription>
+	</field>
+	<field name="enReparacionAnio" class="java.lang.String">
+		<fieldDescription><![CDATA[enReparacionAnio]]></fieldDescription>
+	</field>
+	<field name="ventasAnio" class="java.lang.String">
+		<fieldDescription><![CDATA[ventasAnio]]></fieldDescription>
+	</field>
+	<field name="enReparacionMes" class="java.lang.String">
+		<fieldDescription><![CDATA[enReparacionMes]]></fieldDescription>
+	</field>
+	<field name="sinFallaMes" class="java.lang.String">
+		<fieldDescription><![CDATA[sinFallaMes]]></fieldDescription>
+	</field>
+	<field name="reparadosEngtiaMes" class="java.lang.String">
+		<fieldDescription><![CDATA[reparadosEngtiaMes]]></fieldDescription>
+	</field>
+	<field name="reparadosMes" class="java.lang.String">
+		<fieldDescription><![CDATA[reparadosMes]]></fieldDescription>
+	</field>
+	<field name="sinReparacionMes" class="java.lang.String">
+		<fieldDescription><![CDATA[sinReparacionMes]]></fieldDescription>
+	</field>
+	<field name="ventasMes" class="java.lang.String">
+		<fieldDescription><![CDATA[ventasMes]]></fieldDescription>
+	</field>
+	<field name="revisadosMes" class="java.lang.String">
+		<fieldDescription><![CDATA[revisadosMes]]></fieldDescription>
+	</field>
+	<field name="mes" class="java.lang.String">
+		<fieldDescription><![CDATA[mes]]></fieldDescription>
+	</field>
+	<field name="repNoAceptAnio" class="java.lang.String">
+		<fieldDescription><![CDATA[repNoAceptAnio]]></fieldDescription>
+	</field>
+	<field name="repNoAceptMes" class="java.lang.String">
+		<fieldDescription><![CDATA[repNoAceptMes]]></fieldDescription>
+	</field>
+	<field name="repAceptadaMes" class="java.lang.String">
+		<fieldDescription><![CDATA[repAceptadaMes]]></fieldDescription>
+	</field>
+	<field name="repAceptadaAnio" class="java.lang.String">
+		<fieldDescription><![CDATA[repAceptadaAnio]]></fieldDescription>
+	</field>
+	<field name="repEsperaMes" class="java.lang.String">
+		<fieldDescription><![CDATA[repEsperaMes]]></fieldDescription>
+	</field>
+	<field name="repEsperaAnio" class="java.lang.String">
+		<fieldDescription><![CDATA[repEsperaAnio]]></fieldDescription>
+	</field>
+	<field name="aceptacionesDelMes" class="java.lang.String">
+		<fieldDescription><![CDATA[aceptacionesDelMes]]></fieldDescription>
+	</field>
+	<title>
+		<band height="60" splitType="Stretch">
+			<line>
+				<reportElement x="36" y="50" width="483" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="400" y="30" width="152" height="15" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979"/>
+				<textElement textAlignment="Right">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat( "EEEEE dd MMMMM yyyy",new Locale("es", "ES")).format (new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="36" y="53" width="483" height="1" uuid="0ec8a2a0-e9c5-4541-9d5e-6dfde9a0f290">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="555" height="31" uuid="2b502578-2a2a-4e5b-8013-82050e7efb93"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreTecnico} +"  - "+$F{anio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="6"/>
+	</columnHeader>
+	<detail>
+		<band height="217">
+			<staticText>
+				<reportElement x="30" y="40" width="130" height="20" uuid="52513d53-848e-477d-b05f-9da6d1842082"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EQUIPOS REVISADOS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="70" width="130" height="20" uuid="c535e31a-ad88-4e19-8acb-4b1d8f4fdabe"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<text><![CDATA[REPARADOS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="90" width="130" height="20" uuid="52cb7c16-8ed5-49a3-bd81-2f2458375b1f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<text><![CDATA[EN GARANTÍA: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="110" width="130" height="20" uuid="ac4f02a5-dd89-43a7-a25d-356375338b1f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<text><![CDATA[SIN FALLA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="130" width="130" height="20" uuid="d1894561-4f16-4278-8cbe-987991697cbe"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<text><![CDATA[EN REPARACIÓN: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="170" width="130" height="20" uuid="9f9a95ac-393a-4c52-8e7f-0b31c06b47b2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<text><![CDATA[SIN REPARACIÓN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="150" width="130" height="20" uuid="8776a484-7dd9-48f3-aff5-139f86ae9e76"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<text><![CDATA[VENTAS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="0" width="199" height="20" uuid="48c7db48-78c9-457b-9e01-82823be4b1a5"/>
+				<textElement>
+					<font fontName="Cambria" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS TOTALES DEL AÑO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="167" y="40" width="40" height="20" uuid="8448ea5a-a0e4-49a7-96c9-123f9b3a9460"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{revisadosAnio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="70" width="40" height="20" uuid="dd41c2d2-7145-448d-ac98-999690a76643"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reparadosAnio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="110" width="40" height="20" uuid="d3292567-7bc1-49bd-9948-8d3f4246c371"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinFallaAnio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="90" width="40" height="20" uuid="88c3a4ea-3546-4d49-9cb8-4cc769fc7f26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reparadosEngtiaAnio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="170" width="40" height="20" uuid="2d50b449-4276-45ce-ab35-20404ed3ebe8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinReparacionAnio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="130" width="40" height="20" uuid="5a662682-474a-4b6c-af8d-9c3e3f9c220d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{enReparacionAnio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="150" width="40" height="20" uuid="24f0de31-a76f-4314-bbf5-7acc21677fa5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ventasAnio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="0" width="140" height="20" uuid="295c9caa-8b72-4a53-80d8-b25a418efe1d"/>
+				<textElement>
+					<font fontName="Cambria" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="235" y="40" width="38" height="20" uuid="e6f489b6-3c6d-49ae-95c2-527fd49ea2f5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACEP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="282" y="40" width="52" height="20" uuid="b4cd84a8-9745-4b71-b1c7-4353dd04acf0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO ACEP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="344" y="40" width="50" height="20" uuid="42b7240d-7e53-4d5c-9f21-653b6e78f924"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESPERA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="234" y="70" width="40" height="20" uuid="908b67ee-61fa-47cd-9c13-d179b6f2db90"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{repAceptadaAnio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="288" y="70" width="40" height="20" uuid="23cdb2f0-d5bb-499c-831f-0ea9717754c5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{repNoAceptAnio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="349" y="70" width="40" height="20" uuid="6e212a2e-8a0f-45ac-b503-20b9ef68314a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{repEsperaAnio}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="218" y="38" width="1" height="152" uuid="9a67970f-b4ff-4209-901f-cf4312ebb004"/>
+			</line>
+			<line>
+				<reportElement x="221" y="38" width="1" height="152" uuid="5a1beb0f-e88a-4e92-9640-b52710581d87"/>
+			</line>
+			<line>
+				<reportElement x="30" y="210" width="522" height="1" uuid="ed673d08-5579-40db-b4ce-81bf93027e5e"/>
+			</line>
+		</band>
+		<band height="207">
+			<staticText>
+				<reportElement x="30" y="177" width="130" height="20" uuid="8475012b-b477-48a3-a71b-84b55a02f1ee"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<text><![CDATA[SIN REPARACIÓN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="77" width="130" height="20" uuid="f420a4ec-3c8d-4c75-9388-0f56541d8cdd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<text><![CDATA[REPARADOS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="117" width="130" height="20" uuid="f3acb3ee-f631-44fc-8fa5-b1b58ef1f177"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<text><![CDATA[SIN FALLA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="97" width="130" height="20" uuid="7ef3c54a-e950-4e15-b5b2-4088bc4dea15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<text><![CDATA[EN GARANTÍA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="47" width="130" height="20" uuid="fddf7fd0-6581-4501-b0ea-8ba8758e3962"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EQUIPOS REVISADOS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="137" width="130" height="20" uuid="2dff3d89-9329-40d9-b39b-45c5d97d1721"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<text><![CDATA[EN REPARACIÓN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="157" width="130" height="20" uuid="b5389845-e0b6-40ba-bbb5-f92d8cd6307d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<text><![CDATA[VENTAS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="7" width="179" height="20" uuid="3b15f8cf-b3eb-4db6-95f8-dcdd6289d1a7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS TOTALES DEL MES]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="167" y="117" width="40" height="20" uuid="6eaeee21-a609-49f0-a893-d1687bf59fb8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinFallaMes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="157" width="40" height="20" uuid="0959e266-4712-40ae-a074-91dee53f2b04"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ventasMes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="137" width="40" height="20" uuid="16af0a91-f162-4eb7-a369-82388524ba82"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{enReparacionMes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="177" width="40" height="20" uuid="d0bcc40f-7b05-43de-83de-cf46ad2351e5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinReparacionMes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="77" width="40" height="20" uuid="26547e17-e524-4b8a-b8a6-131a7658082a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reparadosMes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="97" width="40" height="20" uuid="0ee64c80-ff41-484e-b008-2193689f9144"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reparadosEngtiaMes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="47" width="40" height="20" uuid="dbed4482-529e-4b81-a597-ad8e2a7133dd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{revisadosMes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="240" y="7" width="140" height="20" uuid="8a32eaeb-17b6-407c-b584-eabb7c69c277"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="221" y="47" width="1" height="152" uuid="68f04c44-3b3d-4c92-8e46-2e89c20ae657"/>
+			</line>
+			<line>
+				<reportElement x="218" y="47" width="1" height="152" uuid="6211dafc-7a57-4591-ad6e-d3d404aed1e3"/>
+			</line>
+			<staticText>
+				<reportElement x="234" y="47" width="38" height="20" uuid="68b1f24f-c64d-4cab-afd0-413a57c973f3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACEP]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="233" y="77" width="40" height="20" uuid="a4ca6419-541d-4b52-b475-0593e4d82a56"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{repAceptadaMes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="281" y="47" width="52" height="20" uuid="84362982-085f-48cc-8a29-8e1193c9adb4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO ACEP]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="287" y="77" width="40" height="20" uuid="72b36058-0fa6-4b70-a4d6-d4b839dfb3e2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{repNoAceptMes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="348" y="77" width="40" height="20" uuid="51f84f12-cfc9-4966-af7d-5c6a9ada2af0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{repEsperaMes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="343" y="47" width="50" height="20" uuid="17c99082-26b9-4c17-8711-e31bffcd9fb8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESPERA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="404" y="45" width="1" height="152" uuid="e5f88909-bca1-44fc-aeb2-1d9fc381d41c"/>
+			</line>
+			<line>
+				<reportElement x="401" y="45" width="1" height="152" uuid="815b3e71-1b9a-4c3d-868e-211ed7075274"/>
+			</line>
+			<staticText>
+				<reportElement x="405" y="47" width="149" height="20" uuid="958399c7-685c-4d5d-b4c4-7d8066320d70"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACEP TOTALES DEL MES]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="456" y="77" width="40" height="20" uuid="20d36a33-40a3-4466-95b2-cd9f2fdd2919"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aceptacionesDelMes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="260" y="121" width="100" height="70" uuid="12e229de-090a-40a2-b940-d3af20cabf3f"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[SON LOS EQUIPOS REPARADOS EN EL MES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="426" y="121" width="100" height="70" uuid="481df049-3557-4f6d-b440-b1b5ad83b85e"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[SON LAS ACEPTACIONES DEL MES]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="107"/>
+	</lastPageFooter>
+</jasperReport>

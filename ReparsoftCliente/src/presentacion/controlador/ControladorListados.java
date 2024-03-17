@@ -35,14 +35,18 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import dto.RegistroPresupuestoDTO;
+import dto.RegistroResumenTecnicoDTO;
 import dto.ReparacionDTO;
 import modelo.Agenda;
+import presentacion.reportes.ReportePresupuesto;
 import presentacion.vista.VentanaCodigoSeguridad;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaEstadisticas;
 import presentacion.vista.VentanaListadoReparaciones;
 import presentacion.vista.VentanaResumenMensualTecnico;
 import tiposPropios.MonedaFormatter;
+import presentacion.reportes.ReporteResumenTecnico;
 
 import javax.swing.*;
 
@@ -139,8 +143,6 @@ public class ControladorListados
 				}
 			}
 		});
-		
-		
 
 		if (arg0.getSource() == this.ventanaListadoReparaciones.getBtnFiltrar()) {
 
@@ -334,9 +336,9 @@ public class ControladorListados
 				&& arg0.getSource() == this.ventanaEstadisticas.getBtnConfiguracion()) {
 
 			if (filtro == 0) {
-				
-				JOptionPane.showMessageDialog(null, "Debe seleccionar un FILTRO antes de setear la configuraración", "SELECCIONAR FILTRO",
-						JOptionPane.INFORMATION_MESSAGE);
+
+				JOptionPane.showMessageDialog(null, "Debe seleccionar un FILTRO antes de setear la configuraración",
+						"SELECCIONAR FILTRO", JOptionPane.INFORMATION_MESSAGE);
 
 			}
 
@@ -495,9 +497,66 @@ public class ControladorListados
 		else if (this.ventanaResumenMensualTecnico != null
 				&& arg0.getSource() == this.ventanaResumenMensualTecnico.getBtnMostrarResumen()) {
 
-			System.out.println("resumen");
+			if (ventanaResumenMensualTecnico.getComboMes() == null) {
+
+				Object mje = "Debe seleccionar un mes.";
+				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+
+			} else {
+
+				List<RegistroResumenTecnicoDTO> listaResumenTecnico = new ArrayList<RegistroResumenTecnicoDTO>();
+
+				RegistroResumenTecnicoDTO resumenDatos = TomarDatosPantallaResumenTecnico();
+
+				listaResumenTecnico.add(resumenDatos);
+
+				ReporteResumenTecnico reporteResumen = new ReporteResumenTecnico(resumenDatos, listaResumenTecnico);
+				reporteResumen.mostrar();
+			}
 
 		}
+
+	}
+
+	private RegistroResumenTecnicoDTO TomarDatosPantallaResumenTecnico() {
+
+		// TODO Auto-generated method stub
+
+		// POR AÑO
+		String NombreTecnico = this.ventanaEstadisticas.getTextNombreTecnico().getText();
+		String anio = this.ventanaEstadisticas.getLblAnioDatos().getText();
+		String mes = this.ventanaResumenMensualTecnico.getComboMes().getSelectedItem().toString();
+
+		String revisadosAnio = this.ventanaEstadisticas.getTextTotalRevisados().getText();
+		String reparadosAnio = this.ventanaEstadisticas.getTextReparadosXTecnico().getText();
+		String reparadosEngtiaAnio = this.ventanaEstadisticas.getTextRepGtiaXtecnico().getText();
+		String sinFallaAnio = this.ventanaEstadisticas.getTextSinFallasXtecnico().getText();
+		String enReparacionAnio = this.ventanaEstadisticas.getTextEnRepXtecnico().getText();
+		String ventasAnio = this.ventanaEstadisticas.getTextVentasXtecnico().getText();
+		String sinReparacionAnio = this.ventanaEstadisticas.getTextSinRepXtecnico().getText();
+		String repAceptadaAnio = this.ventanaEstadisticas.getTextRepAcepXtecnico().getText();
+		String repNoAceptAnio = this.ventanaEstadisticas.getTextRepNoAcepXtecnico().getText();
+		String repEsperaAnio = this.ventanaEstadisticas.getTextRepEsperaXtecnico().getText();
+
+		// POR MES
+		String revisadosMes = this.ventanaResumenMensualTecnico.getTextRevisados().getText();
+		String reparadosMes = this.ventanaResumenMensualTecnico.getTextReparados().getText();
+		String reparadosEngtiaMes = this.ventanaResumenMensualTecnico.getTextRepGtia().getText();
+		String sinFallaMes = this.ventanaResumenMensualTecnico.getTextSinFalla().getText();
+		String enReparacionMes = this.ventanaResumenMensualTecnico.getTextEnRep().getText();
+		String ventasMes = this.ventanaResumenMensualTecnico.getTextVentas().getText();
+		String sinReparacionMes = this.ventanaResumenMensualTecnico.getTextSinRep().getText();
+		String repAceptadaMes = this.ventanaResumenMensualTecnico.getTextRepAcep().getText();
+		String repNoAceptMes = this.ventanaResumenMensualTecnico.getTextRepNoAcep().getText();
+		String repEsperaMes = this.ventanaResumenMensualTecnico.getTextRepEspera().getText();
+		String aceptacionesDelMes = this.ventanaResumenMensualTecnico.getTextAceptadosDelMes().getText();
+		
+
+		RegistroResumenTecnicoDTO nuevoResumen = new RegistroResumenTecnicoDTO(NombreTecnico, anio, mes, revisadosAnio,
+				reparadosAnio, reparadosEngtiaAnio, sinFallaAnio, enReparacionAnio, ventasAnio, sinReparacionAnio,
+				repAceptadaAnio, repNoAceptAnio, repEsperaAnio, revisadosMes, reparadosMes, reparadosEngtiaMes,
+				sinFallaMes, enReparacionMes, ventasMes, sinReparacionMes, repAceptadaMes, repNoAceptMes, repEsperaMes, aceptacionesDelMes);
+		return nuevoResumen;
 
 	}
 
@@ -622,7 +681,7 @@ public class ControladorListados
 
 		for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
 
-			Object[] fila = {this.Reparaciones_en_tabla.get(i).getELS(),
+			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
 					this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
 					this.Reparaciones_en_tabla.get(i).getCliente(), this.Reparaciones_en_tabla.get(i).getSucursal(),
 					this.Reparaciones_en_tabla.get(i).getNombreEquipo(), this.Reparaciones_en_tabla.get(i).getMarca(),
@@ -639,8 +698,7 @@ public class ControladorListados
 					this.Reparaciones_en_tabla.get(i).getPresupuestoEnviado(),
 					this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
 					this.Reparaciones_en_tabla.get(i).getPrecioDolar(), this.Reparaciones_en_tabla.get(i).getPago(), };
-			
-			
+
 			this.ventanaListadoReparaciones.getModelReparaciones().addRow(fila);
 
 //			String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
@@ -652,13 +710,8 @@ public class ControladorListados
 		}
 
 		ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTblReparaciones());
-					
 
 		this.ventanaListadoReparaciones.setVisible(true);
-		
-		
-
-		
 
 	}
 
@@ -1920,9 +1973,7 @@ public class ControladorListados
 				}
 
 			}
-			
-			
-			
+
 			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxELS()) {
 				if (this.ventanaListadoReparaciones.getChckbxELS().isSelected()) {
 
@@ -3379,7 +3430,6 @@ public class ControladorListados
 			}
 
 		}
-		
 
 	}
 

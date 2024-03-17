@@ -175,7 +175,7 @@ public class VentanaEstadisticas extends JFrame {
 
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.inactiveCaption);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
@@ -203,43 +203,43 @@ public class VentanaEstadisticas extends JFrame {
 		
 		JLabel lblNewLabel_1_3 = new JLabel("FILTRO: ");
 		lblNewLabel_1_3.setFont(new Font("Cambria", Font.BOLD, 14));
-		lblNewLabel_1_3.setBounds(78, 6, 104, 14);
+		lblNewLabel_1_3.setBounds(115, 6, 104, 14);
 		lblNewLabel_1_3.setPreferredSize(new Dimension(50, 14));
 		panel_Filtros.add(lblNewLabel_1_3);
 		
 		comboFiltro = new JComboBox();
 		comboFiltro.setFont(new Font("Cambria", Font.BOLD, 14));
-		comboFiltro.setBounds(78, 23, 166, 22);
+		comboFiltro.setBounds(115, 23, 166, 22);
 		panel_Filtros.add(comboFiltro);
 		
 		lblAnio = new JLabel("AÑO: ");
 		lblAnio.setVisible(false);
 		lblAnio.setFont(new Font("Cambria", Font.BOLD, 14));
-		lblAnio.setBounds(535, 6, 104, 14);
+		lblAnio.setBounds(677, 6, 104, 14);
 		lblAnio.setPreferredSize(new Dimension(50, 14));
 		panel_Filtros.add(lblAnio);
 		
 		comboAnio = new JComboBox();
 		comboAnio.setVisible(false);
 		comboAnio.setFont(new Font("Cambria", Font.PLAIN, 14));
-		comboAnio.setBounds(535, 23, 104, 22);
+		comboAnio.setBounds(677, 23, 104, 22);
 		panel_Filtros.add(comboAnio);
 		
 		comboTecnico = new JComboBox<Object>();
 		comboTecnico.setVisible(false);
 		comboTecnico.setFont(new Font("Cambria", Font.PLAIN, 14));
-		comboTecnico.setBounds(291, 23, 166, 22);
+		comboTecnico.setBounds(396, 23, 166, 22);
 		panel_Filtros.add(comboTecnico);
 		
 		lblTecnico = new JLabel("TÉCNICO: ");
 		lblTecnico.setVisible(false);
 		lblTecnico.setFont(new Font("Cambria", Font.BOLD, 14));
-		lblTecnico.setBounds(291, 6, 104, 14);
+		lblTecnico.setBounds(396, 6, 104, 14);
 		panel_Filtros.add(lblTecnico);
 		
 		comboCliente = new JComboBox();
 		comboCliente.setVisible(false);
-		comboCliente.setBounds(291, 23, 166, 22);
+		comboCliente.setBounds(396, 23, 166, 22);
 		panel_Filtros.add(comboCliente);
 		
 		panel = new JPanel();
@@ -269,7 +269,7 @@ public class VentanaEstadisticas extends JFrame {
 		JPanel panelDerecha = new JPanel();
 		panelDerecha.setBackground(new Color(176, 196, 222));
 		panelDerecha.setPreferredSize(new Dimension(350, 10));
-		panelDerecha.setBorder(new LineBorder(new Color(0, 128, 128), 3));
+		panelDerecha.setBorder(new LineBorder(new Color(0, 128, 128), 4));
 		contentPane.add(panelDerecha, BorderLayout.EAST);
 		panelDerecha.setLayout(new BorderLayout(0, 0));
 		
@@ -300,77 +300,12 @@ public class VentanaEstadisticas extends JFrame {
 		panel_facturacionPorCliente = new JPanel();
 		panel_facturacionPorCliente.setVisible(false);
 		
+		panel_facturacionPorTecnico = new JPanel();
+		panel_facturacionPorTecnico.setVisible(false);
+		
 		panel_datosPorTecnico = new JPanel();
 		panel_datosPorTecnico.setLayout(null);
 		panel_datosPorTecnico.setVisible(false);
-		
-		panel_facturacionPorTecnico = new JPanel();
-		panel_facturacionPorTecnico.setVisible(false);
-		panel_facturacionPorTecnico.setLayout(null);
-		panel_facturacionPorTecnico.setOpaque(false);
-		panel_facturacionPorTecnico.setBorder(null);
-		panel_facturacionPorTecnico.setBounds(4, 386, 333, 156);
-		panel_Datos.add(panel_facturacionPorTecnico);
-		
-		lblFacturacionTecnicoPesos = new JLabel("FACTURACIÓN TÉCNICO (PESOS): ");
-		lblFacturacionTecnicoPesos.setFont(new Font("Cambria", Font.BOLD, 11));
-		lblFacturacionTecnicoPesos.setBounds(10, 13, 187, 14);
-		panel_facturacionPorTecnico.add(lblFacturacionTecnicoPesos);
-		
-		lblFacturacionTecnicoDolar = new JLabel("FACTURACIÓN TÉCNICO (DOLARES): ");
-		lblFacturacionTecnicoDolar.setFont(new Font("Cambria", Font.BOLD, 11));
-		lblFacturacionTecnicoDolar.setBounds(10, 30, 187, 14);
-		panel_facturacionPorTecnico.add(lblFacturacionTecnicoDolar);
-		
-		textFacturacionTecnicoPesos = new JTextField();
-		textFacturacionTecnicoPesos.setOpaque(false);
-		textFacturacionTecnicoPesos.setHorizontalAlignment(SwingConstants.CENTER);
-		textFacturacionTecnicoPesos.setFont(new Font("Cambria", Font.PLAIN, 13));
-		textFacturacionTecnicoPesos.setEditable(false);
-		textFacturacionTecnicoPesos.setColumns(10);
-		textFacturacionTecnicoPesos.setBorder(null);
-		textFacturacionTecnicoPesos.setBounds(194, 11, 75, 16);
-		panel_facturacionPorTecnico.add(textFacturacionTecnicoPesos);
-		
-		textFacturacionTecnicoDolares = new JTextField();
-		textFacturacionTecnicoDolares.setOpaque(false);
-		textFacturacionTecnicoDolares.setHorizontalAlignment(SwingConstants.CENTER);
-		textFacturacionTecnicoDolares.setFont(new Font("Cambria", Font.PLAIN, 13));
-		textFacturacionTecnicoDolares.setEditable(false);
-		textFacturacionTecnicoDolares.setColumns(10);
-		textFacturacionTecnicoDolares.setBorder(null);
-		textFacturacionTecnicoDolares.setBounds(194, 28, 75, 16);
-		panel_facturacionPorTecnico.add(textFacturacionTecnicoDolares);
-		
-		btnResumenAnualTecnico = new JButton("<html><center>RESUMEN ANUAL</html>");
-		btnResumenAnualTecnico.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnResumenAnualTecnico.setBounds(31, 59, 106, 37);
-		panel_facturacionPorTecnico.add(btnResumenAnualTecnico);
-		
-		btnResumenMensualTecnico = new JButton("<html><center>RESUMEN MENSUAL</html>");
-		btnResumenMensualTecnico.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnResumenMensualTecnico.setBounds(194, 59, 106, 37);
-		panel_facturacionPorTecnico.add(btnResumenMensualTecnico);
-		
-		textPorcFacturacionTecnicoDolar = new JTextField();
-		textPorcFacturacionTecnicoDolar.setOpaque(false);
-		textPorcFacturacionTecnicoDolar.setHorizontalAlignment(SwingConstants.CENTER);
-		textPorcFacturacionTecnicoDolar.setFont(new Font("Cambria", Font.PLAIN, 13));
-		textPorcFacturacionTecnicoDolar.setEditable(false);
-		textPorcFacturacionTecnicoDolar.setColumns(10);
-		textPorcFacturacionTecnicoDolar.setBorder(null);
-		textPorcFacturacionTecnicoDolar.setBounds(279, 28, 45, 16);
-		panel_facturacionPorTecnico.add(textPorcFacturacionTecnicoDolar);
-		
-		textPorcFacturacionTecnicoPesos = new JTextField();
-		textPorcFacturacionTecnicoPesos.setOpaque(false);
-		textPorcFacturacionTecnicoPesos.setHorizontalAlignment(SwingConstants.CENTER);
-		textPorcFacturacionTecnicoPesos.setFont(new Font("Cambria", Font.PLAIN, 13));
-		textPorcFacturacionTecnicoPesos.setEditable(false);
-		textPorcFacturacionTecnicoPesos.setColumns(10);
-		textPorcFacturacionTecnicoPesos.setBorder(null);
-		textPorcFacturacionTecnicoPesos.setBounds(278, 11, 45, 16);
-		panel_facturacionPorTecnico.add(textPorcFacturacionTecnicoPesos);
 		panel_datosPorTecnico.setOpaque(false);
 		panel_datosPorTecnico.setBorder(null);
 		panel_datosPorTecnico.setBounds(4, 126, 333, 251);
@@ -660,6 +595,71 @@ public class VentanaEstadisticas extends JFrame {
 		textNombreTecnico.setBorder(null);
 		textNombreTecnico.setBounds(3, 29, 327, 18);
 		panel_datosPorTecnico.add(textNombreTecnico);
+		panel_facturacionPorTecnico.setLayout(null);
+		panel_facturacionPorTecnico.setOpaque(false);
+		panel_facturacionPorTecnico.setBorder(null);
+		panel_facturacionPorTecnico.setBounds(4, 386, 333, 156);
+		panel_Datos.add(panel_facturacionPorTecnico);
+		
+		lblFacturacionTecnicoPesos = new JLabel("FACTURACIÓN TÉCNICO (PESOS): ");
+		lblFacturacionTecnicoPesos.setFont(new Font("Cambria", Font.BOLD, 11));
+		lblFacturacionTecnicoPesos.setBounds(10, 13, 187, 14);
+		panel_facturacionPorTecnico.add(lblFacturacionTecnicoPesos);
+		
+		lblFacturacionTecnicoDolar = new JLabel("FACTURACIÓN TÉCNICO (DOLARES): ");
+		lblFacturacionTecnicoDolar.setFont(new Font("Cambria", Font.BOLD, 11));
+		lblFacturacionTecnicoDolar.setBounds(10, 30, 187, 14);
+		panel_facturacionPorTecnico.add(lblFacturacionTecnicoDolar);
+		
+		textFacturacionTecnicoPesos = new JTextField();
+		textFacturacionTecnicoPesos.setOpaque(false);
+		textFacturacionTecnicoPesos.setHorizontalAlignment(SwingConstants.CENTER);
+		textFacturacionTecnicoPesos.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textFacturacionTecnicoPesos.setEditable(false);
+		textFacturacionTecnicoPesos.setColumns(10);
+		textFacturacionTecnicoPesos.setBorder(null);
+		textFacturacionTecnicoPesos.setBounds(194, 11, 75, 16);
+		panel_facturacionPorTecnico.add(textFacturacionTecnicoPesos);
+		
+		textFacturacionTecnicoDolares = new JTextField();
+		textFacturacionTecnicoDolares.setOpaque(false);
+		textFacturacionTecnicoDolares.setHorizontalAlignment(SwingConstants.CENTER);
+		textFacturacionTecnicoDolares.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textFacturacionTecnicoDolares.setEditable(false);
+		textFacturacionTecnicoDolares.setColumns(10);
+		textFacturacionTecnicoDolares.setBorder(null);
+		textFacturacionTecnicoDolares.setBounds(194, 28, 75, 16);
+		panel_facturacionPorTecnico.add(textFacturacionTecnicoDolares);
+		
+		btnResumenAnualTecnico = new JButton("<html><center>RESUMEN ANUAL</html>");
+		btnResumenAnualTecnico.setFont(new Font("Cambria", Font.BOLD, 12));
+		btnResumenAnualTecnico.setBounds(31, 59, 106, 37);
+		panel_facturacionPorTecnico.add(btnResumenAnualTecnico);
+		
+		btnResumenMensualTecnico = new JButton("<html><center>RESUMEN MENSUAL</html>");
+		btnResumenMensualTecnico.setFont(new Font("Cambria", Font.BOLD, 12));
+		btnResumenMensualTecnico.setBounds(194, 59, 106, 37);
+		panel_facturacionPorTecnico.add(btnResumenMensualTecnico);
+		
+		textPorcFacturacionTecnicoDolar = new JTextField();
+		textPorcFacturacionTecnicoDolar.setOpaque(false);
+		textPorcFacturacionTecnicoDolar.setHorizontalAlignment(SwingConstants.CENTER);
+		textPorcFacturacionTecnicoDolar.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textPorcFacturacionTecnicoDolar.setEditable(false);
+		textPorcFacturacionTecnicoDolar.setColumns(10);
+		textPorcFacturacionTecnicoDolar.setBorder(null);
+		textPorcFacturacionTecnicoDolar.setBounds(279, 28, 48, 16);
+		panel_facturacionPorTecnico.add(textPorcFacturacionTecnicoDolar);
+		
+		textPorcFacturacionTecnicoPesos = new JTextField();
+		textPorcFacturacionTecnicoPesos.setOpaque(false);
+		textPorcFacturacionTecnicoPesos.setHorizontalAlignment(SwingConstants.CENTER);
+		textPorcFacturacionTecnicoPesos.setFont(new Font("Cambria", Font.PLAIN, 13));
+		textPorcFacturacionTecnicoPesos.setEditable(false);
+		textPorcFacturacionTecnicoPesos.setColumns(10);
+		textPorcFacturacionTecnicoPesos.setBorder(null);
+		textPorcFacturacionTecnicoPesos.setBounds(279, 11, 48, 16);
+		panel_facturacionPorTecnico.add(textPorcFacturacionTecnicoPesos);
 		panel_facturacionPorCliente.setLayout(null);
 		panel_facturacionPorCliente.setOpaque(false);
 		panel_facturacionPorCliente.setBorder(null);
