@@ -22,7 +22,7 @@ public class FacturacionXclienteDAOImp implements FacturacionXclienteDAO {
 	private Conexion conexion;
 	
 	
-	private static final String readall = "select Cliente.idCliente, Cliente.nombre, SUM(PrecioPeso) from reparaciones INNER JOIN (Equipos INNER JOIN Cliente ON Equipos.idCliente = Cliente.idCliente)  ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.EstadoComercial = 'Aceptado' group by Equipos.idCliente";
+	private static final String readall = "select Cliente.idCliente, Cliente.nombre, SUM(PrecioPeso) from reparaciones INNER JOIN (Equipos INNER JOIN Cliente ON Equipos.idCliente = Cliente.idCliente)  ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.EstadoComercial = 'Aceptado' group by Equipos.idCliente order by  SUM(PrecioPeso) DESC";
 	
 	
 	@SuppressWarnings("unused")
