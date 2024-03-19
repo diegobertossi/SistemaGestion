@@ -74,7 +74,7 @@ public class CellRendererTablaFacturacionXlientes extends DefaultTableCellRender
 		if (column == 0) {
 			
 			
-			table.getColumnModel().getColumn(column).setPreferredWidth(200);
+			table.getColumnModel().getColumn(column).setPreferredWidth(240);
 			
 
 		}

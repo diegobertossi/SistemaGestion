@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import presentacion.controlador.ControladorListados;
 import presentacion.controlador.ControladorReparacion;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.util.Enumeration;
 import java.awt.Font;
 import javax.swing.JLabel;
@@ -22,6 +23,8 @@ import VistaPropias.CellRendererTablaFacturacionXlientes;
 import VistaPropias.CellRendererTablaListado;
 
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -39,22 +42,21 @@ public class VentanaFacturacionXcliente extends JFrame {
 	private JPanel panelCentro;
 	private JPanel panelTabla;
 	private JPanel panelGrafico;
-	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel_2;
-	private JLabel lblNewLabel_3;
 
 	private JScrollPane scrollPane;
 	private JTable tblFacturacionClientes;
 	private DefaultTableModel modelFacturacionClientes;
 
 	private String[] nombreColumnas = { "CLIENTE", "FACTURACIÓN", "PORCENTAJE" };
-
-	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
 	private JLabel lblNewLabel_7;
 	private JLabel lblNewLabel_8;
 	private JPanel panelGraficoCliente;
+	private JLabel lblNewLabel_1;
+	private JLabel lblNewLabel_2;
+	private JLabel lblNewLabel_3;
+	private JLabel lblNewLabel_4;
 
 	@SuppressWarnings({ "rawtypes", "serial" })
 	public VentanaFacturacionXcliente(ControladorListados controlador) {
@@ -63,10 +65,11 @@ public class VentanaFacturacionXcliente extends JFrame {
 		this.controlador = controlador;
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1280, 720);
+		setBounds(100, 100, 1270, 700);
 
 		this.setLocationRelativeTo(null);
-
+		
+		
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(204, 204, 255));
 		contentPane.setBorder(null);
@@ -79,13 +82,15 @@ public class VentanaFacturacionXcliente extends JFrame {
 		panelNorte.setBorder(new LineBorder(new Color(0, 128, 128), 4));
 		contentPane.add(panelNorte, BorderLayout.NORTH);
 
-		JLabel lblNewLabel = new JLabel("FACTURACIÓN POR CLIENTE");
+		JLabel lblNewLabel = new JLabel("FACTURACIÓN POR CLIENTE - AÑO :  ");
+		lblNewLabel.setForeground(new Color(0, 51, 153));
 		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 30));
 		panelNorte.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 15));
 		panelNorte.add(lblNewLabel);
 
 		textAnio = new JTextField();
-		textAnio.setHorizontalAlignment(SwingConstants.CENTER);
+		textAnio.setForeground(new Color(0, 51, 153));
+		textAnio.setHorizontalAlignment(SwingConstants.LEFT);
 		textAnio.setEditable(false);
 		textAnio.setBorder(null);
 		textAnio.setOpaque(false);
@@ -96,22 +101,13 @@ public class VentanaFacturacionXcliente extends JFrame {
 		panelCentro = new JPanel();
 		panelCentro.setBackground(new Color(204, 204, 255));
 		contentPane.add(panelCentro, BorderLayout.CENTER);
-		panelCentro.setLayout(new BoxLayout(panelCentro, BoxLayout.X_AXIS));
+		panelCentro.setLayout(new BoxLayout(panelCentro, BoxLayout.LINE_AXIS));
 
 		panelTabla = new JPanel();
-		panelTabla.setOpaque(false);
+		panelTabla.setBackground(new Color(204, 204, 255));
+		panelTabla.setOpaque(false);;
 		panelTabla.setBorder(new LineBorder(new Color(0, 128, 128), 4));
 		panelCentro.add(panelTabla);
-		panelTabla.setLayout(new BorderLayout(0, 0));
-
-		lblNewLabel_1 = new JLabel("          ");
-		panelTabla.add(lblNewLabel_1, BorderLayout.NORTH);
-
-		lblNewLabel_2 = new JLabel("          ");
-		panelTabla.add(lblNewLabel_2, BorderLayout.WEST);
-
-		lblNewLabel_3 = new JLabel("          ");
-		panelTabla.add(lblNewLabel_3, BorderLayout.EAST);
 
 		modelFacturacionClientes = new DefaultTableModel(new Object[][] {}, nombreColumnas) {
 
@@ -133,11 +129,16 @@ public class VentanaFacturacionXcliente extends JFrame {
 		tblFacturacionClientes = new JTable(modelFacturacionClientes) {
 		};
 
-		tblFacturacionClientes.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		//tblFacturacionClientes.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		scrollPane = new JScrollPane(tblFacturacionClientes);
 		scrollPane.setOpaque(false);
-
+		scrollPane.setPreferredSize(new Dimension(442, 500));
+		scrollPane.setAlignmentX(CENTER_ALIGNMENT);
+		scrollPane.setAlignmentY(CENTER_ALIGNMENT);
+		
+		
+		
 		try {
 
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
@@ -170,11 +171,21 @@ public class VentanaFacturacionXcliente extends JFrame {
 		}
 
 		tblFacturacionClientes.getTableHeader().setReorderingAllowed(false);
+		panelTabla.setLayout(new BorderLayout(0, 0));
 
-		panelTabla.add(scrollPane, BorderLayout.CENTER);
-
+		panelTabla.add(scrollPane);
+		
+		lblNewLabel_1 = new JLabel("          ");
+		panelTabla.add(lblNewLabel_1, BorderLayout.NORTH);
+		
+		lblNewLabel_2 = new JLabel("          ");
+		panelTabla.add(lblNewLabel_2, BorderLayout.SOUTH);
+		
+		lblNewLabel_3 = new JLabel("          ");
+		panelTabla.add(lblNewLabel_3, BorderLayout.WEST);
+		
 		lblNewLabel_4 = new JLabel("          ");
-		panelTabla.add(lblNewLabel_4, BorderLayout.SOUTH);
+		panelTabla.add(lblNewLabel_4, BorderLayout.EAST);
 
 		panelGrafico = new JPanel();
 		panelGrafico.setOpaque(false);
@@ -195,7 +206,7 @@ public class VentanaFacturacionXcliente extends JFrame {
 		panelGrafico.add(lblNewLabel_8, BorderLayout.EAST);
 
 		panelGraficoCliente = new JPanel();
-		panelGraficoCliente.setOpaque(false);
+		panelGraficoCliente.setBackground(new Color(204, 204, 255));
 		panelGraficoCliente.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelGrafico.add(panelGraficoCliente, BorderLayout.CENTER);
 		panelGraficoCliente.setLayout(new BorderLayout(0, 0));

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GradientPaint;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -34,11 +35,19 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.util.Rotation;
+
+
+import org.jfree.chart.labels.CategoryItemLabelGenerator;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
+
 
 import dto.FacturacionXclienteDTO;
 import dto.RegistroPresupuestoDTO;
@@ -511,8 +520,16 @@ public class ControladorListados
 			cargarTablaFacturacionCliente();
 			mostrarGraficoFacturacionXcliente();
 			
-			ventanaFacturacionXcliente.setBounds(100, 100, 1281, 721);
-			ventanaFacturacionXcliente.setBounds(100, 100, 1280, 720);
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+	        // Calcular las coordenadas para centrar la ventana
+	        int x = (screenSize.width - 1270) / 2;
+	        int y = (screenSize.height - 700) / 2;
+
+	        // Establecer la posición de la ventana
+	        //setLocation(x, y);
+			ventanaFacturacionXcliente.setBounds( x, y, 1271, 701);
+			ventanaFacturacionXcliente.setBounds(x, y, 1270, 700);
 			
 
 		}
@@ -1689,6 +1706,7 @@ public class ControladorListados
 		DefaultCategoryDataset datosIngresos = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosDiagnosticos = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosFacturacion = new DefaultCategoryDataset();
+		CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();
 
 		datosIngresos.setValue(listaIngresos.get(0), "Ingresos", "ENE");
 		datosIngresos.setValue(listaIngresos.get(1), "Ingresos", "FEB");
@@ -1760,6 +1778,16 @@ public class ControladorListados
 		renderer_facturacion.setDrawBarOutline(false);
 		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, new Color(64, 0, 0));
 		renderer_facturacion.setSeriesPaint(0, gp2);
+		
+		
+		plot_diagnostico.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
+		plot_diagnostico.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
+
+		plot_ingreso.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
+		plot_ingreso.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
+        
+        plot_facturacion.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
+        plot_facturacion.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
 
 		ChartPanel panelGraficoIngresos = new ChartPanel(grafico_ingresos);
 		panelGraficoIngresos.setMouseWheelEnabled(true);
@@ -1805,6 +1833,7 @@ public class ControladorListados
 		DefaultCategoryDataset datosDiagnosticos = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosAceptaciones = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosFacturacion = new DefaultCategoryDataset();
+		CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();
 
 		datosDiagnosticos.setValue(listaDiagnosticos.get(0), "Diagnósticos", "ENE");
 		datosDiagnosticos.setValue(listaDiagnosticos.get(1), "Diagnósticos", "FEB");
@@ -1877,6 +1906,18 @@ public class ControladorListados
 		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, new Color(64, 0, 0));
 		renderer_facturacion.setSeriesPaint(0, gp2);
 
+		
+		plot_diagnostico.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
+		plot_diagnostico.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
+
+        plot_aceptaciones.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
+        plot_aceptaciones.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
+        
+        plot_facturacion.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
+        plot_facturacion.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
+		
+		
+		
 		ChartPanel panelGraficoAceptaciones = new ChartPanel(grafico_aceptaciones);
 		panelGraficoAceptaciones.setMouseWheelEnabled(true);
 		panelGraficoAceptaciones.setPreferredSize(new Dimension(700, 40));
@@ -1911,6 +1952,7 @@ public class ControladorListados
 		DefaultCategoryDataset datosIngresos = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosAceptaciones = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosFacturacion = new DefaultCategoryDataset();
+		CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();
 
 		datosIngresos.setValue(listaIngresos.get(0), "Ingresos", "ENE");
 		datosIngresos.setValue(listaIngresos.get(1), "Ingresos", "FEB");
@@ -1983,6 +2025,20 @@ public class ControladorListados
 		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, new Color(64, 0, 0));
 		renderer_facturacion.setSeriesPaint(0, gp2);
 
+		
+		//CategoryPlot plot = (CategoryPlot) chart.getPlot();
+		// Crear generador de etiquetas para mostrar los valores en las barras
+        
+        plot_ingreso.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
+        plot_ingreso.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
+
+        plot_aceptaciones.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
+        plot_aceptaciones.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
+        
+        plot_facturacion.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
+        plot_facturacion.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
+		
+		
 		ChartPanel panelGraficoAceptaciones = new ChartPanel(grafico_aceptaciones);
 		panelGraficoAceptaciones.setMouseWheelEnabled(true);
 		panelGraficoAceptaciones.setPreferredSize(new Dimension(700, 40));
@@ -2012,20 +2068,25 @@ public class ControladorListados
 
         // Crear el gráfico de torta
         JFreeChart chart = ChartFactory.createPieChart(
-                "Porcentaje de Facturación por Cliente",
+                "",
                 dataset,
-                true, // Incluir leyenda
+                false, // Incluir leyenda
                 true,
                 false
         );
+        chart.setBackgroundPaint(new Color(213, 216, 220)); // Cambia el color de fondo del gráfico
+        //chart.getPlot().setOutlinePaint(Color.BLUE); // Cambia el color del área detrás del gráfico
+
 		
 		
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setStartAngle(290);
+        plot.setDirection(Rotation.CLOCKWISE);
+        plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: {2}"));
+        
         ChartPanel chartGraficoFacturacion = new ChartPanel(chart);
-       //chartPanel.add(chartPanel, BorderLayout.CENTER);
         chartGraficoFacturacion.setMouseWheelEnabled(true);
-        //chartGraficoFacturacion.setPreferredSize(new Dimension(700, 40));
-		ventanaFacturacionXcliente.getPanelGraficoCliente().add(chartGraficoFacturacion,BorderLayout.CENTER );
-		
+        ventanaFacturacionXcliente.getPanelGraficoCliente().add(chartGraficoFacturacion,BorderLayout.CENTER );
 		ventanaFacturacionXcliente.getPanelGraficoCliente().repaint();
 	
 		
