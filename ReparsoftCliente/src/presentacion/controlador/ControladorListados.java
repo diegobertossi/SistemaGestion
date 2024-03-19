@@ -35,9 +35,11 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import dto.FacturacionXclienteDTO;
 import dto.RegistroPresupuestoDTO;
 import dto.RegistroResumenTecnicoDTO;
 import dto.ReparacionDTO;
+import dto.RepuestosDTO;
 import modelo.Agenda;
 import presentacion.reportes.ReportePresupuesto;
 import presentacion.vista.VentanaCodigoSeguridad;
@@ -63,7 +65,7 @@ public class ControladorListados
 	private VentanaEstadisticas ventanaEstadisticas;
 	private VentanaCodigoSeguridad ventanaCodigoSeguridad;
 	private VentanaResumenMensualTecnico ventanaResumenMensualTecnico;
-	
+
 	private VentanaFacturacionXcliente ventanaFacturacionXcliente;
 	// private int max = Frame.MAXIMIZED_BOTH;
 	// private int min = Frame.NORMAL;
@@ -94,6 +96,7 @@ public class ControladorListados
 
 	private double porcentaje;
 	private double facturacion;
+	private List<FacturacionXclienteDTO> itemFacturacion_en_tabla;
 
 	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
@@ -102,6 +105,7 @@ public class ControladorListados
 		this.controladorUsuLogin = controladorUsuLogin;
 		this.controladorReparacion = controladorReparacion;
 		this.modelo = modelo;
+		this.itemFacturacion_en_tabla = null;
 
 		agregarListenerVentanaListados();
 
@@ -489,19 +493,14 @@ public class ControladorListados
 			});
 
 		}
-		
+
 		else if (this.ventanaEstadisticas != null
 				&& arg0.getSource() == this.ventanaEstadisticas.getBtnFacturacionPorCliente()) {
-			
-			
+
 			ventanaFacturacionXcliente = new VentanaFacturacionXcliente(this);
 			cargarTablaFacturacionCliente();
 			
-			
-			
-			
-			
-			
+
 		}
 
 		else if (this.ventanaResumenMensualTecnico != null
@@ -567,12 +566,12 @@ public class ControladorListados
 		String repNoAceptMes = this.ventanaResumenMensualTecnico.getTextRepNoAcep().getText();
 		String repEsperaMes = this.ventanaResumenMensualTecnico.getTextRepEspera().getText();
 		String aceptacionesDelMes = this.ventanaResumenMensualTecnico.getTextAceptadosDelMes().getText();
-		
 
 		RegistroResumenTecnicoDTO nuevoResumen = new RegistroResumenTecnicoDTO(NombreTecnico, anio, mes, revisadosAnio,
 				reparadosAnio, reparadosEngtiaAnio, sinFallaAnio, enReparacionAnio, ventasAnio, sinReparacionAnio,
 				repAceptadaAnio, repNoAceptAnio, repEsperaAnio, revisadosMes, reparadosMes, reparadosEngtiaMes,
-				sinFallaMes, enReparacionMes, ventasMes, sinReparacionMes, repAceptadaMes, repNoAceptMes, repEsperaMes, aceptacionesDelMes);
+				sinFallaMes, enReparacionMes, ventasMes, sinReparacionMes, repAceptadaMes, repNoAceptMes, repEsperaMes,
+				aceptacionesDelMes);
 		return nuevoResumen;
 
 	}
@@ -887,7 +886,7 @@ public class ControladorListados
 		AutoCompleteDecorator.decorate(ventanaListadoReparaciones.getComboFiltroTecnico());
 
 	}
-	
+
 	private void cargarTablaFacturacionCliente() {
 
 		this.ventanaFacturacionXcliente.getModelFacturacionClientes().setRowCount(0); // Para
@@ -897,41 +896,25 @@ public class ControladorListados
 		this.ventanaFacturacionXcliente.getModelFacturacionClientes()
 				.setColumnIdentifiers(this.ventanaFacturacionXcliente.getNombreColumnas());
 
-//		this.Clientes_en_tabla = (List<ReparacionDTO>) modelo.obtenerReparacion();
-//
-//		for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
-//
-//			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
-//					this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
-//					this.Reparaciones_en_tabla.get(i).getCliente(), this.Reparaciones_en_tabla.get(i).getSucursal(),
-//					this.Reparaciones_en_tabla.get(i).getNombreEquipo(), this.Reparaciones_en_tabla.get(i).getMarca(),
-//					this.Reparaciones_en_tabla.get(i).getModelo(), this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
-//					this.Reparaciones_en_tabla.get(i).getAviso(),
-//					this.Reparaciones_en_tabla.get(i).getFechadereparacion(),
-//					this.Reparaciones_en_tabla.get(i).getClienteCliente(),
-//					this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
-//					this.Reparaciones_en_tabla.get(i).getEstadoComercial(),
-//					this.Reparaciones_en_tabla.get(i).getEstadoFisico(),
-//					this.Reparaciones_en_tabla.get(i).getNombreUsuario(), this.Reparaciones_en_tabla.get(i).getCodigo(),
-//					this.Reparaciones_en_tabla.get(i).getNumeroRemitoSalida(),
-//					this.Reparaciones_en_tabla.get(i).getPresupuestoGenerado(),
-//					this.Reparaciones_en_tabla.get(i).getPresupuestoEnviado(),
-//					this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
-//					this.Reparaciones_en_tabla.get(i).getPrecioDolar(), this.Reparaciones_en_tabla.get(i).getPago(), };
-//
-//			this.ventanaListadoReparaciones.getModelReparaciones().addRow(fila);
-//
-////			String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
-////			String pagoPeso = monedaFormatter.formatPeso(reparacion.getPago().toString());
-////
-////			ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);
-////			ventanaVisualizarEquipos.setTextPago(pagoPeso);
-//
-//		}
-//
-//		ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTblReparaciones());
-//
-//		this.ventanaListadoReparaciones.setVisible(true);
+
+		
+
+		this.itemFacturacion_en_tabla =  (List<FacturacionXclienteDTO>) modelo.dameFacturacionXcliente(anio);
+
+		for (int i = 0; i < this.itemFacturacion_en_tabla.size(); i++) {
+			
+			
+//			double facturación = monedaFormatter.formatPeso(Double.toString(this.itemFacturacion_en_tabla.get(i).getFacturacion()))	;		
+			double porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
+			String porcentaFacturacion = String.format("%.1f %%", porcentaje);
+			
+			Object[] fila = { this.itemFacturacion_en_tabla.get(i).getNombreCliente(), this.itemFacturacion_en_tabla.get(i).getFacturacion(), porcentaFacturacion };
+			this.ventanaFacturacionXcliente.getModelFacturacionClientes().addRow(fila);
+		}
+		this.ventanaFacturacionXcliente.show();
+		
+		
+		ventanaFacturacionXcliente.setCellRender(this.ventanaFacturacionXcliente.getTblFacturacionClientes());
 
 	}
 

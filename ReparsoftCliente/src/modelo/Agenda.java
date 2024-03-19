@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.JComboBox;
 import dto.ClienteDTO;
 import dto.ClienteWSPDTO;
+import dto.FacturacionXclienteDTO;
 import dto.RemitoDTO;
 import dto.ReparacionDTO;
 import dto.RepuestosDTO;
@@ -13,6 +14,7 @@ import dto.SucursalDTO;
 import dto.UsuarioDTO;
 import persistencia.dao.interfaz.ClienteDAO;
 import persistencia.dao.interfaz.ClienteWSPDAO;
+import persistencia.dao.interfaz.FacturacionXclienteDAO;
 import persistencia.dao.interfaz.RemitoDAO;
 import persistencia.dao.interfaz.ReparacionDAO;
 import persistencia.dao.interfaz.RepuestoDAO;
@@ -21,6 +23,7 @@ import persistencia.dao.interfaz.SucursalDAO;
 import persistencia.dao.interfaz.UsuarioDAO;
 import persistencia.dao.mysql.ClienteDAOImpl;
 import persistencia.dao.mysql.ClienteWSPDAOImpl;
+import persistencia.dao.mysql.FacturacionXclienteDAOImp;
 import persistencia.dao.mysql.RemitoDAOImpl;
 import persistencia.dao.mysql.ReparacionDAOImpl;
 import persistencia.dao.mysql.RepuestosDAOImpl;
@@ -37,7 +40,8 @@ public class Agenda {
 	private SucursalDAO Sucursal;
 	private UsuarioDAO usuario;
 	private RolDAO rol;
-	private RemitoDAO remito;
+	private RemitoDAO remito;	
+	private FacturacionXclienteDAO facturacionXcliente;
 	private String ubicacionBase;
 
 	public Agenda(String ubicacionDeBase) {
@@ -51,6 +55,7 @@ public class Agenda {
 		rol = new RolDAOImpl(ubicacionDeBase);
 		remito = new RemitoDAOImpl(ubicacionDeBase);
 		ClienteWSP = new ClienteWSPDAOImpl(ubicacionDeBase);
+		facturacionXcliente = new FacturacionXclienteDAOImp(ubicacionDeBase); 
 		
 		
 		
@@ -726,6 +731,12 @@ public class Agenda {
 
 	public void setUbicacionBase(String ubicacionBase) {
 		this.ubicacionBase = ubicacionBase;
+	}
+
+	
+	
+	public List<FacturacionXclienteDTO> dameFacturacionXcliente(int anio) {
+		return facturacionXcliente.readAll(anio);
 	}
 
 

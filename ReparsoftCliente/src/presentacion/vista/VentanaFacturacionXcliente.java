@@ -5,13 +5,21 @@ import javax.swing.JPanel;
 import presentacion.controlador.ControladorListados;
 import presentacion.controlador.ControladorReparacion;
 import java.awt.SystemColor;
+import java.util.Enumeration;
 import java.awt.Font;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
+import VistaPropias.CellRendererTablaFacturacionXlientes;
+import VistaPropias.CellRendererTablaListado;
 
 import java.awt.Color;
 import javax.swing.BoxLayout;
@@ -120,16 +128,63 @@ public class VentanaFacturacionXcliente extends JFrame {
 
 
 		};
-
+		
 
 
 		tblFacturacionClientes = new JTable(modelFacturacionClientes) {};
 
 		tblFacturacionClientes.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-				
-				
-		
+						
 		scrollPane = new JScrollPane(tblFacturacionClientes);
+		
+		
+		
+		try {
+
+			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+
+			e.printStackTrace();
+		}
+
+		tblFacturacionClientes.setGridColor(new Color(105, 105, 105));
+		tblFacturacionClientes.setBackground(new Color(176, 196, 222));
+		tblFacturacionClientes.setOpaque(false);
+		tblFacturacionClientes.setRowMargin(3);
+		tblFacturacionClientes.setRowHeight(18);
+
+		((DefaultTableCellRenderer) tblFacturacionClientes.getTableHeader().getDefaultRenderer())
+				.setHorizontalAlignment(JLabel.CENTER);
+
+		tblFacturacionClientes.setShowGrid(true);
+		tblFacturacionClientes.setCellSelectionEnabled(true);
+	
+		
+		try {
+			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		
+		
+		tblFacturacionClientes.getTableHeader().setReorderingAllowed(false);
+		
+
+		int[] anchos = { 150, 100, 80};
+
+		for (int i = 0; i < tblFacturacionClientes.getColumnCount(); i++) {
+
+			tblFacturacionClientes.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+			
+		}
+		
+		
 		panelTabla.add(scrollPane, BorderLayout.CENTER);
 		
 		lblNewLabel_4 = new JLabel("          ");
@@ -274,6 +329,17 @@ public class VentanaFacturacionXcliente extends JFrame {
 
 	public void setPanelGraficoCliente(JPanel panelGraficoCliente) {
 		this.panelGraficoCliente = panelGraficoCliente;
+	}
+
+
+
+
+	public void setCellRender(JTable table) {
+		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
+		while (en.hasMoreElements()) {
+			TableColumn tc = en.nextElement();
+			tc.setCellRenderer(new CellRendererTablaFacturacionXlientes());
+		}
 	}
 
 

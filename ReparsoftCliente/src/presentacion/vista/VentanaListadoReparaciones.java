@@ -952,7 +952,7 @@ public class VentanaListadoReparaciones extends JFrame {
 
 		tblListado = new JTable(modelReparaciones) {};
 
-				tblListado.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tblListado.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 				
 		
 		scrollPane = new JScrollPane(tblListado);
