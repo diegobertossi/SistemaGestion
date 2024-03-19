@@ -19,7 +19,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.swing.table.AbstractTableModel;
@@ -34,6 +38,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 
 import dto.FacturacionXclienteDTO;
 import dto.RegistroPresupuestoDTO;
@@ -50,6 +55,8 @@ import presentacion.vista.VentanaListadoReparaciones;
 import presentacion.vista.VentanaResumenMensualTecnico;
 import tiposPropios.MonedaFormatter;
 import presentacion.reportes.ReporteResumenTecnico;
+import java.util.Comparator;
+import java.util.HashMap;
 
 import javax.swing.*;
 
@@ -498,7 +505,14 @@ public class ControladorListados
 				&& arg0.getSource() == this.ventanaEstadisticas.getBtnFacturacionPorCliente()) {
 
 			ventanaFacturacionXcliente = new VentanaFacturacionXcliente(this);
+			
+			System.out.println(ventanaEstadisticas.getLblAnio().getText());
+			ventanaFacturacionXcliente.getTextAnio().setText(ventanaEstadisticas.getLblAnioDatos().getText());
 			cargarTablaFacturacionCliente();
+			mostrarGraficoFacturacionXcliente();
+			
+			ventanaFacturacionXcliente.setBounds(100, 100, 1281, 721);
+			ventanaFacturacionXcliente.setBounds(100, 100, 1280, 720);
 			
 
 		}
@@ -896,24 +910,64 @@ public class ControladorListados
 		this.ventanaFacturacionXcliente.getModelFacturacionClientes()
 				.setColumnIdentifiers(this.ventanaFacturacionXcliente.getNombreColumnas());
 
-
+		double porcentaje = 0.0;
+		double PorcentajeOtros = 0.0;
+		double facturacionOtros = 0.0;
+		this.itemFacturacion_en_tabla = (List<FacturacionXclienteDTO>) modelo.dameFacturacionXcliente(anio);
 		
+		for (int i = 0; i < this.itemFacturacion_en_tabla.size(); i++) {
 
-		this.itemFacturacion_en_tabla =  (List<FacturacionXclienteDTO>) modelo.dameFacturacionXcliente(anio);
+			porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
+			if (porcentaje < 2.0) {
+
+				PorcentajeOtros = PorcentajeOtros + porcentaje;
+				facturacionOtros = facturacionOtros + this.itemFacturacion_en_tabla.get(i).getFacturacion();
+
+				this.itemFacturacion_en_tabla.get(i).setNombreCliente("Otros");
+				this.itemFacturacion_en_tabla.get(i).setFacturacion(facturacionOtros);
+
+			}
+
+		}
+
+		Set<String> stringsVistos = new HashSet<>();
+		List<FacturacionXclienteDTO> nuevaLista = new ArrayList<>();
+		for (int i = itemFacturacion_en_tabla.size() - 1; i >= 0; i--) {
+			String str = itemFacturacion_en_tabla.get(i).getNombreCliente();
+			if (!stringsVistos.contains(str)) {
+				nuevaLista.add(itemFacturacion_en_tabla.get(i));
+				stringsVistos.add(str);
+			}
+		}
+
+		itemFacturacion_en_tabla.clear(); // Limpiamos la lista original
+		itemFacturacion_en_tabla.addAll(nuevaLista); // Agregamos los elementos únicos a la lista original
+
+		Collections.reverse(itemFacturacion_en_tabla);
+
+		Collections.sort(itemFacturacion_en_tabla, new Comparator<FacturacionXclienteDTO>() {
+
+			@Override
+			public int compare(FacturacionXclienteDTO t1, FacturacionXclienteDTO t2) {
+				// Comparar los primeros doubles de cada objeto y ordenar de mayor a menor
+				return Double.compare(t2.getFacturacion(), t1.getFacturacion());
+			}
+
+		});
 
 		for (int i = 0; i < this.itemFacturacion_en_tabla.size(); i++) {
-			
-			
+
 //			double facturación = monedaFormatter.formatPeso(Double.toString(this.itemFacturacion_en_tabla.get(i).getFacturacion()))	;		
-			double porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
+			porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
+
 			String porcentaFacturacion = String.format("%.1f %%", porcentaje);
-			
-			Object[] fila = { this.itemFacturacion_en_tabla.get(i).getNombreCliente(), this.itemFacturacion_en_tabla.get(i).getFacturacion(), porcentaFacturacion };
+
+			Object[] fila = { this.itemFacturacion_en_tabla.get(i).getNombreCliente(),
+					this.itemFacturacion_en_tabla.get(i).getFacturacion(), porcentaFacturacion };
 			this.ventanaFacturacionXcliente.getModelFacturacionClientes().addRow(fila);
 		}
 		this.ventanaFacturacionXcliente.show();
-		
-		
+
 		ventanaFacturacionXcliente.setCellRender(this.ventanaFacturacionXcliente.getTblFacturacionClientes());
 
 	}
@@ -1948,6 +2002,59 @@ public class ControladorListados
 		ventanaEstadisticas.repaint();
 
 	}
+	
+	
+	
+	private void mostrarGraficoFacturacionXcliente(){
+		
+
+		DefaultPieDataset dataset = createDataset();
+
+        // Crear el gráfico de torta
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Porcentaje de Facturación por Cliente",
+                dataset,
+                true, // Incluir leyenda
+                true,
+                false
+        );
+		
+		
+        ChartPanel chartGraficoFacturacion = new ChartPanel(chart);
+       //chartPanel.add(chartPanel, BorderLayout.CENTER);
+        chartGraficoFacturacion.setMouseWheelEnabled(true);
+        //chartGraficoFacturacion.setPreferredSize(new Dimension(700, 40));
+		ventanaFacturacionXcliente.getPanelGraficoCliente().add(chartGraficoFacturacion,BorderLayout.CENTER );
+		
+		ventanaFacturacionXcliente.getPanelGraficoCliente().repaint();
+	
+		
+		
+	}
+	
+	
+	private DefaultPieDataset createDataset() {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+
+        // Obtener los datos de la tabla
+        int rowCount = ventanaFacturacionXcliente.getTblFacturacionClientes().getRowCount();
+        Map<String, Double> porcentajePorCliente = new HashMap<>();
+
+        for (int i = 0; i < rowCount; i++) {
+            String cliente = (String) ventanaFacturacionXcliente.getTblFacturacionClientes().getValueAt(i, 0);
+            double porcentaje = monedaFormatter.parseAmount(ventanaFacturacionXcliente.getTblFacturacionClientes().getValueAt(i, 2).toString());
+
+            // Sumar los porcentajes para el mismo cliente
+            porcentajePorCliente.put(cliente, porcentajePorCliente.getOrDefault(cliente, 0.0) + porcentaje);
+        }
+
+        // Agregar los datos al dataset del gráfico de torta
+        for (Map.Entry<String, Double> entry : porcentajePorCliente.entrySet()) {
+            dataset.setValue(entry.getKey(), entry.getValue());
+        }
+
+        return dataset;
+    }
 
 	private void calcularComisiones() {
 

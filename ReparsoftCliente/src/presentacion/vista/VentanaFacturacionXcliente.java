@@ -25,6 +25,7 @@ import java.awt.Color;
 import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 public class VentanaFacturacionXcliente extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -34,7 +35,7 @@ public class VentanaFacturacionXcliente extends JFrame {
 	private ControladorReparacion controladorP;
 	@SuppressWarnings("unused")
 	private ControladorListados controlador;
-	private JTextField textField;
+	private JTextField textAnio;
 	private JPanel panelCentro;
 	private JPanel panelTabla;
 	private JPanel panelGrafico;
@@ -62,37 +63,43 @@ public class VentanaFacturacionXcliente extends JFrame {
 		this.controlador = controlador;
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1279, 721);
+		setBounds(100, 100, 1280, 720);
 
 		this.setLocationRelativeTo(null);
 
 		contentPane = new JPanel();
-		contentPane.setBackground(SystemColor.inactiveCaption);
+		contentPane.setBackground(new Color(204, 204, 255));
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelNorte = new JPanel();
+		panelNorte.setOpaque(false);
 		panelNorte.setBackground(new Color(176, 196, 222));
 		panelNorte.setBorder(new LineBorder(new Color(0, 128, 128), 4));
 		contentPane.add(panelNorte, BorderLayout.NORTH);
 
 		JLabel lblNewLabel = new JLabel("FACTURACIÓN POR CLIENTE");
 		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 30));
-		panelNorte.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 15));
+		panelNorte.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 15));
 		panelNorte.add(lblNewLabel);
 
-		textField = new JTextField();
-		textField.setOpaque(false);
-		textField.setFont(new Font("Cambria", Font.BOLD, 30));
-		panelNorte.add(textField);
-		textField.setColumns(10);
+		textAnio = new JTextField();
+		textAnio.setHorizontalAlignment(SwingConstants.CENTER);
+		textAnio.setEditable(false);
+		textAnio.setBorder(null);
+		textAnio.setOpaque(false);
+		textAnio.setFont(new Font("Cambria", Font.BOLD, 30));
+		panelNorte.add(textAnio);
+		textAnio.setColumns(10);
 
 		panelCentro = new JPanel();
+		panelCentro.setBackground(new Color(204, 204, 255));
 		contentPane.add(panelCentro, BorderLayout.CENTER);
 		panelCentro.setLayout(new BoxLayout(panelCentro, BoxLayout.X_AXIS));
 
 		panelTabla = new JPanel();
+		panelTabla.setOpaque(false);
 		panelTabla.setBorder(new LineBorder(new Color(0, 128, 128), 4));
 		panelCentro.add(panelTabla);
 		panelTabla.setLayout(new BorderLayout(0, 0));
@@ -129,6 +136,7 @@ public class VentanaFacturacionXcliente extends JFrame {
 		tblFacturacionClientes.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		scrollPane = new JScrollPane(tblFacturacionClientes);
+		scrollPane.setOpaque(false);
 
 		try {
 
@@ -169,6 +177,7 @@ public class VentanaFacturacionXcliente extends JFrame {
 		panelTabla.add(lblNewLabel_4, BorderLayout.SOUTH);
 
 		panelGrafico = new JPanel();
+		panelGrafico.setOpaque(false);
 		panelGrafico.setBorder(new LineBorder(new Color(0, 128, 128), 4));
 		panelCentro.add(panelGrafico);
 		panelGrafico.setLayout(new BorderLayout(0, 0));
@@ -186,6 +195,7 @@ public class VentanaFacturacionXcliente extends JFrame {
 		panelGrafico.add(lblNewLabel_8, BorderLayout.EAST);
 
 		panelGraficoCliente = new JPanel();
+		panelGraficoCliente.setOpaque(false);
 		panelGraficoCliente.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelGrafico.add(panelGraficoCliente, BorderLayout.CENTER);
 		panelGraficoCliente.setLayout(new BorderLayout(0, 0));
@@ -264,6 +274,14 @@ public class VentanaFacturacionXcliente extends JFrame {
 			TableColumn tc = en.nextElement();
 			tc.setCellRenderer(new CellRendererTablaFacturacionXlientes());
 		}
+	}
+
+	public JTextField getTextAnio() {
+		return textAnio;
+	}
+
+	public void setTextAnio(JTextField textAnio) {
+		this.textAnio = textAnio;
 	}
 
 }
