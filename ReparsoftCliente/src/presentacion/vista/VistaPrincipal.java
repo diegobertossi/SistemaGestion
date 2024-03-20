@@ -256,11 +256,11 @@ public class VistaPrincipal extends JFrame {
 						panelDeControl.add(botonBackUp);
 		
 				JLabel lblReparacionesEls = new JLabel("");
+				lblReparacionesEls.setIcon(new ImageIcon(this.getClass().getResource("/REPARSOFT logo pequeño.png")));
 				lblReparacionesEls.setOpaque(true);
 				lblReparacionesEls.setHorizontalTextPosition(SwingConstants.CENTER);
 				lblReparacionesEls.setVerticalTextPosition(SwingConstants.TOP);
 				lblReparacionesEls.setHorizontalAlignment(SwingConstants.CENTER);
-				lblReparacionesEls.setIcon(new ImageIcon("F:\\Users\\Diego\\git\\SistemaGestion\\ReparsoftCliente\\img\\REPARSOFT logo pequeño.png"));
 				lblReparacionesEls.setBackground(new Color(176, 196, 222));
 				lblReparacionesEls.setBounds(22, 25, 473, 167);
 				panel_1.add(lblReparacionesEls);

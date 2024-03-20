@@ -70,7 +70,7 @@ public class VentanaUbicacionBaseDeDatos extends JFrame
 			lblNewLabel_1.setFont(new Font("Cambria", Font.BOLD, 18));
 			
 			lblreparsoft = new JLabel("");
-			lblreparsoft.setIcon(new ImageIcon("F:\\Users\\Diego\\git\\SistemaGestion\\ReparsoftCliente\\img\\REPARSOFT logo Inicio.png"));
+			lblreparsoft.setIcon(new ImageIcon(this.getClass().getResource("/REPARSOFT logo Inicio.png")));
 			lblreparsoft.setVerticalAlignment(SwingConstants.TOP);
 			lblreparsoft.setHorizontalAlignment(SwingConstants.CENTER);
 			lblreparsoft.setForeground(new Color(105, 105, 105));
