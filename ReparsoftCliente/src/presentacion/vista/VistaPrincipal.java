@@ -61,7 +61,7 @@ public class VistaPrincipal extends JFrame {
 		super();
 		setResizable(false);
 		this.setLocationRelativeTo(null);
-		getContentPane().setBackground(new Color(176, 196, 222));
+		getContentPane().setBackground(new Color(219, 227, 246));
 		setMinimumSize(new Dimension(500, 400));
 		initialize();
 
@@ -69,126 +69,18 @@ public class VistaPrincipal extends JFrame {
 
 	private void initialize() {
 
-		setBounds(100, 10, 500, 440);
+		setBounds(100, 10, 500, 451);
 		// this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		getContentPane().setLayout(null);
-
-		panelDeControl = new JPanel();
-		panelDeControl.setBackground(new Color(112, 128, 144));
-		panelDeControl.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-
-		panelDeControl.setBounds(11, 149, 462, 210);
-		getContentPane().add(panelDeControl);
-		panelDeControl.setLayout(null);
-
-		botonEquipos = new JButton("EQUIPOS");
-		botonEquipos.setForeground(new Color(0, 0, 128));
-		botonEquipos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		botonEquipos.setBounds(11, 24, 143, 49);
-		botonEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonEquipos.setFont(new Font("Cambria", Font.BOLD, 13));
-
-		botonEquipos.setToolTipText("Ingreso y visualización de equipos al Sistema");
 		
-		botonEquipos.setIcon(new ImageIcon(this.getClass().getResource("/motherboard_46935.png")));
-		panelDeControl.add(botonEquipos);
-
-		botonSalidas = new JButton("SALIDAS");
-		botonSalidas.setForeground(new Color(0, 0, 128));
-		botonSalidas.setBounds(160, 24, 143, 49);
-		botonSalidas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonSalidas.setFont(new Font("Cambria", Font.BOLD, 13));
-		botonSalidas.setToolTipText("Egreso de equipos y generación de Remitos");
-		botonSalidas.setIcon(new ImageIcon(this.getClass().getResource("/Salida.png")));
-		panelDeControl.add(botonSalidas);
-
-		botonBusquedas = new JButton("BUSCAR");
-		botonBusquedas.setForeground(new Color(0, 0, 128));
-		botonBusquedas.setBounds(11, 84, 143, 49);
-		botonBusquedas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonBusquedas.setFont(new Font("Cambria", Font.BOLD, 13));
-		botonBusquedas.setToolTipText("Busqueda de equipos, por ELS, Cliente o Tecnico.");
-		botonBusquedas.setIcon(new ImageIcon(this.getClass().getResource("/Buscar.png")));
-		panelDeControl.add(botonBusquedas);
-
-		botonListados = new JButton("LISTADOS");
-		botonListados.setForeground(new Color(0, 0, 128));
-		botonListados.setBounds(309, 24, 143, 49);
-		botonListados.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonListados.setFont(new Font("Cambria", Font.BOLD, 13));
-		botonListados.setToolTipText("Listados de equipos.");
-		botonListados.setIcon(new ImageIcon(this.getClass().getResource("/Listado.png")));
-		panelDeControl.add(botonListados);
-
-		botonClientes = new JButton("CLIENTES");
-		botonClientes.setForeground(new Color(0, 0, 128));
-		botonClientes.setBounds(160, 84, 143, 49);
-		botonClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonClientes.setFont(new Font("Cambria", Font.BOLD, 13));
-
-		botonClientes.setToolTipText("Visualización y alta de Clientes");
-
-		botonClientes.setIcon(new ImageIcon(this.getClass().getResource("/Clientes.png")));
-		panelDeControl.add(botonClientes);
-
-		botonPresupuestos = new JButton("PRESUPUESTOS");
-		botonPresupuestos.setHorizontalAlignment(SwingConstants.LEFT);
-		botonPresupuestos.setForeground(new Color(0, 0, 128));
-		botonPresupuestos.setBounds(309, 84, 143, 49);
-		botonPresupuestos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonPresupuestos.setFont(new Font("Cambria", Font.BOLD, 11));
-
-		botonPresupuestos.setToolTipText("Generación de Presupuestos, pendientes e Ingreso de Pagos.");
-
-		botonPresupuestos.setIcon(new ImageIcon(this.getClass().getResource("/Presupuestos.png")));
-		panelDeControl.add(botonPresupuestos);
-
-		botonUsuarios = new JButton("USUARIOS");
-		botonUsuarios.setForeground(new Color(0, 0, 128));
-		botonUsuarios.setBounds(160, 144, 143, 49);
-		botonUsuarios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonUsuarios.setFont(new Font("Cambria", Font.BOLD, 13));
-		botonUsuarios.setToolTipText("Gestión de los Usuarios del Sistema.");
-		botonUsuarios.setIcon(new ImageIcon(this.getClass().getResource("/Usuarios.png")));
-		panelDeControl.add(botonUsuarios);
-
-		botonBackUp = new JButton("BACKUP");
-		botonBackUp.setForeground(new Color(0, 0, 128));
-		botonBackUp.setBounds(11, 144, 143, 49);
-		botonBackUp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonBackUp.setFont(new Font("Cambria", Font.BOLD, 13));
-		botonBackUp.setToolTipText("Backup del Sistema.");
-		botonBackUp.setIcon(new ImageIcon(this.getClass().getResource("/Backup.png")));
-		panelDeControl.add(botonBackUp);
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(85, 172, 314, 2);
+		getContentPane().add(separator_1);
 		
-		panel_1 = new JPanel();
-		panel_1.setOpaque(false);
-		panel_1.setBackground(new Color(153, 153, 255));
-		panel_1.setBorder(null);
-		panel_1.setBounds(11, 47, 462, 83);
-		getContentPane().add(panel_1);
-		panel_1.setLayout(null);
-
-
-		JLabel lblNewLabel = new JLabel("SISTEMA DE GESTIÓN");
-		lblNewLabel.setBounds(68, 2, 325, 36);
-		panel_1.add(lblNewLabel);
-
-		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 25));
-
-		JLabel lblReparacionesEls = new JLabel("REPARSOFT");
-		lblReparacionesEls.setBackground(new Color(119, 136, 153));
-		lblReparacionesEls.setBounds(90, 41, 282, 36);
-		panel_1.add(lblReparacionesEls);
-		lblReparacionesEls.setForeground(new Color(105, 105, 105));
-		lblReparacionesEls.setHorizontalAlignment(SwingConstants.CENTER);
-		lblReparacionesEls.setFont(new Font("Wide Latin", Font.BOLD, 22));
+		JSeparator separator_1_1 = new JSeparator();
+		separator_1_1.setBounds(85, 168, 314, 2);
+		getContentPane().add(separator_1_1);
 
 		textUsuario = new JTextField();
 		textUsuario.setOpaque(false);
@@ -201,30 +93,6 @@ public class VistaPrincipal extends JFrame {
 		textUsuario.setBounds(143, 0, 198, 27);
 		getContentPane().add(textUsuario);
 		textUsuario.setColumns(10);
-
-		textVersionSoft = new JTextField();
-		textVersionSoft.setOpaque(false);
-		textVersionSoft.setHorizontalAlignment(SwingConstants.RIGHT);
-		textVersionSoft.setForeground(Color.WHITE);
-		textVersionSoft.setFont(new Font("Cambria", Font.PLAIN, 12));
-		textVersionSoft.setEditable(false);
-		textVersionSoft.setColumns(10);
-		textVersionSoft.setBorder(null);
-		textVersionSoft.setBackground(SystemColor.activeCaption);
-		textVersionSoft.setBounds(308, 383, 166, 16);
-		getContentPane().add(textVersionSoft);
-
-		textProgramador = new JTextField();
-		textProgramador.setOpaque(false);
-		textProgramador.setHorizontalAlignment(SwingConstants.RIGHT);
-		textProgramador.setForeground(Color.WHITE);
-		textProgramador.setFont(new Font("Cambria", Font.PLAIN, 12));
-		textProgramador.setEditable(false);
-		textProgramador.setColumns(10);
-		textProgramador.setBorder(null);
-		textProgramador.setBackground(SystemColor.activeCaption);
-		textProgramador.setBounds(11, 383, 166, 16);
-		getContentPane().add(textProgramador);
 
 		btnSalir = new JButton("SALIR");
 		btnSalir.setForeground(new Color(255, 0, 51));
@@ -249,7 +117,7 @@ public class VistaPrincipal extends JFrame {
 		mnMenu.setBorderPainted(true);
 		mnMenu.setForeground(new Color(0, 0, 0));
 		mnMenu.setFont(new Font("Cambria", Font.BOLD, 13));
-		mnMenu.setBackground(new Color(192, 192, 192));
+		mnMenu.setBackground(new Color(176, 196, 222));
 		menuBar.setBounds(0, 0, 40, 22);
 		mnMenu.setBounds(0, 0, 101, 22);
 		getContentPane().add(menuBar);
@@ -281,21 +149,147 @@ public class VistaPrincipal extends JFrame {
 		
 		mnMenu.add(btnAyuda);
 		
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(85, 132, 314, 2);
-		getContentPane().add(separator_1);
-		
-		JSeparator separator_1_1 = new JSeparator();
-		separator_1_1.setBounds(85, 136, 314, 2);
-		getContentPane().add(separator_1_1);
-		
 		JSeparator separator_1_1_1 = new JSeparator();
-		separator_1_1_1.setBounds(85, 374, 314, 2);
+		separator_1_1_1.setBounds(85, 388, 314, 2);
 		getContentPane().add(separator_1_1_1);
 		
 		JSeparator separator_1_2 = new JSeparator();
-		separator_1_2.setBounds(85, 370, 314, 2);
+		separator_1_2.setBounds(85, 384, 314, 2);
 		getContentPane().add(separator_1_2);
+		
+		panel_1 = new JPanel();
+		panel_1.setOpaque(false);
+		panel_1.setBackground(new Color(219,227,246));
+		panel_1.setBorder(null);
+		panel_1.setBounds(0, 0, 483, 412);
+		getContentPane().add(panel_1);
+		panel_1.setLayout(null);
+				
+						panelDeControl = new JPanel();
+						panelDeControl.setBounds(10, 179, 462, 201);
+						panel_1.add(panelDeControl);
+						panelDeControl.setBackground(new Color(176, 196, 222));
+						panelDeControl.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+						panelDeControl.setLayout(null);
+						
+								botonEquipos = new JButton("EQUIPOS");
+								botonEquipos.setForeground(new Color(0, 0, 128));
+								botonEquipos.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent arg0) {
+									}
+								});
+								botonEquipos.setBounds(11, 13, 143, 49);
+								botonEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+								botonEquipos.setFont(new Font("Cambria", Font.BOLD, 13));
+								
+		botonEquipos.setToolTipText("Ingreso y visualización de equipos al Sistema");
+		
+		botonEquipos.setIcon(new ImageIcon(this.getClass().getResource("/motherboard_46935.png")));
+		panelDeControl.add(botonEquipos);
+		
+				botonSalidas = new JButton("SALIDAS");
+				botonSalidas.setForeground(new Color(0, 0, 128));
+				botonSalidas.setBounds(160, 13, 143, 49);
+				botonSalidas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				botonSalidas.setFont(new Font("Cambria", Font.BOLD, 13));
+				botonSalidas.setToolTipText("Egreso de equipos y generación de Remitos");
+				botonSalidas.setIcon(new ImageIcon(this.getClass().getResource("/Salida.png")));
+				panelDeControl.add(botonSalidas);
+				
+						botonBusquedas = new JButton("BUSCAR");
+						botonBusquedas.setForeground(new Color(0, 0, 128));
+						botonBusquedas.setBounds(11, 75, 143, 49);
+						botonBusquedas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+						botonBusquedas.setFont(new Font("Cambria", Font.BOLD, 13));
+						botonBusquedas.setToolTipText("Busqueda de equipos, por ELS, Cliente o Tecnico.");
+						botonBusquedas.setIcon(new ImageIcon(this.getClass().getResource("/Buscar.png")));
+						panelDeControl.add(botonBusquedas);
+						
+								botonListados = new JButton("LISTADOS");
+								botonListados.setForeground(new Color(0, 0, 128));
+								botonListados.setBounds(309, 13, 143, 49);
+								botonListados.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+								botonListados.setFont(new Font("Cambria", Font.BOLD, 13));
+								botonListados.setToolTipText("Listados de equipos.");
+								botonListados.setIcon(new ImageIcon(this.getClass().getResource("/Listado.png")));
+								panelDeControl.add(botonListados);
+								
+										botonClientes = new JButton("CLIENTES");
+										botonClientes.setForeground(new Color(0, 0, 128));
+										botonClientes.setBounds(160, 75, 143, 49);
+										botonClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+										botonClientes.setFont(new Font("Cambria", Font.BOLD, 13));
+										
+		botonClientes.setToolTipText("Visualización y alta de Clientes");
+		
+		botonClientes.setIcon(new ImageIcon(this.getClass().getResource("/Clientes.png")));
+		panelDeControl.add(botonClientes);
+		
+				botonPresupuestos = new JButton("PRESUPUESTOS");
+				botonPresupuestos.setHorizontalAlignment(SwingConstants.LEFT);
+				botonPresupuestos.setForeground(new Color(0, 0, 128));
+				botonPresupuestos.setBounds(309, 75, 143, 49);
+				botonPresupuestos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				botonPresupuestos.setFont(new Font("Cambria", Font.BOLD, 11));
+				
+		botonPresupuestos.setToolTipText("Generación de Presupuestos, pendientes e Ingreso de Pagos.");
+		
+		botonPresupuestos.setIcon(new ImageIcon(this.getClass().getResource("/Presupuestos.png")));
+		panelDeControl.add(botonPresupuestos);
+		
+				botonUsuarios = new JButton("USUARIOS");
+				botonUsuarios.setForeground(new Color(0, 0, 128));
+				botonUsuarios.setBounds(160, 137, 143, 49);
+				botonUsuarios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				botonUsuarios.setFont(new Font("Cambria", Font.BOLD, 13));
+				botonUsuarios.setToolTipText("Gestión de los Usuarios del Sistema.");
+				botonUsuarios.setIcon(new ImageIcon(this.getClass().getResource("/Usuarios.png")));
+				panelDeControl.add(botonUsuarios);
+				
+						botonBackUp = new JButton("BACKUP");
+						botonBackUp.setForeground(new Color(0, 0, 128));
+						botonBackUp.setBounds(11, 137, 143, 49);
+						botonBackUp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+						botonBackUp.setFont(new Font("Cambria", Font.BOLD, 13));
+						botonBackUp.setToolTipText("Backup del Sistema.");
+						botonBackUp.setIcon(new ImageIcon(this.getClass().getResource("/Backup.png")));
+						panelDeControl.add(botonBackUp);
+		
+				JLabel lblReparacionesEls = new JLabel("");
+				lblReparacionesEls.setOpaque(true);
+				lblReparacionesEls.setHorizontalTextPosition(SwingConstants.CENTER);
+				lblReparacionesEls.setVerticalTextPosition(SwingConstants.TOP);
+				lblReparacionesEls.setHorizontalAlignment(SwingConstants.CENTER);
+				lblReparacionesEls.setIcon(new ImageIcon("F:\\Users\\Diego\\git\\SistemaGestion\\ReparsoftCliente\\img\\REPARSOFT logo pequeño.png"));
+				lblReparacionesEls.setBackground(new Color(176, 196, 222));
+				lblReparacionesEls.setBounds(22, 25, 473, 167);
+				panel_1.add(lblReparacionesEls);
+				lblReparacionesEls.setForeground(new Color(105, 105, 105));
+				lblReparacionesEls.setFont(new Font("Wide Latin", Font.BOLD, 22));
+				
+						textProgramador = new JTextField();
+						textProgramador.setBounds(4, 398, 166, 16);
+						panel_1.add(textProgramador);
+						textProgramador.setOpaque(false);
+						textProgramador.setHorizontalAlignment(SwingConstants.RIGHT);
+						textProgramador.setForeground(Color.WHITE);
+						textProgramador.setFont(new Font("Cambria", Font.PLAIN, 12));
+						textProgramador.setEditable(false);
+						textProgramador.setColumns(10);
+						textProgramador.setBorder(null);
+						textProgramador.setBackground(SystemColor.activeCaption);
+						
+								textVersionSoft = new JTextField();
+								textVersionSoft.setBounds(316, 397, 166, 16);
+								panel_1.add(textVersionSoft);
+								textVersionSoft.setOpaque(false);
+								textVersionSoft.setHorizontalAlignment(SwingConstants.RIGHT);
+								textVersionSoft.setForeground(Color.WHITE);
+								textVersionSoft.setFont(new Font("Cambria", Font.PLAIN, 12));
+								textVersionSoft.setEditable(false);
+								textVersionSoft.setColumns(10);
+								textVersionSoft.setBorder(null);
+								textVersionSoft.setBackground(SystemColor.activeCaption);
 		
 		
 		
