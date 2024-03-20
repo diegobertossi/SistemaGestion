@@ -21,6 +21,7 @@ import javax.swing.JSeparator;
 import javax.swing.BoxLayout;
 import javax.swing.border.CompoundBorder;
 import javax.swing.SwingConstants;
+import java.awt.CardLayout;
 
 public class VentanaEstadisticas extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -166,9 +167,12 @@ public class VentanaEstadisticas extends JFrame {
 		super();
 		//setResizable(false);
 		this.controlador = controlador;
+		
+		int x = 1279;
+		int y = 721;
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1279, 721);
+		setBounds(100, 100, x, y);
 
 		this.setLocationRelativeTo(null);
 
@@ -250,20 +254,20 @@ public class VentanaEstadisticas extends JFrame {
 		panel_Ingresos.setBackground(new Color(176, 196, 222));
 		panel_Ingresos.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0), 0), new LineBorder(new Color(0, 128, 128), 3)));
 		panel.add(panel_Ingresos);
-		panel_Ingresos.setLayout(new BorderLayout(0, 0));
+		panel_Ingresos.setLayout(new CardLayout(0, 0));
 		
 		panel_Diagnosticos = new JPanel();
 		panel_Diagnosticos.setBackground(new Color(176, 196, 222));
 		panel_Diagnosticos.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0), 0), new LineBorder(new Color(0, 128, 128), 3)));
 		panel.add(panel_Diagnosticos);
-		panel_Diagnosticos.setLayout(new BorderLayout(0, 0));
+		panel_Diagnosticos.setLayout(new CardLayout(0, 0));
 		
 		panel_Facturacion = new JPanel();
 		panel_Facturacion.setVisible(false);
 		panel_Facturacion.setBackground(new Color(176, 196, 222));
 		panel_Facturacion.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0), 0), new LineBorder(new Color(0, 128, 128), 3)));
 		panel.add(panel_Facturacion);
-		panel_Facturacion.setLayout(new BorderLayout(0, 0));
+		panel_Facturacion.setLayout(new CardLayout(0, 0));
 		
 		JPanel panelDerecha = new JPanel();
 		panelDerecha.setBackground(new Color(176, 196, 222));

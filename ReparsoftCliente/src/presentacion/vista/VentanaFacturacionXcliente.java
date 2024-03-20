@@ -206,6 +206,7 @@ public class VentanaFacturacionXcliente extends JFrame {
 		panelGrafico.add(lblNewLabel_8, BorderLayout.EAST);
 
 		panelGraficoCliente = new JPanel();
+		panelGraficoCliente.setOpaque(false);
 		panelGraficoCliente.setBackground(new Color(204, 204, 255));
 		panelGraficoCliente.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelGrafico.add(panelGraficoCliente, BorderLayout.CENTER);

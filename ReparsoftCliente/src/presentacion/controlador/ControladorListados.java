@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -18,6 +19,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,20 +36,26 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.Axis;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.ui.TextAnchor;
 import org.jfree.util.Rotation;
 
-
 import org.jfree.chart.labels.CategoryItemLabelGenerator;
+import org.jfree.chart.labels.IntervalCategoryItemLabelGenerator;
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
-
 
 import dto.FacturacionXclienteDTO;
 import dto.RegistroPresupuestoDTO;
@@ -113,6 +121,12 @@ public class ControladorListados
 	private double porcentaje;
 	private double facturacion;
 	private List<FacturacionXclienteDTO> itemFacturacion_en_tabla;
+
+	private CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();
+	private Font titleFont = new Font("Cambria", Font.BOLD, 20); // Por ejemplo, Arial, negrita, tamaño 16
+	private Font labelFont = new Font("Cambria", Font.PLAIN, 16); // Por ejemplo, Arial, tamaño 12
+	private Font labelFontPie = new Font("Cambria", Font.PLAIN, 12);
+	private Color labelColor = Color.BLACK; // Cambiar color de la letra
 
 	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
@@ -514,23 +528,21 @@ public class ControladorListados
 				&& arg0.getSource() == this.ventanaEstadisticas.getBtnFacturacionPorCliente()) {
 
 			ventanaFacturacionXcliente = new VentanaFacturacionXcliente(this);
-			
-			System.out.println(ventanaEstadisticas.getLblAnio().getText());
+
 			ventanaFacturacionXcliente.getTextAnio().setText(ventanaEstadisticas.getLblAnioDatos().getText());
 			cargarTablaFacturacionCliente();
 			mostrarGraficoFacturacionXcliente();
-			
+
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-	        // Calcular las coordenadas para centrar la ventana
-	        int x = (screenSize.width - 1270) / 2;
-	        int y = (screenSize.height - 700) / 2;
+			// Calcular las coordenadas para centrar la ventana
+			int x = (screenSize.width - 1270) / 2;
+			int y = (screenSize.height - 700) / 2;
 
-	        // Establecer la posición de la ventana
-	        //setLocation(x, y);
-			ventanaFacturacionXcliente.setBounds( x, y, 1271, 701);
+			// Establecer la posición de la ventana
+			// setLocation(x, y);
+			ventanaFacturacionXcliente.setBounds(x, y, 1271, 701);
 			ventanaFacturacionXcliente.setBounds(x, y, 1270, 700);
-			
 
 		}
 
@@ -660,7 +672,10 @@ public class ControladorListados
 				}
 
 				seleccionDetalleEstadisticas = "MOSTRAR DETALLE";
-
+				
+				
+				ventanaCodigoSeguridad.dispose();
+				ventanaCodigoSeguridad = null;
 			}
 		});
 
@@ -679,9 +694,16 @@ public class ControladorListados
 				ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
 
 				seleccionDetalleEstadisticas = "OCULTAR DETALLE";
+				
+				
+				ventanaCodigoSeguridad.dispose();
+				ventanaCodigoSeguridad = null;
 
 			}
 		});
+		
+		
+
 
 	}
 
@@ -695,12 +717,14 @@ public class ControladorListados
 			if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
 
 				ventanaCodigoSeguridad.getRdbtnMostrar().setSelected(true);
+				
 			}
 
 			else {
 
 				ventanaCodigoSeguridad.getRdbtnOcultar().setSelected(true);
 			}
+			
 
 			return true;
 
@@ -931,7 +955,7 @@ public class ControladorListados
 		double PorcentajeOtros = 0.0;
 		double facturacionOtros = 0.0;
 		this.itemFacturacion_en_tabla = (List<FacturacionXclienteDTO>) modelo.dameFacturacionXcliente(anio);
-		
+
 		for (int i = 0; i < this.itemFacturacion_en_tabla.size(); i++) {
 
 			porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
@@ -1706,7 +1730,6 @@ public class ControladorListados
 		DefaultCategoryDataset datosIngresos = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosDiagnosticos = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosFacturacion = new DefaultCategoryDataset();
-		CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();
 
 		datosIngresos.setValue(listaIngresos.get(0), "Ingresos", "ENE");
 		datosIngresos.setValue(listaIngresos.get(1), "Ingresos", "FEB");
@@ -1778,32 +1801,49 @@ public class ControladorListados
 		renderer_facturacion.setDrawBarOutline(false);
 		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, new Color(64, 0, 0));
 		renderer_facturacion.setSeriesPaint(0, gp2);
-		
-		
-		plot_diagnostico.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
-		plot_diagnostico.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
 
-		plot_ingreso.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
-		plot_ingreso.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
-        
-        plot_facturacion.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
-        plot_facturacion.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
+		grafico_ingresos.getTitle().setFont(titleFont);
+		grafico_diagnosticos.getTitle().setFont(titleFont);
+		grafico_facturacion.getTitle().setFont(titleFont);
+
+		renderer_ingreso.setItemLabelGenerator(generator);
+		renderer_diagnostico.setItemLabelGenerator(generator);
+		renderer_facturacion.setItemLabelGenerator(generator);
+
+		renderer_ingreso.setItemLabelFont(labelFont);
+		renderer_ingreso.setItemLabelPaint(labelColor);
+
+		renderer_diagnostico.setItemLabelFont(labelFont);
+		renderer_diagnostico.setItemLabelPaint(labelColor);
+
+		renderer_facturacion.setItemLabelFont(labelFont);
+		renderer_facturacion.setItemLabelPaint(labelColor);
+
+		renderer_ingreso.setItemLabelsVisible(true);
+		renderer_diagnostico.setItemLabelsVisible(true);
+		renderer_facturacion.setItemLabelsVisible(true);
 
 		ChartPanel panelGraficoIngresos = new ChartPanel(grafico_ingresos);
 		panelGraficoIngresos.setMouseWheelEnabled(true);
-		panelGraficoIngresos.setPreferredSize(new Dimension(700, 40));
 
 		ChartPanel panelGraficoDiagnosticos = new ChartPanel(grafico_diagnosticos);
 		panelGraficoDiagnosticos.setMouseWheelEnabled(true);
-		panelGraficoDiagnosticos.setPreferredSize(new Dimension(700, 40));
 
 		ChartPanel panelGraficoFacturacion = new ChartPanel(grafico_facturacion);
 		panelGraficoFacturacion.setMouseWheelEnabled(true);
-		panelGraficoFacturacion.setPreferredSize(new Dimension(700, 40));
 
-		ventanaEstadisticas.getPanel_Ingresos().add(panelGraficoIngresos, BorderLayout.CENTER);
-		ventanaEstadisticas.getPanel_Diagnosticos().add(panelGraficoDiagnosticos, BorderLayout.CENTER);
-		ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoFacturacion, BorderLayout.CENTER);
+		panelGraficoIngresos.setMinimumDrawHeight(400);
+		panelGraficoIngresos.setMaximumDrawWidth(1280);
+
+		panelGraficoDiagnosticos.setMinimumDrawHeight(400);
+		panelGraficoDiagnosticos.setMaximumDrawWidth(1280);
+
+		panelGraficoFacturacion.setMinimumDrawHeight(400);
+		panelGraficoFacturacion.setMaximumDrawWidth(1280);
+
+		ventanaEstadisticas.getPanel_Ingresos().add(panelGraficoIngresos);
+		ventanaEstadisticas.getPanel_Diagnosticos().add(panelGraficoDiagnosticos);
+		ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoFacturacion);
 
 		if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
 
@@ -1833,7 +1873,6 @@ public class ControladorListados
 		DefaultCategoryDataset datosDiagnosticos = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosAceptaciones = new DefaultCategoryDataset();
 		DefaultCategoryDataset datosFacturacion = new DefaultCategoryDataset();
-		CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();
 
 		datosDiagnosticos.setValue(listaDiagnosticos.get(0), "Diagnósticos", "ENE");
 		datosDiagnosticos.setValue(listaDiagnosticos.get(1), "Diagnósticos", "FEB");
@@ -1906,29 +1945,44 @@ public class ControladorListados
 		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, new Color(64, 0, 0));
 		renderer_facturacion.setSeriesPaint(0, gp2);
 
-		
-		plot_diagnostico.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
-		plot_diagnostico.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
+		grafico_aceptaciones.getTitle().setFont(titleFont);
+		grafico_diagnosticos.getTitle().setFont(titleFont);
+		grafico_facturacion.getTitle().setFont(titleFont);
 
-        plot_aceptaciones.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
-        plot_aceptaciones.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
-        
-        plot_facturacion.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
-        plot_facturacion.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
-		
-		
-		
+		renderer_aceptaciones.setItemLabelGenerator(generator);
+		renderer_diagnostico.setItemLabelGenerator(generator);
+		renderer_facturacion.setItemLabelGenerator(generator);
+
+		renderer_aceptaciones.setItemLabelFont(labelFont);
+		renderer_aceptaciones.setItemLabelPaint(labelColor);
+
+		renderer_diagnostico.setItemLabelFont(labelFont);
+		renderer_diagnostico.setItemLabelPaint(labelColor);
+
+		renderer_facturacion.setItemLabelFont(labelFont);
+		renderer_facturacion.setItemLabelPaint(labelColor);
+
+		renderer_aceptaciones.setItemLabelsVisible(true);
+		renderer_diagnostico.setItemLabelsVisible(true);
+		renderer_facturacion.setItemLabelsVisible(true);
+
 		ChartPanel panelGraficoAceptaciones = new ChartPanel(grafico_aceptaciones);
 		panelGraficoAceptaciones.setMouseWheelEnabled(true);
-		panelGraficoAceptaciones.setPreferredSize(new Dimension(700, 40));
 
 		ChartPanel panelGraficoDiagnosticos = new ChartPanel(grafico_diagnosticos);
 		panelGraficoDiagnosticos.setMouseWheelEnabled(true);
-		panelGraficoDiagnosticos.setPreferredSize(new Dimension(700, 40));
 
 		ChartPanel panelGraficoFacturacion = new ChartPanel(grafico_facturacion);
 		panelGraficoFacturacion.setMouseWheelEnabled(true);
-		panelGraficoFacturacion.setPreferredSize(new Dimension(700, 40));
+
+		panelGraficoAceptaciones.setMinimumDrawHeight(400);
+		panelGraficoAceptaciones.setMaximumDrawWidth(1280);
+
+		panelGraficoDiagnosticos.setMinimumDrawHeight(400);
+		panelGraficoDiagnosticos.setMaximumDrawWidth(1280);
+
+		panelGraficoFacturacion.setMinimumDrawHeight(400);
+		panelGraficoFacturacion.setMaximumDrawWidth(1280);
 
 		ventanaEstadisticas.getPanel_Diagnosticos().add(panelGraficoAceptaciones, BorderLayout.CENTER);
 		ventanaEstadisticas.getPanel_Ingresos().add(panelGraficoDiagnosticos, BorderLayout.CENTER);
@@ -2025,97 +2079,116 @@ public class ControladorListados
 		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, new Color(64, 0, 0));
 		renderer_facturacion.setSeriesPaint(0, gp2);
 
-		
-		//CategoryPlot plot = (CategoryPlot) chart.getPlot();
-		// Crear generador de etiquetas para mostrar los valores en las barras
-        
-        plot_ingreso.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
-        plot_ingreso.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
+		grafico_aceptaciones.getTitle().setFont(titleFont);
+		grafico_Ingresos.getTitle().setFont(titleFont);
+		grafico_facturacion.getTitle().setFont(titleFont);
 
-        plot_aceptaciones.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
-        plot_aceptaciones.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
-        
-        plot_facturacion.getRenderer().setItemLabelGenerator(generator); // Establecer generador de etiquetas
-        plot_facturacion.getRenderer().setItemLabelsVisible(true); // Mostrar las etiquetas
-		
-		
+		renderer_aceptaciones.setItemLabelGenerator(generator);
+		renderer_ingreso.setItemLabelGenerator(generator);
+		renderer_facturacion.setItemLabelGenerator(generator);
+
+		renderer_aceptaciones.setItemLabelFont(labelFont);
+		renderer_aceptaciones.setItemLabelPaint(labelColor);
+
+		renderer_ingreso.setItemLabelFont(labelFont);
+		renderer_ingreso.setItemLabelPaint(labelColor);
+
+		renderer_facturacion.setItemLabelFont(labelFont);
+		renderer_facturacion.setItemLabelPaint(labelColor);
+
+		renderer_aceptaciones.setItemLabelsVisible(true);
+		renderer_ingreso.setItemLabelsVisible(true);
+		renderer_facturacion.setItemLabelsVisible(true);
+
 		ChartPanel panelGraficoAceptaciones = new ChartPanel(grafico_aceptaciones);
 		panelGraficoAceptaciones.setMouseWheelEnabled(true);
-		panelGraficoAceptaciones.setPreferredSize(new Dimension(700, 40));
 
 		ChartPanel panelGraficoIngresos = new ChartPanel(grafico_Ingresos);
 		panelGraficoIngresos.setMouseWheelEnabled(true);
-		panelGraficoIngresos.setPreferredSize(new Dimension(700, 40));
 
 		ChartPanel panelGraficoFacturacion = new ChartPanel(grafico_facturacion);
 		panelGraficoFacturacion.setMouseWheelEnabled(true);
-		panelGraficoFacturacion.setPreferredSize(new Dimension(700, 40));
 
 		ventanaEstadisticas.getPanel_Ingresos().add(panelGraficoIngresos, BorderLayout.CENTER);
 		ventanaEstadisticas.getPanel_Diagnosticos().add(panelGraficoAceptaciones, BorderLayout.CENTER);
 		ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoFacturacion, BorderLayout.CENTER);
 
+		panelGraficoAceptaciones.setMinimumDrawHeight(400);
+		panelGraficoAceptaciones.setMaximumDrawWidth(1280);
+
+		panelGraficoIngresos.setMinimumDrawHeight(400);
+		panelGraficoIngresos.setMaximumDrawWidth(1280);
+
+		panelGraficoFacturacion.setMinimumDrawHeight(400);
+		panelGraficoFacturacion.setMaximumDrawWidth(1280);
+
 		ventanaEstadisticas.repaint();
 
 	}
-	
-	
-	
-	private void mostrarGraficoFacturacionXcliente(){
-		
+
+	private void mostrarGraficoFacturacionXcliente() {
 
 		DefaultPieDataset dataset = createDataset();
 
-        // Crear el gráfico de torta
-        JFreeChart chart = ChartFactory.createPieChart(
-                "",
-                dataset,
-                false, // Incluir leyenda
-                true,
-                false
-        );
-        chart.setBackgroundPaint(new Color(213, 216, 220)); // Cambia el color de fondo del gráfico
-        //chart.getPlot().setOutlinePaint(Color.BLUE); // Cambia el color del área detrás del gráfico
+		// Crear el gráfico de torta
+		JFreeChart chart = ChartFactory.createPieChart("", dataset, false, // Incluir leyenda
+				true, false);
+		
+		//Color labelBackColor = new Color(210, 210, 210); 
+			
+		Color BackgrounColor = new Color(197, 202, 233); 
+		Color BorderLine = new Color(121, 134, 203);
+		
+		
+		PiePlot plot = (PiePlot) chart.getPlot();
+		plot.setStartAngle(290);
+		plot.setBackgroundPaint(BackgrounColor);
+		//plot.setBaseSectionOutlinePaint(BorderLine);
+		plot.setDirection(Rotation.CLOCKWISE);
+		
+		plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: {2}"));
 
+		plot.setLabelFont(labelFontPie);
+		plot.setLabelBackgroundPaint(BackgrounColor);
+		plot.setLabelOutlinePaint(BackgrounColor);
+
+		plot.setShadowPaint(Color.BLACK);
+		plot.setSectionOutlinesVisible(false);
 		
+		ChartPanel chartGraficoFacturacion = new ChartPanel(chart);
+		chartGraficoFacturacion.setMouseWheelEnabled(true);
+		chartGraficoFacturacion.setBackground(BorderLine);
 		
-        PiePlot plot = (PiePlot) chart.getPlot();
-        plot.setStartAngle(290);
-        plot.setDirection(Rotation.CLOCKWISE);
-        plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: {2}"));
-        
-        ChartPanel chartGraficoFacturacion = new ChartPanel(chart);
-        chartGraficoFacturacion.setMouseWheelEnabled(true);
-        ventanaFacturacionXcliente.getPanelGraficoCliente().add(chartGraficoFacturacion,BorderLayout.CENTER );
-		ventanaFacturacionXcliente.getPanelGraficoCliente().repaint();
-	
-		
-		
+
+		ventanaFacturacionXcliente.getPanelGraficoCliente().add(chartGraficoFacturacion, BorderLayout.CENTER);
+				
+		//ventanaFacturacionXcliente.getPanelGraficoCliente().repaint();
+
 	}
-	
-	
+
 	private DefaultPieDataset createDataset() {
-        DefaultPieDataset dataset = new DefaultPieDataset();
+		DefaultPieDataset dataset = new DefaultPieDataset();
 
-        // Obtener los datos de la tabla
-        int rowCount = ventanaFacturacionXcliente.getTblFacturacionClientes().getRowCount();
-        Map<String, Double> porcentajePorCliente = new HashMap<>();
+		// Obtener los datos de la tabla
+		int rowCount = ventanaFacturacionXcliente.getTblFacturacionClientes().getRowCount();
+		Map<String, Double> porcentajePorCliente = new HashMap<>();
 
-        for (int i = 0; i < rowCount; i++) {
-            String cliente = (String) ventanaFacturacionXcliente.getTblFacturacionClientes().getValueAt(i, 0);
-            double porcentaje = monedaFormatter.parseAmount(ventanaFacturacionXcliente.getTblFacturacionClientes().getValueAt(i, 2).toString());
+		for (int i = 0; i < rowCount; i++) {
+			String cliente = (String) ventanaFacturacionXcliente.getTblFacturacionClientes().getValueAt(i, 0);
+			double porcentaje = monedaFormatter
+					.parseAmount(ventanaFacturacionXcliente.getTblFacturacionClientes().getValueAt(i, 2).toString());
 
-            // Sumar los porcentajes para el mismo cliente
-            porcentajePorCliente.put(cliente, porcentajePorCliente.getOrDefault(cliente, 0.0) + porcentaje);
-        }
+			// Sumar los porcentajes para el mismo cliente
+			porcentajePorCliente.put(cliente, porcentajePorCliente.getOrDefault(cliente, 0.0) + porcentaje);
+		}
 
-        // Agregar los datos al dataset del gráfico de torta
-        for (Map.Entry<String, Double> entry : porcentajePorCliente.entrySet()) {
-            dataset.setValue(entry.getKey(), entry.getValue());
-        }
+		// Agregar los datos al dataset del gráfico de torta
+		for (Map.Entry<String, Double> entry : porcentajePorCliente.entrySet()) {
+			dataset.setValue(entry.getKey(), entry.getValue());
+		}
 
-        return dataset;
-    }
+		return dataset;
+	}
 
 	private void calcularComisiones() {
 
