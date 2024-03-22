@@ -184,7 +184,7 @@ public class VentanaEstadisticas extends JFrame {
 		
 		JPanel panelNorte = new JPanel();
 		panelNorte.setBackground(new Color(176, 196, 222));
-		panelNorte.setBorder(new LineBorder(new Color(0, 128, 128), 3));
+		panelNorte.setBorder(new LineBorder(new Color(0, 128, 128)));
 		contentPane.add(panelNorte, BorderLayout.NORTH);
 		
 		JLabel lblNewLabel = new JLabel("ESTADÍSTICAS");
@@ -193,13 +193,13 @@ public class VentanaEstadisticas extends JFrame {
 		panelNorte.add(lblNewLabel);
 		
 		JPanel panelCentro = new JPanel();
-		panelCentro.setBorder(new LineBorder(new Color(0, 128, 128), 2));
+		panelCentro.setBorder(null);
 		contentPane.add(panelCentro, BorderLayout.CENTER);
 		panelCentro.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_Filtros = new JPanel();
 		panel_Filtros.setBackground(new Color(176, 196, 222));
-		panel_Filtros.setBorder(new LineBorder(new Color(0, 128, 128), 3));
+		panel_Filtros.setBorder(new LineBorder(new Color(0, 128, 128)));
 		panel_Filtros.setPreferredSize(new Dimension(500, 50));
 		panelCentro.add(panel_Filtros, BorderLayout.NORTH);
 		panel_Filtros.setLayout(null);
@@ -252,33 +252,33 @@ public class VentanaEstadisticas extends JFrame {
 		
 		panel_Ingresos = new JPanel();
 		panel_Ingresos.setBackground(new Color(176, 196, 222));
-		panel_Ingresos.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0), 0), new LineBorder(new Color(0, 128, 128), 3)));
+		panel_Ingresos.setBorder(new LineBorder(new Color(0, 128, 128)));
 		panel.add(panel_Ingresos);
 		panel_Ingresos.setLayout(new CardLayout(0, 0));
 		
 		panel_Diagnosticos = new JPanel();
 		panel_Diagnosticos.setBackground(new Color(176, 196, 222));
-		panel_Diagnosticos.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0), 0), new LineBorder(new Color(0, 128, 128), 3)));
+		panel_Diagnosticos.setBorder(new LineBorder(new Color(0, 128, 128)));
 		panel.add(panel_Diagnosticos);
 		panel_Diagnosticos.setLayout(new CardLayout(0, 0));
 		
 		panel_Facturacion = new JPanel();
 		panel_Facturacion.setVisible(false);
 		panel_Facturacion.setBackground(new Color(176, 196, 222));
-		panel_Facturacion.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0), 0), new LineBorder(new Color(0, 128, 128), 3)));
+		panel_Facturacion.setBorder(new LineBorder(new Color(0, 128, 128)));
 		panel.add(panel_Facturacion);
 		panel_Facturacion.setLayout(new CardLayout(0, 0));
 		
 		JPanel panelDerecha = new JPanel();
 		panelDerecha.setBackground(new Color(176, 196, 222));
 		panelDerecha.setPreferredSize(new Dimension(350, 10));
-		panelDerecha.setBorder(new LineBorder(new Color(0, 128, 128), 4));
+		panelDerecha.setBorder(new LineBorder(new Color(0, 128, 128)));
 		contentPane.add(panelDerecha, BorderLayout.EAST);
 		panelDerecha.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_Derecha_Inferior = new JPanel();
 		panel_Derecha_Inferior.setBackground(new Color(176, 196, 222));
-		panel_Derecha_Inferior.setBorder(null);
+		panel_Derecha_Inferior.setBorder(new LineBorder(new Color(0, 128, 128)));
 		panelDerecha.add(panel_Derecha_Inferior, BorderLayout.SOUTH);
 		panel_Derecha_Inferior.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 6));
 		
@@ -288,7 +288,7 @@ public class VentanaEstadisticas extends JFrame {
 		
 		panel_Datos = new JPanel();
 		panel_Datos.setBackground(new Color(176, 196, 222));
-		panel_Datos.setBorder(null);
+		panel_Datos.setBorder(new LineBorder(new Color(0, 128, 128)));
 		panel_Datos.setVisible(false);
 		panelDerecha.add(panel_Datos, BorderLayout.CENTER);
 		panel_Datos.setLayout(null);

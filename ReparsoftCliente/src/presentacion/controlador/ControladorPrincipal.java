@@ -60,10 +60,7 @@ public class ControladorPrincipal implements ActionListener {
 		this.modelo = new Agenda(ubicacionBase);
 		this.ubicacionDeBase = ubicacionBase;
 
-		this.vistaPrincipal.getBtnCerrarSesion().addActionListener(this);
-		this.vistaPrincipal.getBtnAcercaDe().addActionListener(this);
-		this.vistaPrincipal.getBtnAyuda().addActionListener(this);
-		this.vistaPrincipal.getBtnConfiguracion().addActionListener(this);
+		this.vistaPrincipal.getBtncerrarSesion().addActionListener(this);
 
 		this.vistaPrincipal.getBotonEquipos().addActionListener(this);
 		this.vistaPrincipal.getBtnSalir().addActionListener(this);
@@ -169,7 +166,7 @@ public class ControladorPrincipal implements ActionListener {
 
 		}
 
-		else if (arg0.getSource() == this.vistaPrincipal.getBtnCerrarSesion()) {
+		else if (arg0.getSource() == this.vistaPrincipal.getBtncerrarSesion()) {
 
 			this.controladorUsuLogin.cerrarSesion();
 			inicializar();

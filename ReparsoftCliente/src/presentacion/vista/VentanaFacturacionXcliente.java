@@ -79,18 +79,18 @@ public class VentanaFacturacionXcliente extends JFrame {
 		JPanel panelNorte = new JPanel();
 		panelNorte.setOpaque(false);
 		panelNorte.setBackground(new Color(176, 196, 222));
-		panelNorte.setBorder(new LineBorder(new Color(0, 128, 128), 4));
+		panelNorte.setBorder(new LineBorder(new Color(0, 128, 128)));
 		contentPane.add(panelNorte, BorderLayout.NORTH);
 
 		JLabel lblNewLabel = new JLabel("FACTURACIÓN POR CLIENTE - AÑO :  ");
-		lblNewLabel.setForeground(new Color(0, 51, 153));
+		lblNewLabel.setForeground(new Color(0, 0, 0));
 		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 30));
 		panelNorte.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 15));
 		panelNorte.add(lblNewLabel);
 
 		textAnio = new JTextField();
-		textAnio.setForeground(new Color(0, 51, 153));
-		textAnio.setHorizontalAlignment(SwingConstants.LEFT);
+		textAnio.setForeground(new Color(0, 0, 0));
+		textAnio.setHorizontalAlignment(SwingConstants.RIGHT);
 		textAnio.setEditable(false);
 		textAnio.setBorder(null);
 		textAnio.setOpaque(false);
@@ -99,6 +99,7 @@ public class VentanaFacturacionXcliente extends JFrame {
 		textAnio.setColumns(10);
 
 		panelCentro = new JPanel();
+		panelCentro.setBorder(null);
 		panelCentro.setBackground(new Color(204, 204, 255));
 		contentPane.add(panelCentro, BorderLayout.CENTER);
 		panelCentro.setLayout(new BoxLayout(panelCentro, BoxLayout.LINE_AXIS));
@@ -106,7 +107,7 @@ public class VentanaFacturacionXcliente extends JFrame {
 		panelTabla = new JPanel();
 		panelTabla.setBackground(new Color(204, 204, 255));
 		panelTabla.setOpaque(false);;
-		panelTabla.setBorder(new LineBorder(new Color(0, 128, 128), 4));
+		panelTabla.setBorder(new LineBorder(new Color(0, 128, 128)));
 		panelCentro.add(panelTabla);
 
 		modelFacturacionClientes = new DefaultTableModel(new Object[][] {}, nombreColumnas) {
@@ -189,7 +190,7 @@ public class VentanaFacturacionXcliente extends JFrame {
 
 		panelGrafico = new JPanel();
 		panelGrafico.setOpaque(false);
-		panelGrafico.setBorder(new LineBorder(new Color(0, 128, 128), 4));
+		panelGrafico.setBorder(new LineBorder(new Color(0, 128, 128)));
 		panelCentro.add(panelGrafico);
 		panelGrafico.setLayout(new BorderLayout(0, 0));
 

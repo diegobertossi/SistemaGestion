@@ -47,15 +47,8 @@ public class VistaPrincipal extends JFrame {
 	private JTextField textUsuario;
 	private JTextField textVersionSoft;
 	private JTextField textProgramador;
-	
-	private JMenuItem  btnCerrarSesion;
-	private JMenuItem  btnConfiguracion;
-	private JMenuItem  btnAcercaDe;
-	private JMenuItem  btnAyuda;
-	private JSeparator separator;
 	private JPanel panel_1;
-	
-	
+	private JButton btncerrarSesion;
 
 	public VistaPrincipal() {
 		super();
@@ -73,11 +66,11 @@ public class VistaPrincipal extends JFrame {
 		// this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		getContentPane().setLayout(null);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(85, 172, 314, 2);
 		getContentPane().add(separator_1);
-		
+
 		JSeparator separator_1_1 = new JSeparator();
 		separator_1_1.setBounds(85, 168, 314, 2);
 		getContentPane().add(separator_1_1);
@@ -88,215 +81,177 @@ public class VistaPrincipal extends JFrame {
 		textUsuario.setBorder(null);
 		textUsuario.setHorizontalAlignment(SwingConstants.CENTER);
 		textUsuario.setBackground(SystemColor.activeCaption);
-		textUsuario.setForeground(Color.WHITE);
+		textUsuario.setForeground(new Color(65, 105, 225));
 		textUsuario.setFont(new Font("Cambria", Font.BOLD, 14));
 		textUsuario.setBounds(143, 0, 198, 27);
 		getContentPane().add(textUsuario);
 		textUsuario.setColumns(10);
 
-		btnSalir = new JButton("SALIR");
-		btnSalir.setForeground(new Color(255, 0, 51));
-		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnSalir.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnSalir.setBounds(376, 1, 107, 36);
-		btnSalir.setToolTipText("Salir del Sistema");
-		btnSalir.setIcon(new ImageIcon(this.getClass().getResource("/logout.png")));
-		getContentPane().add(btnSalir);
-		
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.setOpaque(false);
-		menuBar.setBorderPainted(false);
-		menuBar.setBorder(UIManager.getBorder("MenuBar.border"));
-		menuBar.setFont(new Font("Cambria", Font.BOLD, 12));
-		menuBar.setBackground(SystemColor.activeCaption);
-		JMenu mnMenu = new JMenu("");
-		mnMenu.setHorizontalTextPosition(SwingConstants.CENTER);
-		mnMenu.setHorizontalAlignment(SwingConstants.CENTER);
-		mnMenu.setPreferredSize(new Dimension(40, 25));
-		mnMenu.setIcon(new ImageIcon(this.getClass().getResource("/icons8-menú-25.png")));
-		mnMenu.setBorderPainted(true);
-		mnMenu.setForeground(new Color(0, 0, 0));
-		mnMenu.setFont(new Font("Cambria", Font.BOLD, 13));
-		mnMenu.setBackground(new Color(176, 196, 222));
-		menuBar.setBounds(0, 0, 40, 22);
-		mnMenu.setBounds(0, 0, 101, 22);
-		getContentPane().add(menuBar);
-		menuBar.add(mnMenu);
-		
-
-		btnCerrarSesion = new JMenuItem("Cerrar Sesion");
-		btnCerrarSesion.setFont(new Font("Cambria", Font.PLAIN, 12));
-		btnConfiguracion = new JMenuItem("Configuración");
-		btnConfiguracion.setFont(new Font("Cambria", Font.PLAIN, 12));
-		separator = new JSeparator();
-		separator.setBounds(new Rectangle(0, 0, 0, 3));
-		separator.setBorder(new EmptyBorder(10, 0, 10, 0));
-		btnAcercaDe = new JMenuItem("Acerca de...");
-		btnAcercaDe.setFont(new Font("Cambria", Font.PLAIN, 12));
-		btnAyuda = new JMenuItem("Ayuda");
-		btnAyuda.setFont(new Font("Cambria", Font.PLAIN, 12));
-		
-		
-		
-	
-		mnMenu.add(btnCerrarSesion);
-		
-		mnMenu.add(btnConfiguracion);
-		
-		mnMenu.add(separator);
-		
-		mnMenu.add(btnAcercaDe);
-		
-		mnMenu.add(btnAyuda);
-		
 		JSeparator separator_1_1_1 = new JSeparator();
 		separator_1_1_1.setBounds(85, 388, 314, 2);
 		getContentPane().add(separator_1_1_1);
-		
+
 		JSeparator separator_1_2 = new JSeparator();
 		separator_1_2.setBounds(85, 384, 314, 2);
 		getContentPane().add(separator_1_2);
-		
+
 		panel_1 = new JPanel();
 		panel_1.setOpaque(false);
-		panel_1.setBackground(new Color(219,227,246));
+		panel_1.setBackground(new Color(219, 227, 246));
 		panel_1.setBorder(null);
 		panel_1.setBounds(0, 0, 483, 412);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
-				
-						panelDeControl = new JPanel();
-						panelDeControl.setBounds(10, 179, 462, 201);
-						panel_1.add(panelDeControl);
-						panelDeControl.setBackground(new Color(176, 196, 222));
-						panelDeControl.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-						panelDeControl.setLayout(null);
-						
-								botonEquipos = new JButton("EQUIPOS");
-								botonEquipos.setForeground(new Color(0, 0, 128));
-								botonEquipos.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent arg0) {
-									}
-								});
-								botonEquipos.setBounds(11, 13, 143, 49);
-								botonEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-								botonEquipos.setFont(new Font("Cambria", Font.BOLD, 13));
-								
+
+		btncerrarSesion = new JButton("<html><center>CERRAR SESIÓN</html>");
+		btncerrarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btncerrarSesion.setToolTipText("Cerrar sesión pero no el sistema");
+		btncerrarSesion.setHorizontalTextPosition(SwingConstants.RIGHT);
+		btncerrarSesion.setHorizontalAlignment(SwingConstants.LEFT);
+		btncerrarSesion.setForeground(new Color(70, 130, 180));
+		btncerrarSesion.setFont(new Font("Cambria", Font.BOLD, 10));
+		btncerrarSesion.setBounds(10, 11, 98, 33);
+		btncerrarSesion.setIcon(new ImageIcon(this.getClass().getResource("/Icono cerrar sesion.png")));
+		btncerrarSesion.setHorizontalTextPosition(SwingConstants.RIGHT);
+
+		panel_1.add(btncerrarSesion);
+
+		btnSalir = new JButton("SALIR");
+		btnSalir.setBounds(376, 11, 97, 33);
+		panel_1.add(btnSalir);
+		btnSalir.setHorizontalAlignment(SwingConstants.LEFT);
+		btnSalir.setForeground(new Color(255, 0, 51));
+		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSalir.setFont(new Font("Cambria", Font.BOLD, 10));
+		btnSalir.setToolTipText("Salir del Sistema");
+		btnSalir.setIcon(new ImageIcon(this.getClass().getResource("/Icono salir.png")));
+		btnSalir.setHorizontalTextPosition(SwingConstants.RIGHT);
+
+		panelDeControl = new JPanel();
+		panelDeControl.setBounds(10, 179, 462, 201);
+		panel_1.add(panelDeControl);
+		panelDeControl.setBackground(new Color(176, 196, 222));
+		panelDeControl.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panelDeControl.setLayout(null);
+
+		botonEquipos = new JButton("EQUIPOS");
+		botonEquipos.setForeground(new Color(0, 0, 128));
+		botonEquipos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		botonEquipos.setBounds(11, 13, 143, 49);
+		botonEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		botonEquipos.setFont(new Font("Cambria", Font.BOLD, 13));
+
 		botonEquipos.setToolTipText("Ingreso y visualización de equipos al Sistema");
-		
+
 		botonEquipos.setIcon(new ImageIcon(this.getClass().getResource("/motherboard_46935.png")));
 		panelDeControl.add(botonEquipos);
-		
-				botonSalidas = new JButton("SALIDAS");
-				botonSalidas.setForeground(new Color(0, 0, 128));
-				botonSalidas.setBounds(160, 13, 143, 49);
-				botonSalidas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				botonSalidas.setFont(new Font("Cambria", Font.BOLD, 13));
-				botonSalidas.setToolTipText("Egreso de equipos y generación de Remitos");
-				botonSalidas.setIcon(new ImageIcon(this.getClass().getResource("/Salida.png")));
-				panelDeControl.add(botonSalidas);
-				
-						botonBusquedas = new JButton("BUSCAR");
-						botonBusquedas.setForeground(new Color(0, 0, 128));
-						botonBusquedas.setBounds(11, 75, 143, 49);
-						botonBusquedas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-						botonBusquedas.setFont(new Font("Cambria", Font.BOLD, 13));
-						botonBusquedas.setToolTipText("Busqueda de equipos, por ELS, Cliente o Tecnico.");
-						botonBusquedas.setIcon(new ImageIcon(this.getClass().getResource("/Buscar.png")));
-						panelDeControl.add(botonBusquedas);
-						
-								botonListados = new JButton("LISTADOS");
-								botonListados.setForeground(new Color(0, 0, 128));
-								botonListados.setBounds(309, 13, 143, 49);
-								botonListados.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-								botonListados.setFont(new Font("Cambria", Font.BOLD, 13));
-								botonListados.setToolTipText("Listados de equipos.");
-								botonListados.setIcon(new ImageIcon(this.getClass().getResource("/Listado.png")));
-								panelDeControl.add(botonListados);
-								
-										botonClientes = new JButton("CLIENTES");
-										botonClientes.setForeground(new Color(0, 0, 128));
-										botonClientes.setBounds(160, 75, 143, 49);
-										botonClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-										botonClientes.setFont(new Font("Cambria", Font.BOLD, 13));
-										
+
+		botonSalidas = new JButton("SALIDAS");
+		botonSalidas.setForeground(new Color(0, 0, 128));
+		botonSalidas.setBounds(160, 13, 143, 49);
+		botonSalidas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		botonSalidas.setFont(new Font("Cambria", Font.BOLD, 13));
+		botonSalidas.setToolTipText("Egreso de equipos y generación de Remitos");
+		botonSalidas.setIcon(new ImageIcon(this.getClass().getResource("/Salida.png")));
+		panelDeControl.add(botonSalidas);
+
+		botonBusquedas = new JButton("BUSCAR");
+		botonBusquedas.setForeground(new Color(0, 0, 128));
+		botonBusquedas.setBounds(11, 75, 143, 49);
+		botonBusquedas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		botonBusquedas.setFont(new Font("Cambria", Font.BOLD, 13));
+		botonBusquedas.setToolTipText("Busqueda de equipos, por ELS, Cliente o Tecnico.");
+		botonBusquedas.setIcon(new ImageIcon(this.getClass().getResource("/Buscar.png")));
+		panelDeControl.add(botonBusquedas);
+
+		botonListados = new JButton("LISTADOS");
+		botonListados.setForeground(new Color(0, 0, 128));
+		botonListados.setBounds(309, 13, 143, 49);
+		botonListados.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		botonListados.setFont(new Font("Cambria", Font.BOLD, 13));
+		botonListados.setToolTipText("Listados de equipos.");
+		botonListados.setIcon(new ImageIcon(this.getClass().getResource("/Listado.png")));
+		panelDeControl.add(botonListados);
+
+		botonClientes = new JButton("CLIENTES");
+		botonClientes.setForeground(new Color(0, 0, 128));
+		botonClientes.setBounds(160, 75, 143, 49);
+		botonClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		botonClientes.setFont(new Font("Cambria", Font.BOLD, 13));
+
 		botonClientes.setToolTipText("Visualización y alta de Clientes");
-		
+
 		botonClientes.setIcon(new ImageIcon(this.getClass().getResource("/Clientes.png")));
 		panelDeControl.add(botonClientes);
-		
-				botonPresupuestos = new JButton("PRESUPUESTOS");
-				botonPresupuestos.setHorizontalAlignment(SwingConstants.LEFT);
-				botonPresupuestos.setForeground(new Color(0, 0, 128));
-				botonPresupuestos.setBounds(309, 75, 143, 49);
-				botonPresupuestos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				botonPresupuestos.setFont(new Font("Cambria", Font.BOLD, 11));
-				
+
+		botonPresupuestos = new JButton("PRESUPUESTOS");
+		botonPresupuestos.setHorizontalAlignment(SwingConstants.LEFT);
+		botonPresupuestos.setForeground(new Color(0, 0, 128));
+		botonPresupuestos.setBounds(309, 75, 143, 49);
+		botonPresupuestos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		botonPresupuestos.setFont(new Font("Cambria", Font.BOLD, 11));
+
 		botonPresupuestos.setToolTipText("Generación de Presupuestos, pendientes e Ingreso de Pagos.");
-		
+
 		botonPresupuestos.setIcon(new ImageIcon(this.getClass().getResource("/Presupuestos.png")));
 		panelDeControl.add(botonPresupuestos);
-		
-				botonUsuarios = new JButton("USUARIOS");
-				botonUsuarios.setForeground(new Color(0, 0, 128));
-				botonUsuarios.setBounds(160, 137, 143, 49);
-				botonUsuarios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				botonUsuarios.setFont(new Font("Cambria", Font.BOLD, 13));
-				botonUsuarios.setToolTipText("Gestión de los Usuarios del Sistema.");
-				botonUsuarios.setIcon(new ImageIcon(this.getClass().getResource("/Usuarios.png")));
-				panelDeControl.add(botonUsuarios);
-				
-						botonBackUp = new JButton("BACKUP");
-						botonBackUp.setForeground(new Color(0, 0, 128));
-						botonBackUp.setBounds(11, 137, 143, 49);
-						botonBackUp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-						botonBackUp.setFont(new Font("Cambria", Font.BOLD, 13));
-						botonBackUp.setToolTipText("Backup del Sistema.");
-						botonBackUp.setIcon(new ImageIcon(this.getClass().getResource("/Backup.png")));
-						panelDeControl.add(botonBackUp);
-		
-				JLabel lblReparacionesEls = new JLabel("");
-				lblReparacionesEls.setIcon(new ImageIcon(this.getClass().getResource("/REPARSOFT logo pequeño.png")));
-				lblReparacionesEls.setOpaque(true);
-				lblReparacionesEls.setHorizontalTextPosition(SwingConstants.CENTER);
-				lblReparacionesEls.setVerticalTextPosition(SwingConstants.TOP);
-				lblReparacionesEls.setHorizontalAlignment(SwingConstants.CENTER);
-				lblReparacionesEls.setBackground(new Color(176, 196, 222));
-				lblReparacionesEls.setBounds(22, 25, 473, 167);
-				panel_1.add(lblReparacionesEls);
-				lblReparacionesEls.setForeground(new Color(105, 105, 105));
-				lblReparacionesEls.setFont(new Font("Wide Latin", Font.BOLD, 22));
-				
-						textProgramador = new JTextField();
-						textProgramador.setBounds(4, 398, 166, 16);
-						panel_1.add(textProgramador);
-						textProgramador.setOpaque(false);
-						textProgramador.setHorizontalAlignment(SwingConstants.RIGHT);
-						textProgramador.setForeground(Color.WHITE);
-						textProgramador.setFont(new Font("Cambria", Font.PLAIN, 12));
-						textProgramador.setEditable(false);
-						textProgramador.setColumns(10);
-						textProgramador.setBorder(null);
-						textProgramador.setBackground(SystemColor.activeCaption);
-						
-								textVersionSoft = new JTextField();
-								textVersionSoft.setBounds(316, 397, 166, 16);
-								panel_1.add(textVersionSoft);
-								textVersionSoft.setOpaque(false);
-								textVersionSoft.setHorizontalAlignment(SwingConstants.RIGHT);
-								textVersionSoft.setForeground(Color.WHITE);
-								textVersionSoft.setFont(new Font("Cambria", Font.PLAIN, 12));
-								textVersionSoft.setEditable(false);
-								textVersionSoft.setColumns(10);
-								textVersionSoft.setBorder(null);
-								textVersionSoft.setBackground(SystemColor.activeCaption);
-		
-		
-		
-		
-		
-		
-		
+
+		botonUsuarios = new JButton("USUARIOS");
+		botonUsuarios.setForeground(new Color(0, 0, 128));
+		botonUsuarios.setBounds(160, 137, 143, 49);
+		botonUsuarios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		botonUsuarios.setFont(new Font("Cambria", Font.BOLD, 13));
+		botonUsuarios.setToolTipText("Gestión de los Usuarios del Sistema.");
+		botonUsuarios.setIcon(new ImageIcon(this.getClass().getResource("/Usuarios.png")));
+		panelDeControl.add(botonUsuarios);
+
+		botonBackUp = new JButton("BACKUP");
+		botonBackUp.setForeground(new Color(0, 0, 128));
+		botonBackUp.setBounds(11, 137, 143, 49);
+		botonBackUp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		botonBackUp.setFont(new Font("Cambria", Font.BOLD, 13));
+		botonBackUp.setToolTipText("Backup del Sistema.");
+		botonBackUp.setIcon(new ImageIcon(this.getClass().getResource("/Backup.png")));
+		panelDeControl.add(botonBackUp);
+
+		JLabel lblReparacionesEls = new JLabel("");
+		lblReparacionesEls.setIcon(new ImageIcon(this.getClass().getResource("/REPARSOFT logo pequeño.png")));
+		lblReparacionesEls.setOpaque(true);
+		lblReparacionesEls.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblReparacionesEls.setVerticalTextPosition(SwingConstants.TOP);
+		lblReparacionesEls.setHorizontalAlignment(SwingConstants.CENTER);
+		lblReparacionesEls.setBackground(new Color(176, 196, 222));
+		lblReparacionesEls.setBounds(22, 25, 473, 167);
+		panel_1.add(lblReparacionesEls);
+		lblReparacionesEls.setForeground(new Color(105, 105, 105));
+		lblReparacionesEls.setFont(new Font("Wide Latin", Font.BOLD, 22));
+
+		textProgramador = new JTextField();
+		textProgramador.setBounds(4, 398, 166, 16);
+		panel_1.add(textProgramador);
+		textProgramador.setOpaque(false);
+		textProgramador.setHorizontalAlignment(SwingConstants.RIGHT);
+		textProgramador.setForeground(new Color(65, 105, 225));
+		textProgramador.setFont(new Font("Cambria", Font.PLAIN, 12));
+		textProgramador.setEditable(false);
+		textProgramador.setColumns(10);
+		textProgramador.setBorder(null);
+		textProgramador.setBackground(SystemColor.activeCaption);
+
+		textVersionSoft = new JTextField();
+		textVersionSoft.setBounds(316, 397, 166, 16);
+		panel_1.add(textVersionSoft);
+		textVersionSoft.setOpaque(false);
+		textVersionSoft.setHorizontalAlignment(SwingConstants.RIGHT);
+		textVersionSoft.setForeground(new Color(65, 105, 225));
+		textVersionSoft.setFont(new Font("Cambria", Font.PLAIN, 12));
+		textVersionSoft.setEditable(false);
+		textVersionSoft.setColumns(10);
+		textVersionSoft.setBorder(null);
+		textVersionSoft.setBackground(SystemColor.activeCaption);
 
 		setLocationCenter();
 		setVisible(true);
@@ -326,7 +281,6 @@ public class VistaPrincipal extends JFrame {
 	public void setBotonBackUp(JButton botonBackUp) {
 		this.botonBackUp = botonBackUp;
 	}
-
 
 	public JButton getBotonSalidas() {
 		return botonSalidas;
@@ -452,35 +406,12 @@ public class VistaPrincipal extends JFrame {
 		this.btnSalir = btnSalir;
 	}
 
-	public JMenuItem getBtnCerrarSesion() {
-		return btnCerrarSesion;
+
+	public JButton getBtncerrarSesion() {
+		return btncerrarSesion;
 	}
 
-	public void setBtnCerrarSesion(JMenuItem btnCerrarSesion) {
-		this.btnCerrarSesion = btnCerrarSesion;
-	}
-
-	public JMenuItem getBtnConfiguracion() {
-		return btnConfiguracion;
-	}
-
-	public void setBtnConfiguracion(JMenuItem btnConfiguracion) {
-		this.btnConfiguracion = btnConfiguracion;
-	}
-
-	public JMenuItem getBtnAcercaDe() {
-		return btnAcercaDe;
-	}
-
-	public void setBtnAcercaDe(JMenuItem btnAcercaDe) {
-		this.btnAcercaDe = btnAcercaDe;
-	}
-
-	public JMenuItem getBtnAyuda() {
-		return btnAyuda;
-	}
-
-	public void setBtnAyuda(JMenuItem btnAyuda) {
-		this.btnAyuda = btnAyuda;
+	public void setBtncerrarSesion(JButton btncerrarSesion) {
+		this.btncerrarSesion = btncerrarSesion;
 	}
 }
