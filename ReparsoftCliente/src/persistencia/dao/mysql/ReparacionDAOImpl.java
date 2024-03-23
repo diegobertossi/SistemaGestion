@@ -15,7 +15,7 @@ import dto.ReparacionDTO;
 
 public class ReparacionDAOImpl implements ReparacionDAO {
 
-	private static final String insert = "INSERT INTO reparaciones(ELS,FechaEntrada,Falla, EstadoFisico, EstadoTecnico,EstadoComercial, RemitoCliente, idEquipo, idUsuario) VALUES( ? , ? ,? , ? , ?,? , ? , ?,?)";
+	private static final String insert = "INSERT INTO reparaciones(ELS,FechaEntrada,Falla, EstadoFisico, EstadoTecnico,EstadoComercial, RemitoCliente, idEquipo, idUsuario, lugar_de_ingreso) VALUES( ? , ? ,? , ? , ?,? , ? , ?,?,?)";
 
 	private static final String insertEquipo = "INSERT INTO Equipos (IdEquipo, Nombre, Modelo, Marca, NumeroDeSerie, FechaFabr,Aviso, ClienteCliente, RemitoCliente, idCliente, idSucursal ) VALUES(? , ? ,? , ? , ? , ? , ? , ? , ?, ?,?)";
 
@@ -166,7 +166,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	@SuppressWarnings("unused")
 	public ReparacionDAOImpl(String ubicacionBase) {
 
-		final String insert = "INSERT INTO reparaciones(ELS,FechaEntrada,Falla, EstadoFisico, EstadoTecnico,EstadoComercial, RemitoCliente, idEquipo, idUsuario) VALUES( ? , ? ,? , ? , ?,? , ? , ?,?)";
+		final String insert = "INSERT INTO reparaciones(ELS,FechaEntrada,Falla, EstadoFisico, EstadoTecnico,EstadoComercial, RemitoCliente, idEquipo, idUsuario, lugar_de_ingreso) VALUES( ? , ? ,? , ? , ?,? ,?, ? , ?,?)";
 
 		final String insertEquipo = "INSERT INTO Equipos (IdEquipo, Nombre, Modelo, Marca, NumeroDeSerie, FechaFabr,Aviso, ClienteCliente, RemitoCliente, idCliente, idSucursal ) VALUES(? , ? ,? , ? , ? , ? , ? , ? , ?, ?,?)";
 
@@ -258,6 +258,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			statement.setString(7, Reparaciones.getRemitoCliente());
 			statement.setInt(8, Reparaciones.getIDEquipo());
 			statement.setInt(9, Reparaciones.getidUsuario());
+			statement.setString(10, Reparaciones.getLugarDeIngreso());
 
 			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
 				return true;

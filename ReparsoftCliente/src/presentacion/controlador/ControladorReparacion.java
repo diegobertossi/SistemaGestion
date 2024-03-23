@@ -120,6 +120,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private String estadoFisico = "";
 	private String estadoTecnico = "";
 	private String estadocomercial = "";
+	private String lugarDeIngreso="";
 	private String NombreEq = "";
 	private String Marca = "";
 	private String Modelo = "";
@@ -2553,6 +2554,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			if (button.isSelected()) {
 
 				estadoFisico = button.getText();
+				lugarDeIngreso =button.getText();
 
 			}
 		}
@@ -2562,7 +2564,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ReparacionDTO nuevoReparacion = new ReparacionDTO(ELS, fechaentrada, falla, estadoFisico, estadoTecnico,
 				estadocomercial, RemitoCLiente, IDEquipo, idUsuarios, NombreEquipo, Modelo, Marca, Series, aviso,
-				ClienteCliente, idCliente, idSucursal, fechaFarbricacion);
+				ClienteCliente, idCliente, idSucursal, fechaFarbricacion, lugarDeIngreso);
 
 		return nuevoReparacion;
 

@@ -242,7 +242,7 @@ public class ReparacionDTO {
 	public ReparacionDTO(int ELS, String Fecha_Entrada, String Falla, String EstadoFisico, String EstadoTecnico,
 			String EstadoComercial, String RemitoCliente, int IDEquipo, int IDusuario, String Nombre, String Modelo,
 			String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente, int IDCliente, int IDSuc,
-			String FechaFabr) {
+			String FechaFabr,String lugarDeIngreso) {
 
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
@@ -262,11 +262,12 @@ public class ReparacionDTO {
 		this.idCliente = IDCliente;
 		this.idSucursal = IDSuc;
 		this.FechaFabr = FechaFabr;
+		this.LugarDeIngreso = lugarDeIngreso;
 
 	}
 
 	public ReparacionDTO(int IDEquipo, String Nombre, String Modelo, String Marca, String NumeroDeSerie, String Aviso,
-			String ClienteCliente, int IDCliente, int IDSuc) {
+			String ClienteCliente, int IDCliente, int IDSuc, String lugarDeIngreso) {
 		this.idEquipo = IDEquipo;
 		this.NombreEquipo = Nombre;
 		this.Modelo = Modelo;
@@ -276,6 +277,9 @@ public class ReparacionDTO {
 		this.ClienteCliente = ClienteCliente;
 		this.idCliente = IDCliente;
 		this.idSucursal = IDSuc;
+		this.LugarDeIngreso = lugarDeIngreso;
+		
+		
 
 	}
 
