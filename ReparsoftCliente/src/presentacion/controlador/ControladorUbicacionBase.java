@@ -2,6 +2,9 @@ package presentacion.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JOptionPane;
+
 import presentacion.vista.VistaPrincipal;
 
 import presentacion.vista.VentanaUbicacionBaseDeDatos;
@@ -14,38 +17,48 @@ public class ControladorUbicacionBase implements ActionListener {
 	public ControladorUbicacionBase(VentanaUbicacionBaseDeDatos vistaUbicacionBaseDatos) {
 
 		this.vistaUbicacionBase = vistaUbicacionBaseDatos;
-
-		this.vistaUbicacionBase.getBtnBuenosAires().addActionListener(this);
-		this.vistaUbicacionBase.getBtnBariloche().addActionListener(this);
+		this.vistaUbicacionBase.getBtnAcceder().addActionListener(this);
+		this.vistaUbicacionBase.getComboUbicacion().addActionListener(this);
+		llenarComboUbicacionBase();
 
 	}
 
-
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
 
-		if (arg0.getSource() == vistaUbicacionBase.getBtnBariloche()) {
+		if (arg0.getSource() == vistaUbicacionBase.getBtnAcceder()) {
+						
+			if (vistaUbicacionBase.getComboUbicacion().getSelectedItem()!= null) {
+				
+				
+				UbicacionBase = vistaUbicacionBase.getComboUbicacion().getSelectedItem().toString();
+				vistaUbicacionBase.dispose();
+				vistaUbicacionBase = null;
 
-			UbicacionBase = "Bariloche";
-			vistaUbicacionBase.dispose();
-			vistaUbicacionBase = null;
+				VistaPrincipal vista = new VistaPrincipal();
+
+				ControladorPrincipal controlador = new ControladorPrincipal(vista, UbicacionBase);
+
+				controlador.inicializar();
+				
+				
+			}
+			else
+				
+				JOptionPane.showMessageDialog(null, "Debe seleccionar una UBICACIÓN para acceder",
+						"SELECCIONAR UBICACIÓN", JOptionPane.INFORMATION_MESSAGE);
+
 
 		}
 
-		else if (arg0.getSource() == vistaUbicacionBase.getBtnBuenosAires()) {
+	}
 
-			UbicacionBase = "Buenos Aires";
-			vistaUbicacionBase.dispose();
-			vistaUbicacionBase = null;
+	@SuppressWarnings("unchecked")
+	private void llenarComboUbicacionBase() {
 
-		}
-
-		VistaPrincipal vista = new VistaPrincipal();
-
-		ControladorPrincipal controlador = new ControladorPrincipal(vista, UbicacionBase);
-
-		controlador.inicializar();
+		vistaUbicacionBase.getComboUbicacion().addItem("Buenos Aires");
+		vistaUbicacionBase.getComboUbicacion().addItem("Bariloche");
+		vistaUbicacionBase.getComboUbicacion().setSelectedIndex(-1);
 
 	}
 

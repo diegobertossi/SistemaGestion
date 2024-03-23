@@ -180,6 +180,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JLabel lblInformeSiemensGenerado;
 	private JLabel lblInformeSiemensEnviado;
 	private JTextField textPresupuestoDolar;
+	private JTextField textLugarDeIngreso;
 
 	@SuppressWarnings({ "rawtypes", "serial" })
 	public VentanaVisualizarEquipos(ControladorReparacion controladorReparacion) {
@@ -638,7 +639,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		BotonEditarEstados.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonEditarEstados.setBackground(SystemColor.textHighlight);
 		BotonEditarEstados.setEnabled(false);
-		BotonEditarEstados.setBounds(117, 80, 145, 28);
+		BotonEditarEstados.setBounds(200, 83, 145, 28);
 		panel_2.add(BotonEditarEstados);
 		BotonEditarEstados.setFont(new Font("Cambria", Font.BOLD, 14));
 
@@ -677,6 +678,17 @@ public class VentanaVisualizarEquipos extends JFrame {
 		JSeparator separator_3 = new JSeparator();
 		separator_3.setBounds(11, 112, 332, 4);
 		panel_2.add(separator_3);
+		
+		textLugarDeIngreso = new JTextField();
+		textLugarDeIngreso.setBounds(139, 87, 51, 20);
+		panel_2.add(textLugarDeIngreso);
+		textLugarDeIngreso.setColumns(10);
+		
+		JLabel lblLugarDeIngreso = new JLabel("Lugar de ingreso: ");
+		lblLugarDeIngreso.setFont(new Font("Cambria", Font.BOLD, 14));
+		lblLugarDeIngreso.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
+		lblLugarDeIngreso.setBounds(10, 90, 125, 14);
+		panel_2.add(lblLugarDeIngreso);
 
 		panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.activeCaption);
@@ -1790,4 +1802,16 @@ public class VentanaVisualizarEquipos extends JFrame {
 		this.textPresupuestoDolar.setText(textPresupuestoDolar);
 	}
 
+	public JTextField getTextLugarDeIngreso() {
+		return textLugarDeIngreso;
+	}
+
+	public void setTextLugarDeIngreso(JTextField textLugarDeIngreso) {
+		this.textLugarDeIngreso = textLugarDeIngreso;
+	}
+
+	public void setTextLugarDeIngreso(String lugarDeIngreso) {
+		this.textLugarDeIngreso.setText(lugarDeIngreso);
+		
+	}
 }

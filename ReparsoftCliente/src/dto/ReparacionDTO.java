@@ -1,5 +1,7 @@
 package dto;
 
+import javax.swing.JTextField;
+
 public class ReparacionDTO {
 	// private int Id;
 	private int ELS;
@@ -13,6 +15,7 @@ public class ReparacionDTO {
 	private String EstadoFisico;
 	private String EstadoTecnico;
 	private String EstadoComercial;
+	private String LugarDeIngreso;
 	private String RemitoCliente;
 	private String OrdendeCompra;
 	private Boolean Agregadoaremito;
@@ -56,7 +59,7 @@ public class ReparacionDTO {
 			Boolean PresupuestoGenerado, Boolean Enviado, Double Pago, Boolean PresupuestoEnviado, String Nombre,
 			String Correo, String Modelo, String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente,
 			int IDCliente, int IDSuc, String Cliente, String Sucursal, String NombreUsuario, int Codigo,
-			int NumeroRemitoSalida, String FechaFabr, Boolean AvisoEnviado, Boolean WordGenerado, Boolean WordEnviado) {
+			int NumeroRemitoSalida, String FechaFabr, Boolean AvisoEnviado, Boolean WordGenerado, Boolean WordEnviado, String LugarDeIngreso) {
 
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
@@ -83,6 +86,7 @@ public class ReparacionDTO {
 
 		this.wordGenerado = WordGenerado;
 		this.wordEnviado = WordEnviado;
+		this.LugarDeIngreso = LugarDeIngreso;
 
 		this.Enviado = Enviado;
 		this.Pago = Pago;
@@ -564,6 +568,11 @@ public class ReparacionDTO {
 	public void setEstadoComercial(String estadoComercial) {
 		EstadoComercial = estadoComercial;
 	}
+	
+	
+	public String getLugarDeIngreso() {
+		return LugarDeIngreso;
+	}
 
 	public String getRemitoCliente() {
 		return RemitoCliente;
@@ -714,5 +723,7 @@ public class ReparacionDTO {
 	public void setWordGenerado(Boolean WordGenerado) {
 		wordGenerado = WordGenerado;
 	}
+
+
 
 }

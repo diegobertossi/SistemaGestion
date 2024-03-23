@@ -23,20 +23,23 @@ public class Conexion {
 		}
 
 		String DSN = "";
+		String nombreBase = "";
+		
+		if (ubicacion.compareTo("Bariloche") == 0) {
+			
+			nombreBase = "ordenesbrc";
+			
+		}
+		
+		else if (ubicacion.compareTo("Buenos Aires") == 0) {
+			
+			nombreBase = "ordenesbsas";
+		}
 
-		try {
+		try {		
 
-			if (ubicacion.compareTo("Bariloche") == 0) {
+				DSN = "jdbc:mysql://localhost:3306/"+nombreBase+"?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8";
 
-				DSN = "jdbc:mysql://localhost:3306/ordenesbrc?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8";
-
-			}
-
-			else if (ubicacion.compareTo("Buenos Aires") == 0) {
-
-				DSN = "jdbc:mysql://localhost:3306/ordenesbsas?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8";
-
-			}
 
 			String user = "root";
 			String password = "root";
