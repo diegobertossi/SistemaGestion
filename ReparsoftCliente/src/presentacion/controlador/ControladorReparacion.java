@@ -520,9 +520,32 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				}
 			}
+			
+			
+			Enumeration<?> elementsIngreso = ventanaEstados.getGrupoLugarDeIngreso().getElements();
+
+			while (elementsIngreso.hasMoreElements()) {
+				AbstractButton button = (AbstractButton) elementsIngreso.nextElement();
+				if (button.getText()
+						.compareToIgnoreCase(ventanaVisualizarEquipos.getTextLugarDeIngreso().getText()) == 0) {
+
+					button.setSelected(true);
+
+				}
+			}
 
 			ventanaEstados.getBtnAceptarEdicion().addActionListener(this);
+			ventanaEstados.getBtnHabilitarLugarIngreso().addActionListener(this);
 
+		}
+		
+		
+		else if (this.ventanaEstados != null && e.getSource() == this.ventanaEstados.getBtnHabilitarLugarIngreso()) {
+			
+			ventanaEstados.getRdbtnIngresoBRC().setEnabled(true);
+			ventanaEstados.getRdbtnIngresoCABA().setEnabled(true);
+			ventanaEstados.getRdbtnIngresoMDP().setEnabled(true);
+			
 		}
 
 		else if (this.ventanaEstados != null && e.getSource() == this.ventanaEstados.getBtnAceptarEdicion()) {
@@ -530,6 +553,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			String estadoFisico = "";
 			String estadoTecnico = "";
 			String estadoComercial = "";
+			String lugarDeIngreso = "";
+			
 
 			Boolean cambioDeEstadoBoolean = false;
 
@@ -562,6 +587,18 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				if (button.isSelected()) {
 
 					estadoComercial = button.getText();
+
+				}
+			}
+			
+			
+			Enumeration<?> elementsIngreso = ventanaEstados.getGrupoLugarDeIngreso().getElements();
+
+			while (elementsIngreso.hasMoreElements()) {
+				AbstractButton button = (AbstractButton) elementsIngreso.nextElement();
+				if (button.isSelected()) {
+
+					lugarDeIngreso = button.getText();
 
 				}
 			}
@@ -640,6 +677,21 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 						ventanaVisualizarEquipos.getFechaRespuesta().setDate(fechaParseadaHOY);
 
 					}
+
+				}
+
+			}
+			
+			if (ventanaVisualizarEquipos.getTextLugarDeIngreso().getText().compareTo(lugarDeIngreso) != 0) {
+
+				cambioDeEstadoBoolean = true;
+
+				int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
+						"EL LUGAR DE INGRESO A CAMBIADO, ¿DESEA CONTINUAR?", "Confirmación", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+
+				if (seleccion == JOptionPane.YES_OPTION) {
+					ventanaVisualizarEquipos.setTextLugarDeIngreso(lugarDeIngreso);
 
 				}
 
@@ -1117,8 +1169,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 						ventanaAgregarEquipo.getRdbtnBRC().setEnabled(false);
 						ventanaAgregarEquipo.getRdbtnCABA().setEnabled(false);
-						ventanaAgregarEquipo.getRdbtnENVIADO().setEnabled(false);
-						ventanaAgregarEquipo.getRdbtnMDQ().setEnabled(false);
+						ventanaAgregarEquipo.getRdbtnMDP().setEnabled(false);
 						ventanaAgregarEquipo.getBtnFechaDefault().setEnabled(false);
 						ventanaAgregarEquipo.getBtnGenerarSerie().setEnabled(false);
 						ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(true);
@@ -1428,8 +1479,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			ventanaAgregarEquipo.getRdbtnBRC().setEnabled(true);
 			ventanaAgregarEquipo.getRdbtnCABA().setEnabled(true);
-			ventanaAgregarEquipo.getRdbtnENVIADO().setEnabled(true);
-			ventanaAgregarEquipo.getRdbtnMDQ().setEnabled(true);
+			ventanaAgregarEquipo.getRdbtnMDP().setEnabled(true);
 			ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(false);
 			ventanaAgregarEquipo.getBtnFechaDefault().setEnabled(true);
 			ventanaAgregarEquipo.getBtnGenerarSerie().setEnabled(true);
@@ -1449,8 +1499,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			ventanaAgregarEquipo.getRdbtnBRC().setEnabled(true);
 			ventanaAgregarEquipo.getRdbtnCABA().setEnabled(true);
-			ventanaAgregarEquipo.getRdbtnENVIADO().setEnabled(true);
-			ventanaAgregarEquipo.getRdbtnMDQ().setEnabled(true);
+			ventanaAgregarEquipo.getRdbtnMDP().setEnabled(true);
 
 		}
 
@@ -1665,6 +1714,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getGrupoEstadoFisico().setSelected(ventanaAgregarEquipo.getRdbtnBRC().getModel(), true);
 
 	}
+	
 
 	private void TomarDatosDeTablas() throws ParseException {
 
@@ -2559,7 +2609,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		}
 
-		estadoTecnico = "Sin revisar";
+		estadoTecnico = "Sin Revisar";
 		estadocomercial = "A la Espera de Aceptación";
 
 		ReparacionDTO nuevoReparacion = new ReparacionDTO(ELS, fechaentrada, falla, estadoFisico, estadoTecnico,
@@ -2619,6 +2669,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		String estadoFisico = this.ventanaVisualizarEquipos.getTextEstadoFisico().getText();
 		String estadoTecnico = this.ventanaVisualizarEquipos.getTextEstadoTecnico().getText();
 		String estadoComercial = this.ventanaVisualizarEquipos.getTextEstadoComercial().getText();
+		String lugarIngreso = this.ventanaVisualizarEquipos.getTextLugarDeIngreso().getText();
 
 		boolean enviado = false;
 
@@ -2706,7 +2757,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				solucion, informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo,
 				Cliente, Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
 				idCliente, idSucursal, fechafabrvisual, idUsuario, nombreTecnico, enviado, presupuesto,
-				presupuestoDolar, pago, presupuestoGenerado, avisoEnviado, presupuestoEnviado, OrdenDeCompra);
+				presupuestoDolar, pago, presupuestoGenerado, avisoEnviado, presupuestoEnviado, OrdenDeCompra, lugarIngreso);
 
 		return reparacionAeditar;
 

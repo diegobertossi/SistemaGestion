@@ -1,7 +1,5 @@
 package dto;
 
-import javax.swing.JTextField;
-
 public class ReparacionDTO {
 	// private int Id;
 	private int ELS;
@@ -144,7 +142,7 @@ public class ReparacionDTO {
 			String RemitoCliente, int IDEquipo, String Cliente, String Sucursal, String FechAceptacion, String Nombre,
 			String Modelo, String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente, int IDCliente,
 			int IDSuc, String FechaFabr, int idUsuario, String nombreUsuario,boolean enviado, double presupuesto,double presupuestoDolar, double pago,
-			boolean PresupuestoGenerado, boolean avisoEnviao, boolean PresupuestoEnviado, String ordenDeCompra) {
+			boolean PresupuestoGenerado, boolean avisoEnviao, boolean PresupuestoEnviado, String ordenDeCompra, String LugarDeIngreso) {
 
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
@@ -179,6 +177,7 @@ public class ReparacionDTO {
 		this.PresupuestoEnviado = PresupuestoEnviado;
 		this.OrdendeCompra = ordenDeCompra;
 		this.NombreUsuario = nombreUsuario;
+		this.LugarDeIngreso = LugarDeIngreso;
 
 	}
 

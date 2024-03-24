@@ -52,10 +52,9 @@ public class VentanaAgregarEquipo extends JFrame {
 	private JDateChooser FechaEntrada;
 	private JTextFieldDateEditor textFechafabricacion;
 
-	private JRadioButton rdbtnMDQ;
+	private JRadioButton rdbtnMDP;
 	private JRadioButton rdbtnCABA;
 	private JRadioButton rdbtnBRC;
-	private JRadioButton rdbtnENVIADO;
 
 	private ButtonGroup GrupoEstadoFisico;;
 
@@ -379,17 +378,17 @@ public class VentanaAgregarEquipo extends JFrame {
 		lblEstadoFisico.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		panel_2 = new JPanel();
-		panel_2.setBounds(6, 432, 356, 52);
+		panel_2.setBounds(6, 432, 249, 52);
 		panel.add(panel_2);
 		panel_2.setBackground(SystemColor.activeCaption);
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.setLayout(null);
 
-		rdbtnMDQ = new JRadioButton("MDQ");
-		rdbtnMDQ.setBackground(SystemColor.activeCaption);
-		rdbtnMDQ.setFont(new Font("Cambria", Font.PLAIN, 14));
-		rdbtnMDQ.setBounds(93, 14, 85, 23);
-		panel_2.add(rdbtnMDQ);
+		rdbtnMDP = new JRadioButton("MDP");
+		rdbtnMDP.setBackground(SystemColor.activeCaption);
+		rdbtnMDP.setFont(new Font("Cambria", Font.PLAIN, 14));
+		rdbtnMDP.setBounds(93, 14, 85, 23);
+		panel_2.add(rdbtnMDP);
 
 		rdbtnBRC = new JRadioButton("BRC");
 		rdbtnBRC.setBackground(SystemColor.activeCaption);
@@ -397,20 +396,13 @@ public class VentanaAgregarEquipo extends JFrame {
 		rdbtnBRC.setBounds(180, 14, 60, 23);
 		panel_2.add(rdbtnBRC);
 
-		rdbtnENVIADO = new JRadioButton("ENVIADO");
-		rdbtnENVIADO.setBackground(SystemColor.activeCaption);
-		rdbtnENVIADO.setFont(new Font("Cambria", Font.PLAIN, 14));
-		rdbtnENVIADO.setBounds(256, 14, 94, 23);
-		panel_2.add(rdbtnENVIADO);
-
 		rdbtnCABA = new JRadioButton("CABA");
 		rdbtnCABA.setBackground(SystemColor.activeCaption);
 		rdbtnCABA.setFont(new Font("Cambria", Font.PLAIN, 14));
 		rdbtnCABA.setBounds(16, 14, 75, 23);
 		panel_2.add(rdbtnCABA);
-		GrupoEstadoFisico.add(rdbtnMDQ);
+		GrupoEstadoFisico.add(rdbtnMDP);
 		GrupoEstadoFisico.add(rdbtnBRC);
-		GrupoEstadoFisico.add(rdbtnENVIADO);
 		GrupoEstadoFisico.add(rdbtnCABA);
 				
 				panel_4 = new JPanel();
@@ -477,12 +469,12 @@ public class VentanaAgregarEquipo extends JFrame {
 		BotonGuardar = botonGuardar;
 	}
 
-	public JRadioButton getRdbtnMDQ() {
-		return rdbtnMDQ;
+	public JRadioButton getRdbtnMDP() {
+		return rdbtnMDP;
 	}
 
-	public void setRdbtnMDQ(JRadioButton rdbtnMDQ) {
-		this.rdbtnMDQ = rdbtnMDQ;
+	public void setRdbtnMDP(JRadioButton rdbtnMDQ) {
+		this.rdbtnMDP = rdbtnMDQ;
 	}
 
 	public JRadioButton getRdbtnCABA() {
@@ -501,13 +493,6 @@ public class VentanaAgregarEquipo extends JFrame {
 		this.rdbtnBRC = rdbtnBRC;
 	}
 
-	public JRadioButton getRdbtnENVIADO() {
-		return rdbtnENVIADO;
-	}
-
-	public void setRdbtnENVIADO(JRadioButton rdbtnENVIADO) {
-		this.rdbtnENVIADO = rdbtnENVIADO;
-	}
 
 	public JComboBox<?> getComboClientes() {
 		return comboClientes;

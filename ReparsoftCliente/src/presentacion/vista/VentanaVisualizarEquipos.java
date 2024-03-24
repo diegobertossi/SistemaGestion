@@ -680,6 +680,8 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_2.add(separator_3);
 		
 		textLugarDeIngreso = new JTextField();
+		textLugarDeIngreso.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textLugarDeIngreso.setEditable(false);
 		textLugarDeIngreso.setBounds(139, 87, 51, 20);
 		panel_2.add(textLugarDeIngreso);
 		textLugarDeIngreso.setColumns(10);
