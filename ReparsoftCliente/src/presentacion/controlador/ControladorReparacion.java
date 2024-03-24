@@ -1,6 +1,8 @@
 package presentacion.controlador;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,8 +36,10 @@ import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
@@ -780,6 +784,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			llenarComboOrganizacion();
 			llenarComboNombreWSP();
+			
+			performActionOnTextComponents(ventanaWSP);
 
 		}
 
@@ -796,6 +802,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaClientesWSP.getBtnGuardarNuevo().addActionListener(this);
 
 			llenarTablaClientesWSP();
+			
+			performActionOnTextComponents(ventanaWSP);
 
 		}
 
@@ -1005,6 +1013,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaagregarRepuesto = new VentanaAgregarRepuesto(this);
 			this.ventanaagregarRepuesto.getBtnAgregarRepuesto().addActionListener(this);
 			this.ventanaagregarRepuesto.getBtnCancelar().addActionListener(this);
+			
+			performActionOnTextComponents(ventanaagregarRepuesto);
 
 		}
 
@@ -1617,16 +1627,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		});
 
-//		ventanaVisualizarEquipos.getTextPresupuesto().addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//                SwingUtilities.invokeLater(() -> {
-//                	
-//                	
-//                	ventanaVisualizarEquipos.getTextPresupuesto().setText(""); // Borra el texto al presionar cualquier tecla
-//                });
-//            }
-//        });
 
 		ventanaVisualizarEquipos.getTextPresupuesto().addActionListener(new ActionListener() {
 			@Override
@@ -1662,10 +1662,37 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		});
 
-		configureUndoManager(ventanaVisualizarEquipos.getTextDiagnostico());
-		configureUndoManager(ventanaVisualizarEquipos.getTextInformeCliente());
+		performActionOnTextComponents(ventanaVisualizarEquipos);
+		
+		
 
 	}
+	
+	
+    // Método para realizar una acción sobre todos los JTextField y JTextArea en un JFrame
+    private void performActionOnTextComponents(JFrame frame) {
+        List<JTextComponent> textComponents = getAllTextComponents(frame);
+        // Realiza la acción deseada sobre cada JTextComponent
+        for (JTextComponent textComponent : textComponents) {
+        	configureUndoManager(textComponent);
+        }
+    }
+
+    // Método para obtener todos los JTextField y JTextArea en un JFrame
+    private List<JTextComponent> getAllTextComponents(Container container) {
+        List<JTextComponent> textComponents = new ArrayList<>();
+        Component[] components = container.getComponents();
+        // Itera sobre los componentes y filtra los JTextField y JTextArea
+        for (Component component : components) {
+            if (component instanceof JTextComponent) {
+                textComponents.add((JTextComponent) component);
+            } else if (component instanceof Container) {
+                textComponents.addAll(getAllTextComponents((Container) component));
+            }
+        }
+        return textComponents;
+    }
+
 
 	public void agregarListenersVentanaVisualizarEquiposListado() {
 
@@ -1696,7 +1723,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().addActionListener(this);
 		ventanaAgregarEquipo.getBtnaltaCliente().addActionListener(this);
 		ventanaAgregarEquipo.getBtnrecargarLista().addActionListener(this);
-
+	
 		llenarComboCliente();
 		llenarComboSucursal();
 		llenarComboNombreEquipo();
@@ -1712,6 +1739,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboSerie());
 
 		ventanaAgregarEquipo.getGrupoEstadoFisico().setSelected(ventanaAgregarEquipo.getRdbtnBRC().getModel(), true);
+		
+		performActionOnTextComponents(ventanaAgregarEquipo);
 
 	}
 	
@@ -3006,30 +3035,53 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 	}
+	
+	
+	
 
-	// Método para configurar UndoManager en un componente de texto
+	
+	
 	@SuppressWarnings({ "serial", "deprecation" })
 	private static void configureUndoManager(JTextComponent textComponent) {
-		UndoManager undoManager = new UndoManager();
-		textComponent.getDocument().addUndoableEditListener(undoManager);
+	    UndoManager undoManager = new UndoManager();
+	    textComponent.getDocument().addUndoableEditListener(undoManager);
 
-		// Crear una acción de deshacer
-		AbstractAction undoAction = new AbstractAction("Deshacer") {
-			public void actionPerformed(ActionEvent e) {
-				if (undoManager.canUndo()) {
-					undoManager.undo();
-				}
-			}
-		};
+	    // Crear una acción de deshacer
+	    AbstractAction undoAction = new AbstractAction("Deshacer") {
+	        public void actionPerformed(ActionEvent e) {
+	            if (undoManager.canUndo()) {
+	                undoManager.undo();
+	            }
+	        }
+	    };
 
-		// Asignar la tecla de acceso directo (Ctrl + Z) para la acción de deshacer
-		undoAction.putValue(Action.ACCELERATOR_KEY,
-				KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+	    // Asignar la tecla de acceso directo (Ctrl + Z) para la acción de deshacer
+	    undoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-		// Agregar la acción de deshacer al componente
-		textComponent.getActionMap().put("Undo", undoAction);
-		textComponent.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
+	    // Agregar la acción de deshacer al componente
+	    textComponent.getActionMap().put("Undo", undoAction);
+	    textComponent.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
+
+	    // Crear una acción de rehacer
+	    AbstractAction redoAction = new AbstractAction("Rehacer") {
+	        public void actionPerformed(ActionEvent e) {
+	            if (undoManager.canRedo()) {
+	                undoManager.redo();
+	            }
+	        }
+	    };
+
+	    // Asignar la tecla de acceso directo (Ctrl + Y) para la acción de rehacer
+	    redoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+
+	    // Agregar la acción de rehacer al componente
+	    textComponent.getActionMap().put("Redo", redoAction);
+	    textComponent.getInputMap().put((KeyStroke) redoAction.getValue(Action.ACCELERATOR_KEY), "Redo");
 	}
+
+	
+	
+	
 
 	public void cerraVentanaVisualizarEquipo() {
 

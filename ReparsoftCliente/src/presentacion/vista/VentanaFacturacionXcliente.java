@@ -57,6 +57,7 @@ public class VentanaFacturacionXcliente extends JFrame {
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
+	private JLabel lblNewLabel_9;
 
 	@SuppressWarnings({ "rawtypes", "serial" })
 	public VentanaFacturacionXcliente(ControladorListados controlador) {
@@ -85,12 +86,15 @@ public class VentanaFacturacionXcliente extends JFrame {
 		JLabel lblNewLabel = new JLabel("FACTURACIÓN POR CLIENTE - AÑO :  ");
 		lblNewLabel.setForeground(new Color(0, 0, 0));
 		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 30));
-		panelNorte.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 15));
+		panelNorte.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 15));
+		
+		lblNewLabel_9 = new JLabel("        ");
+		panelNorte.add(lblNewLabel_9);
 		panelNorte.add(lblNewLabel);
 
 		textAnio = new JTextField();
 		textAnio.setForeground(new Color(0, 0, 0));
-		textAnio.setHorizontalAlignment(SwingConstants.RIGHT);
+		textAnio.setHorizontalAlignment(SwingConstants.CENTER);
 		textAnio.setEditable(false);
 		textAnio.setBorder(null);
 		textAnio.setOpaque(false);

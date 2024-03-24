@@ -2228,7 +2228,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ "' ," + "PresupuestoGenerado = '" + PresupGenerado + "' ," + "EstadoFisico = '"
 						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
 						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
-						+ reparacion_a_editar.getEstadoComercial() + "' ," + "RemitoCliente = '"
+						+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
+						+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "RemitoCliente = '"
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = null " + "WHERE ELS = "
 						+ reparacion_a_editar.getELS() + "");
 
@@ -2247,7 +2248,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ "' ," + "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ,"
 						+ "EstadoFisico = '" + reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
 						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
-						+ reparacion_a_editar.getEstadoComercial() + "' ," + "RemitoCliente = '"
+						+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
+						+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "' ," + "RemitoCliente = '"
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = '"
 						+ reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = " + reparacion_a_editar.getELS()
 						+ "");
@@ -2267,7 +2269,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "EstadoFisico = '"
 						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
 						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
-						+ reparacion_a_editar.getEstadoComercial() + "' ," + "RemitoCliente = '"
+						+ reparacion_a_editar.getEstadoComercial()+ "' ," + "lugar_de_ingreso = '"
+						+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "RemitoCliente = '"
 						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = null " + "WHERE ELS = "
 						+ reparacion_a_editar.getELS() + "");
 

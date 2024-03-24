@@ -32,7 +32,7 @@ public class VentanaClientes extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	@SuppressWarnings("unused")
-	private JTable tablaClientes;
+//  private JTable tablaClientes;
 	private JTable tablaClientes_1;
 	private JButton btnAgregar;
 	private JButton btnBorrar;
@@ -104,7 +104,7 @@ public class VentanaClientes extends JFrame {
 		panel.add(spClientes);
 
 		modelClientes = new DefaultTableModel(null, nombreColumnas);
-		tablaClientes = new JTable(modelClientes);
+		//tablaClientes = new JTable(modelClientes);
 
 		modelClientes = new DefaultTableModel(new Object[][] {}, new String[] { "NOMBRE", "CUIT"
 

@@ -1,18 +1,30 @@
 package presentacion.controlador;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+import javax.swing.text.JTextComponent;
+import javax.swing.undo.UndoManager;
+
 import dto.PermisoDTO;
 import dto.ReparacionDTO;
 import dto.RolDTO;
@@ -67,6 +79,9 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		this.ventanaRolesUsuarios.getBtnEliminarUsuario().addActionListener(this);
 		this.ventanaRolesUsuarios.getBtnPermisosXrol().addActionListener(this);
 		this.ventanaRolesUsuarios.getBtnMostrarContraseña().addActionListener(this);
+		
+		performActionOnTextComponents(ventanaRolesUsuarios);
+		
 
 		llenarComboRoles();
 		llenarTablaUsuarios();
@@ -356,6 +371,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						this.ventanaRolesUsuarios.getTextRol().setText("");
 						this.ventanaRolesUsuarios.getTxtLogin().setText("");
 						this.ventanaRolesUsuarios.getTxtPass().setText("");
+						
+						
 
 						usuarioElegido = null;
 						rolElegido = null;
@@ -732,5 +749,74 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 
 	}
+	
+	
+	
+	
+	@SuppressWarnings({ "serial", "deprecation" })
+	private static void configureUndoManager(JTextComponent textComponent) {
+	    UndoManager undoManager = new UndoManager();
+	    textComponent.getDocument().addUndoableEditListener(undoManager);
+
+	    // Crear una acción de deshacer
+	    AbstractAction undoAction = new AbstractAction("Deshacer") {
+	        public void actionPerformed(ActionEvent e) {
+	            if (undoManager.canUndo()) {
+	                undoManager.undo();
+	            }
+	        }
+	    };
+
+	    // Asignar la tecla de acceso directo (Ctrl + Z) para la acción de deshacer
+	    undoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+
+	    // Agregar la acción de deshacer al componente
+	    textComponent.getActionMap().put("Undo", undoAction);
+	    textComponent.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
+
+	    // Crear una acción de rehacer
+	    AbstractAction redoAction = new AbstractAction("Rehacer") {
+	        public void actionPerformed(ActionEvent e) {
+	            if (undoManager.canRedo()) {
+	                undoManager.redo();
+	            }
+	        }
+	    };
+
+	    // Asignar la tecla de acceso directo (Ctrl + Y) para la acción de rehacer
+	    redoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+
+	    // Agregar la acción de rehacer al componente
+	    textComponent.getActionMap().put("Redo", redoAction);
+	    textComponent.getInputMap().put((KeyStroke) redoAction.getValue(Action.ACCELERATOR_KEY), "Redo");
+	}
+	
+	
+	
+	
+    // Método para realizar una acción sobre todos los JTextField y JTextArea en un JFrame
+    private void performActionOnTextComponents(JFrame frame) {
+        List<JTextComponent> textComponents = getAllTextComponents(frame);
+        // Realiza la acción deseada sobre cada JTextComponent
+        for (JTextComponent textComponent : textComponents) {
+        	configureUndoManager(textComponent);
+        }
+    }
+
+    // Método para obtener todos los JTextField y JTextArea en un JFrame
+    private List<JTextComponent> getAllTextComponents(Container container) {
+        List<JTextComponent> textComponents = new ArrayList<>();
+        Component[] components = container.getComponents();
+        // Itera sobre los componentes y filtra los JTextField y JTextArea
+        for (Component component : components) {
+            if (component instanceof JTextComponent) {
+                textComponents.add((JTextComponent) component);
+            } else if (component instanceof Container) {
+                textComponents.addAll(getAllTextComponents((Container) component));
+            }
+        }
+        return textComponents;
+    }
+	
 
 }

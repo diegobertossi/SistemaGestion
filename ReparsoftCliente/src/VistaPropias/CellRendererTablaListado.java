@@ -50,24 +50,11 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
 
-		
-		
-		
-		
 		// establecemos el fondo blanco o vac�o
 		setBackground(null);
 		// COnstructor de la clase DefaultTableCellRenderer
 		Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-		
-		
-			
-		    
-		
-		
-		
-		
-		
 		if (value != null) {
 			if (c instanceof JComponent) {
 				((JComponent) c).setToolTipText(value.toString()); // Muestra el valor completo al pasar el cursor
@@ -77,7 +64,7 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 		// Establecemos las filas que queremos cambiar el color. == 0 para pares
 		// y != 0 para impares
 		boolean oddRow = (row % 2 == 0);
-		
+
 		Color fondoImpar = new Color(230, 230, 250);
 		Color fondoPar = new Color(176, 196, 222);
 		Color fondoParSeleccionado = new Color(70, 130, 180);
@@ -85,16 +72,15 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 		Color letra = new Color(0, 0, 0);
 		Color letraSeleccionado = new Color(255, 255, 255);
 
-		
 		table.getTableHeader().setFont(fuenteCabecera);
+		table.getTableHeader().setReorderingAllowed(false);
 		setFont(fuenteCeldas);
-		
+
 		if (column == 0 || column == 1 || column == 8 || column == 9 || column == 11 || column == 12 || column == 13
-				|| column == 14 || column == 17 || column == 18 || column == 19 || column == 20 || column == 21) {
+				|| column == 14 || column == 17 || column == 18 || column == 19 || column == 20 || column == 21
+				|| column == 22) {
 
 			setHorizontalAlignment(SwingConstants.CENTER);
-			
-
 
 		}
 
@@ -161,9 +147,6 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 			setText((value.toString() == null) ? "" : formatter.format(fechaDate));
 
 		}
-		
-			
-		
 
 		return this;
 	}
