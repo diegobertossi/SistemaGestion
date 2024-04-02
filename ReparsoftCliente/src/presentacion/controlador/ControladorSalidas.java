@@ -551,6 +551,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		}
 
 		else if (ventanaRemitos != null && e.getSource() == this.ventanaRemitos.getBtnGuardarRemito()) {
+			System.out.println("entro");
 
 			int filas = this.ventanaRemitos.getModelEquiposParaRemito().getRowCount();
 			int cont = 0;
