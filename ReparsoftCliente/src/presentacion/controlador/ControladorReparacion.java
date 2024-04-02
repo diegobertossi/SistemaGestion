@@ -1988,6 +1988,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setTextEstadoFisico(reparacion.getEstadoFisico());
 		ventanaVisualizarEquipos.setTextEstadoTecnico(reparacion.getEstadoTecnico());
 		ventanaVisualizarEquipos.setTextEstadoComercial(reparacion.getEstadoComercial());
+		ventanaVisualizarEquipos.setTextLugarDeIngreso(reparacion.getLugarDeIngreso());
 		ventanaVisualizarEquipos.setTextDiagnostico(reparacion.getSolucion());
 		ventanaVisualizarEquipos.setTextInformeCliente(reparacion.getInformecliente());
 

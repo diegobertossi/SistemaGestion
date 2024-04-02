@@ -25,6 +25,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 import java.awt.SystemColor;
 import javax.swing.border.MatteBorder;
+import javax.swing.border.EtchedBorder;
 
 public class VentanaAgregarEquipo extends JFrame {
 
@@ -90,6 +91,9 @@ public class VentanaAgregarEquipo extends JFrame {
 	private JTextField textSerie;
 	private JButton btnaltaCliente;
 	private JPanel panel_4;
+	private JPanel panel_5;
+	private JPanel panel_6;
+	private JPanel panel_7;
 
 	public VentanaAgregarEquipo(ControladorReparacion controladorReparacion) {
 
@@ -100,7 +104,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		FechaEntrada = new com.toedter.calendar.JDateChooser("dd/MM/yyyy", "##-##-####", '-');
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 800, 543);
+		setBounds(100, 100, 821, 585);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setAutoscrolls(true);
@@ -114,7 +118,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.setBounds(0, 0, 784, 504);
+		panel.setBounds(0, 0, 805, 547);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -124,229 +128,251 @@ public class VentanaAgregarEquipo extends JFrame {
 
 		lblEls = new JLabel("ELS: ");
 		lblEls.setForeground(Color.BLUE);
-		lblEls.setBounds(6, 11, 56, 26);
+		lblEls.setBounds(6, 11, 56, 54);
 		panel.add(lblEls);
 		lblEls.setFont(new Font("Cambria", Font.BOLD, 22));
 
 		panel_1 = new JPanel();
 		panel_1.setBackground(SystemColor.activeCaption);
 		panel_1.setBorder(new LineBorder(null));
-		panel_1.setBounds(6, 143, 768, 260);
+		panel_1.setBounds(6, 106, 768, 361);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
+		
+		panel_6 = new JPanel();
+		panel_6.setOpaque(false);
+		panel_6.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_6.setBounds(12, 75, 487, 264);
+		panel_1.add(panel_6);
+		panel_6.setLayout(null);
 
 		comboSerie = new JComboBox<Object>();
+		comboSerie.setBounds(24, 142, 229, 20);
+		panel_6.add(comboSerie);
 		comboSerie.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboSerie.setBackground(SystemColor.inactiveCaptionBorder);
 		comboSerie.setEditable(true);
-		comboSerie.setBounds(120, 125, 229, 20);
-		panel_1.add(comboSerie);
 
 		comboModelo = new JComboBox<Object>();
+		comboModelo.setBounds(24, 103, 229, 20);
+		panel_6.add(comboModelo);
 		comboModelo.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboModelo.setBackground(SystemColor.inactiveCaptionBorder);
 		comboModelo.setEditable(true);
-		comboModelo.setBounds(120, 103, 229, 20);
-		panel_1.add(comboModelo);
 
 		comboMarca = new JComboBox<Object>();
+		comboMarca.setBounds(24, 65, 229, 20);
+		panel_6.add(comboMarca);
 		comboMarca.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboMarca.setBackground(SystemColor.inactiveCaptionBorder);
 		comboMarca.setEditable(true);
-		comboMarca.setBounds(120, 81, 229, 20);
-		panel_1.add(comboMarca);
 
 		comboNombreEquipo = new JComboBox<Object>();
+		comboNombreEquipo.setBounds(24, 26, 229, 20);
+		panel_6.add(comboNombreEquipo);
 		comboNombreEquipo.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboNombreEquipo.setBackground(SystemColor.inactiveCaptionBorder);
 		comboNombreEquipo.setEditable(true);
-		comboNombreEquipo.setBounds(120, 59, 229, 20);
-		panel_1.add(comboNombreEquipo);
 
 		lblNombreEquipo = new JLabel("Equipo: ");
-		lblNombreEquipo.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblNombreEquipo.setBounds(12, 62, 102, 14);
-		panel_1.add(lblNombreEquipo);
+		lblNombreEquipo.setBounds(24, 11, 102, 14);
+		panel_6.add(lblNombreEquipo);
+		lblNombreEquipo.setBorder(null);
 		lblNombreEquipo.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblMarca = new JLabel("Marca:  ");
-		lblMarca.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblMarca.setBounds(12, 84, 102, 14);
-		panel_1.add(lblMarca);
+		lblMarca.setBounds(24, 50, 102, 14);
+		panel_6.add(lblMarca);
+		lblMarca.setBorder(null);
 		lblMarca.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblModelo = new JLabel("Modelo: ");
-		lblModelo.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblModelo.setBounds(12, 106, 102, 14);
-		panel_1.add(lblModelo);
+		lblModelo.setBounds(24, 89, 102, 14);
+		panel_6.add(lblModelo);
+		lblModelo.setBorder(null);
 		lblModelo.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblNserie = new JLabel("N° de Serie: ");
-		lblNserie.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblNserie.setBounds(12, 128, 102, 14);
-		panel_1.add(lblNserie);
+		lblNserie.setBounds(24, 127, 102, 14);
+		panel_6.add(lblNserie);
+		lblNserie.setBorder(null);
 		lblNserie.setFont(new Font("Cambria", Font.BOLD, 14));
+		
+				JLabel lblFechaDeFabr = new JLabel("Fecha de Fabr.: ");
+				lblFechaDeFabr.setBounds(263, 127, 122, 14);
+				panel_6.add(lblFechaDeFabr);
+				lblFechaDeFabr.setBorder(null);
+				lblFechaDeFabr.setFont(new Font("Cambria", Font.BOLD, 14));
+				
+						btnGenerarSerie = new JButton("<html><center>Generar N° de Serie</html>");
+						btnGenerarSerie.setBounds(24, 167, 229, 36);
+						panel_6.add(btnGenerarSerie);
+						btnGenerarSerie.setForeground(Color.BLACK);
+						btnGenerarSerie.setFont(new Font("Cambria", Font.BOLD, 12));
+						btnGenerarSerie.setBackground(new Color(176, 224, 230));
+						
+								btnFechaDefault = new JButton("<html><center>Si no se conoce fecha, presionar aquí</html>");
+								btnFechaDefault.setBounds(264, 167, 211, 36);
+								panel_6.add(btnFechaDefault);
+								btnFechaDefault.setForeground(Color.BLACK);
+								btnFechaDefault.setFont(new Font("Cambria", Font.BOLD, 12));
+								btnFechaDefault.setBackground(new Color(176, 224, 230));
+								
+										textFechafabricacion = new JTextFieldDateEditor("dd/MM/yyyy", "##-##-####", '-');
+										textFechafabricacion.setBounds(264, 142, 211, 20);
+										panel_6.add(textFechafabricacion);
+										textFechafabricacion.setHorizontalAlignment(SwingConstants.CENTER);
+										textFechafabricacion.setFont(new Font("Cambria", Font.BOLD, 14));
+										
+												textSerie = new JTextField();
+												textSerie.setBounds(24, 142, 229, 20);
+												panel_6.add(textSerie);
+												textSerie.setHorizontalAlignment(SwingConstants.LEFT);
+												textSerie.setFont(new Font("Cambria", Font.PLAIN, 14));
+												textSerie.setColumns(10);
+												textSerie.setBackground(SystemColor.inactiveCaptionBorder);
+												textSerie.setAlignmentY(0.0f);
+												textSerie.setAlignmentX(0.0f);
 
 		lblFalla = new JLabel("Falla: ");
-		lblFalla.setBounds(12, 187, 52, 14);
-		panel_1.add(lblFalla);
+		lblFalla.setBounds(24, 214, 52, 14);
+		panel_6.add(lblFalla);
 		lblFalla.setFont(new Font("Cambria", Font.BOLD, 14));
+		
+				scrollPane = new JScrollPane();
+				scrollPane.setBounds(64, 214, 411, 44);
+				panel_6.add(scrollPane);
+				
+						textFalla = new JTextAreaCustom();
+						textFalla.setBackground(SystemColor.inactiveCaptionBorder);
+						textFalla.setLocation(12, 0);
+						textFalla.setSize(215, 20);
+						textFalla.setAlignmentY(Component.TOP_ALIGNMENT);
+						textFalla.setAlignmentX(Component.LEFT_ALIGNMENT);
+						scrollPane.setViewportView(textFalla);
+						textFalla.setFont(new Font("Cambria", Font.PLAIN, 14));
+						textFalla.setLineWrap(true);
+						textFalla.setWrapStyleWord(true);
+						textFalla.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+		
+		panel_7 = new JPanel();
+		panel_7.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_7.setOpaque(false);
+		panel_7.setBounds(509, 75, 237, 264);
+		panel_1.add(panel_7);
+		panel_7.setLayout(null);
 
 		lblAvisoCliente = new JLabel("Aviso Cliente: ");
-		lblAvisoCliente.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblAvisoCliente.setBounds(396, 65, 122, 14);
-		panel_1.add(lblAvisoCliente);
+		lblAvisoCliente.setBounds(10, 89, 122, 14);
+		panel_7.add(lblAvisoCliente);
+		lblAvisoCliente.setBorder(null);
 		lblAvisoCliente.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblClienteCliente = new JLabel("Cliente de Cliente: ");
-		lblClienteCliente.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblClienteCliente.setBounds(396, 21, 122, 14);
-		panel_1.add(lblClienteCliente);
+		lblClienteCliente.setBounds(10, 11, 122, 14);
+		panel_7.add(lblClienteCliente);
+		lblClienteCliente.setBorder(null);
 		lblClienteCliente.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblRemitoCliente = new JLabel("Remito de Cliente: ");
-		lblRemitoCliente.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblRemitoCliente.setBounds(396, 43, 122, 14);
-		panel_1.add(lblRemitoCliente);
+		lblRemitoCliente.setBounds(10, 50, 122, 14);
+		panel_7.add(lblRemitoCliente);
+		lblRemitoCliente.setBorder(null);
 		lblRemitoCliente.setFont(new Font("Cambria", Font.BOLD, 14));
+		
+				textAvisoCliente = new JTextField();
+				textAvisoCliente.setBounds(10, 103, 211, 20);
+				panel_7.add(textAvisoCliente);
+				textAvisoCliente.setBackground(SystemColor.inactiveCaptionBorder);
+				textAvisoCliente.setAlignmentY(Component.TOP_ALIGNMENT);
+				textAvisoCliente.setAlignmentX(Component.LEFT_ALIGNMENT);
+				textAvisoCliente.setHorizontalAlignment(SwingConstants.LEFT);
+				textAvisoCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
+				textAvisoCliente.setColumns(10);
+				
+						textClienteCliente = new JTextField();
+						textClienteCliente.setBounds(10, 26, 211, 20);
+						panel_7.add(textClienteCliente);
+						textClienteCliente.setBackground(SystemColor.inactiveCaptionBorder);
+						textClienteCliente.setAlignmentY(Component.TOP_ALIGNMENT);
+						textClienteCliente.setAlignmentX(Component.LEFT_ALIGNMENT);
+						textClienteCliente.setHorizontalAlignment(SwingConstants.LEFT);
+						textClienteCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
+						textClienteCliente.setColumns(10);
+						
+								textRemitoCliente = new JTextField();
+								textRemitoCliente.setBounds(10, 65, 211, 20);
+								panel_7.add(textRemitoCliente);
+								textRemitoCliente.setBackground(SystemColor.inactiveCaptionBorder);
+								textRemitoCliente.setAlignmentY(Component.TOP_ALIGNMENT);
+								textRemitoCliente.setAlignmentX(Component.LEFT_ALIGNMENT);
+								textRemitoCliente.setHorizontalAlignment(SwingConstants.LEFT);
+								textRemitoCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
+								textRemitoCliente.setColumns(10);
+		
+		panel_5 = new JPanel();
+		panel_5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_5.setOpaque(false);
+		panel_5.setBounds(12, 15, 734, 54);
+		panel_1.add(panel_5);
+		panel_5.setLayout(null);
 
 		lblCliente = new JLabel("Cliente: ");
-		lblCliente.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblCliente.setBounds(12, 18, 102, 14);
-		panel_1.add(lblCliente);
+		lblCliente.setBounds(26, 8, 102, 14);
+		panel_5.add(lblCliente);
+		lblCliente.setBorder(null);
 		lblCliente.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblSucursal = new JLabel("Sucursal: ");
-		lblSucursal.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblSucursal.setBounds(12, 39, 102, 14);
-		panel_1.add(lblSucursal);
+		lblSucursal.setBounds(263, 8, 102, 14);
+		panel_5.add(lblSucursal);
+		lblSucursal.setBorder(null);
 		lblSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
-
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 203, 337, 44);
-		panel_1.add(scrollPane);
-
-		textFalla = new JTextAreaCustom();
-		textFalla.setBackground(SystemColor.inactiveCaptionBorder);
-		textFalla.setLocation(117, 0);
-		textFalla.setSize(215, 20);
-		textFalla.setAlignmentY(Component.TOP_ALIGNMENT);
-		textFalla.setAlignmentX(Component.LEFT_ALIGNMENT);
-		scrollPane.setViewportView(textFalla);
-		textFalla.setFont(new Font("Cambria", Font.PLAIN, 14));
-		textFalla.setLineWrap(true);
-		textFalla.setWrapStyleWord(true);
-		textFalla.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(2, 2, 2, 2)));
-
-		textAvisoCliente = new JTextField();
-		textAvisoCliente.setBackground(SystemColor.inactiveCaptionBorder);
-		textAvisoCliente.setAlignmentY(Component.TOP_ALIGNMENT);
-		textAvisoCliente.setAlignmentX(Component.LEFT_ALIGNMENT);
-		textAvisoCliente.setBounds(522, 62, 211, 20);
-		panel_1.add(textAvisoCliente);
-		textAvisoCliente.setHorizontalAlignment(SwingConstants.LEFT);
-		textAvisoCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
-		textAvisoCliente.setColumns(10);
-
-		textClienteCliente = new JTextField();
-		textClienteCliente.setBackground(SystemColor.inactiveCaptionBorder);
-		textClienteCliente.setAlignmentY(Component.TOP_ALIGNMENT);
-		textClienteCliente.setAlignmentX(Component.LEFT_ALIGNMENT);
-		textClienteCliente.setBounds(522, 18, 211, 20);
-		panel_1.add(textClienteCliente);
-		textClienteCliente.setHorizontalAlignment(SwingConstants.LEFT);
-		textClienteCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
-		textClienteCliente.setColumns(10);
-
-		textRemitoCliente = new JTextField();
-		textRemitoCliente.setBackground(SystemColor.inactiveCaptionBorder);
-		textRemitoCliente.setAlignmentY(Component.TOP_ALIGNMENT);
-		textRemitoCliente.setAlignmentX(Component.LEFT_ALIGNMENT);
-		textRemitoCliente.setBounds(522, 40, 211, 20);
-		panel_1.add(textRemitoCliente);
-		textRemitoCliente.setHorizontalAlignment(SwingConstants.LEFT);
-		textRemitoCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
-		textRemitoCliente.setColumns(10);
-
-		comboClientes = new JComboBox<Object>();
-		comboClientes.setFont(new Font("Cambria", Font.PLAIN, 14));
-		comboClientes.setBackground(SystemColor.inactiveCaptionBorder);
-		comboClientes.setBounds(120, 15, 229, 20);
-		panel_1.add(comboClientes);
-
-		comboSucursal = new JComboBox<Object>();
-		comboSucursal.setFont(new Font("Cambria", Font.PLAIN, 14));
-		comboSucursal.setBackground(SystemColor.inactiveCaptionBorder);
-		comboSucursal.setBounds(120, 37, 229, 20);
-		panel_1.add(comboSucursal);
-
-		JLabel lblFechaDeFabr = new JLabel("Fecha de Fabr.: ");
-		lblFechaDeFabr.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
-		lblFechaDeFabr.setFont(new Font("Cambria", Font.BOLD, 14));
-		lblFechaDeFabr.setBounds(396, 87, 122, 14);
-		panel_1.add(lblFechaDeFabr);
-
-		btnGenerarSerie = new JButton("<html><center>Generar N° de Serie</html>");
-		btnGenerarSerie.setForeground(Color.BLACK);
-		btnGenerarSerie.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnGenerarSerie.setBackground(new Color(176, 224, 230));
-		btnGenerarSerie.setBounds(247, 151, 102, 36);
-		panel_1.add(btnGenerarSerie);
-
-		btnFechaDefault = new JButton("<html><center>Si no se conoce fecha, presionar aquí</html>");
-		btnFechaDefault.setForeground(Color.BLACK);
-		btnFechaDefault.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnFechaDefault.setBackground(new Color(176, 224, 230));
-		btnFechaDefault.setBounds(522, 110, 211, 36);
-		panel_1.add(btnFechaDefault);
-
-		textSerie = new JTextField();
-		textSerie.setHorizontalAlignment(SwingConstants.LEFT);
-		textSerie.setFont(new Font("Cambria", Font.PLAIN, 14));
-		textSerie.setColumns(10);
-		textSerie.setBackground(SystemColor.inactiveCaptionBorder);
-		textSerie.setAlignmentY(0.0f);
-		textSerie.setAlignmentX(0.0f);
-		textSerie.setBounds(138, 125, 193, 20);
-		panel_1.add(textSerie);
-
-		textFechafabricacion = new JTextFieldDateEditor("dd/MM/yyyy", "##-##-####", '-');
-		textFechafabricacion.setHorizontalAlignment(SwingConstants.CENTER);
-		textFechafabricacion.setFont(new Font("Cambria", Font.BOLD, 14));
-		textFechafabricacion.setBounds(522, 84, 211, 20);
-		panel_1.add(textFechafabricacion);
+		
+				comboClientes = new JComboBox<Object>();
+				comboClientes.setBounds(24, 23, 229, 20);
+				panel_5.add(comboClientes);
+				comboClientes.setFont(new Font("Cambria", Font.PLAIN, 14));
+				comboClientes.setBackground(SystemColor.inactiveCaptionBorder);
+				
+						comboSucursal = new JComboBox<Object>();
+						comboSucursal.setBounds(263, 23, 229, 20);
+						panel_5.add(comboSucursal);
+						comboSucursal.setFont(new Font("Cambria", Font.PLAIN, 14));
+						comboSucursal.setBackground(SystemColor.inactiveCaptionBorder);
 
 		lblDatosDeEquipo = new JLabel("DATOS DEL EQUIPO: ");
-		lblDatosDeEquipo.setBounds(6, 48, 179, 17);
+		lblDatosDeEquipo.setBounds(6, 78, 179, 17);
 		panel.add(lblDatosDeEquipo);
 		lblDatosDeEquipo.setFont(new Font("Cambria", Font.BOLD, 18));
 
 		lblFechaEntrada = new JLabel("Fecha de Entrada: ");
-		lblFechaEntrada.setBounds(480, 114, 140, 17);
+		lblFechaEntrada.setBounds(480, 78, 140, 17);
 		panel.add(lblFechaEntrada);
 		lblFechaEntrada.setFont(new Font("Cambria", Font.BOLD, 16));
 
 		textELS = new JTextField();
+		textELS.setBorder(new LineBorder(new Color(0, 0, 0)));
 		textELS.setBackground(SystemColor.activeCaption);
 		textELS.setForeground(new Color(0, 0, 255));
 		textELS.setEditable(false);
 		textELS.setHorizontalAlignment(SwingConstants.CENTER);
-		textELS.setBounds(60, 11, 115, 26);
+		textELS.setBounds(60, 11, 115, 54);
 		panel.add(textELS);
 		textELS.setFont(new Font("Cambria", Font.BOLD, 22));
 		textELS.setColumns(10);
 		textELS.setAlignmentX(CENTER_ALIGNMENT);
 
 		FechaEntrada.setFont(new Font("Cambria", Font.BOLD, 14));
-		FechaEntrada.setBounds(622, 112, 152, 20);
+		FechaEntrada.setBounds(622, 76, 152, 20);
 		panel.add(FechaEntrada);
 
 		GrupoEstadoFisico = new ButtonGroup();
 
 		panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.activeCaption);
-		panel_3.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_3.setBounds(372, 419, 402, 65);
+		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_3.setBounds(372, 473, 402, 66);
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 
@@ -372,62 +398,65 @@ public class VentanaAgregarEquipo extends JFrame {
 		BotonGuardar.setForeground(Color.BLACK);
 		BotonGuardar.setFont(new Font("Cambria", Font.BOLD, 14));
 
-		lblEstadoFisico = new JLabel("Estado Físico: ");
-		lblEstadoFisico.setBounds(6, 414, 128, 14);
-		panel.add(lblEstadoFisico);
-		lblEstadoFisico.setFont(new Font("Cambria", Font.BOLD, 14));
-
 		panel_2 = new JPanel();
-		panel_2.setBounds(6, 432, 249, 52);
+		panel_2.setBounds(6, 473, 341, 66);
 		panel.add(panel_2);
 		panel_2.setBackground(SystemColor.activeCaption);
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.setLayout(null);
 
 		rdbtnMDP = new JRadioButton("MDP");
+		rdbtnMDP.setOpaque(false);
 		rdbtnMDP.setBackground(SystemColor.activeCaption);
 		rdbtnMDP.setFont(new Font("Cambria", Font.PLAIN, 14));
-		rdbtnMDP.setBounds(93, 14, 85, 23);
+		rdbtnMDP.setBounds(130, 25, 80, 23);
 		panel_2.add(rdbtnMDP);
 
 		rdbtnBRC = new JRadioButton("BRC");
+		rdbtnBRC.setOpaque(false);
 		rdbtnBRC.setBackground(SystemColor.activeCaption);
 		rdbtnBRC.setFont(new Font("Cambria", Font.PLAIN, 14));
-		rdbtnBRC.setBounds(180, 14, 60, 23);
+		rdbtnBRC.setBounds(235, 25, 80, 23);
 		panel_2.add(rdbtnBRC);
 
 		rdbtnCABA = new JRadioButton("CABA");
+		rdbtnCABA.setOpaque(false);
 		rdbtnCABA.setBackground(SystemColor.activeCaption);
 		rdbtnCABA.setFont(new Font("Cambria", Font.PLAIN, 14));
-		rdbtnCABA.setBounds(16, 14, 75, 23);
+		rdbtnCABA.setBounds(25, 25, 80, 23);
 		panel_2.add(rdbtnCABA);
 		GrupoEstadoFisico.add(rdbtnMDP);
 		GrupoEstadoFisico.add(rdbtnBRC);
 		GrupoEstadoFisico.add(rdbtnCABA);
+		
+				lblEstadoFisico = new JLabel("Estado Físico: ");
+				lblEstadoFisico.setBounds(16, 4, 128, 14);
+				panel_2.add(lblEstadoFisico);
+				lblEstadoFisico.setFont(new Font("Cambria", Font.BOLD, 14));
 				
 				panel_4 = new JPanel();
 				panel_4.setBorder(new LineBorder(new Color(0, 0, 0)));
 				panel_4.setBackground(SystemColor.activeCaption);
-				panel_4.setBounds(6, 73, 464, 59);
+				panel_4.setBounds(310, 11, 464, 54);
 				panel.add(panel_4);
 				panel_4.setLayout(null);
 		
 				BotonVerificarIngresoAnterior = new JButton("<html><center>VERIFICAR INGRESO</html>");
-				BotonVerificarIngresoAnterior.setBounds(7, 14, 145, 37);
+				BotonVerificarIngresoAnterior.setBounds(7, 8, 145, 37);
 				panel_4.add(BotonVerificarIngresoAnterior);
 				BotonVerificarIngresoAnterior.setBackground(new Color(0, 191, 255));
 				BotonVerificarIngresoAnterior.setForeground(Color.BLACK);
 				BotonVerificarIngresoAnterior.setFont(new Font("Cambria", Font.BOLD, 12));
 				
 						btnaltaCliente = new JButton("<html><center>ALTA CLIENTE<html>");
-						btnaltaCliente.setBounds(159, 14, 145, 37);
+						btnaltaCliente.setBounds(159, 8, 145, 37);
 						panel_4.add(btnaltaCliente);
 						btnaltaCliente.setForeground(Color.BLACK);
 						btnaltaCliente.setFont(new Font("Cambria", Font.BOLD, 12));
 						btnaltaCliente.setBackground(new Color(0, 191, 255));
 						
 						btnrecargarLista = new JButton("<html><center>ACTUALIZAR CLIENTES</html>");
-						btnrecargarLista.setBounds(311, 15, 145, 36);
+						btnrecargarLista.setBounds(311, 9, 145, 36);
 						panel_4.add(btnrecargarLista);
 						btnrecargarLista.setForeground(Color.BLACK);
 						btnrecargarLista.setFont(new Font("Cambria", Font.BOLD, 12));
