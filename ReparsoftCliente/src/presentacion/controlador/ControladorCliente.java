@@ -250,9 +250,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 						JOptionPane.showMessageDialog(null, "Escriba un email correcto",
 								"Error al registrar una direccion de email", JOptionPane.ERROR_MESSAGE);
-					}
-
-					else {
+					} else {
 
 						nuevoCliente = TomarDatosCliente();
 						sucursalDefault = SucursalDefault(nuevoCliente.getId());
@@ -263,8 +261,11 @@ public class ControladorCliente implements ActionListener, MouseListener {
 						this.ventanaAgregarClientes.dispose();
 						ventanaAgregarClientes = null;
 						llenarTabla();
+
 					}
+
 				} else {
+
 					nuevoCliente = TomarDatosCliente();
 					sucursalDefault = SucursalDefault(nuevoCliente.getId());
 
@@ -274,7 +275,9 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					this.ventanaAgregarClientes.dispose();
 					ventanaAgregarClientes = null;
 					llenarTabla();
+
 				}
+
 			} else if (e.getSource() == this.ventanaAgregarClientes.getBtnCancelar()) {
 
 				this.ventanaAgregarClientes.dispose();
@@ -292,11 +295,12 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 						JOptionPane.showMessageDialog(null, "Escriba un email correcto",
 								"Error al registrar una direccion de email", JOptionPane.ERROR_MESSAGE);
-					} else {
-
+					}
+					
+					else {
+						
 						ClienteDTO clienteElegidoeditado = new ClienteDTO(clienteElegido.getId(),
-								ventanaEditarCliente.getTxtNombre().getText(),
-								ventanaEditarCliente.getTxtCUIT().getText(),
+								ventanaEditarCliente.getTxtNombre().getText(), ventanaEditarCliente.getTxtCUIT().getText(),
 								ventanaEditarCliente.getTxtDireccion().getText(),
 								ventanaEditarCliente.getTxtTelefonoEmpresa().getText(),
 								ventanaEditarCliente.getTxtContacto().getText(),
@@ -307,8 +311,25 @@ public class ControladorCliente implements ActionListener, MouseListener {
 						this.ventanaEditarCliente.dispose();
 						ventanaEditarCliente = null;
 						llenarTabla();
-
 					}
+					
+					
+					
+				} else {
+
+					ClienteDTO clienteElegidoeditado = new ClienteDTO(clienteElegido.getId(),
+							ventanaEditarCliente.getTxtNombre().getText(), ventanaEditarCliente.getTxtCUIT().getText(),
+							ventanaEditarCliente.getTxtDireccion().getText(),
+							ventanaEditarCliente.getTxtTelefonoEmpresa().getText(),
+							ventanaEditarCliente.getTxtContacto().getText(),
+							ventanaEditarCliente.getTxtTelefonoContacto().getText(),
+							ventanaEditarCliente.getTxtEmail().getText());
+					this.agenda.editarClientes(clienteElegidoeditado);
+
+					this.ventanaEditarCliente.dispose();
+					ventanaEditarCliente = null;
+					llenarTabla();
+
 				}
 			}
 

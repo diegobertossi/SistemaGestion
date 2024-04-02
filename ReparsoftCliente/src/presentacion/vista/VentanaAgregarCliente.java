@@ -78,7 +78,7 @@ public class VentanaAgregarCliente extends JFrame
 		txtCUIT.setBounds(162, 79, 340, 20);
 		panel.add(txtCUIT);
 		txtCUIT.setColumns(10);
-		soloNumeros(txtCUIT);
+		//soloNumeros(txtCUIT);
 		
 		
 		txtNombre = new JTextField();
