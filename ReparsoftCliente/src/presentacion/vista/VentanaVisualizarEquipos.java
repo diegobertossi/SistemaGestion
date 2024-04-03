@@ -181,6 +181,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JLabel lblInformeSiemensEnviado;
 	private JTextField textPresupuestoDolar;
 	private JTextField textLugarDeIngreso;
+	private JLabel lblFechaDeSalida;
 
 	@SuppressWarnings({ "rawtypes", "serial" })
 	public VentanaVisualizarEquipos(ControladorReparacion controladorReparacion) {
@@ -503,7 +504,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_4 = new JPanel();
 		panel_4.setBackground(SystemColor.activeCaption);
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		panel_4.setBounds(834, 341, 346, 83);
+		panel_4.setBounds(834, 341, 346, 102);
 		panel.add(panel_4);
 		panel_4.setLayout(null);
 
@@ -647,8 +648,20 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnGenerarRemito.setBackground(SystemColor.textHighlight);
 		btnGenerarRemito.setForeground(SystemColor.text);
 		btnGenerarRemito.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnGenerarRemito.setBounds(140, 56, 159, 20);
+		btnGenerarRemito.setBounds(138, 56, 159, 20);
 		panel_4.add(btnGenerarRemito);
+		
+		lblFechaDeSalida = new JLabel("Fecha de Salida: ");
+		lblFechaDeSalida.setFont(new Font("Cambria", Font.BOLD, 14));
+		lblFechaDeSalida.setBounds(7, 81, 121, 14);
+		panel_4.add(lblFechaDeSalida);
+		
+		JDateChooser FechaSalida = new JDateChooser("dd/MM/yyyy", "##-##-####", '-');
+		FechaSalida.setFont(new Font("Cambria", Font.BOLD, 14));
+		FechaSalida.setFocusable(false);
+		FechaSalida.setEnabled(false);
+		FechaSalida.setBounds(138, 80, 131, 17);
+		panel_4.add(FechaSalida);
 
 		panel_7 = new JPanel();
 		panel_7.setBorder(new BevelBorder(BevelBorder.RAISED, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE));
@@ -853,7 +866,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		JLabel lblPanelDeControl = new JLabel("PANEL DE CONTROL");
 		lblPanelDeControl.setForeground(new Color(0, 0, 128));
 		lblPanelDeControl.setFont(new Font("Cambria", Font.BOLD, 18));
-		lblPanelDeControl.setBounds(836, 456, 181, 17);
+		lblPanelDeControl.setBounds(834, 473, 181, 17);
 		panel.add(lblPanelDeControl);
 
 		comboClientes = new JComboBox();
@@ -1095,7 +1108,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		separator_5.setBorder(null);
 		separator_5.setOpaque(true);
 		separator_5.setForeground(Color.BLACK);
-		separator_5.setBounds(826, 437, 355, 2);
+		separator_5.setBounds(826, 447, 355, 2);
 		panel.add(separator_5);
 
 		separator_6 = new JSeparator();
@@ -1132,7 +1145,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		separator_10.setBorder(null);
 		separator_10.setOpaque(true);
 		separator_10.setForeground(Color.BLACK);
-		separator_10.setBounds(826, 441, 355, 2);
+		separator_10.setBounds(826, 451, 355, 2);
 		panel.add(separator_10);
 
 		BotonRefrescarPantalla = new JButton("<html><center>REFRESCAR PANTALLA<html>");
