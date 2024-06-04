@@ -5,26 +5,36 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class MonedaFormatter {
     private NumberFormat pesoFormatter;
     private NumberFormat dolarFormatter;
- 
 
     public MonedaFormatter() {
         // Configura el formato de moneda argentina con el símbolo "$" seguido de un espacio
-        DecimalFormatSymbols pesoSymbols = new DecimalFormatSymbols(Locale.getDefault());
+        DecimalFormatSymbols pesoSymbols = new DecimalFormatSymbols(new Locale("es", "AR"));
         pesoSymbols.setCurrencySymbol("$ ");
+        pesoSymbols.setGroupingSeparator('.');
+        pesoSymbols.setMonetaryDecimalSeparator(',');
         String currencySymbolP = "$ ";
         pesoFormatter = new DecimalFormat(currencySymbolP + "#,##0.00", pesoSymbols);
 
         // Configura el formato de dólar estadounidense con el símbolo "$" y sin espacio
         DecimalFormatSymbols dolarSymbols = new DecimalFormatSymbols(Locale.US);
-        dolarSymbols.setCurrencySymbol("U$S");
+        dolarSymbols.setCurrencySymbol("U$S ");
+        dolarSymbols.setGroupingSeparator(',');
+        dolarSymbols.setMonetaryDecimalSeparator('.');
         String currencySymbolD = "U$S ";
         dolarFormatter = new DecimalFormat(currencySymbolD + "#,##0.00", dolarSymbols);
-        
-       
-        
     }
 
     public String formatPeso(String amount) {
@@ -53,52 +63,56 @@ public class MonedaFormatter {
         } catch (NumberFormatException e) {
             return "Formato de número inválido";
         }
-    }    
-    
+    }
+
     public double parseAmount(String amount) {
         // Elimina todos los caracteres no numéricos, excepto comas y puntos
         String cleanedAmount = amount.replaceAll("[^0-9,.]", "");
 
         try {
             // Sustituye comas por puntos para obtener un formato válido para Double
-        	cleanedAmount = cleanedAmount.replace(",", ".");
+            cleanedAmount = cleanedAmount.replace(",", ".");
 
             // Intenta analizar el número
-        	
             return Double.parseDouble(cleanedAmount);
-            
+
         } catch (NumberFormatException e) {
-        	
             return 0.00; // Valor predeterminado si no se puede analizar el número
         }
     }
-    
+
     public double parseAmountGuardar(String amount) {
         // Elimina todos los caracteres no numéricos, excepto comas y puntos
         String cleanedAmount = amount.replaceAll("[^0-9]", "");
 
         try {
-        	
-            return Double.parseDouble(cleanedAmount)/100;
-            
+            return Double.parseDouble(cleanedAmount) / 100;
+
         } catch (NumberFormatException e) {
-        	
             return 0.00; // Valor predeterminado si no se puede analizar el número
         }
     }
-
-
 
     public String formatAmount(double amount) {
         // Formatea el número en el formato deseado con dos decimales
         DecimalFormat formatter = new DecimalFormat("#,##0.00");
         return formatter.format(amount);
     }
-    
-    
+
     public boolean tieneFormato(String input) {
         // Expresión regular para el formato de pesos argentinos o dólares estadounidenses
-    	 return input.contains("$") || input.contains("U$S");
+        return input.contains("$") || input.contains("U$S");
     }
 
+    public static void main(String[] args) {
+        MonedaFormatter formatter = new MonedaFormatter();
+
+        // Prueba con un valor mayor a 10.000.000,00
+        String formattedPeso = formatter.formatPeso("10.999.000,00");
+        String formattedDolar = formatter.formatDolar("10000000.00");
+
+        System.out.println(formattedPeso);  // Debe imprimir $ 10.000.000,00
+        System.out.println(formattedDolar); // Debe imprimir U$S 10.000.000,00
+    }
 }
+

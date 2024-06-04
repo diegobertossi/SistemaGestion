@@ -44,7 +44,7 @@ public class Agenda {
 	private FacturacionXclienteDAO facturacionXcliente;
 	private String ubicacionBase;
 
-	public Agenda(String ubicacionDeBase) {
+	public Agenda(String ubicacionDeBase) { 
 		
 		this.ubicacionBase = ubicacionDeBase;
 		Cliente = new ClienteDAOImpl(ubicacionDeBase);
