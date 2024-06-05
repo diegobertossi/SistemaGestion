@@ -1486,28 +1486,20 @@ public class ControladorListados
 
 		ventanaEstadisticas.getTextIngresosTotales().setText(Integer.toString(cantidadIngresosPorAnio));
 		ventanaEstadisticas.getTextDiagnosticosTotales().setText(Integer.toString(cantidadDiagnosticosPorAnio));
+		
+		
+		DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        String facturacionStrPeso = decimalFormat.format(facturacionPesoPorAnio);
+        String facturacionStrDolar = decimalFormat.format(facturacionDolarPorAnio);
 
-		if (facturacionPesoPorAnio<10000000) {
+        
+		
 		ventanaEstadisticas.getTextFacTotalPesos()
-				.setText(monedaFormatter.formatPeso(Double.toString(facturacionPesoPorAnio)));}
-		else
-		{
-			
-			DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
-	        String facturacionStr = decimalFormat.format(facturacionPesoPorAnio);
-			
-			ventanaEstadisticas.getTextFacTotalPesos()
-			.setText(monedaFormatter.formatPeso(facturacionStr));
-			
-			
-		System.out.println(facturacionStr);
-		System.out.println(monedaFormatter.formatPeso((facturacionStr)));
-		}
-//		ventanaEstadisticas.getTextFacTotalPesos()
-//		.setText(monedaFormatter.formatPeso(Double.toString(9999999.45)));
+		.setText(monedaFormatter.formatPeso(facturacionStrPeso));
+
 		
 		ventanaEstadisticas.getTextFacTotalDolares()
-				.setText(monedaFormatter.formatDolar(Double.toString(facturacionDolarPorAnio)));
+				.setText(monedaFormatter.formatDolar(facturacionStrDolar));
 
 	}
 

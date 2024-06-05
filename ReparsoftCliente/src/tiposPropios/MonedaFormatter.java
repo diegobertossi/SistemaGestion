@@ -29,10 +29,10 @@ public class MonedaFormatter {
         pesoFormatter = new DecimalFormat(currencySymbolP + "#,##0.00", pesoSymbols);
 
         // Configura el formato de dólar estadounidense con el símbolo "$" y sin espacio
-        DecimalFormatSymbols dolarSymbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormatSymbols dolarSymbols = new DecimalFormatSymbols(new Locale("es", "AR"));
         dolarSymbols.setCurrencySymbol("U$S ");
-        dolarSymbols.setGroupingSeparator(',');
-        dolarSymbols.setMonetaryDecimalSeparator('.');
+        dolarSymbols.setGroupingSeparator('.');
+        dolarSymbols.setMonetaryDecimalSeparator(',');
         String currencySymbolD = "U$S ";
         dolarFormatter = new DecimalFormat(currencySymbolD + "#,##0.00", dolarSymbols);
     }
@@ -104,15 +104,6 @@ public class MonedaFormatter {
         return input.contains("$") || input.contains("U$S");
     }
 
-    public static void main(String[] args) {
-        MonedaFormatter formatter = new MonedaFormatter();
 
-        // Prueba con un valor mayor a 10.000.000,00
-        String formattedPeso = formatter.formatPeso("10.999.000,00");
-        String formattedDolar = formatter.formatDolar("10000000.00");
-
-        System.out.println(formattedPeso);  // Debe imprimir $ 10.000.000,00
-        System.out.println(formattedDolar); // Debe imprimir U$S 10.000.000,00
-    }
 }
 
