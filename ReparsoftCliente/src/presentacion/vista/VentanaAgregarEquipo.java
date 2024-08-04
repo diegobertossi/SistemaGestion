@@ -147,85 +147,85 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_6.setLayout(null);
 
 		comboSerie = new JComboBox<Object>();
-		comboSerie.setBounds(24, 142, 229, 20);
+		comboSerie.setBounds(125, 110, 190, 20);
 		panel_6.add(comboSerie);
 		comboSerie.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboSerie.setBackground(SystemColor.inactiveCaptionBorder);
 		comboSerie.setEditable(true);
 
 		comboModelo = new JComboBox<Object>();
-		comboModelo.setBounds(24, 103, 229, 20);
+		comboModelo.setBounds(125, 79, 229, 20);
 		panel_6.add(comboModelo);
 		comboModelo.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboModelo.setBackground(SystemColor.inactiveCaptionBorder);
 		comboModelo.setEditable(true);
 
 		comboMarca = new JComboBox<Object>();
-		comboMarca.setBounds(24, 65, 229, 20);
+		comboMarca.setBounds(125, 48, 229, 20);
 		panel_6.add(comboMarca);
 		comboMarca.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboMarca.setBackground(SystemColor.inactiveCaptionBorder);
 		comboMarca.setEditable(true);
 
 		comboNombreEquipo = new JComboBox<Object>();
-		comboNombreEquipo.setBounds(24, 26, 229, 20);
+		comboNombreEquipo.setBounds(125, 17, 229, 20);
 		panel_6.add(comboNombreEquipo);
 		comboNombreEquipo.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboNombreEquipo.setBackground(SystemColor.inactiveCaptionBorder);
 		comboNombreEquipo.setEditable(true);
 
 		lblNombreEquipo = new JLabel("Equipo: ");
-		lblNombreEquipo.setBounds(24, 11, 102, 14);
+		lblNombreEquipo.setBounds(24, 20, 87, 14);
 		panel_6.add(lblNombreEquipo);
 		lblNombreEquipo.setBorder(null);
 		lblNombreEquipo.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblMarca = new JLabel("Marca:  ");
-		lblMarca.setBounds(24, 50, 102, 14);
+		lblMarca.setBounds(24, 51, 87, 14);
 		panel_6.add(lblMarca);
 		lblMarca.setBorder(null);
 		lblMarca.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblModelo = new JLabel("Modelo: ");
-		lblModelo.setBounds(24, 89, 102, 14);
+		lblModelo.setBounds(24, 82, 87, 14);
 		panel_6.add(lblModelo);
 		lblModelo.setBorder(null);
 		lblModelo.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblNserie = new JLabel("N° de Serie: ");
-		lblNserie.setBounds(24, 127, 102, 14);
+		lblNserie.setBounds(24, 113, 87, 14);
 		panel_6.add(lblNserie);
 		lblNserie.setBorder(null);
 		lblNserie.setFont(new Font("Cambria", Font.BOLD, 14));
 		
 				JLabel lblFechaDeFabr = new JLabel("Fecha de Fabr.: ");
-				lblFechaDeFabr.setBounds(263, 127, 122, 14);
+				lblFechaDeFabr.setBounds(22, 144, 100, 14);
 				panel_6.add(lblFechaDeFabr);
 				lblFechaDeFabr.setBorder(null);
 				lblFechaDeFabr.setFont(new Font("Cambria", Font.BOLD, 14));
 				
 						btnGenerarSerie = new JButton("<html><center>Generar N° de Serie</html>");
-						btnGenerarSerie.setBounds(24, 167, 229, 36);
+						btnGenerarSerie.setBounds(325, 110, 147, 20);
 						panel_6.add(btnGenerarSerie);
 						btnGenerarSerie.setForeground(Color.BLACK);
 						btnGenerarSerie.setFont(new Font("Cambria", Font.BOLD, 12));
 						btnGenerarSerie.setBackground(new Color(176, 224, 230));
 						
 								btnFechaDefault = new JButton("<html><center>Si no se conoce fecha, presionar aquí</html>");
-								btnFechaDefault.setBounds(264, 167, 211, 36);
+								btnFechaDefault.setBounds(235, 140, 237, 23);
 								panel_6.add(btnFechaDefault);
 								btnFechaDefault.setForeground(Color.BLACK);
 								btnFechaDefault.setFont(new Font("Cambria", Font.BOLD, 12));
 								btnFechaDefault.setBackground(new Color(176, 224, 230));
 								
 										textFechafabricacion = new JTextFieldDateEditor("dd/MM/yyyy", "##-##-####", '-');
-										textFechafabricacion.setBounds(264, 142, 211, 20);
+										textFechafabricacion.setBounds(125, 141, 100, 20);
 										panel_6.add(textFechafabricacion);
 										textFechafabricacion.setHorizontalAlignment(SwingConstants.CENTER);
 										textFechafabricacion.setFont(new Font("Cambria", Font.BOLD, 14));
 										
 												textSerie = new JTextField();
-												textSerie.setBounds(24, 142, 229, 20);
+												textSerie.setBounds(125, 110, 190, 20);
 												panel_6.add(textSerie);
 												textSerie.setHorizontalAlignment(SwingConstants.LEFT);
 												textSerie.setFont(new Font("Cambria", Font.PLAIN, 14));
@@ -235,12 +235,12 @@ public class VentanaAgregarEquipo extends JFrame {
 												textSerie.setAlignmentX(0.0f);
 
 		lblFalla = new JLabel("Falla: ");
-		lblFalla.setBounds(24, 214, 52, 14);
+		lblFalla.setBounds(24, 181, 52, 14);
 		panel_6.add(lblFalla);
 		lblFalla.setFont(new Font("Cambria", Font.BOLD, 14));
 		
 				scrollPane = new JScrollPane();
-				scrollPane.setBounds(64, 214, 411, 44);
+				scrollPane.setBounds(24, 197, 411, 56);
 				panel_6.add(scrollPane);
 				
 						textFalla = new JTextAreaCustom();
@@ -318,25 +318,25 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_5.setLayout(null);
 
 		lblCliente = new JLabel("Cliente: ");
-		lblCliente.setBounds(26, 8, 102, 14);
+		lblCliente.setBounds(25, 20, 50, 14);
 		panel_5.add(lblCliente);
 		lblCliente.setBorder(null);
 		lblCliente.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblSucursal = new JLabel("Sucursal: ");
-		lblSucursal.setBounds(263, 8, 102, 14);
+		lblSucursal.setBounds(315, 20, 61, 14);
 		panel_5.add(lblSucursal);
 		lblSucursal.setBorder(null);
 		lblSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
 		
 				comboClientes = new JComboBox<Object>();
-				comboClientes.setBounds(24, 23, 229, 20);
+				comboClientes.setBounds(75, 17, 229, 20);
 				panel_5.add(comboClientes);
 				comboClientes.setFont(new Font("Cambria", Font.PLAIN, 14));
 				comboClientes.setBackground(SystemColor.inactiveCaptionBorder);
 				
 						comboSucursal = new JComboBox<Object>();
-						comboSucursal.setBounds(263, 23, 229, 20);
+						comboSucursal.setBounds(377, 17, 229, 20);
 						panel_5.add(comboSucursal);
 						comboSucursal.setFont(new Font("Cambria", Font.PLAIN, 14));
 						comboSucursal.setBackground(SystemColor.inactiveCaptionBorder);
