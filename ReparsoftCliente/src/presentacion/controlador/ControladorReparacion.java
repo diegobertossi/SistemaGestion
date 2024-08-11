@@ -124,7 +124,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private String estadoFisico = "";
 	private String estadoTecnico = "";
 	private String estadocomercial = "";
-	private String lugarDeIngreso="";
+	private String lugarDeIngreso = "";
 	private String NombreEq = "";
 	private String Marca = "";
 	private String Modelo = "";
@@ -225,75 +225,23 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonSiguiente()) {
-			int eleccion = JOptionPane.YES_OPTION;
 
-			if (!guardado) {
-				eleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
 
-						"No se han guardado los cambios. Si continua se descartarán los mismos. ¿Desea continuar?",
-						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			String ubicacionDeBase = agenda.getUbicacionBase();
 
-			}
-			if (eleccion == JOptionPane.YES_OPTION) {
+			int tam = agenda.obtenerReparacion().size();
 
-				String ubicacionDeBase = agenda.getUbicacionBase();
+			if (ubicacionDeBase.compareTo("Bariloche") == 0) {
 
-				int tam = agenda.obtenerReparacion().size();
+				if (!guardado) {
+					ReparacionDTO reparacionAeditar = TomarDatosVisualizacion();
+					this.agenda.editarReparacionR(reparacionAeditar);
 
-				if (ubicacionDeBase.compareTo("Bariloche") == 0) {
-
-					if (ELSinicial < tam + 987) {
-						ELSinicial = ELSinicial + 1;
-						try {
-							TomarDatosDeTablas();
-
-						} catch (ParseException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					} else {
-						Object mje = "No hay más reparaciones ";
-						JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
-								JOptionPane.INFORMATION_MESSAGE);
-					}
-
-				} else if (ubicacionDeBase.compareTo("Buenos Aires") == 0) {
-
-					if (ELSinicialBSAS < tam) {
-						ELSinicialBSAS = ELSinicialBSAS + 1;
-						try {
-							TomarDatosDeTablas();
-
-						} catch (ParseException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					} else {
-						Object mje = "No hay más reparaciones ";
-						JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
-								JOptionPane.INFORMATION_MESSAGE);
-					}
-
+					guardado = true;
 				}
 
-				guardado = true;
-			}
-		} else if (this.ventanaVisualizarEquipos != null
-				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonAnterior()) {
-
-			int eleccion = JOptionPane.YES_OPTION;
-
-			if (!guardado) {
-				eleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-
-						"No se han guardado los cambios. Si continua se descartarán los mismos. ¿Desea continuar?",
-
-						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			}
-			if (eleccion == JOptionPane.YES_OPTION) {
-
-				if (ELSinicial > 988) {
-					ELSinicial = ELSinicial - 1;
+				if (ELSinicial < tam + 987) {
+					ELSinicial = ELSinicial + 1;
 					try {
 						TomarDatosDeTablas();
 
@@ -301,10 +249,59 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+				} else {
+					Object mje = "No hay más reparaciones ";
+					JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 				}
+
+			} else if (ubicacionDeBase.compareTo("Buenos Aires") == 0) {
+
+				if (!guardado) {
+					ReparacionDTO reparacionAeditar = TomarDatosVisualizacion();
+					this.agenda.editarReparacionR(reparacionAeditar);
+
+					guardado = true;
+				}
+
+				if (ELSinicialBSAS < tam) {
+					ELSinicialBSAS = ELSinicialBSAS + 1;
+					try {
+						TomarDatosDeTablas();
+
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else {
+					Object mje = "No hay más reparaciones ";
+					JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+				}
+
+			}
+
+
+
+		} else if (this.ventanaVisualizarEquipos != null
+				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonAnterior()) {
+
+
+			if (!guardado) {
+				ReparacionDTO reparacionAeditar = TomarDatosVisualizacion();
+				this.agenda.editarReparacionR(reparacionAeditar);
 
 				guardado = true;
 			}
+			if (ELSinicial > 988) {
+				ELSinicial = ELSinicial - 1;
+				try {
+					TomarDatosDeTablas();
+
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+
 		}
 
 		else if (this.ventanaVisualizarEquipos != null
@@ -313,11 +310,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			int eleccion = JOptionPane.YES_OPTION;
 
 			if (!guardado) {
-				eleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
+				ReparacionDTO reparacionAeditar = TomarDatosVisualizacion();
+				this.agenda.editarReparacionR(reparacionAeditar);
 
-						"No se han guardado los cambios. Si continua se descartarán los mismos. ¿Desea continuar?",
-						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
+				guardado = true;
 			}
 			if (eleccion == JOptionPane.YES_OPTION) {
 
@@ -329,7 +325,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					e1.printStackTrace();
 				}
 
-				guardado = true;
+			
 			}
 		}
 
@@ -339,11 +335,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			int eleccion = JOptionPane.YES_OPTION;
 
 			if (!guardado) {
-				eleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
+				ReparacionDTO reparacionAeditar = TomarDatosVisualizacion();
+				this.agenda.editarReparacionR(reparacionAeditar);
 
-						"No se han guardado los cambios. Si continua se descartarán los mismos. ¿Desea continuar?",
-						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
+				guardado = true;
 			}
 			if (eleccion == JOptionPane.YES_OPTION) {
 
@@ -355,7 +350,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					e1.printStackTrace();
 				}
 
-				guardado = true;
+		
 			}
 		}
 
@@ -524,8 +519,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				}
 			}
-			
-			
+
 			Enumeration<?> elementsIngreso = ventanaEstados.getGrupoLugarDeIngreso().getElements();
 
 			while (elementsIngreso.hasMoreElements()) {
@@ -542,14 +536,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaEstados.getBtnHabilitarLugarIngreso().addActionListener(this);
 
 		}
-		
-		
+
 		else if (this.ventanaEstados != null && e.getSource() == this.ventanaEstados.getBtnHabilitarLugarIngreso()) {
-			
+
 			ventanaEstados.getRdbtnIngresoBRC().setEnabled(true);
 			ventanaEstados.getRdbtnIngresoCABA().setEnabled(true);
 			ventanaEstados.getRdbtnIngresoMDP().setEnabled(true);
-			
+
 		}
 
 		else if (this.ventanaEstados != null && e.getSource() == this.ventanaEstados.getBtnAceptarEdicion()) {
@@ -558,7 +551,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			String estadoTecnico = "";
 			String estadoComercial = "";
 			String lugarDeIngreso = "";
-			
 
 			Boolean cambioDeEstadoBoolean = false;
 
@@ -594,8 +586,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				}
 			}
-			
-			
+
 			Enumeration<?> elementsIngreso = ventanaEstados.getGrupoLugarDeIngreso().getElements();
 
 			while (elementsIngreso.hasMoreElements()) {
@@ -685,7 +676,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				}
 
 			}
-			
+
 			if (ventanaVisualizarEquipos.getTextLugarDeIngreso().getText().compareTo(lugarDeIngreso) != 0) {
 
 				cambioDeEstadoBoolean = true;
@@ -784,7 +775,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			llenarComboOrganizacion();
 			llenarComboNombreWSP();
-			
+
 			performActionOnTextComponents(ventanaWSP);
 
 		}
@@ -802,7 +793,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaClientesWSP.getBtnGuardarNuevo().addActionListener(this);
 
 			llenarTablaClientesWSP();
-			
+
 			performActionOnTextComponents(ventanaWSP);
 
 		}
@@ -1013,7 +1004,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaagregarRepuesto = new VentanaAgregarRepuesto(this);
 			this.ventanaagregarRepuesto.getBtnAgregarRepuesto().addActionListener(this);
 			this.ventanaagregarRepuesto.getBtnCancelar().addActionListener(this);
-			
+
 			performActionOnTextComponents(ventanaagregarRepuesto);
 
 		}
@@ -1627,7 +1618,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		});
 
-
 		ventanaVisualizarEquipos.getTextPresupuesto().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1663,36 +1653,33 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 		performActionOnTextComponents(ventanaVisualizarEquipos);
-		
-		
 
 	}
-	
-	
-    // Método para realizar una acción sobre todos los JTextField y JTextArea en un JFrame
-    private void performActionOnTextComponents(JFrame frame) {
-        List<JTextComponent> textComponents = getAllTextComponents(frame);
-        // Realiza la acción deseada sobre cada JTextComponent
-        for (JTextComponent textComponent : textComponents) {
-        	configureUndoManager(textComponent);
-        }
-    }
 
-    // Método para obtener todos los JTextField y JTextArea en un JFrame
-    private List<JTextComponent> getAllTextComponents(Container container) {
-        List<JTextComponent> textComponents = new ArrayList<>();
-        Component[] components = container.getComponents();
-        // Itera sobre los componentes y filtra los JTextField y JTextArea
-        for (Component component : components) {
-            if (component instanceof JTextComponent) {
-                textComponents.add((JTextComponent) component);
-            } else if (component instanceof Container) {
-                textComponents.addAll(getAllTextComponents((Container) component));
-            }
-        }
-        return textComponents;
-    }
+	// Método para realizar una acción sobre todos los JTextField y JTextArea en un
+	// JFrame
+	private void performActionOnTextComponents(JFrame frame) {
+		List<JTextComponent> textComponents = getAllTextComponents(frame);
+		// Realiza la acción deseada sobre cada JTextComponent
+		for (JTextComponent textComponent : textComponents) {
+			configureUndoManager(textComponent);
+		}
+	}
 
+	// Método para obtener todos los JTextField y JTextArea en un JFrame
+	private List<JTextComponent> getAllTextComponents(Container container) {
+		List<JTextComponent> textComponents = new ArrayList<>();
+		Component[] components = container.getComponents();
+		// Itera sobre los componentes y filtra los JTextField y JTextArea
+		for (Component component : components) {
+			if (component instanceof JTextComponent) {
+				textComponents.add((JTextComponent) component);
+			} else if (component instanceof Container) {
+				textComponents.addAll(getAllTextComponents((Container) component));
+			}
+		}
+		return textComponents;
+	}
 
 	public void agregarListenersVentanaVisualizarEquiposListado() {
 
@@ -1723,7 +1710,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().addActionListener(this);
 		ventanaAgregarEquipo.getBtnaltaCliente().addActionListener(this);
 		ventanaAgregarEquipo.getBtnrecargarLista().addActionListener(this);
-	
+
 		llenarComboCliente();
 		llenarComboSucursal();
 		llenarComboNombreEquipo();
@@ -1739,11 +1726,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboSerie());
 
 		ventanaAgregarEquipo.getGrupoEstadoFisico().setSelected(ventanaAgregarEquipo.getRdbtnBRC().getModel(), true);
-		
+
 		performActionOnTextComponents(ventanaAgregarEquipo);
 
 	}
-	
 
 	private void TomarDatosDeTablas() throws ParseException {
 
@@ -1792,8 +1778,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setTextEstadoTecnico(reparacion.getEstadoTecnico());
 		ventanaVisualizarEquipos.setTextEstadoComercial(reparacion.getEstadoComercial());
 		ventanaVisualizarEquipos.setTextLugarDeIngreso(reparacion.getLugarDeIngreso());
-		
-		
+
 		ventanaVisualizarEquipos.setTextDiagnostico(reparacion.getSolucion());
 		ventanaVisualizarEquipos.setTextInformeCliente(reparacion.getInformecliente());
 
@@ -2368,6 +2353,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getFechaRespuesta().setEnabled(false);
 		this.ventanaVisualizarEquipos.getBtnGuardarCambios().setEnabled(false);
 		this.ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(false);
+		this.ventanaVisualizarEquipos.getBtnRepuestos().setEnabled(false);
+		this.ventanaVisualizarEquipos.getBtnEliminarRepuesto().setEnabled(false);
+		this.ventanaVisualizarEquipos.getBtnEditarRepuesto().setEnabled(false);
+
+		
 
 		this.ventanaVisualizarEquipos.getTextCliente().setVisible(true);
 		this.ventanaVisualizarEquipos.getTextSucursal().setVisible(true);
@@ -2407,6 +2397,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getFechaRespuesta().setEnabled(true);
 		this.ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(true);
 		this.ventanaVisualizarEquipos.getBtnGuardarCambios().setEnabled(true);
+		this.ventanaVisualizarEquipos.getBtnRepuestos().setEnabled(true);
+		this.ventanaVisualizarEquipos.getBtnEliminarRepuesto().setEnabled(true);
+	
+
 
 		this.ventanaVisualizarEquipos.getTextCliente().setVisible(false);
 		this.ventanaVisualizarEquipos.getTextSucursal().setVisible(false);
@@ -2634,7 +2628,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			if (button.isSelected()) {
 
 				estadoFisico = button.getText();
-				lugarDeIngreso =button.getText();
+				lugarDeIngreso = button.getText();
 
 			}
 		}
@@ -2787,7 +2781,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				solucion, informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo,
 				Cliente, Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
 				idCliente, idSucursal, fechafabrvisual, idUsuario, nombreTecnico, enviado, presupuesto,
-				presupuestoDolar, pago, presupuestoGenerado, avisoEnviado, presupuestoEnviado, OrdenDeCompra, lugarIngreso);
+				presupuestoDolar, pago, presupuestoGenerado, avisoEnviado, presupuestoEnviado, OrdenDeCompra,
+				lugarIngreso);
 
 		return reparacionAeditar;
 
@@ -3036,53 +3031,46 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 	}
-	
-	
-	
 
-	
-	
 	@SuppressWarnings({ "serial", "deprecation" })
 	private static void configureUndoManager(JTextComponent textComponent) {
-	    UndoManager undoManager = new UndoManager();
-	    textComponent.getDocument().addUndoableEditListener(undoManager);
+		UndoManager undoManager = new UndoManager();
+		textComponent.getDocument().addUndoableEditListener(undoManager);
 
-	    // Crear una acción de deshacer
-	    AbstractAction undoAction = new AbstractAction("Deshacer") {
-	        public void actionPerformed(ActionEvent e) {
-	            if (undoManager.canUndo()) {
-	                undoManager.undo();
-	            }
-	        }
-	    };
+		// Crear una acción de deshacer
+		AbstractAction undoAction = new AbstractAction("Deshacer") {
+			public void actionPerformed(ActionEvent e) {
+				if (undoManager.canUndo()) {
+					undoManager.undo();
+				}
+			}
+		};
 
-	    // Asignar la tecla de acceso directo (Ctrl + Z) para la acción de deshacer
-	    undoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		// Asignar la tecla de acceso directo (Ctrl + Z) para la acción de deshacer
+		undoAction.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-	    // Agregar la acción de deshacer al componente
-	    textComponent.getActionMap().put("Undo", undoAction);
-	    textComponent.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
+		// Agregar la acción de deshacer al componente
+		textComponent.getActionMap().put("Undo", undoAction);
+		textComponent.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
 
-	    // Crear una acción de rehacer
-	    AbstractAction redoAction = new AbstractAction("Rehacer") {
-	        public void actionPerformed(ActionEvent e) {
-	            if (undoManager.canRedo()) {
-	                undoManager.redo();
-	            }
-	        }
-	    };
+		// Crear una acción de rehacer
+		AbstractAction redoAction = new AbstractAction("Rehacer") {
+			public void actionPerformed(ActionEvent e) {
+				if (undoManager.canRedo()) {
+					undoManager.redo();
+				}
+			}
+		};
 
-	    // Asignar la tecla de acceso directo (Ctrl + Y) para la acción de rehacer
-	    redoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		// Asignar la tecla de acceso directo (Ctrl + Y) para la acción de rehacer
+		redoAction.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-	    // Agregar la acción de rehacer al componente
-	    textComponent.getActionMap().put("Redo", redoAction);
-	    textComponent.getInputMap().put((KeyStroke) redoAction.getValue(Action.ACCELERATOR_KEY), "Redo");
+		// Agregar la acción de rehacer al componente
+		textComponent.getActionMap().put("Redo", redoAction);
+		textComponent.getInputMap().put((KeyStroke) redoAction.getValue(Action.ACCELERATOR_KEY), "Redo");
 	}
-
-	
-	
-	
 
 	public void cerraVentanaVisualizarEquipo() {
 

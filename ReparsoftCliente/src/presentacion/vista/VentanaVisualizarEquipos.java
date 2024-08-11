@@ -813,6 +813,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		spRepuestos.setViewportView(tablaRepuestos_1);
 
 		btnRepuestos = new JButton("AGREGAR");
+		btnRepuestos.setEnabled(false);
 		btnRepuestos.setBounds(10, 298, 103, 23);
 		panel_3.add(btnRepuestos);
 		btnRepuestos.setForeground(new Color(0, 128, 0));
@@ -826,6 +827,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnEditarRepuesto.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnEliminarRepuesto = new JButton("ELIMINAR");
+		btnEliminarRepuesto.setEnabled(false);
 		btnEliminarRepuesto.setBounds(296, 298, 99, 23);
 		panel_3.add(btnEliminarRepuesto);
 		btnEliminarRepuesto.setForeground(new Color(255, 0, 0));
