@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
@@ -115,22 +115,25 @@
 		<fieldDescription><![CDATA[plazoEntrega]]></fieldDescription>
 	</field>
 	<title>
-		<band height="173" splitType="Stretch">
+		<band height="11" splitType="Stretch"/>
+	</title>
+	<columnHeader>
+		<band height="160">
 			<line>
-				<reportElement x="40" y="157" width="483" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
+				<reportElement x="45" y="138" width="483" height="1" uuid="838a5eb2-2fea-4b28-a175-3908a84f1252">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</line>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="370" y="138" width="152" height="15" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979"/>
+				<reportElement x="375" y="119" width="152" height="15" uuid="4cab0b5a-f32a-4cb1-868d-7b35ba828c8a"/>
 				<textElement textAlignment="Right">
 					<font fontName="Cambria" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat( "EEEEE dd MMMMM yyyy",new Locale("es", "ES")).format (new java.util.Date())]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="40" y="23" width="440" height="25" uuid="7b15ae29-fb0c-4c6f-888d-61935c787068">
+				<reportElement x="45" y="4" width="440" height="25" uuid="8064dd55-eb6e-4acc-8e06-0616feb37af5">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -140,7 +143,7 @@
 				<text><![CDATA[PRESUPUESTO DE REPARACIÓN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="40" y="52" width="320" height="83" uuid="46e02b08-a11a-4bb2-960b-2822dafb4cde"/>
+				<reportElement x="45" y="33" width="320" height="83" uuid="0c1fc4ee-dde2-47cc-9392-05bb7bcfd02a"/>
 				<textElement>
 					<font fontName="Cambria" size="10"/>
 				</textElement>
@@ -153,38 +156,45 @@ www.elsweb.com.ar
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="40" y="138" width="320" height="15" uuid="bddbffda-9944-4ef1-acc6-3842dc4898db"/>
+				<reportElement x="45" y="119" width="320" height="15" uuid="1f0c0c3d-fa20-4a06-b093-9f1e40aec1eb"/>
 				<textElement>
 					<font fontName="Cambria"/>
 				</textElement>
 				<text><![CDATA[E-mail: diego.bertossi@elsweb.com.ar / els@elsweb.com.ar]]></text>
 			</staticText>
 			<line>
-				<reportElement x="40" y="160" width="483" height="1" uuid="0ec8a2a0-e9c5-4541-9d5e-6dfde9a0f290">
+				<reportElement x="45" y="141" width="483" height="1" uuid="9a262e06-7285-4576-a09b-c6a46b97fa30">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</line>
 		</band>
-	</title>
-	<columnHeader>
-		<band height="136">
+	</columnHeader>
+	<detail>
+		<band height="349">
+			<staticText>
+				<reportElement x="40" y="130" width="77" height="15" uuid="7b91e440-470e-4e56-bbc9-0b1f4f766d5c"/>
+				<textElement>
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diagnóstico: ]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="40" y="16" width="339" height="25" uuid="02e60c28-3c12-4cd3-a33c-2ecaaea0a973"/>
+				<reportElement x="40" y="0" width="339" height="25" uuid="02e60c28-3c12-4cd3-a33c-2ecaaea0a973"/>
 				<textElement>
 					<font fontName="Cambria" size="18" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="440" y="16" width="84" height="25" uuid="7838a9d6-a366-454d-911f-a8ddf0b9c4ed"/>
+				<reportElement x="438" y="0" width="84" height="25" uuid="7838a9d6-a366-454d-911f-a8ddf0b9c4ed"/>
 				<textElement textAlignment="Right">
 					<font fontName="Cambria" size="18" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ELS}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="387" y="16" width="52" height="25" uuid="0b3f9342-da78-4cfa-9fc5-2301c4749678"/>
+				<reportElement x="385" y="0" width="52" height="25" uuid="0b3f9342-da78-4cfa-9fc5-2301c4749678"/>
 				<box rightPadding="4"/>
 				<textElement textAlignment="Right">
 					<font fontName="Cambria" size="18" isBold="true"/>
@@ -192,7 +202,7 @@ www.elsweb.com.ar
 				<text><![CDATA[ELS :]]></text>
 			</staticText>
 			<frame>
-				<reportElement x="40" y="58" width="482" height="78" forecolor="#000000" uuid="7a4117d2-a844-4eba-b6a1-3fb888c66131"/>
+				<reportElement x="39" y="25" width="482" height="78" forecolor="#000000" uuid="7a4117d2-a844-4eba-b6a1-3fb888c66131"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -284,26 +294,12 @@ www.elsweb.com.ar
 					<textFieldExpression><![CDATA[$F{clienteCliente}]]></textFieldExpression>
 				</textField>
 			</frame>
-		</band>
-	</columnHeader>
-	<detail>
-		<band height="330">
-			<staticText>
-				<reportElement x="40" y="10" width="77" height="15" uuid="7b91e440-470e-4e56-bbc9-0b1f4f766d5c"/>
-				<textElement>
-					<font fontName="Cambria" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Diagnóstico: ]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="41" y="30" width="462" height="280" uuid="2571ba8e-59f8-40ef-a7e3-0ff785b6f87c"/>
-				<textElement>
-					<font fontName="Cambria" size="12"/>
-				</textElement>
+				<reportElement x="40" y="149" width="490" height="180" uuid="efc0cd87-f51c-48d1-a0b3-1cfaa419cca9"/>
 				<textFieldExpression><![CDATA[$F{informecliente}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="43">
+		<band height="124">
 			<staticText>
 				<reportElement x="40" y="5" width="40" height="15" uuid="ca0f7b2e-7ffe-4719-899e-c23e29b21d89">
 					<printWhenExpression><![CDATA[$F{chckpesos}]]></printWhenExpression>
@@ -337,63 +333,125 @@ www.elsweb.com.ar
 				<text><![CDATA[Total: ]]></text>
 			</staticText>
 		</band>
-	</detail>
-	<lastPageFooter>
-		<band height="107">
+		<band height="135">
+			<break>
+				<reportElement x="0" y="130" width="138" height="1" uuid="afdeae66-381a-44a2-a73c-9ef9bf8119e9"/>
+			</break>
 			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="40" y="20" width="483" height="77" backcolor="#E6E8E9" uuid="36aa233d-4305-48e6-974a-1bbf89bb3c8f"/>
+				<reportElement positionType="Float" mode="Opaque" x="45" y="25" width="483" height="77" backcolor="#E6E8E9" uuid="afb5311b-e42a-4c6a-8a6a-250896558816"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Serif" size="9" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<line>
-				<reportElement x="41" y="10" width="482" height="1" uuid="6859596d-d3da-4a73-b8e6-25329366d7a2">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="41" y="7" width="482" height="1" uuid="30d89e10-5a2e-4806-8b83-b66bb39f34cb">
+				<reportElement x="44" y="13" width="482" height="1" uuid="8a63c6d0-99c0-4049-baca-5189cfeb8459">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</line>
 			<textField>
-				<reportElement x="46" y="30" width="468" height="31" uuid="bebea24a-280a-473d-8557-de46f78c98f7"/>
+				<reportElement x="51" y="35" width="468" height="31" uuid="5c31240f-21de-4ae8-ac27-e02d34d30b0e"/>
 				<textElement textAlignment="Left">
 					<font fontName="Cambria"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{condicionesMoneda}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="150" y="62" width="364" height="13" uuid="5dc40e3f-88fd-4465-b09b-71d0c06dc8b7"/>
+				<reportElement x="155" y="67" width="364" height="13" uuid="bfdc549a-1d9b-43bc-8646-c5e2d9bb08f4"/>
 				<textElement textAlignment="Left">
 					<font fontName="Cambria"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{condicionesPago}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="46" y="62" width="100" height="13" uuid="d73c81b6-577b-4acf-a83c-20f8ba0be00e"/>
+				<reportElement x="51" y="67" width="100" height="13" uuid="b68126d2-f435-42f4-b6d6-638aa8bd119e"/>
 				<textElement>
 					<font fontName="Cambria" size="10"/>
 				</textElement>
 				<text><![CDATA[Condiciones de pago: ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="150" y="77" width="364" height="13" uuid="dc92725a-3467-40b4-9b81-e7abd454c889"/>
+				<reportElement x="155" y="82" width="364" height="13" uuid="df487dfe-2f7f-4a2c-ba93-e697f2cf1e89"/>
 				<textElement textAlignment="Left">
 					<font fontName="Cambria"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{plazoEntrega}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="46" y="77" width="100" height="13" uuid="4b4e489f-2b97-4a5f-89b3-699c51d42fce"/>
+				<reportElement x="51" y="82" width="100" height="13" uuid="23e47f76-4eb5-4aa1-9bb2-e4a0e51b0494"/>
 				<textElement>
 					<font fontName="Cambria" size="10"/>
 				</textElement>
 				<text><![CDATA[Plazo de entrega: ]]></text>
 			</staticText>
+			<line>
+				<reportElement x="44" y="10" width="482" height="1" uuid="35f8348a-b310-4318-b3d9-3318c6877a6d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="190" y="110" width="90" height="20" uuid="172a22ec-ff77-41ed-820f-948171e18730"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="281" y="110" width="90" height="20" uuid="37ca2f97-d079-495a-b278-8fcafc4b39d2"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="642">
+			<staticText>
+				<reportElement x="39" y="34" width="483" height="559" uuid="b17a694f-dbfa-49c0-8ea6-5b43f5334bf2"/>
+				<text><![CDATA[PRECIOS: Los precios indicados en la oferta de referencia se entienden netos en $ o USD (según se especifique).
+En el caso de USD será el tipo de cambio vendedor del dólar Banco Nación.
+VALIDEZ DE LA OFERTA: La cotización adjunta es válida por un plazo de 7 días a partir del envío del informe. La
+devolución del equipo invalida cualquier Informe y/o Cotización emitida, en caso de nueva recepción se
+realizará un nuevo Informe Técnico & Cotización de acuerdo al procedimiento vigente.
+ACEPTACIÓN DEL SERVICIO: La Orden de Compra o solicitud equivalente emitida por el cliente, implica la
+aceptación de las Condiciones de Contratación aquí indicadas. Se considerará a la misma como autorización
+suficiente para proceder a la implementación de la Propuesta y a la facturación de los montos presupuestados
+en el presente Informe Técnico. En el caso de que razones técnicas o comerciales, no ponderables al momento
+de emitir este informe, impidan la implementación de la solución propuesta, la responsabilidad de ELS se limita
+a la devolución del equipo en el estado recibido, no correspondiendo al cliente el reclamo de ningún tipo de
+resarcimiento económico y / o material. Iguales condiciones se aplican al caso de extenderse los plazos de la
+realización de trabajos por causas ajenas a ELS.
+RESPONSABILIDAD: ELS no asume responsabilidad alguna sobre la integridad y/o validez de las configuraciones,
+programas almacenados, seteos de parámetros ni ningún otro ajuste propio en los equipos reparados. Es
+responsabilidad del Cliente/Usuario la realización de una copia de seguridad de los programas almacenados y
+la correspondiente verificación previa a la puesta en marcha o prueba de los equipos reparados. Tampoco se
+asumen responsabilidades sobre los efectos que el comportamiento de los equipos provoque, aunque sean
+éstos derivados y/o atribuibles a fallas en la reparación, en especial costos derivados de lucro cesante por
+inactividad.
+GARANTÍA: La garantía sobre los trabajos realizados incluye solamente las secciones reparadas del equipo, bajo
+condiciones de uso nominales indicadas por el fabricante del mismo. ELS determinará en cuales casos y sobre
+que secciones del equipo corresponde aplicar la garantía, pudiendo optar el cliente por la realización de una
+nueva reparación sin cargo con plazos a determinar, o a la devolución del importe facturado sin actualizaciones
+y / o compensaciones de ningún tipo. En caso de equipos con faja de garantía, la rotura y/o deterioro de la
+misma invalida automáticamente la garantía.
+TRANSPORTE & DEPÓSITO: Los equipos viajan por cuenta y riesgo del cliente. Los equipos recibidos se
+considerarán en depósito hasta 120 días posteriores a la emisión del Informe Técnico/Propuesta de reparación
+correspondiente. Cumplido dicho plazo y en caso de no mediar respuesta del cliente respecto al destino del
+equipo, ELS podrá disponer del equipo para su destrucción.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="12" width="200" height="20" uuid="157ef871-33a6-4b34-a4cb-8985e80a5ed2"/>
+				<text><![CDATA[CONDICIONES COMECIALES]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="600" width="90" height="20" uuid="000577bc-b012-42dc-b625-bb30a99b2000"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="281" y="600" width="90" height="20" uuid="7c4723f5-5842-4885-a76e-64b8c09b28c2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 		</band>
 	</lastPageFooter>
 </jasperReport>
