@@ -130,12 +130,12 @@
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="40" y="53" width="259" height="25" uuid="8064dd55-eb6e-4acc-8e06-0616feb37af5">
+				<reportElement x="40" y="53" width="350" height="25" uuid="8064dd55-eb6e-4acc-8e06-0616feb37af5">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Calibri" size="19" isBold="true"/>
+					<font fontName="Tahoma" size="19" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PRESUPUESTO DE REPARACIÓN]]></text>
 			</staticText>
@@ -144,7 +144,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="Tahoma" size="8"/>
 				</textElement>
 				<text><![CDATA[De  Sergio M. Fernández  CUIT: 20-21488895-6
 Mar del Plata :  Independencia 2609 1er piso   Te:+54 223 5969934
@@ -202,11 +202,11 @@ E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar
 	<detail>
 		<band height="269">
 			<staticText>
-				<reportElement x="40" y="161" width="190" height="22" uuid="7b91e440-470e-4e56-bbc9-0b1f4f766d5c">
+				<reportElement x="47" y="161" width="100" height="22" uuid="7b91e440-470e-4e56-bbc9-0b1f4f766d5c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Calibri" size="18" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Diagnóstico: ]]></text>
 			</staticText>
@@ -215,7 +215,7 @@ E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Calibri" size="18" isBold="true"/>
+					<font fontName="Tahoma" size="18" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
 			</textField>
@@ -223,92 +223,92 @@ E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar
 				<reportElement x="38" y="55" width="478" height="95" forecolor="#000000" uuid="7a4117d2-a844-4eba-b6a1-3fb888c66131"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineColor="rgba(0, 0, 0, 0.5882353)"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<topPen lineWidth="0.75" lineColor="rgba(0, 0, 0, 0.39215687)"/>
+					<leftPen lineWidth="0.75" lineColor="rgba(0, 0, 0, 0.39215687)"/>
+					<bottomPen lineWidth="0.75" lineColor="rgba(0, 0, 0, 0.39215687)"/>
+					<rightPen lineWidth="0.75" lineColor="rgba(0, 0, 0, 0.39215687)"/>
 				</box>
 				<textField>
 					<reportElement x="75" y="41" width="207" height="15" uuid="81aef732-d368-4f16-8c82-c8abbbe9b00e"/>
 					<textElement>
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{modelo}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="75" y="25" width="207" height="15" uuid="6513dc6a-e888-4971-bc14-4682433f475b"/>
 					<textElement>
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{nombreEquipo}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="75" y="57" width="207" height="15" uuid="6c78e574-2a71-489b-a700-d8ad4d051d45"/>
 					<textElement>
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{marca}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="75" y="74" width="207" height="15" uuid="c4f05a3b-513d-4a66-bb62-fa2bf4cde0a5"/>
 					<textElement>
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{numeroDeSerie}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="7" y="25" width="48" height="15" uuid="07bd501d-daee-4f0c-b545-64bfffa95bcb"/>
 					<textElement>
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Equipo :]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="7" y="41" width="48" height="15" uuid="9242dcd7-1eb2-4311-af99-8aa1dca4433d"/>
 					<textElement>
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Marca: ]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="7" y="57" width="48" height="15" uuid="338c181e-05a3-42cb-8ded-0e1e549fb3af"/>
 					<textElement>
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Modelo:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="7" y="74" width="48" height="15" uuid="31d67a35-8eda-4218-90a4-1192acd28030"/>
 					<textElement>
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<text><![CDATA[N° de Serie: ]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="299" y="24" width="46" height="15" uuid="a280be5c-7c94-42d7-8914-c2ba67c59a8a"/>
 					<textElement>
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Cliente:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="299" y="8" width="46" height="15" uuid="d8e1e605-297d-4f40-99f9-b6882e654c53"/>
 					<textElement>
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Aviso:]]></text>
 				</staticText>
 				<textField>
 					<reportElement x="366" y="8" width="96" height="15" uuid="a4d4922e-d9b8-4390-8f41-9f165048a305"/>
 					<textElement>
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{aviso}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="366" y="24" width="96" height="15" uuid="61d50c95-0445-4a78-b6f3-f6347091c1b4"/>
 					<textElement>
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{clienteCliente}]]></textFieldExpression>
 				</textField>
@@ -319,7 +319,7 @@ E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar
 					</reportElement>
 					<box rightPadding="4"/>
 					<textElement textAlignment="Left">
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<text><![CDATA[ELS :]]></text>
 				</staticText>
@@ -329,7 +329,7 @@ E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Left">
-						<font fontName="Calibri" size="12" isBold="false"/>
+						<font fontName="Tahoma" size="12" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{ELS}]]></textFieldExpression>
 				</textField>
@@ -338,54 +338,54 @@ E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar
 				<reportElement mode="Transparent" x="39" y="184" width="476" height="80" forecolor="#000000" uuid="efc0cd87-f51c-48d1-a0b3-1cfaa419cca9"/>
 				<box padding="10">
 					<pen lineWidth="0.75" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5882353)"/>
-					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.49019608)"/>
-					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.49019608)"/>
-					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.49019608)"/>
-					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.49019608)"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.39215687)"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.39215687)"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.39215687)"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.39215687)"/>
 				</box>
 				<textElement>
-					<font fontName="Calibri" size="12"/>
+					<font fontName="Tahoma" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{informecliente}]]></textFieldExpression>
 			</textField>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="378" y="0" width="138" height="20" uuid="4cab0b5a-f32a-4cb1-868d-7b35ba828c8a"/>
+				<reportElement x="279" y="0" width="235" height="20" uuid="4cab0b5a-f32a-4cb1-868d-7b35ba828c8a"/>
 				<textElement textAlignment="Right">
-					<font fontName="Calibri" size="14"/>
+					<font fontName="Tahoma" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat( "EEEEE dd MMMMM yyyy",new Locale("es", "ES")).format (new java.util.Date())]]></textFieldExpression>
 			</textField>
 		</band>
 		<band height="41">
 			<staticText>
-				<reportElement x="40" y="5" width="40" height="15" uuid="ca0f7b2e-7ffe-4719-899e-c23e29b21d89">
+				<reportElement x="49" y="3" width="40" height="15" uuid="ca0f7b2e-7ffe-4719-899e-c23e29b21d89">
 					<printWhenExpression><![CDATA[$F{chckpesos}]]></printWhenExpression>
 				</reportElement>
 				<textElement markup="none">
-					<font fontName="Calibri" size="12" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total: ]]></text>
 			</staticText>
 			<textField pattern="U$S #,##0.##;U$S -#,##0.##">
-				<reportElement x="80" y="23" width="70" height="15" uuid="d392b3f9-20f9-4d55-b3f8-b36c4ed16efb"/>
+				<reportElement x="89" y="21" width="70" height="15" uuid="d392b3f9-20f9-4d55-b3f8-b36c4ed16efb"/>
 				<textElement>
-					<font fontName="Calibri" size="12" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{chckdolar}== true? $F{precioDolar}:""]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="40" y="23" width="40" height="15" uuid="79147458-006c-452f-92b8-5fec4f8b4277">
+				<reportElement x="49" y="21" width="40" height="15" uuid="79147458-006c-452f-92b8-5fec4f8b4277">
 					<printWhenExpression><![CDATA[$F{chckdolar}]]></printWhenExpression>
 				</reportElement>
 				<textElement markup="none">
-					<font fontName="Calibri" size="12" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total: ]]></text>
 			</staticText>
 			<textField pattern="¤#,##0.##;¤-#,##0.##">
-				<reportElement x="80" y="5" width="70" height="15" uuid="f5980fff-f0ef-4aec-a350-5f8248d72619"/>
+				<reportElement x="89" y="3" width="70" height="15" uuid="f5980fff-f0ef-4aec-a350-5f8248d72619"/>
 				<textElement>
-					<font fontName="Calibri" size="12" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{chckpesos}== true? $F{precioPeso}:""]]></textFieldExpression>
 			</textField>
@@ -404,7 +404,7 @@ E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar
 					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5882353)"/>
 				</box>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font fontName="Calibri" size="10"/>
+					<font fontName="Tahoma" size="10"/>
 					<paragraph lineSpacing="Single" lineSpacingSize="1.0"/>
 				</textElement>
 				<text><![CDATA[PRECIOS: Los precios indicados en la oferta de referencia se entienden netos en $ o USD (según se especifique). En el caso de USD será el tipo de cambio vendedor del dólar Banco Nación.
@@ -422,7 +422,7 @@ TRANSPORTE & DEPÓSITO: Los equipos viajan por cuenta y riesgo del cliente. Los 
 			<staticText>
 				<reportElement x="49" y="3" width="150" height="18" forecolor="rgba(0, 0, 0, 0.74509805)" uuid="1e0d17b0-f6a7-4611-979b-0a49abb501ea"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Calibri" size="12"/>
+					<font fontName="Tahoma" size="12"/>
 				</textElement>
 				<text><![CDATA[CONDICIONES COMECIALES]]></text>
 			</staticText>
@@ -440,49 +440,49 @@ TRANSPORTE & DEPÓSITO: Los equipos viajan por cuenta y riesgo del cliente. Los 
 			<textField>
 				<reportElement x="57" y="27" width="444" height="31" uuid="5ebc37d2-8ee5-4d4f-a3ed-eb1d92e30057"/>
 				<textElement textAlignment="Left">
-					<font fontName="Calibri"/>
+					<font fontName="Tahoma"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{condicionesMoneda}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="161" y="59" width="340" height="13" uuid="627c76fd-01cf-4d58-99bd-7604542a23d3"/>
 				<textElement textAlignment="Left">
-					<font fontName="Calibri"/>
+					<font fontName="Tahoma"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{condicionesPago}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="57" y="59" width="100" height="13" uuid="6fdad223-7bfd-4217-89bc-f897159ea71a"/>
 				<textElement>
-					<font fontName="Calibri" size="10"/>
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[Condiciones de pago: ]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="161" y="74" width="340" height="13" uuid="7de1c772-4050-4d97-833a-af4265bfcbad"/>
 				<textElement textAlignment="Left">
-					<font fontName="Calibri"/>
+					<font fontName="Tahoma"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{plazoEntrega}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="57" y="74" width="100" height="13" uuid="d43875ea-a5f9-4efa-9e9d-28269bf0c97e"/>
 				<textElement>
-					<font fontName="Calibri" size="10"/>
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[Plazo de entrega: ]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="180" y="102" width="90" height="18" uuid="29984978-fe02-4e6d-ad2e-5f779563d286"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Calibri"/>
+					<font fontName="Tahoma"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="271" y="102" width="90" height="18" uuid="d9ace0f3-f48d-4c3c-88ed-a44f52966ebe"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Calibri"/>
+					<font fontName="Tahoma"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
@@ -521,14 +521,14 @@ TRANSPORTE & DEPÓSITO: Los equipos viajan por cuenta y riesgo del cliente. Los 
 			<textField>
 				<reportElement x="180" y="102" width="90" height="18" uuid="262f63ab-dd09-475f-ad59-3162c1a91bbb"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Calibri"/>
+					<font fontName="Tahoma"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="271" y="102" width="90" height="18" uuid="b0041052-6853-4ae1-84ac-81aa848df89c"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Calibri"/>
+					<font fontName="Tahoma"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
