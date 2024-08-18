@@ -118,7 +118,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	public void actionPerformed(ActionEvent e) {
 
-
 		if (ventanaPresupuestos != null && e.getSource() == this.ventanaPresupuestos.getBtningresarPago()) {
 
 			btnPresupuestoxELS = false;
@@ -248,8 +247,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						}
 					});
 
-					
-					
 					performActionOnTextComponents(ventanaIngresoDePago);
 				}
 
@@ -435,39 +432,22 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				if (seleccion2 == JOptionPane.YES_OPTION) {
 
 					ventanaAgregarImagenes = new VentanaAgregarImagenes(this);
-					ventanaAgregarImagenes.getBtngenerarInforme().addActionListener(this);
-					ventanaAgregarImagenes.getBtnAgregarImagen().addActionListener(this);
-					ventanaAgregarImagenes.getBtnBorrarImagen_1().addActionListener(this);
-					ventanaAgregarImagenes.getBtnBorrarImagen_2().addActionListener(this);
-					ventanaAgregarImagenes.getBtnBorrarImagen_3().addActionListener(this);
-					ventanaAgregarImagenes.getBtnBorrarImagen_4().addActionListener(this);
-					ventanaAgregarImagenes.getBtnBorrarImagen_5().addActionListener(this);
-					ventanaAgregarImagenes.getBtnBorrarImagen_6().addActionListener(this);
-					ventanaAgregarImagenes.getBtnCancelar().addActionListener(this);
-					ventanaAgregarImagenes.getBtnAgregarImagenDiagnostico().addActionListener(this);
+
+					agregarListenersVentanaImagenes();
 
 				}
 			}
 		} else if (this.ventanaAgregarImagenes != null
 				&& e.getSource() == this.ventanaAgregarImagenes.getBtnAgregarImagen()) {
 
-			JTextField txtRutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1();
-			JTextField txtRutaImagen_2 = ventanaAgregarImagenes.getTxtRutaImagen_2();
-			JTextField txtRutaImagen_3 = ventanaAgregarImagenes.getTxtRutaImagen_3();
-
-			abrirSelectorImagen(txtRutaImagen_1, txtRutaImagen_2, txtRutaImagen_3);
+			agregarImagenesIngreso();
 
 		}
 
 		else if (this.ventanaAgregarImagenes != null
 				&& e.getSource() == this.ventanaAgregarImagenes.getBtnAgregarImagenDiagnostico()) {
 
-			JTextField txtRutaImagen_4 = ventanaAgregarImagenes.getTxtRutaImagen_4();
-			JTextField txtRutaImagen_5 = ventanaAgregarImagenes.getTxtRutaImagen_5();
-			JTextField txtRutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6();
-
-			abrirSelectorImagen(txtRutaImagen_4, txtRutaImagen_5, txtRutaImagen_6);
-
+			agregarImagenesDiagnostico();
 		}
 
 		else if (this.ventanaAgregarImagenes != null
@@ -823,6 +803,40 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 	}
 
+	private void agregarImagenesDiagnostico() {
+		JTextField txtRutaImagen_4 = ventanaAgregarImagenes.getTxtRutaImagen_4();
+		JTextField txtRutaImagen_5 = ventanaAgregarImagenes.getTxtRutaImagen_5();
+		JTextField txtRutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6();
+
+		abrirSelectorImagen(txtRutaImagen_4, txtRutaImagen_5, txtRutaImagen_6);
+
+	}
+
+	private void agregarImagenesIngreso() {
+
+		JTextField txtRutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1();
+		JTextField txtRutaImagen_2 = ventanaAgregarImagenes.getTxtRutaImagen_2();
+		JTextField txtRutaImagen_3 = ventanaAgregarImagenes.getTxtRutaImagen_3();
+
+		abrirSelectorImagen(txtRutaImagen_1, txtRutaImagen_2, txtRutaImagen_3);
+
+	}
+
+	private void agregarListenersVentanaImagenes() {
+
+		ventanaAgregarImagenes.getBtngenerarInforme().addActionListener(this);
+		ventanaAgregarImagenes.getBtnAgregarImagen().addActionListener(this);
+		ventanaAgregarImagenes.getBtnBorrarImagen_1().addActionListener(this);
+		ventanaAgregarImagenes.getBtnBorrarImagen_2().addActionListener(this);
+		ventanaAgregarImagenes.getBtnBorrarImagen_3().addActionListener(this);
+		ventanaAgregarImagenes.getBtnBorrarImagen_4().addActionListener(this);
+		ventanaAgregarImagenes.getBtnBorrarImagen_5().addActionListener(this);
+		ventanaAgregarImagenes.getBtnBorrarImagen_6().addActionListener(this);
+		ventanaAgregarImagenes.getBtnCancelar().addActionListener(this);
+		ventanaAgregarImagenes.getBtnAgregarImagenDiagnostico().addActionListener(this);
+
+	}
+
 	public void cerraVentanaMarcarAceptaciones() {
 
 		this.ventanaMarcarAceptaciones.addWindowListener(new WindowAdapter() {
@@ -1093,12 +1107,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		});
 
 		this.ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens().addActionListener(this);
-		
-		
+
 		performActionOnTextComponents(ventanaGenerarPresupuesto);
-		
-		
-		
 
 	}
 
@@ -1743,74 +1753,70 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		// TODO Auto-generated method stub
 
 	}
-	
-	
-	
+
 	@SuppressWarnings({ "serial", "deprecation" })
 	private static void configureUndoManager(JTextComponent textComponent) {
-	    UndoManager undoManager = new UndoManager();
-	    textComponent.getDocument().addUndoableEditListener(undoManager);
+		UndoManager undoManager = new UndoManager();
+		textComponent.getDocument().addUndoableEditListener(undoManager);
 
-	    // Crear una acción de deshacer
-	    AbstractAction undoAction = new AbstractAction("Deshacer") {
-	        public void actionPerformed(ActionEvent e) {
-	            if (undoManager.canUndo()) {
-	                undoManager.undo();
-	            }
-	        }
-	    };
+		// Crear una acción de deshacer
+		AbstractAction undoAction = new AbstractAction("Deshacer") {
+			public void actionPerformed(ActionEvent e) {
+				if (undoManager.canUndo()) {
+					undoManager.undo();
+				}
+			}
+		};
 
-	    // Asignar la tecla de acceso directo (Ctrl + Z) para la acción de deshacer
-	    undoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		// Asignar la tecla de acceso directo (Ctrl + Z) para la acción de deshacer
+		undoAction.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-	    // Agregar la acción de deshacer al componente
-	    textComponent.getActionMap().put("Undo", undoAction);
-	    textComponent.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
+		// Agregar la acción de deshacer al componente
+		textComponent.getActionMap().put("Undo", undoAction);
+		textComponent.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
 
-	    // Crear una acción de rehacer
-	    AbstractAction redoAction = new AbstractAction("Rehacer") {
-	        public void actionPerformed(ActionEvent e) {
-	            if (undoManager.canRedo()) {
-	                undoManager.redo();
-	            }
-	        }
-	    };
+		// Crear una acción de rehacer
+		AbstractAction redoAction = new AbstractAction("Rehacer") {
+			public void actionPerformed(ActionEvent e) {
+				if (undoManager.canRedo()) {
+					undoManager.redo();
+				}
+			}
+		};
 
-	    // Asignar la tecla de acceso directo (Ctrl + Y) para la acción de rehacer
-	    redoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		// Asignar la tecla de acceso directo (Ctrl + Y) para la acción de rehacer
+		redoAction.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-	    // Agregar la acción de rehacer al componente
-	    textComponent.getActionMap().put("Redo", redoAction);
-	    textComponent.getInputMap().put((KeyStroke) redoAction.getValue(Action.ACCELERATOR_KEY), "Redo");
+		// Agregar la acción de rehacer al componente
+		textComponent.getActionMap().put("Redo", redoAction);
+		textComponent.getInputMap().put((KeyStroke) redoAction.getValue(Action.ACCELERATOR_KEY), "Redo");
 	}
-	
-	
-	
-	
-    // Método para realizar una acción sobre todos los JTextField y JTextArea en un JFrame
-    private void performActionOnTextComponents(JFrame frame) {
-        List<JTextComponent> textComponents = getAllTextComponents(frame);
-        // Realiza la acción deseada sobre cada JTextComponent
-        for (JTextComponent textComponent : textComponents) {
-        	configureUndoManager(textComponent);
-        }
-    }
 
-    // Método para obtener todos los JTextField y JTextArea en un JFrame
-    private List<JTextComponent> getAllTextComponents(Container container) {
-        List<JTextComponent> textComponents = new ArrayList<>();
-        Component[] components = container.getComponents();
-        // Itera sobre los componentes y filtra los JTextField y JTextArea
-        for (Component component : components) {
-            if (component instanceof JTextComponent) {
-                textComponents.add((JTextComponent) component);
-            } else if (component instanceof Container) {
-                textComponents.addAll(getAllTextComponents((Container) component));
-            }
-        }
-        return textComponents;
-    }
-	
-	
-	
+	// Método para realizar una acción sobre todos los JTextField y JTextArea en un
+	// JFrame
+	private void performActionOnTextComponents(JFrame frame) {
+		List<JTextComponent> textComponents = getAllTextComponents(frame);
+		// Realiza la acción deseada sobre cada JTextComponent
+		for (JTextComponent textComponent : textComponents) {
+			configureUndoManager(textComponent);
+		}
+	}
+
+	// Método para obtener todos los JTextField y JTextArea en un JFrame
+	private List<JTextComponent> getAllTextComponents(Container container) {
+		List<JTextComponent> textComponents = new ArrayList<>();
+		Component[] components = container.getComponents();
+		// Itera sobre los componentes y filtra los JTextField y JTextArea
+		for (Component component : components) {
+			if (component instanceof JTextComponent) {
+				textComponents.add((JTextComponent) component);
+			} else if (component instanceof Container) {
+				textComponents.addAll(getAllTextComponents((Container) component));
+			}
+		}
+		return textComponents;
+	}
+
 }

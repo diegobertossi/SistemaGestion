@@ -148,9 +148,9 @@ public class VentanaAgregarImagenes extends JFrame {
 		panel_1.add(lblBorrarImgen);
 		lblBorrarImgen.setFont(new Font("Cambria", Font.BOLD, 12));
 
-		JLabel lblBackupSistema = new JLabel("DATOS PARA EL INFORME WORD");
+		JLabel lblBackupSistema = new JLabel("DATOS PARA EL INFORME");
 		lblBackupSistema.setHorizontalAlignment(SwingConstants.LEFT);
-		lblBackupSistema.setBounds(40, 24, 383, 29);
+		lblBackupSistema.setBounds(40, 24, 298, 29);
 		panel.add(lblBackupSistema);
 		lblBackupSistema.setForeground(new Color(0, 0, 205));
 		lblBackupSistema.setFont(new Font("Calibri", Font.BOLD, 26));
