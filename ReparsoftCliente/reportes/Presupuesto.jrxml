@@ -114,6 +114,7 @@
 	<field name="plazoEntrega" class="java.lang.String">
 		<fieldDescription><![CDATA[plazoEntrega]]></fieldDescription>
 	</field>
+	<field name="imagePath" class="java.lang.String"/>
 	<title>
 		<band splitType="Stretch"/>
 	</title>
@@ -163,7 +164,7 @@ E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</line>
-			<image>
+			<image hAlign="Left">
 				<reportElement x="39" y="-1" width="240" height="51" uuid="a2d7acbb-1199-4322-b353-a85b2c4982c0"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -392,6 +393,15 @@ E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar
 			<break>
 				<reportElement x="0" y="49" width="132" height="1" uuid="afdeae66-381a-44a2-a73c-9ef9bf8119e9"/>
 			</break>
+		</band>
+		<band height="55">
+			<break>
+				<reportElement x="0" y="54" width="132" height="1" uuid="53949fa8-a2b0-450f-a833-522223f71e62"/>
+			</break>
+			<image hAlign="Center">
+				<reportElement x="70" y="6" width="70" height="40" uuid="6c9ffd83-8b7f-4fd9-8b3a-f7efd0d7b9d7"/>
+				<imageExpression><![CDATA[new java.io.File($P{imagePath}).exists() ? $P{imagePath} : null]]></imageExpression>
+			</image>
 		</band>
 		<band height="512">
 			<staticText>

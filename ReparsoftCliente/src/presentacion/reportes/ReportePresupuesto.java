@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
@@ -41,6 +42,9 @@ public class ReportePresupuesto {
 		reportFileName = "reportes\\Presupuesto.jasper";
 		ELS = reparacion.getELS();
 		Cliente = reparacion.getCliente();
+		
+		JTextField imagePathField = new JTextField(30);
+        imagePathField.setEditable(false);
 
 		try {
 
