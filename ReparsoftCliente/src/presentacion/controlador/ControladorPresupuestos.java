@@ -105,6 +105,16 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	private MonedaFormatter monedaFormatter;
 
+	//this.ventanaGenerarPresupuesto.getImagePath().setText("img\\anterior.png");
+	private String imagePath ="";
+	private String rutaImagen_1="";
+	private String rutaImagen_2="";
+	private String rutaImagen_3="";
+	private String rutaImagen_4="";
+	private String rutaImagen_5="";
+	private String rutaImagen_6="";
+	
+	
 	public ControladorPresupuestos(VentanaPresupuestos ventanaPresupuestos, Agenda agenda) {
 
 		this.ventanaPresupuestos = ventanaPresupuestos;
@@ -443,8 +453,21 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		else if (this.ventanaAgregarImagenes != null
 				&& e.getSource() == this.ventanaAgregarImagenes.getBtngenerarInforme()) {
+			
+			
+			
+			rutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1().getText();
+			rutaImagen_2 = ventanaAgregarImagenes.getTxtRutaImagen_2().getText();
+			rutaImagen_3 = ventanaAgregarImagenes.getTxtRutaImagen_3().getText();
+			rutaImagen_4 = ventanaAgregarImagenes.getTxtRutaImagen_4().getText();
+			rutaImagen_5 = ventanaAgregarImagenes.getTxtRutaImagen_5().getText();
+			rutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6().getText();
 
 			if (btnPresupuestoPDF) {
+				
+				
+				//rutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1().getText();
+
 
 				List<RegistroPresupuestoDTO> lista = new ArrayList<RegistroPresupuestoDTO>();
 				RegistroPresupuestoDTO rep = TomarDatosPantallaPresupuesto();
@@ -517,12 +540,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				String equipo = ventanaGenerarPresupuesto.getTextEquipo().getText();
 				String modelo = ventanaGenerarPresupuesto.getTextModelo().getText();
 				String serie = ventanaGenerarPresupuesto.getTextSerie().getText();
-				String rutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1().getText();
-				String rutaImagen_2 = ventanaAgregarImagenes.getTxtRutaImagen_2().getText();
-				String rutaImagen_3 = ventanaAgregarImagenes.getTxtRutaImagen_3().getText();
-				String rutaImagen_4 = ventanaAgregarImagenes.getTxtRutaImagen_4().getText();
-				String rutaImagen_5 = ventanaAgregarImagenes.getTxtRutaImagen_5().getText();
-				String rutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6().getText();
+				
 
 				String fechaFabricacion = ventanaGenerarPresupuesto.getTextFabrString();
 
@@ -1576,6 +1594,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		String CondicionesMoneda = this.ventanaGenerarPresupuesto.getTextcondicionesMoneda().getText();
 		String CondicionesPago = this.ventanaGenerarPresupuesto.getTextcondicionesPago().getText();
 		String plazoEntrega = this.ventanaGenerarPresupuesto.getTextPlazoEntrega().getText();
+		
 
 		double PrecioPeso;
 		double PrecioDolar;
@@ -1604,7 +1623,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		RegistroPresupuestoDTO nuevoPresupuesto = new RegistroPresupuestoDTO(ELS, InformeCliente, RemitoCLiente,
 				PrecioPeso, PrecioDolar, NombreEquipo, Modelo, Marca, Serie, ClienteCliente, aviso, Sucursal, Cliente,
-				chckpesos, chckdolar, CondicionesMoneda, CondicionesPago, plazoEntrega);
+				chckpesos, chckdolar, CondicionesMoneda, CondicionesPago, plazoEntrega, rutaImagen_1,rutaImagen_2, rutaImagen_3, rutaImagen_4, rutaImagen_5, rutaImagen_6 );
 
 		return nuevoPresupuesto;
 

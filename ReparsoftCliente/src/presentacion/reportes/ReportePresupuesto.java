@@ -45,10 +45,27 @@ public class ReportePresupuesto {
 		
 		JTextField imagePathField = new JTextField(30);
         imagePathField.setEditable(false);
+        JTextField imagePathField2 = new JTextField(30);
+        imagePathField2.setEditable(false);
+        JTextField imagePathField3 = new JTextField(30);
+        imagePathField3.setEditable(false);
+        JTextField imagePathField4 = new JTextField(30);
+        imagePathField4.setEditable(false);
+        JTextField imagePathField5 = new JTextField(30);
+        imagePathField5.setEditable(false);
+        JTextField imagePathField6 = new JTextField(30);
+        imagePathField6.setEditable(false);
 
 		try {
-
+			
+			//imagePathField.setText("img\\anterior.png");
 			ReportePresupuesto.reporte = (JasperReport) JRLoader.loadObjectFromFile(reportFileName);
+			parametersMap.put("imagePath", imagePathField.getText());
+			parametersMap.put("imagePath2", imagePathField2.getText());
+			parametersMap.put("imagePath3", imagePathField3.getText());
+			parametersMap.put("imagePath4", imagePathField4.getText());
+			parametersMap.put("imagePath5", imagePathField5.getText());
+			parametersMap.put("imagePath6", imagePathField6.getText());
 			ReportePresupuesto.reporteLleno = JasperFillManager.fillReport(ReportePresupuesto.reporte, parametersMap,
 
 					new JRBeanCollectionDataSource(Presupuesto, false));

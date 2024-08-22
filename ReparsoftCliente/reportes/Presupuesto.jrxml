@@ -115,6 +115,11 @@
 		<fieldDescription><![CDATA[plazoEntrega]]></fieldDescription>
 	</field>
 	<field name="imagePath" class="java.lang.String"/>
+	<field name="imagePath2" class="java.lang.String"/>
+	<field name="imagePath3" class="java.lang.String"/>
+	<field name="imagePath4" class="java.lang.String"/>
+	<field name="imagePath5" class="java.lang.String"/>
+	<field name="imagePath6" class="java.lang.String"/>
 	<title>
 		<band splitType="Stretch"/>
 	</title>
@@ -394,13 +399,33 @@ E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar
 				<reportElement x="0" y="49" width="132" height="1" uuid="afdeae66-381a-44a2-a73c-9ef9bf8119e9"/>
 			</break>
 		</band>
-		<band height="55">
+		<band height="414">
 			<break>
-				<reportElement x="0" y="54" width="132" height="1" uuid="53949fa8-a2b0-450f-a833-522223f71e62"/>
+				<reportElement x="0" y="410" width="129" height="1" uuid="53949fa8-a2b0-450f-a833-522223f71e62"/>
 			</break>
-			<image hAlign="Center">
-				<reportElement x="70" y="6" width="70" height="40" uuid="6c9ffd83-8b7f-4fd9-8b3a-f7efd0d7b9d7"/>
-				<imageExpression><![CDATA[new java.io.File($P{imagePath}).exists() ? $P{imagePath} : null]]></imageExpression>
+			<image scaleImage="RealHeight">
+				<reportElement x="37" y="20" width="161" height="139" uuid="898484d8-db6a-4a80-a30e-f62c5a6d3114"/>
+				<imageExpression><![CDATA[new java.io.File($F{imagePath}).getAbsolutePath()]]></imageExpression>
+			</image>
+			<image scaleImage="RealHeight">
+				<reportElement x="209" y="20" width="161" height="139" uuid="d43c04b5-65f3-427a-ae72-7ac0dbe3a0e4"/>
+				<imageExpression><![CDATA[new java.io.File($F{imagePath2}).getAbsolutePath()]]></imageExpression>
+			</image>
+			<image scaleImage="RealHeight">
+				<reportElement x="383" y="20" width="161" height="139" uuid="234c87d4-5eb9-4135-9dad-7ade6e90a896"/>
+				<imageExpression><![CDATA[new java.io.File($F{imagePath3}).getAbsolutePath()]]></imageExpression>
+			</image>
+			<image scaleImage="RealHeight">
+				<reportElement x="40" y="250" width="161" height="139" uuid="c7229153-1ce4-4999-bb73-9040ffa570db"/>
+				<imageExpression><![CDATA[new java.io.File($F{imagePath4}).getAbsolutePath()]]></imageExpression>
+			</image>
+			<image scaleImage="RealHeight">
+				<reportElement x="212" y="250" width="161" height="139" uuid="24b3d459-072f-49f4-a15a-5afccdf28039"/>
+				<imageExpression><![CDATA[new java.io.File($F{imagePath5}).getAbsolutePath()]]></imageExpression>
+			</image>
+			<image scaleImage="RealHeight">
+				<reportElement x="386" y="250" width="161" height="139" uuid="5d2fc0fe-7163-4982-b45f-5a0ba2fcddb2"/>
+				<imageExpression><![CDATA[new java.io.File($F{imagePath6}).getAbsolutePath()]]></imageExpression>
 			</image>
 		</band>
 		<band height="512">
