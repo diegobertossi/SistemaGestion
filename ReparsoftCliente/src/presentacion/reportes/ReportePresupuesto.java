@@ -60,12 +60,12 @@ public class ReportePresupuesto {
 			
 			//imagePathField.setText("img\\anterior.png");
 			ReportePresupuesto.reporte = (JasperReport) JRLoader.loadObjectFromFile(reportFileName);
-			parametersMap.put("imagePath", imagePathField.getText());
-			parametersMap.put("imagePath2", imagePathField2.getText());
-			parametersMap.put("imagePath3", imagePathField3.getText());
-			parametersMap.put("imagePath4", imagePathField4.getText());
-			parametersMap.put("imagePath5", imagePathField5.getText());
-			parametersMap.put("imagePath6", imagePathField6.getText());
+			parametersMap.put("imagePath", imagePathField.getText().isEmpty()? null : imagePathField.getText());
+			parametersMap.put("imagePath2", imagePathField2.getText().isEmpty()? null : imagePathField2.getText());
+			parametersMap.put("imagePath3", imagePathField3.getText().isEmpty()? null : imagePathField3.getText());
+			parametersMap.put("imagePath4", imagePathField4.getText().isEmpty()? null : imagePathField4.getText());
+			parametersMap.put("imagePath5", imagePathField5.getText().isEmpty()? null : imagePathField5.getText());
+			parametersMap.put("imagePath6", imagePathField6.getText().isEmpty()? null : imagePathField6.getText());
 			ReportePresupuesto.reporteLleno = JasperFillManager.fillReport(ReportePresupuesto.reporte, parametersMap,
 
 					new JRBeanCollectionDataSource(Presupuesto, false));
