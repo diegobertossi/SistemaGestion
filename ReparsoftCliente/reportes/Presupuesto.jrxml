@@ -140,8 +140,8 @@
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="19" isBold="false"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="Roboto" size="19" isBold="true" isItalic="false" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[PRESUPUESTO DE REPARACIÓN]]></text>
 			</staticText>
