@@ -15,6 +15,8 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.view.JasperViewer;
 import dto.RemitoDTO;
 
@@ -80,10 +82,11 @@ public class ReporteRemitoSalida {
 			outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Remitos PDF\\Remitos Comunes\\"
 					+ nombreArchivoPDF;
 
-		JRExporter exporter = new JRPdfExporter();
-		exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
-		exporter.setParameter(JRExporterParameter.JASPER_PRINT, reporteLleno);
-
+		JRPdfExporter exporter = new JRPdfExporter();
+		
+		exporter.setExporterInput(new SimpleExporterInput(reporteLleno));
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outFileName));
+	
 		try {
 
 			exporter.exportReport();

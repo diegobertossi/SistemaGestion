@@ -9,16 +9,28 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.fonts.FontExtensionsRegistry;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 import net.sf.jasperreports.view.JasperViewer;
+
+import net.sf.jasperreports.engine.JasperReportsContext;
+
+
+
 import dto.RegistroPresupuestoDTO;
 
 
@@ -100,11 +112,32 @@ public class ReportePresupuesto {
 			//outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF\\" + nombreArchivoPDF;
 			outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF\\" + nombreArchivoPDF;
 
-		JRExporter exporter = new JRPdfExporter();
-		exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
-		exporter.setParameter(JRExporterParameter.JASPER_PRINT, reporteLleno);
+//		JRExporter exporter = new JRPdfExporter();
+//		exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
+//		exporter.setParameter(JRExporterParameter.JASPER_PRINT, reporteLleno);
 		
+		
+		JRPdfExporter exporter = new JRPdfExporter();
+		exporter.setExporterInput(new SimpleExporterInput(reporteLleno));
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outFileName));
+		SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
+		
+		
+		// Configurar la incrustación de fuentes y otros parámetros
+		SimplePdfReportConfiguration reportConfig = new SimplePdfReportConfiguration();
+		reportConfig.setSizePageToContent(true);
+		reportConfig.setForceLineBreakPolicy(false);
 
+		// Si quieres asegurarte de que las fuentes se incrusten
+		exporter.setConfiguration(reportConfig);
+
+
+//		// Agregar la fuente al compilador
+//		JasperReportsContext context = new DefaultJasperReportsContext();
+//		FontExtensionsRegistry registry = context.getExtensionsRegistry();
+//		registry.addFont(fontname, true, inputStream); // fontname es el nombre de la fuente, inputStream es el stream de la fuente
+
+	
 
 		try {
 

@@ -17,10 +17,11 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.view.JasperViewer;
 import dto.RegistroPresupuestoDTO;
 import dto.RegistroResumenTecnicoDTO;
-
 
 @SuppressWarnings("deprecation")
 public class ReporteResumenTecnico {
@@ -46,7 +47,8 @@ public class ReporteResumenTecnico {
 		try {
 
 			ReporteResumenTecnico.reporte = (JasperReport) JRLoader.loadObjectFromFile(reportFileName);
-			ReporteResumenTecnico.reporteLleno = JasperFillManager.fillReport(ReporteResumenTecnico.reporte, parametersMap,
+			ReporteResumenTecnico.reporteLleno = JasperFillManager.fillReport(ReporteResumenTecnico.reporte,
+					parametersMap,
 
 					new JRBeanCollectionDataSource(resumen, false));
 
@@ -66,7 +68,7 @@ public class ReporteResumenTecnico {
 	public void guardar() {
 
 		nombreArchivoPDF = "Presupuesto ELS_" + ELS + "_" + Cliente + ".pdf";
-		//nombreArchivoPDF = "Presupuesto ELS_";
+		// nombreArchivoPDF = "Presupuesto ELS_";
 
 		File fRutaE = new File("E:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF");
 		File fRutaD = new File("D:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF");
@@ -77,23 +79,22 @@ public class ReporteResumenTecnico {
 		else if (fRutaE.isDirectory())
 			outFileName = "E:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF\\" + nombreArchivoPDF;
 		else if (fRutaF.isDirectory())
-			//outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF\\" + nombreArchivoPDF;
+			// outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos
+			// PDF\\" + nombreArchivoPDF;
 			outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF\\" + nombreArchivoPDF;
 
-		JRExporter exporter = new JRPdfExporter();
-		exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
-		exporter.setParameter(JRExporterParameter.JASPER_PRINT, reporteLleno);
-		
+		JRPdfExporter exporter = new JRPdfExporter();
 
+		exporter.setExporterInput(new SimpleExporterInput(reporteLleno));
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outFileName));
 
 		try {
 
-			//JasperExportManager.exportReportToPdfFile(reporteLleno, outFileName);
+			// JasperExportManager.exportReportToPdfFile(reporteLleno, outFileName);
 			exporter.exportReport();
-			
-			Object mje = "Se ha generado el: "+ nombreArchivoPDF;
+
+			Object mje = "Se ha generado el: " + nombreArchivoPDF;
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-		
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
