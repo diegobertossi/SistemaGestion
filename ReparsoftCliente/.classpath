@@ -60,6 +60,7 @@
 	<classpathentry kind="lib" path="lib/log4j-core-2.20.0.jar"/>
 	<classpathentry kind="lib" path="lib/jasperreports-6.21.3.jar"/>
 	<classpathentry kind="lib" path="Fonts/Roboto.jar"/>
+	<classpathentry kind="lib" path="Fonts/Cambria.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
