@@ -301,28 +301,28 @@ E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar
 					<text><![CDATA[N° SERIE: ]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="316" y="19" width="63" height="17" uuid="a280be5c-7c94-42d7-8914-c2ba67c59a8a"/>
+					<reportElement x="316" y="22" width="63" height="17" uuid="a280be5c-7c94-42d7-8914-c2ba67c59a8a"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="MyfuenteCambria" size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[CLIENTE:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="316" y="3" width="63" height="17" uuid="d8e1e605-297d-4f40-99f9-b6882e654c53"/>
+					<reportElement x="316" y="4" width="63" height="17" uuid="d8e1e605-297d-4f40-99f9-b6882e654c53"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="MyfuenteCambria" size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[AVISO:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="379" y="3" width="83" height="17" uuid="a4d4922e-d9b8-4390-8f41-9f165048a305"/>
+					<reportElement x="379" y="4" width="83" height="17" uuid="a4d4922e-d9b8-4390-8f41-9f165048a305"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="MyfuenteCambria" size="12" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{aviso}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="379" y="19" width="83" height="17" uuid="61d50c95-0445-4a78-b6f3-f6347091c1b4"/>
+					<reportElement x="379" y="22" width="83" height="17" uuid="61d50c95-0445-4a78-b6f3-f6347091c1b4"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="MyfuenteCambria" size="12" isBold="false"/>
 					</textElement>
