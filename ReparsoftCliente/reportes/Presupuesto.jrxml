@@ -475,7 +475,7 @@ E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar
 				<imageExpression><![CDATA[$F{imagePath4} != null && !$F{imagePath4}.isEmpty() ? new java.io.File($F{imagePath4}).getAbsolutePath() : null]]></imageExpression>
 			</image>
 			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
-				<reportElement x="201" y="38" width="161" height="139" uuid="24b3d459-072f-49f4-a15a-5afccdf28039"/>
+				<reportElement x="201" y="40" width="161" height="139" uuid="24b3d459-072f-49f4-a15a-5afccdf28039"/>
 				<box padding="2">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -516,7 +516,7 @@ E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar
 		</band>
 		<band height="512">
 			<staticText>
-				<reportElement x="39" y="31" width="476" height="448" forecolor="rgba(0, 0, 0, 0.74509805)" uuid="28404709-0894-499b-be8e-753f8ae1666e"/>
+				<reportElement x="39" y="36" width="476" height="448" forecolor="rgba(0, 0, 0, 0.74509805)" uuid="28404709-0894-499b-be8e-753f8ae1666e"/>
 				<box topPadding="10" leftPadding="10" bottomPadding="10" rightPadding="10">
 					<pen lineWidth="0.75" lineColor="rgba(0, 0, 0, 0.5882353)"/>
 					<topPen lineWidth="3.0" lineStyle="Double" lineColor="rgba(0, 0, 0, 0.5882353)"/>
@@ -541,7 +541,7 @@ GARANTÍA: La garantía sobre los trabajos realizados incluye solamente las secc
 TRANSPORTE & DEPÓSITO: Los equipos viajan por cuenta y riesgo del cliente. Los equipos recibidos se considerarán en depósito hasta 120 días posteriores a la emisión del Informe Técnico/Propuesta de reparación correspondiente. Cumplido dicho plazo y en caso de no mediar respuesta del cliente respecto al destino del equipo, ELS podrá disponer del equipo para su destrucción.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="39" y="3" width="171" height="18" forecolor="rgba(0, 0, 0, 0.74509805)" uuid="1e0d17b0-f6a7-4611-979b-0a49abb501ea"/>
+				<reportElement x="39" y="10" width="171" height="18" forecolor="rgba(0, 0, 0, 0.74509805)" uuid="1e0d17b0-f6a7-4611-979b-0a49abb501ea"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="MyfuenteCambria" size="12"/>
 				</textElement>

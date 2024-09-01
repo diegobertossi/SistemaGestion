@@ -84,7 +84,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Verdana" size="20"/>
+					<font fontName="MyfuenteCambria" size="20" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INGRESO DE EQUIPOS]]></text>
 			</staticText>
@@ -112,7 +112,7 @@
 			<textField>
 				<reportElement x="200" y="10" width="360" height="25" uuid="98cf5e38-9a3c-4b4a-aec1-de248c7e608f"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Verdana" size="18"/>
+					<font fontName="MyfuenteCambria" size="18"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
 			</textField>
@@ -210,14 +210,14 @@
 			<staticText>
 				<reportElement x="20" y="31" width="140" height="21" uuid="19f753d8-ddfe-4cf9-80f5-d6ea2c54087f"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Verdana" size="12" isBold="true"/>
+					<font fontName="MyfuenteCambria" size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[EQUIPO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="20" y="10" width="140" height="21" uuid="682685c5-23ef-48f6-8e12-31dbda09b36f"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Verdana" size="12" isBold="true"/>
+					<font fontName="MyfuenteCambria" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FECHA DE ENTRADA:]]></text>
 			</staticText>
