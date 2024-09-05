@@ -451,7 +451,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		lblCondicionesDelPresupuesto.setFont(new Font("Cambria", Font.BOLD, 18));
 
 		panel_4 = new JPanel();
-		panel_4.setBounds(621, 380, 243, 24);
+		panel_4.setBounds(616, 380, 248, 24);
 		contentPane.add(panel_4);
 		panel_4.setBackground(Color.LIGHT_GRAY);
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
@@ -473,7 +473,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		lblTotalPesos.setFont(new Font("Cambria", Font.PLAIN, 12));
 
 		panel_5 = new JPanel();
-		panel_5.setBounds(621, 407, 243, 24);
+		panel_5.setBounds(616, 407, 248, 24);
 		contentPane.add(panel_5);
 		panel_5.setBackground(Color.LIGHT_GRAY);
 		panel_5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
@@ -511,16 +511,16 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		panel_4_1.setLayout(null);
 		panel_4_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
 		panel_4_1.setBackground(Color.LIGHT_GRAY);
-		panel_4_1.setBounds(622, 243, 242, 132);
+		panel_4_1.setBounds(616, 243, 248, 132);
 		contentPane.add(panel_4_1);
 		
-				btnCotizacionDolar = new JButton("<html>COTIZACIÓN DEL DOLAR</html>");
-				btnCotizacionDolar.setBounds(10, 11, 87, 51);
+				btnCotizacionDolar = new JButton("<html><center>COTIZACIÓN DEL DOLAR</html>");
+				btnCotizacionDolar.setBounds(5, 5, 97, 54);
 				panel_4_1.add(btnCotizacionDolar);
 				btnCotizacionDolar.setFont(new Font("Cambria", Font.BOLD, 12));
 				
 				textCotizacionDolarOf = new JTextDouble(10);
-				textCotizacionDolarOf.setBounds(163, 11, 69, 20);
+				textCotizacionDolarOf.setBounds(163, 5, 69, 20);
 				panel_4_1.add(textCotizacionDolarOf);
 				textCotizacionDolarOf.setFont(new Font("Cambria", Font.BOLD, 14));
 				textCotizacionDolarOf.setEditable(false);
@@ -529,14 +529,14 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				textCotizacionDolarOf.setBackground(Color.LIGHT_GRAY);
 				
 				JLabel lblsugerenciaEnPesos = new JLabel("<html>SUGERENCIA EN PESOS</html>");
-				lblsugerenciaEnPesos.setBounds(22, 73, 69, 31);
+				lblsugerenciaEnPesos.setBounds(28, 73, 69, 31);
 				panel_4_1.add(lblsugerenciaEnPesos);
 				lblsugerenciaEnPesos.setHorizontalAlignment(SwingConstants.CENTER);
 				lblsugerenciaEnPesos.setForeground(new Color(47, 79, 79));
 				lblsugerenciaEnPesos.setFont(new Font("Cambria", Font.PLAIN, 11));
 				
 				textSugerenciaPeso = new JTextDouble(10);
-				textSugerenciaPeso.setBounds(33, 106, 69, 20);
+				textSugerenciaPeso.setBounds(39, 106, 69, 20);
 				panel_4_1.add(textSugerenciaPeso);
 				textSugerenciaPeso.setFont(new Font("Cambria", Font.BOLD, 14));
 				textSugerenciaPeso.setEditable(false);
@@ -545,24 +545,24 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				textSugerenciaPeso.setBackground(Color.LIGHT_GRAY);
 				
 				JLabel label_2_1 = new JLabel("$");
-				label_2_1.setBounds(22, 106, 20, 20);
+				label_2_1.setBounds(28, 106, 20, 20);
 				panel_4_1.add(label_2_1);
 				label_2_1.setFont(new Font("Cambria", Font.BOLD, 14));
 				
 				JLabel lblsugerenciaEnDolares = new JLabel("<html>SUGERENCIA EN DÓLARES</html>");
-				lblsugerenciaEnDolares.setBounds(121, 73, 69, 31);
+				lblsugerenciaEnDolares.setBounds(127, 73, 69, 31);
 				panel_4_1.add(lblsugerenciaEnDolares);
 				lblsugerenciaEnDolares.setHorizontalAlignment(SwingConstants.CENTER);
 				lblsugerenciaEnDolares.setForeground(new Color(47, 79, 79));
 				lblsugerenciaEnDolares.setFont(new Font("Cambria", Font.PLAIN, 11));
 				
 				JLabel lblUs_2 = new JLabel("US$");
-				lblUs_2.setBounds(121, 106, 30, 20);
+				lblUs_2.setBounds(127, 106, 30, 20);
 				panel_4_1.add(lblUs_2);
 				lblUs_2.setFont(new Font("Cambria", Font.BOLD, 14));
 				
 				textSugerenciaDolar = new JTextDouble(10);
-				textSugerenciaDolar.setBounds(149, 106, 69, 20);
+				textSugerenciaDolar.setBounds(155, 106, 69, 20);
 				panel_4_1.add(textSugerenciaDolar);
 				textSugerenciaDolar.setFont(new Font("Cambria", Font.BOLD, 14));
 				textSugerenciaDolar.setEditable(false);
@@ -571,14 +571,14 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				textSugerenciaDolar.setBackground(Color.LIGHT_GRAY);
 				
 				JLabel lblOficial = new JLabel("<html>OFICIAL</html>");
-				lblOficial.setBounds(107, 17, 45, 14);
+				lblOficial.setBounds(107, 11, 45, 14);
 				panel_4_1.add(lblOficial);
 				lblOficial.setHorizontalAlignment(SwingConstants.LEFT);
 				lblOficial.setForeground(new Color(47, 79, 79));
 				lblOficial.setFont(new Font("Cambria", Font.PLAIN, 11));
 				
 				JLabel lblblue = new JLabel("BLUE");
-				lblblue.setBounds(107, 48, 45, 14);
+				lblblue.setBounds(107, 42, 45, 14);
 				panel_4_1.add(lblblue);
 				lblblue.setHorizontalAlignment(SwingConstants.LEFT);
 				lblblue.setForeground(new Color(47, 79, 79));
@@ -590,15 +590,15 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				textCotizacionDolarBl.setColumns(10);
 				textCotizacionDolarBl.setBorder(null);
 				textCotizacionDolarBl.setBackground(Color.LIGHT_GRAY);
-				textCotizacionDolarBl.setBounds(163, 42, 69, 20);
+				textCotizacionDolarBl.setBounds(163, 36, 69, 20);
 				panel_4_1.add(textCotizacionDolarBl);
 				
 				JSeparator separator = new JSeparator();
-				separator.setBounds(107, 32, 125, 2);
+				separator.setBounds(107, 26, 125, 2);
 				panel_4_1.add(separator);
 				
 				JSeparator separator_2 = new JSeparator();
-				separator_2.setBounds(107, 62, 125, 2);
+				separator_2.setBounds(107, 56, 125, 2);
 				panel_4_1.add(separator_2);
 				
 				btnGenerarInformeSiemens = new JButton("<html><center>Informe WORD</html>");
