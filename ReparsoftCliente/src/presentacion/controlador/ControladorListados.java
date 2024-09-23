@@ -128,6 +128,21 @@ public class ControladorListados
 	private Font labelFontPie = new Font("Cambria", Font.PLAIN, 12);
 	private Color labelColor = Color.BLACK; // Cambiar color de la letra
 
+	private  ItemLabelPosition positionNumeroGrande = new ItemLabelPosition(
+             ItemLabelAnchor.CENTER, // Posición dentro de la barra
+             TextAnchor.BASELINE_CENTER, // Alineación vertical
+             TextAnchor.BASELINE_CENTER, // Alineación de texto
+             -Math.PI / 2.0 // Rotación del texto (90 grados para vertical)
+     );
+	private  ItemLabelPosition positionNumeroChico = new ItemLabelPosition(
+             ItemLabelAnchor.CENTER, // Posición dentro de la barra
+             TextAnchor.BASELINE_CENTER, // Alineación vertical
+             TextAnchor.BASELINE_CENTER, // Alineación de texto
+             0 // Rotación del texto (90 grados para vertical)
+     );
+
+	
+	
 	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
 
@@ -476,6 +491,9 @@ public class ControladorListados
 			ventanaResumenMensualTecnico.getComboMes().addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
 
+					ventanaResumenMensualTecnico.getTextPorcComisiones().setText("");
+					ventanaResumenMensualTecnico.getTextTotalComisionesPesos().setText("");
+					
 					String nombreTecnico = ventanaEstadisticas.getTextNombreTecnico().getText();
 					int idTecnico = modelo.idUsuarioporNombre(nombreTecnico);
 					mes = ventanaResumenMensualTecnico.getComboMes().getSelectedIndex();
@@ -1828,23 +1846,23 @@ public class ControladorListados
 
 		BarRenderer renderer_ingreso = (BarRenderer) plot_ingreso.getRenderer();
 		renderer_ingreso.setDrawBarOutline(false);
-		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, new Color(0, 0, 64));
+		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, new Color(100, 149, 237), 0.0f, 0.0f, new Color(70, 130, 180));
 		renderer_ingreso.setSeriesPaint(0, gp0);
 
 		BarRenderer renderer_diagnostico = (BarRenderer) plot_diagnostico.getRenderer();
 		renderer_diagnostico.setDrawBarOutline(false);
-		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, new Color(0, 64, 0));
+		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, new Color(102, 205, 170), 0.0f, 0.0f, new Color(60, 179, 113));
 		renderer_diagnostico.setSeriesPaint(0, gp1);
 
 		BarRenderer renderer_facturacion = (BarRenderer) plot_facturacion.getRenderer();
 		renderer_facturacion.setDrawBarOutline(false);
-		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, new Color(64, 0, 0));
+		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, new Color(240, 128, 128), 0.0f, 0.0f, new Color(205, 92, 92));
 		renderer_facturacion.setSeriesPaint(0, gp2);
 
 		grafico_ingresos.getTitle().setFont(titleFont);
 		grafico_diagnosticos.getTitle().setFont(titleFont);
 		grafico_facturacion.getTitle().setFont(titleFont);
-
+				 
 		renderer_ingreso.setItemLabelGenerator(generator);
 		renderer_diagnostico.setItemLabelGenerator(generator);
 		renderer_facturacion.setItemLabelGenerator(generator);
@@ -1861,6 +1879,10 @@ public class ControladorListados
 		renderer_ingreso.setItemLabelsVisible(true);
 		renderer_diagnostico.setItemLabelsVisible(true);
 		renderer_facturacion.setItemLabelsVisible(true);
+		
+		renderer_facturacion.setPositiveItemLabelPosition(positionNumeroGrande);
+		renderer_diagnostico.setPositiveItemLabelPosition(positionNumeroChico);
+		renderer_ingreso.setPositiveItemLabelPosition(positionNumeroChico);
 
 		ChartPanel panelGraficoIngresos = new ChartPanel(grafico_ingresos);
 		panelGraficoIngresos.setMouseWheelEnabled(true);
@@ -1971,17 +1993,17 @@ public class ControladorListados
 
 		BarRenderer renderer_diagnostico = (BarRenderer) plot_diagnostico.getRenderer();
 		renderer_diagnostico.setDrawBarOutline(false);
-		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, new Color(0, 64, 0));
+		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, new Color(102, 205, 170), 0.0f, 0.0f, new Color(60, 179, 113));
 		renderer_diagnostico.setSeriesPaint(0, gp1);
 
 		BarRenderer renderer_aceptaciones = (BarRenderer) plot_aceptaciones.getRenderer();
 		renderer_aceptaciones.setDrawBarOutline(false);
-		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, new Color(0, 0, 64));
+		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, new Color(186, 85, 211), 0.0f, 0.0f, new Color(148, 0, 211));
 		renderer_aceptaciones.setSeriesPaint(0, gp0);
 
 		BarRenderer renderer_facturacion = (BarRenderer) plot_facturacion.getRenderer();
 		renderer_facturacion.setDrawBarOutline(false);
-		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, new Color(64, 0, 0));
+		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, new Color(240, 128, 128), 0.0f, 0.0f, new Color(205, 92, 92));
 		renderer_facturacion.setSeriesPaint(0, gp2);
 
 		grafico_aceptaciones.getTitle().setFont(titleFont);
@@ -2004,6 +2026,10 @@ public class ControladorListados
 		renderer_aceptaciones.setItemLabelsVisible(true);
 		renderer_diagnostico.setItemLabelsVisible(true);
 		renderer_facturacion.setItemLabelsVisible(true);
+		
+		renderer_facturacion.setPositiveItemLabelPosition(positionNumeroGrande);
+		renderer_diagnostico.setPositiveItemLabelPosition(positionNumeroChico);
+		renderer_aceptaciones.setPositiveItemLabelPosition(positionNumeroChico);
 
 		ChartPanel panelGraficoAceptaciones = new ChartPanel(grafico_aceptaciones);
 		panelGraficoAceptaciones.setMouseWheelEnabled(true);
@@ -2105,17 +2131,17 @@ public class ControladorListados
 
 		BarRenderer renderer_ingreso = (BarRenderer) plot_ingreso.getRenderer();
 		renderer_ingreso.setDrawBarOutline(false);
-		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, new Color(0, 64, 0));
+		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, new Color(100, 149, 237), 0.0f, 0.0f, new Color(70, 130, 180));
 		renderer_ingreso.setSeriesPaint(0, gp1);
 
 		BarRenderer renderer_aceptaciones = (BarRenderer) plot_aceptaciones.getRenderer();
 		renderer_aceptaciones.setDrawBarOutline(false);
-		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, new Color(0, 0, 64));
+		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, new Color(186, 85, 211), 0.0f, 0.0f, new Color(148, 0, 211));
 		renderer_aceptaciones.setSeriesPaint(0, gp0);
 
 		BarRenderer renderer_facturacion = (BarRenderer) plot_facturacion.getRenderer();
 		renderer_facturacion.setDrawBarOutline(false);
-		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, new Color(64, 0, 0));
+		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, new Color(240, 128, 128), 0.0f, 0.0f, new Color(205, 92, 92));
 		renderer_facturacion.setSeriesPaint(0, gp2);
 
 		grafico_aceptaciones.getTitle().setFont(titleFont);
@@ -2138,6 +2164,10 @@ public class ControladorListados
 		renderer_aceptaciones.setItemLabelsVisible(true);
 		renderer_ingreso.setItemLabelsVisible(true);
 		renderer_facturacion.setItemLabelsVisible(true);
+		
+		renderer_facturacion.setPositiveItemLabelPosition(positionNumeroGrande);
+		renderer_ingreso.setPositiveItemLabelPosition(positionNumeroChico);
+		renderer_aceptaciones.setPositiveItemLabelPosition(positionNumeroChico);
 
 		ChartPanel panelGraficoAceptaciones = new ChartPanel(grafico_aceptaciones);
 		panelGraficoAceptaciones.setMouseWheelEnabled(true);
