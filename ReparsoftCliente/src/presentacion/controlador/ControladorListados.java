@@ -46,8 +46,10 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.TextAnchor;
 import org.jfree.util.Rotation;
 
@@ -1834,6 +1836,15 @@ public class ControladorListados
 				PlotOrientation.VERTICAL, false, true, false);
 		JFreeChart grafico_facturacion = ChartFactory.createBarChart("FACTURACIÓN", null, "Pesos($)", datosFacturacion,
 				PlotOrientation.VERTICAL, false, true, false);
+		
+		TextTitle chartTitleIngresos = grafico_ingresos.getTitle();
+		chartTitleIngresos.setPadding(new RectangleInsets(20, 0, 0, 0)); // 20 píxeles de margen superior
+		
+		TextTitle chartTitleDiagnosticos = grafico_diagnosticos.getTitle();
+		chartTitleDiagnosticos.setPadding(new RectangleInsets(20, 0, 0, 0)); // 20 píxeles de margen superior
+		
+		TextTitle chartTitleFacturacion = grafico_facturacion.getTitle();
+		chartTitleFacturacion.setPadding(new RectangleInsets(20, 0, 0, 0)); // 20 píxeles de margen superior
 
 		NumberAxis yAxisIngresos = (NumberAxis) grafico_ingresos.getCategoryPlot().getRangeAxis();
 		yAxisIngresos.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
