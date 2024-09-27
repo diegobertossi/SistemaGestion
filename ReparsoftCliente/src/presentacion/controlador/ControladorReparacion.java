@@ -141,6 +141,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private int idCli;
 	private int idSuc;
+	
+	private boolean banderaVentanaVisualizacion;
 
 	private String fechaentrada;
 	private String fechaFarbricacion;
@@ -1689,6 +1691,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getBotonSiguiente().removeActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonUltimo().removeActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonPrimero().removeActionListener(this);
+		this.ventanaVisualizarEquipos.getBotonRefrescarPantalla().removeActionListener(this);
 
 	}
 
@@ -1930,7 +1933,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	public void TomarDatosDeTablasListado(int numeroELSSeleccionado2) throws ParseException {
 
 		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
-		cerraVentanaVisualizarEquipo();
+		banderaVentanaVisualizacion = true;
+		cerraVentanaVisualizarEquipoListado();
 
 		monedaFormatter = new MonedaFormatter();
 
@@ -3090,5 +3094,40 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 	}
+	
+	public boolean cerraVentanaVisualizarEquipoListado() {
+		
+		
+		this.ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				int opcion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
+						"¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?", "Aviso", JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE);
 
+				if (opcion == JOptionPane.YES_OPTION) {
+					banderaVentanaVisualizacion = false;
+					ventanaVisualizarEquipos.dispose();
+					ventanaVisualizarEquipos = null;
+
+				}
+			}
+
+		});
+		return banderaVentanaVisualizacion;
+
+	}
+
+	public boolean isBanderaVentanaVisualizacion() {
+		return banderaVentanaVisualizacion;
+	}
+
+	public void setBanderaVentanaVisualizacion(boolean banderaVentanaVisualizacion) {
+		this.banderaVentanaVisualizacion = banderaVentanaVisualizacion;
+	}
+	
+	
+	
+
+	
+	
 }

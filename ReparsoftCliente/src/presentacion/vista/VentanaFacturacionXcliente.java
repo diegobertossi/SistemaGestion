@@ -10,7 +10,6 @@ import java.util.Enumeration;
 import java.awt.Font;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -86,7 +85,7 @@ public class VentanaFacturacionXcliente extends JFrame {
 		JLabel lblNewLabel = new JLabel("FACTURACIÓN POR CLIENTE - AÑO :  ");
 		lblNewLabel.setForeground(new Color(0, 0, 0));
 		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 30));
-		panelNorte.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 15));
+		//panelNorte.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 15));
 		
 		lblNewLabel_9 = new JLabel("        ");
 		panelNorte.add(lblNewLabel_9);

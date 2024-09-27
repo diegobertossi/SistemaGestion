@@ -11,7 +11,6 @@ import java.awt.SystemColor;
 import java.awt.Font;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
@@ -189,7 +188,7 @@ public class VentanaEstadisticas extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("ESTADÍSTICAS");
 		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 30));
-		panelNorte.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 15));
+		//panelNorte.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 15));
 		panelNorte.add(lblNewLabel);
 		
 		JPanel panelCentro = new JPanel();
@@ -280,7 +279,7 @@ public class VentanaEstadisticas extends JFrame {
 		panel_Derecha_Inferior.setBackground(new Color(176, 196, 222));
 		panel_Derecha_Inferior.setBorder(new LineBorder(new Color(0, 128, 128)));
 		panelDerecha.add(panel_Derecha_Inferior, BorderLayout.SOUTH);
-		panel_Derecha_Inferior.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 6));
+		//panel_Derecha_Inferior.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 6));
 		
 		btnConfiguracion = new JButton("CONFIGURACIÓN");
 		btnConfiguracion.setFont(new Font("Cambria", Font.BOLD, 16));
@@ -315,12 +314,12 @@ public class VentanaEstadisticas extends JFrame {
 		panel_facturacionPorCliente.setBounds(4, 386, 333, 156);
 		panel_Datos.add(panel_facturacionPorCliente);
 		
-		lblFacturacionClientePesos = new JLabel("FACTURACIÓN CLIENTE (PESOS): ");
+		lblFacturacionClientePesos = new JLabel("FACTURACIÓN (PESOS): ");
 		lblFacturacionClientePesos.setFont(new Font("Cambria", Font.BOLD, 11));
 		lblFacturacionClientePesos.setBounds(10, 13, 169, 14);
 		panel_facturacionPorCliente.add(lblFacturacionClientePesos);
 		
-		lblFacturacionClienteDolar = new JLabel("FACTURACIÓN CLIENTE (DOLARES): ");
+		lblFacturacionClienteDolar = new JLabel("FACTURACIÓN (DOLARES): ");
 		lblFacturacionClienteDolar.setFont(new Font("Cambria", Font.BOLD, 11));
 		lblFacturacionClienteDolar.setBounds(10, 30, 179, 14);
 		panel_facturacionPorCliente.add(lblFacturacionClienteDolar);
@@ -332,7 +331,7 @@ public class VentanaEstadisticas extends JFrame {
 		textFactClientePesos.setEditable(false);
 		textFactClientePesos.setColumns(10);
 		textFactClientePesos.setBorder(null);
-		textFactClientePesos.setBounds(199, 11, 75, 16);
+		textFactClientePesos.setBounds(151, 11, 123, 16);
 		panel_facturacionPorCliente.add(textFactClientePesos);
 		
 		textFactClienteDolar = new JTextField();
@@ -342,7 +341,7 @@ public class VentanaEstadisticas extends JFrame {
 		textFactClienteDolar.setEditable(false);
 		textFactClienteDolar.setColumns(10);
 		textFactClienteDolar.setBorder(null);
-		textFactClienteDolar.setBounds(199, 28, 75, 16);
+		textFactClienteDolar.setBounds(151, 28, 123, 16);
 		panel_facturacionPorCliente.add(textFactClienteDolar);
 		
 		textPorcFacturacionPesoCliente = new JTextField();
@@ -352,7 +351,7 @@ public class VentanaEstadisticas extends JFrame {
 		textPorcFacturacionPesoCliente.setEditable(false);
 		textPorcFacturacionPesoCliente.setColumns(10);
 		textPorcFacturacionPesoCliente.setBorder(null);
-		textPorcFacturacionPesoCliente.setBounds(286, 11, 47, 16);
+		textPorcFacturacionPesoCliente.setBounds(276, 11, 47, 16);
 		panel_facturacionPorCliente.add(textPorcFacturacionPesoCliente);
 		
 		textPorcFacturacionDolarCliente = new JTextField();
@@ -362,7 +361,7 @@ public class VentanaEstadisticas extends JFrame {
 		textPorcFacturacionDolarCliente.setEditable(false);
 		textPorcFacturacionDolarCliente.setColumns(10);
 		textPorcFacturacionDolarCliente.setBorder(null);
-		textPorcFacturacionDolarCliente.setBounds(286, 28, 47, 16);
+		textPorcFacturacionDolarCliente.setBounds(276, 28, 47, 16);
 		panel_facturacionPorCliente.add(textPorcFacturacionDolarCliente);
 		panel_datosPorTecnico.setOpaque(false);
 		panel_datosPorTecnico.setBorder(null);
@@ -659,12 +658,12 @@ public class VentanaEstadisticas extends JFrame {
 		panel_facturacionPorTecnico.setBounds(4, 386, 333, 156);
 		panel_Datos.add(panel_facturacionPorTecnico);
 		
-		lblFacturacionTecnicoPesos = new JLabel("FACTURACIÓN TÉCNICO (PESOS): ");
+		lblFacturacionTecnicoPesos = new JLabel("FACTURACIÓN  (PESOS): ");
 		lblFacturacionTecnicoPesos.setFont(new Font("Cambria", Font.BOLD, 11));
 		lblFacturacionTecnicoPesos.setBounds(10, 13, 187, 14);
 		panel_facturacionPorTecnico.add(lblFacturacionTecnicoPesos);
 		
-		lblFacturacionTecnicoDolar = new JLabel("FACTURACIÓN TÉCNICO (DOLARES): ");
+		lblFacturacionTecnicoDolar = new JLabel("FACTURACIÓN  (DOLARES): ");
 		lblFacturacionTecnicoDolar.setFont(new Font("Cambria", Font.BOLD, 11));
 		lblFacturacionTecnicoDolar.setBounds(10, 30, 187, 14);
 		panel_facturacionPorTecnico.add(lblFacturacionTecnicoDolar);
@@ -676,7 +675,7 @@ public class VentanaEstadisticas extends JFrame {
 		textFacturacionTecnicoPesos.setEditable(false);
 		textFacturacionTecnicoPesos.setColumns(10);
 		textFacturacionTecnicoPesos.setBorder(null);
-		textFacturacionTecnicoPesos.setBounds(194, 11, 75, 16);
+		textFacturacionTecnicoPesos.setBounds(151, 11, 123, 16);
 		panel_facturacionPorTecnico.add(textFacturacionTecnicoPesos);
 		
 		textFacturacionTecnicoDolares = new JTextField();
@@ -686,7 +685,7 @@ public class VentanaEstadisticas extends JFrame {
 		textFacturacionTecnicoDolares.setEditable(false);
 		textFacturacionTecnicoDolares.setColumns(10);
 		textFacturacionTecnicoDolares.setBorder(null);
-		textFacturacionTecnicoDolares.setBounds(194, 28, 75, 16);
+		textFacturacionTecnicoDolares.setBounds(151, 28, 123, 16);
 		panel_facturacionPorTecnico.add(textFacturacionTecnicoDolares);
 		
 		btnResumenMensualTecnico = new JButton("<html><center>RESUMEN MENSUAL</html>");
@@ -701,7 +700,7 @@ public class VentanaEstadisticas extends JFrame {
 		textPorcFacturacionTecnicoDolar.setEditable(false);
 		textPorcFacturacionTecnicoDolar.setColumns(10);
 		textPorcFacturacionTecnicoDolar.setBorder(null);
-		textPorcFacturacionTecnicoDolar.setBounds(279, 28, 48, 16);
+		textPorcFacturacionTecnicoDolar.setBounds(276, 28, 48, 16);
 		panel_facturacionPorTecnico.add(textPorcFacturacionTecnicoDolar);
 		
 		textPorcFacturacionTecnicoPesos = new JTextField();
@@ -711,7 +710,7 @@ public class VentanaEstadisticas extends JFrame {
 		textPorcFacturacionTecnicoPesos.setEditable(false);
 		textPorcFacturacionTecnicoPesos.setColumns(10);
 		textPorcFacturacionTecnicoPesos.setBorder(null);
-		textPorcFacturacionTecnicoPesos.setBounds(279, 11, 48, 16);
+		textPorcFacturacionTecnicoPesos.setBounds(276, 11, 48, 16);
 		panel_facturacionPorTecnico.add(textPorcFacturacionTecnicoPesos);
 		panel_datosPorCliente.setLayout(null);
 		panel_datosPorCliente.setOpaque(false);

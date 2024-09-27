@@ -93,15 +93,11 @@ public class ControladorListados
 	private VentanaResumenMensualTecnico ventanaResumenMensualTecnico;
 
 	private VentanaFacturacionXcliente ventanaFacturacionXcliente;
-	// private int max = Frame.MAXIMIZED_BOTH;
-	// private int min = Frame.NORMAL;
 
 	// private int clickMax = 1;
 	// private int clickMin = 1;
 
 	public int NumeroELSSeleccionado;
-
-	// private TableRowSorter<DefaultTableModel> sorter;
 
 	private List<ReparacionDTO> Reparaciones_en_tabla;
 
@@ -1704,6 +1700,12 @@ public class ControladorListados
 
 		double facturacionPesoPorAnioPorTecnico = modelo.dameFacturacionPesoPorAnioPorTecnico(anio, idTecnico);
 		double facturacionDolarPorAnioPorTecnico = modelo.dameFacturacionDolarPorAnioPorTecnico(anio, idTecnico);
+		
+		
+		DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        String facturacionStrPesoXtecnico = decimalFormat.format(facturacionPesoPorAnioPorTecnico);
+        String facturacionStrDolarXtecnico = decimalFormat.format(facturacionDolarPorAnioPorTecnico);
+        
 
 		ventanaEstadisticas.getTextTotalRevisados().setText(Integer.toString(totalDiagnosticosXanioXtecnico));
 
@@ -1765,9 +1767,9 @@ public class ControladorListados
 		ventanaEstadisticas.getTextPorcRepEsperaXtecnico().setText(porcentajeRepEspera);
 
 		ventanaEstadisticas.getTextFacturacionTecnicoPesos()
-				.setText(monedaFormatter.formatPeso(Double.toString(facturacionPesoPorAnioPorTecnico)));
+				.setText(monedaFormatter.formatPeso(facturacionStrPesoXtecnico));
 		ventanaEstadisticas.getTextFacturacionTecnicoDolares()
-				.setText(monedaFormatter.formatDolar(Double.toString(facturacionDolarPorAnioPorTecnico)));
+				.setText(monedaFormatter.formatPeso(facturacionStrDolarXtecnico));
 
 		double porcentaFacturacionPesoPorTecnico = (facturacionPesoPorAnioPorTecnico / facturacionPesoPorAnio) * 100;
 		String porcentaFacturacionPeso = String.format("%.1f %%", porcentaFacturacionPesoPorTecnico);
@@ -1836,15 +1838,6 @@ public class ControladorListados
 				PlotOrientation.VERTICAL, false, true, false);
 		JFreeChart grafico_facturacion = ChartFactory.createBarChart("FACTURACIÓN", null, "Pesos($)", datosFacturacion,
 				PlotOrientation.VERTICAL, false, true, false);
-		
-		TextTitle chartTitleIngresos = grafico_ingresos.getTitle();
-		chartTitleIngresos.setPadding(new RectangleInsets(20, 0, 0, 0)); // 20 píxeles de margen superior
-		
-		TextTitle chartTitleDiagnosticos = grafico_diagnosticos.getTitle();
-		chartTitleDiagnosticos.setPadding(new RectangleInsets(20, 0, 0, 0)); // 20 píxeles de margen superior
-		
-		TextTitle chartTitleFacturacion = grafico_facturacion.getTitle();
-		chartTitleFacturacion.setPadding(new RectangleInsets(20, 0, 0, 0)); // 20 píxeles de margen superior
 
 		NumberAxis yAxisIngresos = (NumberAxis) grafico_ingresos.getCategoryPlot().getRangeAxis();
 		yAxisIngresos.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
@@ -1872,8 +1865,15 @@ public class ControladorListados
 		renderer_facturacion.setSeriesPaint(0, gp2);
 
 		grafico_ingresos.getTitle().setFont(titleFont);
+		grafico_ingresos.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
+		
 		grafico_diagnosticos.getTitle().setFont(titleFont);
+		grafico_diagnosticos.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
+		
+		
 		grafico_facturacion.getTitle().setFont(titleFont);
+		grafico_facturacion.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
+		
 				 
 		renderer_ingreso.setItemLabelGenerator(generator);
 		renderer_diagnostico.setItemLabelGenerator(generator);
@@ -2019,8 +2019,13 @@ public class ControladorListados
 		renderer_facturacion.setSeriesPaint(0, gp2);
 
 		grafico_aceptaciones.getTitle().setFont(titleFont);
+		grafico_aceptaciones.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
+		
 		grafico_diagnosticos.getTitle().setFont(titleFont);
+		grafico_diagnosticos.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
+		
 		grafico_facturacion.getTitle().setFont(titleFont);
+		grafico_facturacion.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
 
 		renderer_aceptaciones.setItemLabelGenerator(generator);
 		renderer_diagnostico.setItemLabelGenerator(generator);
@@ -2157,8 +2162,13 @@ public class ControladorListados
 		renderer_facturacion.setSeriesPaint(0, gp2);
 
 		grafico_aceptaciones.getTitle().setFont(titleFont);
+		grafico_aceptaciones.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
+		
 		grafico_Ingresos.getTitle().setFont(titleFont);
+		grafico_Ingresos.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
+		
 		grafico_facturacion.getTitle().setFont(titleFont);
+		grafico_facturacion.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
 
 		renderer_aceptaciones.setItemLabelGenerator(generator);
 		renderer_ingreso.setItemLabelGenerator(generator);
@@ -2326,9 +2336,11 @@ public class ControladorListados
 							this.ventanaListadoReparaciones.getTblReparaciones().getValueAt(row, col).toString());
 
 				NumeroELSSeleccionado = els;
+				boolean ventanaVisualizacionAbierta = controladorReparacion.isBanderaVentanaVisualizacion();
 
-				if (NumeroELSSeleccionado != 0) {
-
+				if (NumeroELSSeleccionado != 0 && !ventanaVisualizacionAbierta) {
+					
+					
 					try {
 						controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado);
 					} catch (ParseException e) {
@@ -3839,36 +3851,6 @@ public class ControladorListados
 
 		}
 
-		if (this.ventanaListadoReparaciones != null) {
-			if (e.getSource() == this.ventanaListadoReparaciones.getTblReparaciones()) {
-
-				int row = this.ventanaListadoReparaciones.getTblReparaciones().getSelectedRow();
-				int col = this.ventanaListadoReparaciones.getTblReparaciones().getSelectedColumn();
-
-				int els = 0;
-				if (col == 0)
-
-					els = Integer.parseInt(
-							this.ventanaListadoReparaciones.getTblReparaciones().getValueAt(row, col).toString());
-
-				NumeroELSSeleccionado = els;
-
-				if (NumeroELSSeleccionado != 0) {
-
-					try {
-						controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado);
-					} catch (ParseException error) {
-						// TODO Auto-generated catch block
-						error.printStackTrace();
-					}
-
-					controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
-
-				}
-
-			}
-
-		}
 
 	}
 
