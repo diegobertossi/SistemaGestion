@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -1658,30 +1659,90 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	// Método para realizar una acción sobre todos los JTextField y JTextArea en un
-	// JFrame
+	
+	// Método para realizar una acción sobre todos los JTextField, JTextArea y JComboBox en un JFrame
 	private void performActionOnTextComponents(JFrame frame) {
-		List<JTextComponent> textComponents = getAllTextComponents(frame);
-		// Realiza la acción deseada sobre cada JTextComponent
-		for (JTextComponent textComponent : textComponents) {
-			configureUndoManager(textComponent);
-		}
+	    List<Component> textAndComboComponents = getAllTextAndComboComponents(frame);
+	    // Realiza la acción deseada sobre cada JTextComponent y JComboBox
+	    for (Component component : textAndComboComponents) {
+	        if (component instanceof JTextComponent) {
+	            configureUndoManager((JTextComponent) component);
+	        } else if (component instanceof JComboBox) {
+	            // Aquí puedes realizar alguna acción con el JComboBox
+	            configureComboBox((JComboBox<?>) component);
+	        }
+	    }
 	}
 
-	// Método para obtener todos los JTextField y JTextArea en un JFrame
-	private List<JTextComponent> getAllTextComponents(Container container) {
-		List<JTextComponent> textComponents = new ArrayList<>();
-		Component[] components = container.getComponents();
-		// Itera sobre los componentes y filtra los JTextField y JTextArea
-		for (Component component : components) {
-			if (component instanceof JTextComponent) {
-				textComponents.add((JTextComponent) component);
-			} else if (component instanceof Container) {
-				textComponents.addAll(getAllTextComponents((Container) component));
-			}
-		}
-		return textComponents;
+	// Método para obtener todos los JTextField, JTextArea y JComboBox en un JFrame
+	private List<Component> getAllTextAndComboComponents(Container container) {
+	    List<Component> componentsList = new ArrayList<>();
+	    Component[] components = container.getComponents();
+	    // Itera sobre los componentes y filtra los JTextField, JTextArea y JComboBox
+	    for (Component component : components) {
+	        if (component instanceof JTextComponent) {
+	            componentsList.add((JTextComponent) component);
+	        } else if (component instanceof JComboBox) {
+	            componentsList.add((JComboBox<?>) component);
+	        } else if (component instanceof Container) {
+	            componentsList.addAll(getAllTextAndComboComponents((Container) component));
+	        }
+	    }
+	    return componentsList;
 	}
+
+	// Método para configurar JComboBox (puedes ajustar según tus necesidades)
+	private void configureComboBox(JComboBox<?> comboBox) {
+	    // Aquí puedes configurar el JComboBox como desees
+	    System.out.println("Configurando JComboBox: " + comboBox.getName());
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	// Método para realizar una acción sobre todos los JTextField y JTextArea en un
+//	// JFrame
+//	private void performActionOnTextComponents(JFrame frame) {
+//		List<JTextComponent> textComponents = getAllTextComponents(frame);
+//		// Realiza la acción deseada sobre cada JTextComponent
+//		for (JTextComponent textComponent : textComponents) {
+//			configureUndoManager(textComponent);
+//		}
+//	}
+//
+//	// Método para obtener todos los JTextField y JTextArea en un JFrame
+//	private List<JTextComponent> getAllTextComponents(Container container) {
+//		List<JTextComponent> textComponents = new ArrayList<>();
+//		Component[] components = container.getComponents();
+//		// Itera sobre los componentes y filtra los JTextField y JTextArea
+//		for (Component component : components) {
+//			if (component instanceof JTextComponent) {
+//				textComponents.add((JTextComponent) component);
+//			} else if (component instanceof Container) {
+//				textComponents.addAll(getAllTextComponents((Container) component));
+//			}
+//		}
+//		return textComponents;
+//	}
 
 	public void agregarListenersVentanaVisualizarEquiposListado() {
 

@@ -895,7 +895,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private void abrirSelectorImagen(JTextField txtRutaImagen_1, JTextField txtRutaImagen_2,
 			JTextField txtRutaImagen_3) {
 
-		String rutadefaulImagenes = "F:\\els\\Administracion\\Sistema\\Informes Siemens\\";
+		//String rutadefaulImagenes = "F:\\els\\Administracion\\Sistema\\";
+		String rutadefaulImagenes = "C:\\";
 
 		JFileChooser archivosImagenes = new JFileChooser(rutadefaulImagenes);
 
