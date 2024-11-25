@@ -999,7 +999,8 @@ public class ControladorListados
 			if (porcentaje < 2.0) {
 
 				PorcentajeOtros = PorcentajeOtros + porcentaje;
-				facturacionOtros = facturacionOtros + this.itemFacturacion_en_tabla.get(i).getFacturacion();
+				//facturacionOtros = facturacionOtros + this.itemFacturacion_en_tabla.get(i).getFacturacion();
+				facturacionOtros = 14000000;
 
 				this.itemFacturacion_en_tabla.get(i).setNombreCliente("Otros");
 				this.itemFacturacion_en_tabla.get(i).setFacturacion(facturacionOtros);

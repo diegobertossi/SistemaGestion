@@ -109,7 +109,7 @@ public class ReportePresupuesto {
 		else if (fRutaE.isDirectory())
 			outFileName = "E:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF\\" + nombreArchivoPDF;
 		else if (fRutaF.isDirectory())
-			//outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF\\" + nombreArchivoPDF;
+		
 			outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF\\" + nombreArchivoPDF;
 
 //		JRExporter exporter = new JRPdfExporter();
