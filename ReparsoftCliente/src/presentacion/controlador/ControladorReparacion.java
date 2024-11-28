@@ -173,9 +173,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == this.ventanaEquipos.getBtnVisualizarEquipos()) {
-
-			int ELS = DameNumeroELS() - 1;
-
+			
+				int ELS = DameNumeroELS() - 1;
+								
+			
 			if (ELS < 1) {
 
 				Object mje = "No se ha ingresado ningún equipo.";
@@ -1804,7 +1805,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicial));
 
 		} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
-
+			
+			
 			ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicialBSAS));
 
 		}
@@ -2648,7 +2650,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private int DameNumeroELS() {
 		int ELS = 0;
-		ELS = agenda.dameNumeroELS() + 1;
+		String ubicacionDeBase = agenda.getUbicacionBase();
+		
+		if (ubicacionDeBase.compareTo("Buenos Aires") == 0)
+			ELS = agenda.dameNumeroELSbsas() + 1;
+		else if (ubicacionDeBase.compareTo("Bariloche") == 0)
+			ELS = agenda.dameNumeroELS() + 1;
 		return ELS;
 	}
 

@@ -361,6 +361,10 @@ public class Agenda {
 		return ReparacionR.obtenerNumeroELSels();
 	}
 
+	
+	public int dameNumeroELSbsas() {
+		return ReparacionR.obtenerNumeroELSbsas();
+	}
 	public int dameIDequipo() {
 		return ReparacionR.obtenerIDequipo();
 

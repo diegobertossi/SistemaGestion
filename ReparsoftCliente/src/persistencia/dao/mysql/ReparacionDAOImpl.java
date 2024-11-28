@@ -456,6 +456,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
 		int ELS = 0;
+		
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(maximoELS);
 			resultSet = statement.executeQuery();
@@ -479,6 +480,35 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		return ELS;
 	}
 
+	
+	@Override
+	public int obtenerNumeroELSbsas() {
+
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		int ELS = 0;
+		
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(maximoELS);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				ELS = resultSet.getInt("MAX(ELS)");
+
+			}
+		
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		return ELS;
+	}
+	
+	
 	@Override
 	public int obtenerIDequipo() {
 

@@ -176,6 +176,8 @@ public interface ReparacionDAO
 
 	public List<Double> FacturacionDolaresPorAnioPorTecnico(int anio, int idTecnico);
 
+	public int obtenerNumeroELSbsas();
+
 
 
 
