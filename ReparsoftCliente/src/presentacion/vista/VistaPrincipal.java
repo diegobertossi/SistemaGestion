@@ -49,6 +49,7 @@ public class VistaPrincipal extends JFrame {
 	private JTextField textProgramador;
 	private JPanel panel_1;
 	private JButton btncerrarSesion;
+	private JButton botonConfiguracion;
 
 	public VistaPrincipal() {
 		super();
@@ -216,6 +217,17 @@ public class VistaPrincipal extends JFrame {
 		botonBackUp.setToolTipText("Backup del Sistema.");
 		botonBackUp.setIcon(new ImageIcon(this.getClass().getResource("/Backup.png")));
 		panelDeControl.add(botonBackUp);
+		
+		botonConfiguracion = new JButton("CONFIGURACIÓN");
+		botonConfiguracion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		botonConfiguracion.setToolTipText("Configuraciones del Sistema");
+		botonConfiguracion.setForeground(new Color(0, 0, 128));
+		botonConfiguracion.setFont(new Font("Cambria", Font.BOLD, 13));
+		botonConfiguracion.setBounds(309, 135, 143, 49);
+		panelDeControl.add(botonConfiguracion);
 
 		JLabel lblReparacionesEls = new JLabel("");
 		lblReparacionesEls.setIcon(new ImageIcon(this.getClass().getResource("/REPARSOFT logo pequeño.png")));
@@ -413,5 +425,13 @@ public class VistaPrincipal extends JFrame {
 
 	public void setBtncerrarSesion(JButton btncerrarSesion) {
 		this.btncerrarSesion = btncerrarSesion;
+	}
+
+	public JButton getBotonConfiguracion() {
+		return botonConfiguracion;
+	}
+
+	public void setBotonConfiguracion(JButton botonConfiguracion) {
+		this.botonConfiguracion = botonConfiguracion;
 	}
 }

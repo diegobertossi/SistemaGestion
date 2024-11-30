@@ -39,6 +39,7 @@ public class ControladorUbicacionBase implements ActionListener {
 
 				ControladorPrincipal controlador = new ControladorPrincipal(vista, UbicacionBase);
 
+						
 				controlador.inicializar();
 				
 				

@@ -15,6 +15,7 @@ import modelo.Permisos;
 import presentacion.vista.VistaPrincipal;
 import presentacion.vista.VentanaBackUp;
 import presentacion.vista.VentanaClientes;
+import presentacion.vista.VentanaConfiguracion;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaListadoReparaciones;
 
@@ -22,6 +23,7 @@ import presentacion.vista.VentanaLogin;
 import presentacion.vista.VentanaPresupuestos;
 import presentacion.vista.VentanaRolesUsuarios;
 import presentacion.vista.VentanaSalidas;
+import presentacion.vista.VentanaUbicacionBaseDeDatos;
 import presentacion.vista.VentanaBusqueda;
 
 public class ControladorPrincipal implements ActionListener {
@@ -33,6 +35,7 @@ public class ControladorPrincipal implements ActionListener {
 	private VentanaClientes ventanaClientes;
 	private VentanaSalidas ventanaSalidas;
 	private VentanaListadoReparaciones ventanaListadoReparaciones;
+	private VentanaConfiguracion ventanaConfiguracion;
 
 	private VentanaBackUp ventanaBackUp;
 	private VentanaBusqueda ventanaBusqueda;
@@ -49,6 +52,8 @@ public class ControladorPrincipal implements ActionListener {
 	private ControladorUsuarios controladoUsuario;
 	private ControladorBusquedas controladorBusqueda;
 	private ControladorPresupuestos controladorPresupuestos;
+	private ControladorUbicacionBase controladorUbicacionBase;
+	private ControladorConfiguraciones controladorconfiguraciones;
 
 	private VentanaLogin vistaLogin;
 
@@ -71,6 +76,7 @@ public class ControladorPrincipal implements ActionListener {
 		this.vistaPrincipal.getBotonListados().addActionListener(this);
 		this.vistaPrincipal.getBotonBackUp().addActionListener(this);
 		this.vistaPrincipal.getBotonPresupuestos().addActionListener(this);
+		this.vistaPrincipal.getBotonConfiguracion().addActionListener(this);
 
 		controladorUsuLogin = new ControladorUsuLogin(new Permisos(ubicacionBase));
 
@@ -272,6 +278,17 @@ public class ControladorPrincipal implements ActionListener {
 			}
 
 		}
+		
+		
+		else if (arg0.getSource() == vistaPrincipal.getBotonConfiguracion()) {
+			
+			ventanaConfiguracion = new VentanaConfiguracion(controladorconfiguraciones);
+			controladorconfiguraciones = new ControladorConfiguraciones(ventanaConfiguracion,controladorUsuLogin,vistaPrincipal);
+
+			
+		}
+		
+		
 
 	}
 
