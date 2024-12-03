@@ -1157,11 +1157,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 						ReparacionDTO nuevoReparacion = TomarDatosPantallaIngreso();
 						this.agenda.agregarReparacionR(nuevoReparacion);
 
-						ventanaAgregarEquipo.getTextAvisoCliente().setEditable(false);
-						ventanaAgregarEquipo.getTextClienteCliente().setEditable(false);
-						ventanaAgregarEquipo.getTextFalla().setEditable(false);
-						ventanaAgregarEquipo.getTextRemitoCliente().setEditable(false);
-						ventanaAgregarEquipo.getTextFechafabricacion().setEditable(false);
+						ventanaAgregarEquipo.getTextAvisoCliente().setEnabled(false);
+						ventanaAgregarEquipo.getTextClienteCliente().setEnabled(false);
+						ventanaAgregarEquipo.getTextFalla().setEnabled(false);
+						ventanaAgregarEquipo.getTextRemitoCliente().setEnabled(false);
 						ventanaAgregarEquipo.getTextFechafabricacion().setEnabled(false);
 						ventanaAgregarEquipo.getFechaEntrada().setEnabled(false);
 						ventanaAgregarEquipo.getComboClientes().setEnabled(false);
@@ -1865,7 +1864,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		}
 
 		ventanaVisualizarEquipos.setTextNombreTecnico(reparacion.getNombreUsuario());
-		// ventanaVisualizarEquipos.getComboTecnico().setSelectedIndex(reparacion.getidUsuario()-1);
 		ventanaVisualizarEquipos.setTextOC(reparacion.getOrdendeCompra());
 		ventanaVisualizarEquipos.setTextUbicacionRemito(Integer.toString(reparacion.getCodigo()));
 		ventanaVisualizarEquipos.setTextNumeroRemito(Integer.toString(reparacion.getNumeroRemitoSalida()));
@@ -2455,6 +2453,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getTextPago().setEditable(true);
 
 		this.ventanaVisualizarEquipos.getTextNombreTecnico().setEditable(true);
+		
 		this.ventanaVisualizarEquipos.getTextDiagnostico().setEditable(true);
 		this.ventanaVisualizarEquipos.getTextInformeCliente().setEditable(true);
 		this.ventanaVisualizarEquipos.getTablaRepuestos().setEnabled(true);
@@ -2471,11 +2470,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		this.ventanaVisualizarEquipos.getTextCliente().setVisible(false);
 		this.ventanaVisualizarEquipos.getTextSucursal().setVisible(false);
+		
 		this.ventanaVisualizarEquipos.getComboClientes().setVisible(true);
 		this.ventanaVisualizarEquipos.getComboSucursal().setVisible(true);
-		this.ventanaVisualizarEquipos.getComboSucursal().setEditable(true);
+		//this.ventanaVisualizarEquipos.getComboSucursal().setEditable(true);
 		this.ventanaVisualizarEquipos.getComboTecnico().setVisible(true);
-		this.ventanaVisualizarEquipos.getComboTecnico().setEditable(true);
+//		this.ventanaVisualizarEquipos.getComboTecnico().setEditable(true);
 
 		nombreCliente = this.ventanaVisualizarEquipos.getTextCliente().getText();
 		nombreSucursal = this.ventanaVisualizarEquipos.getTextSucursal().getText();

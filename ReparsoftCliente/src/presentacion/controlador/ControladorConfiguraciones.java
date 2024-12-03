@@ -40,6 +40,8 @@ public class ControladorConfiguraciones implements ActionListener {
 					this.controladorUsuLogin.cerrarSesion();
 					vistaPrincipal.dispose();
 					vistaPrincipal = null;
+					vistaConfiguracion.dispose();
+					vistaConfiguracion = null;
 				
 					VentanaUbicacionBaseDeDatos ventanaUbicacionBaseDeDatos = new VentanaUbicacionBaseDeDatos();
 					ControladorUbicacionBase controlador = new ControladorUbicacionBase(ventanaUbicacionBaseDeDatos);
