@@ -142,7 +142,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private int idCli;
 	private int idSuc;
-	
+
 	private boolean banderaVentanaVisualizacion;
 
 	private String fechaentrada;
@@ -173,10 +173,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == this.ventanaEquipos.getBtnVisualizarEquipos()) {
-			
-				int ELS = DameNumeroELS() - 1;
-								
-			
+
+			int ELS = DameNumeroELS() - 1;
+
 			if (ELS < 1) {
 
 				Object mje = "No se ha ingresado ningún equipo.";
@@ -230,7 +229,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonSiguiente()) {
 
-
 			String ubicacionDeBase = agenda.getUbicacionBase();
 
 			int tam = agenda.obtenerReparacion().size();
@@ -283,11 +281,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 
-
-
 		} else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonAnterior()) {
-
 
 			if (!guardado) {
 				ReparacionDTO reparacionAeditar = TomarDatosVisualizacion();
@@ -329,7 +324,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					e1.printStackTrace();
 				}
 
-			
 			}
 		}
 
@@ -354,7 +348,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					e1.printStackTrace();
 				}
 
-		
 			}
 		}
 
@@ -475,12 +468,18 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnGuardarCambios()) {
 
 			ReparacionDTO reparacionAeditar = TomarDatosVisualizacion();
-			this.agenda.editarReparacionR(reparacionAeditar);
 
-			guardado = true;
+			if (reparacionAeditar == null) {
+				JOptionPane.showMessageDialog(null, "Hay caracteres invalidos ( ' )", "Información",
+						JOptionPane.INFORMATION_MESSAGE);			}
 
-			deshabilitarCampos();
+			else {
+				this.agenda.editarReparacionR(reparacionAeditar);
 
+				guardado = true;
+
+				deshabilitarCampos();
+			}
 		}
 
 		else if (this.ventanaVisualizarEquipos != null
@@ -1133,10 +1132,15 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				RegistroEntradaReporteDTO rep = TomarDatosPantallaIngresoRep();
 
-				lista.add(rep);
+				if (rep == null) {
+					JOptionPane.showMessageDialog(null, "Hay caracteres invalidos ( ' )", "Información",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					lista.add(rep);
 
-				ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista);
-				reporte.mostrar();
+					ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista);
+					reporte.mostrar();
+				}
 
 			}
 		}
@@ -1155,36 +1159,43 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					if (Integer.parseInt(this.ventanaAgregarEquipo.getTextELS()) != DameNumeroELS() - 1) {
 
 						ReparacionDTO nuevoReparacion = TomarDatosPantallaIngreso();
-						this.agenda.agregarReparacionR(nuevoReparacion);
+						if (nuevoReparacion == null) {
 
-						ventanaAgregarEquipo.getTextAvisoCliente().setEnabled(false);
-						ventanaAgregarEquipo.getTextClienteCliente().setEnabled(false);
-						ventanaAgregarEquipo.getTextFalla().setEnabled(false);
-						ventanaAgregarEquipo.getTextRemitoCliente().setEnabled(false);
-						ventanaAgregarEquipo.getTextFechafabricacion().setEnabled(false);
-						ventanaAgregarEquipo.getFechaEntrada().setEnabled(false);
-						ventanaAgregarEquipo.getComboClientes().setEnabled(false);
-						ventanaAgregarEquipo.getComboSucursal().setEnabled(false);
-						ventanaAgregarEquipo.getComboMarca().setEnabled(false);
-						ventanaAgregarEquipo.getComboNombreEquipo().setEnabled(false);
-						ventanaAgregarEquipo.getComboModelo().setEnabled(false);
-						ventanaAgregarEquipo.getComboSerie().setEnabled(false);
-						ventanaAgregarEquipo.getTextFalla().setEnabled(false);
+							JOptionPane.showMessageDialog(null, "Hay caracteres invalidos ( ' )", "Información",
+									JOptionPane.INFORMATION_MESSAGE);
+						} else {
 
-						ventanaAgregarEquipo.getRdbtnBRC().setEnabled(false);
-						ventanaAgregarEquipo.getRdbtnCABA().setEnabled(false);
-						ventanaAgregarEquipo.getRdbtnMDP().setEnabled(false);
-						ventanaAgregarEquipo.getBtnFechaDefault().setEnabled(false);
-						ventanaAgregarEquipo.getBtnGenerarSerie().setEnabled(false);
-						ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(true);
-						ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().setEnabled(false);
+							this.agenda.agregarReparacionR(nuevoReparacion);
 
-						Object mje = "Equipo Guardado. Solo se podrá modificar desde la visualización";
+							ventanaAgregarEquipo.getTextAvisoCliente().setEnabled(false);
+							ventanaAgregarEquipo.getTextClienteCliente().setEnabled(false);
+							ventanaAgregarEquipo.getTextFalla().setEnabled(false);
+							ventanaAgregarEquipo.getTextRemitoCliente().setEnabled(false);
+							ventanaAgregarEquipo.getTextFechafabricacion().setEnabled(false);
+							ventanaAgregarEquipo.getFechaEntrada().setEnabled(false);
+							ventanaAgregarEquipo.getComboClientes().setEnabled(false);
+							ventanaAgregarEquipo.getComboSucursal().setEnabled(false);
+							ventanaAgregarEquipo.getComboMarca().setEnabled(false);
+							ventanaAgregarEquipo.getComboNombreEquipo().setEnabled(false);
+							ventanaAgregarEquipo.getComboModelo().setEnabled(false);
+							ventanaAgregarEquipo.getComboSerie().setEnabled(false);
+							ventanaAgregarEquipo.getTextFalla().setEnabled(false);
 
-						JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
-								JOptionPane.INFORMATION_MESSAGE);
+							ventanaAgregarEquipo.getRdbtnBRC().setEnabled(false);
+							ventanaAgregarEquipo.getRdbtnCABA().setEnabled(false);
+							ventanaAgregarEquipo.getRdbtnMDP().setEnabled(false);
+							ventanaAgregarEquipo.getBtnFechaDefault().setEnabled(false);
+							ventanaAgregarEquipo.getBtnGenerarSerie().setEnabled(false);
+							ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(true);
+							ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().setEnabled(false);
 
-						break;
+							Object mje = "Equipo Guardado. Solo se podrá modificar desde la visualización";
+
+							JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
+									JOptionPane.INFORMATION_MESSAGE);
+
+							break;
+						}
 					}
 
 					else {
@@ -1659,66 +1670,44 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	
-	// Método para realizar una acción sobre todos los JTextField, JTextArea y JComboBox en un JFrame
+	// Método para realizar una acción sobre todos los JTextField, JTextArea y
+	// JComboBox en un JFrame
 	private void performActionOnTextComponents(JFrame frame) {
-	    List<Component> textAndComboComponents = getAllTextAndComboComponents(frame);
-	    // Realiza la acción deseada sobre cada JTextComponent y JComboBox
-	    for (Component component : textAndComboComponents) {
-	        if (component instanceof JTextComponent) {
-	            configureUndoManager((JTextComponent) component);
-	        } else if (component instanceof JComboBox) {
-	            // Aquí puedes realizar alguna acción con el JComboBox
-	            configureComboBox((JComboBox<?>) component);
-	        }
-	    }
+		List<Component> textAndComboComponents = getAllTextAndComboComponents(frame);
+		// Realiza la acción deseada sobre cada JTextComponent y JComboBox
+		for (Component component : textAndComboComponents) {
+			if (component instanceof JTextComponent) {
+				configureUndoManager((JTextComponent) component);
+			} else if (component instanceof JComboBox) {
+				// Aquí puedes realizar alguna acción con el JComboBox
+				configureComboBox((JComboBox<?>) component);
+			}
+		}
 	}
 
 	// Método para obtener todos los JTextField, JTextArea y JComboBox en un JFrame
 	private List<Component> getAllTextAndComboComponents(Container container) {
-	    List<Component> componentsList = new ArrayList<>();
-	    Component[] components = container.getComponents();
-	    // Itera sobre los componentes y filtra los JTextField, JTextArea y JComboBox
-	    for (Component component : components) {
-	        if (component instanceof JTextComponent) {
-	            componentsList.add((JTextComponent) component);
-	        } else if (component instanceof JComboBox) {
-	            componentsList.add((JComboBox<?>) component);
-	        } else if (component instanceof Container) {
-	            componentsList.addAll(getAllTextAndComboComponents((Container) component));
-	        }
-	    }
-	    return componentsList;
+		List<Component> componentsList = new ArrayList<>();
+		Component[] components = container.getComponents();
+		// Itera sobre los componentes y filtra los JTextField, JTextArea y JComboBox
+		for (Component component : components) {
+			if (component instanceof JTextComponent) {
+				componentsList.add((JTextComponent) component);
+			} else if (component instanceof JComboBox) {
+				componentsList.add((JComboBox<?>) component);
+			} else if (component instanceof Container) {
+				componentsList.addAll(getAllTextAndComboComponents((Container) component));
+			}
+		}
+		return componentsList;
 	}
 
 	// Método para configurar JComboBox (puedes ajustar según tus necesidades)
 	private void configureComboBox(JComboBox<?> comboBox) {
-	    // Aquí puedes configurar el JComboBox como desees
-	    System.out.println("Configurando JComboBox: " + comboBox.getName());
+		// Aquí puedes configurar el JComboBox como desees
+		System.out.println("Configurando JComboBox: " + comboBox.getName());
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 //	// Método para realizar una acción sobre todos los JTextField y JTextArea en un
 //	// JFrame
 //	private void performActionOnTextComponents(JFrame frame) {
@@ -1804,8 +1793,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicial));
 
 		} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
-			
-			
+
 			ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicialBSAS));
 
 		}
@@ -2179,6 +2167,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private RegistroEntradaReporteDTO TomarDatosPantallaIngresoRep() {
 
+		RegistroEntradaReporteDTO nuevoReparacion;
+
 		int ELS = Integer.parseInt(this.ventanaAgregarEquipo.getTextELS());
 		String falla = this.ventanaAgregarEquipo.getTextFalla().getText();
 		String RemitoCLiente = this.ventanaAgregarEquipo.getTextRemitoCliente().getText();
@@ -2214,9 +2204,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		}
 
-		RegistroEntradaReporteDTO nuevoReparacion = new RegistroEntradaReporteDTO(ELS, fechaentrada, falla,
-				estadoFisico, estadoTecnico, RemitoCLiente, IDEquipo, NombreEquipo, Modelo, Marca, Serie, aviso,
-				ClienteCliente, idCliente, idSucursal, Cliente, Sucursal);
+		if (verificarCaracteresPermitidos(NombreEquipo) || verificarCaracteresPermitidos(falla)
+				|| verificarCaracteresPermitidos(Modelo) || verificarCaracteresPermitidos(Marca)
+				|| verificarCaracteresPermitidos(Serie)) {
+
+			nuevoReparacion = null;
+
+		} else {
+			nuevoReparacion = new RegistroEntradaReporteDTO(ELS, fechaentrada, falla, estadoFisico, estadoTecnico,
+					RemitoCLiente, IDEquipo, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente, idCliente,
+					idSucursal, Cliente, Sucursal);
+		}
 
 		return nuevoReparacion;
 	}
@@ -2422,8 +2420,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getBtnEliminarRepuesto().setEnabled(false);
 		this.ventanaVisualizarEquipos.getBtnEditarRepuesto().setEnabled(false);
 
-		
-
 		this.ventanaVisualizarEquipos.getTextCliente().setVisible(true);
 		this.ventanaVisualizarEquipos.getTextSucursal().setVisible(true);
 		this.ventanaVisualizarEquipos.getComboClientes().setVisible(false);
@@ -2453,7 +2449,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getTextPago().setEditable(true);
 
 		this.ventanaVisualizarEquipos.getTextNombreTecnico().setEditable(true);
-		
+
 		this.ventanaVisualizarEquipos.getTextDiagnostico().setEditable(true);
 		this.ventanaVisualizarEquipos.getTextInformeCliente().setEditable(true);
 		this.ventanaVisualizarEquipos.getTablaRepuestos().setEnabled(true);
@@ -2465,15 +2461,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getBtnGuardarCambios().setEnabled(true);
 		this.ventanaVisualizarEquipos.getBtnRepuestos().setEnabled(true);
 		this.ventanaVisualizarEquipos.getBtnEliminarRepuesto().setEnabled(true);
-	
-
 
 		this.ventanaVisualizarEquipos.getTextCliente().setVisible(false);
 		this.ventanaVisualizarEquipos.getTextSucursal().setVisible(false);
-		
+
 		this.ventanaVisualizarEquipos.getComboClientes().setVisible(true);
 		this.ventanaVisualizarEquipos.getComboSucursal().setVisible(true);
-		//this.ventanaVisualizarEquipos.getComboSucursal().setEditable(true);
+		// this.ventanaVisualizarEquipos.getComboSucursal().setEditable(true);
 		this.ventanaVisualizarEquipos.getComboTecnico().setVisible(true);
 //		this.ventanaVisualizarEquipos.getComboTecnico().setEditable(true);
 
@@ -2651,7 +2645,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private int DameNumeroELS() {
 		int ELS = 0;
 		String ubicacionDeBase = agenda.getUbicacionBase();
-		
+
 		if (ubicacionDeBase.compareTo("Buenos Aires") == 0)
 			ELS = agenda.dameNumeroELSbsas() + 1;
 		else if (ubicacionDeBase.compareTo("Bariloche") == 0)
@@ -2660,6 +2654,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	private ReparacionDTO TomarDatosPantallaIngreso() {
+
+		ReparacionDTO nuevoReparacion;
 
 		int ELS = Integer.parseInt(this.ventanaAgregarEquipo.getTextELS());
 		String falla = this.ventanaAgregarEquipo.getTextFalla().getText();
@@ -2708,15 +2704,25 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		estadoTecnico = "Sin Revisar";
 		estadocomercial = "A la Espera de Aceptación";
 
-		ReparacionDTO nuevoReparacion = new ReparacionDTO(ELS, fechaentrada, falla, estadoFisico, estadoTecnico,
-				estadocomercial, RemitoCLiente, IDEquipo, idUsuarios, NombreEquipo, Modelo, Marca, Series, aviso,
-				ClienteCliente, idCliente, idSucursal, fechaFarbricacion, lugarDeIngreso);
+		if (verificarCaracteresPermitidos(NombreEquipo) || verificarCaracteresPermitidos(falla)
+				|| verificarCaracteresPermitidos(Modelo) || verificarCaracteresPermitidos(Marca)
+				|| verificarCaracteresPermitidos(Serie)) {
 
+			nuevoReparacion = null;
+
+		} else {
+
+			nuevoReparacion = new ReparacionDTO(ELS, fechaentrada, falla, estadoFisico, estadoTecnico, estadocomercial,
+					RemitoCLiente, IDEquipo, idUsuarios, NombreEquipo, Modelo, Marca, Series, aviso, ClienteCliente,
+					idCliente, idSucursal, fechaFarbricacion, lugarDeIngreso);
+		}
 		return nuevoReparacion;
 
 	}
 
 	private ReparacionDTO TomarDatosVisualizacion() {
+
+		ReparacionDTO reparacionAeditar;
 
 		int ELS = Integer.parseInt(this.ventanaVisualizarEquipos.getTextELS());
 		String falla = this.ventanaVisualizarEquipos.getTextFalla().getText();
@@ -2849,13 +2855,22 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		String OrdenDeCompra = this.ventanaVisualizarEquipos.getTextOC().getText();
 
-		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, fechaentradavisual, fechareparacionvisual, falla,
-				solucion, informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo,
-				Cliente, Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
-				idCliente, idSucursal, fechafabrvisual, idUsuario, nombreTecnico, enviado, presupuesto,
-				presupuestoDolar, pago, presupuestoGenerado, avisoEnviado, presupuestoEnviado, OrdenDeCompra,
-				lugarIngreso);
+		if (verificarCaracteresPermitidos(falla) || verificarCaracteresPermitidos(solucion)
+				|| verificarCaracteresPermitidos(informeCliente) || verificarCaracteresPermitidos(NombreEquipo)
+				|| verificarCaracteresPermitidos(Modelo) || verificarCaracteresPermitidos(Marca)
+				|| verificarCaracteresPermitidos(Serie)) {
 
+			reparacionAeditar = null;
+
+		} else {
+
+			reparacionAeditar = new ReparacionDTO(ELS, fechaentradavisual, fechareparacionvisual, falla, solucion,
+					informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo, Cliente,
+					Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
+					idCliente, idSucursal, fechafabrvisual, idUsuario, nombreTecnico, enviado, presupuesto,
+					presupuestoDolar, pago, presupuestoGenerado, avisoEnviado, presupuestoEnviado, OrdenDeCompra,
+					lugarIngreso);
+		}
 		return reparacionAeditar;
 
 	}
@@ -3011,6 +3026,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		return matcher.matches();
 	}
 
+	public boolean verificarCaracteresPermitidos(String texto) {
+		return texto.contains("'");
+	}
+
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -3162,10 +3181,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 	}
-	
+
 	public boolean cerraVentanaVisualizarEquipoListado() {
-		
-		
+
 		this.ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				int opcion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
@@ -3192,10 +3210,5 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	public void setBanderaVentanaVisualizacion(boolean banderaVentanaVisualizacion) {
 		this.banderaVentanaVisualizacion = banderaVentanaVisualizacion;
 	}
-	
-	
-	
 
-	
-	
 }
