@@ -106,16 +106,15 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	private MonedaFormatter monedaFormatter;
 
-	//this.ventanaGenerarPresupuesto.getImagePath().setText("img\\anterior.png");
-	private String imagePath ="";
-	private String rutaImagen_1="";
-	private String rutaImagen_2="";
-	private String rutaImagen_3="";
-	private String rutaImagen_4="";
-	private String rutaImagen_5="";
-	private String rutaImagen_6="";
-	
-	
+	// this.ventanaGenerarPresupuesto.getImagePath().setText("img\\anterior.png");
+	private String imagePath = "";
+	private String rutaImagen_1 = "";
+	private String rutaImagen_2 = "";
+	private String rutaImagen_3 = "";
+	private String rutaImagen_4 = "";
+	private String rutaImagen_5 = "";
+	private String rutaImagen_6 = "";
+
 	public ControladorPresupuestos(VentanaPresupuestos ventanaPresupuestos, Agenda agenda) {
 
 		this.ventanaPresupuestos = ventanaPresupuestos;
@@ -342,36 +341,45 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		else if (this.ventanaGenerarPresupuesto != null
 				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnCotizacionDolar()) {
 
-			
 			DecimalFormat df = new DecimalFormat("#.##");
-			
+
 			double[] cotizaciones = consumoAPI.ConsumoAPI.consultaCotizacionDolar();
 
 			String cotizacionDolarOf = Double.toString(cotizaciones[0]);
 
 			String cotizacionDolarBl = Double.toString(cotizaciones[1]);
-			
-			
-			
+
 			double presupuestoPesos = reparacion.getPrecioPeso();
+			double presupuestoDolar = reparacion.getPrecioDolar(); 
 
 			ventanaGenerarPresupuesto.getTextCotizacionDolarOf().setText(cotizacionDolarOf);
 			ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
-			
+
 			System.out.println(presupuestoPesos);
 
-			if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().compareTo("0.0") != 0) {
-				
-				double sugerenciaDolar = presupuestoPesos/cotizaciones[0];
-				
+			if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().compareTo("0.0") != 0 && ventanaGenerarPresupuesto.getTextPrecioDolar().getText().compareTo("0.0") == 0) {
+
+				double sugerenciaDolar = presupuestoPesos / cotizaciones[0];
 				String sugerenciaDolarString = df.format(sugerenciaDolar);
-				
+
+				String sugerenciaPesoString = df.format(presupuestoPesos);
+
 				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(sugerenciaDolarString);
-				
+				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(sugerenciaPesoString);
+
 			}
-			
-			
-			
+
+			if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().compareTo("0.0") == 0 && ventanaGenerarPresupuesto.getTextPrecioDolar().getText().compareTo("0.0") != 0) {
+
+				double sugerenciaPeso = presupuestoDolar * cotizaciones[0];
+				String sugerenciaPesoString = df.format(sugerenciaPeso);
+
+				String sugerenciaDolarString = df.format(presupuestoDolar);
+
+				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(sugerenciaDolarString);
+				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(sugerenciaPesoString);
+
+			}
 
 		}
 
@@ -472,9 +480,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		else if (this.ventanaAgregarImagenes != null
 				&& e.getSource() == this.ventanaAgregarImagenes.getBtngenerarInforme()) {
-			
-			
-			
+
 			rutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1().getText();
 			rutaImagen_2 = ventanaAgregarImagenes.getTxtRutaImagen_2().getText();
 			rutaImagen_3 = ventanaAgregarImagenes.getTxtRutaImagen_3().getText();
@@ -483,10 +489,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			rutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6().getText();
 
 			if (btnPresupuestoPDF) {
-				
-				
-				//rutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1().getText();
 
+				// rutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1().getText();
 
 				List<RegistroPresupuestoDTO> lista = new ArrayList<RegistroPresupuestoDTO>();
 				RegistroPresupuestoDTO rep = TomarDatosPantallaPresupuesto();
@@ -559,7 +563,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				String equipo = ventanaGenerarPresupuesto.getTextEquipo().getText();
 				String modelo = ventanaGenerarPresupuesto.getTextModelo().getText();
 				String serie = ventanaGenerarPresupuesto.getTextSerie().getText();
-				
 
 				String fechaFabricacion = ventanaGenerarPresupuesto.getTextFabrString();
 
@@ -726,8 +729,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
-			}
-			else {
+			} else {
 				String nombreWORD = ventanaEmail.getTextAdjunto().getText();
 
 				try {
@@ -914,7 +916,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private void abrirSelectorImagen(JTextField txtRutaImagen_1, JTextField txtRutaImagen_2,
 			JTextField txtRutaImagen_3) {
 
-		//String rutadefaulImagenes = "F:\\els\\Administracion\\Sistema\\";
+		// String rutadefaulImagenes = "F:\\els\\Administracion\\Sistema\\";
 		String rutadefaulImagenes = "C:\\";
 
 		JFileChooser archivosImagenes = new JFileChooser(rutadefaulImagenes);
@@ -1614,7 +1616,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		String CondicionesMoneda = this.ventanaGenerarPresupuesto.getTextcondicionesMoneda().getText();
 		String CondicionesPago = this.ventanaGenerarPresupuesto.getTextcondicionesPago().getText();
 		String plazoEntrega = this.ventanaGenerarPresupuesto.getTextPlazoEntrega().getText();
-		
 
 		double PrecioPeso;
 		double PrecioDolar;
@@ -1643,7 +1644,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		RegistroPresupuestoDTO nuevoPresupuesto = new RegistroPresupuestoDTO(ELS, InformeCliente, RemitoCLiente,
 				PrecioPeso, PrecioDolar, NombreEquipo, Modelo, Marca, Serie, ClienteCliente, aviso, Sucursal, Cliente,
-				chckpesos, chckdolar, CondicionesMoneda, CondicionesPago, plazoEntrega, rutaImagen_1,rutaImagen_2, rutaImagen_3, rutaImagen_4, rutaImagen_5, rutaImagen_6 );
+				chckpesos, chckdolar, CondicionesMoneda, CondicionesPago, plazoEntrega, rutaImagen_1, rutaImagen_2,
+				rutaImagen_3, rutaImagen_4, rutaImagen_5, rutaImagen_6);
 
 		return nuevoPresupuesto;
 
