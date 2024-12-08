@@ -19,6 +19,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -341,18 +342,36 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		else if (this.ventanaGenerarPresupuesto != null
 				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnCotizacionDolar()) {
 
+			
+			DecimalFormat df = new DecimalFormat("#.##");
+			
 			double[] cotizaciones = consumoAPI.ConsumoAPI.consultaCotizacionDolar();
 
 			String cotizacionDolarOf = Double.toString(cotizaciones[0]);
 
 			String cotizacionDolarBl = Double.toString(cotizaciones[1]);
+			
+			
+			
+			double presupuestoPesos = reparacion.getPrecioPeso();
 
 			ventanaGenerarPresupuesto.getTextCotizacionDolarOf().setText(cotizacionDolarOf);
 			ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
+			
+			System.out.println(presupuestoPesos);
 
 			if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().compareTo("0.0") != 0) {
-
+				
+				double sugerenciaDolar = presupuestoPesos/cotizaciones[0];
+				
+				String sugerenciaDolarString = df.format(sugerenciaDolar);
+				
+				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(sugerenciaDolarString);
+				
 			}
+			
+			
+			
 
 		}
 

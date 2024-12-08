@@ -1679,7 +1679,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				configureUndoManager((JTextComponent) component);
 			} else if (component instanceof JComboBox) {
 				// Aquí puedes realizar alguna acción con el JComboBox
-				configureComboBox((JComboBox<?>) component);
+				//configureComboBox((JComboBox<?>) component);
 			}
 		}
 	}
@@ -1702,10 +1702,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	// Método para configurar JComboBox (puedes ajustar según tus necesidades)
-	private void configureComboBox(JComboBox<?> comboBox) {
-		// Aquí puedes configurar el JComboBox como desees
-		System.out.println("Configurando JComboBox: " + comboBox.getName());
-	}
+//	private void configureComboBox(JComboBox<?> comboBox) {
+//		// Aquí puedes configurar el JComboBox como desees
+//		System.out.println("Configurando JComboBox: " + comboBox.getName());
+//	}
 
 //	// Método para realizar una acción sobre todos los JTextField y JTextArea en un
 //	// JFrame
@@ -1975,6 +1975,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		verificarPresupuesto();
 		deshabilitarCampos();
+		ELSinicial = numeroELSSeleccionado;
 
 	}
 

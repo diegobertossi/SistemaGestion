@@ -14,61 +14,6 @@ import org.json.JSONObject;
 
 public class ConsumoAPI {
 
-//	public static double[] consultaCotizacionDolar() {
-//		double[] cotizacionesPromedios = { 0, 0 };
-//		int maxRetries = 3;
-//
-//		for (int attempt = 1; attempt <= maxRetries; attempt++) {
-//			try {
-//				URL url = new URL("https://api.bluelytics.com.ar/v2/latest");
-//				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//				conn.setRequestMethod("GET");
-//
-//				int responseCode = conn.getResponseCode();
-//				System.out.println("Response Code: " + responseCode);
-//
-//				if (responseCode != 200) {
-//					throw new RuntimeException("Ocurrió un error " + responseCode);
-//				} else {
-//					// Parse JSON response
-//					StringBuilder informationString = new StringBuilder();
-//					try (Scanner scanner = new Scanner(conn.getInputStream())) {
-//						while (scanner.hasNext()) {
-//							informationString.append(scanner.nextLine());
-//						}
-//					}
-//
-//					JSONObject jo = new JSONObject(informationString.toString());
-//
-//					JSONObject oficialObject = jo.getJSONObject("oficial");
-//					double valorPromedioOficial = oficialObject.getDouble("value_avg");
-//
-//					JSONObject blueObject = jo.getJSONObject("blue");
-//					double valorPromedioBlue = blueObject.getDouble("value_avg");
-//
-//					cotizacionesPromedios[0] = valorPromedioOficial;
-//					cotizacionesPromedios[1] = valorPromedioBlue;
-//
-//					// Return the result if successful
-//					return cotizacionesPromedios;
-//				}
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//				System.out.println("Attempt " + attempt + " failed. Retrying...");
-//				// Wait for a short time before retrying
-//				try {
-//					Thread.sleep(1000);
-//				} catch (InterruptedException ex) {
-//					ex.printStackTrace();
-//				}
-//			}
-//		}
-//
-//		// Return default values in case of failure after retries
-//		double[] valuesOnError = { -1.0, -1.0 };
-//		return valuesOnError;
-//
-//	}
 
 	public static double[] consultaCotizacionDolar() {
 
@@ -112,13 +57,13 @@ public class ConsumoAPI {
 				
 				
 				JSONObject oficialObject = jo.getJSONObject("oficial");
-			    double valorPromedioOficial = oficialObject.getDouble("value_avg");
+			    double valorVentaOficial = oficialObject.getDouble("value_sell");
 			    
 			    JSONObject blueObject = jo.getJSONObject("blue");
-			    double valorPromedioBlue = blueObject.getDouble("value_avg");
+			    double valorVentaBlue = blueObject.getDouble("value_sell");
 			     
-			    cotizacionesPromedios[0] = valorPromedioOficial;
-			    cotizacionesPromedios[1] = valorPromedioBlue;
+			    cotizacionesPromedios[0] = valorVentaOficial;
+			    cotizacionesPromedios[1] = valorVentaBlue;
 			    
 			   
 				return cotizacionesPromedios;
