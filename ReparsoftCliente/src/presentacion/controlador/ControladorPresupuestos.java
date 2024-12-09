@@ -350,14 +350,16 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			String cotizacionDolarBl = Double.toString(cotizaciones[1]);
 
 			double presupuestoPesos = reparacion.getPrecioPeso();
-			double presupuestoDolar = reparacion.getPrecioDolar(); 
+			double presupuestoDolar = reparacion.getPrecioDolar();
 
 			ventanaGenerarPresupuesto.getTextCotizacionDolarOf().setText(cotizacionDolarOf);
 			ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
 
-			System.out.println(presupuestoPesos);
+			System.out.println(presupuestoPesos + "   " + Double.toString(presupuestoPesos).compareTo("0.0"));
+			
 
-			if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().compareTo("0.0") != 0 && ventanaGenerarPresupuesto.getTextPrecioDolar().getText().compareTo("0.0") == 0) {
+			if (Double.toString(presupuestoPesos).compareTo("0.0") != 0
+					&& Double.toString(presupuestoDolar).compareTo("0.0") == 0) {
 
 				double sugerenciaDolar = presupuestoPesos / cotizaciones[0];
 				String sugerenciaDolarString = df.format(sugerenciaDolar);
@@ -369,7 +371,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 			}
 
-			if (ventanaGenerarPresupuesto.getTextPrecioPeso().getText().compareTo("0.0") == 0 && ventanaGenerarPresupuesto.getTextPrecioDolar().getText().compareTo("0.0") != 0) {
+			if (Double.toString(presupuestoPesos).compareTo("0.0") == 0
+					&& Double.toString(presupuestoDolar).compareTo("0.0") != 0) {
 
 				double sugerenciaPeso = presupuestoDolar * cotizaciones[0];
 				String sugerenciaPesoString = df.format(sugerenciaPeso);
@@ -378,6 +381,16 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(sugerenciaDolarString);
 				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(sugerenciaPesoString);
+
+			}
+			
+			if (Double.toString(presupuestoPesos).compareTo("0.0") == 0
+					&& Double.toString(presupuestoDolar).compareTo("0.0") == 0) {
+				
+				
+	
+				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText("0.0");
+				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText("0.0");
 
 			}
 
