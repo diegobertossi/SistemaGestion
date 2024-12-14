@@ -978,78 +978,162 @@ public class ControladorListados
 		AutoCompleteDecorator.decorate(ventanaListadoReparaciones.getComboFiltroIngreso());
 
 	}
-
+	
+	
+	
+	
 	private void cargarTablaFacturacionCliente() {
+	    // Limpia la tabla
+	    this.ventanaFacturacionXcliente.getModelFacturacionClientes().setRowCount(0);
+	    this.ventanaFacturacionXcliente.getModelFacturacionClientes().setColumnCount(0);
+	    this.ventanaFacturacionXcliente.getModelFacturacionClientes()
+	        .setColumnIdentifiers(this.ventanaFacturacionXcliente.getNombreColumnas());
 
-		this.ventanaFacturacionXcliente.getModelFacturacionClientes().setRowCount(0); // Para
-		// vaciar
-		// tabla
-		this.ventanaFacturacionXcliente.getModelFacturacionClientes().setColumnCount(0);
-		this.ventanaFacturacionXcliente.getModelFacturacionClientes()
-				.setColumnIdentifiers(this.ventanaFacturacionXcliente.getNombreColumnas());
+	    double porcentaje = 0.0;
+	    double porcentajeOtros = 0.0;
+	    double facturacionOtros = 0.0;
+	    
+	    // Obtiene la facturación por cliente
+	    this.itemFacturacion_en_tabla = (List<FacturacionXclienteDTO>) modelo.dameFacturacionXcliente(anio);
 
-		double porcentaje = 0.0;
-		double PorcentajeOtros = 0.0;
-		double facturacionOtros = 0.0;
-		this.itemFacturacion_en_tabla = (List<FacturacionXclienteDTO>) modelo.dameFacturacionXcliente(anio);
+	    // Agrupa clientes pequeños
+	    for (int i = 0; i < this.itemFacturacion_en_tabla.size(); i++) {
+	        porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
+	        if (porcentaje < 2.0) {
+	            porcentajeOtros += porcentaje;
+	            facturacionOtros += this.itemFacturacion_en_tabla.get(i).getFacturacion();
+	            this.itemFacturacion_en_tabla.get(i).setNombreCliente("Otros");
+	            this.itemFacturacion_en_tabla.get(i).setFacturacion(facturacionOtros);
+	        }
+	    }
 
-		for (int i = 0; i < this.itemFacturacion_en_tabla.size(); i++) {
+	    // Elimina duplicados manteniendo el último
+	    Set<String> stringsVistos = new HashSet<>();
+	    List<FacturacionXclienteDTO> nuevaLista = new ArrayList<>();
+	    for (int i = itemFacturacion_en_tabla.size() - 1; i >= 0; i--) {
+	        String str = itemFacturacion_en_tabla.get(i).getNombreCliente();
+	        if (!stringsVistos.contains(str)) {
+	            nuevaLista.add(itemFacturacion_en_tabla.get(i));
+	            stringsVistos.add(str);
+	        }
+	    }
 
-			porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
-			if (porcentaje < 2.0) {
+	    // Limpia y reconstruye la lista original
+	    itemFacturacion_en_tabla.clear();
+	    itemFacturacion_en_tabla.addAll(nuevaLista);
+	    Collections.reverse(itemFacturacion_en_tabla);
 
-				PorcentajeOtros = PorcentajeOtros + porcentaje;
-				//facturacionOtros = facturacionOtros + this.itemFacturacion_en_tabla.get(i).getFacturacion();
-				facturacionOtros = 14000000;
+	    // Ordena de mayor a menor por facturación
+	    Collections.sort(itemFacturacion_en_tabla, new Comparator<FacturacionXclienteDTO>() {
+	        @Override
+	        public int compare(FacturacionXclienteDTO t1, FacturacionXclienteDTO t2) {
+	            return Double.compare(t2.getFacturacion(), t1.getFacturacion());
+	        }
+	    });
 
-				this.itemFacturacion_en_tabla.get(i).setNombreCliente("Otros");
-				this.itemFacturacion_en_tabla.get(i).setFacturacion(facturacionOtros);
+	    // Formato de números
+	    java.text.NumberFormat formatoNumero = java.text.NumberFormat.getNumberInstance();
+	    formatoNumero.setMaximumFractionDigits(2);
+	    formatoNumero.setGroupingUsed(true);
 
-			}
+	    // Llena la tabla
+	    for (FacturacionXclienteDTO item : this.itemFacturacion_en_tabla) {
+	        porcentaje = item.getFacturacion() * 100 / facturacionPesoPorAnio;
+	        
+	        // Formatear el número sin notación científica
+	        String facturacionFormateada = "$ " +formatoNumero.format(item.getFacturacion());
+	        String porcentajeFormateado = String.format("%.1f %%", porcentaje);
 
-		}
+	        Object[] fila = { 
+	            item.getNombreCliente(), 
+	            facturacionFormateada, 
+	            porcentajeFormateado 
+	        };
+	        this.ventanaFacturacionXcliente.getModelFacturacionClientes().addRow(fila);
+	    }
 
-		Set<String> stringsVistos = new HashSet<>();
-		List<FacturacionXclienteDTO> nuevaLista = new ArrayList<>();
-		for (int i = itemFacturacion_en_tabla.size() - 1; i >= 0; i--) {
-			String str = itemFacturacion_en_tabla.get(i).getNombreCliente();
-			if (!stringsVistos.contains(str)) {
-				nuevaLista.add(itemFacturacion_en_tabla.get(i));
-				stringsVistos.add(str);
-			}
-		}
-
-		itemFacturacion_en_tabla.clear(); // Limpiamos la lista original
-		itemFacturacion_en_tabla.addAll(nuevaLista); // Agregamos los elementos únicos a la lista original
-
-		Collections.reverse(itemFacturacion_en_tabla);
-
-		Collections.sort(itemFacturacion_en_tabla, new Comparator<FacturacionXclienteDTO>() {
-
-			@Override
-			public int compare(FacturacionXclienteDTO t1, FacturacionXclienteDTO t2) {
-				// Comparar los primeros doubles de cada objeto y ordenar de mayor a menor
-				return Double.compare(t2.getFacturacion(), t1.getFacturacion());
-			}
-
-		});
-
-		for (int i = 0; i < this.itemFacturacion_en_tabla.size(); i++) {
-
-//			double facturación = monedaFormatter.formatPeso(Double.toString(this.itemFacturacion_en_tabla.get(i).getFacturacion()))	;		
-			porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
-
-			String porcentaFacturacion = String.format("%.1f %%", porcentaje);
-
-			Object[] fila = { this.itemFacturacion_en_tabla.get(i).getNombreCliente(),
-					this.itemFacturacion_en_tabla.get(i).getFacturacion(), porcentaFacturacion };
-			this.ventanaFacturacionXcliente.getModelFacturacionClientes().addRow(fila);
-		}
-		this.ventanaFacturacionXcliente.show();
-
-		ventanaFacturacionXcliente.setCellRender(this.ventanaFacturacionXcliente.getTblFacturacionClientes());
-
+	    this.ventanaFacturacionXcliente.show();
+	    ventanaFacturacionXcliente.setCellRender(this.ventanaFacturacionXcliente.getTblFacturacionClientes());
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+//	private void cargarTablaFacturacionCliente() {
+//
+//		this.ventanaFacturacionXcliente.getModelFacturacionClientes().setRowCount(0); // Para
+//		// vaciar
+//		// tabla
+//		this.ventanaFacturacionXcliente.getModelFacturacionClientes().setColumnCount(0);
+//		this.ventanaFacturacionXcliente.getModelFacturacionClientes()
+//				.setColumnIdentifiers(this.ventanaFacturacionXcliente.getNombreColumnas());
+//
+//		double porcentaje = 0.0;
+//		double PorcentajeOtros = 0.0;
+//		double facturacionOtros = 0.0;
+//		this.itemFacturacion_en_tabla = (List<FacturacionXclienteDTO>) modelo.dameFacturacionXcliente(anio);
+//
+//		for (int i = 0; i < this.itemFacturacion_en_tabla.size(); i++) {
+//
+//			porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
+//			if (porcentaje < 2.0) {
+//
+//				PorcentajeOtros = PorcentajeOtros + porcentaje;
+//				facturacionOtros = facturacionOtros + this.itemFacturacion_en_tabla.get(i).getFacturacion();
+//			
+//				this.itemFacturacion_en_tabla.get(i).setNombreCliente("Otros");
+//				this.itemFacturacion_en_tabla.get(i).setFacturacion(facturacionOtros);
+//
+//			}
+//
+//		}
+//
+//		Set<String> stringsVistos = new HashSet<>();
+//		List<FacturacionXclienteDTO> nuevaLista = new ArrayList<>();
+//		for (int i = itemFacturacion_en_tabla.size() - 1; i >= 0; i--) {
+//			String str = itemFacturacion_en_tabla.get(i).getNombreCliente();
+//			if (!stringsVistos.contains(str)) {
+//				nuevaLista.add(itemFacturacion_en_tabla.get(i));
+//				stringsVistos.add(str);
+//			}
+//		}
+//
+//		itemFacturacion_en_tabla.clear(); // Limpiamos la lista original
+//		itemFacturacion_en_tabla.addAll(nuevaLista); // Agregamos los elementos únicos a la lista original
+//
+//		Collections.reverse(itemFacturacion_en_tabla);
+//
+//		Collections.sort(itemFacturacion_en_tabla, new Comparator<FacturacionXclienteDTO>() {
+//
+//			@Override
+//			public int compare(FacturacionXclienteDTO t1, FacturacionXclienteDTO t2) {
+//				// Comparar los primeros doubles de cada objeto y ordenar de mayor a menor
+//				return Double.compare(t2.getFacturacion(), t1.getFacturacion());
+//			}
+//
+//		});
+//
+//		for (int i = 0; i < this.itemFacturacion_en_tabla.size(); i++) {
+//
+//	
+//			porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
+//
+//			String porcentaFacturacion = String.format("%.1f %%", porcentaje);
+//
+//			Object[] fila = { this.itemFacturacion_en_tabla.get(i).getNombreCliente(),
+//					this.itemFacturacion_en_tabla.get(i).getFacturacion(), porcentaFacturacion };
+//			this.ventanaFacturacionXcliente.getModelFacturacionClientes().addRow(fila);
+//		}
+//		this.ventanaFacturacionXcliente.show();
+//
+//		ventanaFacturacionXcliente.setCellRender(this.ventanaFacturacionXcliente.getTblFacturacionClientes());
+//
+//	}
 
 	private void llenarComboCliente() {
 

@@ -38,6 +38,8 @@ public class MonedaFormatter {
     }
 
     public String formatPeso(String amount) {
+    	
+
         if (amount == null || amount.trim().isEmpty() || amount.equals("0")) {
             return "$ 0,00";
         }

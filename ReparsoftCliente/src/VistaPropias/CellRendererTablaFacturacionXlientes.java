@@ -72,30 +72,24 @@ public class CellRendererTablaFacturacionXlientes extends DefaultTableCellRender
 		}
 
 		if (column == 0) {
-			
-			
+
 			table.getColumnModel().getColumn(column).setPreferredWidth(240);
-			
 
 		}
-		
+
 		if (column == 1) {
 
-			monedaFormatter = new MonedaFormatter();
-			String valor = monedaFormatter.formatPeso(value.toString());
-			setText((value == null) ? "" : valor);
 
 			table.getColumnModel().getColumn(column).setPreferredWidth(100);
-			
 			setHorizontalAlignment(SwingConstants.RIGHT);
-			
+
 		}
 
 		if (column == 2) {
 
 			setHorizontalAlignment(SwingConstants.CENTER);
 			table.getColumnModel().getColumn(column).setPreferredWidth(100);
-						
+
 		}
 
 		return this;
