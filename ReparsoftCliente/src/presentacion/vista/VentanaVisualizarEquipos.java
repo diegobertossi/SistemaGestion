@@ -36,6 +36,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.JCheckBox;
 import java.awt.Cursor;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.awt.event.ActionEvent;
 
 public class VentanaVisualizarEquipos extends JFrame {
@@ -650,12 +652,12 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnGenerarRemito.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnGenerarRemito.setBounds(138, 56, 159, 20);
 		panel_4.add(btnGenerarRemito);
-		
+
 		lblFechaDeSalida = new JLabel("Fecha de Salida: ");
 		lblFechaDeSalida.setFont(new Font("Cambria", Font.BOLD, 14));
 		lblFechaDeSalida.setBounds(7, 81, 121, 14);
 		panel_4.add(lblFechaDeSalida);
-		
+
 		JDateChooser FechaSalida = new JDateChooser("dd/MM/yyyy", "##-##-####", '-');
 		FechaSalida.setFont(new Font("Cambria", Font.BOLD, 14));
 		FechaSalida.setFocusable(false);
@@ -691,14 +693,14 @@ public class VentanaVisualizarEquipos extends JFrame {
 		JSeparator separator_3 = new JSeparator();
 		separator_3.setBounds(11, 112, 332, 4);
 		panel_2.add(separator_3);
-		
+
 		textLugarDeIngreso = new JTextField();
 		textLugarDeIngreso.setFont(new Font("Cambria", Font.PLAIN, 14));
 		textLugarDeIngreso.setEditable(false);
 		textLugarDeIngreso.setBounds(139, 87, 51, 20);
 		panel_2.add(textLugarDeIngreso);
 		textLugarDeIngreso.setColumns(10);
-		
+
 		JLabel lblLugarDeIngreso = new JLabel("Lugar de ingreso: ");
 		lblLugarDeIngreso.setFont(new Font("Cambria", Font.BOLD, 14));
 		lblLugarDeIngreso.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(128, 128, 128)));
@@ -1176,12 +1178,29 @@ public class VentanaVisualizarEquipos extends JFrame {
 		setLocationCenter();
 		this.setVisible(true);
 
+//		addWindowFocusListener(new WindowFocusListener() {
+//			@Override
+//			public void windowGainedFocus(WindowEvent e) {
+//				System.out.println("La ventana ganó el foco: ");
+//			}
+//
+//			@Override
+//			public void windowLostFocus(WindowEvent e) {
+//				System.out.println("La ventana perdió el foco: ");
+//			}
+//
+//		});
+
 	}
 
+	
+
+	
 	public void setLocationCenter() {
 		setLocationMove(0, 0);
 	}
-
+	
+	
 	public void setLocationMove(int moveWidth, int moveHeight) {
 		// Obtenemos el tama�o de la pantalla.
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -1829,6 +1848,6 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 	public void setTextLugarDeIngreso(String lugarDeIngreso) {
 		this.textLugarDeIngreso.setText(lugarDeIngreso);
-		
+
 	}
 }

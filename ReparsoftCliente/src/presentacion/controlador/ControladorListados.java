@@ -72,6 +72,7 @@ import presentacion.vista.VentanaEstadisticas;
 import presentacion.vista.VentanaFacturacionXcliente;
 import presentacion.vista.VentanaListadoReparaciones;
 import presentacion.vista.VentanaResumenMensualTecnico;
+import presentacion.vista.VentanaVisualizarEquipos;
 import tiposPropios.MonedaFormatter;
 import presentacion.reportes.ReporteResumenTecnico;
 import java.util.Comparator;
@@ -127,21 +128,19 @@ public class ControladorListados
 	private Color labelColor2 = Color.BLACK; // Cambiar color de la letra
 	private Color labelColor = Color.WHITE; // Cambiar color de la letra
 
-	private  ItemLabelPosition positionNumeroGrande = new ItemLabelPosition(
-             ItemLabelAnchor.CENTER, // Posición dentro de la barra
-             TextAnchor.BASELINE_CENTER, // Alineación vertical
-             TextAnchor.BASELINE_CENTER, // Alineación de texto
-             -Math.PI / 2.0 // Rotación del texto (90 grados para vertical)
-     );
-	private  ItemLabelPosition positionNumeroChico = new ItemLabelPosition(
-             ItemLabelAnchor.CENTER, // Posición dentro de la barra
-             TextAnchor.BASELINE_CENTER, // Alineación vertical
-             TextAnchor.BASELINE_CENTER, // Alineación de texto
-             0 // Rotación del texto (90 grados para vertical)
-     );
+	private ItemLabelPosition positionNumeroGrande = new ItemLabelPosition(ItemLabelAnchor.CENTER, // Posición dentro de
+																									// la barra
+			TextAnchor.BASELINE_CENTER, // Alineación vertical
+			TextAnchor.BASELINE_CENTER, // Alineación de texto
+			-Math.PI / 2.0 // Rotación del texto (90 grados para vertical)
+	);
+	private ItemLabelPosition positionNumeroChico = new ItemLabelPosition(ItemLabelAnchor.CENTER, // Posición dentro de
+																									// la barra
+			TextAnchor.BASELINE_CENTER, // Alineación vertical
+			TextAnchor.BASELINE_CENTER, // Alineación de texto
+			0 // Rotación del texto (90 grados para vertical)
+	);
 
-	
-	
 	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
 
@@ -320,7 +319,7 @@ public class ControladorListados
 				rfs.add(RowFilter.regexFilter(
 						String.valueOf(ventanaListadoReparaciones.getChckbxPresupuestoGenerado().isSelected()), 17));
 			}
-			
+
 			if (ventanaListadoReparaciones.getRadioButtonIngreso().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroIngreso().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroIngreso().getSelectedItem().toString() != null) {
@@ -492,7 +491,7 @@ public class ControladorListados
 
 					ventanaResumenMensualTecnico.getTextPorcComisiones().setText("");
 					ventanaResumenMensualTecnico.getTextTotalComisionesPesos().setText("");
-					
+
 					String nombreTecnico = ventanaEstadisticas.getTextNombreTecnico().getText();
 					int idTecnico = modelo.idUsuarioporNombre(nombreTecnico);
 					mes = ventanaResumenMensualTecnico.getComboMes().getSelectedIndex();
@@ -700,8 +699,7 @@ public class ControladorListados
 				}
 
 				seleccionDetalleEstadisticas = "MOSTRAR DETALLE";
-				
-				
+
 				ventanaCodigoSeguridad.dispose();
 				ventanaCodigoSeguridad = null;
 			}
@@ -722,16 +720,12 @@ public class ControladorListados
 				ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
 
 				seleccionDetalleEstadisticas = "OCULTAR DETALLE";
-				
-				
+
 				ventanaCodigoSeguridad.dispose();
 				ventanaCodigoSeguridad = null;
 
 			}
 		});
-		
-		
-
 
 	}
 
@@ -745,14 +739,13 @@ public class ControladorListados
 			if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
 
 				ventanaCodigoSeguridad.getRdbtnMostrar().setSelected(true);
-				
+
 			}
 
 			else {
 
 				ventanaCodigoSeguridad.getRdbtnOcultar().setSelected(true);
 			}
-			
 
 			return true;
 
@@ -796,7 +789,8 @@ public class ControladorListados
 					this.Reparaciones_en_tabla.get(i).getPresupuestoGenerado(),
 					this.Reparaciones_en_tabla.get(i).getPresupuestoEnviado(),
 					this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
-					this.Reparaciones_en_tabla.get(i).getPrecioDolar(), this.Reparaciones_en_tabla.get(i).getPago(),this.Reparaciones_en_tabla.get(i).getLugarDeIngreso() };
+					this.Reparaciones_en_tabla.get(i).getPrecioDolar(), this.Reparaciones_en_tabla.get(i).getPago(),
+					this.Reparaciones_en_tabla.get(i).getLugarDeIngreso() };
 
 			this.ventanaListadoReparaciones.getModelReparaciones().addRow(fila);
 
@@ -832,7 +826,7 @@ public class ControladorListados
 		this.ventanaListadoReparaciones.getComboFiltroELS().addActionListener(this);
 		this.ventanaListadoReparaciones.getComboFiltroTecnico().addActionListener(this);
 		this.ventanaListadoReparaciones.getComboFiltroIngreso().addActionListener(this);
-		
+
 		this.ventanaListadoReparaciones.getChckbxPresupuestoEnviado().addActionListener(this);
 		this.ventanaListadoReparaciones.getChckbxPresupuestoGenerado().addActionListener(this);
 
@@ -868,7 +862,7 @@ public class ControladorListados
 		this.ventanaListadoReparaciones.getRadioButtonPresupEnviado().addItemListener(this);
 		this.ventanaListadoReparaciones.getRadioButtonPresupGenerado().addItemListener(this);
 		this.ventanaListadoReparaciones.getRadioButtonIngreso().addItemListener(this);
-		
+
 		this.ventanaListadoReparaciones.getTblReparaciones().addMouseListener(this);
 		this.ventanaListadoReparaciones.getTblReparaciones().addMouseMotionListener(this);
 
@@ -947,7 +941,7 @@ public class ControladorListados
 		this.ventanaListadoReparaciones.getChckbxPresupuestoEnviadoColumna().addActionListener(this);
 		this.ventanaListadoReparaciones.getChckbxPresupuestoEnviadoColumna().addItemListener(this);
 		this.ventanaListadoReparaciones.getChckbxPresupuestoEnviadoColumna().addMouseListener(this);
-		
+
 		this.ventanaListadoReparaciones.getChckbxIngreso().addActionListener(this);
 		this.ventanaListadoReparaciones.getChckbxIngreso().addItemListener(this);
 		this.ventanaListadoReparaciones.getChckbxIngreso().addMouseListener(this);
@@ -978,162 +972,76 @@ public class ControladorListados
 		AutoCompleteDecorator.decorate(ventanaListadoReparaciones.getComboFiltroIngreso());
 
 	}
-	
-	
-	
-	
+
 	private void cargarTablaFacturacionCliente() {
-	    // Limpia la tabla
-	    this.ventanaFacturacionXcliente.getModelFacturacionClientes().setRowCount(0);
-	    this.ventanaFacturacionXcliente.getModelFacturacionClientes().setColumnCount(0);
-	    this.ventanaFacturacionXcliente.getModelFacturacionClientes()
-	        .setColumnIdentifiers(this.ventanaFacturacionXcliente.getNombreColumnas());
+		// Limpia la tabla
+		this.ventanaFacturacionXcliente.getModelFacturacionClientes().setRowCount(0);
+		this.ventanaFacturacionXcliente.getModelFacturacionClientes().setColumnCount(0);
+		this.ventanaFacturacionXcliente.getModelFacturacionClientes()
+				.setColumnIdentifiers(this.ventanaFacturacionXcliente.getNombreColumnas());
 
-	    double porcentaje = 0.0;
-	    double porcentajeOtros = 0.0;
-	    double facturacionOtros = 0.0;
-	    
-	    // Obtiene la facturación por cliente
-	    this.itemFacturacion_en_tabla = (List<FacturacionXclienteDTO>) modelo.dameFacturacionXcliente(anio);
+		double porcentaje = 0.0;
+		double porcentajeOtros = 0.0;
+		double facturacionOtros = 0.0;
 
-	    // Agrupa clientes pequeños
-	    for (int i = 0; i < this.itemFacturacion_en_tabla.size(); i++) {
-	        porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
-	        if (porcentaje < 2.0) {
-	            porcentajeOtros += porcentaje;
-	            facturacionOtros += this.itemFacturacion_en_tabla.get(i).getFacturacion();
-	            this.itemFacturacion_en_tabla.get(i).setNombreCliente("Otros");
-	            this.itemFacturacion_en_tabla.get(i).setFacturacion(facturacionOtros);
-	        }
-	    }
+		// Obtiene la facturación por cliente
+		this.itemFacturacion_en_tabla = (List<FacturacionXclienteDTO>) modelo.dameFacturacionXcliente(anio);
 
-	    // Elimina duplicados manteniendo el último
-	    Set<String> stringsVistos = new HashSet<>();
-	    List<FacturacionXclienteDTO> nuevaLista = new ArrayList<>();
-	    for (int i = itemFacturacion_en_tabla.size() - 1; i >= 0; i--) {
-	        String str = itemFacturacion_en_tabla.get(i).getNombreCliente();
-	        if (!stringsVistos.contains(str)) {
-	            nuevaLista.add(itemFacturacion_en_tabla.get(i));
-	            stringsVistos.add(str);
-	        }
-	    }
+		// Agrupa clientes pequeños
+		for (int i = 0; i < this.itemFacturacion_en_tabla.size(); i++) {
+			porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
+			if (porcentaje < 2.0) {
+				porcentajeOtros += porcentaje;
+				facturacionOtros += this.itemFacturacion_en_tabla.get(i).getFacturacion();
+				this.itemFacturacion_en_tabla.get(i).setNombreCliente("Otros");
+				this.itemFacturacion_en_tabla.get(i).setFacturacion(facturacionOtros);
+			}
+		}
 
-	    // Limpia y reconstruye la lista original
-	    itemFacturacion_en_tabla.clear();
-	    itemFacturacion_en_tabla.addAll(nuevaLista);
-	    Collections.reverse(itemFacturacion_en_tabla);
+		// Elimina duplicados manteniendo el último
+		Set<String> stringsVistos = new HashSet<>();
+		List<FacturacionXclienteDTO> nuevaLista = new ArrayList<>();
+		for (int i = itemFacturacion_en_tabla.size() - 1; i >= 0; i--) {
+			String str = itemFacturacion_en_tabla.get(i).getNombreCliente();
+			if (!stringsVistos.contains(str)) {
+				nuevaLista.add(itemFacturacion_en_tabla.get(i));
+				stringsVistos.add(str);
+			}
+		}
 
-	    // Ordena de mayor a menor por facturación
-	    Collections.sort(itemFacturacion_en_tabla, new Comparator<FacturacionXclienteDTO>() {
-	        @Override
-	        public int compare(FacturacionXclienteDTO t1, FacturacionXclienteDTO t2) {
-	            return Double.compare(t2.getFacturacion(), t1.getFacturacion());
-	        }
-	    });
+		// Limpia y reconstruye la lista original
+		itemFacturacion_en_tabla.clear();
+		itemFacturacion_en_tabla.addAll(nuevaLista);
+		Collections.reverse(itemFacturacion_en_tabla);
 
-	    // Formato de números
-	    java.text.NumberFormat formatoNumero = java.text.NumberFormat.getNumberInstance();
-	    formatoNumero.setMaximumFractionDigits(2);
-	    formatoNumero.setGroupingUsed(true);
+		// Ordena de mayor a menor por facturación
+		Collections.sort(itemFacturacion_en_tabla, new Comparator<FacturacionXclienteDTO>() {
+			@Override
+			public int compare(FacturacionXclienteDTO t1, FacturacionXclienteDTO t2) {
+				return Double.compare(t2.getFacturacion(), t1.getFacturacion());
+			}
+		});
 
-	    // Llena la tabla
-	    for (FacturacionXclienteDTO item : this.itemFacturacion_en_tabla) {
-	        porcentaje = item.getFacturacion() * 100 / facturacionPesoPorAnio;
-	        
-	        // Formatear el número sin notación científica
-	        String facturacionFormateada = "$ " +formatoNumero.format(item.getFacturacion());
-	        String porcentajeFormateado = String.format("%.1f %%", porcentaje);
+		// Formato de números
+		java.text.NumberFormat formatoNumero = java.text.NumberFormat.getNumberInstance();
+		formatoNumero.setMaximumFractionDigits(2);
+		formatoNumero.setGroupingUsed(true);
 
-	        Object[] fila = { 
-	            item.getNombreCliente(), 
-	            facturacionFormateada, 
-	            porcentajeFormateado 
-	        };
-	        this.ventanaFacturacionXcliente.getModelFacturacionClientes().addRow(fila);
-	    }
+		// Llena la tabla
+		for (FacturacionXclienteDTO item : this.itemFacturacion_en_tabla) {
+			porcentaje = item.getFacturacion() * 100 / facturacionPesoPorAnio;
 
-	    this.ventanaFacturacionXcliente.show();
-	    ventanaFacturacionXcliente.setCellRender(this.ventanaFacturacionXcliente.getTblFacturacionClientes());
+			// Formatear el número sin notación científica
+			String facturacionFormateada = "$ " + formatoNumero.format(item.getFacturacion());
+			String porcentajeFormateado = String.format("%.1f %%", porcentaje);
+
+			Object[] fila = { item.getNombreCliente(), facturacionFormateada, porcentajeFormateado };
+			this.ventanaFacturacionXcliente.getModelFacturacionClientes().addRow(fila);
+		}
+
+		this.ventanaFacturacionXcliente.show();
+		ventanaFacturacionXcliente.setCellRender(this.ventanaFacturacionXcliente.getTblFacturacionClientes());
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-
-//	private void cargarTablaFacturacionCliente() {
-//
-//		this.ventanaFacturacionXcliente.getModelFacturacionClientes().setRowCount(0); // Para
-//		// vaciar
-//		// tabla
-//		this.ventanaFacturacionXcliente.getModelFacturacionClientes().setColumnCount(0);
-//		this.ventanaFacturacionXcliente.getModelFacturacionClientes()
-//				.setColumnIdentifiers(this.ventanaFacturacionXcliente.getNombreColumnas());
-//
-//		double porcentaje = 0.0;
-//		double PorcentajeOtros = 0.0;
-//		double facturacionOtros = 0.0;
-//		this.itemFacturacion_en_tabla = (List<FacturacionXclienteDTO>) modelo.dameFacturacionXcliente(anio);
-//
-//		for (int i = 0; i < this.itemFacturacion_en_tabla.size(); i++) {
-//
-//			porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
-//			if (porcentaje < 2.0) {
-//
-//				PorcentajeOtros = PorcentajeOtros + porcentaje;
-//				facturacionOtros = facturacionOtros + this.itemFacturacion_en_tabla.get(i).getFacturacion();
-//			
-//				this.itemFacturacion_en_tabla.get(i).setNombreCliente("Otros");
-//				this.itemFacturacion_en_tabla.get(i).setFacturacion(facturacionOtros);
-//
-//			}
-//
-//		}
-//
-//		Set<String> stringsVistos = new HashSet<>();
-//		List<FacturacionXclienteDTO> nuevaLista = new ArrayList<>();
-//		for (int i = itemFacturacion_en_tabla.size() - 1; i >= 0; i--) {
-//			String str = itemFacturacion_en_tabla.get(i).getNombreCliente();
-//			if (!stringsVistos.contains(str)) {
-//				nuevaLista.add(itemFacturacion_en_tabla.get(i));
-//				stringsVistos.add(str);
-//			}
-//		}
-//
-//		itemFacturacion_en_tabla.clear(); // Limpiamos la lista original
-//		itemFacturacion_en_tabla.addAll(nuevaLista); // Agregamos los elementos únicos a la lista original
-//
-//		Collections.reverse(itemFacturacion_en_tabla);
-//
-//		Collections.sort(itemFacturacion_en_tabla, new Comparator<FacturacionXclienteDTO>() {
-//
-//			@Override
-//			public int compare(FacturacionXclienteDTO t1, FacturacionXclienteDTO t2) {
-//				// Comparar los primeros doubles de cada objeto y ordenar de mayor a menor
-//				return Double.compare(t2.getFacturacion(), t1.getFacturacion());
-//			}
-//
-//		});
-//
-//		for (int i = 0; i < this.itemFacturacion_en_tabla.size(); i++) {
-//
-//	
-//			porcentaje = this.itemFacturacion_en_tabla.get(i).getFacturacion() * 100 / facturacionPesoPorAnio;
-//
-//			String porcentaFacturacion = String.format("%.1f %%", porcentaje);
-//
-//			Object[] fila = { this.itemFacturacion_en_tabla.get(i).getNombreCliente(),
-//					this.itemFacturacion_en_tabla.get(i).getFacturacion(), porcentaFacturacion };
-//			this.ventanaFacturacionXcliente.getModelFacturacionClientes().addRow(fila);
-//		}
-//		this.ventanaFacturacionXcliente.show();
-//
-//		ventanaFacturacionXcliente.setCellRender(this.ventanaFacturacionXcliente.getTblFacturacionClientes());
-//
-//	}
 
 	private void llenarComboCliente() {
 
@@ -1219,10 +1127,9 @@ public class ControladorListados
 		ventanaListadoReparaciones.getComboFiltroTecnico().setSelectedIndex(-1);
 
 	}
-	
+
 	private void llenarComboIngreso() {
 
-		
 		ventanaListadoReparaciones.getComboFiltroIngreso().addItem("CABA");
 		ventanaListadoReparaciones.getComboFiltroIngreso().addItem("MDP");
 		ventanaListadoReparaciones.getComboFiltroIngreso().addItem("BRC");
@@ -1588,20 +1495,14 @@ public class ControladorListados
 
 		ventanaEstadisticas.getTextIngresosTotales().setText(Integer.toString(cantidadIngresosPorAnio));
 		ventanaEstadisticas.getTextDiagnosticosTotales().setText(Integer.toString(cantidadDiagnosticosPorAnio));
-		
-		
+
 		DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        String facturacionStrPeso = decimalFormat.format(facturacionPesoPorAnio);
-        String facturacionStrDolar = decimalFormat.format(facturacionDolarPorAnio);
+		String facturacionStrPeso = decimalFormat.format(facturacionPesoPorAnio);
+		String facturacionStrDolar = decimalFormat.format(facturacionDolarPorAnio);
 
-        
-		
-		ventanaEstadisticas.getTextFacTotalPesos()
-		.setText(monedaFormatter.formatPeso(facturacionStrPeso));
+		ventanaEstadisticas.getTextFacTotalPesos().setText(monedaFormatter.formatPeso(facturacionStrPeso));
 
-		
-		ventanaEstadisticas.getTextFacTotalDolares()
-				.setText(monedaFormatter.formatDolar(facturacionStrDolar));
+		ventanaEstadisticas.getTextFacTotalDolares().setText(monedaFormatter.formatDolar(facturacionStrDolar));
 
 	}
 
@@ -1785,12 +1686,10 @@ public class ControladorListados
 
 		double facturacionPesoPorAnioPorTecnico = modelo.dameFacturacionPesoPorAnioPorTecnico(anio, idTecnico);
 		double facturacionDolarPorAnioPorTecnico = modelo.dameFacturacionDolarPorAnioPorTecnico(anio, idTecnico);
-		
-		
+
 		DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        String facturacionStrPesoXtecnico = decimalFormat.format(facturacionPesoPorAnioPorTecnico);
-        String facturacionStrDolarXtecnico = decimalFormat.format(facturacionDolarPorAnioPorTecnico);
-        
+		String facturacionStrPesoXtecnico = decimalFormat.format(facturacionPesoPorAnioPorTecnico);
+		String facturacionStrDolarXtecnico = decimalFormat.format(facturacionDolarPorAnioPorTecnico);
 
 		ventanaEstadisticas.getTextTotalRevisados().setText(Integer.toString(totalDiagnosticosXanioXtecnico));
 
@@ -1936,12 +1835,14 @@ public class ControladorListados
 
 		BarRenderer renderer_ingreso = (BarRenderer) plot_ingreso.getRenderer();
 		renderer_ingreso.setDrawBarOutline(false);
-		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, new Color(100, 149, 237), 0.0f, 0.0f, new Color(70, 130, 180));
+		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, new Color(100, 149, 237), 0.0f, 0.0f,
+				new Color(70, 130, 180));
 		renderer_ingreso.setSeriesPaint(0, gp0);
 
 		BarRenderer renderer_diagnostico = (BarRenderer) plot_diagnostico.getRenderer();
 		renderer_diagnostico.setDrawBarOutline(false);
-		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, new Color(102, 205, 170), 0.0f, 0.0f, new Color(60, 179, 113));
+		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, new Color(102, 205, 170), 0.0f, 0.0f,
+				new Color(60, 179, 113));
 		renderer_diagnostico.setSeriesPaint(0, gp1);
 
 		BarRenderer renderer_facturacion = (BarRenderer) plot_facturacion.getRenderer();
@@ -1951,15 +1852,13 @@ public class ControladorListados
 
 		grafico_ingresos.getTitle().setFont(titleFont);
 		grafico_ingresos.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-		
+
 		grafico_diagnosticos.getTitle().setFont(titleFont);
 		grafico_diagnosticos.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-		
-		
+
 		grafico_facturacion.getTitle().setFont(titleFont);
 		grafico_facturacion.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-		
-				 
+
 		renderer_ingreso.setItemLabelGenerator(generator);
 		renderer_diagnostico.setItemLabelGenerator(generator);
 		renderer_facturacion.setItemLabelGenerator(generator);
@@ -1976,7 +1875,7 @@ public class ControladorListados
 		renderer_ingreso.setItemLabelsVisible(true);
 		renderer_diagnostico.setItemLabelsVisible(true);
 		renderer_facturacion.setItemLabelsVisible(true);
-		
+
 		renderer_facturacion.setPositiveItemLabelPosition(positionNumeroGrande);
 		renderer_diagnostico.setPositiveItemLabelPosition(positionNumeroChico);
 		renderer_ingreso.setPositiveItemLabelPosition(positionNumeroChico);
@@ -2090,7 +1989,8 @@ public class ControladorListados
 
 		BarRenderer renderer_diagnostico = (BarRenderer) plot_diagnostico.getRenderer();
 		renderer_diagnostico.setDrawBarOutline(false);
-		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, new Color(102, 205, 170), 0.0f, 0.0f, new Color(60, 179, 113));
+		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, new Color(102, 205, 170), 0.0f, 0.0f,
+				new Color(60, 179, 113));
 		renderer_diagnostico.setSeriesPaint(0, gp1);
 
 		BarRenderer renderer_aceptaciones = (BarRenderer) plot_aceptaciones.getRenderer();
@@ -2105,10 +2005,10 @@ public class ControladorListados
 
 		grafico_aceptaciones.getTitle().setFont(titleFont);
 		grafico_aceptaciones.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-		
+
 		grafico_diagnosticos.getTitle().setFont(titleFont);
 		grafico_diagnosticos.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-		
+
 		grafico_facturacion.getTitle().setFont(titleFont);
 		grafico_facturacion.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
 
@@ -2128,7 +2028,7 @@ public class ControladorListados
 		renderer_aceptaciones.setItemLabelsVisible(true);
 		renderer_diagnostico.setItemLabelsVisible(true);
 		renderer_facturacion.setItemLabelsVisible(true);
-		
+
 		renderer_facturacion.setPositiveItemLabelPosition(positionNumeroGrande);
 		renderer_diagnostico.setPositiveItemLabelPosition(positionNumeroChico);
 		renderer_aceptaciones.setPositiveItemLabelPosition(positionNumeroChico);
@@ -2233,7 +2133,8 @@ public class ControladorListados
 
 		BarRenderer renderer_ingreso = (BarRenderer) plot_ingreso.getRenderer();
 		renderer_ingreso.setDrawBarOutline(false);
-		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, new Color(100, 149, 237), 0.0f, 0.0f, new Color(70, 130, 180));
+		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, new Color(100, 149, 237), 0.0f, 0.0f,
+				new Color(70, 130, 180));
 		renderer_ingreso.setSeriesPaint(0, gp1);
 
 		BarRenderer renderer_aceptaciones = (BarRenderer) plot_aceptaciones.getRenderer();
@@ -2248,10 +2149,10 @@ public class ControladorListados
 
 		grafico_aceptaciones.getTitle().setFont(titleFont);
 		grafico_aceptaciones.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-		
+
 		grafico_Ingresos.getTitle().setFont(titleFont);
 		grafico_Ingresos.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-		
+
 		grafico_facturacion.getTitle().setFont(titleFont);
 		grafico_facturacion.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
 
@@ -2271,7 +2172,7 @@ public class ControladorListados
 		renderer_aceptaciones.setItemLabelsVisible(true);
 		renderer_ingreso.setItemLabelsVisible(true);
 		renderer_facturacion.setItemLabelsVisible(true);
-		
+
 		renderer_facturacion.setPositiveItemLabelPosition(positionNumeroGrande);
 		renderer_ingreso.setPositiveItemLabelPosition(positionNumeroChico);
 		renderer_aceptaciones.setPositiveItemLabelPosition(positionNumeroChico);
@@ -2309,19 +2210,18 @@ public class ControladorListados
 		// Crear el gráfico de torta
 		JFreeChart chart = ChartFactory.createPieChart("", dataset, false, // Incluir leyenda
 				true, false);
-		
-		//Color labelBackColor = new Color(210, 210, 210); 
-			
-		Color BackgrounColor = new Color(197, 202, 233); 
+
+		// Color labelBackColor = new Color(210, 210, 210);
+
+		Color BackgrounColor = new Color(197, 202, 233);
 		Color BorderLine = new Color(121, 134, 203);
-		
-		
+
 		PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setStartAngle(290);
 		plot.setBackgroundPaint(BackgrounColor);
-		//plot.setBaseSectionOutlinePaint(BorderLine);
+		// plot.setBaseSectionOutlinePaint(BorderLine);
 		plot.setDirection(Rotation.CLOCKWISE);
-		
+
 		plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: {2}"));
 
 		plot.setLabelFont(labelFontPie);
@@ -2330,15 +2230,14 @@ public class ControladorListados
 
 		plot.setShadowPaint(Color.BLACK);
 		plot.setSectionOutlinesVisible(false);
-		
+
 		ChartPanel chartGraficoFacturacion = new ChartPanel(chart);
 		chartGraficoFacturacion.setMouseWheelEnabled(true);
 		chartGraficoFacturacion.setBackground(BorderLine);
-		
 
 		ventanaFacturacionXcliente.getPanelGraficoCliente().add(chartGraficoFacturacion, BorderLayout.CENTER);
-				
-		//ventanaFacturacionXcliente.getPanelGraficoCliente().repaint();
+
+		// ventanaFacturacionXcliente.getPanelGraficoCliente().repaint();
 
 	}
 
@@ -2421,20 +2320,36 @@ public class ControladorListados
 							this.ventanaListadoReparaciones.getTblReparaciones().getValueAt(row, col).toString());
 
 				NumeroELSSeleccionado = els;
-				boolean ventanaVisualizacionAbierta = controladorReparacion.isBanderaVentanaVisualizacion();
+				// boolean ventanaVisualizacionAbierta =
+				// controladorReparacion.isBanderaVentanaVisualizacion();
 
-				if (NumeroELSSeleccionado != 0 && !ventanaVisualizacionAbierta) {
-					
-					
-					try {
-						controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado);
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				System.out.println(controladorReparacion.cantidadVentanasAbiertas());
 
+//				if (NumeroELSSeleccionado != 0 && !ventanaVisualizacionAbierta) {
+//					
+//					
+//					try {
+//						controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado);
+//					} catch (ParseException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//
+//					controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
+//
+//				}
+//				
+
+				try {
+					controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				for (VentanaVisualizarEquipos ventana : controladorReparacion.ventanasDeVisualizacionAbiertas()) {
+					System.out.println("Título de la ventana: " + ventana.getTitle());
 					controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
-
 				}
 
 			}
@@ -3053,9 +2968,7 @@ public class ControladorListados
 				}
 
 			}
-			
-			
-			
+
 			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxIngreso()) {
 				if (this.ventanaListadoReparaciones.getChckbxIngreso().isSelected()) {
 
@@ -3083,7 +2996,6 @@ public class ControladorListados
 				}
 
 			}
-			
 
 		}
 
@@ -3278,7 +3190,7 @@ public class ControladorListados
 				}
 
 			}
-			
+
 			if (e.getSource() == this.ventanaListadoReparaciones.getRadioButtonIngreso()) {
 				if (this.ventanaListadoReparaciones.getRadioButtonIngreso().isSelected())
 
@@ -3904,8 +3816,7 @@ public class ControladorListados
 				}
 
 			}
-			
-			
+
 			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxIngreso()) {
 				if (this.ventanaListadoReparaciones.getChckbxIngreso().isSelected()) {
 
@@ -3935,7 +3846,6 @@ public class ControladorListados
 			}
 
 		}
-
 
 	}
 

@@ -151,6 +151,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
+	private List<VentanaVisualizarEquipos> ventanasAbiertas = new ArrayList<>();
+	
+	
 	public ControladorReparacion(VentanaEquipos ventanaEquipos, ControladorUsuLogin controladorUsuLogin, Agenda agendas,
 			ControladorPresupuestos controladorPresupuestos, ControladorSalidas controladorSalidas,
 			ControladorCliente controladorCliente) {
@@ -1982,7 +1985,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	public void TomarDatosDeTablasListado(int numeroELSSeleccionado2) throws ParseException {
 
 		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
+		ventanasAbiertas.add(ventanaVisualizarEquipos);
+		
+		
 		banderaVentanaVisualizacion = true;
+		
 		cerraVentanaVisualizarEquipoListado();
 
 		monedaFormatter = new MonedaFormatter();
@@ -2077,6 +2084,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		verificarPresupuesto();
 		deshabilitarCampos();
 
+	}
+	
+	
+	public int cantidadVentanasAbiertas() {
+		
+		return ventanasAbiertas.size()+1;
+		
+	}
+	
+	public List<VentanaVisualizarEquipos> ventanasDeVisualizacionAbiertas(){
+		return ventanasAbiertas;		
 	}
 
 	@SuppressWarnings("deprecation")
@@ -3194,11 +3212,14 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					banderaVentanaVisualizacion = false;
 					ventanaVisualizarEquipos.dispose();
 					ventanaVisualizarEquipos = null;
+					ventanasAbiertas.remove(ventanaVisualizarEquipos);
 
 				}
 			}
 
 		});
+		
+		
 		return banderaVentanaVisualizacion;
 
 	}
