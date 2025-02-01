@@ -2323,7 +2323,7 @@ public class ControladorListados
 				// boolean ventanaVisualizacionAbierta =
 				// controladorReparacion.isBanderaVentanaVisualizacion();
 
-				System.out.println(controladorReparacion.cantidadVentanasAbiertas());
+				System.out.println("Ventanas Abiertas: " + controladorReparacion.cantidadVentanasAbiertas());
 
 //				if (NumeroELSSeleccionado != 0 && !ventanaVisualizacionAbierta) {
 //					
@@ -2342,15 +2342,26 @@ public class ControladorListados
 
 				try {
 					controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado);
+					
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
-				for (VentanaVisualizarEquipos ventana : controladorReparacion.ventanasDeVisualizacionAbiertas()) {
-					System.out.println("Título de la ventana: " + ventana.getTitle());
-					controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
-				}
+				//controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
+				
+//				for (int i =0; i< controladorReparacion.ventanasDeVisualizacionAbiertas().size();i++) {
+//					
+//					//System.out.println("Título de la ventana: " + controladorReparacion.ventanasDeVisualizacionAbiertas().get(i).getTitle());
+//					//controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
+//				}
+				
+				
+				
+//				for (VentanaVisualizarEquipos ventana : controladorReparacion.ventanasDeVisualizacionAbiertas()) {
+//					System.out.println("Título de la ventana: " + controladorReparacion.ventanasDeVisualizacionAbiertas().get(els));
+//					controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
+//				}
 
 			}
 
