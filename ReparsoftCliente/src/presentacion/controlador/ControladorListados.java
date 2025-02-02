@@ -94,6 +94,7 @@ public class ControladorListados
 	private VentanaResumenMensualTecnico ventanaResumenMensualTecnico;
 
 	private VentanaFacturacionXcliente ventanaFacturacionXcliente;
+	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
 
 	// private int clickMax = 1;
 	// private int clickMin = 1;
@@ -2341,14 +2342,14 @@ public class ControladorListados
 //				
 
 				try {
-					controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado);
+					ventanaVisualizarEquipos = controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado);
 					
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
-				//controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
+				controladorReparacion.agregarListenersVentanaVisualizarEquiposListado(ventanaVisualizarEquipos);
 				
 //				for (int i =0; i< controladorReparacion.ventanasDeVisualizacionAbiertas().size();i++) {
 //					

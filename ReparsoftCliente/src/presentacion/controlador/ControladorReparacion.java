@@ -205,7 +205,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				this.ventanaEquipos.dispose();
 
-				agregarListenersVentanaVisualizarEquipos();
+				agregarListenersVentanaVisualizarEquipos(ventanaVisualizarEquipos);
 
 				llenarComboELSvisualizacion();
 
@@ -427,8 +427,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		}
 
-		else if (this.ventanaVisualizarEquipos != null
-				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnEditar()) {
+		else if (ventanaVisualizarEquipos != null
+				&& e.getSource() == ventanaVisualizarEquipos.getBtnEditar()) {
 
 			String nombreCliente = "";
 			String nombreSucursal = "";
@@ -754,7 +754,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					e1.printStackTrace();
 				}
 
-				agregarListenersVentanaVisualizarEquipos();
+				agregarListenersVentanaVisualizarEquipos(ventanaVisualizarEquipos);
 
 			}
 		}
@@ -1562,17 +1562,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	public void agregarListenersVentanaVisualizarEquipos() {
+	public void agregarListenersVentanaVisualizarEquipos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
-		this.ventanaVisualizarEquipos.getBotonAnterior().addActionListener(this);
-		this.ventanaVisualizarEquipos.getBotonSiguiente().addActionListener(this);
-		this.ventanaVisualizarEquipos.getBotonUltimo().addActionListener(this);
-		this.ventanaVisualizarEquipos.getBotonPrimero().addActionListener(this);
-		this.ventanaVisualizarEquipos.getBtnGuardarCambios().addActionListener(this);
-		this.ventanaVisualizarEquipos.getBotonRegistroIngreso().addActionListener(this);
-		this.ventanaVisualizarEquipos.getBotonEditarEstados().addActionListener(this);
-		this.ventanaVisualizarEquipos.getBtnEditar().addActionListener(this);
-		this.ventanaVisualizarEquipos.getBotonAvisoInforme().addActionListener(this);
+		ventanaVisualizarEquipos.getBotonAnterior().addActionListener(this);
+		ventanaVisualizarEquipos.getBotonSiguiente().addActionListener(this);
+		ventanaVisualizarEquipos.getBotonUltimo().addActionListener(this);
+		ventanaVisualizarEquipos.getBotonPrimero().addActionListener(this);
+		ventanaVisualizarEquipos.getBtnGuardarCambios().addActionListener(this);
+		ventanaVisualizarEquipos.getBotonRegistroIngreso().addActionListener(this);
+		ventanaVisualizarEquipos.getBotonEditarEstados().addActionListener(this);
+		ventanaVisualizarEquipos.getBtnEditar().addActionListener(this);
+		ventanaVisualizarEquipos.getBotonAvisoInforme().addActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonAvisoEquipoListo().addActionListener(this);
 		this.ventanaVisualizarEquipos.getBotonRespuestaAlTecnico().addActionListener(this);
 		this.ventanaVisualizarEquipos.getBtnGenerarRemito().addActionListener(this);
@@ -1797,142 +1797,142 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		
 		
 		
-		//agregarListenersVentanaVisualizarEquipos();
+		agregarListenersVentanaVisualizarEquipos(ventanaVisualizarEquipos);
 		
-		System.out.println(ventanaVisualizarEquipos.getTitle());
+		//System.out.println(ventanaVisualizarEquipos.getTitle());
 		
-		ventanaVisualizarEquipos.getBotonAnterior().addActionListener(this);
-		ventanaVisualizarEquipos.getBotonSiguiente().addActionListener(this);
-		ventanaVisualizarEquipos.getBotonUltimo().addActionListener(this);
-		ventanaVisualizarEquipos.getBotonPrimero().addActionListener(this);
-		ventanaVisualizarEquipos.getBtnGuardarCambios().addActionListener(this);
-		ventanaVisualizarEquipos.getBotonRegistroIngreso().addActionListener(this);
-		ventanaVisualizarEquipos.getBotonEditarEstados().addActionListener(this);
-		
-		
-		
-		ventanaVisualizarEquipos.getBtnEditar().addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Hola " + ventanaVisualizarEquipos.getTitle());
-				
-			}
-		});
+//		ventanaVisualizarEquipos.getBotonAnterior().addActionListener(this);
+//		ventanaVisualizarEquipos.getBotonSiguiente().addActionListener(this);
+//		ventanaVisualizarEquipos.getBotonUltimo().addActionListener(this);
+//		ventanaVisualizarEquipos.getBotonPrimero().addActionListener(this);
+//		ventanaVisualizarEquipos.getBtnGuardarCambios().addActionListener(this);
+//		ventanaVisualizarEquipos.getBotonRegistroIngreso().addActionListener(this);
+//		ventanaVisualizarEquipos.getBotonEditarEstados().addActionListener(this);
 		
 		
+//		
+//		ventanaVisualizarEquipos.getBtnEditar().addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				System.out.println("Hola " + ventanaVisualizarEquipos.getTitle());
+//				
+//			}
+//		});
 		
-		
-		
-		ventanaVisualizarEquipos.getBotonAvisoInforme().addActionListener(this);
-		ventanaVisualizarEquipos.getBotonAvisoEquipoListo().addActionListener(this);
-		ventanaVisualizarEquipos.getBotonRespuestaAlTecnico().addActionListener(this);
-		ventanaVisualizarEquipos.getBtnGenerarRemito().addActionListener(this);
-		ventanaVisualizarEquipos.getBotonPresupuestar().addActionListener(this);
-		ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(this);
-		ventanaVisualizarEquipos.getComboClientes().addActionListener(this);
-		ventanaVisualizarEquipos.getComboSucursal().addActionListener(this);
-		ventanaVisualizarEquipos.getComboTecnico().addActionListener(this);
-		ventanaVisualizarEquipos.getBtnRepuestos().addActionListener(this);
-		ventanaVisualizarEquipos.getBtnEditarRepuesto().addActionListener(this);
-		ventanaVisualizarEquipos.getBtnEliminarRepuesto().addActionListener(this);
-		ventanaVisualizarEquipos.getTablaRepuestos().addMouseListener(this);
-		ventanaVisualizarEquipos.getTablaRepuestos().addKeyListener(this);
-		ventanaVisualizarEquipos.getBotonRefrescarPantalla().addActionListener(this);
-
-		ventanaVisualizarEquipos.getTextPresupuesto().addKeyListener(this);
-		ventanaVisualizarEquipos.getTextPresupuestoDolar().addKeyListener(this);
-		ventanaVisualizarEquipos.getBtnBuscarELS().addActionListener(this);
-		ventanaVisualizarEquipos.getComboELS().addActionListener(this);
-		llenarComboELSvisualizacion();
-		AutoCompleteDecorator.decorate(ventanaVisualizarEquipos.getComboELS());
-
-		ventanaVisualizarEquipos.getTextPresupuesto().addFocusListener(new FocusListener() {
-			public void focusLost(FocusEvent e) {
-
-			}
-
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				SwingUtilities.invokeLater(() -> {
-					ventanaVisualizarEquipos.getTextPresupuesto().selectAll();
-				});
-			}
-		});
-
-		ventanaVisualizarEquipos.getTextPresupuestoDolar().addFocusListener(new FocusListener() {
-			public void focusLost(FocusEvent e) {
-
-			}
-
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				SwingUtilities.invokeLater(() -> {
-					ventanaVisualizarEquipos.getTextPresupuestoDolar().selectAll();
-				});
-			}
-		});
-
-		ventanaVisualizarEquipos.getTextPago().addKeyListener(this);
-		ventanaVisualizarEquipos.getTextPago().addFocusListener(new FocusListener() {
-			public void focusLost(FocusEvent e) {
-
-			}
-
-			@Override
-			public void focusGained(FocusEvent arg0) {
-
-				SwingUtilities.invokeLater(() -> {
-					ventanaVisualizarEquipos.getTextPago().selectAll();
-				});
-
-			}
-		});
-
-		ventanaVisualizarEquipos.getTextPresupuesto().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				String presupuesto = ventanaVisualizarEquipos.getTextPresupuesto().getText();
-				ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.formatPeso(presupuesto));
-				verificarPresupuestoEditado();
-
-			}
-		});
-
-		ventanaVisualizarEquipos.getTextPago().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				String pago = ventanaVisualizarEquipos.getTextPago().getText();
-				ventanaVisualizarEquipos.getTextPago().setText(monedaFormatter.formatPeso(pago));
-				verificarPresupuestoEditado();
-
-			}
-		});
-
-		ventanaVisualizarEquipos.getTextPresupuestoDolar().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				String presupuestoDolar = ventanaVisualizarEquipos.getTextPresupuestoDolar().getText();
-				ventanaVisualizarEquipos.getTextPresupuestoDolar()
-						.setText(monedaFormatter.formatDolar(presupuestoDolar));
-				verificarPresupuestoEditado();
-
-			}
-		});
-
-		performActionOnTextComponents(ventanaVisualizarEquipos);
-
-
-		ventanaVisualizarEquipos.getBotonAnterior().removeActionListener(this);
-		ventanaVisualizarEquipos.getBotonSiguiente().removeActionListener(this);
-		ventanaVisualizarEquipos.getBotonUltimo().removeActionListener(this);
-		ventanaVisualizarEquipos.getBotonPrimero().removeActionListener(this);
-		ventanaVisualizarEquipos.getBotonRefrescarPantalla().removeActionListener(this);
-		
-		
+//		
+//		
+//		
+//		
+//		ventanaVisualizarEquipos.getBotonAvisoInforme().addActionListener(this);
+//		ventanaVisualizarEquipos.getBotonAvisoEquipoListo().addActionListener(this);
+//		ventanaVisualizarEquipos.getBotonRespuestaAlTecnico().addActionListener(this);
+//		ventanaVisualizarEquipos.getBtnGenerarRemito().addActionListener(this);
+//		ventanaVisualizarEquipos.getBotonPresupuestar().addActionListener(this);
+//		ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(this);
+//		ventanaVisualizarEquipos.getComboClientes().addActionListener(this);
+//		ventanaVisualizarEquipos.getComboSucursal().addActionListener(this);
+//		ventanaVisualizarEquipos.getComboTecnico().addActionListener(this);
+//		ventanaVisualizarEquipos.getBtnRepuestos().addActionListener(this);
+//		ventanaVisualizarEquipos.getBtnEditarRepuesto().addActionListener(this);
+//		ventanaVisualizarEquipos.getBtnEliminarRepuesto().addActionListener(this);
+//		ventanaVisualizarEquipos.getTablaRepuestos().addMouseListener(this);
+//		ventanaVisualizarEquipos.getTablaRepuestos().addKeyListener(this);
+//		ventanaVisualizarEquipos.getBotonRefrescarPantalla().addActionListener(this);
+//
+//		ventanaVisualizarEquipos.getTextPresupuesto().addKeyListener(this);
+//		ventanaVisualizarEquipos.getTextPresupuestoDolar().addKeyListener(this);
+//		ventanaVisualizarEquipos.getBtnBuscarELS().addActionListener(this);
+//		ventanaVisualizarEquipos.getComboELS().addActionListener(this);
+//		llenarComboELSvisualizacion();
+//		AutoCompleteDecorator.decorate(ventanaVisualizarEquipos.getComboELS());
+//
+//		ventanaVisualizarEquipos.getTextPresupuesto().addFocusListener(new FocusListener() {
+//			public void focusLost(FocusEvent e) {
+//
+//			}
+//
+//			@Override
+//			public void focusGained(FocusEvent arg0) {
+//				SwingUtilities.invokeLater(() -> {
+//					ventanaVisualizarEquipos.getTextPresupuesto().selectAll();
+//				});
+//			}
+//		});
+//
+//		ventanaVisualizarEquipos.getTextPresupuestoDolar().addFocusListener(new FocusListener() {
+//			public void focusLost(FocusEvent e) {
+//
+//			}
+//
+//			@Override
+//			public void focusGained(FocusEvent arg0) {
+//				SwingUtilities.invokeLater(() -> {
+//					ventanaVisualizarEquipos.getTextPresupuestoDolar().selectAll();
+//				});
+//			}
+//		});
+//
+//		ventanaVisualizarEquipos.getTextPago().addKeyListener(this);
+//		ventanaVisualizarEquipos.getTextPago().addFocusListener(new FocusListener() {
+//			public void focusLost(FocusEvent e) {
+//
+//			}
+//
+//			@Override
+//			public void focusGained(FocusEvent arg0) {
+//
+//				SwingUtilities.invokeLater(() -> {
+//					ventanaVisualizarEquipos.getTextPago().selectAll();
+//				});
+//
+//			}
+//		});
+//
+//		ventanaVisualizarEquipos.getTextPresupuesto().addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//
+//				String presupuesto = ventanaVisualizarEquipos.getTextPresupuesto().getText();
+//				ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.formatPeso(presupuesto));
+//				verificarPresupuestoEditado();
+//
+//			}
+//		});
+//
+//		ventanaVisualizarEquipos.getTextPago().addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//
+//				String pago = ventanaVisualizarEquipos.getTextPago().getText();
+//				ventanaVisualizarEquipos.getTextPago().setText(monedaFormatter.formatPeso(pago));
+//				verificarPresupuestoEditado();
+//
+//			}
+//		});
+//
+//		ventanaVisualizarEquipos.getTextPresupuestoDolar().addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//
+//				String presupuestoDolar = ventanaVisualizarEquipos.getTextPresupuestoDolar().getText();
+//				ventanaVisualizarEquipos.getTextPresupuestoDolar()
+//						.setText(monedaFormatter.formatDolar(presupuestoDolar));
+//				verificarPresupuestoEditado();
+//
+//			}
+//		});
+//
+//		performActionOnTextComponents(ventanaVisualizarEquipos);
+//
+//
+//		ventanaVisualizarEquipos.getBotonAnterior().removeActionListener(this);
+//		ventanaVisualizarEquipos.getBotonSiguiente().removeActionListener(this);
+//		ventanaVisualizarEquipos.getBotonUltimo().removeActionListener(this);
+//		ventanaVisualizarEquipos.getBotonPrimero().removeActionListener(this);
+//		ventanaVisualizarEquipos.getBotonRefrescarPantalla().removeActionListener(this);
+//		
+//		
 		
 		
 		
@@ -2313,12 +2313,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	public void TomarDatosDeTablasListado(int numeroELSSeleccionado2) throws ParseException {
+	public VentanaVisualizarEquipos TomarDatosDeTablasListado(int numeroELSSeleccionado2) throws ParseException {
 
 		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
 		ventanaVisualizarEquipos.setTitle(String.valueOf(numeroELSSeleccionado2));
 		ventanasAbiertas.add(ventanaVisualizarEquipos);
-		agregarListenersVentanaVisualizarEquiposListado(ventanaVisualizarEquipos);
+		
 
 		// ventanasAbiertas.get(ventanasAbiertas.size()-1);
 
@@ -2443,6 +2443,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		verificarPresupuesto();
 		deshabilitarCampos();
+		
+		return ventanaVisualizarEquipos;
 
 	}
 
