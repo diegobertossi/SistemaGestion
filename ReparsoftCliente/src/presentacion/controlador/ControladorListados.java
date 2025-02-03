@@ -2321,48 +2321,20 @@ public class ControladorListados
 							this.ventanaListadoReparaciones.getTblReparaciones().getValueAt(row, col).toString());
 
 				NumeroELSSeleccionado = els;
-				// boolean ventanaVisualizacionAbierta =
-				// controladorReparacion.isBanderaVentanaVisualizacion();
+
 
 				System.out.println("Ventanas Abiertas: " + controladorReparacion.cantidadVentanasAbiertas());
 
-//				if (NumeroELSSeleccionado != 0 && !ventanaVisualizacionAbierta) {
-//					
-//					
-//					try {
-//						controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado);
-//					} catch (ParseException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//
-//					controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
-//
-//				}
-//				
 
 				try {
 					ventanaVisualizarEquipos = controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado);
-					
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 				controladorReparacion.agregarListenersVentanaVisualizarEquiposListado(ventanaVisualizarEquipos);
 				
-//				for (int i =0; i< controladorReparacion.ventanasDeVisualizacionAbiertas().size();i++) {
-//					
-//					//System.out.println("Título de la ventana: " + controladorReparacion.ventanasDeVisualizacionAbiertas().get(i).getTitle());
-//					//controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
-//				}
-				
-				
-				
-//				for (VentanaVisualizarEquipos ventana : controladorReparacion.ventanasDeVisualizacionAbiertas()) {
-//					System.out.println("Título de la ventana: " + controladorReparacion.ventanasDeVisualizacionAbiertas().get(els));
-//					controladorReparacion.agregarListenersVentanaVisualizarEquiposListado();
-//				}
+
 
 			}
 

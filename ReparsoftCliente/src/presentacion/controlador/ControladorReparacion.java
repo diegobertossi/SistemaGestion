@@ -176,7 +176,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getSource() == this.ventanaEquipos.getBtnVisualizarEquipos()) {
+		if (e.getSource() == this.ventanaEquipos.getBtnVisualizarEquipos() ) {
 
 			int ELS = DameNumeroELS() - 1;
 
@@ -429,15 +429,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (ventanaVisualizarEquipos != null
 				&& e.getSource() == ventanaVisualizarEquipos.getBtnEditar()) {
-
-			String nombreCliente = "";
-			String nombreSucursal = "";
-
-			llenarComboClienteV();
-			llenarComboTecnico();
-
-			habilitarCampos();
-			guardado = false;
+			
+			
+			editar();
+			
+			
 
 		}
 
@@ -1562,8 +1558,24 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
+	private void editar() {
+		
+		
+		String nombreCliente = "";
+		String nombreSucursal = "";
+
+		llenarComboClienteV();
+		llenarComboTecnico();
+
+		habilitarCampos();
+		guardado = false;
+	}
+
 	public void agregarListenersVentanaVisualizarEquipos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
+		
+		System.out.println("listeners agregados en ventana "+ ventanaVisualizarEquipos.getTitle());
+		
 		ventanaVisualizarEquipos.getBotonAnterior().addActionListener(this);
 		ventanaVisualizarEquipos.getBotonSiguiente().addActionListener(this);
 		ventanaVisualizarEquipos.getBotonUltimo().addActionListener(this);
@@ -1758,46 +1770,31 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		return componentsList;
 	}
 
-	// Método para configurar JComboBox (puedes ajustar según tus necesidades)
-//	private void configureComboBox(JComboBox<?> comboBox) {
-//		// Aquí puedes configurar el JComboBox como desees
-//		System.out.println("Configurando JComboBox: " + comboBox.getName());
-//	}
-
-//	// Método para realizar una acción sobre todos los JTextField y JTextArea en un
-//	// JFrame
-//	private void performActionOnTextComponents(JFrame frame) {
-//		List<JTextComponent> textComponents = getAllTextComponents(frame);
-//		// Realiza la acción deseada sobre cada JTextComponent
-//		for (JTextComponent textComponent : textComponents) {
-//			configureUndoManager(textComponent);
-//		}
-//	}
-//
-//	// Método para obtener todos los JTextField y JTextArea en un JFrame
-//	private List<JTextComponent> getAllTextComponents(Container container) {
-//		List<JTextComponent> textComponents = new ArrayList<>();
-//		Component[] components = container.getComponents();
-//		// Itera sobre los componentes y filtra los JTextField y JTextArea
-//		for (Component component : components) {
-//			if (component instanceof JTextComponent) {
-//				textComponents.add((JTextComponent) component);
-//			} else if (component instanceof Container) {
-//				textComponents.addAll(getAllTextComponents((Container) component));
-//			}
-//		}
-//		return textComponents;
-//	}
 
 	public void agregarListenersVentanaVisualizarEquiposListado( VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 		
+				
 		
+		ventanaVisualizarEquipos.getBtnEditar().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				editar( );
+
+			}
+		});
+			
+			
 		
 		//this.ventanaVisualizarEquipos = ventanaVisualizarEquipos;	
 		
+		//System.out.println("listeners agregados en ventana "+ ventanaVisualizarEquipos.getTitle());
+		
+		//agregarListenersVentanaVisualizarEquipos(ventanaVisualizarEquipos);
 		
 		
-		agregarListenersVentanaVisualizarEquipos(ventanaVisualizarEquipos);
+		
+		
 		
 		//System.out.println(ventanaVisualizarEquipos.getTitle());
 		
