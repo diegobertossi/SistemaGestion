@@ -2315,27 +2315,23 @@ public class ControladorListados
 				int col = this.ventanaListadoReparaciones.getTblReparaciones().getSelectedColumn();
 
 				int els = 0;
-				if (col == 0)
+				if (col == 0) {
 
 					els = Integer.parseInt(
 							this.ventanaListadoReparaciones.getTblReparaciones().getValueAt(row, col).toString());
 
-				NumeroELSSeleccionado = els;
+					NumeroELSSeleccionado = els;
 
+					try {
+						ventanaVisualizarEquipos = controladorReparacion
+								.TomarDatosDeTablasListado(NumeroELSSeleccionado);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					controladorReparacion.agregarListenersVentanaVisualizarEquiposListado(ventanaVisualizarEquipos);
 
-				System.out.println("Ventanas Abiertas: " + controladorReparacion.cantidadVentanasAbiertas());
-
-
-				try {
-					ventanaVisualizarEquipos = controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado);
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-				controladorReparacion.agregarListenersVentanaVisualizarEquiposListado(ventanaVisualizarEquipos);
-				
-
-
 			}
 
 			if (arg0.getSource() == this.ventanaListadoReparaciones.getChckbxELS()) {

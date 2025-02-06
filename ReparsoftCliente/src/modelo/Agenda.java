@@ -89,11 +89,13 @@ public class Agenda {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public void ListarTecnicosV(JComboBox comboTecnico) {
+	public void ListarTecnicosV(JComboBox<?> comboTecnico) {
 		usuario.comboFiltroTecnicosV(comboTecnico);
 
 		
 	}
+	
+	
 
 	
 	public int idUsuarioporNombre(String nombreTecnico) {

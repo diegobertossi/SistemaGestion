@@ -304,7 +304,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
+		ArrayList<UsuarioDTO> Usuarios = new ArrayList<UsuarioDTO>();
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(readallTecnicoVisualizacion);
 			resultSet = statement.executeQuery();
