@@ -643,10 +643,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnenviarCorreoOwsp()) {
+			
+			
+			listenerVentanaCorreoWsp(ventanaVisualizarEquipos);
 
-			ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(this);
-
-			ventanaEnviarCorreoOwsp.getBtnEnviarWST().addActionListener(this);
+			
 
 		}
 
@@ -1474,6 +1475,14 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
+	private void listenerVentanaCorreoWsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		
+		ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(this);
+
+		ventanaEnviarCorreoOwsp.getBtnEnviarWST().addActionListener(this);
+		
+	}
+
 	private void refrescarPantalla(VentanaVisualizarEquipos ventanaVisualizarEquipos2) {
 
 		try {
@@ -1629,7 +1638,16 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getComboELS().addActionListener(this);
 		llenarComboELSvisualizacion();
 		AutoCompleteDecorator.decorate(ventanaVisualizarEquipos.getComboELS());
+		
+		
+		
+		listenerPrecios(ventanaVisualizarEquipos);
 
+
+
+	}
+
+	private void listenerPrecios(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 		ventanaVisualizarEquipos.getTextPresupuesto().addFocusListener(new FocusListener() {
 			public void focusLost(FocusEvent e) {
 
@@ -1673,12 +1691,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 		ventanaVisualizarEquipos.getTextPresupuesto().addActionListener(new ActionListener() {
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				String presupuesto = ventanaVisualizarEquipos.getTextPresupuesto().getText();
 				ventanaVisualizarEquipos.getTextPresupuesto().setText(monedaFormatter.formatPeso(presupuesto));
-				verificarPresupuestoEditado();
+				verificarPresupuestoEditado(ventanaVisualizarEquipos);
 
 			}
 		});
@@ -1689,7 +1708,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				String pago = ventanaVisualizarEquipos.getTextPago().getText();
 				ventanaVisualizarEquipos.getTextPago().setText(monedaFormatter.formatPeso(pago));
-				verificarPresupuestoEditado();
+				verificarPresupuestoEditado(ventanaVisualizarEquipos);
 
 			}
 		});
@@ -1701,13 +1720,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				String presupuestoDolar = ventanaVisualizarEquipos.getTextPresupuestoDolar().getText();
 				ventanaVisualizarEquipos.getTextPresupuestoDolar()
 						.setText(monedaFormatter.formatDolar(presupuestoDolar));
-				verificarPresupuestoEditado();
+				verificarPresupuestoEditado(ventanaVisualizarEquipos);
 
 			}
 		});
 
 		performActionOnTextComponents(ventanaVisualizarEquipos);
-
+		
 	}
 
 	public void quitarListenersVentanaVisualizarEquipos() {
@@ -1841,6 +1860,28 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				banderarefrescarPantalla = false;
 			}
 		});
+		
+		listenerPrecios(ventanaVisualizarEquipos);
+		
+		
+		
+		ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+
+				listenerVentanaCorreoWsp(ventanaVisualizarEquipos);
+				
+				
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
 
 	}
 
@@ -2443,7 +2484,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	@SuppressWarnings("unused")
-	public void verificarPresupuestoEditado() {
+	public void verificarPresupuestoEditado(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
 		Color EquipoPagado = new Color(130, 224, 170);
 		Color AzulClaro = new Color(169, 204, 227);
