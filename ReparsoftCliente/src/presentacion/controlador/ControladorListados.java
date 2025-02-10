@@ -2324,7 +2324,7 @@ public class ControladorListados
 
 					try {
 						ventanaVisualizarEquipos = controladorReparacion
-								.TomarDatosDeTablasListado(NumeroELSSeleccionado);
+								.TomarDatosDeTablasListado(NumeroELSSeleccionado, this.ventanaVisualizarEquipos);
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

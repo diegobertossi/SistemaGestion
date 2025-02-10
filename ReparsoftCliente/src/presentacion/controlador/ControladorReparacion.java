@@ -153,7 +153,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
 	private List<VentanaVisualizarEquipos> ventanasAbiertas = new ArrayList<>();
-	private VentanaVisualizarEquipos ventanaConFoco; // Referencia a la ventana que tiene el foco actualmente
+	// private VentanaVisualizarEquipos ventanaConFoco; // Referencia a la ventana
+	// que tiene el foco actualmente
 
 	public ControladorReparacion(VentanaEquipos ventanaEquipos, ControladorUsuLogin controladorUsuLogin, Agenda agendas,
 			ControladorPresupuestos controladorPresupuestos, ControladorSalidas controladorSalidas,
@@ -937,7 +938,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			this.ventanaagregarRepuesto.dispose();
 			this.ventanaagregarRepuesto = null;
 
-			llenarTablaRepuestos();
+			llenarTablaRepuestos(ventanaVisualizarEquipos);
 
 		}
 
@@ -983,7 +984,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				agenda.editarRepuesto(repuestoElegido);
 
-				llenarTablaRepuestos();
+				llenarTablaRepuestos(ventanaVisualizarEquipos);
 				repuestoElegido = null;
 
 			}
@@ -1007,7 +1008,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 						agenda.borraRepuesto(Repuestos_en_tabla.get(fila));
 					}
 
-					llenarTablaRepuestos();
+					llenarTablaRepuestos(ventanaVisualizarEquipos);
 					repuestoElegido = null;
 
 				}
@@ -1484,10 +1485,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		}
 	}
 
-	private void refrescarPantallaListados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+	private void refrescarPantallaListados(int ELS, VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
 		try {
-			TomarDatosDeTablasListado(Integer.parseInt(ventanaVisualizarEquipos.getTextELS()));
+			TomarDatosDeTablasListado(Integer.parseInt(ventanaVisualizarEquipos.getTextELS()),
+					ventanaVisualizarEquipos);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -1833,9 +1835,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-//				banderarefrescarPantalla = true;
-//				refrescarPantallaListados(ventanaVisualizarEquipos);
-
+				banderarefrescarPantalla = true;
+				refrescarPantallaListados(Integer.parseInt(ventanaVisualizarEquipos.getTextELS()),
+						ventanaVisualizarEquipos);
+				banderarefrescarPantalla = false;
 			}
 		});
 
@@ -1953,7 +1956,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setTextNumeroRemito(Integer.toString(reparacion.getNumeroRemitoSalida()));
 		// ventanaVisualizarEquipos.setChckbxAvisoEnviado((boolean)reparacion.getEnviado());
 
-		llenarTablaRepuestos();
+		llenarTablaRepuestos(ventanaVisualizarEquipos);
 		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
 
 		String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
@@ -1972,7 +1975,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
-		verificarPresupuesto();
+		verificarPresupuesto(ventanaVisualizarEquipos);
 		deshabilitarCampos(ventanaVisualizarEquipos);
 
 	}
@@ -2050,7 +2053,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setTextNumeroRemito(Integer.toString(reparacion.getNumeroRemitoSalida()));
 		// ventanaVisualizarEquipos.setChckbxAvisoEnviado((boolean)reparacion.getEnviado());
 
-		llenarTablaRepuestos();
+		llenarTablaRepuestos(ventanaVisualizarEquipos);
 		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
 
 		String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
@@ -2072,21 +2075,22 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
-		verificarPresupuesto();
+		verificarPresupuesto(ventanaVisualizarEquipos);
 		deshabilitarCampos(ventanaVisualizarEquipos);
 		ELSinicial = numeroELSSeleccionado;
 
 	}
 
-	public VentanaVisualizarEquipos TomarDatosDeTablasListado(int numeroELSSeleccionado2) throws ParseException {
+	public VentanaVisualizarEquipos TomarDatosDeTablasListado(int numeroELSSeleccionado2,
+			VentanaVisualizarEquipos ventanaVisualizarEquipos) throws ParseException {
 
-		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
-		ventanaVisualizarEquipos.setTitle(String.valueOf(numeroELSSeleccionado2));
-		ventanasAbiertas.add(ventanaVisualizarEquipos);
-
+		if (!banderarefrescarPantalla) {
+			ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
+			ventanaVisualizarEquipos.setTitle(String.valueOf(numeroELSSeleccionado2));
+			ventanasAbiertas.add(ventanaVisualizarEquipos);
+			cerraVentanaVisualizarEquipoListado(ventanaVisualizarEquipos);
+		}
 		// banderarefrescarPantalla = true;
-
-		cerraVentanaVisualizarEquipoListado(ventanaVisualizarEquipos);
 
 		monedaFormatter = new MonedaFormatter();
 
@@ -2156,7 +2160,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setTextNumeroRemito(Integer.toString(reparacion.getNumeroRemitoSalida()));
 		// ventanaVisualizarEquipos.setChckbxAvisoEnviado((boolean)reparacion.getEnviado());
 
-		llenarTablaRepuestos();
+		llenarTablaRepuestos(ventanaVisualizarEquipos);
 		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
 
 		String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
@@ -2177,8 +2181,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setChckWORDEnviado(reparacion.getWORDenviado());
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
-		verificarPresupuesto();
+		verificarPresupuesto(ventanaVisualizarEquipos);
 		deshabilitarCampos(ventanaVisualizarEquipos);
+		// ELSinicial = numeroELSSeleccionado2;
 
 		return ventanaVisualizarEquipos;
 
@@ -2360,28 +2365,27 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	@SuppressWarnings("deprecation")
-	private void llenarTablaRepuestos() {
-		this.ventanaVisualizarEquipos.getModelRepuestos().setRowCount(0); // Para
-																			// vaciar
-																			// tabla
-		this.ventanaVisualizarEquipos.getModelRepuestos().setColumnCount(0);
-		this.ventanaVisualizarEquipos.getModelRepuestos()
-				.setColumnIdentifiers(this.ventanaVisualizarEquipos.getNombreColumnas());
+	private void llenarTablaRepuestos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		ventanaVisualizarEquipos.getModelRepuestos().setRowCount(0); // Para
+																		// vaciar
+																		// tabla
+		ventanaVisualizarEquipos.getModelRepuestos().setColumnCount(0);
+		ventanaVisualizarEquipos.getModelRepuestos().setColumnIdentifiers(ventanaVisualizarEquipos.getNombreColumnas());
 
-		int ELS = Integer.parseInt(this.ventanaVisualizarEquipos.getTextELS());
+		int ELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
 
 		this.Repuestos_en_tabla = (List<RepuestosDTO>) agenda.dameRepuestoXels(ELS);
 
 		for (int i = 0; i < this.Repuestos_en_tabla.size(); i++) {
 			Object[] fila = { this.Repuestos_en_tabla.get(i).getRef(), this.Repuestos_en_tabla.get(i).getOriginal(),
 					this.Repuestos_en_tabla.get(i).getReemplazo(), this.Repuestos_en_tabla.get(i).getNotas() };
-			this.ventanaVisualizarEquipos.getModelRepuestos().addRow(fila);
+			ventanaVisualizarEquipos.getModelRepuestos().addRow(fila);
 		}
-		this.ventanaVisualizarEquipos.show();
+		ventanaVisualizarEquipos.show();
 
 	}
 
-	private void verificarPresupuesto() {
+	private void verificarPresupuesto(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
 		Color EquipoPagado = new Color(130, 224, 170);
 		Color AzulClaro = new Color(169, 204, 227);
