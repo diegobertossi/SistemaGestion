@@ -675,30 +675,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		else if (this.ventanaEnviarCorreoOwsp != null
 				&& e.getSource() == this.ventanaEnviarCorreoOwsp.getBtnEnviarWST()) {
 
-			ventanaWSP = new VentanaWSP(this);
-
-			String cliente = ventanaVisualizarEquipos.getTextCliente().getText();
-
-			String NombreContacto = this.agenda.ContactoPorCliente(cliente);
-			String TelefonoContacto = this.agenda.obtenerTelefonoPorCliente(cliente);
-
-			ventanaWSP.getTextNombreContacto().setText(NombreContacto);
-			ventanaWSP.getTextNumeroContacto().setText(TelefonoContacto);
-
-			ventanaWSP.getTextCliente().setText(cliente);
-			ventanaWSP.getBtnEnviar().addActionListener(this);
-			ventanaWSP.getBtnEditarNmero().addActionListener(this);
-			ventanaWSP.getBtnClientes().addActionListener(this);
-			ventanaWSP.getBtnUtilizarContactoBuscado().addActionListener(this);
-			ventanaWSP.getBtnUtilizarContacto().addActionListener(this);
-			ventanaWSP.getComboOrganizacion().addActionListener(this);
-			ventanaWSP.getComboNombreBuscado().addActionListener(this);
-
-			llenarComboOrganizacion();
-			llenarComboNombreWSP();
-
-			performActionOnTextComponents(ventanaWSP);
-
+			
+			abrirVentanaWsp(ventanaVisualizarEquipos);
+			
+			
+			
+			
+			
 		}
 
 		else if (this.ventanaWSP != null && e.getSource() == this.ventanaWSP.getBtnClientes()) {
@@ -1473,6 +1456,36 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		}
 
+	}
+
+	
+	private void abrirVentanaWsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		
+		ventanaWSP = new VentanaWSP(this);
+
+		String cliente = ventanaVisualizarEquipos.getTextCliente().getText();
+
+		String NombreContacto = this.agenda.ContactoPorCliente(cliente);
+		String TelefonoContacto = this.agenda.obtenerTelefonoPorCliente(cliente);
+
+		ventanaWSP.getTextNombreContacto().setText(NombreContacto);
+		ventanaWSP.getTextNumeroContacto().setText(TelefonoContacto);
+
+		ventanaWSP.getTextCliente().setText(cliente);
+		ventanaWSP.getBtnEnviar().addActionListener(this);
+		ventanaWSP.getBtnEditarNmero().addActionListener(this);
+		ventanaWSP.getBtnClientes().addActionListener(this);
+		ventanaWSP.getBtnUtilizarContactoBuscado().addActionListener(this);
+		ventanaWSP.getBtnUtilizarContacto().addActionListener(this);
+		ventanaWSP.getComboOrganizacion().addActionListener(this);
+		ventanaWSP.getComboNombreBuscado().addActionListener(this);
+
+		llenarComboOrganizacion();
+		llenarComboNombreWSP();
+
+		performActionOnTextComponents(ventanaWSP);
+
+		
 	}
 
 	private void listenerVentanaCorreoWsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
