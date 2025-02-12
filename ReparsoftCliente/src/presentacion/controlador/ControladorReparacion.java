@@ -480,7 +480,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaEstados != null && e.getSource() == this.ventanaEstados.getBtnAceptarEdicion()) {
 
-			// System.out.println(ventanaVisualizarEquipos.getTextCliente().getText());
 			aceptarEdicionEstados(ventanaVisualizarEquipos);
 
 		}
@@ -494,7 +493,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnenviarCorreoOwsp()) {
 
-			listenerVentanaCorreoWsp(ventanaVisualizarEquipos);
+			enviarCorreoOwsp(ventanaVisualizarEquipos);
 
 		}
 
@@ -1490,13 +1489,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	private void listenerVentanaCorreoWsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-
-		ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(this);
-		ventanaEnviarCorreoOwsp.getBtnEnviarWST().addActionListener(this);
-
-	}
-
 	private void refrescarPantalla(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
 		try {
@@ -1855,15 +1847,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		});
 
-//		ventanaVisualizarEquipos.getBotonEditarEstados().addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//
-//				editarEstados(ventanaVisualizarEquipos);
-//
-//			}
-//		});
-
 		ventanaVisualizarEquipos.getBotonPresupuestar().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1890,7 +1873,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				listenerVentanaCorreoWsp(ventanaVisualizarEquipos);
+				enviarCorreoOwsp(ventanaVisualizarEquipos);
 
 			}
 		});
@@ -1901,6 +1884,21 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				editarEstados(ventanaVisualizarEquipos);
 				listenerVentanaEstados(ventanaVisualizarEquipos);
+
+			}
+		});
+
+	}
+
+	protected void enviarCorreoOwsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+
+		ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(this);
+
+		ventanaEnviarCorreoOwsp.getBtnEnviarWST().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				abrirVentanaWsp(ventanaVisualizarEquipos);
 
 			}
 		});
