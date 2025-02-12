@@ -463,7 +463,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonEditarEstados()) {
 
-			editarEstados(ventanaVisualizarEquipos);
+			ventanaEstados = editarEstados(ventanaVisualizarEquipos);
+
+			ventanaEstados.getBtnAceptarEdicion().addActionListener(this);
+			ventanaEstados.getBtnHabilitarLugarIngreso().addActionListener(this);
 
 		}
 
@@ -477,161 +480,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaEstados != null && e.getSource() == this.ventanaEstados.getBtnAceptarEdicion()) {
 
-			String estadoFisico = "";
-			String estadoTecnico = "";
-			String estadoComercial = "";
-			String lugarDeIngreso = "";
-
-			Boolean cambioDeEstadoBoolean = false;
-
-			Enumeration<?> elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
-
-			while (elementsF.hasMoreElements()) {
-				AbstractButton button = (AbstractButton) elementsF.nextElement();
-				if (button.isSelected()) {
-
-					estadoFisico = button.getText();
-
-				}
-			}
-
-			Enumeration<?> elementsT = ventanaEstados.getGrupoEstadoTecnico().getElements();
-
-			while (elementsT.hasMoreElements()) {
-				AbstractButton button = (AbstractButton) elementsT.nextElement();
-				if (button.isSelected()) {
-
-					estadoTecnico = button.getText();
-
-				}
-			}
-
-			Enumeration<?> elementsC = ventanaEstados.getGrupoEstadoComercial().getElements();
-
-			while (elementsC.hasMoreElements()) {
-				AbstractButton button = (AbstractButton) elementsC.nextElement();
-				if (button.isSelected()) {
-
-					estadoComercial = button.getText();
-
-				}
-			}
-
-			Enumeration<?> elementsIngreso = ventanaEstados.getGrupoLugarDeIngreso().getElements();
-
-			while (elementsIngreso.hasMoreElements()) {
-				AbstractButton button = (AbstractButton) elementsIngreso.nextElement();
-				if (button.isSelected()) {
-
-					lugarDeIngreso = button.getText();
-
-				}
-			}
-
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-			java.util.Date fechaParseadaHOY = null;
-
-			try {
-				fechaParseadaHOY = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(LocalDateTime.now()));
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-			if (ventanaVisualizarEquipos.getTextEstadoFisico().getText().compareTo(estadoFisico) != 0) {
-
-				cambioDeEstadoBoolean = true;
-
-				int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
-						"EL ESTADO FÍSICO A CAMBIADO, ¿DESEA CONTINUAR?", "Confirmación", JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
-
-				if (seleccion == JOptionPane.YES_OPTION) {
-					ventanaVisualizarEquipos.setTextEstadoFisico(estadoFisico);
-
-				}
-
-			}
-
-			if (ventanaVisualizarEquipos.getTextEstadoTecnico().getText().compareTo(estadoTecnico) != 0) {
-
-				cambioDeEstadoBoolean = true;
-
-				int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
-						"EL ESTADO TÉCNICO A CAMBIADO, SE MODIFICARÁ LA FECHA DE DIAGNÓSTICO. ¿DESEA CONTINUAR?",
-						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-				if (seleccion == JOptionPane.YES_OPTION) {
-					ventanaVisualizarEquipos.setTextEstadoTecnico(estadoTecnico);
-
-					if (estadoTecnico == "Sin Revisar") {
-
-						ventanaVisualizarEquipos.getFechaReparacion().setDate(null);
-
-					}
-
-					else {
-
-						ventanaVisualizarEquipos.getFechaReparacion().setDate(fechaParseadaHOY);
-
-					}
-
-				}
-
-			}
-
-			if (ventanaVisualizarEquipos.getTextEstadoComercial().getText().compareTo(estadoComercial) != 0) {
-
-				cambioDeEstadoBoolean = true;
-
-				int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
-						"EL ESTADO COMERCIAL A CAMBIADO, SE MODIFICARÁ LA FECHA DE ACEPTACIÓN. ¿DESEA CONTINUAR?",
-						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-				if (seleccion == JOptionPane.YES_OPTION) {
-					ventanaVisualizarEquipos.setTextEstadoComercial(estadoComercial);
-
-					if (estadoComercial == "A la Espera de Aceptación") {
-
-						ventanaVisualizarEquipos.getFechaRespuesta().setDate(null);
-
-					}
-
-					else {
-
-						ventanaVisualizarEquipos.getFechaRespuesta().setDate(fechaParseadaHOY);
-
-					}
-
-				}
-
-			}
-
-			if (ventanaVisualizarEquipos.getTextLugarDeIngreso().getText().compareTo(lugarDeIngreso) != 0) {
-
-				cambioDeEstadoBoolean = true;
-
-				int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
-						"EL LUGAR DE INGRESO A CAMBIADO, ¿DESEA CONTINUAR?", "Confirmación", JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
-
-				if (seleccion == JOptionPane.YES_OPTION) {
-					ventanaVisualizarEquipos.setTextLugarDeIngreso(lugarDeIngreso);
-
-				}
-
-			}
-
-			if (cambioDeEstadoBoolean) {
-				Object mje = "Deberá 'GUARDAR CAMBIOS' para mantener las modificaciones.";
-				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-			} else {
-				Object mje = "No se realizó ningún cambio de estado.";
-				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-			}
-
-			this.ventanaEstados.dispose();
-			this.ventanaEstados = null;
+			// System.out.println(ventanaVisualizarEquipos.getTextCliente().getText());
+			aceptarEdicionEstados(ventanaVisualizarEquipos);
 
 		}
 
@@ -643,11 +493,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnenviarCorreoOwsp()) {
-			
-			
-			listenerVentanaCorreoWsp(ventanaVisualizarEquipos);
 
-			
+			listenerVentanaCorreoWsp(ventanaVisualizarEquipos);
 
 		}
 
@@ -675,13 +522,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		else if (this.ventanaEnviarCorreoOwsp != null
 				&& e.getSource() == this.ventanaEnviarCorreoOwsp.getBtnEnviarWST()) {
 
-			
 			abrirVentanaWsp(ventanaVisualizarEquipos);
-			
-			
-			
-			
-			
+
 		}
 
 		else if (this.ventanaWSP != null && e.getSource() == this.ventanaWSP.getBtnClientes()) {
@@ -1458,9 +1300,170 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	
+	private void aceptarEdicionEstados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+
+		// asda
+
+		String estadoFisico = "";
+		String estadoTecnico = "";
+		String estadoComercial = "";
+		String lugarDeIngreso = "";
+
+		Boolean cambioDeEstadoBoolean = false;
+
+		Enumeration<?> elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
+
+		while (elementsF.hasMoreElements()) {
+			AbstractButton button = (AbstractButton) elementsF.nextElement();
+			if (button.isSelected()) {
+
+				estadoFisico = button.getText();
+
+			}
+		}
+
+		Enumeration<?> elementsT = ventanaEstados.getGrupoEstadoTecnico().getElements();
+
+		while (elementsT.hasMoreElements()) {
+			AbstractButton button = (AbstractButton) elementsT.nextElement();
+			if (button.isSelected()) {
+
+				estadoTecnico = button.getText();
+
+			}
+		}
+
+		Enumeration<?> elementsC = ventanaEstados.getGrupoEstadoComercial().getElements();
+
+		while (elementsC.hasMoreElements()) {
+			AbstractButton button = (AbstractButton) elementsC.nextElement();
+			if (button.isSelected()) {
+
+				estadoComercial = button.getText();
+
+			}
+		}
+
+		Enumeration<?> elementsIngreso = ventanaEstados.getGrupoLugarDeIngreso().getElements();
+
+		while (elementsIngreso.hasMoreElements()) {
+			AbstractButton button = (AbstractButton) elementsIngreso.nextElement();
+			if (button.isSelected()) {
+
+				lugarDeIngreso = button.getText();
+
+			}
+		}
+
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		java.util.Date fechaParseadaHOY = null;
+
+		try {
+			fechaParseadaHOY = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(LocalDateTime.now()));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		if (ventanaVisualizarEquipos.getTextEstadoFisico().getText().compareTo(estadoFisico) != 0) {
+
+			cambioDeEstadoBoolean = true;
+
+			int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
+					"EL ESTADO FÍSICO A CAMBIADO, ¿DESEA CONTINUAR?", "Confirmación", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+
+			if (seleccion == JOptionPane.YES_OPTION) {
+				ventanaVisualizarEquipos.setTextEstadoFisico(estadoFisico);
+
+			}
+
+		}
+
+		if (ventanaVisualizarEquipos.getTextEstadoTecnico().getText().compareTo(estadoTecnico) != 0) {
+
+			cambioDeEstadoBoolean = true;
+
+			int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
+					"EL ESTADO TÉCNICO A CAMBIADO, SE MODIFICARÁ LA FECHA DE DIAGNÓSTICO. ¿DESEA CONTINUAR?",
+					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+			if (seleccion == JOptionPane.YES_OPTION) {
+				ventanaVisualizarEquipos.setTextEstadoTecnico(estadoTecnico);
+
+				if (estadoTecnico == "Sin Revisar") {
+
+					ventanaVisualizarEquipos.getFechaReparacion().setDate(null);
+
+				}
+
+				else {
+
+					ventanaVisualizarEquipos.getFechaReparacion().setDate(fechaParseadaHOY);
+
+				}
+
+			}
+
+		}
+
+		if (ventanaVisualizarEquipos.getTextEstadoComercial().getText().compareTo(estadoComercial) != 0) {
+
+			cambioDeEstadoBoolean = true;
+
+			int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
+					"EL ESTADO COMERCIAL A CAMBIADO, SE MODIFICARÁ LA FECHA DE ACEPTACIÓN. ¿DESEA CONTINUAR?",
+					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+			if (seleccion == JOptionPane.YES_OPTION) {
+				ventanaVisualizarEquipos.setTextEstadoComercial(estadoComercial);
+
+				if (estadoComercial == "A la Espera de Aceptación") {
+
+					ventanaVisualizarEquipos.getFechaRespuesta().setDate(null);
+
+				}
+
+				else {
+
+					ventanaVisualizarEquipos.getFechaRespuesta().setDate(fechaParseadaHOY);
+
+				}
+
+			}
+
+		}
+
+		if (ventanaVisualizarEquipos.getTextLugarDeIngreso().getText().compareTo(lugarDeIngreso) != 0) {
+
+			cambioDeEstadoBoolean = true;
+
+			int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
+					"EL LUGAR DE INGRESO A CAMBIADO, ¿DESEA CONTINUAR?", "Confirmación", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+
+			if (seleccion == JOptionPane.YES_OPTION) {
+				ventanaVisualizarEquipos.setTextLugarDeIngreso(lugarDeIngreso);
+
+			}
+
+		}
+
+		if (cambioDeEstadoBoolean) {
+			Object mje = "Deberá 'GUARDAR CAMBIOS' para mantener las modificaciones.";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			Object mje = "No se realizó ningún cambio de estado.";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+		}
+
+		this.ventanaEstados.dispose();
+		this.ventanaEstados = null;
+
+	}
+
 	private void abrirVentanaWsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-		
+
 		ventanaWSP = new VentanaWSP(this);
 
 		String cliente = ventanaVisualizarEquipos.getTextCliente().getText();
@@ -1485,18 +1488,16 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		performActionOnTextComponents(ventanaWSP);
 
-		
 	}
 
 	private void listenerVentanaCorreoWsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-		
-		ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(this);
 
+		ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(this);
 		ventanaEnviarCorreoOwsp.getBtnEnviarWST().addActionListener(this);
-		
+
 	}
 
-	private void refrescarPantalla(VentanaVisualizarEquipos ventanaVisualizarEquipos2) {
+	private void refrescarPantalla(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
 		try {
 			TomarDatosDeTablas(ventanaVisualizarEquipos);
@@ -1535,7 +1536,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	private void editarEstados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+	private VentanaEstados editarEstados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+
 		ventanaEstados = new VentanaEstados(this);
 
 		Enumeration<?> elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
@@ -1583,8 +1585,20 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		}
 
-		ventanaEstados.getBtnAceptarEdicion().addActionListener(this);
-		ventanaEstados.getBtnHabilitarLugarIngreso().addActionListener(this);
+		return ventanaEstados;
+
+	}
+
+	private void listenerVentanaEstados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+
+		ventanaEstados.getBtnAceptarEdicion().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				aceptarEdicionEstados(ventanaVisualizarEquipos);
+
+			}
+		});
 
 	}
 
@@ -1651,12 +1665,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getComboELS().addActionListener(this);
 		llenarComboELSvisualizacion();
 		AutoCompleteDecorator.decorate(ventanaVisualizarEquipos.getComboELS());
-		
-		
-		
+
 		listenerPrecios(ventanaVisualizarEquipos);
-
-
 
 	}
 
@@ -1704,7 +1714,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 		ventanaVisualizarEquipos.getTextPresupuesto().addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
@@ -1739,7 +1749,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 		performActionOnTextComponents(ventanaVisualizarEquipos);
-		
+
 	}
 
 	public void quitarListenersVentanaVisualizarEquipos() {
@@ -1845,14 +1855,14 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		});
 
-		ventanaVisualizarEquipos.getBotonEditarEstados().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				editarEstados(ventanaVisualizarEquipos);
-
-			}
-		});
+//		ventanaVisualizarEquipos.getBotonEditarEstados().addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//
+//				editarEstados(ventanaVisualizarEquipos);
+//
+//			}
+//		});
 
 		ventanaVisualizarEquipos.getBotonPresupuestar().addActionListener(new ActionListener() {
 			@Override
@@ -1873,28 +1883,27 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				banderarefrescarPantalla = false;
 			}
 		});
-		
+
 		listenerPrecios(ventanaVisualizarEquipos);
-		
-		
-		
+
 		ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-
 				listenerVentanaCorreoWsp(ventanaVisualizarEquipos);
-				
-				
+
 			}
 		});
-		
-		
-		
-		
-		
-		
-		
+
+		ventanaVisualizarEquipos.getBotonEditarEstados().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				editarEstados(ventanaVisualizarEquipos);
+				listenerVentanaEstados(ventanaVisualizarEquipos);
+
+			}
+		});
 
 	}
 
