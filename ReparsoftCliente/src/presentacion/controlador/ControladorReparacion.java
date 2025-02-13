@@ -746,108 +746,33 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnRepuestos()) {
 
-			ventanaagregarRepuesto = new VentanaAgregarRepuesto(this);
-			this.ventanaagregarRepuesto.getBtnAgregarRepuesto().addActionListener(this);
-			this.ventanaagregarRepuesto.getBtnCancelar().addActionListener(this);
-
-			performActionOnTextComponents(ventanaagregarRepuesto);
-
-		}
-
-		else if (this.ventanaagregarRepuesto != null
-				&& e.getSource() == this.ventanaagregarRepuesto.getBtnAgregarRepuesto()) {
-
-			RepuestosDTO nuevoRepuesto = TomarDatosRepuesto();
-			this.agenda.agregarRepuesto(nuevoRepuesto);
-
-			this.ventanaagregarRepuesto.dispose();
-			this.ventanaagregarRepuesto = null;
-
-			llenarTablaRepuestos(ventanaVisualizarEquipos);
-
-		}
-
-		else if (this.ventanaagregarRepuesto != null && e.getSource() == this.ventanaagregarRepuesto.getBtnCancelar()) {
-
-			this.ventanaagregarRepuesto.dispose();
-			this.ventanaagregarRepuesto = null;
+			abrirVentanaRepuestos(ventanaVisualizarEquipos);
+			listenerRepuestos(ventanaVisualizarEquipos);
 
 		}
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnEditarRepuesto()) {
+			
+			
+			guardarEditarRepuesto(ventanaVisualizarEquipos);
+			
 
-			if (repuestoElegido == null) {
-				this.ventanaVisualizarEquipos.getErrorMsj("Seleccione un Repuesto");
-
-			} else {
-
-				int i = this.ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow();
-				if (i != -1) {
-					if (!Repuestos_en_tabla.isEmpty()) {
-						repuestoElegido = Repuestos_en_tabla.get(i);
-
-						int idreemplazo = repuestoElegido.getIdRepuesto();
-						int ELS = repuestoElegido.getELS();
-						String referencia = String.valueOf(ventanaVisualizarEquipos.getTablaRepuestos().getModel()
-								.getValueAt(ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow(), 0));
-						String original = String.valueOf(ventanaVisualizarEquipos.getTablaRepuestos().getModel()
-								.getValueAt(ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow(), 1));
-						String reemplazo = String.valueOf(ventanaVisualizarEquipos.getTablaRepuestos().getModel()
-								.getValueAt(ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow(), 2));
-						String nota = String.valueOf(ventanaVisualizarEquipos.getTablaRepuestos().getModel()
-								.getValueAt(ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow(), 3));
-
-						repuestoElegido.setRef(referencia);
-						repuestoElegido.setOriginal(original);
-						repuestoElegido.setReemplazo(reemplazo);
-						repuestoElegido.setNotas(nota);
-
-					}
-				}
-				this.ventanaVisualizarEquipos.getBtnEditarRepuesto().setEnabled(false);
-
-				agenda.editarRepuesto(repuestoElegido);
-
-				llenarTablaRepuestos(ventanaVisualizarEquipos);
-				repuestoElegido = null;
-
-			}
+		
 		} else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnEliminarRepuesto()) {
 
-			if (repuestoElegido == null) {
-				this.ventanaVisualizarEquipos.getErrorMsj("Seleccione un Repuesto");
-
-			}
-
-			else {
-				int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-						"¿Está seguro de realizar la operación?", "Confirmación", JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
-
-				if (seleccion == JOptionPane.YES_OPTION) {
-
-					int[] filas_seleccionadas = this.ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRows();
-					for (int fila : filas_seleccionadas) {
-						agenda.borraRepuesto(Repuestos_en_tabla.get(fila));
-					}
-
-					llenarTablaRepuestos(ventanaVisualizarEquipos);
-					repuestoElegido = null;
-
-				}
-			}
+			
+			
+			eliminarRepuesto(ventanaVisualizarEquipos);
+			
 
 		}
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnGenerarRemito()) {
 
-			NumeroELSParaRemito = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
-
-			controladorSalidas.cargarRemitoVisualizacion(NumeroELSParaRemito);
-			controladorSalidas.agregarListenersVentanaRemitos();
+			generarRemito(ventanaVisualizarEquipos);
 
 		}
 
@@ -1297,6 +1222,96 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		}
 
+	}
+
+	private void eliminarRepuesto(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		
+		if (repuestoElegido == null) {
+			ventanaVisualizarEquipos.getErrorMsj("Seleccione un Repuesto");
+
+		}
+
+		else {
+			int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
+					"¿Está seguro de realizar la operación?", "Confirmación", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+
+			if (seleccion == JOptionPane.YES_OPTION) {
+
+				int[] filas_seleccionadas = ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRows();
+				for (int fila : filas_seleccionadas) {
+					agenda.borraRepuesto(Repuestos_en_tabla.get(fila));
+				}
+
+				llenarTablaRepuestos(ventanaVisualizarEquipos);
+				repuestoElegido = null;
+
+			}
+		}
+
+		
+	}
+
+	private void guardarEditarRepuesto(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		
+		if (repuestoElegido == null) {
+			ventanaVisualizarEquipos.getErrorMsj("Seleccione un Repuesto");
+
+		} else {
+
+			int i = ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow();
+			if (i != -1) {
+				if (!Repuestos_en_tabla.isEmpty()) {
+					repuestoElegido = Repuestos_en_tabla.get(i);
+
+					int idreemplazo = repuestoElegido.getIdRepuesto();
+					int ELS = repuestoElegido.getELS();
+					String referencia = String.valueOf(ventanaVisualizarEquipos.getTablaRepuestos().getModel()
+							.getValueAt(ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow(), 0));
+					String original = String.valueOf(ventanaVisualizarEquipos.getTablaRepuestos().getModel()
+							.getValueAt(ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow(), 1));
+					String reemplazo = String.valueOf(ventanaVisualizarEquipos.getTablaRepuestos().getModel()
+							.getValueAt(ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow(), 2));
+					String nota = String.valueOf(ventanaVisualizarEquipos.getTablaRepuestos().getModel()
+							.getValueAt(ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow(), 3));
+
+					repuestoElegido.setRef(referencia);
+					repuestoElegido.setOriginal(original);
+					repuestoElegido.setReemplazo(reemplazo);
+					repuestoElegido.setNotas(nota);
+
+				}
+			}
+		 ventanaVisualizarEquipos.getBtnEditarRepuesto().setEnabled(false);
+
+			agenda.editarRepuesto(repuestoElegido);
+
+			llenarTablaRepuestos(ventanaVisualizarEquipos);
+			repuestoElegido = null;
+
+		}
+		
+	}
+
+	private void AgregarRepuesto(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+
+		RepuestosDTO nuevoRepuesto = TomarDatosRepuesto(ventanaVisualizarEquipos);
+		this.agenda.agregarRepuesto(nuevoRepuesto);
+
+		this.ventanaagregarRepuesto.dispose();
+		this.ventanaagregarRepuesto = null;
+
+		llenarTablaRepuestos(ventanaVisualizarEquipos);
+
+	}
+
+	private void abrirVentanaRepuestos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+
+		ventanaagregarRepuesto = new VentanaAgregarRepuesto(this);
+		this.ventanaagregarRepuesto.getBtnAgregarRepuesto().addActionListener(this);
+		this.ventanaagregarRepuesto.getBtnCancelar().addActionListener(this);
+
+		performActionOnTextComponents(ventanaagregarRepuesto);
 	}
 
 	private void aceptarEdicionEstados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
@@ -1888,6 +1903,134 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		});
 
+		ventanaVisualizarEquipos.getBtnGenerarRemito().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				generarRemito(ventanaVisualizarEquipos);
+
+			}
+		});
+
+		ventanaVisualizarEquipos.getBtnRepuestos().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				abrirVentanaRepuestos(ventanaVisualizarEquipos);
+				listenerRepuestos(ventanaVisualizarEquipos);
+
+			}
+		});
+		
+		
+		ventanaVisualizarEquipos.getBtnEditarRepuesto().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				guardarEditarRepuesto(ventanaVisualizarEquipos);
+
+			}
+		});
+		
+		
+		ventanaVisualizarEquipos.getBtnEliminarRepuesto().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				eliminarRepuesto(ventanaVisualizarEquipos);
+
+			}
+		});
+		
+		
+		
+		
+
+		ventanaVisualizarEquipos.getTablaRepuestos().addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				repuestoSeleccionado(ventanaVisualizarEquipos, e);
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		ventanaVisualizarEquipos.getTablaRepuestos().addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				habilitarEdicionRepuestos(ventanaVisualizarEquipos, e);
+
+			}
+
+		});
+
+	}
+
+	private void listenerRepuestos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+
+		ventanaagregarRepuesto.getBtnAgregarRepuesto().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				AgregarRepuesto(ventanaVisualizarEquipos);
+
+			}
+		});
+
+		ventanaagregarRepuesto.getBtnCancelar().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				ventanaagregarRepuesto.dispose();
+				ventanaagregarRepuesto = null;
+			}
+		});
+
+	}
+
+	public void generarRemito(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		NumeroELSParaRemito = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
+		controladorSalidas.cargarRemitoVisualizacion(NumeroELSParaRemito);
+		controladorSalidas.agregarListenersVentanaRemitos();
+
 	}
 
 	protected void enviarCorreoOwsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
@@ -2409,9 +2552,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	private RepuestosDTO TomarDatosRepuesto() {
+	private RepuestosDTO TomarDatosRepuesto(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
-		int ELS = Integer.parseInt(this.ventanaVisualizarEquipos.getTextELS());
+		int ELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
 		String Referencia = this.ventanaagregarRepuesto.getTxtReferencia().getText();
 		String Original = this.ventanaagregarRepuesto.getTxtOriginal().getText();
 		String Reemplazo = this.ventanaagregarRepuesto.getTxtReemplazo().getText();
@@ -3082,17 +3225,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	@SuppressWarnings("unused")
 	public void mouseClicked(MouseEvent arg0) {
 
-		if (this.ventanaVisualizarEquipos != null) {
-			if (arg0.getSource() == this.ventanaVisualizarEquipos.getTablaRepuestos()) {
-				int i = this.ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow();
-				if (i != -1) {
-					if (!Repuestos_en_tabla.isEmpty()) {
-						repuestoElegido = Repuestos_en_tabla.get(i);
-
-					}
-				}
-			}
-		}
+		
+		repuestoSeleccionado(ventanaVisualizarEquipos, arg0);
+		
+		
 
 		if (this.ventanaClientesWSP != null) {
 			if (arg0.getSource() == this.ventanaClientesWSP.getTablaClienteSWSP()) {
@@ -3124,6 +3260,22 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		}
 
+	}
+
+	private void repuestoSeleccionado(VentanaVisualizarEquipos ventanaVisualizarEquipos,MouseEvent arg0) {
+		
+		if (ventanaVisualizarEquipos != null) {
+			if (arg0.getSource() == ventanaVisualizarEquipos.getTablaRepuestos()) {
+				int i = ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow();
+				if (i != -1) {
+					if (!Repuestos_en_tabla.isEmpty()) {
+						repuestoElegido = Repuestos_en_tabla.get(i);
+
+					}
+				}
+			}
+		}
+		
 	}
 
 	private void llenarComboELS() {
@@ -3236,9 +3388,26 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (this.ventanaVisualizarEquipos != null) {
 
-			if (e.getSource() == this.ventanaVisualizarEquipos.getTablaRepuestos()) {
+		habilitarEdicionRepuestos(ventanaVisualizarEquipos, e);
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+
+	}
+
+	private void habilitarEdicionRepuestos(VentanaVisualizarEquipos ventanaVisualizarEquipos, KeyEvent e) {
+
+		if (ventanaVisualizarEquipos != null) {
+
+			if (e.getSource() == ventanaVisualizarEquipos.getTablaRepuestos()) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
 					Object mje = "Deberá 'GUARDAR EDICIÓN' para mantener las modificaciones.";
@@ -3250,15 +3419,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		}
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e) {
 
 	}
 
