@@ -194,8 +194,8 @@ public class EnviarMail {
 			t.connect("diego.bertossi@elsweb.com.ar", "Diego1216");
 			t.sendMessage(message, message.getAllRecipients());
 
-			Object mje = "El correo se envió Exitosamente.";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+//			Object mje = "El correo se envió Exitosamente.";
+//			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 
 			// Cierre.
 			t.close();

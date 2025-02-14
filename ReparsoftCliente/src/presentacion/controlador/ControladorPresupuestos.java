@@ -1,10 +1,12 @@
 package presentacion.controlador;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -106,6 +108,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	// private int clickMin = 1;
 
 	private MonedaFormatter monedaFormatter;
+
+	private JFrame frame;
 
 	// this.ventanaGenerarPresupuesto.getImagePath().setText("img\\anterior.png");
 	private String imagePath = "";
@@ -357,7 +361,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
 
 			System.out.println(presupuestoPesos + "   " + Double.toString(presupuestoPesos).compareTo("0.0"));
-			
 
 			if (Double.toString(presupuestoPesos).compareTo("0.0") != 0
 					&& Double.toString(presupuestoDolar).compareTo("0.0") == 0) {
@@ -384,12 +387,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(sugerenciaPesoString);
 
 			}
-			
+
 			if (Double.toString(presupuestoPesos).compareTo("0.0") == 0
 					&& Double.toString(presupuestoDolar).compareTo("0.0") == 0) {
-				
-				
-	
+
 				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText("0.0");
 				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText("0.0");
 
@@ -501,7 +502,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			rutaImagen_4 = ventanaAgregarImagenes.getTxtRutaImagen_4().getText();
 			rutaImagen_5 = ventanaAgregarImagenes.getTxtRutaImagen_5().getText();
 			rutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6().getText();
-			
+
 			ventanaAgregarImagenes.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			if (btnPresupuestoPDF) {
@@ -520,7 +521,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 				ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
 				this.agenda.editarReparacionR(reparacionAeditar);
-							
 
 				int seleccion3 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
 						"Desea enviar el Presupuesto por correo?", "Confirmación", JOptionPane.YES_NO_OPTION,
@@ -622,8 +622,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
 					this.agenda.editarReparacionR(reparacionAeditar);
 
-					
-					
 					int seleccion3 = JOptionPane.showConfirmDialog(null, "Desea enviar el informe WORD por correo?",
 							"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
@@ -661,9 +659,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					f.printStackTrace();
 				}
 			}
-			
+
 			ventanaAgregarImagenes.setCursor(Cursor.getDefaultCursor());
-			
+
 			ventanaAgregarImagenes.dispose();
 			ventanaAgregarImagenes = null;
 
@@ -681,73 +679,28 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 
 		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnEnviar()) {
-			
 
 			if (ventanaEmail.getTextPara().getText().isEmpty()) {
-
 				Object mje = "Debe agregar al menos un destinatario al correo.";
 				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 
 			} else if (!validacionMail(ventanaEmail.getTextPara().getText())) {
-
 				JOptionPane.showMessageDialog(null, "Escriba un email correcto",
 						"Error al registrar una direccion de email", JOptionPane.ERROR_MESSAGE);
-			} else
-
-			{
+			} else {
 				int seleccion = JOptionPane.showConfirmDialog(ventanaEmail, "Desea enviar el Informe al cliente",
 						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (seleccion == JOptionPane.YES_OPTION) {
 					
-					ventanaEmail.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 					
-					
-					String correo = ventanaEmail.getTextPara().getText();
-					String Asunto = ventanaEmail.getTextAsunto().getText();
-					String Cuerpo = ventanaEmail.getTextCuerpo().getText();
-
-					if (ventanaAgregarImagenes == null) {
-
-						String NombrePDF = ventanaEmail.getTextAdjunto().getText();
-						
-						
-
-						if (mails.EnviarMail.enviarInformeAlCliente(correo, Asunto, Cuerpo, NombrePDF)) {
-
-							System.out.println("dijo si");
-							ventanaEmail.setCursor(Cursor.getDefaultCursor());
-							ventanaGenerarPresupuesto.setChckPDFEnviado(true);
-
-							ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
-							this.agenda.editarReparacionR(reparacionAeditar);
-							
-							
-							
-
-						}
-
-					} else {
-						String NombreWORD = ventanaEmail.getTextAdjunto().getText();
-
-						if (mails.EnviarMail.enviarInformeAlCliente(correo, Asunto, Cuerpo, NombreWORD)) {
-
-							ventanaGenerarPresupuesto.setChckWORDEnviado(true);
-
-							ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
-							this.agenda.editarReparacionR(reparacionAeditar);
-
-						}
-
-					}
-				
+					enviarMail();
 					
 
 				}
-			
-
 			}
 		}
+
 
 		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnEditar()) {
 
@@ -895,6 +848,65 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			mostrarTodo();
 
 		}
+	}
+
+	private void enviarMail() {
+		// Crear un popup para mostrar el mensaje de "Enviando correo, espere..."
+		JDialog popup = new JDialog();
+		popup.setTitle("Procesando");
+		popup.setModal(false);
+		popup.setSize(300, 100);
+		popup.setLocationRelativeTo(ventanaEmail);
+		popup.add(new JLabel("Enviando correo, espere...", SwingConstants.CENTER));
+
+		// Ejecutar el envío del correo en un hilo separado para no bloquear el UI
+		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+			@Override
+			protected Void doInBackground() {
+				try {
+					String correo = ventanaEmail.getTextPara().getText();
+					String Asunto = ventanaEmail.getTextAsunto().getText();
+					String Cuerpo = ventanaEmail.getTextCuerpo().getText();
+
+					if (ventanaAgregarImagenes == null) {
+						String NombrePDF = ventanaEmail.getTextAdjunto().getText();
+
+						if (mails.EnviarMail.enviarInformeAlCliente(correo, Asunto, Cuerpo, NombrePDF)) {
+							ventanaGenerarPresupuesto.setChckPDFEnviado(true);
+							ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
+							agenda.editarReparacionR(reparacionAeditar);
+						}
+
+					} else {
+						String NombreWORD = ventanaEmail.getTextAdjunto().getText();
+
+						if (mails.EnviarMail.enviarInformeAlCliente(correo, Asunto, Cuerpo, NombreWORD)) {
+							ventanaGenerarPresupuesto.setChckWORDEnviado(true);
+							ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
+							agenda.editarReparacionR(reparacionAeditar);
+						}
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				return null;
+			}
+
+			@Override
+			protected void done() {
+				// Cerrar el popup después de completar el envío
+				popup.dispose();
+				JOptionPane.showMessageDialog(ventanaEmail, "Correo enviado exitosamente.", "Confirmación",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		};
+
+		// Mostrar el popup y ejecutar el SwingWorker
+		SwingUtilities.invokeLater(() -> {
+			popup.setVisible(true);
+			worker.execute();
+		});
+		
 	}
 
 	private void agregarImagenesDiagnostico() {

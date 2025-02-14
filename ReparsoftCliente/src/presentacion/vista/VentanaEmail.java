@@ -4,6 +4,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
@@ -394,4 +396,10 @@ public class VentanaEmail extends JFrame {
 	public void setBtnEnviar(JButton btnEnviar) {
 		this.btnEnviar = btnEnviar;
 	}
+	
+	
+
+	
+	
+	
 }
