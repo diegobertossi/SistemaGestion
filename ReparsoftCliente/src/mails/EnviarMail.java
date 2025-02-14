@@ -230,7 +230,8 @@ public class EnviarMail {
 	}
 
 	public static boolean enviarInformeAlCliente(String correo, String Asunto, String Cuerpo, String NombrePDF) {
-
+		
+		
 		return enviarInformeAlClientePR(correo, Asunto, Cuerpo, NombrePDF);
 
 	}

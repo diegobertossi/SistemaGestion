@@ -702,7 +702,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					
 					ventanaEmail.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 					
-					System.out.println("dijo si");
 					
 					String correo = ventanaEmail.getTextPara().getText();
 					String Asunto = ventanaEmail.getTextAsunto().getText();
@@ -712,10 +711,12 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 						String NombrePDF = ventanaEmail.getTextAdjunto().getText();
 						
+						
 
 						if (mails.EnviarMail.enviarInformeAlCliente(correo, Asunto, Cuerpo, NombrePDF)) {
 
-							
+							System.out.println("dijo si");
+							ventanaEmail.setCursor(Cursor.getDefaultCursor());
 							ventanaGenerarPresupuesto.setChckPDFEnviado(true);
 
 							ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
