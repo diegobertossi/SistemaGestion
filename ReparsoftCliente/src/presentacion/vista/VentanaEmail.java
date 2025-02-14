@@ -66,6 +66,7 @@ public class VentanaEmail extends JFrame {
 		panel.add(lblCliente);
 		
 		textCliente = new JTextField();
+		textCliente.setEditable(false);
 		textCliente.setForeground(new Color(0, 0, 128));
 		textCliente.setFont(new Font("Cambria", Font.BOLD, 22));
 		textCliente.setBorder(null);
@@ -91,6 +92,7 @@ public class VentanaEmail extends JFrame {
 		label.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		textNombreContacto = new JTextField();
+		textNombreContacto.setEditable(false);
 		textNombreContacto.setBounds(168, 8, 348, 20);
 		panel_1.add(textNombreContacto);
 		textNombreContacto.setForeground(SystemColor.textHighlight);
@@ -100,6 +102,7 @@ public class VentanaEmail extends JFrame {
 		textNombreContacto.setColumns(10);
 		
 		textEmailContacto = new JTextField();
+		textEmailContacto.setEditable(false);
 		textEmailContacto.setBounds(168, 34, 348, 20);
 		panel_1.add(textEmailContacto);
 		textEmailContacto.setForeground(SystemColor.textHighlight);

@@ -45,7 +45,7 @@ public class EnviarMail {
 			t.connect("diego.bertossi@elsweb.com.ar", "Diego1216");
 			t.sendMessage(message, message.getAllRecipients());
 
-			Object mje = "El correo se envi� Exitosamente.";
+			Object mje = "El correo se envió Exitosamente.";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 
 			// Cierre.
@@ -124,14 +124,14 @@ public class EnviarMail {
 			message.addRecipients(Message.RecipientType.BCC, correo);
 
 			message.setSubject("ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - " + EstadoComercial);
-			message.setText("PROCEDER SEG�N CORRESPONDA");
+			message.setText("PROCEDER SEGÚN CORRESPONDA");
 
 			// Lo enviamos.
 			Transport t = session.getTransport("smtp");
 			t.connect("diego.bertossi@elsweb.com.ar", "Diego1216");
 			t.sendMessage(message, message.getAllRecipients());
 
-			Object mje = "El correo se envi� Exitosamente.";
+			Object mje = "El correo se envió Exitosamente.";
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 
 			// Cierre.

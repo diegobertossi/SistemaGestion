@@ -3,6 +3,7 @@ package presentacion.controlador;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Frame;
 import java.awt.Toolkit;
@@ -500,6 +501,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			rutaImagen_4 = ventanaAgregarImagenes.getTxtRutaImagen_4().getText();
 			rutaImagen_5 = ventanaAgregarImagenes.getTxtRutaImagen_5().getText();
 			rutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6().getText();
+			
+			ventanaAgregarImagenes.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			if (btnPresupuestoPDF) {
 
@@ -517,6 +520,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 				ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
 				this.agenda.editarReparacionR(reparacionAeditar);
+							
 
 				int seleccion3 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
 						"Desea enviar el Presupuesto por correo?", "Confirmación", JOptionPane.YES_NO_OPTION,
@@ -618,6 +622,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
 					this.agenda.editarReparacionR(reparacionAeditar);
 
+					
+					
 					int seleccion3 = JOptionPane.showConfirmDialog(null, "Desea enviar el informe WORD por correo?",
 							"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
@@ -655,6 +661,11 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					f.printStackTrace();
 				}
 			}
+			
+			ventanaAgregarImagenes.setCursor(Cursor.getDefaultCursor());
+			
+			ventanaAgregarImagenes.dispose();
+			ventanaAgregarImagenes = null;
 
 		} else if (this.ventanaAgregarImagenes != null
 				&& e.getSource() == this.ventanaAgregarImagenes.getBtnCancelar()) {
@@ -670,6 +681,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 
 		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnEnviar()) {
+			
 
 			if (ventanaEmail.getTextPara().getText().isEmpty()) {
 
@@ -687,7 +699,11 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (seleccion == JOptionPane.YES_OPTION) {
-
+					
+					ventanaEmail.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+					
+					System.out.println("dijo si");
+					
 					String correo = ventanaEmail.getTextPara().getText();
 					String Asunto = ventanaEmail.getTextAsunto().getText();
 					String Cuerpo = ventanaEmail.getTextCuerpo().getText();
@@ -695,13 +711,18 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					if (ventanaAgregarImagenes == null) {
 
 						String NombrePDF = ventanaEmail.getTextAdjunto().getText();
+						
 
 						if (mails.EnviarMail.enviarInformeAlCliente(correo, Asunto, Cuerpo, NombrePDF)) {
 
+							
 							ventanaGenerarPresupuesto.setChckPDFEnviado(true);
 
 							ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
 							this.agenda.editarReparacionR(reparacionAeditar);
+							
+							
+							
 
 						}
 
@@ -718,8 +739,11 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						}
 
 					}
+				
+					
 
 				}
+			
 
 			}
 		}
