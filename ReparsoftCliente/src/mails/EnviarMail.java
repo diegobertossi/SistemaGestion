@@ -3,237 +3,103 @@ package mails;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.*;
+import javax.mail.internet.*;
 import javax.swing.JOptionPane;
-
-//import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeBodyPart;
-
 
 public class EnviarMail {
 
-	private static boolean enviarAvisoInformePR(String correo, String ELS, String Cliente, String Sucursal) {
-		try {
+    // Configuración de propiedades del servidor SMTP
+    private static Properties getMailProperties() {
+        Properties props = new Properties();
+        props.setProperty("mail.smtp.host", "smtp.elsweb.com.ar");
+        props.setProperty("mail.smtp.starttls.enable", "true");
+        props.setProperty("mail.smtp.port", "587");
+        props.setProperty("mail.smtp.user", "diego.bertossi@elsweb.com.ar");
+        props.setProperty("mail.smtp.auth", "true");
+        return props;
+    }
 
-			// Propiedades de la conexi�n
-			Properties props = new Properties();
-			props.setProperty("mail.smtp.host", "smtp.elsweb.com.ar");
-			props.setProperty("mail.smtp.starttls.enable", "true");
-			props.setProperty("mail.smtp.port", "587");
-			props.setProperty("mail.smtp.user", "diego.bertossi@elsweb.com.ar");
-			props.setProperty("mail.smtp.auth", "true");
+    // Método común para enviar correos
+    private static boolean enviarCorreo(String from, String correo, String subject, String cuerpo, BodyPart... adjuntos) {
+        try {
+            // Crear sesión
+            Session session = Session.getDefaultInstance(getMailProperties());
 
-			// Preparamos la sesion
-			Session session = Session.getDefaultInstance(props);
+            // Crear el mensaje
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.addRecipients(Message.RecipientType.BCC, correo);
+            message.setSubject(subject);
 
-			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("Equipos Diagnosticados ELS<diego.bertossi@elsweb.com.ar>"));
+            if (adjuntos != null && adjuntos.length > 0) {
+                Multipart multipart = new MimeMultipart();
 
-			message.addRecipients(Message.RecipientType.BCC, correo);
+                // Agregar el cuerpo del mensaje como texto
+                BodyPart texto = new MimeBodyPart();
+                texto.setText(cuerpo);
+                multipart.addBodyPart(texto);
 
-			message.setSubject("ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - DIAGNOSTICADO");
-			message.setText("");
+                // Agregar adjuntos
+                for (BodyPart adjunto : adjuntos) {
+                    multipart.addBodyPart(adjunto);
+                }
 
-			// Lo enviamos.
-			Transport t = session.getTransport("smtp");
-			t.connect("diego.bertossi@elsweb.com.ar", "Diego1216");
-			t.sendMessage(message, message.getAllRecipients());
+                message.setContent(multipart);
+            } else {
+                message.setText(cuerpo);
+            }
 
-			Object mje = "El correo se envió Exitosamente.";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+            // Enviar correo
+            Transport t = session.getTransport("smtp");
+            t.connect("diego.bertossi@elsweb.com.ar", "Diego1216");
+            t.sendMessage(message, message.getAllRecipients());
+            t.close();
 
-			// Cierre.
-			t.close();
-			return true;
-		} catch (Exception e) {
-			Object mje = "El correo NO ha sido enviado.";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.WARNING_MESSAGE);
-			e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "El correo se envió exitosamente.", "Confirmación de envío", JOptionPane.INFORMATION_MESSAGE);
+            return true;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "El correo NO ha sido enviado.", "Error de envío", JOptionPane.WARNING_MESSAGE);
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-			return false;
-		}
+    // Métodos específicos para cada tipo de correo
+    public static void enviarAvisoInforme(String correo, String ELS, String Cliente, String Sucursal) {
+        String from = "Equipos Diagnosticados ELS<diego.bertossi@elsweb.com.ar>";
+        String subject = "ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - DIAGNOSTICADO";
+        enviarCorreo(from, correo, subject, "");
+    }
 
-	}
+    public static void enviarAvisoEquipoTerminado(String correo, String ELS, String Cliente, String Sucursal) {
+        String from = "Equipos Terminados ELS<diego.bertossi@elsweb.com.ar>";
+        String subject = "ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - TERMINADO";
+        enviarCorreo(from, correo, subject, "");
+    }
 
-	private static void enviarAvisoEquipoTerminadoPR(String correo, String ELS, String Cliente, String Sucursal) {
-		try {
+    public static void enviarAvisoRespuestaCliente(String correo, String ELS, String Cliente, String Sucursal, String EstadoComercial) {
+        String from = "Respuesta de Clientes ELS<diego.bertossi@elsweb.com.ar>";
+        String subject = "ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - " + EstadoComercial;
+        String cuerpo = "PROCEDER SEGÚN CORRESPONDA";
+        enviarCorreo(from, correo, subject, cuerpo);
+    }
 
-			// Propiedades de la conexi�n
-			Properties props = new Properties();
-			props.setProperty("mail.smtp.host", "smtp.elsweb.com.ar");
-			props.setProperty("mail.smtp.starttls.enable", "true");
-			props.setProperty("mail.smtp.port", "587");
-			props.setProperty("mail.smtp.user", "diego.bertossi@elsweb.com.ar");
-			props.setProperty("mail.smtp.auth", "true");
+    public static void enviarInformeAlCliente(String correo, String asunto, String cuerpo, String nombreArchivo) {
+        try {
+            BodyPart adjunto = new MimeBodyPart();
+            if (nombreArchivo.endsWith(".pdf")) {
+                adjunto.setDataHandler(new DataHandler(new FileDataSource("F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/" + nombreArchivo)));
+            } else if (nombreArchivo.endsWith(".docx")) {
+                adjunto.setDataHandler(new DataHandler(new FileDataSource("F:/ELS/Administracion/Sistema/Informes Siemens/" + nombreArchivo)));
+            }
+            adjunto.setFileName(nombreArchivo);
 
-			// Preparamos la sesion
-			Session session = Session.getDefaultInstance(props);
-
-			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("Equipos Terminados ELS<diego.bertossi@elsweb.com.ar>"));
-
-			message.addRecipients(Message.RecipientType.BCC, correo);
-
-			message.setSubject("ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - TERMINADO");
-			message.setText("");
-
-			// Lo enviamos.
-			Transport t = session.getTransport("smtp");
-			t.connect("diego.bertossi@elsweb.com.ar", "Diego1216");
-			t.sendMessage(message, message.getAllRecipients());
-
-			Object mje = "El correo se envi� Exitosamente.";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-
-			// Cierre.
-			t.close();
-
-		} catch (Exception e) {
-			Object mje = "El correo NO ha sido enviado.";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.WARNING_MESSAGE);
-			e.printStackTrace();
-
-		}
-
-	}
-
-	private static void enviarAvisoRespuestaClientePR(String correo, String ELS, String Cliente, String Sucursal,
-			String EstadoComercial) {
-		try {
-
-			// Propiedades de la conexi�n
-			Properties props = new Properties();
-			props.setProperty("mail.smtp.host", "smtp.elsweb.com.ar");
-			props.setProperty("mail.smtp.starttls.enable", "true");
-			props.setProperty("mail.smtp.port", "587");
-			props.setProperty("mail.smtp.user", "diego.bertossi@elsweb.com.ar");
-			props.setProperty("mail.smtp.auth", "true");
-
-			// Preparamos la sesion
-			Session session = Session.getDefaultInstance(props);
-
-			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("Respuesta de Clientes ELS<diego.bertossi@elsweb.com.ar>"));
-
-			message.addRecipients(Message.RecipientType.BCC, correo);
-
-			message.setSubject("ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - " + EstadoComercial);
-			message.setText("PROCEDER SEGÚN CORRESPONDA");
-
-			// Lo enviamos.
-			Transport t = session.getTransport("smtp");
-			t.connect("diego.bertossi@elsweb.com.ar", "Diego1216");
-			t.sendMessage(message, message.getAllRecipients());
-
-			Object mje = "El correo se envió Exitosamente.";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-
-			// Cierre.
-			t.close();
-
-		} catch (Exception e) {
-			Object mje = "El correo NO ha sido enviado.";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.WARNING_MESSAGE);
-			e.printStackTrace();
-
-		}
-
-	}
-
-	private static boolean enviarInformeAlClientePR(String correo, String Asunto, String Cuerpo, String nombreArchivo) {
-		try {
-
-			// Propiedades de la conexi�n
-			Properties props = new Properties();
-			props.setProperty("mail.smtp.host", "smtp.elsweb.com.ar");
-			props.setProperty("mail.smtp.starttls.enable", "true");
-			props.setProperty("mail.smtp.port", "587");
-			props.setProperty("mail.smtp.user", "diego.bertossi@elsweb.com.ar");
-			props.setProperty("mail.smtp.auth", "true");
-
-			// Preparamos la sesion
-			Session session = Session.getDefaultInstance(props);
-
-			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("ELS <diego.bertossi@elsweb.com.ar>"));
-
-			message.addRecipients(Message.RecipientType.BCC, correo);
-
-			message.setSubject(Asunto);
-			message.setText(Cuerpo);
-
-			BodyPart texto = new javax.mail.internet.MimeBodyPart();
-			texto.setText(Cuerpo);
-
-//			
-			BodyPart adjunto = new javax.mail.internet.MimeBodyPart();
-
-			if (nombreArchivo.endsWith(".pdf")) {
-				adjunto.setDataHandler(new DataHandler(new FileDataSource(
-						"F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/" + nombreArchivo)));
-			}else if (nombreArchivo.endsWith(".docx")) {
-				adjunto.setDataHandler(new DataHandler(new FileDataSource(
-						"F:/ELS/Administracion/Sistema/Informes Siemens/" + nombreArchivo)));
-			}
-			adjunto.setFileName(nombreArchivo);
-
-			Multipart multipart = new MimeMultipart();
-			multipart.addBodyPart(texto);
-			multipart.addBodyPart(adjunto);
-
-			message.setContent(multipart);
-
-			// Lo enviamos.
-			Transport t = session.getTransport("smtp");
-			t.connect("diego.bertossi@elsweb.com.ar", "Diego1216");
-			t.sendMessage(message, message.getAllRecipients());
-
-//			Object mje = "El correo se envió Exitosamente.";
-//			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-
-			// Cierre.
-			t.close();
-			return true;
-
-		} catch (Exception e) {
-			Object mje = "El correo NO ha sido enviado.";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.WARNING_MESSAGE);
-			e.printStackTrace();
-			return false;
-		}
-
-	}
-
-	public static boolean enviarAvisoInforme(String correo, String ELS, String Cliente, String Sucursal) {
-
-		return enviarAvisoInformePR(correo, ELS, Cliente, Sucursal);
-
-	}
-
-	public static void enviarAvisoEquipoTerminado(String correo, String ELS, String Cliente, String Sucursal) {
-
-		enviarAvisoEquipoTerminadoPR(correo, ELS, Cliente, Sucursal);
-
-	}
-
-	public static void enviarAvisoRespuestaCliente(String correo, String ELS, String Cliente, String Sucursal,
-			String EstadoComercial) {
-
-		enviarAvisoRespuestaClientePR(correo, ELS, Cliente, Sucursal, EstadoComercial);
-
-	}
-
-	public static boolean enviarInformeAlCliente(String correo, String Asunto, String Cuerpo, String NombrePDF) {
-		
-		
-		return enviarInformeAlClientePR(correo, Asunto, Cuerpo, NombrePDF);
-
-	}
-
+            String from = "ELS <diego.bertossi@elsweb.com.ar>";
+            enviarCorreo(from, correo, asunto, cuerpo, adjunto);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se pudo adjuntar el archivo.", "Error", JOptionPane.WARNING_MESSAGE);
+            e.printStackTrace();
+        }
+    }
 }

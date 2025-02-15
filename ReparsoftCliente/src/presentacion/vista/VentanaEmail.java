@@ -396,10 +396,4 @@ public class VentanaEmail extends JFrame {
 	public void setBtnEnviar(JButton btnEnviar) {
 		this.btnEnviar = btnEnviar;
 	}
-	
-	
-
-	
-	
-	
 }

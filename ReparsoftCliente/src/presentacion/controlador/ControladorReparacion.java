@@ -39,11 +39,14 @@ import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.UndoManager;
 
@@ -358,29 +361,22 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonAvisoInforme()) {
-			
-			
+
 			enviarAvisoInforme(ventanaVisualizarEquipos);
 
-			
 		}
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonAvisoEquipoListo()) {
-			
-			
+
 			enviarAvisoEquipoListo(ventanaVisualizarEquipos);
 
-			
 		}
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonRespuestaAlTecnico()) {
-			
+
 			enviarRespuestaAlTecnico(ventanaVisualizarEquipos);
-
-
-			
 
 		}
 
@@ -710,19 +706,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnEditarRepuesto()) {
-			
-			
-			guardarEditarRepuesto(ventanaVisualizarEquipos);
-			
 
-		
+			guardarEditarRepuesto(ventanaVisualizarEquipos);
+
 		} else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnEliminarRepuesto()) {
 
-			
-			
 			eliminarRepuesto(ventanaVisualizarEquipos);
-			
 
 		}
 
@@ -1182,84 +1172,93 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	private void enviarRespuestaAlTecnico(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-		
 		String correo = reparacion.getCorreo();
-		String ELS = ventanaVisualizarEquipos.getTextELS().toString();
-		String Cliente = ventanaVisualizarEquipos.getTextCliente().getText();
-		String Sucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
-		String EstadoComercial = reparacion.getEstadoComercial();
-
-		int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-				"Desea enviar el aviso de 'Respuesta del Cliente' a " + correo + " ?", "Confirmación",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-		if (seleccion == JOptionPane.YES_OPTION) {
-
-			ventanaVisualizarEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			mails.EnviarMail.enviarAvisoRespuestaCliente(correo, ELS, Cliente, Sucursal, EstadoComercial);
-
-		}
-		ventanaVisualizarEquipos.setCursor(Cursor.getDefaultCursor());
-		
+		enviarAviso(ventanaVisualizarEquipos, correo, "Desea enviar el aviso de 'Respuesta del Cliente'",
+				"RESPUESTA_CLIENTE");
 	}
 
 	private void enviarAvisoEquipoListo(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-		
 		String correo = "diego.bertossi@elsweb.com.ar";
-
-		String ELS = ventanaVisualizarEquipos.getTextELS().toString();
-		String Cliente = ventanaVisualizarEquipos.getTextCliente().getText();
-		String Sucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
-
-		int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-
-				"¿Desea enviar el aviso de 'Equipo Terminado' a " + correo + " ?", "Confirmación",
-
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-		if (seleccion == JOptionPane.YES_OPTION) {
-			
-			ventanaVisualizarEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			mails.EnviarMail.enviarAvisoEquipoTerminado(correo, ELS, Cliente, Sucursal);
-
-		}
-
-		ventanaVisualizarEquipos.setCursor(Cursor.getDefaultCursor());
+		enviarAviso(ventanaVisualizarEquipos, correo, "¿Desea enviar el aviso de 'Equipo Terminado'", "EQUIPO_LISTO");
 	}
 
 	private void enviarAvisoInforme(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-		
 		String correo = "diego.bertossi@elsweb.com.ar";
+		enviarAviso(ventanaVisualizarEquipos, correo, "¿Desea enviar el aviso", "INFORME");
+	}
+
+	private void enviarAviso(VentanaVisualizarEquipos ventanaVisualizarEquipos, String correo,
+			String mensajeConfirmacion, String tipoAviso) {
+
 		String ELS = ventanaVisualizarEquipos.getTextELS().toString();
 		String Cliente = ventanaVisualizarEquipos.getTextCliente().getText();
 		String Sucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
 
 		int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-
-				"¿Desea enviar el aviso  a " + correo + " ?", "Confirmación", JOptionPane.YES_NO_OPTION,
-
+				mensajeConfirmacion + " a " + correo + " ?", "Confirmación", JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 
 		if (seleccion == JOptionPane.YES_OPTION) {
-			
-			ventanaVisualizarEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			if (mails.EnviarMail.enviarAvisoInforme(correo, ELS, Cliente, Sucursal)) {
+			JDialog popup = new JDialog();
+			popup.setTitle("Procesando");
+			popup.setModal(false);
+			popup.setSize(300, 100);
+			popup.setLocationRelativeTo(ventanaVisualizarEquipos);
+			popup.add(new JLabel("Enviando correo, espere...", SwingConstants.CENTER));
 
-				ventanaVisualizarEquipos.setChckbxAvisoEnviado(true);
-				ReparacionDTO reparacionAeditar = TomarDatosVisualizacion(ventanaVisualizarEquipos);
-				this.agenda.editarReparacionR(reparacionAeditar);
+			// Ejecutar el envío del correo en un hilo separado para no bloquear el UI
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				@Override
+				protected Void doInBackground() {
+					try {
 
-			}
+						switch (tipoAviso) {
+						case "RESPUESTA_CLIENTE":
+							String EstadoComercial = reparacion.getEstadoComercial();
+							mails.EnviarMail.enviarAvisoRespuestaCliente(correo, ELS, Cliente, Sucursal,
+									EstadoComercial);
+							break;
+						case "EQUIPO_LISTO":
+							mails.EnviarMail.enviarAvisoEquipoTerminado(correo, ELS, Cliente, Sucursal);
+							break;
+						case "INFORME":
+							mails.EnviarMail.enviarAvisoInforme(correo, ELS, Cliente, Sucursal);
+							ventanaVisualizarEquipos.setChckbxAvisoEnviado(true);
+							ReparacionDTO reparacionAeditar = TomarDatosVisualizacion(ventanaVisualizarEquipos);
+							agenda.editarReparacionR(reparacionAeditar);
+							break;
+						default:
+							throw new IllegalArgumentException("Tipo de aviso no reconocido: " + tipoAviso);
+						}
 
-			ventanaVisualizarEquipos.setCursor(Cursor.getDefaultCursor());
+					} catch (Exception ex) {
+						popup.dispose();					
+						ex.printStackTrace();
+						//JOptionPane.showMessageDialog(null, "El correo NO ha sido enviado.", "Error de envío", JOptionPane.WARNING_MESSAGE);
+					}
+					return null;
+				}
+
+				@Override
+				protected void done() {
+					// Cerrar el popup después de completar el envío
+					popup.dispose();
+
+				}
+			};
+
+			// Mostrar el popup y ejecutar el SwingWorker
+			SwingUtilities.invokeLater(() -> {
+				popup.setVisible(true);
+				worker.execute();
+			});
+
 		}
-
-		
 	}
 
 	private void eliminarRepuesto(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-		
+
 		if (repuestoElegido == null) {
 			ventanaVisualizarEquipos.getErrorMsj("Seleccione un Repuesto");
 
@@ -1283,11 +1282,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		}
 
-		
 	}
 
 	private void guardarEditarRepuesto(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-		
+
 		if (repuestoElegido == null) {
 			ventanaVisualizarEquipos.getErrorMsj("Seleccione un Repuesto");
 
@@ -1316,7 +1314,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				}
 			}
-		 ventanaVisualizarEquipos.getBtnEditarRepuesto().setEnabled(false);
+			ventanaVisualizarEquipos.getBtnEditarRepuesto().setEnabled(false);
 
 			agenda.editarRepuesto(repuestoElegido);
 
@@ -1324,7 +1322,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			repuestoElegido = null;
 
 		}
-		
+
 	}
 
 	private void AgregarRepuesto(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
@@ -1955,8 +1953,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		});
-		
-		
+
 		ventanaVisualizarEquipos.getBtnEditarRepuesto().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1965,8 +1962,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		});
-		
-		
+
 		ventanaVisualizarEquipos.getBtnEliminarRepuesto().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1975,7 +1971,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		});
-		
+
 		ventanaVisualizarEquipos.getBotonAvisoInforme().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1984,7 +1980,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		});
-		
+
 		ventanaVisualizarEquipos.getBotonAvisoEquipoListo().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1993,7 +1989,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		});
-		
+
 		ventanaVisualizarEquipos.getBotonRespuestaAlTecnico().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -2002,8 +1998,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		});
-		
-		
 
 		ventanaVisualizarEquipos.getTablaRepuestos().addMouseListener(new MouseListener() {
 
@@ -3284,10 +3278,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	@SuppressWarnings("unused")
 	public void mouseClicked(MouseEvent arg0) {
 
-		
 		repuestoSeleccionado(ventanaVisualizarEquipos, arg0);
-		
-		
 
 		if (this.ventanaClientesWSP != null) {
 			if (arg0.getSource() == this.ventanaClientesWSP.getTablaClienteSWSP()) {
@@ -3321,8 +3312,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	private void repuestoSeleccionado(VentanaVisualizarEquipos ventanaVisualizarEquipos,MouseEvent arg0) {
-		
+	private void repuestoSeleccionado(VentanaVisualizarEquipos ventanaVisualizarEquipos, MouseEvent arg0) {
+
 		if (ventanaVisualizarEquipos != null) {
 			if (arg0.getSource() == ventanaVisualizarEquipos.getTablaRepuestos()) {
 				int i = ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow();
@@ -3334,7 +3325,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				}
 			}
 		}
-		
+
 	}
 
 	private void llenarComboELS() {

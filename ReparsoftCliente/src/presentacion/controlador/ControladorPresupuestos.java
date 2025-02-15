@@ -503,6 +503,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			rutaImagen_5 = ventanaAgregarImagenes.getTxtRutaImagen_5().getText();
 			rutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6().getText();
 
+			String emailPrueba = "diego.bertossi@gmail.com";
+
 			ventanaAgregarImagenes.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			if (btnPresupuestoPDF) {
@@ -541,7 +543,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 					ventanaEmail.getTextCliente().setText(NombreCliente + " ( " + Sucursal + " ) ");
 					ventanaEmail.getTextNombreContacto().setText(NombreContacto);
-					ventanaEmail.getTextEmailContacto().setText(emailContacto);
+
+					// ventanaEmail.getTextEmailContacto().setText(emailContacto);
+					ventanaEmail.getTextEmailContacto().setText(emailPrueba);
+
 					ventanaEmail.getTextAdjunto().setText(NombrePDF);
 
 					String empresa = "ELS - Electronic Laboratory & Services.";
@@ -637,7 +642,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 						ventanaEmail.getTextCliente().setText(cliente + " ( " + sucursal + " ) ");
 						ventanaEmail.getTextNombreContacto().setText(NombreContacto);
-						ventanaEmail.getTextEmailContacto().setText(emailContacto);
+
+						ventanaEmail.getTextEmailContacto().setText(emailPrueba);
+						// ventanaEmail.getTextEmailContacto().setText(emailContacto);
 						ventanaEmail.getTextAdjunto().setText(nombreWordNuevo);
 
 						String empresa = "ELS - Electronic Laboratory & Services.";
@@ -692,15 +699,12 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (seleccion == JOptionPane.YES_OPTION) {
-					
-					
+
 					enviarMail();
-					
 
 				}
 			}
 		}
-
 
 		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnEditar()) {
 
@@ -864,30 +868,32 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			@Override
 			protected Void doInBackground() {
 				try {
+
 					String correo = ventanaEmail.getTextPara().getText();
-					String Asunto = ventanaEmail.getTextAsunto().getText();
-					String Cuerpo = ventanaEmail.getTextCuerpo().getText();
+					String asunto = ventanaEmail.getTextAsunto().getText();
+					String cuerpo = ventanaEmail.getTextCuerpo().getText();
+					String nombreArchivo = ventanaEmail.getTextAdjunto().getText();
 
-					if (ventanaAgregarImagenes == null) {
-						String NombrePDF = ventanaEmail.getTextAdjunto().getText();
+					mails.EnviarMail.enviarInformeAlCliente(correo, asunto, cuerpo, nombreArchivo);
 
-						if (mails.EnviarMail.enviarInformeAlCliente(correo, Asunto, Cuerpo, NombrePDF)) {
-							ventanaGenerarPresupuesto.setChckPDFEnviado(true);
-							ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
-							agenda.editarReparacionR(reparacionAeditar);
-						}
+					if (nombreArchivo.endsWith(".pdf")) {
 
-					} else {
-						String NombreWORD = ventanaEmail.getTextAdjunto().getText();
+						ventanaGenerarPresupuesto.setChckPDFEnviado(true);
 
-						if (mails.EnviarMail.enviarInformeAlCliente(correo, Asunto, Cuerpo, NombreWORD)) {
-							ventanaGenerarPresupuesto.setChckWORDEnviado(true);
-							ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
-							agenda.editarReparacionR(reparacionAeditar);
-						}
+					} else if (nombreArchivo.endsWith(".docx")) {
+
+						ventanaGenerarPresupuesto.setChckWORDEnviado(true);
+
 					}
+
+					ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
+					agenda.editarReparacionR(reparacionAeditar);
+
 				} catch (Exception ex) {
+					
+					popup.dispose();					
 					ex.printStackTrace();
+//					JOptionPane.showMessageDialog(null, "El correo NO ha sido enviado.", "Error de envío", JOptionPane.WARNING_MESSAGE);
 				}
 				return null;
 			}
@@ -896,8 +902,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			protected void done() {
 				// Cerrar el popup después de completar el envío
 				popup.dispose();
-				JOptionPane.showMessageDialog(ventanaEmail, "Correo enviado exitosamente.", "Confirmación",
-						JOptionPane.INFORMATION_MESSAGE);
+
 			}
 		};
 
@@ -906,7 +911,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			popup.setVisible(true);
 			worker.execute();
 		});
-		
+
 	}
 
 	private void agregarImagenesDiagnostico() {
