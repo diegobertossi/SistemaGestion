@@ -222,7 +222,8 @@ public class ControladorPrincipal implements ActionListener {
 			ventanaListadoReparaciones = new VentanaListadoReparaciones(controladorListados);
 
 			controladorUsuLogin.verificarPermisosVentanaListados(ventanaListadoReparaciones);
-
+ 
+			
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
 			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);
 
@@ -244,6 +245,7 @@ public class ControladorPrincipal implements ActionListener {
 			ventanaEquipos.setVisible(false);
 			ventanaSalidas.setVisible(false);
 
+	
 		}
 
 		else if (arg0.getSource() == vistaPrincipal.getBotonBackUp()) {

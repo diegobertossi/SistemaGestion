@@ -132,48 +132,43 @@ public class ControladorUsuLogin {
 
 		}
 	}
-
+	
+	
 	public void verificarPermisosVentanaListados(VentanaListadoReparaciones ventanaListadoReparaciones) {
+	    if (usu_login != null) {
+	        // Obtener la lista de permisos principales del usuario
+	        List<PermisoDTO> permisos_principal = permisos.damePermisosPadres(usu_login.getIdRol());
 
-		if (usu_login != null) {
-			List<PermisoDTO> permisos_principal = permisos.damePermisosPadres(usu_login.getIdRol());
+	        if (permisos_principal != null && !permisos_principal.isEmpty()) {
+	            // Verificar si tiene el permiso "Presupuestos"
+	            boolean tienePermisoPresupuestos = permisos_principal.stream()
+	                    .anyMatch(permiso -> "Presupuestos".equalsIgnoreCase(permiso.getNombrePantalla()));
 
-			if (!permisos_principal.contains(new PermisoDTO(0, 0, 0, "Presupuestos"))) {
+	            if (!tienePermisoPresupuestos) {
+	                System.out.println("NO TIENE PERMISO");
 
-				DefaultTableModel modelo = (DefaultTableModel) ventanaListadoReparaciones.getModelReparaciones();
-				int columnaPrecioPeso = 19;
-				int columnaPrecioDolar = 20;
-				int columnaPrecioPago = 21;
+	                // Ocultar las columnas 19, 20 y 21
+	                int[] columnas = {19, 20, 21};
+	                for (int columna : columnas) {
+	                    ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columna).setMaxWidth(0);
+	                    ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columna).setMinWidth(0);
+	                    ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columna).setPreferredWidth(0);
+	                }
 
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso)
-						.setMaxWidth(0);
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso)
-						.setMinWidth(0);
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPeso)
-						.setPreferredWidth(0);
-				ventanaListadoReparaciones.getChckbxPrecioPeso().setVisible(false);
-
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar)
-						.setMaxWidth(0);
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar)
-						.setMinWidth(0);
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioDolar)
-						.setPreferredWidth(0);
-				ventanaListadoReparaciones.getChckbxPrecioDolar().setVisible(false);
-
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago)
-						.setMaxWidth(0);
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago)
-						.setMinWidth(0);
-				ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columnaPrecioPago)
-						.setPreferredWidth(0);
-				ventanaListadoReparaciones.getChckbxPago().setVisible(false);
-
-				modelo.fireTableStructureChanged();
-			}
-
-		}
+	                // Ocultar los checkboxes correspondientes
+	                ventanaListadoReparaciones.getChckbxPrecioPeso().setVisible(false);
+	                ventanaListadoReparaciones.getChckbxPrecioDolar().setVisible(false);
+	                ventanaListadoReparaciones.getChckbxPago().setVisible(false);
+	                ventanaListadoReparaciones.getBtnEstadisticas().setVisible(false);
+	                
+	            }
+	        } else {
+	            System.out.println("La lista de permisos está vacía o es nula.");
+	        }
+	    }
 	}
+
+
 
 	// public void verificarPermisosInternacion(VistaInternaciones vista)
 	// {

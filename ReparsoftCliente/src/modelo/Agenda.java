@@ -303,13 +303,6 @@ public class Agenda {
 		ReparacionR.ListarModelos(box);
 
 	}
-
-	public List<String> ListarModelosEnList() {
-
-		return ReparacionR.ListarModelosEnList();
-
-	}
-	
 	
 	public void ListarMarca(JComboBox<?> comboMarca) {
 		ReparacionR.ListarMarca(comboMarca);

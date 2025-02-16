@@ -180,7 +180,7 @@ public interface ReparacionDAO
 
 	public int obtenerNumeroELSbsas();
 
-	public List<String> ListarModelosEnList();
+	
 
 
 
