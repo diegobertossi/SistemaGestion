@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.ReparacionDAO;
+import presentacion.vista.VentanaVisualizarEquipos;
 import dto.ReparacionDTO;
 
 public class ReparacionDAOImpl implements ReparacionDAO {
@@ -2496,7 +2497,44 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		}
 
 	}
+	
+	
 
+
+	@Override
+	public List<String> ListarModelosEnList() {
+		
+		List<String> items = new ArrayList<>();
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		// ArrayList<SucursalDTO> Sucursal = new ArrayList<SucursalDTO>();
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(readallModelo);
+			//statement.setString(1, marca);
+			resultSet = statement.executeQuery();
+			
+			
+
+			while (resultSet.next()) {
+
+				items.add(new ReparacionDTO(resultSet.getString(1)).getModelo()) ;
+
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		
+		
+		{
+			conexion.cerrarConexion();
+		}
+		return items;
+		
+	
+	}
+	
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void ListarSeriexModelo(JComboBox comboSerie, String modelo) {
@@ -2919,6 +2957,9 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		}
 		return Reparaciones;
 	}
+
+
+
 
 
 

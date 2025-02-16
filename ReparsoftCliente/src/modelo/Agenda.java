@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -303,6 +304,13 @@ public class Agenda {
 
 	}
 
+	public List<String> ListarModelosEnList() {
+
+		return ReparacionR.ListarModelosEnList();
+
+	}
+	
+	
 	public void ListarMarca(JComboBox<?> comboMarca) {
 		ReparacionR.ListarMarca(comboMarca);
 

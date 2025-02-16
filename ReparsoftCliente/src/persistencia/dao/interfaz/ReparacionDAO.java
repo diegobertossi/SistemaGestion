@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 
+import org.apache.logging.log4j.util.Strings;
+
 import dto.ReparacionDTO;
 
 
@@ -177,6 +179,8 @@ public interface ReparacionDAO
 	public List<Double> FacturacionDolaresPorAnioPorTecnico(int anio, int idTecnico);
 
 	public int obtenerNumeroELSbsas();
+
+	public List<String> ListarModelosEnList();
 
 
 

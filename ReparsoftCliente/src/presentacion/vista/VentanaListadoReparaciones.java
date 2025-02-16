@@ -68,7 +68,7 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JComboBox<?> comboFiltroEstadoTec;
 	private JComboBox<?> comboFiltroELS;
 	private JComboBox<?> comboFiltroEquipo;
-	private JComboBox<?> comboFiltroModelo;
+	private JComboBox<String> comboFiltroModelo;
 	private JComboBox<?> comboFiltroAviso;
 	private JComboBox<?> comboFiltroTecnico;
 
@@ -568,7 +568,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		gbc_lblNewLabel_5_1.gridy = 4;
 		panelFiltros.add(lblNewLabel_5_1, gbc_lblNewLabel_5_1);
 
-		comboFiltroModelo = new JComboBox<Object>();
+		comboFiltroModelo = new JComboBox<String>();
 		comboFiltroModelo.setEnabled(false);
 		comboFiltroModelo.setBackground(new Color(176, 196, 222));
 		comboFiltroModelo.setFont(new Font("Cambria", Font.PLAIN, 12));
@@ -1249,11 +1249,11 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.comboFiltroEquipo = comboFiltroEquipo;
 	}
 
-	public JComboBox<?> getComboFiltroModelo() {
+	public JComboBox<String> getComboFiltroModelo() {
 		return comboFiltroModelo;
 	}
 
-	public void setComboFiltroModelo(JComboBox<?> comboFiltroModelo) {
+	public void setComboFiltroModelo(JComboBox<String> comboFiltroModelo) {
 		this.comboFiltroModelo = comboFiltroModelo;
 	}
 
