@@ -61,7 +61,6 @@
 	<classpathentry kind="lib" path="lib/jasperreports-6.21.3.jar"/>
 	<classpathentry kind="lib" path="Fonts/Roboto.jar"/>
 	<classpathentry kind="lib" path="Fonts/MyfuenteCambria.jar"/>
-	<classpathentry kind="lib" path="lib/glazedlists-1.11.0.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>

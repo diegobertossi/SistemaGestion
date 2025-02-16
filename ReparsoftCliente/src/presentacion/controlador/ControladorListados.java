@@ -33,11 +33,6 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import ca.odell.glazedlists.EventList;
-import ca.odell.glazedlists.GlazedLists;
-//import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-import ca.odell.glazedlists.swing.AutoCompleteSupport;
-
 import VistaPropias.AutoCompletarComboBox;
 
 import org.jfree.chart.ChartFactory;
@@ -236,102 +231,201 @@ public class ControladorListados
 					&& ventanaListadoReparaciones.getComboFiltroCliente().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroCliente().getSelectedItem().toString() != null) {
 				String searchText = ventanaListadoReparaciones.getComboFiltroCliente().getSelectedItem().toString();
-				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 2)); // (?i) para ignorar
-																								// mayúsculas/minúsculas
+				if (searchText.contains("*")) {
+					searchText = searchText.replace("*", ".*");
+					rfs.add(RowFilter.regexFilter("(?i)" + searchText, 2));
+				} else {
+					rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 2));
+				}
 			}
+//			if (ventanaListadoReparaciones.getRadioButtonCliente().isSelected()
+//					&& ventanaListadoReparaciones.getComboFiltroCliente().getSelectedItem() != null
+//					&& ventanaListadoReparaciones.getComboFiltroCliente().getSelectedItem().toString() != null) {
+//				String searchText = ventanaListadoReparaciones.getComboFiltroCliente().getSelectedItem().toString();
+//				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 2)); // (?i) para ignorar
+//																								// mayúsculas/minúsculas
+//			}
 
 			if (ventanaListadoReparaciones.getRadioButtonMarca().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroMarca().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroMarca().getSelectedItem().toString() != null) {
 				String searchText = ventanaListadoReparaciones.getComboFiltroMarca().getSelectedItem().toString();
-				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 5)); // (?i) para ignorar
-																								// mayúsculas/minúsculas
+				if (searchText.contains("*")) {
+					searchText = searchText.replace("*", ".*");
+					rfs.add(RowFilter.regexFilter("(?i)" + searchText, 5));
+				} else {
+					rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 5));
+				}
 			}
+//			if (ventanaListadoReparaciones.getRadioButtonMarca().isSelected()
+//					&& ventanaListadoReparaciones.getComboFiltroMarca().getSelectedItem() != null
+//					&& ventanaListadoReparaciones.getComboFiltroMarca().getSelectedItem().toString() != null) {
+//				String searchText = ventanaListadoReparaciones.getComboFiltroMarca().getSelectedItem().toString();
+//				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 5)); // (?i) para ignorar
+//																								// mayúsculas/minúsculas
+//			}
 
 			if (ventanaListadoReparaciones.getRadioButtonSucursal().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroSucursal().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroSucursal().getSelectedItem().toString() != null) {
 				String searchText = ventanaListadoReparaciones.getComboFiltroSucursal().getSelectedItem().toString();
-				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 3)); // (?i) para ignorar
-																								// mayúsculas/minúsculas
+				if (searchText.contains("*")) {
+					searchText = searchText.replace("*", ".*");
+					rfs.add(RowFilter.regexFilter("(?i)" + searchText, 3));
+				} else {
+					rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 3));
+				}
 			}
+//			if (ventanaListadoReparaciones.getRadioButtonSucursal().isSelected()
+//					&& ventanaListadoReparaciones.getComboFiltroSucursal().getSelectedItem() != null
+//					&& ventanaListadoReparaciones.getComboFiltroSucursal().getSelectedItem().toString() != null) {
+//				String searchText = ventanaListadoReparaciones.getComboFiltroSucursal().getSelectedItem().toString();
+//				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 3)); // (?i) para ignorar
+//																								// mayúsculas/minúsculas
+//			}
 
 			if (ventanaListadoReparaciones.getRadioButtonEquipo().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroEquipo().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroEquipo().getSelectedItem().toString() != null) {
 				String searchText = ventanaListadoReparaciones.getComboFiltroEquipo().getSelectedItem().toString();
-				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 4)); // (?i) para ignorar
-																								// mayúsculas/minúsculas
+				if (searchText.contains("*")) {
+					searchText = searchText.replace("*", ".*");
+					rfs.add(RowFilter.regexFilter("(?i)" + searchText, 4));
+				} else {
+					rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 4));
+				}
 			}
-
-//			if (ventanaListadoReparaciones.getRadioButtonModelo().isSelected()
-//					&& ventanaListadoReparaciones.getComboFiltroModelo().getSelectedItem() != null
-//					&& ventanaListadoReparaciones.getComboFiltroModelo().getSelectedItem().toString() != null) {
-//				String searchText = ventanaListadoReparaciones.getComboFiltroModelo().getSelectedItem().toString();
-//				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 6)); // (?i) para ignorar
+//			if (ventanaListadoReparaciones.getRadioButtonEquipo().isSelected()
+//					&& ventanaListadoReparaciones.getComboFiltroEquipo().getSelectedItem() != null
+//					&& ventanaListadoReparaciones.getComboFiltroEquipo().getSelectedItem().toString() != null) {
+//				String searchText = ventanaListadoReparaciones.getComboFiltroEquipo().getSelectedItem().toString();
+//				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 4)); // (?i) para ignorar
 //																								// mayúsculas/minúsculas
 //			}
-			
-			if (ventanaListadoReparaciones.getRadioButtonModelo().isSelected()
-			        && ventanaListadoReparaciones.getComboFiltroModelo().getSelectedItem() != null
-			        && ventanaListadoReparaciones.getComboFiltroModelo().getSelectedItem().toString() != null) {
-			    String searchText = ventanaListadoReparaciones.getComboFiltroModelo().getSelectedItem().toString();
-			    if (searchText.contains("*")) {
-			        searchText = searchText.replace("*", ".*");
-			        rfs.add(RowFilter.regexFilter("(?i)" + searchText, 6));
-			    } else {
-			        rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 6));
-			    }
-			}
 
-			
-			
+			if (ventanaListadoReparaciones.getRadioButtonModelo().isSelected()
+					&& ventanaListadoReparaciones.getComboFiltroModelo().getSelectedItem() != null
+					&& ventanaListadoReparaciones.getComboFiltroModelo().getSelectedItem().toString() != null) {
+				String searchText = ventanaListadoReparaciones.getComboFiltroModelo().getSelectedItem().toString();
+				if (searchText.contains("*")) {
+					searchText = searchText.replace("*", ".*");
+					rfs.add(RowFilter.regexFilter("(?i)" + searchText, 6));
+				} else {
+					rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 6));
+				}
+			}
 
 			if (ventanaListadoReparaciones.getRadioButtonAviso().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroAviso().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroAviso().getSelectedItem().toString() != null) {
-				rfs.add(RowFilter.regexFilter(
-						"^" + ventanaListadoReparaciones.getComboFiltroAviso().getSelectedItem().toString() + "$", 8));
+				String searchText = ventanaListadoReparaciones.getComboFiltroAviso().getSelectedItem().toString();
+				if (searchText.contains("*")) {
+					searchText = searchText.replace("*", ".*");
+					rfs.add(RowFilter.regexFilter("(?i)" + searchText, 8));
+				} else {
+					rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 8));
+				}
 			}
+//			if (ventanaListadoReparaciones.getRadioButtonAviso().isSelected()
+//					&& ventanaListadoReparaciones.getComboFiltroAviso().getSelectedItem() != null
+//					&& ventanaListadoReparaciones.getComboFiltroAviso().getSelectedItem().toString() != null) {
+//				rfs.add(RowFilter.regexFilter(
+//						"^" + ventanaListadoReparaciones.getComboFiltroAviso().getSelectedItem().toString() + "$", 8));
+//			}
 
 			if (ventanaListadoReparaciones.getRadioButtonEstadoCom().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroEstadoCom().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroEstadoCom().getSelectedItem().toString() != null) {
 				String searchText = ventanaListadoReparaciones.getComboFiltroEstadoCom().getSelectedItem().toString();
-				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 12)); // (?i) para ignorar
-																								// mayúsculas/minúsculas
+				if (searchText.contains("*")) {
+					searchText = searchText.replace("*", ".*");
+					rfs.add(RowFilter.regexFilter("(?i)" + searchText, 12));
+				} else {
+					rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 12));
+				}
 			}
+//			if (ventanaListadoReparaciones.getRadioButtonEstadoCom().isSelected()
+//					&& ventanaListadoReparaciones.getComboFiltroEstadoCom().getSelectedItem() != null
+//					&& ventanaListadoReparaciones.getComboFiltroEstadoCom().getSelectedItem().toString() != null) {
+//				String searchText = ventanaListadoReparaciones.getComboFiltroEstadoCom().getSelectedItem().toString();
+//				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 12)); // (?i) para ignorar
+//																								// mayúsculas/minúsculas
+//			}
 
 			if (ventanaListadoReparaciones.getRadioButtonEstadoFis().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroEstadoFis().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroEstadoFis().getSelectedItem().toString() != null) {
 				String searchText = ventanaListadoReparaciones.getComboFiltroEstadoFis().getSelectedItem().toString();
-				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 13)); // (?i) para ignorar
-																								// mayúsculas/minúsculas
+				if (searchText.contains("*")) {
+					searchText = searchText.replace("*", ".*");
+					rfs.add(RowFilter.regexFilter("(?i)" + searchText, 13));
+				} else {
+					rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 13));
+				}
 			}
+//			if (ventanaListadoReparaciones.getRadioButtonEstadoFis().isSelected()
+//					&& ventanaListadoReparaciones.getComboFiltroEstadoFis().getSelectedItem() != null
+//					&& ventanaListadoReparaciones.getComboFiltroEstadoFis().getSelectedItem().toString() != null) {
+//				String searchText = ventanaListadoReparaciones.getComboFiltroEstadoFis().getSelectedItem().toString();
+//				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 13)); // (?i) para ignorar
+//																								// mayúsculas/minúsculas
+//			}
 
 			if (ventanaListadoReparaciones.getRadioButtonEstadoTec().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroEstadoTec().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroEstadoTec().getSelectedItem().toString() != null) {
 				String searchText = ventanaListadoReparaciones.getComboFiltroEstadoTec().getSelectedItem().toString();
-				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 11)); // (?i) para ignorar
-																								// mayúsculas/minúsculas
+				if (searchText.contains("*")) {
+					searchText = searchText.replace("*", ".*");
+					rfs.add(RowFilter.regexFilter("(?i)" + searchText, 11));
+				} else {
+					rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 11));
+				}
 			}
+//			if (ventanaListadoReparaciones.getRadioButtonEstadoTec().isSelected()
+//					&& ventanaListadoReparaciones.getComboFiltroEstadoTec().getSelectedItem() != null
+//					&& ventanaListadoReparaciones.getComboFiltroEstadoTec().getSelectedItem().toString() != null) {
+//				String searchText = ventanaListadoReparaciones.getComboFiltroEstadoTec().getSelectedItem().toString();
+//				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 11)); // (?i) para ignorar
+//																								// mayúsculas/minúsculas
+//			}
 
 			if (ventanaListadoReparaciones.getRadioButtonELS().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroELS().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroELS().getSelectedItem().toString() != null) {
-				rfs.add(RowFilter.regexFilter(
-						"^" + ventanaListadoReparaciones.getComboFiltroELS().getSelectedItem().toString() + "$", 0));
+				String searchText = ventanaListadoReparaciones.getComboFiltroELS().getSelectedItem().toString();
+				if (searchText.contains("*")) {
+					searchText = searchText.replace("*", ".*");
+					rfs.add(RowFilter.regexFilter("(?i)" + searchText, 0));
+				} else {
+					rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 0));
+				}
 			}
+//			if (ventanaListadoReparaciones.getRadioButtonELS().isSelected()
+//					&& ventanaListadoReparaciones.getComboFiltroELS().getSelectedItem() != null
+//					&& ventanaListadoReparaciones.getComboFiltroELS().getSelectedItem().toString() != null) {
+//				rfs.add(RowFilter.regexFilter(
+//						"^" + ventanaListadoReparaciones.getComboFiltroELS().getSelectedItem().toString() + "$", 0));
+//			}
 
 			if (ventanaListadoReparaciones.getRadioButtonTecnico().isSelected()
 					&& ventanaListadoReparaciones.getComboFiltroTecnico().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroTecnico().getSelectedItem().toString() != null) {
 				String searchText = ventanaListadoReparaciones.getComboFiltroTecnico().getSelectedItem().toString();
-				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 14)); // (?i) para ignorar
-																								// mayúsculas/minúsculas
+				if (searchText.contains("*")) {
+					searchText = searchText.replace("*", ".*");
+					rfs.add(RowFilter.regexFilter("(?i)" + searchText, 18));
+				} else {
+					rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 18));
+				}
 			}
+//			if (ventanaListadoReparaciones.getRadioButtonTecnico().isSelected()
+//					&& ventanaListadoReparaciones.getComboFiltroTecnico().getSelectedItem() != null
+//					&& ventanaListadoReparaciones.getComboFiltroTecnico().getSelectedItem().toString() != null) {
+//				String searchText = ventanaListadoReparaciones.getComboFiltroTecnico().getSelectedItem().toString();
+//				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 14)); // (?i) para ignorar
+//																								// mayúsculas/minúsculas
+//			}
 
 			if (ventanaListadoReparaciones.getRadioButtonPresupEnviado().isSelected()) {
 				rfs.add(RowFilter.regexFilter(
@@ -347,9 +441,20 @@ public class ControladorListados
 					&& ventanaListadoReparaciones.getComboFiltroIngreso().getSelectedItem() != null
 					&& ventanaListadoReparaciones.getComboFiltroIngreso().getSelectedItem().toString() != null) {
 				String searchText = ventanaListadoReparaciones.getComboFiltroIngreso().getSelectedItem().toString();
-				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 22)); // (?i) para ignorar
-																								// mayúsculas/minúsculas
+				if (searchText.contains("*")) {
+					searchText = searchText.replace("*", ".*");
+					rfs.add(RowFilter.regexFilter("(?i)" + searchText, 22));
+				} else {
+					rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 22));
+				}
 			}
+//			if (ventanaListadoReparaciones.getRadioButtonIngreso().isSelected()
+//					&& ventanaListadoReparaciones.getComboFiltroIngreso().getSelectedItem() != null
+//					&& ventanaListadoReparaciones.getComboFiltroIngreso().getSelectedItem().toString() != null) {
+//				String searchText = ventanaListadoReparaciones.getComboFiltroIngreso().getSelectedItem().toString();
+//				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 22)); // (?i) para ignorar
+//																								// mayúsculas/minúsculas
+//			}
 
 			rf = RowFilter.andFilter(rfs);
 
@@ -993,12 +1098,34 @@ public class ControladorListados
 //		AutoCompleteDecorator.decorate(ventanaListadoReparaciones.getComboFiltroELS());
 //		AutoCompleteDecorator.decorate(ventanaListadoReparaciones.getComboFiltroTecnico());
 //		AutoCompleteDecorator.decorate(ventanaListadoReparaciones.getComboFiltroIngreso());
+
 		
 	
-		VistaPropias.AutoCompletarComboBox autoUno = new AutoCompletarComboBox(ventanaListadoReparaciones.getComboFiltroModelo());
-		VistaPropias.AutoCompletarComboBox autodos = new AutoCompletarComboBox(ventanaListadoReparaciones.getComboFiltroTecnico());
-		VistaPropias.AutoCompletarComboBox autotres = new AutoCompletarComboBox(ventanaListadoReparaciones.getComboFiltroELS());
 		
+		VistaPropias.AutoCompletarComboBox autoUno = new AutoCompletarComboBox(
+				ventanaListadoReparaciones.getComboFiltroCliente());
+		VistaPropias.AutoCompletarComboBox autoDos = new AutoCompletarComboBox(
+				ventanaListadoReparaciones.getComboFiltroMarca());
+		VistaPropias.AutoCompletarComboBox autoTres = new AutoCompletarComboBox(
+				ventanaListadoReparaciones.getComboFiltroSucursal());
+		VistaPropias.AutoCompletarComboBox autoCuatro = new AutoCompletarComboBox(
+				ventanaListadoReparaciones.getComboFiltroAviso());
+		VistaPropias.AutoCompletarComboBox autoCinco = new AutoCompletarComboBox(
+				ventanaListadoReparaciones.getComboFiltroEquipo());
+		VistaPropias.AutoCompletarComboBox autoSeis = new AutoCompletarComboBox(
+				ventanaListadoReparaciones.getComboFiltroEstadoCom());
+		VistaPropias.AutoCompletarComboBox autoSiete = new AutoCompletarComboBox(
+				ventanaListadoReparaciones.getComboFiltroEstadoFis());
+		VistaPropias.AutoCompletarComboBox autoOcho = new AutoCompletarComboBox(
+				ventanaListadoReparaciones.getComboFiltroEstadoTec());
+		VistaPropias.AutoCompletarComboBox autoNueve = new AutoCompletarComboBox(
+				ventanaListadoReparaciones.getComboFiltroModelo());
+		VistaPropias.AutoCompletarComboBox autoDiez = new AutoCompletarComboBox(
+				ventanaListadoReparaciones.getComboFiltroELS());
+		VistaPropias.AutoCompletarComboBox autoOnce = new AutoCompletarComboBox(
+				ventanaListadoReparaciones.getComboFiltroTecnico());
+		VistaPropias.AutoCompletarComboBox autoDocce = new AutoCompletarComboBox(
+				ventanaListadoReparaciones.getComboFiltroIngreso());
 		
 
 	}
@@ -3069,18 +3196,22 @@ public class ControladorListados
 		if (this.ventanaListadoReparaciones != null) {
 			if (e.getSource() == this.ventanaListadoReparaciones.getRadioButtonCliente()) {
 
-				if (ventanaListadoReparaciones.getRadioButtonCliente().isSelected())
+				if (ventanaListadoReparaciones.getRadioButtonCliente().isSelected()) {
 					this.ventanaListadoReparaciones.getComboFiltroCliente().setEnabled(true);
-				else {
+					this.ventanaListadoReparaciones.getComboFiltroCliente().setEditable(true);
+				} else {
 					this.ventanaListadoReparaciones.getComboFiltroCliente().setEnabled(false);
 					ventanaListadoReparaciones.getComboFiltroCliente().setSelectedIndex(-1);
 				}
 			}
 
 			if (e.getSource() == this.ventanaListadoReparaciones.getRadioButtonMarca()) {
-				if (ventanaListadoReparaciones.getRadioButtonMarca().isSelected())
+				if (ventanaListadoReparaciones.getRadioButtonMarca().isSelected()) {
 
 					this.ventanaListadoReparaciones.getComboFiltroMarca().setEnabled(true);
+					this.ventanaListadoReparaciones.getComboFiltroMarca().setEditable(true);
+				}
+
 				else {
 					this.ventanaListadoReparaciones.getComboFiltroMarca().setEnabled(false);
 					ventanaListadoReparaciones.getComboFiltroMarca().setSelectedIndex(-1);
@@ -3088,19 +3219,23 @@ public class ControladorListados
 			}
 
 			if (e.getSource() == this.ventanaListadoReparaciones.getRadioButtonSucursal()) {
-				if (ventanaListadoReparaciones.getRadioButtonSucursal().isSelected())
+				if (ventanaListadoReparaciones.getRadioButtonSucursal().isSelected()) {
 
 					this.ventanaListadoReparaciones.getComboFiltroSucursal().setEnabled(true);
-				else {
+					this.ventanaListadoReparaciones.getComboFiltroSucursal().setEditable(true);
+				} else {
 					this.ventanaListadoReparaciones.getComboFiltroSucursal().setEnabled(false);
 					ventanaListadoReparaciones.getComboFiltroSucursal().setSelectedIndex(-1);
 				}
 			}
 
 			if (e.getSource() == this.ventanaListadoReparaciones.getRadioButtonEquipo()) {
-				if (ventanaListadoReparaciones.getRadioButtonEquipo().isSelected())
+				if (ventanaListadoReparaciones.getRadioButtonEquipo().isSelected()) {
 
 					this.ventanaListadoReparaciones.getComboFiltroEquipo().setEnabled(true);
+					this.ventanaListadoReparaciones.getComboFiltroEquipo().setEditable(true);
+				}
+
 				else {
 					this.ventanaListadoReparaciones.getComboFiltroEquipo().setEnabled(false);
 					ventanaListadoReparaciones.getComboFiltroEquipo().setSelectedIndex(-1);
@@ -3108,19 +3243,23 @@ public class ControladorListados
 			}
 
 			if (e.getSource() == this.ventanaListadoReparaciones.getRadioButtonEstadoCom()) {
-				if (ventanaListadoReparaciones.getRadioButtonEstadoCom().isSelected())
+				if (ventanaListadoReparaciones.getRadioButtonEstadoCom().isSelected()) {
 
 					this.ventanaListadoReparaciones.getComboFiltroEstadoCom().setEnabled(true);
-				else {
+					this.ventanaListadoReparaciones.getComboFiltroEstadoCom().setEditable(true);
+				} else {
 					this.ventanaListadoReparaciones.getComboFiltroEstadoCom().setEnabled(false);
 					ventanaListadoReparaciones.getComboFiltroEstadoCom().setSelectedIndex(-1);
 				}
 			}
 
 			if (e.getSource() == this.ventanaListadoReparaciones.getRadioButtonEstadoFis()) {
-				if (ventanaListadoReparaciones.getRadioButtonEstadoFis().isSelected())
+				if (ventanaListadoReparaciones.getRadioButtonEstadoFis().isSelected()) {
 
 					this.ventanaListadoReparaciones.getComboFiltroEstadoFis().setEnabled(true);
+					this.ventanaListadoReparaciones.getComboFiltroEstadoFis().setEditable(true);
+				}
+
 				else {
 					this.ventanaListadoReparaciones.getComboFiltroEstadoFis().setEnabled(false);
 					ventanaListadoReparaciones.getComboFiltroEstadoFis().setSelectedIndex(-1);
@@ -3128,9 +3267,12 @@ public class ControladorListados
 			}
 
 			if (e.getSource() == this.ventanaListadoReparaciones.getRadioButtonEstadoTec()) {
-				if (ventanaListadoReparaciones.getRadioButtonEstadoTec().isSelected())
+				if (ventanaListadoReparaciones.getRadioButtonEstadoTec().isSelected()) {
 
 					this.ventanaListadoReparaciones.getComboFiltroEstadoTec().setEnabled(true);
+					this.ventanaListadoReparaciones.getComboFiltroEstadoTec().setEditable(true);
+				}
+
 				else {
 					this.ventanaListadoReparaciones.getComboFiltroEstadoTec().setEnabled(false);
 					ventanaListadoReparaciones.getComboFiltroEstadoTec().setSelectedIndex(-1);
@@ -3138,9 +3280,12 @@ public class ControladorListados
 			}
 
 			if (e.getSource() == this.ventanaListadoReparaciones.getRadioButtonAviso()) {
-				if (ventanaListadoReparaciones.getRadioButtonAviso().isSelected())
+				if (ventanaListadoReparaciones.getRadioButtonAviso().isSelected()) {
 
-					this.ventanaListadoReparaciones.getComboFiltroAviso().setEnabled(true);
+					this.ventanaListadoReparaciones.getComboFiltroEstadoTec().setEnabled(true);
+					this.ventanaListadoReparaciones.getComboFiltroEstadoTec().setEditable(true);
+				}
+
 				else {
 					this.ventanaListadoReparaciones.getComboFiltroAviso().setEnabled(false);
 					ventanaListadoReparaciones.getComboFiltroAviso().setSelectedIndex(-1);
@@ -3151,9 +3296,8 @@ public class ControladorListados
 				if (this.ventanaListadoReparaciones.getRadioButtonModelo().isSelected()) {
 
 					this.ventanaListadoReparaciones.getComboFiltroModelo().setEnabled(true);
-					this.ventanaListadoReparaciones.getComboFiltroModelo().setEditable(true);;
-				}
-				else
+					this.ventanaListadoReparaciones.getComboFiltroModelo().setEditable(true);
+				} else
 					this.ventanaListadoReparaciones.getComboFiltroModelo().setEnabled(false);
 				ventanaListadoReparaciones.getComboFiltroModelo().setSelectedIndex(-1);
 
@@ -3164,8 +3308,9 @@ public class ControladorListados
 
 				{
 					this.ventanaListadoReparaciones.getComboFiltroELS().setEnabled(true);
-					this.ventanaListadoReparaciones.getComboFiltroELS().setEditable(true);}
-				
+					this.ventanaListadoReparaciones.getComboFiltroELS().setEditable(true);
+				}
+
 				else {
 					this.ventanaListadoReparaciones.getComboFiltroELS().setEnabled(false);
 					ventanaListadoReparaciones.getComboFiltroELS().setSelectedIndex(-1);
@@ -3173,12 +3318,10 @@ public class ControladorListados
 			}
 
 			if (e.getSource() == this.ventanaListadoReparaciones.getRadioButtonTecnico()) {
-				if (this.ventanaListadoReparaciones.getRadioButtonTecnico().isSelected())
-				{
+				if (this.ventanaListadoReparaciones.getRadioButtonTecnico().isSelected()) {
 					this.ventanaListadoReparaciones.getComboFiltroTecnico().setEnabled(true);
 					this.ventanaListadoReparaciones.getComboFiltroTecnico().setEditable(true);
-			}
-				else {
+				} else {
 					this.ventanaListadoReparaciones.getComboFiltroTecnico().setEnabled(false);
 					ventanaListadoReparaciones.getComboFiltroTecnico().setSelectedIndex(-1);
 				}
@@ -3189,6 +3332,7 @@ public class ControladorListados
 				if (this.ventanaListadoReparaciones.getRadioButtonPresupEnviado().isSelected())
 
 					this.ventanaListadoReparaciones.getChckbxPresupuestoEnviado().setEnabled(true);
+
 				else {
 					this.ventanaListadoReparaciones.getChckbxPresupuestoEnviado().setEnabled(false);
 					ventanaListadoReparaciones.getChckbxPresupuestoEnviado().setSelected(false);
@@ -3208,10 +3352,11 @@ public class ControladorListados
 			}
 
 			if (e.getSource() == this.ventanaListadoReparaciones.getRadioButtonIngreso()) {
-				if (this.ventanaListadoReparaciones.getRadioButtonIngreso().isSelected())
+				if (this.ventanaListadoReparaciones.getRadioButtonIngreso().isSelected()) {
 
 					this.ventanaListadoReparaciones.getComboFiltroIngreso().setEnabled(true);
-				else {
+					this.ventanaListadoReparaciones.getComboFiltroIngreso().setEditable(true);
+				} else {
 					this.ventanaListadoReparaciones.getComboFiltroIngreso().setEnabled(false);
 					ventanaListadoReparaciones.getComboFiltroIngreso().setSelectedIndex(-1);
 				}
