@@ -1,1083 +1,397 @@
 package presentacion.vista;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import javax.swing.JLabel;
-import javax.swing.JCheckBox;
-import javax.swing.JRadioButton;
-import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import java.awt.Font;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JComboBox;
-import javax.swing.border.LineBorder;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import VistaPropias.CellRendererTablaListado;
-import presentacion.controlador.ControladorListados;
-import java.awt.Color;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.Enumeration;
-import java.awt.Dimension;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JViewport;
-import javax.swing.ListSelectionModel;
-import javax.swing.JButton;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.border.MatteBorder;
-import javax.swing.event.ListSelectionEvent;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
+import VistaPropias.CellRendererTablaListado;
+import presentacion.controlador.ControladorListados;
 
 public class VentanaListadoReparaciones extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	private JTable tblListado;
-	private DefaultTableModel modelReparaciones;
-
-	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
-			"N° SERIE", "AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
-			"UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO" ,"INGRESO"};
-	private JButton btnMax;
-	public static int est;
-
-	private JPanel panelPrincipal;
-	private JPanel panelFiltros;
-	private JPanel panelSuperior;
-	private JPanel panelTitulo;
-	private JPanel panelInferior;
-	private JPanel panelCentral;
-	private JScrollPane scrollPane;
-
-	@SuppressWarnings("unused")
-	private ControladorListados controlador;
-
-	private JComboBox<?> comboFiltroMarca;
-	private JComboBox<?> comboFiltroCliente;
-	private JComboBox<?> comboFiltroSucursal;
-	private JComboBox<?> comboFiltroEstadoFis;
-	private JComboBox<?> comboFiltroEstadoCom;
-	private JComboBox<?> comboFiltroEstadoTec;
-	private JComboBox<?> comboFiltroELS;
-	private JComboBox<?> comboFiltroEquipo;
-	private JComboBox<String> comboFiltroModelo;
-	private JComboBox<?> comboFiltroAviso;
-	private JComboBox<?> comboFiltroTecnico;
-
-
-	private JRadioButton radioButtonMarca;
-	private JRadioButton radioButtonCliente;
-	private JRadioButton radioButtonSucursal;
-	private JRadioButton radioButtonELS;
-	private JRadioButton radioButtonEstadoFis;
-	private JRadioButton radioButtonEstadoCom;
-	private JRadioButton radioButtonEstadoTec;
-	private JRadioButton radioButtonEquipo;
-	private JRadioButton radioButtonModelo;
-	private JRadioButton radioButtonAviso;
-	private JRadioButton radioButtonPresupGenerado;
-	private JRadioButton radioButtonPresupEnviado;
-	private JRadioButton radioButtonTecnico;
-
-
-	private JCheckBox chckbxPresupuestoGenerado;
-	private JCheckBox chckbxPresupuestoEnviado;
-
-	Dimension DimScrollPane;
-	Dimension DimPanel;
-	Dimension DimContentPane;
-	Dimension DimTblReparaciones;
-	private JPanel panelBotonera;
-	private JPanel panelBotones;
-	private JButton btnFiltrar;
-	private JButton btnMostrarTodo;
-	private JButton btnEstadisticas;
-	private JPanel panelColumnas;
-	private JCheckBox chckbxSucursal;
-	private JCheckBox chckbxModelo;
-	private JCheckBox chckbxRevisión;
-	private JCheckBox chckbxEntrada;
-	private JCheckBox chckbxEquipo;
-	private JCheckBox chckbxELS;
-	private JCheckBox chckbxClienteCliente;
-	private JCheckBox chckbxSerie;
-	private JCheckBox chckbxCliente;
-	private JCheckBox chckbxMarca;
-	private JCheckBox chckbxAviso;
-	private JCheckBox chckbxEstadoTec;
-	private JCheckBox chckbxEstadoCom;
-	private JCheckBox chckbxEstadoFis;
-	private JCheckBox chckbxTecnico;
-	private JCheckBox chckbxUbicacionRemito;
-	private JCheckBox chckbxNumeroRemito;
-	private JCheckBox chckbxPresupuestoGeneradoColumna;
-	private JCheckBox chckbxPresupuestoEnviadoColumna;
-	private JCheckBox chckbxIngreso;
-	private JCheckBox chckbxPrecioDolar;
-	private JLabel lblNewLabel_3;
-	private JLabel lblNewLabel_4;
-	private JLabel lblNewLabel_5;
-	private JLabel lblNewLabel_6;
-	private JLabel lblNewLabel_2;
-	private JLabel lblNewLabel_7;
-	private JLabel lblNewLabel_10;
-	private JComboBox<Object> comboFiltroIngreso;
-	private JRadioButton radioButtonIngreso;
-	private JCheckBox chckbxPago;
-	private JCheckBox chckbxPrecioPeso;
-
-	protected void this_windowOpened(WindowEvent e) {
-		centrarVentana();
-	}
-
-	private void centrarVentana() {
-		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension ventana = getSize();
-		setLocation((pantalla.width - ventana.width) / 2, (pantalla.height - ventana.height) / 2);
-	}
-
-	@SuppressWarnings("serial")
-	public VentanaListadoReparaciones(ControladorListados controlador) {
-
-		super();
-		this.controlador = controlador;
-
-		this.this_windowOpened(null);
-		setSize(1200, 680);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.setLocationRelativeTo(null);
-
-		getContentPane().setLayout(new BorderLayout(0, 0));
-
-		panelPrincipal = new JPanel();
-		getContentPane().add(panelPrincipal, BorderLayout.CENTER);
-		panelPrincipal.setLayout(new BorderLayout(0, 0));
-
-		panelSuperior = new JPanel();
-		panelPrincipal.add(panelSuperior, BorderLayout.NORTH);
-		panelSuperior.setLayout(new BorderLayout(0, 0));
-
-		panelFiltros = new JPanel();
-		panelFiltros.setFont(new Font("Cambria", Font.PLAIN, 10));
-		panelFiltros.setBackground(new Color(176, 196, 222));
-		panelFiltros.setBorder(new LineBorder(new Color(0, 128, 128)));
-
-		panelFiltros.setBounds(35, 50, 994, 134);
-		panelSuperior.add(panelFiltros, BorderLayout.CENTER);
-		GridBagLayout gbl_panelFiltros = new GridBagLayout();
-		gbl_panelFiltros.columnWidths = new int[] { 30, 50, 150, 50, 50, 150, 50, 80, 150, 50, 90, 50, 30 ,30};
-		gbl_panelFiltros.rowHeights = new int[] { 10, 10, 10, 10, 10, 10 };
-		gbl_panelFiltros.columnWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
-				0.0, 0.0};
-
-		gbl_panelFiltros.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-		panelFiltros.setLayout(gbl_panelFiltros);
-
-		JLabel lblNewLabel_1 = new JLabel("CLIENTE");
-		lblNewLabel_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_1.gridx = 1;
-		gbc_lblNewLabel_1.gridy = 1;
-		panelFiltros.add(lblNewLabel_1, gbc_lblNewLabel_1);
-
-		comboFiltroCliente = new JComboBox<Object>();
-		comboFiltroCliente.setEnabled(false);
-		comboFiltroCliente.setBackground(new Color(176, 196, 222));
-		comboFiltroCliente.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroCliente.setPreferredSize(new Dimension(150, 20));
-		GridBagConstraints gbc_comboFiltroCliente = new GridBagConstraints();
-		gbc_comboFiltroCliente.insets = new Insets(0, 0, 5, 5);
-		gbc_comboFiltroCliente.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboFiltroCliente.gridx = 2;
-		gbc_comboFiltroCliente.gridy = 1;
-		panelFiltros.add(comboFiltroCliente, gbc_comboFiltroCliente);
-
-		radioButtonCliente = new JRadioButton("");
-		radioButtonCliente.setBackground(new Color(176, 196, 222));
-		radioButtonCliente.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_radioButtonCliente = new GridBagConstraints();
-		gbc_radioButtonCliente.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonCliente.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonCliente.gridx = 3;
-		gbc_radioButtonCliente.gridy = 1;
-		panelFiltros.add(radioButtonCliente, gbc_radioButtonCliente);
-
-		JLabel lblNewLabel_4_1 = new JLabel("EQUIPO");
-		lblNewLabel_4_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_4_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_lblNewLabel_4_1 = new GridBagConstraints();
-		gbc_lblNewLabel_4_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_4_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_4_1.gridx = 4;
-		gbc_lblNewLabel_4_1.gridy = 1;
-		panelFiltros.add(lblNewLabel_4_1, gbc_lblNewLabel_4_1);
-
-		comboFiltroEquipo = new JComboBox<Object>();
-		comboFiltroEquipo.setEnabled(false);
-		comboFiltroEquipo.setBackground(new Color(176, 196, 222));
-		comboFiltroEquipo.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroEquipo.setPreferredSize(new Dimension(150, 20));
-		GridBagConstraints gbc_comboFiltroEquipo = new GridBagConstraints();
-		gbc_comboFiltroEquipo.insets = new Insets(0, 0, 5, 5);
-		gbc_comboFiltroEquipo.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboFiltroEquipo.gridx = 5;
-		gbc_comboFiltroEquipo.gridy = 1;
-		panelFiltros.add(comboFiltroEquipo, gbc_comboFiltroEquipo);
-
-		radioButtonEquipo = new JRadioButton("");
-		radioButtonEquipo.setBackground(new Color(176, 196, 222));
-		radioButtonEquipo.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_radioButtonEquipo = new GridBagConstraints();
-		gbc_radioButtonEquipo.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonEquipo.fill = GridBagConstraints.VERTICAL;
-		gbc_radioButtonEquipo.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonEquipo.gridx = 6;
-		gbc_radioButtonEquipo.gridy = 1;
-		panelFiltros.add(radioButtonEquipo, gbc_radioButtonEquipo);
-
-		JLabel lblNewLabel_9_1 = new JLabel("ESTADO COM");
-		lblNewLabel_9_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_9_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_lblNewLabel_9_1 = new GridBagConstraints();
-		gbc_lblNewLabel_9_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_9_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_9_1.gridx = 7;
-		gbc_lblNewLabel_9_1.gridy = 1;
-		panelFiltros.add(lblNewLabel_9_1, gbc_lblNewLabel_9_1);
-
-		comboFiltroEstadoCom = new JComboBox<Object>();
-		comboFiltroEstadoCom.setEnabled(false);
-		comboFiltroEstadoCom.setBackground(new Color(176, 196, 222));
-		comboFiltroEstadoCom.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroEstadoCom.setPreferredSize(new Dimension(150, 20));
-		GridBagConstraints gbc_comboFiltroEstadoCom = new GridBagConstraints();
-		gbc_comboFiltroEstadoCom.insets = new Insets(0, 0, 5, 5);
-		gbc_comboFiltroEstadoCom.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboFiltroEstadoCom.gridx = 8;
-		gbc_comboFiltroEstadoCom.gridy = 1;
-		panelFiltros.add(comboFiltroEstadoCom, gbc_comboFiltroEstadoCom);
-
-		radioButtonEstadoCom = new JRadioButton("");
-		radioButtonEstadoCom.setBackground(new Color(176, 196, 222));
-		radioButtonEstadoCom.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_radioButtonEstadoCom = new GridBagConstraints();
-		gbc_radioButtonEstadoCom.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonEstadoCom.fill = GridBagConstraints.VERTICAL;
-		gbc_radioButtonEstadoCom.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonEstadoCom.gridx = 9;
-		gbc_radioButtonEstadoCom.gridy = 1;
-		panelFiltros.add(radioButtonEstadoCom, gbc_radioButtonEstadoCom);
-
-		chckbxPresupuestoEnviado = new JCheckBox("PRESUPUESTO ENVIADO");
-		chckbxPresupuestoEnviado.setPreferredSize(new Dimension(170, 20));
-		chckbxPresupuestoEnviado.setEnabled(false);
-		chckbxPresupuestoEnviado.setBackground(new Color(176, 196, 222));
-		chckbxPresupuestoEnviado.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_chckbxPresupuestoEnviado = new GridBagConstraints();
-		gbc_chckbxPresupuestoEnviado.anchor = GridBagConstraints.WEST;
-		gbc_chckbxPresupuestoEnviado.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxPresupuestoEnviado.gridx = 10;
-		gbc_chckbxPresupuestoEnviado.gridy = 1;
-		panelFiltros.add(chckbxPresupuestoEnviado, gbc_chckbxPresupuestoEnviado);
-
-		radioButtonPresupEnviado = new JRadioButton("");
-		radioButtonPresupEnviado.setBackground(new Color(176, 196, 222));
-		radioButtonPresupEnviado.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_radioButtonPresupEnviado = new GridBagConstraints();
-		gbc_radioButtonPresupEnviado.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonPresupEnviado.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonPresupEnviado.gridx = 11;
-		gbc_radioButtonPresupEnviado.gridy = 1;
-		panelFiltros.add(radioButtonPresupEnviado, gbc_radioButtonPresupEnviado);
-
-		JLabel lblNewLabel_1_1 = new JLabel("SUCURSAL");
-		lblNewLabel_1_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_1_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_lblNewLabel_1_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_1_1.gridx = 1;
-		gbc_lblNewLabel_1_1.gridy = 2;
-		panelFiltros.add(lblNewLabel_1_1, gbc_lblNewLabel_1_1);
-
-		comboFiltroSucursal = new JComboBox<Object>();
-		comboFiltroSucursal.setEnabled(false);
-		comboFiltroSucursal.setBackground(new Color(176, 196, 222));
-		comboFiltroSucursal.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroSucursal.setPreferredSize(new Dimension(150, 20));
-		GridBagConstraints gbc_comboFiltroSucursal = new GridBagConstraints();
-		gbc_comboFiltroSucursal.insets = new Insets(0, 0, 5, 5);
-		gbc_comboFiltroSucursal.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboFiltroSucursal.gridx = 2;
-		gbc_comboFiltroSucursal.gridy = 2;
-		panelFiltros.add(comboFiltroSucursal, gbc_comboFiltroSucursal);
-
-		radioButtonSucursal = new JRadioButton("");
-		radioButtonSucursal.setBackground(new Color(176, 196, 222));
-		radioButtonSucursal.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_radioButtonSucursal = new GridBagConstraints();
-		gbc_radioButtonSucursal.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonSucursal.fill = GridBagConstraints.VERTICAL;
-		gbc_radioButtonSucursal.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonSucursal.gridx = 3;
-		gbc_radioButtonSucursal.gridy = 2;
-		panelFiltros.add(radioButtonSucursal, gbc_radioButtonSucursal);
-
-		JLabel lblNewLabel_2_1 = new JLabel("MARCA");
-		lblNewLabel_2_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_2_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_lblNewLabel_2_1 = new GridBagConstraints();
-		gbc_lblNewLabel_2_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_2_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_2_1.gridx = 4;
-		gbc_lblNewLabel_2_1.gridy = 2;
-		panelFiltros.add(lblNewLabel_2_1, gbc_lblNewLabel_2_1);
-
-		comboFiltroMarca = new JComboBox<Object>();
-		comboFiltroMarca.setEnabled(false);
-		comboFiltroMarca.setBackground(new Color(176, 196, 222));
-		comboFiltroMarca.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroMarca.setPreferredSize(new Dimension(150, 20));
-		GridBagConstraints gbc_comboFiltroMarca = new GridBagConstraints();
-		gbc_comboFiltroMarca.insets = new Insets(0, 0, 5, 5);
-		gbc_comboFiltroMarca.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboFiltroMarca.gridx = 5;
-		gbc_comboFiltroMarca.gridy = 2;
-		panelFiltros.add(comboFiltroMarca, gbc_comboFiltroMarca);
-
-		radioButtonMarca = new JRadioButton("");
-		radioButtonMarca.setBackground(new Color(176, 196, 222));
-		radioButtonMarca.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_radioButtonMarca = new GridBagConstraints();
-		gbc_radioButtonMarca.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonMarca.fill = GridBagConstraints.VERTICAL;
-		gbc_radioButtonMarca.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonMarca.gridx = 6;
-		gbc_radioButtonMarca.gridy = 2;
-		panelFiltros.add(radioButtonMarca, gbc_radioButtonMarca);
-
-		JLabel lblNewLabel_8_1 = new JLabel("ESTADO TEC");
-		lblNewLabel_8_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_8_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_lblNewLabel_8_1 = new GridBagConstraints();
-		gbc_lblNewLabel_8_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_8_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_8_1.gridx = 7;
-		gbc_lblNewLabel_8_1.gridy = 2;
-		panelFiltros.add(lblNewLabel_8_1, gbc_lblNewLabel_8_1);
-
-		comboFiltroEstadoTec = new JComboBox<Object>();
-		comboFiltroEstadoTec.setEnabled(false);
-		comboFiltroEstadoTec.setBackground(new Color(176, 196, 222));
-		comboFiltroEstadoTec.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroEstadoTec.setPreferredSize(new Dimension(150, 20));
-		GridBagConstraints gbc_comboFiltroEstadoTec = new GridBagConstraints();
-		gbc_comboFiltroEstadoTec.insets = new Insets(0, 0, 5, 5);
-		gbc_comboFiltroEstadoTec.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboFiltroEstadoTec.gridx = 8;
-		gbc_comboFiltroEstadoTec.gridy = 2;
-		panelFiltros.add(comboFiltroEstadoTec, gbc_comboFiltroEstadoTec);
-
-		radioButtonEstadoTec = new JRadioButton("");
-		radioButtonEstadoTec.setBackground(new Color(176, 196, 222));
-		radioButtonEstadoTec.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_radioButtonEstadoTec = new GridBagConstraints();
-		gbc_radioButtonEstadoTec.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonEstadoTec.fill = GridBagConstraints.VERTICAL;
-		gbc_radioButtonEstadoTec.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonEstadoTec.gridx = 9;
-		gbc_radioButtonEstadoTec.gridy = 2;
-		panelFiltros.add(radioButtonEstadoTec, gbc_radioButtonEstadoTec);
-
-		chckbxPresupuestoGenerado = new JCheckBox("PRESUPUESTO GENERADO");
-		chckbxPresupuestoGenerado.setPreferredSize(new Dimension(170, 20));
-		chckbxPresupuestoGenerado.setEnabled(false);
-		chckbxPresupuestoGenerado.setBackground(new Color(176, 196, 222));
-		chckbxPresupuestoGenerado.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_chckbxPresupuestoGenerado = new GridBagConstraints();
-		gbc_chckbxPresupuestoGenerado.anchor = GridBagConstraints.WEST;
-		gbc_chckbxPresupuestoGenerado.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxPresupuestoGenerado.gridx = 10;
-		gbc_chckbxPresupuestoGenerado.gridy = 2;
-		panelFiltros.add(chckbxPresupuestoGenerado, gbc_chckbxPresupuestoGenerado);
-
-		radioButtonPresupGenerado = new JRadioButton("");
-		radioButtonPresupGenerado.setBackground(new Color(176, 196, 222));
-		radioButtonPresupGenerado.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_radioButtonPresupGenerado = new GridBagConstraints();
-		gbc_radioButtonPresupGenerado.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonPresupGenerado.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonPresupGenerado.gridx = 11;
-		gbc_radioButtonPresupGenerado.gridy = 2;
-		panelFiltros.add(radioButtonPresupGenerado, gbc_radioButtonPresupGenerado);
-
-		JLabel lblNewLabel_3_1 = new JLabel("ELS");
-		lblNewLabel_3_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_3_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_lblNewLabel_3_1 = new GridBagConstraints();
-		gbc_lblNewLabel_3_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_3_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_3_1.gridx = 1;
-		gbc_lblNewLabel_3_1.gridy = 3;
-		panelFiltros.add(lblNewLabel_3_1, gbc_lblNewLabel_3_1);
-
-		comboFiltroELS = new JComboBox<Object>();
-		comboFiltroELS.setEnabled(false);
-		comboFiltroELS.setBackground(new Color(176, 196, 222));
-		comboFiltroELS.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroELS.setPreferredSize(new Dimension(150, 20));
-		GridBagConstraints gbc_comboFiltroELS = new GridBagConstraints();
-		gbc_comboFiltroELS.insets = new Insets(0, 0, 5, 5);
-		gbc_comboFiltroELS.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboFiltroELS.gridx = 2;
-		gbc_comboFiltroELS.gridy = 3;
-		panelFiltros.add(comboFiltroELS, gbc_comboFiltroELS);
-
-		radioButtonELS = new JRadioButton("");
-		radioButtonELS.setBackground(new Color(176, 196, 222));
-		radioButtonELS.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_radioButtonELS = new GridBagConstraints();
-		gbc_radioButtonELS.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonELS.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonELS.gridx = 3;
-		gbc_radioButtonELS.gridy = 3;
-		panelFiltros.add(radioButtonELS, gbc_radioButtonELS);
-
-		JLabel lblNewLabel_7_1 = new JLabel("TÉCNICO");
-		lblNewLabel_7_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_7_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_7_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_lblNewLabel_7_1 = new GridBagConstraints();
-		gbc_lblNewLabel_7_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_7_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_7_1.gridx = 4;
-		gbc_lblNewLabel_7_1.gridy = 3;
-		panelFiltros.add(lblNewLabel_7_1, gbc_lblNewLabel_7_1);
-
-		comboFiltroTecnico = new JComboBox<Object>();
-		comboFiltroTecnico.setEnabled(false);
-		comboFiltroTecnico.setBackground(new Color(176, 196, 222));
-		comboFiltroTecnico.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroTecnico.setPreferredSize(new Dimension(150, 20));
-		GridBagConstraints gbc_comboFiltroTecnico = new GridBagConstraints();
-		gbc_comboFiltroTecnico.insets = new Insets(0, 0, 5, 5);
-		gbc_comboFiltroTecnico.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboFiltroTecnico.gridx = 5;
-		gbc_comboFiltroTecnico.gridy = 3;
-		panelFiltros.add(comboFiltroTecnico, gbc_comboFiltroTecnico);
-
-		radioButtonTecnico = new JRadioButton("");
-		radioButtonTecnico.setBackground(new Color(176, 196, 222));
-		radioButtonTecnico.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_radioButtonTecnico = new GridBagConstraints();
-		gbc_radioButtonTecnico.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonTecnico.fill = GridBagConstraints.VERTICAL;
-		gbc_radioButtonTecnico.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonTecnico.gridx = 6;
-		gbc_radioButtonTecnico.gridy = 3;
-		panelFiltros.add(radioButtonTecnico, gbc_radioButtonTecnico);
-
-		JLabel lblNewLabel_10_1 = new JLabel("ESTADO FIS");
-		lblNewLabel_10_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_10_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_lblNewLabel_10_1 = new GridBagConstraints();
-		gbc_lblNewLabel_10_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_10_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_10_1.gridx = 7;
-		gbc_lblNewLabel_10_1.gridy = 3;
-		panelFiltros.add(lblNewLabel_10_1, gbc_lblNewLabel_10_1);
-
-		comboFiltroEstadoFis = new JComboBox<Object>();
-		comboFiltroEstadoFis.setEnabled(false);
-		comboFiltroEstadoFis.setBackground(new Color(176, 196, 222));
-		comboFiltroEstadoFis.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroEstadoFis.setPreferredSize(new Dimension(150, 20));
-		GridBagConstraints gbc_comboFiltroEstadoFis = new GridBagConstraints();
-		gbc_comboFiltroEstadoFis.insets = new Insets(0, 0, 5, 5);
-		gbc_comboFiltroEstadoFis.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboFiltroEstadoFis.gridx = 8;
-		gbc_comboFiltroEstadoFis.gridy = 3;
-		panelFiltros.add(comboFiltroEstadoFis, gbc_comboFiltroEstadoFis);
-
-		radioButtonEstadoFis = new JRadioButton("");
-		radioButtonEstadoFis.setBackground(new Color(176, 196, 222));
-		radioButtonEstadoFis.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_radioButtonEstadoFis = new GridBagConstraints();
-		gbc_radioButtonEstadoFis.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonEstadoFis.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonEstadoFis.gridx = 9;
-		gbc_radioButtonEstadoFis.gridy = 3;
-		panelFiltros.add(radioButtonEstadoFis, gbc_radioButtonEstadoFis);
-
-		JLabel lblNewLabel_6_1 = new JLabel("AVISO");
-		lblNewLabel_6_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_6_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_6_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_lblNewLabel_6_1 = new GridBagConstraints();
-		gbc_lblNewLabel_6_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_6_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_6_1.gridx = 1;
-		gbc_lblNewLabel_6_1.gridy = 4;
-		panelFiltros.add(lblNewLabel_6_1, gbc_lblNewLabel_6_1);
-
-		comboFiltroAviso = new JComboBox<Object>();
-		comboFiltroAviso.setEnabled(false);
-		comboFiltroAviso.setBackground(new Color(176, 196, 222));
-		comboFiltroAviso.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroAviso.setPreferredSize(new Dimension(150, 20));
-		GridBagConstraints gbc_comboFiltroAviso = new GridBagConstraints();
-		gbc_comboFiltroAviso.insets = new Insets(0, 0, 5, 5);
-		gbc_comboFiltroAviso.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboFiltroAviso.gridx = 2;
-		gbc_comboFiltroAviso.gridy = 4;
-		panelFiltros.add(comboFiltroAviso, gbc_comboFiltroAviso);
-
-		radioButtonAviso = new JRadioButton("");
-		radioButtonAviso.setBackground(new Color(176, 196, 222));
-		radioButtonAviso.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_radioButtonAviso = new GridBagConstraints();
-		gbc_radioButtonAviso.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonAviso.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonAviso.gridx = 3;
-		gbc_radioButtonAviso.gridy = 4;
-		panelFiltros.add(radioButtonAviso, gbc_radioButtonAviso);
-
-		JLabel lblNewLabel_5_1 = new JLabel("MODELO");
-		lblNewLabel_5_1.setBackground(new Color(176, 196, 222));
-		lblNewLabel_5_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_5_1.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_lblNewLabel_5_1 = new GridBagConstraints();
-		gbc_lblNewLabel_5_1.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_5_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_5_1.gridx = 4;
-		gbc_lblNewLabel_5_1.gridy = 4;
-		panelFiltros.add(lblNewLabel_5_1, gbc_lblNewLabel_5_1);
-
-		comboFiltroModelo = new JComboBox<String>();
-		comboFiltroModelo.setEnabled(false);
-		comboFiltroModelo.setBackground(new Color(176, 196, 222));
-		comboFiltroModelo.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroModelo.setPreferredSize(new Dimension(150, 20));
-		GridBagConstraints gbc_comboFiltroModelo = new GridBagConstraints();
-		gbc_comboFiltroModelo.insets = new Insets(0, 0, 5, 5);
-		gbc_comboFiltroModelo.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboFiltroModelo.gridx = 5;
-		gbc_comboFiltroModelo.gridy = 4;
-		panelFiltros.add(comboFiltroModelo, gbc_comboFiltroModelo);
-
-		radioButtonModelo = new JRadioButton("");
-		radioButtonModelo.setBackground(new Color(176, 196, 222));
-		radioButtonModelo.setFont(new Font("Cambria", Font.BOLD, 12));
-		GridBagConstraints gbc_radioButtonModelo = new GridBagConstraints();
-		gbc_radioButtonModelo.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonModelo.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonModelo.gridx = 6;
-		gbc_radioButtonModelo.gridy = 4;
-		panelFiltros.add(radioButtonModelo, gbc_radioButtonModelo);
-		
-		lblNewLabel_10 = new JLabel("INGRESO");
-		lblNewLabel_10.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblNewLabel_10.setBackground(new Color(176, 196, 222));
-		GridBagConstraints gbc_lblNewLabel_10 = new GridBagConstraints();
-		gbc_lblNewLabel_10.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_10.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_10.gridx = 7;
-		gbc_lblNewLabel_10.gridy = 4;
-		panelFiltros.add(lblNewLabel_10, gbc_lblNewLabel_10);
-		
-		comboFiltroIngreso = new JComboBox<Object>();
-		comboFiltroIngreso.setPreferredSize(new Dimension(150, 20));
-		comboFiltroIngreso.setFont(new Font("Cambria", Font.PLAIN, 12));
-		comboFiltroIngreso.setEnabled(false);
-		comboFiltroIngreso.setBackground(new Color(176, 196, 222));
-		GridBagConstraints gbc_comboFiltroIngreso = new GridBagConstraints();
-		gbc_comboFiltroIngreso.insets = new Insets(0, 0, 5, 5);
-		gbc_comboFiltroIngreso.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboFiltroIngreso.gridx = 8;
-		gbc_comboFiltroIngreso.gridy = 4;
-		panelFiltros.add(comboFiltroIngreso, gbc_comboFiltroIngreso);
-		
-		radioButtonIngreso = new JRadioButton("");
-		radioButtonIngreso.setFont(new Font("Cambria", Font.BOLD, 12));
-		radioButtonIngreso.setBackground(new Color(176, 196, 222));
-		GridBagConstraints gbc_radioButtonIngreso = new GridBagConstraints();
-		gbc_radioButtonIngreso.anchor = GridBagConstraints.WEST;
-		gbc_radioButtonIngreso.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButtonIngreso.gridx = 9;
-		gbc_radioButtonIngreso.gridy = 4;
-		panelFiltros.add(radioButtonIngreso, gbc_radioButtonIngreso);
-
-		panelTitulo = new JPanel();
-		panelTitulo.setBorder(new LineBorder(new Color(0, 128, 128)));
-		panelTitulo.setBackground(new Color(176, 196, 222));
-		panelSuperior.add(panelTitulo, BorderLayout.NORTH);
-		FlowLayout fl_panelTitulo = new FlowLayout(FlowLayout.LEFT, 25, 10);
-		panelTitulo.setLayout(fl_panelTitulo);
-
-		JLabel lbTitulo_1 = new JLabel("LISTADO DE EQUIPOS");
-		lbTitulo_1.setHorizontalTextPosition(SwingConstants.CENTER);
-		lbTitulo_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lbTitulo_1.setFont(new Font("Cambria", Font.BOLD, 30));
-		panelTitulo.add(lbTitulo_1);
-
-		btnMax = new JButton("");
-		btnMax.setVisible(false);
-		btnMax.setPreferredSize(new Dimension(50, 30));
-		btnMax.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnMax.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
-		panelTitulo.add(btnMax);
-
-		panelBotonera = new JPanel();
-		panelSuperior.add(panelBotonera, BorderLayout.SOUTH);
-		panelBotonera.setLayout(new BorderLayout(0, 0));
-
-		panelBotones = new JPanel();
-		panelBotones.setBorder(new LineBorder(new Color(0, 128, 128)));
-		panelBotones.setBackground(new Color(176, 196, 222));
-		panelBotonera.add(panelBotones, BorderLayout.SOUTH);
-		panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 190, 5));
-
-		btnFiltrar = new JButton("FILTRAR");
-		btnFiltrar.setPreferredSize(new Dimension(150, 30));
-		btnFiltrar.setFont(new Font("Cambria", Font.BOLD, 14));
-		panelBotones.add(btnFiltrar);
-
-		btnMostrarTodo = new JButton("MOSTRAR TODO");
-		btnMostrarTodo.setPreferredSize(new Dimension(150, 30));
-		btnMostrarTodo.setFont(new Font("Cambria", Font.BOLD, 14));
-		panelBotones.add(btnMostrarTodo);
-
-		btnEstadisticas = new JButton("ESTADÍSTICAS");
-		btnEstadisticas.setPreferredSize(new Dimension(150, 30));
-		btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 14));
-		panelBotones.add(btnEstadisticas);
-
-		panelColumnas = new JPanel();
-		panelColumnas.setBorder(new LineBorder(new Color(0, 128, 128)));
-		panelColumnas.setBackground(new Color(176, 196, 222));
-		panelBotonera.add(panelColumnas, BorderLayout.NORTH);
-		GridBagLayout gbl_panelColumnas = new GridBagLayout();
-		gbl_panelColumnas.columnWidths = new int[] { 30, 100, 100, 100, 100, 100, 100, 10 };
-		gbl_panelColumnas.rowHeights = new int[] { 10, 10, 10, 10, 10 };
-		gbl_panelColumnas.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0 };
-		gbl_panelColumnas.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		panelColumnas.setLayout(gbl_panelColumnas);
-
-		chckbxELS = new JCheckBox("ELS");
-		chckbxELS.setOpaque(false);
-		chckbxELS.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxELS.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxELS = new GridBagConstraints();
-		gbc_chckbxELS.insets = new Insets(5, 5, 5, 5);
-		gbc_chckbxELS.anchor = GridBagConstraints.WEST;
-		gbc_chckbxELS.gridx = 1;
-		gbc_chckbxELS.gridy = 0;
-		panelColumnas.add(chckbxELS, gbc_chckbxELS);
-
-		chckbxEquipo = new JCheckBox("EQUIPO");
-		chckbxEquipo.setOpaque(false);
-		chckbxEquipo.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxEquipo.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxEquipo = new GridBagConstraints();
-		gbc_chckbxEquipo.insets = new Insets(5, 5, 5, 5);
-		gbc_chckbxEquipo.anchor = GridBagConstraints.WEST;
-		gbc_chckbxEquipo.gridx = 2;
-		gbc_chckbxEquipo.gridy = 0;
-		panelColumnas.add(chckbxEquipo, gbc_chckbxEquipo);
-
-		chckbxRevisión = new JCheckBox("REVISIÓN");
-		chckbxRevisión.setOpaque(false);
-		chckbxRevisión.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxRevisión.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxRevisión = new GridBagConstraints();
-		gbc_chckbxRevisión.insets = new Insets(5, 5, 5, 5);
-		gbc_chckbxRevisión.anchor = GridBagConstraints.WEST;
-		gbc_chckbxRevisión.gridx = 3;
-		gbc_chckbxRevisión.gridy = 0;
-		panelColumnas.add(chckbxRevisión, gbc_chckbxRevisión);
-
-		chckbxEstadoFis = new JCheckBox("ESTADO FÍSICO");
-		chckbxEstadoFis.setOpaque(false);
-		chckbxEstadoFis.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxEstadoFis.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxEstadoFis = new GridBagConstraints();
-		gbc_chckbxEstadoFis.insets = new Insets(5, 5, 5, 5);
-		gbc_chckbxEstadoFis.anchor = GridBagConstraints.WEST;
-		gbc_chckbxEstadoFis.gridx = 4;
-		gbc_chckbxEstadoFis.gridy = 0;
-		panelColumnas.add(chckbxEstadoFis, gbc_chckbxEstadoFis);
-
-		chckbxNumeroRemito = new JCheckBox("NÚMERO REMITO");
-		chckbxNumeroRemito.setOpaque(false);
-		chckbxNumeroRemito.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxNumeroRemito.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxNumeroRemito = new GridBagConstraints();
-		gbc_chckbxNumeroRemito.insets = new Insets(5, 5, 5, 5);
-		gbc_chckbxNumeroRemito.anchor = GridBagConstraints.WEST;
-		gbc_chckbxNumeroRemito.gridx = 5;
-		gbc_chckbxNumeroRemito.gridy = 0;
-		panelColumnas.add(chckbxNumeroRemito, gbc_chckbxNumeroRemito);
-
-		chckbxPrecioDolar = new JCheckBox("PRECIO DOLAR");
-		chckbxPrecioDolar.setOpaque(false);
-		chckbxPrecioDolar.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxPrecioDolar.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxPrecioDolar = new GridBagConstraints();
-		gbc_chckbxPrecioDolar.insets = new Insets(5, 5, 5, 5);
-		gbc_chckbxPrecioDolar.anchor = GridBagConstraints.WEST;
-		gbc_chckbxPrecioDolar.gridx = 6;
-		gbc_chckbxPrecioDolar.gridy = 0;
-		panelColumnas.add(chckbxPrecioDolar, gbc_chckbxPrecioDolar);
-
-		lblNewLabel_3 = new JLabel("     ");
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-		gbc_lblNewLabel_3.insets = new Insets(5, 5, 5, 0);
-		gbc_lblNewLabel_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblNewLabel_3.gridx = 7;
-		gbc_lblNewLabel_3.gridy = 0;
-		panelColumnas.add(lblNewLabel_3, gbc_lblNewLabel_3);
-
-		lblNewLabel_2 = new JLabel("OCULTAR");
-		lblNewLabel_2.setFont(new Font("Cambria", Font.BOLD, 14));
-		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2.insets = new Insets(0, 20, 5, 20);
-		gbc_lblNewLabel_2.gridx = 0;
-		gbc_lblNewLabel_2.gridy = 1;
-		panelColumnas.add(lblNewLabel_2, gbc_lblNewLabel_2);
-
-		chckbxEntrada = new JCheckBox("ENTRADA");
-		chckbxEntrada.setOpaque(false);
-		chckbxEntrada.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxEntrada.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxEntrada = new GridBagConstraints();
-		gbc_chckbxEntrada.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxEntrada.anchor = GridBagConstraints.WEST;
-		gbc_chckbxEntrada.gridx = 1;
-		gbc_chckbxEntrada.gridy = 1;
-		panelColumnas.add(chckbxEntrada, gbc_chckbxEntrada);
-
-		chckbxMarca = new JCheckBox("MARCA");
-		chckbxMarca.setOpaque(false);
-		chckbxMarca.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxMarca.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxMarca = new GridBagConstraints();
-		gbc_chckbxMarca.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxMarca.anchor = GridBagConstraints.WEST;
-		gbc_chckbxMarca.gridx = 2;
-		gbc_chckbxMarca.gridy = 1;
-		panelColumnas.add(chckbxMarca, gbc_chckbxMarca);
-
-		chckbxClienteCliente = new JCheckBox("CLIENTE/CLIENTE");
-		chckbxClienteCliente.setOpaque(false);
-		chckbxClienteCliente.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxClienteCliente.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxClienteCliente = new GridBagConstraints();
-		gbc_chckbxClienteCliente.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxClienteCliente.anchor = GridBagConstraints.WEST;
-		gbc_chckbxClienteCliente.gridx = 3;
-		gbc_chckbxClienteCliente.gridy = 1;
-		panelColumnas.add(chckbxClienteCliente, gbc_chckbxClienteCliente);
-
-		chckbxEstadoTec = new JCheckBox("ESTADO TÉCNICO");
-		chckbxEstadoTec.setOpaque(false);
-		chckbxEstadoTec.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxEstadoTec.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxEstadoTec = new GridBagConstraints();
-		gbc_chckbxEstadoTec.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxEstadoTec.anchor = GridBagConstraints.WEST;
-		gbc_chckbxEstadoTec.gridx = 4;
-		gbc_chckbxEstadoTec.gridy = 1;
-		panelColumnas.add(chckbxEstadoTec, gbc_chckbxEstadoTec);
-
-		chckbxPresupuestoGeneradoColumna = new JCheckBox("PRESUPUESTO GENERADO");
-		chckbxPresupuestoGeneradoColumna.setOpaque(false);
-		chckbxPresupuestoGeneradoColumna.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxPresupuestoGeneradoColumna.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxPresupuestoGeneradoColumna = new GridBagConstraints();
-		gbc_chckbxPresupuestoGeneradoColumna.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxPresupuestoGeneradoColumna.anchor = GridBagConstraints.WEST;
-		gbc_chckbxPresupuestoGeneradoColumna.gridx = 5;
-		gbc_chckbxPresupuestoGeneradoColumna.gridy = 1;
-		panelColumnas.add(chckbxPresupuestoGeneradoColumna, gbc_chckbxPresupuestoGeneradoColumna);
-		
-		chckbxPrecioPeso = new JCheckBox("PRECIO PESO");
-		chckbxPrecioPeso.setOpaque(false);
-		chckbxPrecioPeso.setHorizontalAlignment(SwingConstants.LEFT);
-		chckbxPrecioPeso.setFont(new Font("Cambria", Font.PLAIN, 10));
-		GridBagConstraints gbc_chckbxPrecioPeso = new GridBagConstraints();
-		gbc_chckbxPrecioPeso.anchor = GridBagConstraints.WEST;
-		gbc_chckbxPrecioPeso.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxPrecioPeso.gridx = 6;
-		gbc_chckbxPrecioPeso.gridy = 1;
-		panelColumnas.add(chckbxPrecioPeso, gbc_chckbxPrecioPeso);
-
-		lblNewLabel_7 = new JLabel("COLUMNAS");
-		lblNewLabel_7.setFont(new Font("Cambria", Font.BOLD, 14));
-		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
-		gbc_lblNewLabel_7.insets = new Insets(0, 20, 5, 20);
-		gbc_lblNewLabel_7.gridx = 0;
-		gbc_lblNewLabel_7.gridy = 2;
-		panelColumnas.add(lblNewLabel_7, gbc_lblNewLabel_7);
-
-		chckbxCliente = new JCheckBox("CLIENTE");
-		chckbxCliente.setOpaque(false);
-		chckbxCliente.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxCliente.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxCliente = new GridBagConstraints();
-		gbc_chckbxCliente.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxCliente.anchor = GridBagConstraints.WEST;
-		gbc_chckbxCliente.gridx = 1;
-		gbc_chckbxCliente.gridy = 2;
-		panelColumnas.add(chckbxCliente, gbc_chckbxCliente);
-
-		chckbxModelo = new JCheckBox("MODELO");
-		chckbxModelo.setOpaque(false);
-		chckbxModelo.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxModelo.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxModelo = new GridBagConstraints();
-		gbc_chckbxModelo.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxModelo.anchor = GridBagConstraints.WEST;
-		gbc_chckbxModelo.gridx = 2;
-		gbc_chckbxModelo.gridy = 2;
-		panelColumnas.add(chckbxModelo, gbc_chckbxModelo);
-
-		chckbxAviso = new JCheckBox("AVISO");
-		chckbxAviso.setOpaque(false);
-		chckbxAviso.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxAviso.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxAviso = new GridBagConstraints();
-		gbc_chckbxAviso.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxAviso.anchor = GridBagConstraints.WEST;
-		gbc_chckbxAviso.gridx = 3;
-		gbc_chckbxAviso.gridy = 2;
-		panelColumnas.add(chckbxAviso, gbc_chckbxAviso);
-
-		chckbxTecnico = new JCheckBox("TÉCNICO");
-		chckbxTecnico.setOpaque(false);
-		chckbxTecnico.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxTecnico.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxTecnico = new GridBagConstraints();
-		gbc_chckbxTecnico.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxTecnico.anchor = GridBagConstraints.WEST;
-		gbc_chckbxTecnico.gridx = 4;
-		gbc_chckbxTecnico.gridy = 2;
-		panelColumnas.add(chckbxTecnico, gbc_chckbxTecnico);
-
-		chckbxPresupuestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENVIADO");
-		chckbxPresupuestoEnviadoColumna.setOpaque(false);
-		chckbxPresupuestoEnviadoColumna.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxPresupuestoEnviadoColumna.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxPresupúestoEnviadoColumna = new GridBagConstraints();
-		gbc_chckbxPresupúestoEnviadoColumna.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxPresupúestoEnviadoColumna.anchor = GridBagConstraints.WEST;
-		gbc_chckbxPresupúestoEnviadoColumna.gridx = 5;
-		gbc_chckbxPresupúestoEnviadoColumna.gridy = 2;
-		panelColumnas.add(chckbxPresupuestoEnviadoColumna, gbc_chckbxPresupúestoEnviadoColumna);
-		
-		chckbxPago = new JCheckBox("PAGO");
-		chckbxPago.setOpaque(false);
-		chckbxPago.setHorizontalAlignment(SwingConstants.LEFT);
-		chckbxPago.setFont(new Font("Cambria", Font.PLAIN, 10));
-		GridBagConstraints gbc_chckbxPago = new GridBagConstraints();
-		gbc_chckbxPago.anchor = GridBagConstraints.WEST;
-		gbc_chckbxPago.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxPago.gridx = 6;
-		gbc_chckbxPago.gridy = 2;
-		panelColumnas.add(chckbxPago, gbc_chckbxPago);
-
-		chckbxSucursal = new JCheckBox("SUCURSAL");
-		chckbxSucursal.setOpaque(false);
-		chckbxSucursal.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxSucursal.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxSucursal = new GridBagConstraints();
-		gbc_chckbxSucursal.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxSucursal.anchor = GridBagConstraints.WEST;
-		gbc_chckbxSucursal.gridx = 1;
-		gbc_chckbxSucursal.gridy = 3;
-		panelColumnas.add(chckbxSucursal, gbc_chckbxSucursal);
-
-		chckbxSerie = new JCheckBox("SERIE");
-		chckbxSerie.setOpaque(false);
-		chckbxSerie.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxSerie.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxSerie = new GridBagConstraints();
-		gbc_chckbxSerie.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxSerie.anchor = GridBagConstraints.WEST;
-		gbc_chckbxSerie.gridx = 2;
-		gbc_chckbxSerie.gridy = 3;
-		panelColumnas.add(chckbxSerie, gbc_chckbxSerie);
-
-		chckbxEstadoCom = new JCheckBox("ESTADO COMERCIAL");
-		chckbxEstadoCom.setOpaque(false);
-		chckbxEstadoCom.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxEstadoCom.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxEstadoCom = new GridBagConstraints();
-		gbc_chckbxEstadoCom.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxEstadoCom.anchor = GridBagConstraints.WEST;
-		gbc_chckbxEstadoCom.gridx = 3;
-		gbc_chckbxEstadoCom.gridy = 3;
-		panelColumnas.add(chckbxEstadoCom, gbc_chckbxEstadoCom);
-
-		chckbxUbicacionRemito = new JCheckBox("UBICACIÓN REMITO");
-		chckbxUbicacionRemito.setOpaque(false);
-		chckbxUbicacionRemito.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxUbicacionRemito.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxUbicacionRemito = new GridBagConstraints();
-		gbc_chckbxUbicacionRemito.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxUbicacionRemito.anchor = GridBagConstraints.WEST;
-		gbc_chckbxUbicacionRemito.gridx = 4;
-		gbc_chckbxUbicacionRemito.gridy = 3;
-		panelColumnas.add(chckbxUbicacionRemito, gbc_chckbxUbicacionRemito);
-
-		chckbxIngreso = new JCheckBox("INGRESO");
-		chckbxIngreso.setOpaque(false);
-		chckbxIngreso.setFont(new Font("Cambria", Font.PLAIN, 10));
-		chckbxIngreso.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxIngreso = new GridBagConstraints();
-		gbc_chckbxIngreso.insets = new Insets(0, 5, 5, 5);
-		gbc_chckbxIngreso.anchor = GridBagConstraints.WEST;
-		gbc_chckbxIngreso.gridx = 5;
-		gbc_chckbxIngreso.gridy = 3;
-		panelColumnas.add(chckbxIngreso, gbc_chckbxIngreso);
-
-		panelInferior = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panelInferior.getLayout();
-		flowLayout.setHgap(0);
-		flowLayout.setVgap(0);
-		panelInferior.setBackground(new Color(176, 196, 222));
-		panelPrincipal.add(panelInferior, BorderLayout.SOUTH);
-
-		JLabel lblNewLabel = new JLabel("       ");
-		panelInferior.add(lblNewLabel);
-
-		panelCentral = new JPanel();
-		panelCentral.setBorder(new MatteBorder(1, 1, 0, 1, (Color) new Color(0, 128, 128)));
-		panelCentral.setBackground(new Color(176, 196, 222));
-		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
-		panelCentral.setLayout(new BorderLayout(0, 0));
-
-		
-		modelReparaciones = new DefaultTableModel(new Object[][] {}, nombreColumnas) {
-
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("rawtypes")
-			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
-					String.class, String.class, String.class, String.class, String.class, String.class, String.class,
-					String.class, String.class, String.class, String.class, String.class, Boolean.class, Boolean.class,
-					double.class, double.class, double.class,String.class };
-
-			public Class<?> getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-
-			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false,
-					false, false, false, false, false, false, false, false, false, false, false, false, false,false };
-
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-			
-
-
-		};
-
-
-
-		
-		try {
-
-			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-
-			e.printStackTrace();
-		}
-		
-		
-		Font fuenteCabecera = new Font("Cambria", Font.BOLD, 14);
-		Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 12);
-		
-
-//		tblListado = new JTable(modelReparaciones) {};
-//
-		
-//				
-//		
-//		scrollPane = new JScrollPane(tblListado);
-//		
-//				
+    private static final long serialVersionUID = 1L;
+    private JTable tblListado;
+    private DefaultTableModel modelReparaciones;
+
+    private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
+            "N° SERIE", "AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
+            "UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO", "INGRESO" };
+    private JButton btnMax;
+    public static int est;
+
+    private JPanel panelPrincipal;
+    private JPanel panelFiltros;
+    private JPanel panelSuperior;
+    private JPanel panelTitulo;
+    private JPanel panelInferior;
+    private JPanel panelCentral;
+    private JScrollPane scrollPane;
+
+    @SuppressWarnings("unused")
+    private ControladorListados controlador;
+
+    private JComboBox<?> comboFiltroMarca;
+    private JComboBox<?> comboFiltroCliente;
+    private JComboBox<?> comboFiltroSucursal;
+    private JComboBox<?> comboFiltroEstadoFis;
+    private JComboBox<?> comboFiltroEstadoCom;
+    private JComboBox<?> comboFiltroEstadoTec;
+    private JComboBox<?> comboFiltroELS;
+    private JComboBox<?> comboFiltroEquipo;
+    private JComboBox<String> comboFiltroModelo;
+    private JComboBox<?> comboFiltroAviso;
+    private JComboBox<?> comboFiltroTecnico;
 	
+    private JRadioButton radioButtonMarca;
+    private JRadioButton radioButtonCliente;
+    private JRadioButton radioButtonSucursal;
+    private JRadioButton radioButtonELS;
+    private JRadioButton radioButtonEstadoFis;
+    private JRadioButton radioButtonEstadoCom;
+    private JRadioButton radioButtonEstadoTec;
+    private JRadioButton radioButtonEquipo;
+    private JRadioButton radioButtonModelo;
+    private JRadioButton radioButtonAviso;
+    private JRadioButton radioButtonPresupGenerado;
+    private JRadioButton radioButtonPresupEnviado;
+    private JRadioButton radioButtonTecnico;
 
-		scrollPane = new JScrollPane();
-		tblListado = new JTable(modelReparaciones);
-		tblListado.getTableHeader().setBorder(new LineBorder(Color.GRAY));
+    private JCheckBox chckbxPresupuestoGenerado;
+    private JCheckBox chckbxPresupuestoEnviado;
 
-		tblListado.setShowGrid(true);
-		tblListado.setGridColor(Color.GRAY);
+    private JPanel panelBotonera;
+    private JPanel panelBotones;
+    private JButton btnFiltrar;
+    private JButton btnMostrarTodo;
+    private JButton btnEstadisticas;
+    private JPanel panelColumnas;
+    private JCheckBox chckbxSucursal;
+    private JCheckBox chckbxModelo;
+    private JCheckBox chckbxRevisión;
+    private JCheckBox chckbxEntrada;
+    private JCheckBox chckbxEquipo;
+    private JCheckBox chckbxELS;
+    private JCheckBox chckbxClienteCliente;
+    private JCheckBox chckbxSerie;
+    private JCheckBox chckbxCliente;
+    private JCheckBox chckbxMarca;
+    private JCheckBox chckbxAviso;
+    private JCheckBox chckbxEstadoTec;
+    private JCheckBox chckbxEstadoCom;
+    private JCheckBox chckbxEstadoFis;
+    private JCheckBox chckbxTecnico;
+    private JCheckBox chckbxUbicacionRemito;
+    private JCheckBox chckbxNumeroRemito;
+    private JCheckBox chckbxPresupuestoGeneradoColumna;
+    private JCheckBox chckbxPresupuestoEnviadoColumna;
+    private JCheckBox chckbxIngreso;
+    private JCheckBox chckbxPrecioDolar;
+    private JLabel lblNewLabel_3;
+    private JLabel lblNewLabel_4;
+    private JLabel lblNewLabel_5;
+    private JLabel lblNewLabel_6;
+    private JLabel lblNewLabel_2;
+    private JLabel lblNewLabel_7;
+    private JLabel lblNewLabel_10;
+    private JComboBox<Object> comboFiltroIngreso;
+    private JRadioButton radioButtonIngreso;
+    private JCheckBox chckbxPago;
+    private JCheckBox chckbxPrecioPeso;
+
+    protected void this_windowOpened(WindowEvent e) {
+        centrarVentana();
+    }
+
+    private void centrarVentana() {
+        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension ventana = getSize();
+        setLocation((pantalla.width - ventana.width) / 2, (pantalla.height - ventana.height) / 2);
+    }
+
+    @SuppressWarnings("serial")
+    public VentanaListadoReparaciones(ControladorListados controlador) {
+        super();
+        this.controlador = controlador;
+
+        this.this_windowOpened(null);
+        setSize(1200, 680);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+
+        getContentPane().setLayout(new BorderLayout(0, 0));
+
+        panelPrincipal = new JPanel();
+        getContentPane().add(panelPrincipal, BorderLayout.CENTER);
+        panelPrincipal.setLayout(new BorderLayout(0, 0));
+
+        panelSuperior = new JPanel();
+        panelPrincipal.add(panelSuperior, BorderLayout.NORTH);
+        panelSuperior.setLayout(new BorderLayout(0, 0));
+
+        panelFiltros = new JPanel();
+        panelFiltros.setFont(new Font("Cambria", Font.PLAIN, 10));
+        panelFiltros.setBackground(new Color(176, 196, 222));
+        panelFiltros.setBorder(new LineBorder(new Color(0, 128, 128)));
+        panelSuperior.add(panelFiltros, BorderLayout.CENTER);
+        panelFiltros.setLayout(new GridLayout(5, 6, 5, 5)); // Ajustado para más espacio
+
+        // Filtros
+        panelFiltros.add(new JLabel("CLIENTE"));
+        comboFiltroCliente = new JComboBox<>();
+        comboFiltroCliente.setEnabled(false);
+        panelFiltros.add(comboFiltroCliente);
+        radioButtonCliente = new JRadioButton("");
+        panelFiltros.add(radioButtonCliente);
+
+        panelFiltros.add(new JLabel("EQUIPO"));
+        comboFiltroEquipo = new JComboBox<>();
+        comboFiltroEquipo.setEnabled(false);
+        panelFiltros.add(comboFiltroEquipo);
+        radioButtonEquipo = new JRadioButton("");
+        panelFiltros.add(radioButtonEquipo);
+
+        panelFiltros.add(new JLabel("MARCA"));
+        comboFiltroMarca = new JComboBox<>();
+        comboFiltroMarca.setEnabled(false);
+        panelFiltros.add(comboFiltroMarca);
+        radioButtonMarca = new JRadioButton("");
+        panelFiltros.add(radioButtonMarca);
+
+        panelFiltros.add(new JLabel("SUCURSAL"));
+        comboFiltroSucursal = new JComboBox<>();
+        comboFiltroSucursal.setEnabled(false);
+        panelFiltros.add(comboFiltroSucursal);
+        radioButtonSucursal = new JRadioButton("");
+        panelFiltros.add(radioButtonSucursal);
+
+        panelFiltros.add(new JLabel("ESTADO TEC"));
+        comboFiltroEstadoTec = new JComboBox<>();
+        comboFiltroEstadoTec.setEnabled(false);
+        panelFiltros.add(comboFiltroEstadoTec);
+        radioButtonEstadoTec = new JRadioButton("");
+        panelFiltros.add(radioButtonEstadoTec);
+
+        panelFiltros.add(new JLabel("ESTADO COM"));
+        comboFiltroEstadoCom = new JComboBox<>();
+        comboFiltroEstadoCom.setEnabled(false);
+        panelFiltros.add(comboFiltroEstadoCom);
+        radioButtonEstadoCom = new JRadioButton("");
+        panelFiltros.add(radioButtonEstadoCom);
+
+        panelFiltros.add(new JLabel("ESTADO FIS"));
+        comboFiltroEstadoFis = new JComboBox<>();
+        comboFiltroEstadoFis.setEnabled(false);
+        panelFiltros.add(comboFiltroEstadoFis);
+        radioButtonEstadoFis = new JRadioButton("");
+        panelFiltros.add(radioButtonEstadoFis);
+
+        panelFiltros.add(new JLabel("ELS"));
+        comboFiltroELS = new JComboBox<>();
+        comboFiltroELS.setEnabled(false);
+        panelFiltros.add(comboFiltroELS);
+        radioButtonELS = new JRadioButton("");
+        panelFiltros.add(radioButtonELS);
+
+        panelFiltros.add(new JLabel("TÉCNICO"));
+        comboFiltroTecnico = new JComboBox<>();
+        comboFiltroTecnico.setEnabled(false);
+        panelFiltros.add(comboFiltroTecnico);
+        radioButtonTecnico = new JRadioButton("");
+        panelFiltros.add(radioButtonTecnico);
+
+        panelFiltros.add(new JLabel("AVISO"));
+        comboFiltroAviso = new JComboBox<>();
+        comboFiltroAviso.setEnabled(false);
+        panelFiltros.add(comboFiltroAviso);
+        radioButtonAviso = new JRadioButton("");
+        panelFiltros.add(radioButtonAviso);
+
+        panelFiltros.add(new JLabel("MODELO"));
+        comboFiltroModelo = new JComboBox<>();
+        comboFiltroModelo.setEnabled(false);
+        panelFiltros.add(comboFiltroModelo);
+        radioButtonModelo = new JRadioButton("");
+        panelFiltros.add(radioButtonModelo);
+
+        panelFiltros.add(new JLabel("INGRESO"));
+        comboFiltroIngreso = new JComboBox<>();
+        comboFiltroIngreso.setEnabled(false);
+        panelFiltros.add(comboFiltroIngreso);
+        radioButtonIngreso = new JRadioButton("");
+        panelFiltros.add(radioButtonIngreso);
 		
-		tblListado.setCellSelectionEnabled(true);
-		tblListado.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-		scrollPane.setViewportView(tblListado);
-
+		panelFiltros.add(new JLabel("PRESUPUESTO ENVIADO"));
+        chckbxPresupuestoEnviado = new JCheckBox();
+        chckbxPresupuestoEnviado.setEnabled(false);
+        panelFiltros.add(chckbxPresupuestoEnviado);
+        radioButtonPresupEnviado = new JRadioButton("");
+        panelFiltros.add(radioButtonPresupEnviado);
+        
+        panelFiltros.add(new JLabel("PRESUPUESTO GENERADO"));
+        chckbxPresupuestoGenerado = new JCheckBox();
+        chckbxPresupuestoGenerado.setEnabled(false);
+        panelFiltros.add(chckbxPresupuestoGenerado);
+        radioButtonPresupGenerado = new JRadioButton("");
+        panelFiltros.add(chckbxPresupuestoGenerado);
+        
 		
 		
-		
-		try {
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
 
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        panelTitulo = new JPanel();
+        panelTitulo.setBorder(new LineBorder(new Color(0, 128, 128)));
+        panelTitulo.setBackground(new Color(176, 196, 222));
+        panelSuperior.add(panelTitulo, BorderLayout.NORTH);
+        panelTitulo.setLayout(new FlowLayout(FlowLayout.LEFT, 25, 10));
 
-		lblNewLabel_6 = new JLabel("        ");
-		panelCentral.add(lblNewLabel_6, BorderLayout.NORTH);
+        JLabel lbTitulo_1 = new JLabel("LISTADO DE EQUIPOS");
+        lbTitulo_1.setHorizontalTextPosition(SwingConstants.CENTER);
+        lbTitulo_1.setHorizontalAlignment(SwingConstants.LEFT);
+        lbTitulo_1.setFont(new Font("Cambria", Font.BOLD, 30));
+        panelTitulo.add(lbTitulo_1);
 
-		lblNewLabel_5 = new JLabel("        ");
-		panelCentral.add(lblNewLabel_5, BorderLayout.EAST);
+        btnMax = new JButton("");
+        btnMax.setVisible(false);
+        btnMax.setPreferredSize(new Dimension(50, 30));
+        btnMax.setFont(new Font("Cambria", Font.BOLD, 14));
+        btnMax.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
+        panelTitulo.add(btnMax);
 
-		lblNewLabel_4 = new JLabel("        ");
-		panelCentral.add(lblNewLabel_4, BorderLayout.WEST);
+        panelBotonera = new JPanel();
+        panelSuperior.add(panelBotonera, BorderLayout.SOUTH);
+        panelBotonera.setLayout(new BorderLayout(0, 0));
 
-		tblListado.getTableHeader().setReorderingAllowed(false);
-				
+        panelBotones = new JPanel();
+        panelBotones.setBorder(new LineBorder(new Color(0, 128, 128)));
+        panelBotones.setBackground(new Color(176, 196, 222));
+        panelBotonera.add(panelBotones, BorderLayout.SOUTH);
+        panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 190, 5));
 
-		int[] anchos = { 60, 80, 150, 150, 200, 100, 150, 100, 100, 80, 110, 120, 150, 100, 100, 100, 100, 80, 80, 100,
-				100, 100,80 };
+        btnFiltrar = new JButton("FILTRAR");
+        btnFiltrar.setPreferredSize(new Dimension(150, 30));
+        btnFiltrar.setFont(new Font("Cambria", Font.BOLD, 14));
+        panelBotones.add(btnFiltrar);
 
-		for (int i = 0; i < tblListado.getColumnCount(); i++) {
+        btnMostrarTodo = new JButton("MOSTRAR TODO");
+        btnMostrarTodo.setPreferredSize(new Dimension(150, 30));
+        btnMostrarTodo.setFont(new Font("Cambria", Font.BOLD, 14));
+        panelBotones.add(btnMostrarTodo);
 
-			tblListado.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+        btnEstadisticas = new JButton("ESTADÍSTICAS");
+        btnEstadisticas.setPreferredSize(new Dimension(150, 30));
+        btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 14));
+        panelBotones.add(btnEstadisticas);
 
-		}
+        panelColumnas = new JPanel();
+        panelColumnas.setBorder(new LineBorder(new Color(0, 128, 128)));
+        panelColumnas.setBackground(new Color(176, 196, 222));
+        panelBotonera.add(panelColumnas, BorderLayout.NORTH);
+        panelColumnas.setLayout(new GridLayout(3, 6, 5, 5));
 
-		panelCentral.add(scrollPane, BorderLayout.CENTER);
-		this.setVisible(true);
+        // Checkboxes para ocultar columnas
+        chckbxELS = new JCheckBox("ELS");
+        panelColumnas.add(chckbxELS);
+        chckbxEquipo = new JCheckBox("EQUIPO");
+        panelColumnas.add(chckbxEquipo);
+        chckbxRevisión = new JCheckBox("REVISIÓN");
+        panelColumnas.add(chckbxRevisión);
+        chckbxEstadoFis = new JCheckBox("ESTADO FÍSICO");
+        panelColumnas.add(chckbxEstadoFis);
+        chckbxNumeroRemito = new JCheckBox("NÚMERO REMITO");
+        panelColumnas.add(chckbxNumeroRemito);
+        chckbxPrecioDolar = new JCheckBox("PRECIO DOLAR");
+        panelColumnas.add(chckbxPrecioDolar);
 
-	}
+        chckbxEntrada = new JCheckBox("ENTRADA");
+        panelColumnas.add(chckbxEntrada);
+        chckbxMarca = new JCheckBox("MARCA");
+        panelColumnas.add(chckbxMarca);
+        chckbxClienteCliente = new JCheckBox("CLIENTE/CLIENTE");
+        panelColumnas.add(chckbxClienteCliente);
+        chckbxEstadoTec = new JCheckBox("ESTADO TÉCNICO");
+        panelColumnas.add(chckbxEstadoTec);
+        chckbxPresupuestoGeneradoColumna = new JCheckBox("PRESUPUESTO GENERADO");
+        panelColumnas.add(chckbxPresupuestoGeneradoColumna);
+        chckbxPrecioPeso = new JCheckBox("PRECIO PESO");
+        panelColumnas.add(chckbxPrecioPeso);
 
+        chckbxCliente = new JCheckBox("CLIENTE");
+        panelColumnas.add(chckbxCliente);
+        chckbxModelo = new JCheckBox("MODELO");
+        panelColumnas.add(chckbxModelo);
+        chckbxAviso = new JCheckBox("AVISO");
+        panelColumnas.add(chckbxAviso);
+        chckbxTecnico = new JCheckBox("TÉCNICO");
+        panelColumnas.add(chckbxTecnico);
+        chckbxPresupuestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENVIADO");
+        panelColumnas.add(chckbxPresupuestoEnviadoColumna);
+        chckbxPago = new JCheckBox("PAGO");
+        panelColumnas.add(chckbxPago);
 
-	
-	public void setCellRender(JTable table) {
+        chckbxSucursal = new JCheckBox("SUCURSAL");
+        panelColumnas.add(chckbxSucursal);
+        chckbxSerie = new JCheckBox("SERIE");
+        panelColumnas.add(chckbxSerie);
+        chckbxEstadoCom = new JCheckBox("ESTADO COMERCIAL");
+        panelColumnas.add(chckbxEstadoCom);
+        chckbxUbicacionRemito = new JCheckBox("UBICACIÓN REMITO");
+        panelColumnas.add(chckbxUbicacionRemito);
+        chckbxIngreso = new JCheckBox("INGRESO");
+        panelColumnas.add(chckbxIngreso);
+
+        panelInferior = new JPanel();
+        panelInferior.setBackground(new Color(176, 196, 222));
+        panelPrincipal.add(panelInferior, BorderLayout.SOUTH);
+
+        panelCentral = new JPanel();
+        panelCentral.setBorder(new LineBorder(new Color(0, 128, 128)));
+        panelCentral.setBackground(new Color(176, 196, 222));
+        panelPrincipal.add(panelCentral, BorderLayout.CENTER);
+        panelCentral.setLayout(new BorderLayout(0, 0));
+
+        modelReparaciones = new DefaultTableModel(new Object[][] {}, nombreColumnas) {
+            private static final long serialVersionUID = 1L;
+            Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
+                    String.class, String.class, String.class, String.class, String.class, String.class, String.class,
+                    String.class, String.class, String.class, String.class, String.class, Boolean.class, Boolean.class,
+                    double.class, double.class, double.class, String.class };
+
+            public Class<?> getColumnClass(int columnIndex) {
+                return columnTypes[columnIndex];
+            }
+
+            boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false,
+                    false, false, false, false, false, false, false, false, false, false, false, false, false, false };
+
+            public boolean isCellEditable(int row, int column) {
+                return columnEditables[column];
+            }
+        };
+
+        tblListado = new JTable(modelReparaciones);
+        tblListado.getTableHeader().setBorder(new LineBorder(Color.GRAY));
+        tblListado.setShowGrid(true);
+        tblListado.setGridColor(Color.GRAY);
+        tblListado.setCellSelectionEnabled(true);
+        tblListado.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+        scrollPane = new JScrollPane(tblListado);
+        panelCentral.add(scrollPane, BorderLayout.CENTER);
+
+        int[] anchos = { 60, 80, 150, 150, 200, 100, 150, 100, 100, 80, 110, 120, 150, 100, 100, 100, 100, 80, 80, 100,
+                100, 100, 80 };
+
+        for (int i = 0; i < tblListado.getColumnCount(); i++) {
+            tblListado.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+        }
+
+        this.setVisible(true);
+    }
+
+   public void setCellRender(JTable table) {
 		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
 		while (en.hasMoreElements()) {
 			TableColumn tc = en.nextElement();
@@ -1580,6 +894,5 @@ public class VentanaListadoReparaciones extends JFrame {
 	public void setRadioButtonIngreso(JRadioButton radioButtonIngreso) {
 		this.radioButtonIngreso = radioButtonIngreso;
 	}
-
 
 }
