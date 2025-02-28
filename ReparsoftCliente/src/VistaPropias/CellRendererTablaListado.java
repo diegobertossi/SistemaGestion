@@ -39,7 +39,7 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 
 	private JCheckBox check = new JCheckBox();
 	Font fuenteELS = new Font("Cambria", Font.BOLD, 12);
-	Font fuenteCabecera = new Font("Cambria", Font.BOLD, 12);
+	Font fuenteCabecera = new Font("Cambria", Font.BOLD, 14);
 	Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 12);
 
 	/** Constructor de clase */
