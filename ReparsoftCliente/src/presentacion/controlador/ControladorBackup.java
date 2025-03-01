@@ -11,13 +11,20 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Date;
+
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.mysql.cj.conf.ConnectionUrl;
 import com.mysql.cj.xdevapi.Statement;
 
+import dto.ReparacionDTO;
 import modelo.Agenda;
 import presentacion.vista.VentanaBackUp;
 import presentacion.vista.VentanaOpcionesBackup;
@@ -129,12 +136,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		String urlcero = "jdbc:mysql://localhost/";
 		ConnectionUrl conn = null;
 
-		Statement stm;
-		File nombrebackup = null;
-		File rutabackup = null;
-		int selecGuardaBack = 0;
-		int selecRestauraBack = 1;
-
 		String rutadefaultBackup = "F:\\els\\Administracion\\Sistema\\Base de datos\\Backups\\";
 
 		JFileChooser archivoBackup = new JFileChooser(rutadefaultBackup);
@@ -145,96 +146,149 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		int resp;
 		resp = archivoBackup.showOpenDialog(ventanaBackUp);
 		if (resp == JFileChooser.APPROVE_OPTION) {
-			try {
-				Statement sentencia = null;
-				ConnectionUrl coneccionini = null;
-				if (selecRestauraBack == 1) {
 
+			JDialog popup = new JDialog();
+			popup.setTitle("Procesando");
+			popup.setModal(false);
+			popup.setSize(300, 100);
+			popup.setLocationRelativeTo(ventanaOpcionesBackup);
+			popup.add(new JLabel("Actualizando Base de Datos, espere...", SwingConstants.CENTER));
+
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				Statement stm;
+				File nombrebackup = null;
+				File rutabackup = null;
+				int selecGuardaBack = 0;
+				int selecRestauraBack = 1;
+
+				@Override
+				protected Void doInBackground() {
 					try {
-						nombrebackup = new File(archivoBackup.getSelectedFile().toString().trim());
-						
-						//System.out.println(nombrebackup.getName());
+						Statement sentencia = null;
+						ConnectionUrl coneccionini = null;
+						if (selecRestauraBack == 1) {
 
-//						Process p = Runtime.getRuntime().exec(
-//								"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql -uroot -proot ordenesbrc");
-						
-						//Process po = Runtime.getRuntime().exec("C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql -uroot -proot ordenesbrc");
-						
-						Process p = Runtime.getRuntime().exec("C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysql -uroot -proot ordenesbrc");
-						
-						
-						OutputStream os = p.getOutputStream();
-						FileInputStream fis = new FileInputStream(nombrebackup);
-						byte[] buffer = new byte[1000];
+							try {
+								nombrebackup = new File(archivoBackup.getSelectedFile().toString().trim());
 
-						int leido = fis.read(buffer);
-						while (leido > 0) {
-							os.write(buffer, 0, leido);
-							leido = fis.read(buffer);
+								Process p = Runtime.getRuntime().exec(
+										"C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysql -uroot -proot ordenesbrc");
+
+								OutputStream os = p.getOutputStream();
+								FileInputStream fis = new FileInputStream(nombrebackup);
+								byte[] buffer = new byte[1000];
+
+								int leido = fis.read(buffer);
+								while (leido > 0) {
+									os.write(buffer, 0, leido);
+									leido = fis.read(buffer);
+								}
+
+								os.flush();
+								os.close();
+								fis.close();
+
+								JOptionPane.showMessageDialog(null, "Base Actualizada", "Verificar",
+										JOptionPane.INFORMATION_MESSAGE);
+							} catch (Exception e) {
+								JOptionPane.showMessageDialog(null,
+										"Error no se actualizo la DB por el siguiente motivo: " + e.getMessage(),
+										"Verificar", JOptionPane.ERROR_MESSAGE);
+								popup.dispose();
+							}
+
+						} else {
+							JOptionPane.showMessageDialog(null, "Ha sido cancelada la actualizacion del Backup");
+							popup.dispose();
 						}
 
-						os.flush();
-						os.close();
-						fis.close();
-
-						JOptionPane.showMessageDialog(null, "Base Actualizada", "Verificar",
-								JOptionPane.INFORMATION_MESSAGE);
 					} catch (Exception e) {
 						JOptionPane.showMessageDialog(null,
-								"Error no se actualizo la DB por el siguiente motivo: " + e.getMessage(), "Verificar",
+								"Error no se genero el archivo por el siguiente motivo:" + e.getMessage(), "Verificar",
 								JOptionPane.ERROR_MESSAGE);
+						popup.dispose();
 					}
-
-				} else {
-					JOptionPane.showMessageDialog(null, "Ha sido cancelada la actualizacion del Backup");
+					return null;
 				}
 
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null,
-						"Error no se genero el archivo por el siguiente motivo:" + e.getMessage(), "Verificar",
-						JOptionPane.ERROR_MESSAGE);
-			}
+				@Override
+				protected void done() {
+					// Cerrar el popup después de completar el envío
+					popup.dispose();
+
+				}
+			};
+
+			// Mostrar el popup y ejecutar el SwingWorker
+			SwingUtilities.invokeLater(() -> {
+				popup.setVisible(true);
+				worker.execute();
+			});
+
 		}
 	}
 
 	private void GenerarBackupMySQL() {
 
-		try {
+		JDialog popup = new JDialog();
+		popup.setTitle("Procesando");
+		popup.setModal(false);
+		popup.setSize(300, 100);
+		popup.setLocationRelativeTo(ventanaOpcionesBackup);
+		popup.add(new JLabel("Generando BackUp, espere...", SwingConstants.CENTER));
 
-			String nombreAguardar = ventanaOpcionesBackup.getTxtNombreArchivo().getText();
-			String rutaAguardar = ventanaOpcionesBackup.getTxtRutaArchivo().getText();
+		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-			Runtime runtime = Runtime.getRuntime();
-			File backupFile = new File(rutaAguardar + nombreAguardar);
-			FileWriter fw = new FileWriter(backupFile);
-			
-			Process child = runtime.exec(
-					"C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysqldump --opt --password=root --user=root --databases ordenesbrc");
-			
-//			Process child = runtime.exec(
-//					"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump --opt --password=root --user=root --databases ordenesbrc");
-			
-			
-			InputStreamReader irs = new InputStreamReader(child.getInputStream());
-			BufferedReader br = new BufferedReader(irs);
-			String line;
-			while ((line = br.readLine()) != null) {
-				fw.write(line + "\n");
+			@Override
+			protected Void doInBackground() {
+				try {
+					String nombreAguardar = ventanaOpcionesBackup.getTxtNombreArchivo().getText();
+					String rutaAguardar = ventanaOpcionesBackup.getTxtRutaArchivo().getText();
+
+					Runtime runtime = Runtime.getRuntime();
+					File backupFile = new File(rutaAguardar + nombreAguardar);
+					FileWriter fw = new FileWriter(backupFile);
+
+					Process child = runtime.exec(
+							"C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysqldump --opt --password=root --user=root --databases ordenesbrc");
+
+//					Process child = runtime.exec(
+//							"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump --opt --password=root --user=root --databases ordenesbrc");
+
+					InputStreamReader irs = new InputStreamReader(child.getInputStream());
+					BufferedReader br = new BufferedReader(irs);
+					String line;
+					while ((line = br.readLine()) != null) {
+						fw.write(line + "\n");
+					}
+					fw.close();
+					irs.close();
+					br.close();
+
+					Object mje = "<html><center>Archivo generado<html>";
+					JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null,
+							"Error no se genero el archivo por el siguiente motivo:" + e.getMessage(), "Verificar",
+							JOptionPane.ERROR_MESSAGE);
+				}
+				return null;
 			}
-			fw.close();
-			irs.close();
-			br.close();
 
-			
-			Object mje = "<html><center>Archivo generado<html>";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-			
-			//JOptionPane.showMessageDialog(null, "Archivo generado", "Verificar", JOptionPane.INFORMATION_MESSAGE);
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,
-					"Error no se genero el archivo por el siguiente motivo:" + e.getMessage(), "Verificar",
-					JOptionPane.ERROR_MESSAGE);
-		}
+			@Override
+			protected void done() {
+				// Cerrar el popup después de completar el envío
+				popup.dispose();
+
+			}
+		};
+
+		// Mostrar el popup y ejecutar el SwingWorker
+		SwingUtilities.invokeLater(() -> {
+			popup.setVisible(true);
+			worker.execute();
+		});
 
 	}
 

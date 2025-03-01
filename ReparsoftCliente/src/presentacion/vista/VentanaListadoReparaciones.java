@@ -145,70 +145,6 @@ public class VentanaListadoReparaciones extends JFrame {
         panelFiltros.setLayout(new GridLayout(5, 9, 1, 2)); // Ajustado para más espacio
 
         // Filtros
-        JLabel lblCliente = new JLabel("CLIENTE");    
-        comboFiltroCliente = new JComboBox<>();        
-        radioButtonCliente = new JRadioButton("");
-        darFormatoFiltros(lblCliente, comboFiltroCliente, radioButtonCliente);  
-        panelFiltros.add(lblCliente);
-        panelFiltros.add(comboFiltroCliente);
-        panelFiltros.add(radioButtonCliente);
-
-        
-        JLabel lblEquipo = new JLabel("EQUIPO");
-        comboFiltroEquipo = new JComboBox<>();
-        radioButtonEquipo = new JRadioButton("");
-        darFormatoFiltros(lblEquipo, comboFiltroEquipo, radioButtonEquipo);  
-        panelFiltros.add(lblEquipo);
-        panelFiltros.add(comboFiltroEquipo);
-        panelFiltros.add(radioButtonEquipo);
-        
-
-        JLabel lblMarca = new JLabel("MARCA");
-        comboFiltroMarca = new JComboBox<>();
-        radioButtonMarca = new JRadioButton("");
-        darFormatoFiltros(lblMarca, comboFiltroMarca, radioButtonMarca);  
-        panelFiltros.add(lblMarca);
-        panelFiltros.add(comboFiltroMarca);
-        panelFiltros.add(radioButtonMarca);
-        
- 
-
-        JLabel lblSucursal = new JLabel("SUCURSAL");
-        comboFiltroSucursal = new JComboBox<>();
-        radioButtonSucursal = new JRadioButton("");
-        darFormatoFiltros(lblSucursal, comboFiltroSucursal, radioButtonSucursal);  
-        panelFiltros.add(lblSucursal);
-        panelFiltros.add(comboFiltroSucursal);
-        panelFiltros.add(radioButtonSucursal);
-        
-        
-        
-        JLabel lblEstadoTec = new JLabel("ESTADO TEC");
-        comboFiltroEstadoTec = new JComboBox<>();
-        radioButtonEstadoTec = new JRadioButton("");
-        darFormatoFiltros(lblEstadoTec, comboFiltroEstadoTec, radioButtonEstadoTec);  
-        panelFiltros.add(lblEstadoTec);
-        panelFiltros.add(comboFiltroEstadoTec);
-        panelFiltros.add(radioButtonEstadoTec);
-
-
-        JLabel lblEstadoCom = new JLabel("ESTADO COM");
-        comboFiltroEstadoCom = new JComboBox<>();
-        radioButtonEstadoCom = new JRadioButton("");
-        darFormatoFiltros(lblEstadoCom, comboFiltroEstadoCom, radioButtonEstadoCom);  
-        panelFiltros.add(lblEstadoCom);
-        panelFiltros.add(comboFiltroEstadoCom);
-        panelFiltros.add(radioButtonEstadoCom);
- 
-        
-        JLabel lblEstadoFis = new JLabel("ESTADO FIS");
-        comboFiltroEstadoFis = new JComboBox<>();
-        radioButtonEstadoFis = new JRadioButton("");
-        darFormatoFiltros(lblEstadoFis, comboFiltroEstadoFis, radioButtonEstadoFis);  
-        panelFiltros.add(lblEstadoFis);
-        panelFiltros.add(comboFiltroEstadoFis);
-        panelFiltros.add(radioButtonEstadoFis);
-
         
         JLabel lblELS = new JLabel("ELS");
         comboFiltroELS = new JComboBox<>();
@@ -218,8 +154,21 @@ public class VentanaListadoReparaciones extends JFrame {
         panelFiltros.add(comboFiltroELS);
         panelFiltros.add(radioButtonELS);
         
+        JLabel lblModelo = new JLabel("MODELO");
+        comboFiltroModelo = new JComboBox<>();
+        radioButtonModelo = new JRadioButton("");
+        darFormatoFiltros(lblModelo, comboFiltroModelo, radioButtonModelo);  
+        panelFiltros.add(lblModelo);
+        panelFiltros.add(comboFiltroModelo);
+        panelFiltros.add(radioButtonModelo);
         
-        
+        JLabel lblEstadoCom = new JLabel("ESTADO COM");
+        comboFiltroEstadoCom = new JComboBox<>();
+        radioButtonEstadoCom = new JRadioButton("");
+        darFormatoFiltros(lblEstadoCom, comboFiltroEstadoCom, radioButtonEstadoCom);  
+        panelFiltros.add(lblEstadoCom);
+        panelFiltros.add(comboFiltroEstadoCom);
+        panelFiltros.add(radioButtonEstadoCom);
         
         JLabel lblTecnico = new JLabel("TÉCNICO");
         comboFiltroTecnico = new JComboBox<>();
@@ -229,22 +178,30 @@ public class VentanaListadoReparaciones extends JFrame {
         panelFiltros.add(comboFiltroTecnico);
         panelFiltros.add(radioButtonTecnico);
         
+        JLabel lblMarca = new JLabel("MARCA");
+        comboFiltroMarca = new JComboBox<>();
+        radioButtonMarca = new JRadioButton("");
+        darFormatoFiltros(lblMarca, comboFiltroMarca, radioButtonMarca);  
+        panelFiltros.add(lblMarca);
+        panelFiltros.add(comboFiltroMarca);
+        panelFiltros.add(radioButtonMarca);
         
-        JLabel lblAviso = new JLabel("AVISO");
-        comboFiltroAviso = new JComboBox<>();
-        radioButtonAviso = new JRadioButton("");
-        darFormatoFiltros(lblAviso, comboFiltroAviso, radioButtonAviso);  
-        panelFiltros.add(lblAviso);
-        panelFiltros.add(comboFiltroAviso);
-        panelFiltros.add(radioButtonAviso);
-
-        JLabel lblModelo = new JLabel("AVISO");
-        comboFiltroModelo = new JComboBox<>();
-        radioButtonModelo = new JRadioButton("");
-        darFormatoFiltros(lblModelo, comboFiltroModelo, radioButtonModelo);  
-        panelFiltros.add(lblModelo);
-        panelFiltros.add(comboFiltroModelo);
-        panelFiltros.add(radioButtonModelo);
+        JLabel lblEstadoFis = new JLabel("ESTADO FIS");
+        comboFiltroEstadoFis = new JComboBox<>();
+        radioButtonEstadoFis = new JRadioButton("");
+        darFormatoFiltros(lblEstadoFis, comboFiltroEstadoFis, radioButtonEstadoFis);  
+        panelFiltros.add(lblEstadoFis);
+        panelFiltros.add(comboFiltroEstadoFis);
+        panelFiltros.add(radioButtonEstadoFis);
+        
+        
+        JLabel lblCliente = new JLabel("CLIENTE");    
+        comboFiltroCliente = new JComboBox<>();        
+        radioButtonCliente = new JRadioButton("");
+        darFormatoFiltros(lblCliente, comboFiltroCliente, radioButtonCliente);  
+        panelFiltros.add(lblCliente);
+        panelFiltros.add(comboFiltroCliente);
+        panelFiltros.add(radioButtonCliente);
         
         JLabel lblIngreso = new JLabel("INGRESO");
         comboFiltroIngreso = new JComboBox<>();
@@ -253,23 +210,6 @@ public class VentanaListadoReparaciones extends JFrame {
         panelFiltros.add(lblIngreso);
         panelFiltros.add(comboFiltroIngreso);
         panelFiltros.add(radioButtonIngreso);
-        
- 
-        JLabel lblPresupuestoEnv = new JLabel("PRESUPUESTO ENV");
-        chckbxPresupuestoEnviado = new JCheckBox();
-        chckbxPresupuestoEnviado.setMargin(new Insets(0, 0, 0, 0));
-        chckbxPresupuestoEnviado.setAlignmentY(0.0f);
-        chckbxPresupuestoEnviado.setHorizontalTextPosition(SwingConstants.LEFT);
-        chckbxPresupuestoEnviado.setIgnoreRepaint(true);
-        chckbxPresupuestoEnviado.setHorizontalAlignment(SwingConstants.LEFT);
-        chckbxPresupuestoEnviado.setEnabled(false);
-        chckbxPresupuestoEnviado.setBackground(new Color(176, 196, 222));
-        radioButtonPresupEnviado = new JRadioButton("");
-        darFormatoFiltros(lblPresupuestoEnv, null, radioButtonPresupEnviado);  
-        panelFiltros.add(lblPresupuestoEnv);
-        panelFiltros.add(chckbxPresupuestoEnviado);
-        panelFiltros.add(radioButtonPresupEnviado);
-		
         
         
         JLabel lblPresupuestoGen = new JLabel("PRESUPUESTO GEN");
@@ -282,9 +222,56 @@ public class VentanaListadoReparaciones extends JFrame {
         panelFiltros.add(lblPresupuestoGen);
         panelFiltros.add(chckbxPresupuestoGenerado);
         panelFiltros.add(radioButtonPresupGenerado);
-        
-      	
 
+        JLabel lblSucursal = new JLabel("SUCURSAL");
+        comboFiltroSucursal = new JComboBox<>();
+        radioButtonSucursal = new JRadioButton("");
+        darFormatoFiltros(lblSucursal, comboFiltroSucursal, radioButtonSucursal);  
+        panelFiltros.add(lblSucursal);
+        panelFiltros.add(comboFiltroSucursal);
+        panelFiltros.add(radioButtonSucursal);
+        
+        JLabel lblAviso = new JLabel("AVISO");
+        comboFiltroAviso = new JComboBox<>();
+        radioButtonAviso = new JRadioButton("");
+        darFormatoFiltros(lblAviso, comboFiltroAviso, radioButtonAviso);  
+        panelFiltros.add(lblAviso);
+        panelFiltros.add(comboFiltroAviso);
+        panelFiltros.add(radioButtonAviso);
+        
+        
+        JLabel lblPresupuestoEnv = new JLabel("PRESUPUESTO ENV");
+        chckbxPresupuestoEnviado = new JCheckBox();
+        chckbxPresupuestoEnviado.setMargin(new Insets(0, 0, 0, 0));
+        chckbxPresupuestoEnviado.setIgnoreRepaint(true);
+        chckbxPresupuestoEnviado.setEnabled(false);
+        chckbxPresupuestoEnviado.setBackground(new Color(176, 196, 222));
+        radioButtonPresupEnviado = new JRadioButton("");
+        darFormatoFiltros(lblPresupuestoEnv, null, radioButtonPresupEnviado);  
+        panelFiltros.add(lblPresupuestoEnv);
+        panelFiltros.add(chckbxPresupuestoEnviado);
+        panelFiltros.add(radioButtonPresupEnviado);
+        
+
+        
+        JLabel lblEquipo = new JLabel("EQUIPO");
+        comboFiltroEquipo = new JComboBox<>();
+        radioButtonEquipo = new JRadioButton("");
+        darFormatoFiltros(lblEquipo, comboFiltroEquipo, radioButtonEquipo);  
+        panelFiltros.add(lblEquipo);
+        panelFiltros.add(comboFiltroEquipo);
+        panelFiltros.add(radioButtonEquipo);
+        
+        JLabel lblEstadoTec = new JLabel("ESTADO TEC");
+        comboFiltroEstadoTec = new JComboBox<>();
+        radioButtonEstadoTec = new JRadioButton("");
+        darFormatoFiltros(lblEstadoTec, comboFiltroEstadoTec, radioButtonEstadoTec);  
+        panelFiltros.add(lblEstadoTec);
+        panelFiltros.add(comboFiltroEstadoTec);
+        panelFiltros.add(radioButtonEstadoTec);
+        
+
+        
         panelTitulo = new JPanel();
         panelTitulo.setBorder(new MatteBorder(1, 1, 0, 1, (Color) new Color(0, 128, 128)));
         panelTitulo.setBackground(new Color(176, 196, 222));
@@ -339,75 +326,79 @@ public class VentanaListadoReparaciones extends JFrame {
         chckbxELS = new JCheckBox("ELS");
         darFormatoOcultarColumnas(chckbxELS);
         panelColumnas.add(chckbxELS);
-        chckbxEquipo = new JCheckBox("EQUIPO");
-        darFormatoOcultarColumnas(chckbxEquipo);
-        panelColumnas.add(chckbxEquipo);
-        chckbxRevisión = new JCheckBox("REVISIÓN");
-        darFormatoOcultarColumnas(chckbxRevisión);
-        panelColumnas.add(chckbxRevisión);
-        chckbxEstadoFis = new JCheckBox("ESTADO FÍS");
-        darFormatoOcultarColumnas(chckbxEstadoFis);
-        panelColumnas.add(chckbxEstadoFis);
-        chckbxNumeroRemito = new JCheckBox("NÚMERO REMITO");
-        darFormatoOcultarColumnas(chckbxNumeroRemito);
-        panelColumnas.add(chckbxNumeroRemito);
-        chckbxPrecioDolar = new JCheckBox("PRECIO DOLAR");
-        darFormatoOcultarColumnas(chckbxPrecioDolar);
-        panelColumnas.add(chckbxPrecioDolar);
-
-        chckbxEntrada = new JCheckBox("ENTRADA");
-        darFormatoOcultarColumnas(chckbxEntrada);
-        panelColumnas.add(chckbxEntrada);
-        chckbxMarca = new JCheckBox("MARCA");
-        darFormatoOcultarColumnas(chckbxMarca);
-        panelColumnas.add(chckbxMarca);
-        chckbxClienteCliente = new JCheckBox("CLIENTE/CLIENTE");
-        darFormatoOcultarColumnas(chckbxClienteCliente);
-        panelColumnas.add(chckbxClienteCliente);
-        chckbxEstadoTec = new JCheckBox("ESTADO TÉC");
-        darFormatoOcultarColumnas(chckbxEstadoTec);
-        panelColumnas.add(chckbxEstadoTec);
-        chckbxPresupuestoGeneradoColumna = new JCheckBox("PRESUPUESTO GEN");
-        darFormatoOcultarColumnas(chckbxPresupuestoGeneradoColumna);
-        panelColumnas.add(chckbxPresupuestoGeneradoColumna);
-        chckbxPrecioPeso = new JCheckBox("PRECIO PESO");
-        darFormatoOcultarColumnas(chckbxPrecioPeso);
-        panelColumnas.add(chckbxPrecioPeso);
-
-        chckbxCliente = new JCheckBox("CLIENTE");
-        darFormatoOcultarColumnas(chckbxCliente);
-        panelColumnas.add(chckbxCliente);
-        chckbxModelo = new JCheckBox("MODELO");
-        darFormatoOcultarColumnas(chckbxModelo);
-        panelColumnas.add(chckbxModelo);
-        chckbxAviso = new JCheckBox("AVISO");
-        darFormatoOcultarColumnas(chckbxAviso);
-        panelColumnas.add(chckbxAviso);
-        chckbxTecnico = new JCheckBox("TÉCNICO");
-        darFormatoOcultarColumnas(chckbxTecnico);
-        panelColumnas.add(chckbxTecnico);
-        chckbxPresupuestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENV");
-        darFormatoOcultarColumnas(chckbxPresupuestoEnviadoColumna);
-        panelColumnas.add(chckbxPresupuestoEnviadoColumna);
-        chckbxPago = new JCheckBox("PAGO");
-        darFormatoOcultarColumnas(chckbxPago);
-        panelColumnas.add(chckbxPago);
-
         chckbxSucursal = new JCheckBox("SUCURSAL");
         darFormatoOcultarColumnas(chckbxSucursal);
         panelColumnas.add(chckbxSucursal);
-        chckbxSerie = new JCheckBox("SERIE");
-        darFormatoOcultarColumnas(chckbxSerie);
-        panelColumnas.add(chckbxSerie);
+        chckbxModelo = new JCheckBox("MODELO");
+        darFormatoOcultarColumnas(chckbxModelo);
+        panelColumnas.add(chckbxModelo);
+        chckbxRevisión = new JCheckBox("REVISIÓN");
+        darFormatoOcultarColumnas(chckbxRevisión);
+        panelColumnas.add(chckbxRevisión);
         chckbxEstadoCom = new JCheckBox("ESTADO COM");
         darFormatoOcultarColumnas(chckbxEstadoCom);
         panelColumnas.add(chckbxEstadoCom);
         chckbxUbicacionRemito = new JCheckBox("UBICACIÓN REMITO");
         darFormatoOcultarColumnas(chckbxUbicacionRemito);
         panelColumnas.add(chckbxUbicacionRemito);
+        chckbxPresupuestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENV");
+        darFormatoOcultarColumnas(chckbxPresupuestoEnviadoColumna);
+        panelColumnas.add(chckbxPresupuestoEnviadoColumna);
+        chckbxPago = new JCheckBox("PAGO");
+        darFormatoOcultarColumnas(chckbxPago);
+        panelColumnas.add(chckbxPago);
+        
+        chckbxEntrada = new JCheckBox("ENTRADA");
+        darFormatoOcultarColumnas(chckbxEntrada);
+        panelColumnas.add(chckbxEntrada);
+        chckbxEquipo = new JCheckBox("EQUIPO");
+        darFormatoOcultarColumnas(chckbxEquipo);
+        panelColumnas.add(chckbxEquipo);
+        chckbxSerie = new JCheckBox("SERIE");
+        darFormatoOcultarColumnas(chckbxSerie);
+        panelColumnas.add(chckbxSerie);
+        chckbxClienteCliente = new JCheckBox("CLIENTE/CLIENTE");
+        darFormatoOcultarColumnas(chckbxClienteCliente);
+        panelColumnas.add(chckbxClienteCliente);
+        chckbxEstadoFis = new JCheckBox("ESTADO FÍS");
+        darFormatoOcultarColumnas(chckbxEstadoFis);
+        panelColumnas.add(chckbxEstadoFis);
+        chckbxNumeroRemito = new JCheckBox("NÚMERO REMITO");
+        darFormatoOcultarColumnas(chckbxNumeroRemito);
+        panelColumnas.add(chckbxNumeroRemito);
+        chckbxPrecioPeso = new JCheckBox("PRECIO PESO");
+        darFormatoOcultarColumnas(chckbxPrecioPeso);
+        panelColumnas.add(chckbxPrecioPeso); 
         chckbxIngreso = new JCheckBox("INGRESO");
         darFormatoOcultarColumnas(chckbxIngreso);
-        panelColumnas.add(chckbxIngreso);
+        panelColumnas.add(chckbxIngreso);        
+        chckbxCliente = new JCheckBox("CLIENTE");
+        darFormatoOcultarColumnas(chckbxCliente);
+        panelColumnas.add(chckbxCliente);
+        chckbxMarca = new JCheckBox("MARCA");
+        darFormatoOcultarColumnas(chckbxMarca);
+        panelColumnas.add(chckbxMarca);
+        chckbxAviso = new JCheckBox("AVISO");
+        darFormatoOcultarColumnas(chckbxAviso);
+        panelColumnas.add(chckbxAviso);
+        chckbxEstadoTec = new JCheckBox("ESTADO TÉC");
+        darFormatoOcultarColumnas(chckbxEstadoTec);
+        panelColumnas.add(chckbxEstadoTec);
+        chckbxTecnico = new JCheckBox("TÉCNICO");
+        darFormatoOcultarColumnas(chckbxTecnico);
+        panelColumnas.add(chckbxTecnico);
+
+
+        chckbxPresupuestoGeneradoColumna = new JCheckBox("PRESUPUESTO GEN");
+        darFormatoOcultarColumnas(chckbxPresupuestoGeneradoColumna);
+        panelColumnas.add(chckbxPresupuestoGeneradoColumna);
+
+       
+        chckbxPrecioDolar = new JCheckBox("PRECIO DOLAR");
+        darFormatoOcultarColumnas(chckbxPrecioDolar);
+        panelColumnas.add(chckbxPrecioDolar);
+
+
 
 //        panelInferior = new JPanel();
 //        panelInferior.setBackground(new Color(176, 196, 222));
