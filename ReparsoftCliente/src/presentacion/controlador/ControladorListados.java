@@ -903,7 +903,8 @@ public class ControladorListados
 
 		this.Reparaciones_en_tabla = (List<ReparacionDTO>) modelo.obtenerReparacion();
 
-		for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
+		//for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
+		for (int i = this.Reparaciones_en_tabla.size()-1; i >= 0; i--) {
 
 			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
 					this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),

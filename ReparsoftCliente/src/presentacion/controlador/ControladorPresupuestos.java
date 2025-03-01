@@ -550,9 +550,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaEmail.getTextAdjunto().setText(NombrePDF);
 
 					String empresa = "ELS - Electronic Laboratory & Services.";
-					String mdp = "Suc. Mar del Plata: Independencia 2609 1er piso- Te: +54 9 223 5969934.";
-					String caba = "Suc. Bs As: Arcos 4002 4 A - Buenos Aires(1429) - Te: +54 9 11 4703-2205.";
-					String brc = "Suc. Bariloche: Onelli 1216 2do 5 - Te: +54 9 11 3768-8372.";
+					String mdp = "Mar del Plata: Avellaneda 2766 1 piso MDP -(7600) - Te: +54 9 223 5969934. NUEVA DIRECCION.";
+					String caba = "Bs As: Arcos 4002 4 A - Buenos Aires(1429) - Te: +54 9 11 4703-2205.";
+					String brc = "Bariloche: 9 de julio 710 - Bariloche (8400) - Te: +54 9 11 3768-8372..";
 					String web = "www.elsweb.com.ar";
 					String email = "E-mail: els@elsweb.com.ar";
 					String Asunto = "Presupuesto ELS: " + ELS;
@@ -648,9 +648,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						ventanaEmail.getTextAdjunto().setText(nombreWordNuevo);
 
 						String empresa = "ELS - Electronic Laboratory & Services.";
-						String mdp = "Suc. Mar del Plata: Independencia 2609 1er piso- Te: +54 9 223 5969934.";
-						String caba = "Suc. Bs As: Arcos 4002 4 A - Buenos Aires(1429) - Te: +54 9 11 4703-2205.";
-						String brc = "Suc. Bariloche: 9 de Julio 710 - Te: +54 9 11 3768-8372.";
+						String mdp = "Mar del Plata: Avellaneda 2766 1 piso MDP -(7600) - Te: +54 9 223 5969934. NUEVA DIRECCION.";
+						String caba = "Bs As: Arcos 4002 4 A - Buenos Aires(1429) - Te: +54 9 11 4703-2205.";
+						String brc = "Bariloche: 9 de julio 710 - Bariloche (8400) - Te: +54 9 11 3768-8372..";
 						String web = "www.elsweb.com.ar";
 						String email = "E-mail: els@elsweb.com.ar";
 						String Asunto = "Informe " + nombreWordNuevo;
