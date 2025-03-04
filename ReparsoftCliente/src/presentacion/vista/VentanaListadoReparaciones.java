@@ -2,11 +2,19 @@ package presentacion.vista;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import VistaPropias.CellRendererTablaListado;
 import presentacion.controlador.ControladorListados;
@@ -524,7 +532,239 @@ public class VentanaListadoReparaciones extends JFrame {
 	       
 	    }
 	
+	 
+	 
+	 
+	 
+//	 public void agregarAutofiltrosATabla(JTable tabla, JScrollPane scrollPane) {
+//		    // Obtener el modelo de ordenamiento
+//		    TableRowSorter<TableModel> sorter = new TableRowSorter<>(tabla.getModel());
+//		    tabla.setRowSorter(sorter);
+//
+//		    // Crear un JPanel para los filtros
+//		    JPanel panelFiltros = new JPanel(new FlowLayout(FlowLayout.LEFT));
+//		    panelFiltros.setPreferredSize(new Dimension(tabla.getColumnModel().getTotalColumnWidth(), 35));
+//
+//		    // Recorrer las columnas de la tabla y agregar filtros individuales
+//		    for (int i = 0; i < tabla.getColumnCount(); i++) {
+//		        final int columna = i;
+//
+//		        // Obtener valores únicos de la columna
+//		        Set<String> valoresUnicos = new LinkedHashSet<>();
+//		        for (int fila = 0; fila < tabla.getRowCount(); fila++) {
+//		            valoresUnicos.add(String.valueOf(tabla.getValueAt(fila, columna)));
+//		        }
+//
+//		        // Crear un JComboBox con los valores únicos
+//		        JComboBox<String> filtro = new JComboBox<>(valoresUnicos.toArray(new String[0]));
+//		        filtro.insertItemAt("Todos", 0);
+//		        filtro.setSelectedIndex(0);
+//
+//		        // Agregar el filtro al panel
+//		        panelFiltros.add(filtro);
+//
+//		        // Evento para filtrar al seleccionar
+//		        filtro.addActionListener(e -> {
+//		            String textoSeleccionado = (String) filtro.getSelectedItem();
+//		            if (textoSeleccionado == null || textoSeleccionado.equals("Todos")) {
+//		                sorter.setRowFilter(null);
+//		            } else {
+//		                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + textoSeleccionado, columna));
+//		            }
+//		        });
+//		    }
+//
+//		    // Crear un contenedor principal
+//		    JPanel contenedorPrincipal = new JPanel(new BorderLayout());
+//
+//		    // Agregar el panel de filtros en la parte superior
+//		    contenedorPrincipal.add(panelFiltros, BorderLayout.NORTH);
+//
+//		    // Agregar el scrollPane (que contiene la tabla) en el centro
+//		    contenedorPrincipal.add(scrollPane, BorderLayout.CENTER);
+//
+//		    // Agregar el contenedor principal al marco o al contenedor padre adecuado
+//		    Component parentComponent = scrollPane.getParent();
+//		    if (parentComponent instanceof JComponent) {
+//		        JComponent parent = (JComponent) parentComponent;
+//		        parent.remove(scrollPane);
+//		        parent.add(contenedorPrincipal);
+//		        parent.revalidate();
+//		        parent.repaint();
+//		    }
+//		}
+
+	 
+	 
+	 
+	 
+	 
+	 
+//	 public void agregarAutofiltrosATabla(JTable tabla, JScrollPane scrollPane) {
+//		    // Obtener el modelo de ordenamiento
+//		    TableRowSorter<TableModel> sorter = new TableRowSorter<>(tabla.getModel());
+//		    tabla.setRowSorter(sorter);
+//
+//		    // Crear un JPanel para los filtros
+//		    JPanel panelFiltros = new JPanel();
+//		    panelFiltros.setLayout(null); // Layout nulo para personalizar el tamaño de los filtros
+//		    panelFiltros.setPreferredSize(new Dimension(tabla.getColumnModel().getTotalColumnWidth(), 25));
+//
+//		    // Recorrer las columnas de la tabla y agregar filtros individuales
+//		    for (int i = 0; i < tabla.getColumnCount(); i++) {
+//		        final int columna = i;
+//
+//		        // Obtener valores únicos de la columna
+//		        Set<String> valoresUnicos = new LinkedHashSet<>();
+//		        for (int fila = 0; fila < tabla.getRowCount(); fila++) {
+//		            valoresUnicos.add(String.valueOf(tabla.getValueAt(fila, columna)));
+//		        }
+//
+//		        // Crear un JComboBox con los valores únicos
+//		        JComboBox<String> filtro = new JComboBox<>(valoresUnicos.toArray(new String[0]));
+//		        filtro.setEditable(true);
+//		        filtro.insertItemAt("Todos", 0);
+//		        filtro.setSelectedIndex(0);
+//
+//		        // Ajustar el tamaño del filtro a la columna correspondiente
+//		        TableColumn tableColumn = tabla.getColumnModel().getColumn(i);
+//		        int anchoColumna = tableColumn.getWidth();
+//		        filtro.setBounds(tabla.getTableHeader().getHeaderRect(i).x, 0, anchoColumna, 25);
+//
+//		        // Agregar el filtro al panel
+//		        panelFiltros.add(filtro);
+//
+//		        // Evento para filtrar al seleccionar o escribir
+//		        filtro.addActionListener(e -> {
+//		            String texto = ((JTextField) filtro.getEditor().getEditorComponent()).getText();
+//		            if (texto == null || texto.equals("Todos") || texto.trim().isEmpty()) {
+//		                sorter.setRowFilter(null);
+//		            } else {
+//		                String patron = texto.trim().replace("*", ".*");
+//		                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + patron, columna));
+//		            }
+//		        });
+//
+//		        // Filtrar también al escribir
+//		        JTextField editor = (JTextField) filtro.getEditor().getEditorComponent();
+//		        editor.addKeyListener(new KeyAdapter() {
+//		            @Override
+//		            public void keyReleased(KeyEvent e) {
+//		                String texto = editor.getText();
+//		                if (texto == null || texto.equals("Todos") || texto.trim().isEmpty()) {
+//		                    sorter.setRowFilter(null);
+//		                } else {
+//		                    String patron = texto.trim().replace("*", ".*");
+//		                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + patron, columna));
+//		                }
+//		            }
+//		        });
+//
+//		        // Ajustar el filtro si cambia el ancho de las columnas
+//		        tableColumn.addPropertyChangeListener(evt -> {
+//		            if ("width".equals(evt.getPropertyName())) {
+//		                filtro.setBounds(tabla.getTableHeader().getHeaderRect(columna).x, 0, tableColumn.getWidth(), 25);
+//		            }
+//		        });
+//		    }
+//
+//		    // Crear un JViewport para los filtros
+//		    JViewport viewportFiltros = new JViewport();
+//		    viewportFiltros.setView(panelFiltros);
+//		    viewportFiltros.setPreferredSize(panelFiltros.getPreferredSize());
+//
+//		    // Agregar los filtros encima del header de la tabla
+//		    scrollPane.setLayout(new BorderLayout(0, 0));
+//		    scrollPane.add(viewportFiltros, BorderLayout.NORTH);
+//		    
+//		}
+	 
 	
+
+	 
+	 
+	 
+	 
+//	 public void agregarAutofiltrosATabla(JTable tabla) {
+//		    // Obtener el modelo de ordenamiento
+//		    TableRowSorter<TableModel> sorter = new TableRowSorter<>(tabla.getModel());
+//		    tabla.setRowSorter(sorter);
+//
+//		    // Crear un JPanel para los filtros
+//		    JPanel panelFiltros = new JPanel();
+//		    panelFiltros.setLayout(null); // Layout nulo para personalizar el tamaño de los filtros
+//		    panelFiltros.setPreferredSize(new Dimension(tabla.getColumnModel().getTotalColumnWidth(), 25));
+//
+//		    // Recorrer las columnas de la tabla y agregar filtros individuales
+//		    for (int i = 0; i < tabla.getColumnCount(); i++) {
+//		        final int columna = i;
+//
+//		        // Obtener valores únicos de la columna
+//		        Set<String> valoresUnicos = new LinkedHashSet<>();
+//		        for (int fila = 0; fila < tabla.getRowCount(); fila++) {
+//		            valoresUnicos.add(String.valueOf(tabla.getValueAt(fila, columna)));
+//		        }
+//
+//		        // Crear un JComboBox con los valores únicos
+//		        JComboBox<String> filtro = new JComboBox<>(valoresUnicos.toArray(new String[0]));
+//		        filtro.setEditable(true);
+//		        filtro.insertItemAt("Todos", 0);
+//		        filtro.setSelectedIndex(0);
+//
+//		        // Ajustar el tamaño del filtro a la columna correspondiente
+//		        TableColumn tableColumn = tabla.getColumnModel().getColumn(i);
+//		        int anchoColumna = tableColumn.getWidth();
+//		        filtro.setBounds(tabla.getTableHeader().getHeaderRect(i).x, 0, anchoColumna, 25);
+//
+//		        // Agregar el filtro al panel
+//		        panelFiltros.add(filtro);
+//
+//		        // Evento para filtrar al seleccionar o escribir
+//		        filtro.addActionListener(e -> {
+//		            String texto = ((JTextField) filtro.getEditor().getEditorComponent()).getText();
+//		            if (texto == null || texto.equals("Todos") || texto.trim().isEmpty()) {
+//		                sorter.setRowFilter(null);
+//		            } else {
+//		                String patron = texto.trim().replace("*", ".*");
+//		                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + patron, columna));
+//		            }
+//		        });
+//
+//		        // Filtrar también al escribir
+//		        JTextField editor = (JTextField) filtro.getEditor().getEditorComponent();
+//		        editor.addKeyListener(new KeyAdapter() {
+//		            @Override
+//		            public void keyReleased(KeyEvent e) {
+//		                String texto = editor.getText();
+//		                if (texto == null || texto.equals("Todos") || texto.trim().isEmpty()) {
+//		                    sorter.setRowFilter(null);
+//		                } else {
+//		                    String patron = texto.trim().replace("*", ".*");
+//		                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + patron, columna));
+//		                }
+//		            }
+//		        });
+//
+//		        // Ajustar el filtro si cambia el ancho de las columnas
+//		        tableColumn.addPropertyChangeListener(evt -> {
+//		            if ("width".equals(evt.getPropertyName())) {
+//		                filtro.setBounds(tabla.getTableHeader().getHeaderRect(columna).x, 0, tableColumn.getWidth(), 25);
+//		            }
+//		        });
+//
+//		    }
+//
+//		    // Agregar el panel de filtros encima de la cabecera de la tabla
+//		    JScrollPane scrollPane = (JScrollPane) tabla.getParent().getParent();
+//		    JViewport viewport = new JViewport();
+//		    viewport.setView(panelFiltros);
+//		    viewport.setPreferredSize(panelFiltros.getPreferredSize());
+//		    scrollPane.setColumnHeader(viewport);
+//		}
+
+
+
+
 	
 	public void setModelReparaciones(DefaultTableModel modelReparaciones) {
 		this.modelReparaciones = modelReparaciones;

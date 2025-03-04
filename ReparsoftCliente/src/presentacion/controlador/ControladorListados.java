@@ -6,6 +6,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GradientPaint;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,6 +32,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
 import VistaPropias.AutoCompletarComboBox;
@@ -123,7 +126,7 @@ public class ControladorListados
 	private double porcentaje;
 	private double facturacion;
 	private List<FacturacionXclienteDTO> itemFacturacion_en_tabla;
-
+	
 	private CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();
 	private Font titleFont = new Font("Cambria", Font.BOLD, 20); // Por ejemplo, Arial, negrita, tamaño 16
 	private Font labelFont = new Font("Cambria", Font.PLAIN, 16); // Por ejemplo, Arial, tamaño 12
@@ -890,6 +893,7 @@ public class ControladorListados
 
 	private void cargarTablaListadoReparaciones() {
 		
+		
 		/*con ese código no respeta las restricciones de los permisos*/
 
 //		this.ventanaListadoReparaciones.getModelReparaciones().setRowCount(0); // Para
@@ -931,11 +935,137 @@ public class ControladorListados
 		}
 
 		ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTblListado());
+		agregarAutofiltrosATabla(this.ventanaListadoReparaciones.getTblListado());
 
 		this.ventanaListadoReparaciones.setVisible(true);
 
 	}
 
+	
+	
+	public void agregarAutofiltrosATabla(JTable tabla) {
+	    // Obtener el modelo de la tabla
+	    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+	    int columnCount = tabla.getColumnCount();
+	    JComboBox<String>[] filterCombos = new JComboBox[columnCount];
+
+	    // Crear un panel para los filtros
+	    JPanel filterPanel = new JPanel();
+	    filterPanel.setLayout(null); // Usar null layout para posicionar manualmente los filtros
+
+	    // Crear los JComboBox y agregarlos al panel de filtros
+	    int xPosition = 0; // Posición horizontal inicial
+	    for (int i = 0; i < columnCount; i++) {
+	        // Crear un combobox editable para cada columna
+	        filterCombos[i] = new JComboBox<>();
+	        filterCombos[i].setEditable(true); // Permitir escribir en el combobox
+	        filterCombos[i].addItem("Todos"); // Opción por defecto
+
+	        // Capturar el índice de la columna en una variable final
+	        final int columnIndex = i;
+
+	        // Agregar ActionListener para filtrar la tabla
+	        filterCombos[i].addActionListener(e -> {
+	            String filterValue = (String) filterCombos[columnIndex].getSelectedItem();
+	            filtrarTabla(tabla, columnIndex, filterValue);
+	        });
+
+	        // Llenar el combobox con valores únicos de la columna
+	        actualizarFiltroColumna(tabla, filterCombos[i], i);
+
+	        // Obtener el ancho de la columna correspondiente
+	        TableColumn column = tabla.getColumnModel().getColumn(columnIndex);
+	        int columnWidth = column.getWidth();
+
+	        // Ajustar la posición y el ancho del combobox
+	        filterCombos[i].setBounds(xPosition, 0, columnWidth, 25);
+	        filterPanel.add(filterCombos[i]);
+
+	        // Actualizar la posición horizontal para el siguiente combobox
+	        xPosition += columnWidth;
+	    }
+
+	    // Establecer la altura del panel de filtros según el tamaño de los combobox
+	    filterPanel.setPreferredSize(new Dimension(tabla.getWidth(), 25));
+
+	    // Crear un contenedor principal para los filtros y encabezados
+	    JPanel headerContainer = new JPanel(new BorderLayout());
+	    headerContainer.add(filterPanel, BorderLayout.NORTH);
+	    headerContainer.add(tabla.getTableHeader(), BorderLayout.SOUTH);
+
+	    // Reemplazar el encabezado del JScrollPane con el contenedor de filtros y encabezados
+	    JScrollPane scrollPane = (JScrollPane) tabla.getParent().getParent();
+	    scrollPane.setColumnHeaderView(headerContainer);
+
+	    // Escuchar cambios en el ancho de las columnas para ajustar el tamaño y posición de los filtros
+	    tabla.getColumnModel().addColumnModelListener(new javax.swing.event.TableColumnModelListener() {
+	        @Override
+	        public void columnAdded(javax.swing.event.TableColumnModelEvent e) {}
+
+	        @Override
+	        public void columnRemoved(javax.swing.event.TableColumnModelEvent e) {}
+
+	        @Override
+	        public void columnMoved(javax.swing.event.TableColumnModelEvent e) {}
+
+	        @Override
+	        public void columnMarginChanged(javax.swing.event.ChangeEvent e) {
+	            int xPosition = 0;
+	            for (int i = 0; i < columnCount; i++) {
+	                TableColumn column = tabla.getColumnModel().getColumn(i);
+	                int columnWidth = column.getWidth();
+	                filterCombos[i].setBounds(xPosition, 0, columnWidth, 25);
+	                filterCombos[i].revalidate();
+	                filterCombos[i].repaint();
+	                xPosition += columnWidth;
+	            }
+	        }
+
+	        @Override
+	        public void columnSelectionChanged(javax.swing.event.ListSelectionEvent e) {}
+	    });
+	}
+
+
+	private void actualizarFiltroColumna(JTable tabla, JComboBox<String> comboBox, int columnIndex) {
+	    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+	    comboBox.removeAllItems();
+	    comboBox.addItem("Todos");
+
+	    // Llenar el combobox con valores únicos de la columna
+	    Set<String> uniqueValues = new HashSet<>();
+	    for (int row = 0; row < model.getRowCount(); row++) {
+	        Object value = model.getValueAt(row, columnIndex);
+	        if (value != null) {
+	            uniqueValues.add(value.toString());
+	        }
+	    }
+	    for (String value : uniqueValues) {
+	        comboBox.addItem(value);
+	    }
+	}
+
+	private void filtrarTabla(JTable tabla, int columnIndex, String filterValue) {
+	    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+	    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+	    tabla.setRowSorter(sorter);
+
+	    if (filterValue == null || filterValue.equals("Todos")) {
+	        // Mostrar todas las filas
+	        sorter.setRowFilter(null);
+	    } else {
+	        // Convertir el valor de filtro en una expresión regular con comodín *
+	        String regex = filterValue.replace("*", ".*");
+	        RowFilter<DefaultTableModel, Object> rowFilter = RowFilter.regexFilter("(?i)" + regex, columnIndex);
+	        sorter.setRowFilter(rowFilter);
+	    }
+	}
+
+	
+	
+	
+	
+	
 	public void agregarListenerVentanaListados() {
 
 		this.ventanaListadoReparaciones.getBtnFiltrar().addActionListener(this);
