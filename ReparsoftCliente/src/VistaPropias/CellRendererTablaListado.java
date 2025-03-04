@@ -1,138 +1,131 @@
 package VistaPropias;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import java.awt.Graphics;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
-//import com.sun.xml.internal.ws.assembler.jaxws.HandlerTubeFactory;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import presentacion.vista.VentanaListadoReparaciones;
 import tiposPropios.MonedaFormatter;
 
 public class CellRendererTablaListado extends DefaultTableCellRenderer implements TableCellRenderer {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@SuppressWarnings("unused")
-	private VentanaListadoReparaciones ventanaListadoReparaciones;
-	private MonedaFormatter monedaFormatter;
+    private static final long serialVersionUID = 1L;
+    private VentanaListadoReparaciones ventanaListadoReparaciones;
+    private MonedaFormatter monedaFormatter;
 
-	private JCheckBox check = new JCheckBox();
-	Font fuenteELS = new Font("Cambria", Font.BOLD, 12);
-	Font fuenteCabecera = new Font("Cambria", Font.BOLD, 14);
-	Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 12);
+    private JCheckBox check = new JCheckBox();
+    Font fuenteELS = new Font("Cambria", Font.BOLD, 12);
+    Font fuenteCabecera = new Font("Cambria", Font.BOLD, 14);
+    Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 12);
 
-	/** Constructor de clase */
-	public CellRendererTablaListado() {
-	}
+    /** Constructor de clase */
+    public CellRendererTablaListado(JTable table) {
+        // Configurar un renderer personalizado para el encabezado
+        JTableHeader header = table.getTableHeader();
+        if (header != null) {
+            header.setFont(fuenteCabecera);
+            header.setDefaultRenderer(new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                        boolean hasFocus, int row, int column) {
+                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-			int row, int column) {
+                    setFont(fuenteCabecera);
+                    setHorizontalAlignment(SwingConstants.CENTER);
+                    table.getTableHeader().setReorderingAllowed(false);
 
-		// establecemos el fondo blanco o vac�o
-		setBackground(null);
-		// COnstructor de la clase DefaultTableCellRenderer
-		Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    // Fondo gris metalizado
+                    setBackground(new Color(169, 169, 169)); // Gris metalizado
+                    setForeground(Color.BLACK); // Color del texto del encabezado
 
-		if (value != null) {
-			if (c instanceof JComponent) {
-				((JComponent) c).setToolTipText(value.toString()); // Muestra el valor completo al pasar el cursor
-																	// sobre la celda.
-			}
-		}
-		// Establecemos las filas que queremos cambiar el color. == 0 para pares
-		// y != 0 para impares
-		boolean oddRow = (row % 2 == 0);
+                    return c;
+                }
 
-		Color fondoImpar = new Color(230, 230, 250);
-		Color fondoPar = new Color(176, 196, 222);
-		Color fondoParSeleccionado = new Color(70, 130, 180);
-		Color fondoImparSeleccionado = new Color(70, 130, 180);
-		Color letra = new Color(0, 0, 0);
-		Color letraSeleccionado = new Color(255, 255, 255);
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
 
-		table.getTableHeader().setFont(fuenteCabecera);
-		table.getTableHeader().setReorderingAllowed(false);
-		setFont(fuenteCeldas);
+                    // Dibujar divisiones entre columnas
+                    g.setColor(new Color(105, 105, 105)); // Gris oscuro para las divisiones
+                    g.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1); // Línea horizontal inferior
+                    g.drawLine(getWidth() - 1, 0, getWidth() - 1, getHeight()); // Línea vertical derecha
+                }
+            });
+        }
+    }
 
-		if (column == 0 || column == 1 || column == 8 || column == 9 || column == 11 || column == 12 || column == 13
-				|| column == 14 || column == 17 || column == 18 || column == 19 || column == 20 || column == 21
-				|| column == 22) {
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+            int row, int column) {
 
-			setHorizontalAlignment(SwingConstants.CENTER);
+        // Construcción del componente para la celda
+        Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-		}
+        if (value != null && c instanceof JComponent) {
+            ((JComponent) c).setToolTipText(value.toString());
+        }
 
-		if (column == 17 || column == 18) {
-			Boolean bol = Boolean.valueOf(String.valueOf(value));
+        // Alternar colores de las filas
+        boolean oddRow = (row % 2 == 0);
+        Color fondoImpar = new Color(230, 230, 250);
+        Color fondoPar = new Color(176, 196, 222);
+        Color fondoSeleccionado = new Color(70, 130, 180);
+        Color letra = new Color(0, 0, 0);
+        Color letraSeleccionado = new Color(255, 255, 255);
 
-			check = new JCheckBox();
-			check.setHorizontalAlignment(JLabel.CENTER);
-			if (oddRow)
-				check.setBackground((isSelected) ? fondoImparSeleccionado : fondoImpar);
-			else
-				check.setBackground((isSelected) ? fondoParSeleccionado : fondoPar);
+        setFont(fuenteCeldas);
 
-			check.setSelected(bol); // valor de celda
-			return check;
+        if (column == 0 || column == 1 || column == 8 || column == 9 || column == 11 || column == 12 || column == 13
+                || column == 14 || column == 17 || column == 18 || column == 19 || column == 20 || column == 21
+                || column == 22) {
+            setHorizontalAlignment(SwingConstants.CENTER);
+        }
 
-		}
+        if (column == 17 || column == 18) {
+            Boolean bol = Boolean.valueOf(String.valueOf(value));
+            check.setHorizontalAlignment(JLabel.CENTER);
+            check.setBackground(isSelected ? fondoSeleccionado : (oddRow ? fondoImpar : fondoPar));
+            check.setSelected(bol);
+            return check;
+        }
 
-		if (column == 19 || column == 21) {
+        if (column == 19 || column == 21) {
+            monedaFormatter = new MonedaFormatter();
+            String valor = monedaFormatter.formatPeso(value.toString());
+            setText((value == null) ? "" : valor);
+        }
 
-			monedaFormatter = new MonedaFormatter();
-			String valor = monedaFormatter.formatPeso(value.toString());
-			setText((value == null) ? "" : valor);
+        if (column == 20) {
+            monedaFormatter = new MonedaFormatter();
+            String valor = monedaFormatter.formatDolar(value.toString());
+            setText((value == null) ? "" : valor);
+        }
 
-		}
+        setBackground(isSelected ? fondoSeleccionado : (oddRow ? fondoImpar : fondoPar));
+        setForeground(isSelected ? letraSeleccionado : letra);
 
-		if (column == 20) {
-
-			monedaFormatter = new MonedaFormatter();
-			String valor = monedaFormatter.formatDolar(value.toString());
-			setText((value == null) ? "" : valor);
-
-		}
-
-		// Si las filas son pares, se cambia el color a gris
-		if (oddRow) {
-			setBackground((isSelected) ? fondoImparSeleccionado : fondoImpar);
-			setForeground((isSelected) ? letraSeleccionado : letra);
-
-		} else {
-			setBackground((isSelected) ? fondoParSeleccionado : fondoPar);
-			setForeground((isSelected) ? letraSeleccionado : letra);
-		}
-
-		if (column == 0) {
-
-			setFont(fuenteELS);
-			setForeground(Color.blue);
-
-		}
-
-		if ((column == 1 || column == 9) && (value != null && value != "")) {
+        if (column == 0) {
+            setFont(fuenteELS);
+            setForeground(Color.blue);
+        }
+        
+        
+        if ((column == 1 || column == 9) && (value != null && value != "")) {
 
 			SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
 			Date fechaDate = null;
@@ -148,7 +141,6 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 
 		}
 
-		return this;
-	}
-
+        return this;
+    }
 }
