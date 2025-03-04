@@ -7,3 +7,5 @@ En el listado muestra precios en cualquier usuario
 
 *sI APRIETO EDITAR EN VISUALIZAR EQUIPO, SE BOORA EL TECNICO
 *SACAR AVISOS EN EDITAR ESTADOS
+
+*Verificar cantidad de reparados en estadisticas  RESUMEN MENSUALL DA MAS DE LO QUE DEBERÍA
