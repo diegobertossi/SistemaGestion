@@ -129,7 +129,7 @@ public class ControladorListados
 	private double porcentaje;
 	private double facturacion;
 	private List<FacturacionXclienteDTO> itemFacturacion_en_tabla;
-	
+
 	private CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();
 	private Font titleFont = new Font("Cambria", Font.BOLD, 20); // Por ejemplo, Arial, negrita, tamaño 16
 	private Font labelFont = new Font("Cambria", Font.PLAIN, 16); // Por ejemplo, Arial, tamaño 12
@@ -163,7 +163,6 @@ public class ControladorListados
 
 		cargarTablaListadoReparaciones();
 
-
 	}
 
 	public void inicializar() {
@@ -173,26 +172,6 @@ public class ControladorListados
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-
-		ventanaListadoReparaciones.getTblReparaciones().addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseMoved(MouseEvent e) {
-
-				// int row =
-				// ventanaListadoReparaciones.getTblReparaciones().rowAtPoint(e.getPoint());
-				int column = ventanaListadoReparaciones.getTblReparaciones().columnAtPoint(e.getPoint());
-
-				// Verificar si el mouse est� sobre la celda deseada
-				if (column == 0) {
-					ventanaListadoReparaciones.getTblReparaciones()
-							.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				} else {
-					ventanaListadoReparaciones.getTblReparaciones().setCursor(Cursor.getDefaultCursor());
-				}
-			}
-		});
-
-
 
 		if (this.ventanaListadoReparaciones != null
 				&& arg0.getSource() == this.ventanaListadoReparaciones.getBtnEstadisticas()) {
@@ -574,9 +553,8 @@ public class ControladorListados
 	}
 
 	private void cargarTablaListadoReparaciones() {
-		
-		
-		/*con ese código no respeta las restricciones de los permisos*/
+
+		/* con ese código no respeta las restricciones de los permisos */
 
 //		this.ventanaListadoReparaciones.getModelReparaciones().setRowCount(0); // Para
 //		// vaciar
@@ -584,13 +562,11 @@ public class ControladorListados
 //		this.ventanaListadoReparaciones.getModelReparaciones().setColumnCount(0);
 //		this.ventanaListadoReparaciones.getModelReparaciones()
 //				.setColumnIdentifiers(this.ventanaListadoReparaciones.getNombreColumnas());
-		
-		
 
 		this.Reparaciones_en_tabla = (List<ReparacionDTO>) modelo.obtenerReparacion();
 
-		//for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
-		for (int i = this.Reparaciones_en_tabla.size()-1; i >= 0; i--) {
+		// for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
+		for (int i = this.Reparaciones_en_tabla.size() - 1; i >= 0; i--) {
 
 			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
 					this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
@@ -613,283 +589,240 @@ public class ControladorListados
 
 			this.ventanaListadoReparaciones.getModelReparaciones().addRow(fila);
 
-
 		}
 
 		ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTblListado());
-		
+
 		agregarAutofiltrosATabla(this.ventanaListadoReparaciones.getTblListado());
 
 		this.ventanaListadoReparaciones.setVisible(true);
 
 	}
 
-	
-	
 	public void agregarAutofiltrosATabla(JTable tabla) {
 
-	    Font fuenteFiltros = new Font("Cambria", Font.PLAIN, 12);
-	    Color fondoFiltros = new Color(255, 255, 150);
-	    Color fondoBusqueda = new Color(148, 255, 129); // Verde pastel claro
+		Font fuenteFiltros = new Font("Cambria", Font.PLAIN, 11);
+		Color fondoFiltros = new Color(255, 255, 150);
+		Color fondoBusqueda = new Color(148, 255, 129); // Verde pastel claro
 
-	    // Obtener el modelo de la tabla
-	    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-	    int columnCount = tabla.getColumnCount();
-	    JComboBox<String>[] filterCombos = new JComboBox[columnCount];
+		// Obtener el modelo de la tabla
+		DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+		int columnCount = tabla.getColumnCount();
+		JComboBox<String>[] filterCombos = new JComboBox[columnCount];
 
-	    // Crear un panel para los filtros
-	    JPanel filterPanel = new JPanel();
-	    filterPanel.setLayout(null); // Usar null layout para posicionar manualmente los filtros
+		// Crear un panel para los filtros
+		JPanel filterPanel = new JPanel();
+		filterPanel.setLayout(null); // Usar null layout para posicionar manualmente los filtros
 
-	    // Crear los JComboBox y agregarlos al panel de filtros
-	    int xPosition = 0; // Posición horizontal inicial
-	    for (int i = 0; i < columnCount; i++) {
-	        // Crear un combobox editable para cada columna
-	        filterCombos[i] = new JComboBox<>();
-	        filterCombos[i].setFont(fuenteFiltros);
-	        filterCombos[i].setEditable(true); // Permitir escribir en el combobox
-	        filterCombos[i].addItem("Todos"); // Opción por defecto
+		// Crear los JComboBox y agregarlos al panel de filtros
+		int xPosition = 0; // Posición horizontal inicial
+		for (int i = 0; i < columnCount; i++) {
+			// Crear un combobox editable para cada columna
+			filterCombos[i] = new JComboBox<>();
+			filterCombos[i].setFont(fuenteFiltros);
+			filterCombos[i].setEditable(true); // Permitir escribir en el combobox
+			filterCombos[i].addItem("Todos"); // Opción por defecto
 
-	        // Cambiar el color de fondo del editor
-	        JTextField editor = (JTextField) filterCombos[i].getEditor().getEditorComponent();
-	        editor.setBackground(fondoFiltros);
+			// Cambiar el color de fondo del editor
+			JTextField editor = (JTextField) filterCombos[i].getEditor().getEditorComponent();
+			editor.setBackground(fondoFiltros);
 
-	        // Establecer un renderer personalizado
-	        filterCombos[i].setRenderer(new DefaultListCellRenderer() {
-	            @Override
-	            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-	                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-	                c.setBackground(isSelected ? fondoFiltros.darker() : fondoFiltros);
-	                c.setForeground(Color.BLACK);
-	                return c;
-	            }
-	        });
+			// Establecer un renderer personalizado
+			filterCombos[i].setRenderer(new DefaultListCellRenderer() {
+				@Override
+				public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+						boolean isSelected, boolean cellHasFocus) {
+					Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+					c.setBackground(isSelected ? fondoFiltros.darker() : fondoFiltros);
+					c.setForeground(Color.BLACK);
+					return c;
+				}
+			});
 
-	        // Capturar el índice de la columna en una variable final
-	        final int columnIndex = i;
+			// Capturar el índice de la columna en una variable final
+			final int columnIndex = i;
 
-	        // Agregar ActionListener para filtrar la tabla
-	        filterCombos[i].addActionListener(e -> {
-	            String filterValue = (String) filterCombos[columnIndex].getSelectedItem();
+			// Agregar ActionListener para filtrar la tabla
+			filterCombos[i].addActionListener(e -> {
+				String filterValue = (String) filterCombos[columnIndex].getSelectedItem();
 
-	            // Cambiar el color de fondo según el valor seleccionado
-	            if (filterValue != null && !filterValue.equals("Todos")) {
-	                editor.setBackground(fondoBusqueda);
-	            } else {
-	                editor.setBackground(fondoFiltros);
-	            }
+				// Cambiar el color de fondo según el valor seleccionado
+				if (filterValue != null && !(filterValue.equals("Todos") || filterValue.equals("") )) {
+					editor.setBackground(fondoBusqueda);
+				} else {
+					editor.setBackground(fondoFiltros);
+				}
 
-	            filtrarTabla(tabla, filterCombos);
-	        });
+				filtrarTabla(tabla, filterCombos);
+			});
 
-	        // Llenar el combobox con valores únicos de la columna
-	        actualizarFiltroColumna(tabla, filterCombos[i], i);
+			// Llenar el combobox con valores únicos de la columna
+			actualizarFiltroColumna(tabla, filterCombos[i], i);
 
-	        // Obtener el ancho de la columna correspondiente
-	        TableColumn column = tabla.getColumnModel().getColumn(columnIndex);
-	        int columnWidth = column.getWidth();
+			// Obtener el ancho de la columna correspondiente
+			TableColumn column = tabla.getColumnModel().getColumn(columnIndex);
+			int columnWidth = column.getWidth();
 
-	        // Ajustar la posición y el ancho del combobox
-	        filterCombos[i].setBounds(xPosition, 0, columnWidth, 25);
-	        filterPanel.add(filterCombos[i]);
+			// Ajustar la posición y el ancho del combobox
+			filterCombos[i].setBounds(xPosition, 0, columnWidth, 25);
+			filterPanel.add(filterCombos[i]);
 
-	        // Actualizar la posición horizontal para el siguiente combobox
-	        xPosition += columnWidth;
-	    }
+			// Actualizar la posición horizontal para el siguiente combobox
+			xPosition += columnWidth;
+		}
 
-	    // Establecer la altura del panel de filtros según el tamaño de los combobox
-	    filterPanel.setPreferredSize(new Dimension(tabla.getWidth(), 25));
+		// Establecer la altura del panel de filtros según el tamaño de los combobox
+		filterPanel.setPreferredSize(new Dimension(tabla.getWidth(), 25));
 
-	    // Crear un contenedor principal para los filtros y encabezados
-	    JPanel headerContainer = new JPanel(new BorderLayout());
-	    headerContainer.add(filterPanel, BorderLayout.NORTH);
-	    headerContainer.add(tabla.getTableHeader(), BorderLayout.SOUTH);
+		// Crear un contenedor principal para los filtros y encabezados
+		JPanel headerContainer = new JPanel(new BorderLayout());
+		headerContainer.add(filterPanel, BorderLayout.NORTH);
+		headerContainer.add(tabla.getTableHeader(), BorderLayout.SOUTH);
 
-	    // Reemplazar el encabezado del JScrollPane con el contenedor de filtros y encabezados
-	    JScrollPane scrollPane = (JScrollPane) tabla.getParent().getParent();
-	    scrollPane.setColumnHeaderView(headerContainer);
+		// Reemplazar el encabezado del JScrollPane con el contenedor de filtros y
+		// encabezados
+		JScrollPane scrollPane = (JScrollPane) tabla.getParent().getParent();
+		scrollPane.setColumnHeaderView(headerContainer);
 
-	    // Escuchar cambios en el ancho de las columnas para ajustar el tamaño y posición de los filtros
-	    tabla.getColumnModel().addColumnModelListener(new javax.swing.event.TableColumnModelListener() {
-	        @Override
-	        public void columnAdded(javax.swing.event.TableColumnModelEvent e) {}
+		// Escuchar cambios en el ancho de las columnas para ajustar el tamaño y
+		// posición de los filtros
+		tabla.getColumnModel().addColumnModelListener(new javax.swing.event.TableColumnModelListener() {
+			@Override
+			public void columnAdded(javax.swing.event.TableColumnModelEvent e) {
+			}
 
-	        @Override
-	        public void columnRemoved(javax.swing.event.TableColumnModelEvent e) {}
+			@Override
+			public void columnRemoved(javax.swing.event.TableColumnModelEvent e) {
+			}
 
-	        @Override
-	        public void columnMoved(javax.swing.event.TableColumnModelEvent e) {}
+			@Override
+			public void columnMoved(javax.swing.event.TableColumnModelEvent e) {
+			}
 
-	        @Override
-	        public void columnMarginChanged(javax.swing.event.ChangeEvent e) {
-	            int xPosition = 0;
-	            for (int i = 0; i < columnCount; i++) {
-	                TableColumn column = tabla.getColumnModel().getColumn(i);
-	                int columnWidth = column.getWidth();
-	                filterCombos[i].setBounds(xPosition, 0, columnWidth, 25);
-	                filterCombos[i].revalidate();
-	                filterCombos[i].repaint();
-	                xPosition += columnWidth;
-	            }
-	        }
+			@Override
+			public void columnMarginChanged(javax.swing.event.ChangeEvent e) {
+				int xPosition = 0;
+				for (int i = 0; i < columnCount; i++) {
+					TableColumn column = tabla.getColumnModel().getColumn(i);
+					int columnWidth = column.getWidth();
+					filterCombos[i].setBounds(xPosition, 0, columnWidth, 25);
+					filterCombos[i].revalidate();
+					filterCombos[i].repaint();
+					xPosition += columnWidth;
+				}
+			}
 
-	        @Override
-	        public void columnSelectionChanged(javax.swing.event.ListSelectionEvent e) {}
-	    });
+			@Override
+			public void columnSelectionChanged(javax.swing.event.ListSelectionEvent e) {
+			}
+		});
 	}
 
-	
 	private void actualizarFiltroColumna(JTable tabla, JComboBox<String> comboBox, int columnIndex) {
-	    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-	    comboBox.removeAllItems();
-	    comboBox.addItem("Todos");
+		DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+		comboBox.removeAllItems();
+		comboBox.addItem("Todos");
 
-	    // Usar un TreeSet con un comparador personalizado para ordenar los valores correctamente
-	    Set<String> uniqueValues = new TreeSet<>((a, b) -> {
-	        // Verificar si ambos valores son fechas
-	        if (esFecha(a) && esFecha(b)) {
-	            return compararFechas(a, b);  // Comparar solo por año
-	        }
-	        // Si no son fechas, comparar como números
-	        if (esNumero(a) && esNumero(b)) {
-	            return Double.compare(Double.parseDouble(a), Double.parseDouble(b));  // Comparar como números
-	        }
-	        // Si son cadenas, comparar alfabéticamente
-	        return a.compareTo(b);  // Comparar cadenas alfabéticamente
-	    });
+		Set<String> uniqueValues = new TreeSet<>((a, b) -> {
 
-	    // Recorrer las filas y agregar los valores únicos al TreeSet
-	    for (int row = 0; row < model.getRowCount(); row++) {
-	        Object value = model.getValueAt(row, columnIndex);
-	        if (value != null) {
-	            String valueString = value.toString();
+			// Si no son fechas, comparar como números
+			if (esNumero(a) && esNumero(b)) {
+				return Double.compare(Double.parseDouble(a), Double.parseDouble(b)); // Comparar como números
+			}
+			return a.compareTo(b); // Comparar cadenas alfabéticamente
+		});
 
-	            // Si la columna contiene fechas, convertirlas al formato DD/MM/AAAA
-	            if (esFecha(valueString)) {
-	                String formattedDate = formatearFecha(valueString);
-	                uniqueValues.add(formattedDate);
-	            } else {
-	                // Agregar el valor tal cual (número o cadena)
-	                uniqueValues.add(valueString);
-	            }
-	        }
-	    }
+		// Recorrer las filas y agregar los valores únicos al TreeSet
+		for (int row = 0; row < model.getRowCount(); row++) {
+			Object value = model.getValueAt(row, columnIndex);
+			if (value != null) {
+				String valueString = value.toString();
 
-	    // Agregar los valores ordenados al JComboBox
-	    for (String value : uniqueValues) {
-	        comboBox.addItem(value);
-	    }
+				uniqueValues.add(valueString);
+
+			}
+		}
+
+		// Agregar los valores ordenados al JComboBox
+		for (String value : uniqueValues) {
+			if (esFecha(value)) {
+				value = formatearFecha(value);
+
+			}
+
+			comboBox.addItem(value);
+		}
 	}
-
-
 
 	private void filtrarTabla(JTable tabla, JComboBox<String>[] filterCombos) {
-	    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-	    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-	    tabla.setRowSorter(sorter);
+		DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+		tabla.setRowSorter(sorter);
 
-	    // Lista de filtros para todas las columnas
-	    List<RowFilter<Object, Object>> rowFilters = new ArrayList<>();
+		// Lista de filtros para todas las columnas
+		List<RowFilter<Object, Object>> rowFilters = new ArrayList<>();
 
-	    // Recorrer cada JComboBox y agregar el filtro correspondiente
-	    for (int columnIndex = 0; columnIndex < filterCombos.length; columnIndex++) {
-	        // Verificar si el JComboBox no es null
-	        if (filterCombos[columnIndex] != null) {
-	            String filterValue = (String) filterCombos[columnIndex].getSelectedItem();
+		// Recorrer cada JComboBox y agregar el filtro correspondiente
+		for (int columnIndex = 0; columnIndex < filterCombos.length; columnIndex++) {
+			// Verificar si el JComboBox no es null
+			if (filterCombos[columnIndex] != null) {
+				String filterValue = (String) filterCombos[columnIndex].getSelectedItem();
 
-	            if (filterValue != null && !filterValue.equals("Todos")) {
-	                // Si el filtro seleccionado es una fecha en formato DD/MM/AAAA, convertirla a AAAAMMDD
-	                if (filterValue.contains("/")) {
-	                    String[] parts = filterValue.split("/");
-	                    filterValue = parts[2] + parts[1] + parts[0];  // Convertir a AAAAMMDD
-	                }
+				if (filterValue != null && !filterValue.equals("Todos")) {
+					// Si el filtro seleccionado es una fecha en formato DD/MM/AAAA, convertirla a
+					// AAAAMMDD
+					if (filterValue.contains("/")) {
+						String[] parts = filterValue.split("/");
+						filterValue = parts[2] + parts[1] + parts[0]; // Convertir a AAAAMMDD
+					}
 
-	                // Convertir el valor de filtro en una expresión regular con comodín *
-	                String regex = filterValue.replace("*", ".*");
-	                // Hacer el cast a RowFilter<Object, Object> para que sea compatible
-	                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter("(?i)" + regex, columnIndex);
-	                rowFilters.add(rowFilter); // Agregar el filtro de esta columna
-	            }
-	        }
-	    }
+					// Convertir el valor de filtro en una expresión regular con comodín *
+					String regex = filterValue.replace("*", ".*");
+					// Hacer el cast a RowFilter<Object, Object> para que sea compatible
+					RowFilter<Object, Object> rowFilter = RowFilter.regexFilter("(?i)" + regex, columnIndex);
+					rowFilters.add(rowFilter); // Agregar el filtro de esta columna
+				}
+			}
+		}
 
-	    // Aplicar todos los filtros a la vez
-	    if (rowFilters.isEmpty()) {
-	        sorter.setRowFilter(null); // Si no hay filtros activos, mostrar todas las filas
-	    } else {
-	        // Combinamos todos los filtros usando una lógica AND
-	        RowFilter<Object, Object> combinedFilter = RowFilter.andFilter(rowFilters);
-	        sorter.setRowFilter(combinedFilter);
-	    }
+		// Aplicar todos los filtros a la vez
+		if (rowFilters.isEmpty()) {
+			sorter.setRowFilter(null); // Si no hay filtros activos, mostrar todas las filas
+		} else {
+			// Combinamos todos los filtros usando una lógica AND
+			RowFilter<Object, Object> combinedFilter = RowFilter.andFilter(rowFilters);
+			sorter.setRowFilter(combinedFilter);
+		}
 	}
 
-
-
-	
-	private boolean esFecha(String value) {
-	    // Verifica si el valor tiene el formato AAAAMMDD (8 dígitos numéricos)
-	    return value.length() == 8 && value.matches("\\d{8}");
-	}
-
-
-	
 	private boolean esNumero(String value) {
-	    try {
-	        // Intentar parsear el valor a número (entero o decimal)
-	        Double.parseDouble(value);
-	        return true;
-	    } catch (NumberFormatException e) {
-	        return false;
-	    }
+		try {
+			// Intentar parsear el valor a número (entero o decimal)
+			Double.parseDouble(value);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 
-	
+	// Verifica si un valor es una fecha en formato AAAAMMDD
+	private boolean esFecha(String value) {
+		// Verifica si el valor tiene el formato AAAAMMDD (8 dígitos numéricos)
+		return value.length() == 8 && value.matches("\\d{8}");
+	}
+
+	// Formatea una fecha en formato AAAAMMDD a DD/MM/AAAA
 	private String formatearFecha(String fecha) {
-	    // Convertir la fecha de formato AAAAMMDD a DD/MM/AAAA
-	    String dia = fecha.substring(6, 8);
-	    String mes = fecha.substring(4, 6);
-	    String año = fecha.substring(0, 4);
-	    return dia + "/" + mes + "/" + año;
+		// Convertir la fecha de formato AAAAMMDD a DD/MM/AAAA
+		String dia = fecha.substring(6, 8);
+		String mes = fecha.substring(4, 6);
+		String año = fecha.substring(0, 4);
+		return dia + "/" + mes + "/" + año;
 	}
 
-
-	private int compararFechas(String a, String b) {
-	    try {
-	        // Extraer los años de las fechas en formato AAAAMMDD
-	        int añoA = Integer.parseInt(a.substring(0, 4));
-	        int añoB = Integer.parseInt(b.substring(0, 4));
-
-	        // Comparar solo los años
-	        return Integer.compare(añoA, añoB);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return 0; // En caso de error, se consideran iguales
-	    }
-	}
-
-
-
-	
-	private LocalDate convertirAFecha(String fecha) {
-	    // Convertir de AAAAMMDD a LocalDate (usando año, mes y día)
-	    try {
-	        int año = Integer.parseInt(fecha.substring(0, 4));
-	        int mes = Integer.parseInt(fecha.substring(4, 6));
-	        int día = Integer.parseInt(fecha.substring(6, 8));
-	        return LocalDate.of(año, mes, día);  // Crear un objeto LocalDate
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return LocalDate.MIN;  // Retornar una fecha mínima si la conversión falla
-	    }
-	}
-	
-	
-	
 	public void agregarListenerVentanaListados() {
 
-
 		this.ventanaListadoReparaciones.getBtnEstadisticas().addActionListener(this);
-
 
 		this.ventanaListadoReparaciones.getTblReparaciones().addMouseListener(this);
 		this.ventanaListadoReparaciones.getTblReparaciones().addMouseMotionListener(this);
@@ -986,8 +919,6 @@ public class ControladorListados
 		this.ventanaListadoReparaciones.getChckbxPago().addItemListener(this);
 		this.ventanaListadoReparaciones.getChckbxPago().addMouseListener(this);
 
-		
-
 	}
 
 	private void cargarTablaFacturacionCliente() {
@@ -1060,7 +991,6 @@ public class ControladorListados
 		ventanaFacturacionXcliente.setCellRender(this.ventanaFacturacionXcliente.getTblFacturacionClientes());
 	}
 
-	
 	public void cerraVentanaListadoEquipos() {
 
 		this.ventanaListadoReparaciones.addWindowListener(new WindowAdapter() {
@@ -2937,14 +2867,21 @@ public class ControladorListados
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
 
+		int column = ventanaListadoReparaciones.getTblReparaciones().columnAtPoint(arg0.getPoint());
+
+		// Verificar si el mouse est� sobre la celda deseada
+		if (column == 0) {
+			ventanaListadoReparaciones.getTblReparaciones().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		} else {
+			ventanaListadoReparaciones.getTblReparaciones().setCursor(Cursor.getDefaultCursor());
+		}
+
 	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (this.ventanaListadoReparaciones != null) {
-			
-			
-			
+
 			if (e.getSource() == this.ventanaListadoReparaciones.getChckbxELS()) {
 				if (this.ventanaListadoReparaciones.getChckbxELS().isSelected()) {
 
