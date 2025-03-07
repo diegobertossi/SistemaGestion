@@ -67,6 +67,8 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JButton btnenviarCorreoOwsp;
 
 	private JButton btnBuscarELS;
+	
+	private JButton btnBuscar;
 
 	private JCheckBox chckbxAvisoEnviado;
 	private JCheckBox chckPDFgenerado;
@@ -1170,10 +1172,15 @@ public class VentanaVisualizarEquipos extends JFrame {
 		comboELS.setBounds(357, 11, 100, 20);
 		panel.add(comboELS);
 
-		btnBuscarELS = new JButton("BUSCAR");
+		btnBuscarELS = new JButton("BUSCAR ELS");
 		btnBuscarELS.setFont(new Font("Cambria", Font.PLAIN, 13));
-		btnBuscarELS.setBounds(463, 11, 80, 20);
+		btnBuscarELS.setBounds(463, 11, 100, 20);
 		panel.add(btnBuscarELS);
+		
+		btnBuscar = new JButton("BUSCAR");
+		btnBuscar.setFont(new Font("Cambria", Font.PLAIN, 13));
+		btnBuscar.setBounds(655, 11, 80, 20);
+		panel.add(btnBuscar);
 
 		setLocationCenter();
 		this.setVisible(true);
@@ -1849,5 +1856,19 @@ public class VentanaVisualizarEquipos extends JFrame {
 	public void setTextLugarDeIngreso(String lugarDeIngreso) {
 		this.textLugarDeIngreso.setText(lugarDeIngreso);
 
+	}
+
+
+
+
+	public JButton getBtnBuscar() {
+		return btnBuscar;
+	}
+
+
+
+
+	public void setBtnBuscar(JButton btnBuscar) {
+		this.btnBuscar = btnBuscar;
 	}
 }

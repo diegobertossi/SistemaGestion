@@ -61,6 +61,7 @@ import presentacion.reportes.ReporteRegistroEntrada;
 
 import presentacion.vista.VentanaAgregarEquipo;
 import presentacion.vista.VentanaAgregarRepuesto;
+import presentacion.vista.VentanaBusquedaEquipo;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaEstados;
 
@@ -97,6 +98,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private VentanaWSP ventanaWSP;
 	private VentanaClientesWSP ventanaClientesWSP;
 
+	private VentanaBusquedaEquipo ventanaBusquedaEquipo;
+	
 	private ControladorUsuLogin controladorUsuLogin;
 	private ControladorPresupuestos controladorpresupuestos;
 	private ControladorSalidas controladorSalidas;
@@ -470,6 +473,22 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		}
+		
+		
+
+		else if (this.ventanaVisualizarEquipos != null
+				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnBuscar()) {
+
+			
+			ventanaBusquedaEquipo = new VentanaBusquedaEquipo(ventanaVisualizarEquipos);
+			
+			
+			
+			
+			
+		}
+		
+		
 
 		else if (this.ventanaEnviarCorreoOwsp != null
 				&& e.getSource() == this.ventanaEnviarCorreoOwsp.getBtnEnviarWST()) {
@@ -1701,6 +1720,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getTextPresupuesto().addKeyListener(this);
 		ventanaVisualizarEquipos.getTextPresupuestoDolar().addKeyListener(this);
 		ventanaVisualizarEquipos.getBtnBuscarELS().addActionListener(this);
+		ventanaVisualizarEquipos.getBtnBuscar().addActionListener(this);
 		ventanaVisualizarEquipos.getComboELS().addActionListener(this);
 		llenarComboELSvisualizacion();
 		AutoCompleteDecorator.decorate(ventanaVisualizarEquipos.getComboELS());

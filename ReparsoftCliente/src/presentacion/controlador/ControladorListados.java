@@ -131,16 +131,17 @@ public class ControladorListados
 	private List<FacturacionXclienteDTO> itemFacturacion_en_tabla;
 
 	private CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();
-	private Font titleFont = new Font("Cambria", Font.BOLD, 20); // Por ejemplo, Arial, negrita, tamaño 16
-	private Font labelFont = new Font("Cambria", Font.PLAIN, 16); // Por ejemplo, Arial, tamaño 12
-	private Font labelFontPie = new Font("Cambria", Font.PLAIN, 12);
+	private Font titleFont = new Font("Arial", Font.BOLD, 20); // Por ejemplo, Arial, negrita, tamaño 16
+	private Font labelFont = new Font("Arial", Font.BOLD, 18); // Por ejemplo, Arial, tamaño 12
+	private Font labelFontPie = new Font("Arial", Font.PLAIN, 12);
 	private Color labelColor2 = Color.BLACK; // Cambiar color de la letra
-	private Color labelColor = Color.WHITE; // Cambiar color de la letra
+	private Color labelColor = Color.darkGray; // Cambiar color de la letra
 
 	private ItemLabelPosition positionNumeroGrande = new ItemLabelPosition(ItemLabelAnchor.CENTER, // Posición dentro de
 																									// la barra
 			TextAnchor.BASELINE_CENTER, // Alineación vertical
 			TextAnchor.BASELINE_CENTER, // Alineación de texto
+			//0
 			-Math.PI / 2.0 // Rotación del texto (90 grados para vertical)
 	);
 	private ItemLabelPosition positionNumeroChico = new ItemLabelPosition(ItemLabelAnchor.CENTER, // Posición dentro de
