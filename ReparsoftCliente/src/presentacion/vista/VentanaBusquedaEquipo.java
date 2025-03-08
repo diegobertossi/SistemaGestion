@@ -1,82 +1,147 @@
 package presentacion.vista;
 
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.*;
+
+import presentacion.controlador.ControladorReparacion;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.EtchedBorder;
 
-public class VentanaBusquedaEquipo extends JDialog {
-    public VentanaBusquedaEquipo(JFrame parent) {
-        super(parent, "Buscar Equipo", true);
-        setSize(400, 200);
-        setLayout(new GridLayout(4, 2, 10, 10));
+public class VentanaBusquedaEquipo extends JFrame {
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
 
-        // Lista de campos disponibles para búsqueda
-        String[] searchFields = {"Cliente", "Sucursal", "Equipo", "Marca", "Modelo", "N° de serie", "Cliente de cliente",
-                "Remito de cliente", "Aviso de cliente", "Falla", "Diagnóstico", "Informe técnico"};
+    public JComboBox<String> comboBuscador;
+    public JTextField textField;
+    public JTextPane textPane;
+    public JScrollPane scrollPane;
+    public JButton btnBuscar;
+    
+    private ControladorReparacion controlador;
+    private JPanel panel;
 
-        // JComboBox para seleccionar el campo
-        JComboBox<String> fieldComboBox = new JComboBox<>(searchFields);
-        add(new JLabel("Campo a buscar:"));
-        add(fieldComboBox);
+    public VentanaBusquedaEquipo(ControladorReparacion controlador) {
+        super();
+        setResizable(false);
+        this.controlador = controlador;
 
-        // JTextField para ingresar el texto de búsqueda
-        JTextField searchField = new JTextField();
-        add(new JLabel("Texto a buscar:"));
-        add(searchField);
+        
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setBounds(100, 100, 447, 252);
 
-        // Botón Aceptar
-        JButton acceptButton = new JButton("Aceptar");
-        add(new JLabel()); // Espaciador
-        add(acceptButton);
+        setAlwaysOnTop(true);
+        
+        //this.setLocationRelativeTo(null);
+        setLocation(360, 190);
+        
+        contentPane = new JPanel();
+        contentPane.setBackground(SystemColor.inactiveCaption);
+        contentPane.setBorder(new LineBorder(new Color(0, 128, 128)));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
 
-        // Resultado de búsqueda
-        JTextArea resultArea = new JTextArea(5, 20);
-        resultArea.setEditable(false);
-        add(new JLabel("Resultados (N° de ELS):"));
-        JScrollPane scrollPane = new JScrollPane(resultArea);
-        add(scrollPane);
+        JLabel lblCampoAbuscar = new JLabel("Campo a buscar:");
+        lblCampoAbuscar.setForeground(new Color(0, 0, 0));
+        lblCampoAbuscar.setFont(new Font("Cambria", Font.BOLD, 16));
+        lblCampoAbuscar.setBounds(18, 15, 132, 23);
+        contentPane.add(lblCampoAbuscar);
 
-        acceptButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedField = (String) fieldComboBox.getSelectedItem();
-                String searchText = searchField.getText();
+        String[] searchFields = {"Falla", "Diagnóstico", "Informe Cliente"};
 
-                // Aquí se realiza la búsqueda en la base de datos
-                // Simulación de resultados
-                List<String> results = performSearch(selectedField, searchText);
+        comboBuscador = new JComboBox<>(searchFields);
+        comboBuscador.setBounds(160, 15, 156, 23);
+        contentPane.add(comboBuscador);
 
-                // Mostrar resultados
-                resultArea.setText(String.join("\n", results));
-            }
-        });
+        btnBuscar = new JButton("BUSCAR");
+        btnBuscar.setFont(new Font("Cambria", Font.BOLD, 12));
+        btnBuscar.setBounds(326, 26, 89, 23);
+        contentPane.add(btnBuscar);
 
-        setLocationRelativeTo(parent);
-        setVisible(true);
+        JLabel lblTextoAbuscar = new JLabel("Texto a buscar:");
+        lblTextoAbuscar.setForeground(new Color(0, 0, 0));
+        lblTextoAbuscar.setFont(new Font("Cambria", Font.BOLD, 16));
+        lblTextoAbuscar.setBounds(18, 43, 132, 23);
+        contentPane.add(lblTextoAbuscar);
+
+        textField = new JTextField();
+        textField.setBounds(160, 43, 156, 23);
+        contentPane.add(textField);
+        textField.setColumns(10);
+        
+        panel = new JPanel();
+        panel.setBackground(SystemColor.inactiveCaption);
+        panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        panel.setBounds(12, 77, 409, 125);
+        contentPane.add(panel);
+        panel.setLayout(null);
+
+        textPane = new JTextPane();
+        textPane.setFont(new Font("Cambria", Font.BOLD, 12));
+        textPane.setBorder(null);
+        textPane.setEditable(false);
+        textPane.setBackground(SystemColor.inactiveCaption);
+
+        scrollPane = new JScrollPane(textPane);
+        scrollPane.setBounds(188, 11, 83, 102);
+        panel.add(scrollPane);
+        scrollPane.setBorder(null);
+
+        JLabel lblEquiposEncontrados = new JLabel("Equipos encontrados:");
+        lblEquiposEncontrados.setBounds(10, 51, 172, 23);
+        panel.add(lblEquiposEncontrados);
+        lblEquiposEncontrados.setForeground(Color.BLACK);
+        lblEquiposEncontrados.setFont(new Font("Cambria", Font.BOLD, 16));
+
+        this.setVisible(true);
     }
 
-    private List<String> performSearch(String field, String text) {
-        // Simula una búsqueda en la base de datos usando el campo y texto dados
-        // En un caso real, aquí se ejecutaría una consulta SQL
+	public JComboBox<String> getComboBuscador() {
+		return comboBuscador;
+	}
 
-        List<String> dummyResults = new ArrayList<>();
-        dummyResults.add("ELS-12345");
-        dummyResults.add("ELS-67890");
+	public void setComboBuscador(JComboBox<String> comboBuscador) {
+		this.comboBuscador = comboBuscador;
+	}
 
-        // Filtrar resultados simulados usando el texto de búsqueda (comodín '*')
-        if (text.contains("*")) {
-            return dummyResults;
-        } else {
-            List<String> filteredResults = new ArrayList<>();
-            for (String result : dummyResults) {
-                if (result.contains(text)) {
-                    filteredResults.add(result);
-                }
-            }
-            return filteredResults;
-        }
-    }
+	public JTextField getTextField() {
+		return textField;
+	}
+
+	public void setTextField(JTextField textField) {
+		this.textField = textField;
+	}
+
+	public JTextPane getTextPane() {
+		return textPane;
+	}
+
+	public void setTextPane(JTextPane textPane) {
+		this.textPane = textPane;
+	}
+
+	public JScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+	public void setScrollPane(JScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
+	}
+
+	public JButton getBtnBuscar() {
+		return btnBuscar;
+	}
+
+	public void setBtnBuscar(JButton btnBuscar) {
+		this.btnBuscar = btnBuscar;
+	}
+
+	
 }

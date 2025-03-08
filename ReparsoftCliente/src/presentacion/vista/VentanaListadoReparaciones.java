@@ -239,10 +239,6 @@ public class VentanaListadoReparaciones extends JFrame {
 
 
 
-//        panelInferior = new JPanel();
-//        panelInferior.setBackground(new Color(176, 196, 222));
-//        panelPrincipal.add(panelInferior, BorderLayout.SOUTH);
-
         panelCentral = new JPanel();
         panelCentral.setBorder(new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 128, 128)), new EmptyBorder(3, 5, 0, 5)));
         panelCentral.setBackground(new Color(176, 196, 222));
@@ -272,9 +268,7 @@ public class VentanaListadoReparaciones extends JFrame {
    
         tblListado = new JTable(modelReparaciones);
 
-//        tblListado.getTableHeader().setBorder(new LineBorder(Color.GRAY));
-//        tblListado.setShowGrid(true);
-//        tblListado.setGridColor(Color.GRAY);
+
         tblListado.setCellSelectionEnabled(true);
         tblListado.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         

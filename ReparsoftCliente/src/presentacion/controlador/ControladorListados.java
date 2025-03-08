@@ -141,7 +141,7 @@ public class ControladorListados
 																									// la barra
 			TextAnchor.BASELINE_CENTER, // Alineación vertical
 			TextAnchor.BASELINE_CENTER, // Alineación de texto
-			//0
+			// 0
 			-Math.PI / 2.0 // Rotación del texto (90 grados para vertical)
 	);
 	private ItemLabelPosition positionNumeroChico = new ItemLabelPosition(ItemLabelAnchor.CENTER, // Posición dentro de
@@ -648,7 +648,7 @@ public class ControladorListados
 				String filterValue = (String) filterCombos[columnIndex].getSelectedItem();
 
 				// Cambiar el color de fondo según el valor seleccionado
-				if (filterValue != null && !(filterValue.equals("Todos") || filterValue.equals("") )) {
+				if (filterValue != null && !(filterValue.equals("Todos") || filterValue.equals(""))) {
 					editor.setBackground(fondoBusqueda);
 				} else {
 					editor.setBackground(fondoFiltros);

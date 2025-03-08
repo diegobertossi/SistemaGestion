@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -47,7 +49,13 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
 import javax.swing.text.JTextComponent;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import javax.swing.undo.UndoManager;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -99,7 +107,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private VentanaClientesWSP ventanaClientesWSP;
 
 	private VentanaBusquedaEquipo ventanaBusquedaEquipo;
-	
+	private final List<String> resultadosSimulados = new ArrayList<>();
+
 	private ControladorUsuLogin controladorUsuLogin;
 	private ControladorPresupuestos controladorpresupuestos;
 	private ControladorSalidas controladorSalidas;
@@ -462,6 +471,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				Integer ELS = Integer.parseInt(ventanaVisualizarEquipos.getComboELS().getSelectedItem().toString());
 				// reparacion = agenda.dameReparacionXels(ELS);
 
+				
+				
+				
 				try {
 					TomarDatosDeTablasBusquedaOrden(ELS);
 				} catch (ParseException e1) {
@@ -473,22 +485,29 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		}
-		
-		
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnBuscar()) {
 
-			
-			ventanaBusquedaEquipo = new VentanaBusquedaEquipo(ventanaVisualizarEquipos);
-			
-			
-			
-			
-			
+			ventanaBusquedaEquipo = new VentanaBusquedaEquipo(this);
+
+			ventanaBusquedaEquipo.btnBuscar.addActionListener(f -> realizarBusqueda());
+
+			ventanaBusquedaEquipo.textPane.addMouseMotionListener(new MouseAdapter() {
+				@Override
+				public void mouseMoved(MouseEvent e) {
+					actualizarCursor(e);
+				}
+			});
+
+			this.ventanaBusquedaEquipo.textPane.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					manejarClickEnTexto(e);
+				}
+			});
+
 		}
-		
-		
 
 		else if (this.ventanaEnviarCorreoOwsp != null
 				&& e.getSource() == this.ventanaEnviarCorreoOwsp.getBtnEnviarWST()) {
@@ -1190,6 +1209,106 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
+	private void realizarBusqueda() {
+		// Limpiar el área de texto
+		ventanaBusquedaEquipo.getTextPane().setText("");
+
+		/* "Falla", "Diagnóstico", "Informe Cliente"}; */
+
+		// Obtener el texto ingresado para buscar
+		String campoBusqueda = ventanaBusquedaEquipo.getComboBuscador().getSelectedItem().toString();
+
+		switch (campoBusqueda) {
+		case "Falla":
+			campoBusqueda = "Falla";
+			break;
+		case "Diagnóstico":
+			campoBusqueda = "Solucion";
+			break;
+		case "Informe Cliente":
+			campoBusqueda = "Informecliente";
+			break;
+
+		default:
+			break;
+		}
+
+		String textoBusqueda = ventanaBusquedaEquipo.getTextField().getText();
+
+		// Simulación de resultados filtrados
+		List<Integer> resultadosFiltrados = new ArrayList<>();
+
+		resultadosFiltrados = agenda.buscarEnCampos(campoBusqueda, textoBusqueda);
+
+//	        for (String resultado : resultadosSimulados) {
+//	            if (resultado.contains(textoBusqueda) || textoBusqueda.contains("*")) {
+//	                resultadosFiltrados.add(resultado);
+//	            }
+//	        }
+
+		// Mostrar resultados en el JTextPane con formato
+		StyledDocument doc = ventanaBusquedaEquipo.textPane.getStyledDocument();
+		Style style = ventanaBusquedaEquipo.textPane.addStyle("", null);
+
+		for (Integer resultado : resultadosFiltrados) {
+			try {
+				StyleConstants.setForeground(style, Color.BLUE);
+				StyleConstants.setBold(style, true);
+				doc.insertString(doc.getLength(), resultado + "\n", style);
+			} catch (BadLocationException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+
+	private void actualizarCursor(MouseEvent e) {
+		Point pt = e.getPoint();
+		int pos = ventanaBusquedaEquipo.textPane.viewToModel(pt);
+		StyledDocument doc = ventanaBusquedaEquipo.textPane.getStyledDocument();
+		Element elem = doc.getCharacterElement(pos);
+		AttributeSet as = elem.getAttributes();
+
+		if (StyleConstants.isBold(as) && StyleConstants.getForeground(as).equals(Color.BLUE)) {
+			ventanaBusquedaEquipo.textPane.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		} else {
+			ventanaBusquedaEquipo.textPane.setCursor(Cursor.getDefaultCursor());
+		}
+	}
+
+	private void manejarClickEnTexto(MouseEvent e) {
+		Point pt = e.getPoint();
+		int pos = ventanaBusquedaEquipo.textPane.viewToModel(pt);
+		StyledDocument doc = ventanaBusquedaEquipo.textPane.getStyledDocument();
+		Element elem = doc.getCharacterElement(pos);
+		AttributeSet as = elem.getAttributes();
+
+		if (StyleConstants.isBold(as) && StyleConstants.getForeground(as).equals(Color.BLUE)) {
+			try {
+				int start = elem.getStartOffset();
+				int end = elem.getEndOffset();
+				String numeroELS = doc.getText(start, end - start).trim();
+				Integer ELSaBuscar = Integer.parseInt(numeroELS);
+
+				try {
+
+					TomarDatosDeTablasBusquedaOrden(ELSaBuscar);
+				} catch (ParseException f) {
+					// TODO Auto-generated catch block
+					f.printStackTrace();
+				}
+				agregarListenersVentanaVisualizarEquipos(ventanaVisualizarEquipos);
+
+			} catch (BadLocationException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+
+	private void abrirVentanaDetalle(String numeroELS) {
+		JOptionPane.showMessageDialog(ventanaBusquedaEquipo, "Se seleccionó el número ELS: " + numeroELS, "Detalle ELS",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+
 	private void enviarRespuestaAlTecnico(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 		String correo = reparacion.getCorreo();
 		enviarAviso(ventanaVisualizarEquipos, correo, "Desea enviar el aviso de 'Respuesta del Cliente'",
@@ -1252,9 +1371,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 						}
 
 					} catch (Exception ex) {
-						popup.dispose();					
+						popup.dispose();
 						ex.printStackTrace();
-						//JOptionPane.showMessageDialog(null, "El correo NO ha sido enviado.", "Error de envío", JOptionPane.WARNING_MESSAGE);
+						// JOptionPane.showMessageDialog(null, "El correo NO ha sido enviado.", "Error
+						// de envío", JOptionPane.WARNING_MESSAGE);
 					}
 					return null;
 				}
@@ -1719,9 +1839,16 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ventanaVisualizarEquipos.getTextPresupuesto().addKeyListener(this);
 		ventanaVisualizarEquipos.getTextPresupuestoDolar().addKeyListener(this);
+
 		ventanaVisualizarEquipos.getBtnBuscarELS().addActionListener(this);
-		ventanaVisualizarEquipos.getBtnBuscar().addActionListener(this);
+
+		if (ventanaBusquedaEquipo == null) {
+			ventanaVisualizarEquipos.getBtnBuscar().addActionListener(this);
+		} else {
+			ventanaVisualizarEquipos.getBtnBuscar().removeActionListener(this);
+		}
 		ventanaVisualizarEquipos.getComboELS().addActionListener(this);
+
 		llenarComboELSvisualizacion();
 		AutoCompleteDecorator.decorate(ventanaVisualizarEquipos.getComboELS());
 
@@ -2265,6 +2392,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos = null;
 		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
 		cerraVentanaVisualizarEquipo();
+		
+		controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
+
+		SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
 
 		monedaFormatter = new MonedaFormatter();
 
@@ -2892,6 +3023,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private int IDUsuarioPorNombre(String nombreTecnico) {
 
 		return agenda.idUsuarioporNombre(nombreTecnico);
+
+	}
+
+	private List<Integer> buscarEnCampos(String campo, String texto) {
+
+		return agenda.buscarEnCampos(campo, texto);
 
 	}
 
@@ -3562,6 +3699,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				if (opcion == JOptionPane.YES_OPTION) {
 					ventanaVisualizarEquipos.dispose();
 					ventanaVisualizarEquipos = null;
+
+					if (ventanaBusquedaEquipo != null) {
+						ventanaBusquedaEquipo.dispose();
+						ventanaBusquedaEquipo = null;
+					}
 
 				}
 			}

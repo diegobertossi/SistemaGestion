@@ -632,6 +632,11 @@ public class Agenda {
 	}
 	
 	
+	
+	public List<Integer> buscarEnCampos(String campo, String texto) {
+		return ReparacionR.buscarEnCampos(campo, texto);
+	}
+
 
 	
 	// REPUESTOS
@@ -745,6 +750,7 @@ public class Agenda {
 	public List<FacturacionXclienteDTO> dameFacturacionXcliente(int anio) {
 		return facturacionXcliente.readAll(anio);
 	}
+
 
 
 

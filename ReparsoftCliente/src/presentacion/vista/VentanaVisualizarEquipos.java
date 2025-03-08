@@ -290,7 +290,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_6 = new JPanel();
 		panel_6.setBackground(SystemColor.activeCaption);
 		panel_6.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_6.setBounds(11, 7, 181, 32);
+		panel_6.setBounds(11, 6, 181, 32);
 		panel.add(panel_6);
 		panel_6.setLayout(null);
 
@@ -1155,31 +1155,29 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel.add(separator_10);
 
 		BotonRefrescarPantalla = new JButton("<html><center>REFRESCAR PANTALLA<html>");
-		BotonRefrescarPantalla.setForeground(new Color(100, 149, 237));
+		BotonRefrescarPantalla.setForeground(new Color(0, 0, 0));
 		BotonRefrescarPantalla.setIcon(new ImageIcon(this.getClass().getResource("/refresh.png")));
 		BotonRefrescarPantalla.setFont(new Font("Cambria", Font.BOLD, 10));
 		BotonRefrescarPantalla.setBackground(new Color(224, 255, 255));
-		BotonRefrescarPantalla.setBounds(1036, 4, 124, 35);
+		BotonRefrescarPantalla.setBounds(844, 6, 159, 35);
 		panel.add(BotonRefrescarPantalla);
 
-		JLabel lblNewLabel = new JLabel("BUSCAR ORDEN:");
-		lblNewLabel.setFont(new Font("Cambria", Font.PLAIN, 16));
-		lblNewLabel.setBounds(232, 11, 124, 20);
-		panel.add(lblNewLabel);
-
 		comboELS = new JComboBox();
+		comboELS.setBackground(new Color(224, 255, 255));
 		comboELS.setFont(new Font("Cambria", Font.PLAIN, 14));
-		comboELS.setBounds(357, 11, 100, 20);
+		comboELS.setBounds(337, 13, 100, 20);
 		panel.add(comboELS);
 
 		btnBuscarELS = new JButton("BUSCAR ELS");
-		btnBuscarELS.setFont(new Font("Cambria", Font.PLAIN, 13));
-		btnBuscarELS.setBounds(463, 11, 100, 20);
+		btnBuscarELS.setBackground(new Color(224, 255, 255));
+		btnBuscarELS.setFont(new Font("Cambria", Font.BOLD, 13));
+		btnBuscarELS.setBounds(440, 6, 159, 35);
 		panel.add(btnBuscarELS);
 		
-		btnBuscar = new JButton("BUSCAR");
-		btnBuscar.setFont(new Font("Cambria", Font.PLAIN, 13));
-		btnBuscar.setBounds(655, 11, 80, 20);
+		btnBuscar = new JButton("BUSQUEDA GENERAL");
+		btnBuscar.setBackground(new Color(224, 255, 255));
+		btnBuscar.setFont(new Font("Cambria", Font.BOLD, 13));
+		btnBuscar.setBounds(642, 6, 159, 35);
 		panel.add(btnBuscar);
 
 		setLocationCenter();

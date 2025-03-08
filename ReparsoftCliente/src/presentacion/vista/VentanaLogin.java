@@ -36,6 +36,8 @@ public class VentanaLogin extends JFrame {
 		setUndecorated(true);
 		setBounds(460, 260, 439, 195);
 		
+		//setAlwaysOnTop(true);
+		
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setBorder(null);

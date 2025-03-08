@@ -180,6 +180,8 @@ public interface ReparacionDAO
 
 	public int obtenerNumeroELSbsas();
 
+	public List<Integer> buscarEnCampos(String campo, String texto);
+
 	
 
 
