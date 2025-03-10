@@ -1,5 +1,6 @@
 package presentacion.controlador;
 
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -15,7 +16,12 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import modelo.Agenda;
 
@@ -32,7 +38,7 @@ import dto.ClienteDTO;
 import dto.RemitoDTO;
 import dto.ReparacionDTO;
 
-public class ControladorSalidas implements ActionListener, MouseListener, ItemListener,KeyListener {
+public class ControladorSalidas implements ActionListener, MouseListener, ItemListener, KeyListener {
 	private VentanaSalidas ventanaSalidas;
 	private VentanaSeleccionarCliente ventanaSeleccionarCliente;
 	private VentanaSeleccionarRemito ventanaSeleccionarRemito;
@@ -526,6 +532,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 		else if (ventanaRemitos != null && e.getSource() == this.ventanaRemitos.getBtnVisualizarRemito()) {
 
+			ventanaRemitos.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
 			int filas = this.ventanaRemitos.getModelEquiposParaRemito().getRowCount();
 			int cont = 0;
 			for (int i = 0; i < filas; i++) {
@@ -548,10 +556,12 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				reporte.mostrar();
 
 			}
+
+			ventanaRemitos.setCursor(Cursor.getDefaultCursor());
 		}
 
 		else if (ventanaRemitos != null && e.getSource() == this.ventanaRemitos.getBtnGuardarRemito()) {
-			System.out.println("entro");
+			// System.out.println("entro");
 
 			int filas = this.ventanaRemitos.getModelEquiposParaRemito().getRowCount();
 			int cont = 0;
@@ -568,41 +578,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				JOptionPane.showMessageDialog(null, "Debe agregar al menos un equipo al remito");
 
 			else {
-				List<RemitoDTO> lista = new ArrayList<RemitoDTO>();
-				RemitoDTO nuevoRemito = TomarDatos();
-				lista.add(nuevoRemito);
-				ReporteRemitoSalida reporte = new ReporteRemitoSalida(nuevoRemito, lista);
-				reporte.mostrar();
-				reporte.guardar();
 
-				RemitoDTO nuevoRemitoTabla = TomarDatosParaTabla();
-				this.agenda.agregarRemito(nuevoRemitoTabla);
-
-				for (int i = 0; i < filas; i++) {
-
-					Boolean agregar = (Boolean) this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8);
-
-					if (agregar != null) {
-						if (agregar) {
-
-							ReparacionDTO reparacionAeditar = TomarDatosPantalla(i);
-							this.agenda.editarReparacionR(reparacionAeditar);
-
-						}
-					}
-
-				}
-
-				JOptionPane.showMessageDialog(null,
-						"Se ha guardodo el remito " + this.ventanaRemitos.getTextRemitoConformado().getText());
-
-				this.ventanaRemitos.getComboUbicacion().setEnabled(false);
-				this.ventanaRemitos.getTxtNumeroRemito().setEnabled(false);
-				this.ventanaRemitos.getBtnVisualizarRemito().setEnabled(false);
-				this.ventanaRemitos.getBtnGuardarRemito().setEnabled(false);
-				this.ventanaRemitos.getTextCantBultos().setEnabled(false);
-				this.ventanaRemitos.getTblEquiposParaRemito().setEnabled(false);
-				this.ventanaRemitos.getBtnCambiarN().setEnabled(false);
+				generarRemito(ventanaRemitos, filas);
 
 			}
 
@@ -613,6 +590,89 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 			this.ventanaRemitos.getTxtNumeroRemito().setEditable(true);
 
 		}
+	}
+
+	private void generarRemito(VentanaRemitos ventanaRemitos, int filas) {
+
+		int seleccion = JOptionPane.showConfirmDialog(ventanaRemitos, "Desea generar un remito para este/os equipos?",
+				"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+		if (seleccion == JOptionPane.YES_OPTION) {
+
+			JDialog popup = new JDialog();
+			popup.setTitle("Procesando");
+			popup.setModal(false);
+			popup.setSize(300, 100);
+			popup.setLocationRelativeTo(ventanaRemitos);
+			popup.add(new JLabel("Generando Remito, espere...", SwingConstants.CENTER));
+
+			// Ejecutar el envío del correo en un hilo separado para no bloquear el UI
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				@Override
+				protected Void doInBackground() {
+					try {
+
+						List<RemitoDTO> lista = new ArrayList<RemitoDTO>();
+						RemitoDTO nuevoRemito = TomarDatos();
+						lista.add(nuevoRemito);
+						ReporteRemitoSalida reporte = new ReporteRemitoSalida(nuevoRemito, lista);
+						reporte.mostrar();
+						reporte.guardar();
+
+						RemitoDTO nuevoRemitoTabla = TomarDatosParaTabla();
+						agenda.agregarRemito(nuevoRemitoTabla);
+
+						for (int i = 0; i < filas; i++) {
+
+							Boolean agregar = (Boolean) ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8);
+
+							if (agregar != null) {
+								if (agregar) {
+
+									ReparacionDTO reparacionAeditar = TomarDatosPantalla(i);
+									agenda.editarReparacionR(reparacionAeditar);
+
+								}
+							}
+
+						}
+
+						JOptionPane.showMessageDialog(null,
+								"Se ha guardodo el remito " + ventanaRemitos.getTextRemitoConformado().getText());
+
+						ventanaRemitos.getComboUbicacion().setEnabled(false);
+						ventanaRemitos.getTxtNumeroRemito().setEnabled(false);
+						ventanaRemitos.getBtnVisualizarRemito().setEnabled(false);
+						ventanaRemitos.getBtnGuardarRemito().setEnabled(false);
+						ventanaRemitos.getTextCantBultos().setEnabled(false);
+						ventanaRemitos.getTblEquiposParaRemito().setEnabled(false);
+						ventanaRemitos.getBtnCambiarN().setEnabled(false);
+
+					} catch (Exception ex) {
+						popup.dispose();
+						ex.printStackTrace();
+						// JOptionPane.showMessageDialog(null, "El correo NO ha sido enviado.", "Error
+						// de envío", JOptionPane.WARNING_MESSAGE);
+					}
+					return null;
+				}
+
+				@Override
+				protected void done() {
+					// Cerrar el popup después de completar el envío
+					popup.dispose();
+
+				}
+			};
+
+			// Mostrar el popup y ejecutar el SwingWorker
+			SwingUtilities.invokeLater(() -> {
+				popup.setVisible(true);
+				worker.execute();
+			});
+
+		}
+
 	}
 
 	public void agregarListenersVentanaRemitos() {
@@ -1100,25 +1160,24 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			
-			
+
 			ventanaRemitos.getTextRemitoConformado().setText(part1 + " - " + numeros);
-			
+
 		}
-		
+
 	}
 
 }

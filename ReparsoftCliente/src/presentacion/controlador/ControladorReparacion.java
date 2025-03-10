@@ -756,7 +756,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnGenerarRemito()) {
+			
+			System.out.println(ventanaVisualizarEquipos.getTextNumeroRemito().getText());
 
+			
 			generarRemito(ventanaVisualizarEquipos);
 
 		}
@@ -2085,10 +2088,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getBtnGenerarRemito().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 
-				generarRemito(ventanaVisualizarEquipos);
+				
+				generarRemito(ventanaVisualizarEquipos);}
+			
 
-			}
+			
 		});
 
 		ventanaVisualizarEquipos.getBtnRepuestos().addActionListener(new ActionListener() {
@@ -2227,10 +2233,20 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	public void generarRemito(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		
+		if (ventanaVisualizarEquipos.getTextNumeroRemito().getText().compareTo("0")==0) {
 		NumeroELSParaRemito = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
 		controladorSalidas.cargarRemitoVisualizacion(NumeroELSParaRemito);
-		controladorSalidas.agregarListenersVentanaRemitos();
+		controladorSalidas.agregarListenersVentanaRemitos();}
+		else
+		{
+			Object mje = "Este equipo ya posee remito. Deberá ANULARLO o ELIMINARLO para generar una nuevo.";
+			JOptionPane.showMessageDialog(null, mje, "Remito existente", JOptionPane.INFORMATION_MESSAGE);
+			
+		}
 
+		
+		
 	}
 
 	protected void enviarCorreoOwsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
@@ -2866,7 +2882,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		double diferencia = presupuesto - pago;
 
-		System.out.println(presupuesto + "-" + pago + "=" + diferencia);
+		//System.out.println(presupuesto + "-" + pago + "=" + diferencia);
 
 		if ((presupuesto != 0.0)) {
 

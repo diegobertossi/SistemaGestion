@@ -39,10 +39,11 @@ public class VentanaClientes extends JFrame {
 	private JButton btnVisualizarSucursales;
 	private JButton btnGenerarSucursales;
 	private JButton btnEditar;
+	private JButton btnBuscarCliente;
+	
 	private DefaultTableModel modelClientes;
 	private String[] nombreColumnas = { "Nombre", "CUIT" };
-	// private String[] nombreColumnas = {"Nombre","CUIT",
-	// "Direcci�n","Contacto", "Tel. Cont�cto", "Correo"};
+	
 	@SuppressWarnings("unused")
 	private JPanel panel;
 	@SuppressWarnings("unused")
@@ -186,22 +187,28 @@ public class VentanaClientes extends JFrame {
 		btnAgregar.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnEditar = new JButton("<html><center>EDITAR</html>");
-		btnEditar.setBounds(14, 59, 171, 23);
+		btnEditar.setBounds(14, 53, 171, 23);
 		panel_2.add(btnEditar);
 		btnEditar.setBackground(new Color(240, 240, 240));
 		btnEditar.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnBorrar = new JButton("<html><center>ELIMINAR</html>");
-		btnBorrar.setBounds(14, 100, 171, 23);
+		btnBorrar.setBounds(14, 88, 171, 23);
 		panel_2.add(btnBorrar);
 		btnBorrar.setBackground(new Color(240, 240, 240));
 		btnBorrar.setFont(new Font("Cambria", Font.BOLD, 14));
 		
 				btnGenerarSucursales = new JButton("<html><center>GENERAR SUCURSAL</html>");
-				btnGenerarSucursales.setBounds(14, 141, 171, 23);
+				btnGenerarSucursales.setBounds(14, 123, 171, 23);
 				panel_2.add(btnGenerarSucursales);
 				btnGenerarSucursales.setBackground(new Color(240, 240, 240));
 				btnGenerarSucursales.setFont(new Font("Cambria", Font.BOLD, 14));
+				
+				btnBuscarCliente = new JButton("<html><center>BUSCAR CLIENTE</html>");
+				btnBuscarCliente.setFont(new Font("Cambria", Font.BOLD, 14));
+				btnBuscarCliente.setBackground(UIManager.getColor("Button.background"));
+				btnBuscarCliente.setBounds(14, 158, 171, 23);
+				panel_2.add(btnBuscarCliente);
 
 		panel_1 = new JPanel();
 		panel_1.setBackground(new Color(119, 136, 153));
@@ -443,5 +450,13 @@ public class VentanaClientes extends JFrame {
 
 	public String[] getNombreColumnas() {
 		return nombreColumnas;
+	}
+
+	public JButton getBtnBuscarCliente() {
+		return btnBuscarCliente;
+	}
+
+	public void setBtnBuscarCliente(JButton btnBuscarCliente) {
+		this.btnBuscarCliente = btnBuscarCliente;
 	}
 }
