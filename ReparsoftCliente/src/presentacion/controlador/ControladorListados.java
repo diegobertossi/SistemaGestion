@@ -756,44 +756,46 @@ public class ControladorListados
 	}
 
 	private void filtrarTabla(JTable tabla, JComboBox<String>[] filterCombos) {
-		DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-		tabla.setRowSorter(sorter);
+	    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+	    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+	    tabla.setRowSorter(sorter);
 
-		// Lista de filtros para todas las columnas
-		List<RowFilter<Object, Object>> rowFilters = new ArrayList<>();
+	    // Lista de filtros para todas las columnas
+	    List<RowFilter<Object, Object>> rowFilters = new ArrayList<>();
 
-		// Recorrer cada JComboBox y agregar el filtro correspondiente
-		for (int columnIndex = 0; columnIndex < filterCombos.length; columnIndex++) {
-			// Verificar si el JComboBox no es null
-			if (filterCombos[columnIndex] != null) {
-				String filterValue = (String) filterCombos[columnIndex].getSelectedItem();
+	    // Recorrer cada JComboBox y agregar el filtro correspondiente
+	    for (int columnIndex = 0; columnIndex < filterCombos.length; columnIndex++) {
+	        // Verificar si el JComboBox no es null
+	        if (filterCombos[columnIndex] != null) {
+	            String filterValue = (String) filterCombos[columnIndex].getSelectedItem();
 
-				if (filterValue != null && !filterValue.equals("Todos")) {
-					// Si el filtro seleccionado es una fecha en formato DD/MM/AAAA, convertirla a
-					// AAAAMMDD
-					if (filterValue.contains("/")) {
-						String[] parts = filterValue.split("/");
-						filterValue = parts[2] + parts[1] + parts[0]; // Convertir a AAAAMMDD
-					}
+	            if (filterValue != null && !filterValue.equals("Todos")) {
+	                // Si el filtro seleccionado es una fecha en formato DD/MM/AAAA, convertirla a AAAAMMDD
+	                if (filterValue.contains("/")) {
+	                    String[] parts = filterValue.split("/");
+	                    filterValue = parts[2] + parts[1] + parts[0]; // Convertir a AAAAMMDD
+	                }
 
-					// Convertir el valor de filtro en una expresión regular con comodín *
-					String regex = filterValue.replace("*", ".*");
-					// Hacer el cast a RowFilter<Object, Object> para que sea compatible
-					RowFilter<Object, Object> rowFilter = RowFilter.regexFilter("(?i)" + regex, columnIndex);
-					rowFilters.add(rowFilter); // Agregar el filtro de esta columna
-				}
-			}
-		}
+	                // Escapar caracteres especiales en el filtro para evitar problemas con la regex
+	                String escapedFilterValue = Pattern.quote(filterValue);
 
-		// Aplicar todos los filtros a la vez
-		if (rowFilters.isEmpty()) {
-			sorter.setRowFilter(null); // Si no hay filtros activos, mostrar todas las filas
-		} else {
-			// Combinamos todos los filtros usando una lógica AND
-			RowFilter<Object, Object> combinedFilter = RowFilter.andFilter(rowFilters);
-			sorter.setRowFilter(combinedFilter);
-		}
+	                // Convertir el valor de filtro en una expresión regular con comodín *
+	                String regex = escapedFilterValue.replace("*", ".*");
+	                // Hacer el cast a RowFilter<Object, Object> para que sea compatible
+	                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter("(?i)" + regex, columnIndex);
+	                rowFilters.add(rowFilter); // Agregar el filtro de esta columna
+	            }
+	        }
+	    }
+
+	    // Aplicar todos los filtros a la vez
+	    if (rowFilters.isEmpty()) {
+	        sorter.setRowFilter(null); // Si no hay filtros activos, mostrar todas las filas
+	    } else {
+	        // Combinamos todos los filtros usando una lógica AND
+	        RowFilter<Object, Object> combinedFilter = RowFilter.andFilter(rowFilters);
+	        sorter.setRowFilter(combinedFilter);
+	    }
 	}
 
 	private boolean esNumero(String value) {

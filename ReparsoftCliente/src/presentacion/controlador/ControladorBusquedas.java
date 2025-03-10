@@ -1,5 +1,6 @@
 package presentacion.controlador;
 
+import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.text.ParseException;
 import java.util.List;
 import javax.swing.ImageIcon;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -15,6 +18,7 @@ import dto.ReparacionDTO;
 import modelo.Agenda;
 import presentacion.vista.VentanaBusqueda;
 import presentacion.vista.VentanaTablaBusqueda;
+import presentacion.vista.VentanaVisualizarEquipos;
 
 public class ControladorBusquedas implements ActionListener, MouseListener, KeyListener {
 
@@ -22,12 +26,11 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 
 	private VentanaBusqueda ventanaBusqueda;
 	private VentanaTablaBusqueda ventanaTablaBusqueda;
+	
 
 	@SuppressWarnings("unused")
 	private ControladorBusquedas controladorBusqueda;
 
-	private int max = Frame.MAXIMIZED_BOTH;
-	private int min = Frame.NORMAL;
 	@SuppressWarnings("unused")
 	private int maxHorizontal = Frame.MAXIMIZED_HORIZ;
 	@SuppressWarnings("unused")
@@ -39,6 +42,8 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 	private String buscarPor;
 
 	private List<ReparacionDTO> Reparaciones_en_tabla;
+	
+	public int NumeroELSSeleccionado;
 
 	public ControladorBusquedas(VentanaBusqueda ventanaBusqueda, Agenda modelo) {
 
@@ -85,12 +90,12 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 						&& ventanaBusqueda.getComboBuscador().getSelectedIndex() != -1) {
 
 					this.ventanaTablaBusqueda = new VentanaTablaBusqueda(this);
-					this.ventanaTablaBusqueda.getBtnMax().addMouseListener(this);
+					
 
 					if (ventanaBusqueda.getRdbComponenteOriginal().isSelected()) {
 
 						ventanaTablaBusqueda.getTxtCategoriaBusqueda()
-								.setText("EQUIPOS DONDE SE REEMPLAZ� EL COMPONENTE:      "+"' "
+								.setText("EQUIPOS DONDE SE REEMPLAZÓ EL COMPONENTE:      "+"' "
 										+ ventanaBusqueda.getComboBuscador().getSelectedItem().toString()+" '");
 
 						cargarTablaListadoBusqueda(ventanaBusqueda.getComboBuscador().getSelectedItem().toString());
@@ -132,7 +137,7 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 
 	@SuppressWarnings("deprecation")
 	private void cargarTablaListadoBusqueda(String componente) {
-
+		
 		this.ventanaTablaBusqueda.getModelReparaciones().setRowCount(0); // Para
 		// vaciar
 		// tabla
@@ -190,27 +195,9 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-
-		if (arg0.getSource() == this.ventanaTablaBusqueda.getBtnMax()) {
-
-			if (clickMax % 2 != 0) {
-
-				ventanaTablaBusqueda.setExtendedState(max);
-				this.ventanaTablaBusqueda.getBtnMax()
-						.setIcon(new ImageIcon(this.getClass().getResource("/minimizar.png")));
-				ventanaTablaBusqueda.setVisible(true);
-
-			} else {
-
-				ventanaTablaBusqueda.setExtendedState(min);
-				this.ventanaTablaBusqueda.getBtnMax()
-						.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
-				ventanaTablaBusqueda.setVisible(true);
-
-			}
-			clickMax++;
-		}
-
+		
+		
+	
 	}
 
 	@Override
@@ -236,4 +223,6 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 		// TODO Auto-generated method stub
 
 	}
+	
+	
 }

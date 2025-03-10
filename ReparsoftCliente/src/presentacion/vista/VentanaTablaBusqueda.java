@@ -36,7 +36,6 @@ public class VentanaTablaBusqueda extends JFrame {
 	private JTable tblReparaciones;
 	private DefaultTableModel modelReparaciones;
 	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "COMP. ORIGINAL","COMP. REEMPLAZO" };
-	private JButton btnMax;
 	public static int est;
 	private JPanel panel;
 	private JScrollPane  scrollPane ;
@@ -174,12 +173,6 @@ public class VentanaTablaBusqueda extends JFrame {
 		tblReparaciones.setAutoCreateColumnsFromModel(false);
 
 		DimTblReparaciones = tblReparaciones.getSize();
-
-		btnMax = new JButton("");
-		btnMax.setVisible(false);
-		btnMax.setBounds(999, 14, 30, 25);
-		btnMax.setIcon(new ImageIcon(this.getClass().getResource("/maximizar.png")));
-		panel.add(btnMax);
 		
 		txtCategoriaBusqueda = new JTextField();
 		txtCategoriaBusqueda.setForeground(new Color(0, 0, 205));
@@ -269,14 +262,6 @@ public class VentanaTablaBusqueda extends JFrame {
 	}
 
 	
-
-	public JButton getBtnMax() {
-		return btnMax;
-	}
-
-	public void setBtnMax(JButton btnMax) {
-		this.btnMax = btnMax;
-	}
 
 	public JPanel getPanel() {
 		return panel;

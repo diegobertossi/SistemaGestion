@@ -94,7 +94,9 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 		ventanaClientes.setCellRender(this.ventanaClientes.getTablaClientes());
 		
+		
 		agregarAutofiltrosATabla(this.ventanaClientes.getTablaClientes());
+			
 		
 		this.ventanaClientes.setVisible(true);
 	}
@@ -251,38 +253,46 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	}
 
 	private void filtrarTabla(JTable tabla, JComboBox<String>[] filterCombos) {
-		DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-		tabla.setRowSorter(sorter);
+	    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+	    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+	    tabla.setRowSorter(sorter);
 
-		// Lista de filtros para todas las columnas
-		List<RowFilter<Object, Object>> rowFilters = new ArrayList<>();
+	    // Lista de filtros para todas las columnas
+	    List<RowFilter<Object, Object>> rowFilters = new ArrayList<>();
 
-		// Recorrer cada JComboBox y agregar el filtro correspondiente
-		for (int columnIndex = 0; columnIndex < filterCombos.length; columnIndex++) {
-			// Verificar si el JComboBox no es null
-			if (filterCombos[columnIndex] != null) {
-				String filterValue = (String) filterCombos[columnIndex].getSelectedItem();
+	    // Recorrer cada JComboBox y agregar el filtro correspondiente
+	    for (int columnIndex = 0; columnIndex < filterCombos.length; columnIndex++) {
+	        // Verificar si el JComboBox no es null
+	        if (filterCombos[columnIndex] != null) {
+	            String filterValue = (String) filterCombos[columnIndex].getSelectedItem();
 
-				if (filterValue != null && !filterValue.equals("Todos")) {
-			
-					// Convertir el valor de filtro en una expresión regular con comodín *
-					String regex = filterValue.replace("*", ".*");
-					// Hacer el cast a RowFilter<Object, Object> para que sea compatible
-					RowFilter<Object, Object> rowFilter = RowFilter.regexFilter("(?i)" + regex, columnIndex);
-					rowFilters.add(rowFilter); // Agregar el filtro de esta columna
-				}
-			}
-		}
+	            if (filterValue != null && !filterValue.equals("Todos")) {
+	                // Si el filtro seleccionado es una fecha en formato DD/MM/AAAA, convertirla a AAAAMMDD
+	                if (filterValue.contains("/")) {
+	                    String[] parts = filterValue.split("/");
+	                    filterValue = parts[2] + parts[1] + parts[0]; // Convertir a AAAAMMDD
+	                }
 
-		// Aplicar todos los filtros a la vez
-		if (rowFilters.isEmpty()) {
-			sorter.setRowFilter(null); // Si no hay filtros activos, mostrar todas las filas
-		} else {
-			// Combinamos todos los filtros usando una lógica AND
-			RowFilter<Object, Object> combinedFilter = RowFilter.andFilter(rowFilters);
-			sorter.setRowFilter(combinedFilter);
-		}
+	                // Escapar caracteres especiales en el filtro para evitar problemas con la regex
+	                String escapedFilterValue = Pattern.quote(filterValue);
+
+	                // Convertir el valor de filtro en una expresión regular con comodín *
+	                String regex = escapedFilterValue.replace("*", ".*");
+	                // Hacer el cast a RowFilter<Object, Object> para que sea compatible
+	                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter("(?i)" + regex, columnIndex);
+	                rowFilters.add(rowFilter); // Agregar el filtro de esta columna
+	            }
+	        }
+	    }
+
+	    // Aplicar todos los filtros a la vez
+	    if (rowFilters.isEmpty()) {
+	        sorter.setRowFilter(null); // Si no hay filtros activos, mostrar todas las filas
+	    } else {
+	        // Combinamos todos los filtros usando una lógica AND
+	        RowFilter<Object, Object> combinedFilter = RowFilter.andFilter(rowFilters);
+	        sorter.setRowFilter(combinedFilter);
+	    }
 	}
 
 	private boolean esNumero(String value) {
@@ -452,6 +462,8 @@ public class ControladorCliente implements ActionListener, MouseListener {
 			this.ventanaSucursales.getBtnBorrar().addActionListener(this);
 
 			this.llenarTablaSucursales(clienteElegido.getId());
+			
+			agregarAutofiltrosATabla(this.ventanaSucursales.getTablaSucursales());
 
 		}
 
@@ -849,76 +861,71 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		if (this.ventanaClientes != null) {
+	    if (this.ventanaClientes != null) {
 
-			if (arg0.getSource() == this.ventanaClientes.getTablaClientes()) {
-				int i = this.ventanaClientes.getTablaClientes().getSelectedRow();
-				if (i != -1) {
-					if (!Clientes_en_tabla.isEmpty()) {
-						clienteElegido = Clientes_en_tabla.get(i);
+	        if (arg0.getSource() == this.ventanaClientes.getTablaClientes()) {
+	            int i = this.ventanaClientes.getTablaClientes().getSelectedRow();
+	            if (i != -1) {
+	                // Convertir índice de vista a índice del modelo
+	                int modelIndex = this.ventanaClientes.getTablaClientes().convertRowIndexToModel(i);
+	                if (!Clientes_en_tabla.isEmpty() && modelIndex < Clientes_en_tabla.size()) {
+	                    clienteElegido = Clientes_en_tabla.get(modelIndex);
 
-						this.ventanaClientes.getTxtNombreCliente().setText(clienteElegido.getRazon_Social());
-						this.ventanaClientes.getTxtCUIT().setText(clienteElegido.getCUIT());
-						this.ventanaClientes.getTxtDireccion().setText(clienteElegido.getDomicilio());
-						this.ventanaClientes.getTxtDireccion().moveCaretPosition(0);
-						this.ventanaClientes.getTxtContacto().setText(clienteElegido.getContacto());
-						this.ventanaClientes.getTxtTelContacto().setText(clienteElegido.getTelefonoContacto());
-						this.ventanaClientes.getTxtCorreo().setText(clienteElegido.getCorreoElectronico());
-						this.ventanaClientes.getTxtTelEmpresa().setText(clienteElegido.getTelefonoEmpresa());
-						this.ventanaClientes.getTxtCorreo().moveCaretPosition(0);
+	                    this.ventanaClientes.getTxtNombreCliente().setText(clienteElegido.getRazon_Social());
+	                    this.ventanaClientes.getTxtCUIT().setText(clienteElegido.getCUIT());
+	                    this.ventanaClientes.getTxtDireccion().setText(clienteElegido.getDomicilio());
+	                    this.ventanaClientes.getTxtDireccion().moveCaretPosition(0);
+	                    this.ventanaClientes.getTxtContacto().setText(clienteElegido.getContacto());
+	                    this.ventanaClientes.getTxtTelContacto().setText(clienteElegido.getTelefonoContacto());
+	                    this.ventanaClientes.getTxtCorreo().setText(clienteElegido.getCorreoElectronico());
+	                    this.ventanaClientes.getTxtTelEmpresa().setText(clienteElegido.getTelefonoEmpresa());
+	                    this.ventanaClientes.getTxtCorreo().moveCaretPosition(0);
 
-						if (cantidadSucursalesXCliente(clienteElegido.getId()) == 1) {
+	                    if (cantidadSucursalesXCliente(clienteElegido.getId()) == 1) {
+	                        SucursalesEncliente = this.agenda.obtenerSucursalesxCliente(clienteElegido.getId()).get(0);
 
-							SucursalesEncliente = this.agenda.obtenerSucursalesxCliente(clienteElegido.getId()).get(0);
+	                        if (!SucursalesEncliente.getNombreSucursal().isEmpty()) {
+	                            this.ventanaClientes.getBtnVisualizarSucursales().setVisible(true);
+	                            this.ventanaClientes.getLblSucursales().setVisible(true);
+	                        } else {
+	                            this.ventanaClientes.getBtnVisualizarSucursales().setVisible(false);
+	                            this.ventanaClientes.getLblSucursales().setVisible(false);
+	                        }
 
-							if (SucursalesEncliente.getNombreSucursal().compareTo("") != 0) {
+	                    } else if (cantidadSucursalesXCliente(clienteElegido.getId()) > 1) {
+	                        this.ventanaClientes.getBtnVisualizarSucursales().setVisible(true);
+	                        this.ventanaClientes.getLblSucursales().setVisible(true);
+	                    } else {
+	                        this.ventanaClientes.getBtnVisualizarSucursales().setVisible(false);
+	                        this.ventanaClientes.getLblSucursales().setVisible(false);
+	                    }
+	                }
+	            }
+	        }
+	    }
 
-								this.ventanaClientes.getBtnVisualizarSucursales().setVisible(true);
-								this.ventanaClientes.getLblSucursales().setVisible(true);
+	    if (this.ventanaSucursales != null) {
 
-							} else {
-								this.ventanaClientes.getBtnVisualizarSucursales().setVisible(false);
-								this.ventanaClientes.getLblSucursales().setVisible(false);
+	        if (arg0.getSource() == this.ventanaSucursales.getTablaSucursales()) {
+	            int j = this.ventanaSucursales.getTablaSucursales().getSelectedRow();
+	            if (j != -1) {
+	                // Convertir índice de vista a índice del modelo
+	                int modelIndex = this.ventanaSucursales.getTablaSucursales().convertRowIndexToModel(j);
+	                if (!Sucursales_en_tabla.isEmpty() && modelIndex < Sucursales_en_tabla.size()) {
+	                    SucursalesEncliente = Sucursales_en_tabla.get(modelIndex);
 
-							}
-
-						} else if (cantidadSucursalesXCliente(clienteElegido.getId()) > 1) {
-
-							this.ventanaClientes.getBtnVisualizarSucursales().setVisible(true);
-							this.ventanaClientes.getLblSucursales().setVisible(true);
-
-						} else {
-							this.ventanaClientes.getBtnVisualizarSucursales().setVisible(false);
-							this.ventanaClientes.getLblSucursales().setVisible(false);
-						}
-
-					}
-				}
-			}
-
-		}
-		if (this.ventanaSucursales != null) {
-
-			if (arg0.getSource() == this.ventanaSucursales.getTablaSucursales()) {
-
-				int j = this.ventanaSucursales.getTablaSucursales().getSelectedRow();
-				if (j != -1) {
-					if (!Sucursales_en_tabla.isEmpty()) {
-						SucursalesEncliente = Sucursales_en_tabla.get(j);
-
-						this.ventanaSucursales.getTxtNombreSucursal().setText(SucursalesEncliente.getNombreSucursal());
-						this.ventanaSucursales.getTxtDireccion().setText(SucursalesEncliente.getDomicilioSucursal());
-						this.ventanaSucursales.getTxtDireccion().moveCaretPosition(0);
-						this.ventanaSucursales.getTxtContacto().setText(SucursalesEncliente.getContactoSucursal());
-						this.ventanaSucursales.getTxtTelContacto().setText(SucursalesEncliente.getTelefonoSucursal());
-						this.ventanaSucursales.getTxtCorreo().setText(SucursalesEncliente.getCorreoElectronico());
-					}
-				}
-			}
-
-		}
-
+	                    this.ventanaSucursales.getTxtNombreSucursal().setText(SucursalesEncliente.getNombreSucursal());
+	                    this.ventanaSucursales.getTxtDireccion().setText(SucursalesEncliente.getDomicilioSucursal());
+	                    this.ventanaSucursales.getTxtDireccion().moveCaretPosition(0);
+	                    this.ventanaSucursales.getTxtContacto().setText(SucursalesEncliente.getContactoSucursal());
+	                    this.ventanaSucursales.getTxtTelContacto().setText(SucursalesEncliente.getTelefonoSucursal());
+	                    this.ventanaSucursales.getTxtCorreo().setText(SucursalesEncliente.getCorreoElectronico());
+	                }
+	            }
+	        }
+	    }
 	}
+
 
 	private int dameIDcliente() {
 		int idcliente = 0;

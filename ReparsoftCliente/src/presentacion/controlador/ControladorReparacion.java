@@ -471,9 +471,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				Integer ELS = Integer.parseInt(ventanaVisualizarEquipos.getComboELS().getSelectedItem().toString());
 				// reparacion = agenda.dameReparacionXels(ELS);
 
-				
-				
-				
 				try {
 					TomarDatosDeTablasBusquedaOrden(ELS);
 				} catch (ParseException e1) {
@@ -756,10 +753,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnGenerarRemito()) {
-			
+
 			System.out.println(ventanaVisualizarEquipos.getTextNumeroRemito().getText());
 
-			
 			generarRemito(ventanaVisualizarEquipos);
 
 		}
@@ -1557,14 +1553,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			cambioDeEstadoBoolean = true;
 
-			int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
-					"EL ESTADO FÍSICO A CAMBIADO, ¿DESEA CONTINUAR?", "Confirmación", JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE);
-
-			if (seleccion == JOptionPane.YES_OPTION) {
-				ventanaVisualizarEquipos.setTextEstadoFisico(estadoFisico);
-
-			}
+			ventanaVisualizarEquipos.setTextEstadoFisico(estadoFisico);
 
 		}
 
@@ -1572,24 +1561,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			cambioDeEstadoBoolean = true;
 
-			int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
-					"EL ESTADO TÉCNICO A CAMBIADO, SE MODIFICARÁ LA FECHA DE DIAGNÓSTICO. ¿DESEA CONTINUAR?",
-					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			ventanaVisualizarEquipos.setTextEstadoTecnico(estadoTecnico);
 
-			if (seleccion == JOptionPane.YES_OPTION) {
-				ventanaVisualizarEquipos.setTextEstadoTecnico(estadoTecnico);
+			if (estadoTecnico == "Sin Revisar") {
 
-				if (estadoTecnico == "Sin Revisar") {
+				ventanaVisualizarEquipos.getFechaReparacion().setDate(null);
 
-					ventanaVisualizarEquipos.getFechaReparacion().setDate(null);
+			}
 
-				}
+			else {
 
-				else {
-
-					ventanaVisualizarEquipos.getFechaReparacion().setDate(fechaParseadaHOY);
-
-				}
+				ventanaVisualizarEquipos.getFechaReparacion().setDate(fechaParseadaHOY);
 
 			}
 
@@ -1599,24 +1581,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			cambioDeEstadoBoolean = true;
 
-			int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
-					"EL ESTADO COMERCIAL A CAMBIADO, SE MODIFICARÁ LA FECHA DE ACEPTACIÓN. ¿DESEA CONTINUAR?",
-					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			ventanaVisualizarEquipos.setTextEstadoComercial(estadoComercial);
 
-			if (seleccion == JOptionPane.YES_OPTION) {
-				ventanaVisualizarEquipos.setTextEstadoComercial(estadoComercial);
+			if (estadoComercial == "A la Espera de Aceptación") {
 
-				if (estadoComercial == "A la Espera de Aceptación") {
+				ventanaVisualizarEquipos.getFechaRespuesta().setDate(null);
 
-					ventanaVisualizarEquipos.getFechaRespuesta().setDate(null);
+			}
 
-				}
+			else {
 
-				else {
-
-					ventanaVisualizarEquipos.getFechaRespuesta().setDate(fechaParseadaHOY);
-
-				}
+				ventanaVisualizarEquipos.getFechaRespuesta().setDate(fechaParseadaHOY);
 
 			}
 
@@ -1626,14 +1601,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			cambioDeEstadoBoolean = true;
 
-			int seleccion = JOptionPane.showConfirmDialog(ventanaEstados,
-					"EL LUGAR DE INGRESO A CAMBIADO, ¿DESEA CONTINUAR?", "Confirmación", JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE);
-
-			if (seleccion == JOptionPane.YES_OPTION) {
-				ventanaVisualizarEquipos.setTextLugarDeIngreso(lugarDeIngreso);
-
-			}
+			ventanaVisualizarEquipos.setTextLugarDeIngreso(lugarDeIngreso);
 
 		}
 
@@ -2088,13 +2056,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getBtnGenerarRemito().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
 
-				
-				generarRemito(ventanaVisualizarEquipos);}
-			
+				generarRemito(ventanaVisualizarEquipos);
+			}
 
-			
 		});
 
 		ventanaVisualizarEquipos.getBtnRepuestos().addActionListener(new ActionListener() {
@@ -2233,20 +2198,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	public void generarRemito(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-		
-		if (ventanaVisualizarEquipos.getTextNumeroRemito().getText().compareTo("0")==0) {
-		NumeroELSParaRemito = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
-		controladorSalidas.cargarRemitoVisualizacion(NumeroELSParaRemito);
-		controladorSalidas.agregarListenersVentanaRemitos();}
-		else
-		{
+
+		if (ventanaVisualizarEquipos.getTextNumeroRemito().getText().compareTo("0") == 0) {
+			NumeroELSParaRemito = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
+			controladorSalidas.cargarRemitoVisualizacion(NumeroELSParaRemito);
+			controladorSalidas.agregarListenersVentanaRemitos();
+		} else {
 			Object mje = "Este equipo ya posee remito. Deberá ANULARLO o ELIMINARLO para generar una nuevo.";
 			JOptionPane.showMessageDialog(null, mje, "Remito existente", JOptionPane.INFORMATION_MESSAGE);
-			
+
 		}
 
-		
-		
 	}
 
 	protected void enviarCorreoOwsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
@@ -2408,7 +2370,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos = null;
 		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
 		cerraVentanaVisualizarEquipo();
-		
+
 		controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
 
 		SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
@@ -2882,7 +2844,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		double diferencia = presupuesto - pago;
 
-		//System.out.println(presupuesto + "-" + pago + "=" + diferencia);
+		// System.out.println(presupuesto + "-" + pago + "=" + diferencia);
 
 		if ((presupuesto != 0.0)) {
 
