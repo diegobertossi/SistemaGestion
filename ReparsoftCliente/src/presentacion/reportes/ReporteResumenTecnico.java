@@ -64,43 +64,5 @@ public class ReporteResumenTecnico {
 		ReporteResumenTecnico.reporteViewer.setVisible(true);
 	}
 
-	@SuppressWarnings("rawtypes")
-	public void guardar() {
-
-		nombreArchivoPDF = "Presupuesto ELS_" + ELS + "_" + Cliente + ".pdf";
-		// nombreArchivoPDF = "Presupuesto ELS_";
-
-		File fRutaE = new File("E:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF");
-		File fRutaD = new File("D:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF");
-		File fRutaF = new File("F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF");
-
-		if (fRutaD.isDirectory())
-			outFileName = "D:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF\\" + nombreArchivoPDF;
-		else if (fRutaE.isDirectory())
-			outFileName = "E:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF\\" + nombreArchivoPDF;
-		else if (fRutaF.isDirectory())
-			// outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos
-			// PDF\\" + nombreArchivoPDF;
-			outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF\\" + nombreArchivoPDF;
-
-		JRPdfExporter exporter = new JRPdfExporter();
-
-		exporter.setExporterInput(new SimpleExporterInput(reporteLleno));
-		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outFileName));
-
-		try {
-
-			// JasperExportManager.exportReportToPdfFile(reporteLleno, outFileName);
-			exporter.exportReport();
-
-			Object mje = "Se ha generado el: " + nombreArchivoPDF;
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-
-		} catch (JRException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
+	
 }

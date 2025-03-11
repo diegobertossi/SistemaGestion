@@ -516,7 +516,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 				lista.add(rep);
 
-				ReportePresupuesto reporte = new ReportePresupuesto(rep, lista);
+				ReportePresupuesto reporte = new ReportePresupuesto(rep, lista, agenda);
 				reporte.guardar();
 
 				ventanaGenerarPresupuesto.setChckPDFGenerado(true);
@@ -752,7 +752,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 				lista.add(rep);
 
-				ReportePresupuesto reporte = new ReportePresupuesto(rep, lista);
+				ReportePresupuesto reporte = new ReportePresupuesto(rep, lista, agenda);
 				reporte.mostrar();
 			}
 

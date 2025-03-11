@@ -107,7 +107,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private VentanaClientesWSP ventanaClientesWSP;
 
 	private VentanaBusquedaEquipo ventanaBusquedaEquipo;
-	private final List<String> resultadosSimulados = new ArrayList<>();
+	
 
 	private ControladorUsuLogin controladorUsuLogin;
 	private ControladorPresupuestos controladorpresupuestos;

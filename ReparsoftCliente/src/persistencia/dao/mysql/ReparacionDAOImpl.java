@@ -156,10 +156,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 	private static final String facturacionDolarPorAnioxTecnicoXmes = "select MONTH(reparaciones.FechAceptacion), SUM(PrecioDolar) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion);";
 
-	private static final String busquePorCampoYtexto = "SELECT reparaciones.ELS from reparaciones where ? = ?";
-
-	
-	private static final String baseQuery = "SELECT reparaciones.ELS FROM reparaciones WHERE %s LIKE ?";
+		
+	private static final String busquePorCampoYtexto = "SELECT reparaciones.ELS FROM reparaciones WHERE %s LIKE ?";
 	
 	@SuppressWarnings("unused")
 	public ReparacionDAOImpl(String ubicacionBase) {
@@ -2863,7 +2861,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	        }
 
 	        // Crear la consulta dinámica con el campo
-	        String query = String.format(baseQuery, campo);
+	        String query = String.format(busquePorCampoYtexto, campo);
 
 	        statement = conexion.getSQLConexion().prepareStatement(query);
 

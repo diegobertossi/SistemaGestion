@@ -552,7 +552,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				List<RemitoDTO> lista = new ArrayList<RemitoDTO>();
 				RemitoDTO rep = TomarDatos();
 				lista.add(rep);
-				ReporteRemitoSalida reporte = new ReporteRemitoSalida(rep, lista);
+				ReporteRemitoSalida reporte = new ReporteRemitoSalida(rep, lista, agenda);
 				reporte.mostrar();
 
 			}
@@ -615,7 +615,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 						List<RemitoDTO> lista = new ArrayList<RemitoDTO>();
 						RemitoDTO nuevoRemito = TomarDatos();
 						lista.add(nuevoRemito);
-						ReporteRemitoSalida reporte = new ReporteRemitoSalida(nuevoRemito, lista);
+						ReporteRemitoSalida reporte = new ReporteRemitoSalida(nuevoRemito, lista, agenda);
 						reporte.mostrar();
 						reporte.guardar();
 

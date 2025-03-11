@@ -188,7 +188,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 								os.close();
 								fis.close();
 
-								JOptionPane.showMessageDialog(null, "Base Actualizada", "Verificar",
+								JOptionPane.showMessageDialog(null, "Base Actualizada", "Actualización",
 										JOptionPane.INFORMATION_MESSAGE);
 							} catch (Exception e) {
 								JOptionPane.showMessageDialog(null,

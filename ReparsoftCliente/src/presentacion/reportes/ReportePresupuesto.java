@@ -32,6 +32,7 @@ import net.sf.jasperreports.engine.JasperReportsContext;
 
 
 import dto.RegistroPresupuestoDTO;
+import modelo.Agenda;
 
 
 @SuppressWarnings("deprecation")
@@ -46,14 +47,16 @@ public class ReportePresupuesto {
 
 	private int ELS;
 	private String Cliente = "";
+	private Agenda agenda;
 
 	// Recibe la lista de PRESUPUESTOS para armar el reporte
-	public ReportePresupuesto(RegistroPresupuestoDTO reparacion, List<RegistroPresupuestoDTO> Presupuesto)
+	public ReportePresupuesto(RegistroPresupuestoDTO reparacion, List<RegistroPresupuestoDTO> Presupuesto, Agenda agenda)
 
 	{
 		reportFileName = "reportes\\Presupuesto.jasper";
 		ELS = reparacion.getELS();
 		Cliente = reparacion.getCliente();
+		this.agenda = agenda;
 		
 		JTextField imagePathField = new JTextField(30);
         imagePathField.setEditable(false);
@@ -98,25 +101,20 @@ public class ReportePresupuesto {
 	public void guardar() {
 
 		nombreArchivoPDF = "Presupuesto ELS_" + ELS + "_" + Cliente + ".pdf";
-		//nombreArchivoPDF = "Presupuesto ELS_";
 
-		File fRutaE = new File("E:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF");
-		File fRutaD = new File("D:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF");
-		File fRutaF = new File("F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF");
-
-		if (fRutaD.isDirectory())
-			outFileName = "D:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF\\" + nombreArchivoPDF;
-		else if (fRutaE.isDirectory())
-			outFileName = "E:\\Sistema\\ELS\\Bariloche\\Administracion\\Presupuestos PDF\\" + nombreArchivoPDF;
-		else if (fRutaF.isDirectory())
 		
+		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
+
 			outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF\\" + nombreArchivoPDF;
+			
 
-//		JRExporter exporter = new JRPdfExporter();
-//		exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
-//		exporter.setParameter(JRExporterParameter.JASPER_PRINT, reporteLleno);
+		} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
+
+			outFileName = "F:\\ELS\\Administracion\\Sistema\\Presupuestos PDF\\" + nombreArchivoPDF;
+
+		}
 		
-		
+				
 		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(new SimpleExporterInput(reporteLleno));
 		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outFileName));

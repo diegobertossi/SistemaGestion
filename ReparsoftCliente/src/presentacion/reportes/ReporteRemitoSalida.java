@@ -19,6 +19,7 @@ import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.view.JasperViewer;
 import dto.RemitoDTO;
+import modelo.Agenda;
 
 @SuppressWarnings("deprecation")
 public class ReporteRemitoSalida {
@@ -33,12 +34,14 @@ public class ReporteRemitoSalida {
 	private String Cliente = "";
 	private String NumeroRemito = "";
 	private String fecha = "";
+	private Agenda agenda;
 
 	// Recibe la lista de PRESUPUESTOS para armar el reporte
-	public ReporteRemitoSalida(RemitoDTO remito, List<RemitoDTO> Remito)
+	public ReporteRemitoSalida(RemitoDTO remito, List<RemitoDTO> Remito, Agenda agenda)
 
 	{
 		reportFileName = "reportes\\RemitoComun.jasper";
+		this.agenda = agenda;
 
 		Cliente = remito.getCliente();
 		NumeroRemito =remito.getRemitoConformado().toString();
@@ -68,19 +71,16 @@ public class ReporteRemitoSalida {
 
 		nombreArchivoPDF = NumeroRemito + "_" + Cliente + "_" + fecha + ".pdf";
 
-		File fRutaE = new File("E:\\Sistema\\ELS\\Bariloche\\Administracion\\Remitos PDF\\Remitos Comunes");
-		File fRutaD = new File("D:\\Sistema\\ELS\\Bariloche\\Administracion\\Remitos PDF\\Remitos Comunes");
-		File fRutaF = new File("F:\\ELS\\Bariloche\\Administracion\\Sistema\\Remitos PDF\\Remitos Comunes");
+		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
 
-		if (fRutaD.isDirectory())
-			outFileName = "D:\\Sistema\\ELS\\Bariloche\\Administracion\\Remitos PDF\\Remitos Comunes\\"
-					+ nombreArchivoPDF;
-		else if (fRutaE.isDirectory())
-			outFileName = "E:\\Sistema\\ELS\\Bariloche\\Administracion\\Remitos PDF\\Remitos Comunes\\"
-					+ nombreArchivoPDF;
-		else if (fRutaF.isDirectory())
-			outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Remitos PDF\\Remitos Comunes\\"
-					+ nombreArchivoPDF;
+			outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Remitos PDF\\" + nombreArchivoPDF;
+			
+
+		} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
+
+			outFileName = "F:\\ELS\\Administracion\\Sistema\\Remitos PDF\\" + nombreArchivoPDF;
+
+		}
 
 		JRPdfExporter exporter = new JRPdfExporter();
 		
