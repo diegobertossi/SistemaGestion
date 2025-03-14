@@ -1,5 +1,7 @@
 eclipse.preferences.version=1
 encoding//reportes/Presupuesto.jrxml=UTF-8
+encoding//reportes/RemitoComun.jrxml=UTF-8
+encoding//reportes/RemitoPreImpreso.jrxml=UTF-8
 encoding//reportes/ReporteRegistroEntrada2.jrxml=UTF-8
 encoding//reportes/ResumenTecnico.jrxml=UTF-8
 encoding//src/presentacion/controlador/ControladorReparacion.java=UTF-8

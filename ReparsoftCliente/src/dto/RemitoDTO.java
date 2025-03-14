@@ -14,8 +14,12 @@ public class RemitoDTO
 	private String Cliente;
 	private String RemitoConformado;
 	private int cantBultos; 
+	private String cuit;
+	private String domicilio;
+	
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public RemitoDTO(Integer IdUbicacion, Integer codigoUbicacion,Integer IdRemito, Integer numeroRemitoSalida,List descripcion, String Cliente, String RemitoConformado,int cantBultos)
+	public RemitoDTO(Integer IdUbicacion, Integer codigoUbicacion,Integer IdRemito, Integer numeroRemitoSalida,List descripcion, String Cliente, String RemitoConformado,int cantBultos, String cuit, String domicilio)
 	{
 		this.IdUbicacion = IdUbicacion;
 		this.codigoUbicacion = codigoUbicacion;
@@ -25,6 +29,8 @@ public class RemitoDTO
 		this.Cliente= Cliente;
 		this.RemitoConformado = RemitoConformado;
 		this.cantBultos =cantBultos;
+		this.cuit = cuit;
+		this.domicilio = domicilio;
 	
 		
 		
@@ -149,6 +155,22 @@ public class RemitoDTO
 
 	public void setCliente(String cliente) {
 		Cliente = cliente;
+	}
+
+	public String getDomicilio() {
+		return domicilio;
+	}
+
+	public void setDomicilio(String domicilio) {
+		this.domicilio = domicilio;
+	}
+
+	public String getCuit() {
+		return cuit;
+	}
+
+	public void setCuit(String cuit) {
+		this.cuit = cuit;
 	}
 	
 

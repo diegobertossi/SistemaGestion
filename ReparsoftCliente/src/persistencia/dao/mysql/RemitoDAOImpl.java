@@ -124,7 +124,7 @@ public class RemitoDAOImpl implements RemitoDAO {
 
 				if (resultSet.getString("Codigo") != null) {
 					if (resultSet.getInt("Codigo") == 2 || resultSet.getInt("Codigo") == 5
-							|| resultSet.getInt("Codigo") == 6) {
+							|| resultSet.getInt("Codigo") == 6|| resultSet.getInt("Codigo") == 7) {
 
 						value.addElement("000" + resultSet.getInt("Codigo") + " - " + resultSet.getString("Ubicacion"));
 					} else

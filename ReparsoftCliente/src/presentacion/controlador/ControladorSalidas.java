@@ -15,6 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -204,12 +205,15 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 							IDubicacion = 7;
 							break;
 						case 4:
+							IDubicacion = 8;
+							
+						case 5:
 							IDubicacion = 3;
 							break;
-						case 5:
+						case 6:
 							IDubicacion = 4;
 							break;
-						case 6:
+						case 7:
 							IDubicacion = 5;
 							break;
 						default:
@@ -450,6 +454,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 						ubicacion = ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex();
 
 						switch (ubicacion) {
+						
+						
 
 						case 1:
 							IDubicacion = 2;
@@ -461,16 +467,20 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 							IDubicacion = 7;
 							break;
 						case 4:
+							IDubicacion = 8;
+							
+						case 5:
 							IDubicacion = 3;
 							break;
-						case 5:
+						case 6:
 							IDubicacion = 4;
 							break;
-						case 6:
+						case 7:
 							IDubicacion = 5;
 							break;
 						default:
 							break;
+
 						}
 
 						agenda.ListarRemitoPorUbicacion(ventanaSeleccionarRemito.getComboNumRemito(), IDubicacion);
@@ -701,10 +711,12 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		else if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex() == 3)
 			ID = 7;
 		else if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex() == 4)
-			ID = 3;
+			ID = 8;
 		else if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex() == 5)
-			ID = 4;
+			ID = 3;
 		else if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex() == 6)
+			ID = 4;
+		else if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex() == 7)
 			ID = 5;
 
 		return ID;
@@ -847,19 +859,36 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 			if (agregar != null) {
 				if (agregar) {
 					descripcion.add("ELS: " + ELS + " - EQUIPO: " + equipo + " - MARCA: " + marca + " - MODELO: "
-							+ modelo + " - N� SERIE: " + serie + "\n\n");
+							+ modelo + " - N° SERIE: " + serie + "\n\n");
 
 				}
 			}
 
 		}
-
-		String Cliente = this.ventanaRemitos.getTxtCliente().getText();
+	
+		
+		//String NombreCliente = this.ventanaRemitos.getTxtCliente().getText();
+		
+		String NombreCliente = "Hugo Rega";
+		System.out.println(NombreCliente);
+		
+		
+		
+		
 		String RemitoConformado = this.ventanaRemitos.getTextRemitoConformado().getText();
 		int cantBultos = Integer.parseInt(this.ventanaRemitos.getTextCantBultos().getText());
+		
+		List<ClienteDTO> clientes =agenda.obtenerCliente();
+		
+		 Optional<ClienteDTO> clienteEncontrado = clientes.stream()
+		            .filter(cliente -> cliente.getRazon_Social().equalsIgnoreCase(NombreCliente))
+		            .findFirst();
+		 
+
+		
 
 		RemitoDTO nuevoRemito = new RemitoDTO(IdUbicacion, codigoUbicacion, IdRemito, numeroRemitoSalida, descripcion,
-				Cliente, RemitoConformado, cantBultos);
+				NombreCliente, RemitoConformado, cantBultos, clienteEncontrado.get().getCUIT(),clienteEncontrado.get().getDomicilio());
 
 		return nuevoRemito;
 	}
@@ -1032,10 +1061,12 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 3)
 			ID = 7;
 		else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 4)
-			ID = 3;
+			ID = 8;
 		else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 5)
-			ID = 4;
+			ID = 3;
 		else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 6)
+			ID = 4;
+		else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 7)
 			ID = 5;
 
 		return ID;
@@ -1059,6 +1090,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 			ID = 5;
 		else if (ubicacion == 6)
 			ID = 7;
+		else if (ubicacion == 7)
+			ID = 8;
 		else
 			ID = 6;
 

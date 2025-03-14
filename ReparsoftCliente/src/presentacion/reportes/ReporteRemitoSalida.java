@@ -31,8 +31,11 @@ public class ReporteRemitoSalida {
 	private String nombreArchivoPDF = "";
 	private String outFileName = "";
 
-	private String Cliente = "";
+	private String NombreCliente = "";
+	private String DireccionCliente = "";
+	private String CuitCliente = "";
 	private String NumeroRemito = "";
+	private int CodigoRemito;
 	private String fecha = "";
 	private Agenda agenda;
 
@@ -40,11 +43,25 @@ public class ReporteRemitoSalida {
 	public ReporteRemitoSalida(RemitoDTO remito, List<RemitoDTO> Remito, Agenda agenda)
 
 	{
-		reportFileName = "reportes\\RemitoComun.jasper";
+
+		CodigoRemito = remito.getCodigoUbicacion();
+
+		if (CodigoRemito == 2 || CodigoRemito == 5 || CodigoRemito == 6 || CodigoRemito == 7) {
+			
+			reportFileName = "reportes\\RemitoPreImpreso.jasper";
+			
+		} else {
+			
+			reportFileName = "reportes\\RemitoComun.jasper";
+		
+		}
 		this.agenda = agenda;
 
-		Cliente = remito.getCliente();
-		NumeroRemito =remito.getRemitoConformado().toString();
+		NombreCliente = remito.getCliente();
+		DireccionCliente = remito.getDomicilio();
+		CuitCliente = remito.getCuit();
+		
+		NumeroRemito = remito.getRemitoConformado().toString();
 		fecha = new java.text.SimpleDateFormat("dd-MM-yyyy", new Locale("es", "ES")).format(new java.util.Date());
 
 		try {
@@ -69,12 +86,11 @@ public class ReporteRemitoSalida {
 	@SuppressWarnings("rawtypes")
 	public void guardar() {
 
-		nombreArchivoPDF = NumeroRemito + "_" + Cliente + "_" + fecha + ".pdf";
+		nombreArchivoPDF = NumeroRemito + "_" + NombreCliente + "_" + fecha + ".pdf";
 
 		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
 
 			outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Remitos PDF\\" + nombreArchivoPDF;
-			
 
 		} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
 
@@ -83,14 +99,13 @@ public class ReporteRemitoSalida {
 		}
 
 		JRPdfExporter exporter = new JRPdfExporter();
-		
+
 		exporter.setExporterInput(new SimpleExporterInput(reporteLleno));
 		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outFileName));
-	
+
 		try {
 
 			exporter.exportReport();
-
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
