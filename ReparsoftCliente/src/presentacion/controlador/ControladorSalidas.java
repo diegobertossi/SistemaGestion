@@ -889,6 +889,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 		RemitoDTO nuevoRemito = new RemitoDTO(IdUbicacion, codigoUbicacion, IdRemito, numeroRemitoSalida, descripcion,
 				NombreCliente, RemitoConformado, cantBultos, clienteEncontrado.get().getCUIT(),clienteEncontrado.get().getDomicilio());
+		System.out.println( clienteEncontrado.get().getCUIT() +" "+ clienteEncontrado.get().getDomicilio() );
 
 		return nuevoRemito;
 	}

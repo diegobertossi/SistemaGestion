@@ -46,14 +46,11 @@
 	<field name="descripcion" class="java.util.List">
 		<fieldDescription><![CDATA[descripcion]]></fieldDescription>
 	</field>
-	<field name="cuit" class="java.lang.String">
-		<fieldDescription><![CDATA[cuit]]></fieldDescription>
-	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="212" splitType="Stretch">
+		<band height="207" splitType="Stretch">
 			<textField>
 				<reportElement positionType="Float" x="30" y="100" width="288" height="22" uuid="295f1c9c-4e90-4578-b109-d43ae7e88854"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
@@ -85,11 +82,11 @@
 				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="320" y="100" width="223" height="22" uuid="ebd38516-d096-48ce-a3ae-36172c80adb6"/>
+				<reportElement positionType="Float" x="320" y="100" width="230" height="22" uuid="e3fa13cb-c813-4f91-94fc-fd07556e12a6"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cuit}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
