@@ -1163,15 +1163,16 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 			if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 1
 					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 2
-					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 3) {
+					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 3
+					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 4) {
 
 				ventanaRemitos.getTextTipoRemito().setText("REMITO PREIMPRESO");
 				ventanaRemitos.getTextTipoRemito().setVisible(true);
 				ventanaRemitos.getPanel_2().setVisible(true);
 
-			} else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 4
-					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 5
-					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 6) {
+			} else if (ventanaRemitos.getComboUbicacion().getSelectedIndex() == 5
+					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 6
+					|| ventanaRemitos.getComboUbicacion().getSelectedIndex() == 7) {
 
 				ventanaRemitos.getTextTipoRemito().setText("REMITO COMÚN");
 				ventanaRemitos.getTextTipoRemito().setVisible(true);

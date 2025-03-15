@@ -2266,7 +2266,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	private void TomarDatosDeTablas(VentanaVisualizarEquipos ventanaVisualizarEquipos) throws ParseException {
+		
+		
 
+		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
 		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
@@ -2281,6 +2284,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		NumeroELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS().toString());
 		reparacion = agenda.dameReparacionXels(NumeroELS);
+		
+		int codigoRemitoBase= reparacion.getCodigo() ;
+		String codigoRemitoVisual;
+		
+		int numeroRemitoBase= reparacion.getNumeroRemitoSalida() ;
+		String numeroRemitoVisual="";
 
 		// llenarComboTecnico();
 
@@ -2334,8 +2343,23 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ventanaVisualizarEquipos.setTextNombreTecnico(reparacion.getNombreUsuario());
 		ventanaVisualizarEquipos.setTextOC(reparacion.getOrdendeCompra());
-		ventanaVisualizarEquipos.setTextUbicacionRemito(Integer.toString(reparacion.getCodigo()));
-		ventanaVisualizarEquipos.setTextNumeroRemito(Integer.toString(reparacion.getNumeroRemitoSalida()));
+	
+		if (codigoRemitoBase == 2 || codigoRemitoBase == 5 || codigoRemitoBase == 6 || codigoRemitoBase == 7) {
+			codigoRemitoVisual = String.format("%04d", codigoRemitoBase); // Agrega ceros al inicio hasta 4 dígitos
+		} else if (codigoRemitoBase == 1000 || codigoRemitoBase == 2000 || codigoRemitoBase == 3000) {
+			codigoRemitoVisual = String.valueOf(codigoRemitoBase); // Si es 1000, 2000 o 3000, lo guarda tal cual
+		} else {
+			codigoRemitoVisual = ""; // Manejo para valores inesperados (opcional)
+		}
+		
+		ventanaVisualizarEquipos.setTextUbicacionRemito(codigoRemitoVisual);
+		
+		if (numeroRemitoBase>0) {
+		numeroRemitoVisual = String.format("%08d", numeroRemitoBase);
+		}
+	
+		
+		ventanaVisualizarEquipos.setTextNumeroRemito(numeroRemitoVisual);
 		// ventanaVisualizarEquipos.setChckbxAvisoEnviado((boolean)reparacion.getEnviado());
 
 		llenarTablaRepuestos(ventanaVisualizarEquipos);

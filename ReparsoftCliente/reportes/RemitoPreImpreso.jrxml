@@ -97,9 +97,9 @@
 		</band>
 	</title>
 	<detail>
-		<band height="510" splitType="Stretch">
+		<band height="394" splitType="Stretch">
 			<textField>
-				<reportElement x="34" y="36" width="523" height="474" uuid="5b4db7dd-6d64-408e-8b13-cc29e0153058"/>
+				<reportElement x="34" y="36" width="523" height="324" uuid="5b4db7dd-6d64-408e-8b13-cc29e0153058"/>
 				<textElement textAlignment="Left">
 					<font fontName="Arial" size="11" isBold="false"/>
 				</textElement>
@@ -108,7 +108,7 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="161" splitType="Stretch">
+		<band height="99" splitType="Stretch">
 			<textField>
 				<reportElement positionType="Float" x="100" y="30" width="20" height="15" uuid="2363b689-5f82-43ff-af19-9c6cc4b9528a"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
