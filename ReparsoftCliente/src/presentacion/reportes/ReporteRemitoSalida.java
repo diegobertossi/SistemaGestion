@@ -55,11 +55,18 @@ public class ReporteRemitoSalida {
 			reportFileName = "reportes\\RemitoComun.jasper";
 		
 		}
+		
+		
 		this.agenda = agenda;
 
 		NombreCliente = remito.getCliente();
 		DireccionCliente = remito.getDomicilio();
 		CuitCliente = remito.getCuit();
+		
+		
+		parametersMap.put("cuit", CuitCliente); // Usa el valor del CUIT del cliente
+		parametersMap.put("domicilio", DireccionCliente); // Usa el valor del domicilio del cliente
+
 		
 		NumeroRemito = remito.getRemitoConformado().toString();
 		fecha = new java.text.SimpleDateFormat("dd-MM-yyyy", new Locale("es", "ES")).format(new java.util.Date());

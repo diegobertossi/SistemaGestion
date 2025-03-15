@@ -514,7 +514,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 				cargarTablaEquiposParaRemito(idCliente, idSucursal);
 
-				ventanaRemitos.getTxtCliente().setText(Cliente + " " + "(" + Sucursal + ")");
+				ventanaRemitos.getTxtCliente().setText(Cliente + " " + "_" + Sucursal + "_");
 
 				ventanaSalidas.dispose();
 				ventanaSalidas = null;
@@ -869,9 +869,11 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		
 		//String NombreCliente = this.ventanaRemitos.getTxtCliente().getText();
 		
-		String NombreCliente = "Hugo Rega";
-		System.out.println(NombreCliente);
-		
+		//String NombreCliente = "Hugo Rega";
+		//System.out.println(NombreCliente);
+		String texto = ventanaRemitos.getTxtCliente().getText(); // Obtiene el texto completo
+		String NombreCliente = texto.split(" \\_")[0]; // Divide por " _" y toma la primera parte
+		System.out.println("Nombre del cliente: " + NombreCliente);
 		
 		
 		
@@ -962,7 +964,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		String Cliente = this.reparacion.getCliente();
 		String Sucursal = this.reparacion.getSucursal();
 
-		ventanaRemitos.getTxtCliente().setText(Cliente + " " + "(" + Sucursal + ")");
+		ventanaRemitos.getTxtCliente().setText(Cliente + " " + "_" + Sucursal + "_");
 
 		this.ventanaRemitos.show();
 

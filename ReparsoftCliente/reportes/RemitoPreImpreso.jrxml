@@ -46,6 +46,12 @@
 	<field name="descripcion" class="java.util.List">
 		<fieldDescription><![CDATA[descripcion]]></fieldDescription>
 	</field>
+	<field name="cuit" class="java.lang.String">
+		<fieldDescription><![CDATA[cuit]]></fieldDescription>
+	</field>
+	<field name="domicilio" class="java.lang.String">
+		<fieldDescription><![CDATA[domicilio]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -75,18 +81,18 @@
 				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="30" y="130" width="288" height="22" uuid="194adc56-842f-43ee-841d-db47ef12ca7e"/>
+				<reportElement positionType="Float" x="340" y="100" width="244" height="22" uuid="76859901-250f-469c-933f-57acfa2d0a5d"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cuit}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="320" y="100" width="230" height="22" uuid="e3fa13cb-c813-4f91-94fc-fd07556e12a6"/>
+				<reportElement positionType="Float" x="30" y="130" width="244" height="22" uuid="1a0ed4e9-844f-47b9-9f93-0c462f877dc5"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
-					<font fontName="Arial" size="10" isBold="false"/>
+					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{domicilio}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
