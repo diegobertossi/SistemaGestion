@@ -2199,7 +2199,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	public void generarRemito(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
-		if (ventanaVisualizarEquipos.getTextNumeroRemito().getText().compareTo("0") == 0) {
+		if (ventanaVisualizarEquipos.getTextNumeroRemito().getText().compareTo("") == 0 ) {
 			NumeroELSParaRemito = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
 			controladorSalidas.cargarRemitoVisualizacion(NumeroELSParaRemito);
 			controladorSalidas.agregarListenersVentanaRemitos();
@@ -2459,9 +2459,30 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setTextNombreTecnico(reparacion.getNombreUsuario());
 		// ventanaVisualizarEquipos.getComboTecnico().setSelectedIndex(reparacion.getidUsuario()-1);
 		ventanaVisualizarEquipos.setTextOC(reparacion.getOrdendeCompra());
-		ventanaVisualizarEquipos.setTextUbicacionRemito(Integer.toString(reparacion.getCodigo()));
-		ventanaVisualizarEquipos.setTextNumeroRemito(Integer.toString(reparacion.getNumeroRemitoSalida()));
-		// ventanaVisualizarEquipos.setChckbxAvisoEnviado((boolean)reparacion.getEnviado());
+		
+		int codigoRemitoBase= reparacion.getCodigo() ;
+		String codigoRemitoVisual;
+		
+		int numeroRemitoBase= reparacion.getNumeroRemitoSalida() ;
+		String numeroRemitoVisual="";
+		
+		
+		if (codigoRemitoBase == 2 || codigoRemitoBase == 5 || codigoRemitoBase == 6 || codigoRemitoBase == 7) {
+			codigoRemitoVisual = String.format("%04d", codigoRemitoBase); // Agrega ceros al inicio hasta 4 dígitos
+		} else if (codigoRemitoBase == 1000 || codigoRemitoBase == 2000 || codigoRemitoBase == 3000) {
+			codigoRemitoVisual = String.valueOf(codigoRemitoBase); // Si es 1000, 2000 o 3000, lo guarda tal cual
+		} else {
+			codigoRemitoVisual = ""; // Manejo para valores inesperados (opcional)
+		}
+		
+		ventanaVisualizarEquipos.setTextUbicacionRemito(codigoRemitoVisual);
+		
+		if (numeroRemitoBase>0) {
+		numeroRemitoVisual = String.format("%08d", numeroRemitoBase);
+		}
+		
+		ventanaVisualizarEquipos.setTextNumeroRemito(numeroRemitoVisual);
+
 
 		llenarTablaRepuestos(ventanaVisualizarEquipos);
 		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
@@ -2566,9 +2587,32 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setTextNombreTecnico(reparacion.getNombreUsuario());
 		// ventanaVisualizarEquipos.getComboTecnico().setSelectedIndex(reparacion.getidUsuario()-1);
 		ventanaVisualizarEquipos.setTextOC(reparacion.getOrdendeCompra());
-		ventanaVisualizarEquipos.setTextUbicacionRemito(Integer.toString(reparacion.getCodigo()));
-		ventanaVisualizarEquipos.setTextNumeroRemito(Integer.toString(reparacion.getNumeroRemitoSalida()));
-		// ventanaVisualizarEquipos.setChckbxAvisoEnviado((boolean)reparacion.getEnviado());
+		
+		
+		
+		int codigoRemitoBase= reparacion.getCodigo() ;
+		String codigoRemitoVisual;
+		
+		int numeroRemitoBase= reparacion.getNumeroRemitoSalida() ;
+		String numeroRemitoVisual="";
+		
+		
+		if (codigoRemitoBase == 2 || codigoRemitoBase == 5 || codigoRemitoBase == 6 || codigoRemitoBase == 7) {
+			codigoRemitoVisual = String.format("%04d", codigoRemitoBase); // Agrega ceros al inicio hasta 4 dígitos
+		} else if (codigoRemitoBase == 1000 || codigoRemitoBase == 2000 || codigoRemitoBase == 3000) {
+			codigoRemitoVisual = String.valueOf(codigoRemitoBase); // Si es 1000, 2000 o 3000, lo guarda tal cual
+		} else {
+			codigoRemitoVisual = ""; // Manejo para valores inesperados (opcional)
+		}
+		
+		ventanaVisualizarEquipos.setTextUbicacionRemito(codigoRemitoVisual);
+		
+		if (numeroRemitoBase>0) {
+		numeroRemitoVisual = String.format("%08d", numeroRemitoBase);
+		}
+		
+		ventanaVisualizarEquipos.setTextNumeroRemito(numeroRemitoVisual);
+
 
 		llenarTablaRepuestos(ventanaVisualizarEquipos);
 		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
@@ -2580,10 +2624,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);
 		ventanaVisualizarEquipos.setTextPresupuestoDolar(presupuestoDolar);
 		ventanaVisualizarEquipos.setTextPago(pagoPeso);
-
-//
-//		ventanaVisualizarEquipos.setTextPresupuesto(reparacion.getPrecioPeso().toString());
-//		ventanaVisualizarEquipos.setTextPago(reparacion.getPago().toString());
 
 		ventanaVisualizarEquipos.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
 		ventanaVisualizarEquipos.setChckPDFEnviado(reparacion.getPresupuestoEnviado());

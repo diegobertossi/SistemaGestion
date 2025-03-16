@@ -35,6 +35,7 @@ public class ReporteRemitoSalida {
 	private String DireccionCliente = "";
 	private String CuitCliente = "";
 	private String NumeroRemito = "";
+	private String ubicacionRemito = "";
 	private int CodigoRemito;
 	private String fecha = "";
 	private Agenda agenda;
@@ -47,28 +48,54 @@ public class ReporteRemitoSalida {
 		CodigoRemito = remito.getCodigoUbicacion();
 
 		if (CodigoRemito == 2 || CodigoRemito == 5 || CodigoRemito == 6 || CodigoRemito == 7) {
-			
+
 			reportFileName = "reportes\\RemitoPreImpreso.jasper";
-			
+
 		} else {
-			
+
 			reportFileName = "reportes\\RemitoComun.jasper";
-		
+
 		}
-		
-		
+
+		switch (CodigoRemito) {
+		case 2:
+			ubicacionRemito = "MDP";
+			break;
+		case 5:
+			ubicacionRemito = "CABA";
+			break;
+		case 6:
+			ubicacionRemito = "BRC";
+			break;
+		case 7:
+			ubicacionRemito = "MDP Avellaneda";
+			break;
+		case 1000:
+			ubicacionRemito = "COMUN CABA";
+			break;
+		case 2000:
+			ubicacionRemito = "COMUN MDP";
+			break;
+		case 3000:
+			ubicacionRemito = "COMUN BRC";
+			break;
+
+		default:
+			break;
+		}
+
 		this.agenda = agenda;
 
 		NombreCliente = remito.getCliente();
 		DireccionCliente = remito.getDomicilio();
 		CuitCliente = remito.getCuit();
-		
-		
+
 		parametersMap.put("cuit", CuitCliente); // Usa el valor del CUIT del cliente
 		parametersMap.put("domicilio", DireccionCliente); // Usa el valor del domicilio del cliente
 
-		
-		NumeroRemito = remito.getRemitoConformado().toString();
+		NumeroRemito = remito.getRemitoConformado().toString().split("-")[1].trim();;
+
+
 		fecha = new java.text.SimpleDateFormat("dd-MM-yyyy", new Locale("es", "ES")).format(new java.util.Date());
 
 		try {
@@ -88,20 +115,41 @@ public class ReporteRemitoSalida {
 
 		ReporteRemitoSalida.reporteViewer = new JasperViewer(ReporteRemitoSalida.reporteLleno, false);
 		ReporteRemitoSalida.reporteViewer.setVisible(true);
+
+
 	}
 
 	@SuppressWarnings("rawtypes")
 	public void guardar() {
 
-		nombreArchivoPDF = NumeroRemito + "_" + NombreCliente + "_" + fecha + ".pdf";
+		nombreArchivoPDF = NumeroRemito + "-" + ubicacionRemito + "_" + NombreCliente + ".pdf";
+		String ubicacionSistema = agenda.getUbicacionBase();
 
-		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
+		if (ubicacionSistema.compareTo("Bariloche") == 0) {
 
-			outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Remitos PDF\\" + nombreArchivoPDF;
+			if (reportFileName.compareTo("reportes\\RemitoComun.jasper") == 0) {
 
-		} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
+				outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Remitos PDF\\Remitos Comunes\\"
+						+ nombreArchivoPDF;
+			}
+			if (reportFileName.compareTo("reportes\\RemitoPreImpreso.jasper") == 0) {
 
-			outFileName = "F:\\ELS\\Administracion\\Sistema\\Remitos PDF\\" + nombreArchivoPDF;
+				outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Remitos PDF\\Remitos PreImpresos\\"
+						+ nombreArchivoPDF;
+
+			}
+
+		} else if (ubicacionSistema.compareTo("Buenos Aires") == 0) {
+
+			if (reportFileName.compareTo("reportes\\RemitoComun.jasper") == 0) {
+
+				outFileName = "F:\\ELS\\Administracion\\Sistema\\Remitos PDF\\Remitos Comunes\\" + nombreArchivoPDF;
+			}
+			if (reportFileName.compareTo("reportes\\RemitoPreImpreso.jasper") == 0) {
+
+				outFileName = "F:\\ELS\\Administracion\\Sistema\\Remitos PDF\\Remitos PreImpresos\\" + nombreArchivoPDF;
+
+			}
 
 		}
 

@@ -52,8 +52,12 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 		String NombreBackUp = "Backup Reparsoft " + dia.getDate() + "-" + (dia.getMonth() + 1) + "-"
 				+ (dia.getYear() + 1900) + ".sql";
+		
+		
 		String rutaBackup = "F:\\els\\Administracion\\Sistema\\Base de datos\\Backups\\";
 
+		
+		
 		String NombreBackUpSinExtension = "Backup Reparsoft " + dia.getDate() + "-" + (dia.getMonth() + 1) + "-"
 				+ (dia.getYear() + 1900);
 

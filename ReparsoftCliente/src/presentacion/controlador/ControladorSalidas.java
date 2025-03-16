@@ -873,7 +873,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		//System.out.println(NombreCliente);
 		String texto = ventanaRemitos.getTxtCliente().getText(); // Obtiene el texto completo
 		String NombreCliente = texto.split(" \\_")[0]; // Divide por " _" y toma la primera parte
-		System.out.println("Nombre del cliente: " + NombreCliente);
+		
 		
 		
 		
@@ -891,7 +891,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 		RemitoDTO nuevoRemito = new RemitoDTO(IdUbicacion, codigoUbicacion, IdRemito, numeroRemitoSalida, descripcion,
 				NombreCliente, RemitoConformado, cantBultos, clienteEncontrado.get().getCUIT(),clienteEncontrado.get().getDomicilio());
-		System.out.println( clienteEncontrado.get().getCUIT() +" "+ clienteEncontrado.get().getDomicilio() );
+		
 
 		return nuevoRemito;
 	}
