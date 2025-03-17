@@ -251,7 +251,7 @@ public class ControladorPrincipal implements ActionListener {
 		else if (arg0.getSource() == vistaPrincipal.getBotonBackUp()) {
 
 			ventanaBackUp = new VentanaBackUp(controladorBackup);
-			controladorBackup = new ControladorBackup(ventanaBackUp);
+			controladorBackup = new ControladorBackup(ventanaBackUp,modelo);
 
 		}
 
