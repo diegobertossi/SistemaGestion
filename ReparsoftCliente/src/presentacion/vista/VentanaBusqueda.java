@@ -9,7 +9,10 @@ import javax.swing.border.EmptyBorder;
 
 import presentacion.controlador.ControladorBusquedas;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.JComboBox;
@@ -39,6 +42,9 @@ public class VentanaBusqueda extends JFrame {
 		setResizable(false);
 		this.controlador = controladorBusqueda;
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 595, 244);
 

@@ -12,7 +12,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.SwingConstants;
 
 public class VentanaBackUp extends JFrame
@@ -36,6 +39,10 @@ public class VentanaBackUp extends JFrame
 		this.controladorBackup = controladorBackup;
 		setBounds(100, 100, 373, 172);
 		this.setLocationRelativeTo(null);
+		
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		contentPane = new JPanel();
 		contentPane.setAutoscrolls(true);
 		contentPane.setAlignmentY(Component.TOP_ALIGNMENT);

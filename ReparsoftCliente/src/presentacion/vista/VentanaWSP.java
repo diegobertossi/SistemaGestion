@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
@@ -55,6 +56,9 @@ public class VentanaWSP extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setUndecorated(true);
 		setBounds(460, 260, 502, 418);
+		
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.inactiveCaption);

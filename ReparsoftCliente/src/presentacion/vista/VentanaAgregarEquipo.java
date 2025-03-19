@@ -3,6 +3,8 @@ package presentacion.vista;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -24,6 +26,8 @@ import presentacion.controlador.ControladorReparacion;
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
+
 import javax.swing.border.MatteBorder;
 import javax.swing.border.EtchedBorder;
 
@@ -98,7 +102,10 @@ public class VentanaAgregarEquipo extends JFrame {
 		super();
 		setResizable(false);
 		this.controladorReparacion = controladorReparacion;
-
+		
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		FechaEntrada = new com.toedter.calendar.JDateChooser("dd/MM/yyyy", "##-##-####", '-');
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

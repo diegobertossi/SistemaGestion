@@ -13,10 +13,12 @@ import javax.swing.JLabel;
 
 import java.awt.Component;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Color;
 
 public class VentanaPermisos extends JFrame {
@@ -42,7 +44,10 @@ public class VentanaPermisos extends JFrame {
 		super();
 		setResizable(false);
 		this.controlador = controlador;
-		
+	
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+	
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 952, 566);
 		this.setLocationRelativeTo(null);

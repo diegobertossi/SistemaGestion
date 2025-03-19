@@ -8,6 +8,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import java.awt.SystemColor;
@@ -36,6 +37,9 @@ public class VentanaLogin extends JFrame {
 		setUndecorated(true);
 		setBounds(460, 260, 439, 195);
 		
+		
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
 		//setAlwaysOnTop(true);
 		
 		JPanel panel = new JPanel();

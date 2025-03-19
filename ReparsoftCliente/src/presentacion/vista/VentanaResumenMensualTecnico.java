@@ -6,7 +6,10 @@ import javax.swing.border.EmptyBorder;
 
 import presentacion.controlador.ControladorListados;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Color;
@@ -53,6 +56,9 @@ public class VentanaResumenMensualTecnico extends JFrame {
 		setResizable(false);
 		this.controlador = controlador;
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 888, 443);
 

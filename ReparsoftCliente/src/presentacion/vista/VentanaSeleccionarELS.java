@@ -7,7 +7,10 @@ import javax.swing.border.EmptyBorder;
 
 import presentacion.controlador.ControladorPresupuestos;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
@@ -33,6 +36,9 @@ public class VentanaSeleccionarELS extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 442, 163);
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		this.setLocationRelativeTo(null);
 
 		contentPane = new JPanel();

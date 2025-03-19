@@ -26,6 +26,8 @@ import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.util.Enumeration;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
@@ -92,6 +94,9 @@ public class VentanaRemitos extends JFrame {
 		setResizable(false);
 		this.controlador = controlador;
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		this.this_windowOpened(null);
 		setSize(1070, 600);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

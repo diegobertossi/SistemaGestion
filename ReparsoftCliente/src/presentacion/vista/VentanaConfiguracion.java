@@ -11,7 +11,9 @@ import presentacion.controlador.ControladorReparacion;
 import presentacion.controlador.ControladorUbicacionBase;
 
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.Image;
 
 public class VentanaConfiguracion extends JFrame 
 {
@@ -30,6 +32,9 @@ public class VentanaConfiguracion extends JFrame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 306, 155);
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		this.setLocationRelativeTo(null);
 
 		contentPane = new JPanel();

@@ -5,7 +5,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
@@ -34,6 +37,9 @@ public class VentanaUbicacionBaseDeDatos extends JFrame
 
 		this.setLocationRelativeTo(null);
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		contentPane = new JPanel();
 		contentPane.setOpaque(false);
 		contentPane.setBackground(SystemColor.inactiveCaption);

@@ -25,6 +25,8 @@ import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.util.Enumeration;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -77,6 +79,9 @@ public class VentanaRemitoGenerado extends JFrame {
 		setResizable(false);
 		this.controlador = controlador;
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		this.this_windowOpened(null);
 		setSize(658, 348);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

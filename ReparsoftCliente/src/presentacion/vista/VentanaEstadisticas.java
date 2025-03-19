@@ -8,7 +8,10 @@ import javax.swing.border.EmptyBorder;
 import presentacion.controlador.ControladorListados;
 import presentacion.controlador.ControladorReparacion;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import javax.swing.JComboBox;
@@ -166,6 +169,9 @@ public class VentanaEstadisticas extends JFrame {
 		super();
 		//setResizable(false);
 		this.controlador = controlador;
+		
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
 		
 		int x = 1279;
 		int y = 721;

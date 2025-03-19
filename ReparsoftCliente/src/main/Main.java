@@ -6,6 +6,7 @@ import javax.swing.UIManager;
 import presentacion.controlador.ControladorUbicacionBase;
 import presentacion.vista.VentanaUbicacionBaseDeDatos;
 
+
 public class Main {
 
 	@SuppressWarnings("unused")
@@ -26,6 +27,7 @@ public class Main {
 //            Synthetica a = new Synthetica(); 
 //            a.setVisible(true);
 			
+		
 			
 
 		} catch (Exception e) {

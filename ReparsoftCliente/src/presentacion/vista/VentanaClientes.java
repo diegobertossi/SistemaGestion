@@ -22,7 +22,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.border.EtchedBorder;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -75,6 +78,9 @@ public class VentanaClientes extends JFrame {
 		setResizable(false);
 		this.controladorCliente = controladorCliente;
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 668, 524);
 		this.setLocationRelativeTo(null);

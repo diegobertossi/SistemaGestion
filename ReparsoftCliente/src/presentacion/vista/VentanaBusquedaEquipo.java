@@ -33,6 +33,8 @@ public class VentanaBusquedaEquipo extends JFrame {
         setResizable(false);
         this.controlador = controlador;
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
         
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 447, 252);

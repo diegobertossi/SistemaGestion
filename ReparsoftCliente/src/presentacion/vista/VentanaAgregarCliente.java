@@ -14,7 +14,9 @@ import java.awt.event.KeyEvent;
 import java.awt.Component;
 import javax.swing.Box;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Color;
 
 public class VentanaAgregarCliente extends JFrame 
@@ -45,6 +47,8 @@ public class VentanaAgregarCliente extends JFrame
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.inactiveCaption);

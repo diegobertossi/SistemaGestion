@@ -8,7 +8,10 @@ import javax.swing.border.EmptyBorder;
 
 import presentacion.controlador.ControladorListados;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.JPasswordField;
@@ -40,6 +43,9 @@ public class VentanaCodigoSeguridad extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 308, 177);
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		this.setLocationRelativeTo(null);
 
 		contentPane = new JPanel();

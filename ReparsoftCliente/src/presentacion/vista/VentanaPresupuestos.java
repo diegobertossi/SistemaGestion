@@ -8,7 +8,9 @@ import javax.swing.border.EmptyBorder;
 
 import presentacion.controlador.ControladorReparacion;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 
 public class VentanaPresupuestos extends JFrame 
 {
@@ -32,6 +34,9 @@ public class VentanaPresupuestos extends JFrame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 504, 153);
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		this.setLocationRelativeTo(null);
 
 		contentPane = new JPanel();

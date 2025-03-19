@@ -20,7 +20,9 @@ import java.awt.Component;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -74,6 +76,9 @@ public class VentanaRolesUsuarios extends JFrame {
 		setResizable(false);
 		this.controlador = controlador;
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 602, 496);
 		this.setLocationRelativeTo(null);

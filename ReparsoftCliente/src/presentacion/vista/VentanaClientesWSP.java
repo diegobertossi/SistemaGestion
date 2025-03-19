@@ -18,7 +18,9 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JTable;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -56,6 +58,9 @@ public class VentanaClientesWSP extends JFrame {
 		setResizable(false);
 		this.controlador = controlador;
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 554, 392);
 		this.setLocationRelativeTo(null);

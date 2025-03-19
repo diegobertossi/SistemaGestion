@@ -3,6 +3,7 @@ package presentacion.vista;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Image;
 import java.sql.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -194,6 +195,10 @@ public class VentanaVisualizarEquipos extends JFrame {
 		setResizable(false);
 		this.controladorReparacion = controladorReparacion;
 
+		
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 1195, 701);
 		this.setLocationRelativeTo(null);

@@ -7,7 +7,9 @@ import javax.swing.border.EmptyBorder;
 
 import presentacion.controlador.ControladorReparacion;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.Image;
 
 public class VentanaEnviarCorreoOwsp extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -22,9 +24,14 @@ public class VentanaEnviarCorreoOwsp extends JFrame {
 		setResizable(false);
 		this.controlador = controlador;
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 306, 155);
 
+		
+		
 		this.setLocationRelativeTo(null);
 
 		contentPane = new JPanel();

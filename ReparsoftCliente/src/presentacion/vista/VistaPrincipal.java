@@ -13,6 +13,7 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Cursor;
 import java.awt.Dimension;
 
@@ -58,6 +59,8 @@ public class VistaPrincipal extends JFrame {
 		getContentPane().setBackground(new Color(219, 227, 246));
 		setMinimumSize(new Dimension(500, 400));
 		initialize();
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
 
 	}
 

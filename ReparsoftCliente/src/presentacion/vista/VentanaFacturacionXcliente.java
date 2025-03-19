@@ -8,6 +8,8 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.util.Enumeration;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import javax.swing.JTextField;
@@ -67,6 +69,9 @@ public class VentanaFacturacionXcliente extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1270, 700);
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		this.setLocationRelativeTo(null);
 		
 		

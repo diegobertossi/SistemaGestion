@@ -9,7 +9,9 @@ import javax.swing.border.EmptyBorder;
 import presentacion.controlador.ControladorSalidas;
 
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 
 public class VentanaSalidas extends JFrame 
 {
@@ -29,7 +31,9 @@ public class VentanaSalidas extends JFrame
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 495, 183);
-
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		this.setLocationRelativeTo(null);
 
 		contentPane = new JPanel();

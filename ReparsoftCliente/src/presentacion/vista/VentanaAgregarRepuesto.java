@@ -11,7 +11,9 @@ import presentacion.controlador.ControladorReparacion;
 import java.awt.Component;
 import javax.swing.Box;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Color;
 
 public class VentanaAgregarRepuesto extends JFrame 
@@ -35,6 +37,9 @@ public class VentanaAgregarRepuesto extends JFrame
 		super();
 		setResizable(false);
 		this.controlador = controlador;
+		
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 490, 251);

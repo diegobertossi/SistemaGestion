@@ -17,7 +17,9 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Insets;
 
 import javax.swing.SwingConstants;
@@ -73,6 +75,8 @@ public class VentanaVerificarIngresoAnterior extends JFrame
 		setResizable(false);
 		this.controladorRepacion = controladorrepacion;
 		
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 589, 578);

@@ -12,6 +12,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JComboBox;
@@ -98,6 +99,9 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		super();
 		this.controladorPresupuestos = controladorPresupuestos;
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		this.this_windowOpened(null);
 		setSize(1200, 680);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

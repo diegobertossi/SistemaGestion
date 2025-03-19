@@ -96,6 +96,9 @@ public class VentanaListadoReparaciones extends JFrame {
         super();
         this.controlador = controlador;
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+        
         this.this_windowOpened(null);
         setSize(1200, 680);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

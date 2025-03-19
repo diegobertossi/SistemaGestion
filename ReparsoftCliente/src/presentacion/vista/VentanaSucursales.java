@@ -17,7 +17,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.border.EtchedBorder;
 
 public class VentanaSucursales extends JFrame
@@ -60,6 +63,10 @@ public class VentanaSucursales extends JFrame
 		setResizable(false);
 		this.setDefaultCloseOperation(VentanaSucursales.DO_NOTHING_ON_CLOSE);
 		this.controladorSucursal = controladorSucursal;
+		
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+		
 		setBounds(100, 100, 517, 493);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
