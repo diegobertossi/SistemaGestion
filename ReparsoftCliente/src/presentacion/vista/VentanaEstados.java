@@ -40,6 +40,7 @@ public class VentanaEstados extends JFrame
 	private JRadioButton rdbtnSinFalla;
 	private JRadioButton rdbtnSinReparacion;
 	private JRadioButton rdbtnNoAceptaron;
+	private JRadioButton rdbtnRecambio;
 	
 	private ButtonGroup GrupoEstadoTecnico;
 	
@@ -47,6 +48,7 @@ public class VentanaEstados extends JFrame
 	private JRadioButton rdbtnAceptado;
 	private JRadioButton rdbtnNoAceptado;
 	private JRadioButton rdbtnGarantia;
+	private JRadioButton rdbtnGarantiaSiemens;
 	
 	
 	private ButtonGroup GrupoEstadoComercial;
@@ -194,6 +196,12 @@ public class VentanaEstados extends JFrame
 		rdbtnNoAceptaron.setBounds(155, 77, 163, 23);
 		panel_3.add(rdbtnNoAceptaron);
 		
+		rdbtnRecambio = new JRadioButton("Sin Rep-Recambio Propuesto");
+		rdbtnRecambio.setFont(new Font("Cambria", Font.PLAIN, 12));
+		rdbtnRecambio.setBackground(SystemColor.activeCaption);
+		rdbtnRecambio.setBounds(6, 102, 221, 23);
+		panel_3.add(rdbtnRecambio);
+		
 		GrupoEstadoTecnico = new ButtonGroup();
 		GrupoEstadoTecnico.add(rdbtnSinRevisar);
 		GrupoEstadoTecnico.add(rdbtnEnReparacion);
@@ -203,6 +211,9 @@ public class VentanaEstados extends JFrame
 		GrupoEstadoTecnico.add(rdbtnSinFalla);
 		GrupoEstadoTecnico.add(rdbtnSinReparacion);
 		GrupoEstadoTecnico.add(rdbtnNoAceptaron);
+		GrupoEstadoTecnico.add(rdbtnRecambio);
+		
+
 		
 		
 
@@ -237,12 +248,21 @@ public class VentanaEstados extends JFrame
 		rdbtnGarantia.setBounds(6, 77, 149, 23);
 		panel_4.add(rdbtnGarantia);
 		
+
+		
+		rdbtnGarantiaSiemens = new JRadioButton("Garantía Siemens");
+		rdbtnGarantiaSiemens.setFont(new Font("Cambria", Font.PLAIN, 12));
+		rdbtnGarantiaSiemens.setBackground(SystemColor.activeCaption);
+		rdbtnGarantiaSiemens.setBounds(6, 102, 149, 23);
+		panel_4.add(rdbtnGarantiaSiemens);
+		
 		
 		GrupoEstadoComercial = new ButtonGroup();
 		GrupoEstadoComercial.add(rdbtnEspera);
 		GrupoEstadoComercial.add(rdbtnAceptado);
 		GrupoEstadoComercial.add(rdbtnNoAceptado);
 		GrupoEstadoComercial.add(rdbtnGarantia);
+		GrupoEstadoComercial.add(rdbtnGarantiaSiemens);
 		
 		
 		lblEstadoFisico = new JLabel("ESTADO FÍSICO:");
@@ -595,6 +615,34 @@ public class VentanaEstados extends JFrame
 
 	public void setBtnHabilitarLugarIngreso(JButton btnHabilitarLugarIngreso) {
 		this.btnHabilitarLugarIngreso = btnHabilitarLugarIngreso;
+	}
+
+
+
+
+	public JRadioButton getRdbtnRecambio() {
+		return rdbtnRecambio;
+	}
+
+
+
+
+	public void setRdbtnRecambio(JRadioButton rdbtnRecambio) {
+		this.rdbtnRecambio = rdbtnRecambio;
+	}
+
+
+
+
+	public JRadioButton getRdbtnGarantiaSiemens() {
+		return rdbtnGarantiaSiemens;
+	}
+
+
+
+
+	public void setRdbtnGarantiaSiemens(JRadioButton rdbtnGarantiaSiemens) {
+		this.rdbtnGarantiaSiemens = rdbtnGarantiaSiemens;
 	}
 }
 

@@ -2310,7 +2310,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setTextRemitoCliente(reparacion.getRemitoCliente());
 
 		ventanaVisualizarEquipos.setTextCliente(reparacion.getCliente());
+		ventanaVisualizarEquipos.getTextCliente().setCaretPosition(0);
 		ventanaVisualizarEquipos.setTextSucursal(reparacion.getSucursal());
+		ventanaVisualizarEquipos.getTextSucursal().setCaretPosition(0);
 
 		if (reparacion.getFecha_Entrada() == null)
 			ventanaVisualizarEquipos.setTextFechaEntrada2(null);
@@ -2427,7 +2429,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setTextRemitoCliente(reparacion.getRemitoCliente());
 
 		ventanaVisualizarEquipos.setTextCliente(reparacion.getCliente());
+		ventanaVisualizarEquipos.getTextCliente().setCaretPosition(0);
 		ventanaVisualizarEquipos.setTextSucursal(reparacion.getSucursal());
+		ventanaVisualizarEquipos.getTextSucursal().setCaretPosition(0);
 
 		if (reparacion.getFecha_Entrada() == null)
 			ventanaVisualizarEquipos.setTextFechaEntrada2(null);
@@ -2554,7 +2558,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setTextRemitoCliente(reparacion.getRemitoCliente());
 
 		ventanaVisualizarEquipos.setTextCliente(reparacion.getCliente());
+		ventanaVisualizarEquipos.getTextCliente().setCaretPosition(0);
 		ventanaVisualizarEquipos.setTextSucursal(reparacion.getSucursal());
+		ventanaVisualizarEquipos.getTextSucursal().setCaretPosition(0);
 
 		if (reparacion.getFecha_Entrada() == null)
 			ventanaVisualizarEquipos.setTextFechaEntrada2(null);
