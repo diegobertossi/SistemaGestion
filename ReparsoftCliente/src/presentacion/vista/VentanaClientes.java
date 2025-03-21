@@ -30,6 +30,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.MatteBorder;
+import java.awt.Cursor;
 
 public class VentanaClientes extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -186,24 +187,28 @@ public class VentanaClientes extends JFrame {
 		panel_2.setLayout(null);
 
 		btnAgregar = new JButton("<html><center>AGREGAR</html>");
+		btnAgregar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAgregar.setBounds(14, 18, 171, 23);
 		panel_2.add(btnAgregar);
 		btnAgregar.setBackground(new Color(240, 240, 240));
 		btnAgregar.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnEditar = new JButton("<html><center>EDITAR</html>");
+		btnEditar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEditar.setBounds(14, 59, 171, 23);
 		panel_2.add(btnEditar);
 		btnEditar.setBackground(new Color(240, 240, 240));
 		btnEditar.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnBorrar = new JButton("<html><center>ELIMINAR</html>");
+		btnBorrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnBorrar.setBounds(14, 100, 171, 23);
 		panel_2.add(btnBorrar);
 		btnBorrar.setBackground(new Color(240, 240, 240));
 		btnBorrar.setFont(new Font("Cambria", Font.BOLD, 14));
 		
 				btnGenerarSucursales = new JButton("<html><center>GENERAR SUCURSAL</html>");
+				btnGenerarSucursales.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				btnGenerarSucursales.setBounds(14, 141, 171, 23);
 				panel_2.add(btnGenerarSucursales);
 				btnGenerarSucursales.setBackground(new Color(240, 240, 240));
@@ -321,6 +326,7 @@ public class VentanaClientes extends JFrame {
 				lblSucursales.setFont(new Font("Cambria", Font.BOLD, 12));
 				
 						btnVisualizarSucursales = new JButton("<html><center>Visualizar Sucursales</html>");
+						btnVisualizarSucursales.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 						btnVisualizarSucursales.setBounds(473, 72, 98, 39);
 						panel_1.add(btnVisualizarSucursales);
 						btnVisualizarSucursales.setVisible(false);

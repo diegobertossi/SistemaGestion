@@ -2319,6 +2319,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		else
 			ventanaVisualizarEquipos.setTextFechaEntrada2((dateFormat.parse(reparacion.getFecha_Entrada())));
 
+		if (reparacion.getFecha_Salida() == null)
+			ventanaVisualizarEquipos.setTextFechaSalida(null);
+		else
+			ventanaVisualizarEquipos.setTextFechaSalida((dateFormat.parse(reparacion.getFecha_Salida())));
+		
+		
 		ventanaVisualizarEquipos.setTextEstadoFisico(reparacion.getEstadoFisico());
 		ventanaVisualizarEquipos.setTextEstadoTecnico(reparacion.getEstadoTecnico());
 		ventanaVisualizarEquipos.setTextEstadoComercial(reparacion.getEstadoComercial());
@@ -2989,6 +2995,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getFechaEntrada().setEnabled(false);
 		ventanaVisualizarEquipos.getFechaReparacion().setEnabled(false);
 		ventanaVisualizarEquipos.getFechaRespuesta().setEnabled(false);
+		ventanaVisualizarEquipos.getFechaSalida().setEnabled(false);
 		ventanaVisualizarEquipos.getBtnGuardarCambios().setEnabled(false);
 		ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(false);
 		ventanaVisualizarEquipos.getBtnRepuestos().setEnabled(false);
@@ -3030,6 +3037,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getFechaEntrada().setEnabled(true);
 		ventanaVisualizarEquipos.getFechaReparacion().setEnabled(true);
 		ventanaVisualizarEquipos.getFechaRespuesta().setEnabled(true);
+		ventanaVisualizarEquipos.getFechaSalida().setEnabled(true);
 		ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(true);
 		ventanaVisualizarEquipos.getBtnGuardarCambios().setEnabled(true);
 		ventanaVisualizarEquipos.getBtnRepuestos().setEnabled(true);
@@ -3379,6 +3387,14 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			fechaaceptacionvisual = dateFormat.format(fechaAceptacionVisual);
 		}
+		
+		String fechasalidaVisual = null;
+		java.util.Date fechaSalidaVisual = ventanaVisualizarEquipos.getFechaSalida().getDate();
+		if (fechaSalidaVisual != null) {
+
+			fechasalidaVisual = dateFormat.format(fechaSalidaVisual);
+		}
+		
 
 		String fechafabrvisual = null;
 		java.util.Date fechaFabrvisual = ventanaVisualizarEquipos.getFechaFabr().getDate();
@@ -3446,7 +3462,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
 					idCliente, idSucursal, fechafabrvisual, idUsuario, nombreTecnico, enviado, presupuesto,
 					presupuestoDolar, pago, presupuestoGenerado, avisoEnviado, presupuestoEnviado, OrdenDeCompra,
-					lugarIngreso);
+					lugarIngreso, fechasalidaVisual);
 		}
 		return reparacionAeditar;
 

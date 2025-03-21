@@ -4,6 +4,7 @@ public class ReparacionDTO {
 	// private int Id;
 	private int ELS;
 	private String FechaEntrada;
+	private String FechaSalida;
 	private String FechadeDiagnostico;
 	private String FechAceptacion;
 	private String Falla;
@@ -57,7 +58,7 @@ public class ReparacionDTO {
 			Boolean PresupuestoGenerado, Boolean Enviado, Double Pago, Boolean PresupuestoEnviado, String Nombre,
 			String Correo, String Modelo, String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente,
 			int IDCliente, int IDSuc, String Cliente, String Sucursal, String NombreUsuario, int Codigo,
-			int NumeroRemitoSalida, String FechaFabr, Boolean AvisoEnviado, Boolean WordGenerado, Boolean WordEnviado, String LugarDeIngreso) {
+			int NumeroRemitoSalida, String FechaFabr, Boolean AvisoEnviado, Boolean WordGenerado, Boolean WordEnviado, String LugarDeIngreso,String FechaDeSalida ) {
 
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
@@ -85,6 +86,7 @@ public class ReparacionDTO {
 		this.wordGenerado = WordGenerado;
 		this.wordEnviado = WordEnviado;
 		this.LugarDeIngreso = LugarDeIngreso;
+		this.FechaSalida = FechaDeSalida;
 
 		this.Enviado = Enviado;
 		this.Pago = Pago;
@@ -142,7 +144,7 @@ public class ReparacionDTO {
 			String RemitoCliente, int IDEquipo, String Cliente, String Sucursal, String FechAceptacion, String Nombre,
 			String Modelo, String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente, int IDCliente,
 			int IDSuc, String FechaFabr, int idUsuario, String nombreUsuario,boolean enviado, double presupuesto,double presupuestoDolar, double pago,
-			boolean PresupuestoGenerado, boolean avisoEnviao, boolean PresupuestoEnviado, String ordenDeCompra, String LugarDeIngreso) {
+			boolean PresupuestoGenerado, boolean avisoEnviao, boolean PresupuestoEnviado, String ordenDeCompra, String LugarDeIngreso, String FechaDeSalida ) {
 
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
@@ -178,6 +180,7 @@ public class ReparacionDTO {
 		this.OrdendeCompra = ordenDeCompra;
 		this.NombreUsuario = nombreUsuario;
 		this.LugarDeIngreso = LugarDeIngreso;
+		this.FechaSalida = FechaDeSalida;
 
 	}
 
@@ -241,7 +244,7 @@ public class ReparacionDTO {
 	public ReparacionDTO(int ELS, String Fecha_Entrada, String Falla, String EstadoFisico, String EstadoTecnico,
 			String EstadoComercial, String RemitoCliente, int IDEquipo, int IDusuario, String Nombre, String Modelo,
 			String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente, int IDCliente, int IDSuc,
-			String FechaFabr,String lugarDeIngreso) {
+			String FechaFabr,String lugarDeIngreso ) {
 
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
@@ -262,11 +265,12 @@ public class ReparacionDTO {
 		this.idSucursal = IDSuc;
 		this.FechaFabr = FechaFabr;
 		this.LugarDeIngreso = lugarDeIngreso;
+		
 
 	}
 
 	public ReparacionDTO(int IDEquipo, String Nombre, String Modelo, String Marca, String NumeroDeSerie, String Aviso,
-			String ClienteCliente, int IDCliente, int IDSuc, String lugarDeIngreso) {
+			String ClienteCliente, int IDCliente, int IDSuc, String lugarDeIngreso, String FechaDeSalida ) {
 		this.idEquipo = IDEquipo;
 		this.NombreEquipo = Nombre;
 		this.Modelo = Modelo;
@@ -277,7 +281,7 @@ public class ReparacionDTO {
 		this.idCliente = IDCliente;
 		this.idSucursal = IDSuc;
 		this.LugarDeIngreso = lugarDeIngreso;
-		
+		this.FechaSalida = FechaDeSalida;
 		
 
 	}
@@ -725,6 +729,16 @@ public class ReparacionDTO {
 
 	public void setWordGenerado(Boolean WordGenerado) {
 		wordGenerado = WordGenerado;
+	}
+
+
+	
+	public String getFecha_Salida() {
+		return FechaSalida;
+	}
+
+	public void setFecha_Salida(String fecha_Salida) {
+		FechaSalida = getFecha_Salida();
 	}
 
 

@@ -15,6 +15,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
+import java.awt.Cursor;
 
 public class VentanaUbicacionBaseDeDatos extends JFrame 
 {
@@ -56,6 +57,7 @@ public class VentanaUbicacionBaseDeDatos extends JFrame
 		
 			
 			btnAcceder = new JButton("<html><center>ACCEDER</html>");
+			btnAcceder.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			btnAcceder.setBackground(new Color(176, 196, 222));
 			btnAcceder.setForeground(new Color(30, 144, 255));
 			btnAcceder.setBounds(111, 55, 134, 38);

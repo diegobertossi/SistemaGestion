@@ -32,6 +32,7 @@ import presentacion.vista.VentanaOpcionesBackup;
 public class ControladorBackup implements ActionListener, MouseListener {
 	private VentanaBackUp ventanaBackUp;
 	private VentanaOpcionesBackup ventanaOpcionesBackup;
+	private String rutadefaultBackup = "";
 
 	@SuppressWarnings("unused")
 	private Agenda agenda;
@@ -54,7 +55,18 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		String NombreBackUp = "Backup Reparsoft " + dia.getDate() + "-" + (dia.getMonth() + 1) + "-"
 				+ (dia.getYear() + 1900) + ".sql";
 
-		String rutaBackup = "F:\\els\\Administracion\\Sistema\\Base de datos\\Backups\\";
+		//String rutaBackup = "F:\\els\\Administracion\\Sistema\\Base de datos\\Backups\\";
+		
+		
+		//String rutadefaultBackup = "";
+
+		if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
+
+			rutadefaultBackup = "F:\\els\\Administracion\\Sistema\\Base de datos\\Backups\\";
+		} else if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
+			rutadefaultBackup = "F:\\els\\Bariloche\\Administracion\\Sistema\\Base de datos\\Backups\\";
+		}
+
 
 		String NombreBackUpSinExtension = "Backup Reparsoft " + dia.getDate() + "-" + (dia.getMonth() + 1) + "-"
 				+ (dia.getYear() + 1900);
@@ -71,7 +83,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 			ventanaOpcionesBackup.getBtnResetDatos().addActionListener(this);
 
 			ventanaOpcionesBackup.getTxtNombreArchivo().setText(NombreBackUp);
-			ventanaOpcionesBackup.getTxtRutaArchivo().setText(rutaBackup);
+			ventanaOpcionesBackup.getTxtRutaArchivo().setText(rutadefaultBackup);
 
 			// F:\els\Administracion\Sistema\Base de datos\Backups
 
@@ -98,7 +110,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 		if (ventanaOpcionesBackup != null && e.getSource() == ventanaOpcionesBackup.getBtnCambiarNombre()) {
 
-			JFileChooser cambiarNombreRuta = new JFileChooser(rutaBackup);
+			JFileChooser cambiarNombreRuta = new JFileChooser(rutadefaultBackup);
 
 			FileNameExtensionFilter sqlFilter = new FileNameExtensionFilter("Bases de datos SQL", "sql");
 			cambiarNombreRuta.setFileFilter(sqlFilter);
@@ -122,7 +134,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		if (ventanaOpcionesBackup != null && e.getSource() == ventanaOpcionesBackup.getBtnResetDatos()) {
 
 			ventanaOpcionesBackup.getTxtNombreArchivo().setText(NombreBackUp);
-			ventanaOpcionesBackup.getTxtRutaArchivo().setText(rutaBackup);
+			ventanaOpcionesBackup.getTxtRutaArchivo().setText(rutadefaultBackup);
 
 		}
 
@@ -137,15 +149,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		String url = "jdbc:mysql://localhost:3306/" + bd;
 		String urlcero = "jdbc:mysql://localhost/";
 		ConnectionUrl conn = null;
-
-		String rutadefaultBackup = "";
-
-		if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
-
-			rutadefaultBackup = "F:\\els\\Administracion\\Sistema\\Base de datos\\Backups\\";
-		} else if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
-			rutadefaultBackup = "F:\\els\\Bariloche\\Administracion\\Sistema\\Base de datos\\Backups\\";
-		}
 
 		JFileChooser archivoBackup = new JFileChooser(rutadefaultBackup);
 

@@ -18,6 +18,7 @@ import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JSeparator;
+import java.awt.Cursor;
 
 @SuppressWarnings("serial")
 public class VentanaLogin extends JFrame {
@@ -50,12 +51,14 @@ public class VentanaLogin extends JFrame {
 		panel.setLayout(null);
 		
 				btnAceptar = new JButton("Aceptar");
+				btnAceptar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				btnAceptar.setBounds(292, 78, 108, 29);
 				panel.add(btnAceptar);
 				btnAceptar.setForeground(new Color(47, 79, 79));
 				btnAceptar.setFont(new Font("Cambria", Font.BOLD, 16));
 				
 				btnCancelar = new JButton("Cancelar");
+				btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				btnCancelar.setBounds(292, 108, 108, 29);
 				panel.add(btnCancelar);
 				btnCancelar.setForeground(new Color(47, 79, 79));

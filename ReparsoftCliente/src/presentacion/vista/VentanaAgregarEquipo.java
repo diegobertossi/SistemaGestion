@@ -30,6 +30,7 @@ import java.awt.Toolkit;
 
 import javax.swing.border.MatteBorder;
 import javax.swing.border.EtchedBorder;
+import java.awt.Cursor;
 
 public class VentanaAgregarEquipo extends JFrame {
 
@@ -107,6 +108,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		this.setIconImage(icon);
 		
 		FechaEntrada = new com.toedter.calendar.JDateChooser("dd/MM/yyyy", "##-##-####", '-');
+		FechaEntrada.getCalendarButton().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 821, 585);
@@ -210,6 +212,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		lblFechaDeFabr.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnGenerarSerie = new JButton("<html><center>Generar N° de Serie</html>");
+		btnGenerarSerie.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnGenerarSerie.setBounds(325, 110, 147, 20);
 		panel_6.add(btnGenerarSerie);
 		btnGenerarSerie.setForeground(Color.BLACK);
@@ -217,6 +220,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		btnGenerarSerie.setBackground(new Color(176, 224, 230));
 
 		btnFechaDefault = new JButton("<html><center>Si no se conoce fecha, presionar aquí</html>");
+		btnFechaDefault.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnFechaDefault.setBounds(235, 140, 237, 23);
 		panel_6.add(btnFechaDefault);
 		btnFechaDefault.setForeground(Color.BLACK);
@@ -383,6 +387,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_3.setLayout(null);
 
 		BotonNuevaReparacion = new JButton("<html><center>NUEVA REPARACIÓN</html>");
+		BotonNuevaReparacion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonNuevaReparacion.setEnabled(false);
 		BotonNuevaReparacion.setBackground(new Color(152, 251, 152));
 		BotonNuevaReparacion.setBounds(272, 11, 105, 45);
@@ -391,6 +396,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		BotonNuevaReparacion.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		BotonGenerarRegistro = new JButton("<html><center>GENERAR REGISTRO<html>");
+		BotonGenerarRegistro.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonGenerarRegistro.setBackground(new Color(152, 251, 152));
 		BotonGenerarRegistro.setBounds(10, 11, 105, 45);
 		panel_3.add(BotonGenerarRegistro);
@@ -398,6 +404,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		BotonGenerarRegistro.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		BotonGuardar = new JButton("<html><center>GUARDAR<html>");
+		BotonGuardar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonGuardar.setBackground(new Color(152, 251, 152));
 		BotonGuardar.setBounds(125, 11, 105, 45);
 		panel_3.add(BotonGuardar);
@@ -412,6 +419,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_2.setLayout(null);
 
 		rdbtnMDP = new JRadioButton("MDP");
+		rdbtnMDP.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		rdbtnMDP.setOpaque(false);
 		rdbtnMDP.setBackground(SystemColor.activeCaption);
 		rdbtnMDP.setFont(new Font("Cambria", Font.PLAIN, 14));
@@ -419,6 +427,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_2.add(rdbtnMDP);
 
 		rdbtnBRC = new JRadioButton("BRC");
+		rdbtnBRC.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		rdbtnBRC.setOpaque(false);
 		rdbtnBRC.setBackground(SystemColor.activeCaption);
 		rdbtnBRC.setFont(new Font("Cambria", Font.PLAIN, 14));
@@ -426,6 +435,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_2.add(rdbtnBRC);
 
 		rdbtnCABA = new JRadioButton("CABA");
+		rdbtnCABA.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		rdbtnCABA.setOpaque(false);
 		rdbtnCABA.setBackground(SystemColor.activeCaption);
 		rdbtnCABA.setFont(new Font("Cambria", Font.PLAIN, 14));
@@ -448,6 +458,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_4.setLayout(null);
 
 		BotonVerificarIngresoAnterior = new JButton("<html><center>VERIFICAR INGRESO</html>");
+		BotonVerificarIngresoAnterior.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonVerificarIngresoAnterior.setBounds(7, 8, 145, 37);
 		panel_4.add(BotonVerificarIngresoAnterior);
 		BotonVerificarIngresoAnterior.setBackground(new Color(0, 191, 255));
@@ -455,6 +466,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		BotonVerificarIngresoAnterior.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		btnaltaCliente = new JButton("<html><center>ALTA CLIENTE<html>");
+		btnaltaCliente.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnaltaCliente.setBounds(159, 8, 145, 37);
 		panel_4.add(btnaltaCliente);
 		btnaltaCliente.setForeground(Color.BLACK);
@@ -462,6 +474,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		btnaltaCliente.setBackground(new Color(0, 191, 255));
 
 		btnrecargarLista = new JButton("<html><center>ACTUALIZAR CLIENTES</html>");
+		btnrecargarLista.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnrecargarLista.setBounds(311, 9, 145, 36);
 		panel_4.add(btnrecargarLista);
 		btnrecargarLista.setForeground(Color.BLACK);

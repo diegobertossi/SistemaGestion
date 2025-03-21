@@ -281,6 +281,7 @@ public class VentanaEstados extends JFrame
 		lblEstadoTecnico.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		btnAceptarEdicion = new JButton("ACEPTAR EDICIÓN");
+		btnAceptarEdicion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAceptarEdicion.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnAceptarEdicion.setBounds(563, 185, 164, 34);
 		panel.add(btnAceptarEdicion);
@@ -327,6 +328,7 @@ public class VentanaEstados extends JFrame
 		panel.add(lblLugarDeIngreso);
 		
 		btnHabilitarLugarIngreso = new JButton("EDITAR");
+		btnHabilitarLugarIngreso.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnHabilitarLugarIngreso.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnHabilitarLugarIngreso.setBounds(409, 185, 95, 34);
 		panel.add(btnHabilitarLugarIngreso);

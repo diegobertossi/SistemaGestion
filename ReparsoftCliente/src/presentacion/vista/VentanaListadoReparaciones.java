@@ -153,6 +153,7 @@ public class VentanaListadoReparaciones extends JFrame {
         panelBotones.setLayout(new FlowLayout(FlowLayout.RIGHT));
         
         btnEstadisticas = new JButton("ESTADÍSTICAS");
+        btnEstadisticas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnEstadisticas.setPreferredSize(new Dimension(150, 30));
         btnEstadisticas.setMargin(new Insets(0, 10, 0, 10));
         btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 14));

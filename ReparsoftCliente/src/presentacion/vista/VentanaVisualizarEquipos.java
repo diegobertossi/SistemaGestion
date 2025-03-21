@@ -90,6 +90,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JTextField textCliente;
 	private JTextField textSucursal;
 	private JDateChooser FechaEntrada;
+	private JDateChooser FechaSalida;
 	private JTextField textEstadoFisico;
 
 	private JTextField textEstadoComercial;
@@ -269,24 +270,28 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_10.setLayout(null);
 
 		BotonAnterior = new JButton("");
+		BotonAnterior.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonAnterior.setBounds(88, 6, 65, 41);
 		panel_10.add(BotonAnterior);
 		BotonAnterior.setIcon(new ImageIcon(this.getClass().getResource("/anterior.png")));
 		BotonAnterior.setFont(new Font("Verdana", Font.BOLD, 11));
 
 		BotonPrimero = new JButton("");
+		BotonPrimero.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonPrimero.setBounds(16, 6, 65, 41);
 		panel_10.add(BotonPrimero);
 		BotonPrimero.setIcon(new ImageIcon(this.getClass().getResource("/primero.png")));
 		BotonPrimero.setFont(new Font("Verdana", Font.BOLD, 11));
 
 		BotonUltimo = new JButton("");
+		BotonUltimo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonUltimo.setBounds(232, 6, 65, 41);
 		panel_10.add(BotonUltimo);
 		BotonUltimo.setIcon(new ImageIcon(this.getClass().getResource("/ultimo.png")));
 		BotonUltimo.setFont(new Font("Verdana", Font.BOLD, 11));
 
 		BotonSiguiente = new JButton("");
+		BotonSiguiente.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonSiguiente.setBounds(160, 6, 65, 41);
 		panel_10.add(BotonSiguiente);
 		BotonSiguiente.setIcon(new ImageIcon(this.getClass().getResource("/siguiente.png")));
@@ -557,6 +562,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textNumeroRemito.setAlignmentX(0.5f);
 
 		FechaEntrada = new JDateChooser();
+		FechaEntrada.getCalendarButton().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		FechaEntrada.setDateFormatString("dd/MM/yyyy");
 		FechaEntrada.setForeground(new Color(0, 0, 0));
 		FechaEntrada.setEnabled(false);
@@ -566,6 +572,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel.add(FechaEntrada);
 
 		FechaReparacion = new JDateChooser("dd/MM/yyyy", "##-##-####", '-');
+		FechaReparacion.getCalendarButton().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		FechaReparacion.setEnabled(false);
 		((JTextFieldDateEditor) FechaReparacion.getDateEditor()).setDisabledTextColor(Color.darkGray);
 		FechaReparacion.setFont(new Font("Cambria", Font.BOLD, 14));
@@ -574,6 +581,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		FechaReparacion.setFocusable(false);
 
 		FechaRespuesta = new JDateChooser("dd/MM/yyyy", "##-##-####", '-');
+		FechaRespuesta.getCalendarButton().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		FechaRespuesta.setEnabled(false);
 		((JTextFieldDateEditor) FechaRespuesta.getDateEditor()).setDisabledTextColor(Color.darkGray);
 		FechaRespuesta.setFont(new Font("Cambria", Font.BOLD, 14));
@@ -656,6 +664,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		BotonEditarEstados.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnGenerarRemito = new JButton("GENERAR REMITO");
+		btnGenerarRemito.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnGenerarRemito.setBackground(SystemColor.textHighlight);
 		btnGenerarRemito.setForeground(SystemColor.text);
 		btnGenerarRemito.setFont(new Font("Cambria", Font.BOLD, 14));
@@ -667,11 +676,12 @@ public class VentanaVisualizarEquipos extends JFrame {
 		lblFechaDeSalida.setBounds(7, 81, 121, 14);
 		panel_4.add(lblFechaDeSalida);
 
-		JDateChooser FechaSalida = new JDateChooser("dd/MM/yyyy", "##-##-####", '-');
+		FechaSalida = new JDateChooser("dd/MM/yyyy", "##-##-####", '-');
+		FechaSalida.getCalendarButton().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		FechaSalida.setFont(new Font("Cambria", Font.BOLD, 14));
 		FechaSalida.setFocusable(false);
 		FechaSalida.setEnabled(false);
-		FechaSalida.setBounds(138, 80, 131, 17);
+		FechaSalida.setBounds(138, 80, 159, 17);
 		panel_4.add(FechaSalida);
 
 		panel_7 = new JPanel();
@@ -825,6 +835,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		spRepuestos.setViewportView(tablaRepuestos_1);
 
 		btnRepuestos = new JButton("AGREGAR");
+		btnRepuestos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRepuestos.setEnabled(false);
 		btnRepuestos.setBounds(10, 298, 103, 23);
 		panel_3.add(btnRepuestos);
@@ -832,6 +843,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnRepuestos.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnEditarRepuesto = new JButton("GUARDAR EDICIÓN");
+		btnEditarRepuesto.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEditarRepuesto.setEnabled(false);
 		btnEditarRepuesto.setBounds(123, 298, 163, 23);
 		panel_3.add(btnEditarRepuesto);
@@ -839,6 +851,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnEditarRepuesto.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnEliminarRepuesto = new JButton("ELIMINAR");
+		btnEliminarRepuesto.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEliminarRepuesto.setEnabled(false);
 		btnEliminarRepuesto.setBounds(296, 298, 99, 23);
 		panel_3.add(btnEliminarRepuesto);
@@ -994,6 +1007,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel.add(separator_10);
 
 		BotonRefrescarPantalla = new JButton("<html><center>REFRESCAR PANTALLA<html>");
+		BotonRefrescarPantalla.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonRefrescarPantalla.setForeground(new Color(0, 0, 0));
 		BotonRefrescarPantalla.setIcon(new ImageIcon(this.getClass().getResource("/refresh.png")));
 		BotonRefrescarPantalla.setFont(new Font("Cambria", Font.BOLD, 10));
@@ -1008,12 +1022,14 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel.add(comboELS);
 
 		btnBuscarELS = new JButton("BUSCAR ELS");
+		btnBuscarELS.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnBuscarELS.setBackground(new Color(224, 255, 255));
 		btnBuscarELS.setFont(new Font("Cambria", Font.BOLD, 13));
 		btnBuscarELS.setBounds(440, 6, 159, 35);
 		panel.add(btnBuscarELS);
 		
 		btnBuscar = new JButton("BUSQUEDA GENERAL");
+		btnBuscar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnBuscar.setBackground(new Color(224, 255, 255));
 		btnBuscar.setFont(new Font("Cambria", Font.BOLD, 13));
 		btnBuscar.setBounds(642, 6, 159, 35);
@@ -1178,6 +1194,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 																																						panel_presupuesto.add(lblInformeSiemensEnviado);
 																																						
 																																								btnenviarCorreoOwsp = new JButton("<html><center>ENVIAR PRESUPUESTO</html>");
+																																								btnenviarCorreoOwsp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 																																								btnenviarCorreoOwsp.setForeground(Color.WHITE);
 																																								btnenviarCorreoOwsp.setFont(new Font("Cambria", Font.BOLD, 14));
 																																								btnenviarCorreoOwsp.setBackground(SystemColor.textHighlight);
@@ -1267,6 +1284,14 @@ public class VentanaVisualizarEquipos extends JFrame {
 	public Date getFechaEntrada2() {
 		return (Date) FechaEntrada.getDate();
 
+	}
+	
+	public Date getFecha_Salida() {
+		return (Date) FechaSalida.getDate();
+
+	}
+	public JDateChooser getFechaSalida() {
+		return FechaSalida;
 	}
 
 	public JDateChooser getFechaReparacion() {
@@ -1543,6 +1568,11 @@ public class VentanaVisualizarEquipos extends JFrame {
 		this.FechaEntrada.setDate(date);
 	}
 
+	
+	public void setTextFechaSalida(java.util.Date date) {
+		this.FechaSalida.setDate(date);
+	}
+	
 	public void setTextEstadoFisico(String string) {
 		this.textEstadoFisico.setText(string);
 	}
@@ -1879,4 +1909,8 @@ public class VentanaVisualizarEquipos extends JFrame {
 	public void setBtnBuscar(JButton btnBuscar) {
 		this.btnBuscar = btnBuscar;
 	}
+
+
+
+	
 }

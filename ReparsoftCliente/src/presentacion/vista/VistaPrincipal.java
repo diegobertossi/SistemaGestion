@@ -222,6 +222,7 @@ public class VistaPrincipal extends JFrame {
 		panelDeControl.add(botonBackUp);
 		
 		botonConfiguracion = new JButton("CONFIGURACIÓN");
+		botonConfiguracion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonConfiguracion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}

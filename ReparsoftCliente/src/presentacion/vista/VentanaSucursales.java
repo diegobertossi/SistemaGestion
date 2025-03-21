@@ -22,6 +22,7 @@ import java.awt.Font;
 import java.awt.Image;
 
 import javax.swing.border.EtchedBorder;
+import java.awt.Cursor;
 
 public class VentanaSucursales extends JFrame
 {
@@ -142,18 +143,21 @@ public class VentanaSucursales extends JFrame
 		spSucursal.setViewportView(tablaSucursales);
 		
 		btnAgregar = new JButton("<html><center>Agregar Sucursal</html>");
+		btnAgregar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAgregar.setBackground(new Color(0, 255, 127));
 		btnAgregar.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnAgregar.setBounds(362, 74, 89, 40);
 		panel.add(btnAgregar);
 		
 		btnEditar = new JButton("<html><center>Editar Sucursal</html>");
+		btnEditar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEditar.setBackground(new Color(255, 255, 153));
 		btnEditar.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnEditar.setBounds(362, 121, 89, 40);
 		panel.add(btnEditar);
 		
 		btnBorrar = new JButton("<html><center>Eliminar Sucursal</html>");
+		btnBorrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnBorrar.setBackground(new Color(255, 51, 0));
 		btnBorrar.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnBorrar.setBounds(362, 167, 89, 40);
