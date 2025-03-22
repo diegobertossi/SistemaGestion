@@ -2080,8 +2080,10 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		int informeWordGenerado = 0;
 		int informeWordEnviado = 0;
 		int AvisoEnviado = 0;
-		String fechaRep="";
-		
+		String fechaReparacion="";
+		String fechaEntrada="";
+		String fechaRespuesta="";
+		String fechaSalida="";
 
 		try {
 
@@ -2135,14 +2137,29 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			
 			
 			if (reparacion_a_editar.getFechadereparacion() != null) {
-				fechaRep = reparacion_a_editar.getFechadereparacion();
+				fechaReparacion = reparacion_a_editar.getFechadereparacion();
 			} 
+			
+			if (reparacion_a_editar.getFechAceptacion() != null) {
+				fechaRespuesta = reparacion_a_editar.getFechAceptacion();
+			} 
+			
+			if (reparacion_a_editar.getFecha_Entrada() != null) {
+				fechaEntrada = reparacion_a_editar.getFecha_Entrada();
+			} 
+			
+			if (reparacion_a_editar.getFecha_Salida() != null) {
+				fechaSalida = reparacion_a_editar.getFecha_Salida();
+			} 
+			
 
-			if (reparacion_a_editar.getFechadereparacion() != null && reparacion_a_editar.getFechAceptacion() != null
+			
+
+			if (reparacion_a_editar.getFechAceptacion() != null
 					&& reparacion_a_editar.getFecha_Entrada() != null && reparacion_a_editar.getFecha_Salida() == null ) {
 				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
 						+ reparacion_a_editar.getFecha_Entrada() + "' , " + "FechadeDiagnostico = '"
-						+ reparacion_a_editar.getFechadereparacion() + "' ," + "Falla = '"
+						+ fechaReparacion + "' ," + "Falla = '"
 						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
 						+ "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario() + "' ," + "NombreUsuario = '"
 						+ reparacion_a_editar.getNombreUsuario() + "' ," + "Enviado = '" + enviado + "' ,"
@@ -2208,8 +2225,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 			}
 
-			else if (reparacion_a_editar.getFechadereparacion() == null
-					&& reparacion_a_editar.getFechAceptacion() == null
+			else if (reparacion_a_editar.getFechAceptacion() == null
 					&& reparacion_a_editar.getFecha_Entrada() != null) {
 				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
 						+ reparacion_a_editar.getFecha_Entrada() + "' ," + "FechadeDiagnostico = null ," + "Falla = '"
