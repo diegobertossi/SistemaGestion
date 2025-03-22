@@ -2080,6 +2080,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		int informeWordGenerado = 0;
 		int informeWordEnviado = 0;
 		int AvisoEnviado = 0;
+		String fechaRep="";
+		
 
 		try {
 
@@ -2130,6 +2132,11 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			} else if (reparacion_a_editar.getAvisoEnviado() == false) {
 				AvisoEnviado = 0;
 			}
+			
+			
+			if (reparacion_a_editar.getFechadereparacion() != null) {
+				fechaRep = reparacion_a_editar.getFechadereparacion();
+			} 
 
 			if (reparacion_a_editar.getFechadereparacion() != null && reparacion_a_editar.getFechAceptacion() != null
 					&& reparacion_a_editar.getFecha_Entrada() != null && reparacion_a_editar.getFecha_Salida() == null ) {
