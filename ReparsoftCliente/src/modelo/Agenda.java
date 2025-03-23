@@ -337,6 +337,14 @@ public class Agenda {
 		ReparacionR.editEquipo(Reparacion_a_editar);
 
 	}
+	
+	public void editarReparacionPresupuesto(ReparacionDTO reparacionAeditar) {
+		
+		ReparacionR.editPresupuesto(reparacionAeditar);
+		//ReparacionR.editEquipo(Reparacion_a_editar);
+		// TODO Auto-generated method stub
+		
+	}
 
 	public void borraReparacion(ReparacionDTO Reparacion_a_eliminar) {
 		ReparacionR.delete(Reparacion_a_eliminar);
@@ -750,6 +758,8 @@ public class Agenda {
 	public List<FacturacionXclienteDTO> dameFacturacionXcliente(int anio) {
 		return facturacionXcliente.readAll(anio);
 	}
+
+
 
 
 

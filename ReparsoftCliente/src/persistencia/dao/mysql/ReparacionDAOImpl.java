@@ -1,10 +1,16 @@
 package persistencia.dao.mysql;
 
+import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -2073,307 +2079,617 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	}
 
 	public boolean edit(ReparacionDTO reparacion_a_editar) {
+
 		PreparedStatement statement = null;
-		int enviado = 0;
-		int PresupGenerado = 0;
-		int PresupEnviado = 0;
-		int informeWordGenerado = 0;
-		int informeWordEnviado = 0;
-		int AvisoEnviado = 0;
-		String fechaReparacion="";
-		String fechaEntrada="";
-		String fechaRespuesta="";
-		String fechaSalida="";
+
+		String query = "UPDATE reparaciones SET " + "FechaEntrada = ?, " + "FechadeDiagnostico = ?, " + "Falla = ?, "
+				+ "Solucion = ?, " + "Informecliente = ?, " + "idUsuario = ?, " + "NombreUsuario = ?, "
+				+ "EstadoFisico = ?, " + "EstadoTecnico = ?, " + "EstadoComercial = ?, " + "RemitoCliente = ?, "
+				+ "OrdendeCompra = ?, " + "Agregadoaremito = ?, " + "RemitoGenerado = ?, " + "idEquipo = ?, "
+				+ "idRemito = ?, " + "PrecioPeso = ?, " + "PrecioDolar = ?, " + "InformeEnviado = ?, "
+				+ "FechAceptacion = ?, " + "PresupuestoGenerado = ?, " + "PresupuestoEnviado = ?, "
+				+ "WordGenerado = ?, " + "WordEnviado = ?, " + "Enviado = ?, " + "AvisoEnviado = ?, " + "Pago = ?, "
+				+ "FechaSalida = ? " + "WHERE ELS = ?";
+
+		// Define el formato en el que llega la fecha
+		SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		try {
 
-			if (reparacion_a_editar.getEnviado() == null) {
-				enviado = 0;
-			} else if (reparacion_a_editar.getEnviado() == true) {
-				enviado = 1;
-			} else if (reparacion_a_editar.getEnviado() == false) {
-				enviado = 0;
-			}
-
-			if (reparacion_a_editar.getPresupuestoGenerado() == null) {
-				PresupGenerado = 0;
-			} else if (reparacion_a_editar.getPresupuestoGenerado() == true) {
-				PresupGenerado = 1;
-			} else if (reparacion_a_editar.getPresupuestoGenerado() == false) {
-				PresupGenerado = 0;
-			}
-
-			if (reparacion_a_editar.getPresupuestoEnviado() == null) {
-				PresupEnviado = 0;
-			} else if (reparacion_a_editar.getPresupuestoEnviado() == true) {
-				PresupEnviado = 1;
-			} else if (reparacion_a_editar.getPresupuestoEnviado() == false) {
-				PresupEnviado = 0;
-			}
-
-			if (reparacion_a_editar.getWORDgenerado() == null) {
-				informeWordGenerado = 0;
-			} else if (reparacion_a_editar.getWORDgenerado() == true) {
-				informeWordGenerado = 1;
-			} else if (reparacion_a_editar.getWORDgenerado() == false) {
-				informeWordGenerado = 0;
-			}
-
-			if (reparacion_a_editar.getWORDenviado() == null) {
-				informeWordEnviado = 0;
-			} else if (reparacion_a_editar.getWORDenviado() == true) {
-				informeWordEnviado = 1;
-			} else if (reparacion_a_editar.getWORDenviado() == false) {
-				informeWordEnviado = 0;
-			}
-
-			if (reparacion_a_editar.getAvisoEnviado() == null) {
-				AvisoEnviado = 0;
-			} else if (reparacion_a_editar.getAvisoEnviado() == true) {
-				AvisoEnviado = 1;
-			} else if (reparacion_a_editar.getAvisoEnviado() == false) {
-				AvisoEnviado = 0;
-			}
+			statement = conexion.getSQLConexion().prepareStatement(query);
 			
-			
-			if (reparacion_a_editar.getFechadereparacion() != null) {
-				fechaReparacion = reparacion_a_editar.getFechadereparacion();
-			} 
-			
-			if (reparacion_a_editar.getFechAceptacion() != null) {
-				fechaRespuesta = reparacion_a_editar.getFechAceptacion();
-			} 
 			
 			if (reparacion_a_editar.getFecha_Entrada() != null) {
-				fechaEntrada = reparacion_a_editar.getFecha_Entrada();
-			} 
-			
+				try {
+
+					// Convierte la fecha de entrada al formato requerido
+					Date parsedDate = inputFormat.parse(reparacion_a_editar.getFecha_Entrada());
+					String formattedDate = outputFormat.format(parsedDate) + " 00:00:00"; // Agrega la hora
+																							// predeterminada
+
+					// Usa el formato correcto para crear el Timestamp
+					statement.setTimestamp(1, Timestamp.valueOf(formattedDate));
+				} catch (Exception e) {
+					throw new RuntimeException(
+							"El formato de la fecha de entrada no es válido o no se pudo convertir. Verifica los datos.",
+							e);
+				}
+			} else {
+				// Si la fecha es nula o vacía, establece el valor como NULL
+				statement.setNull(1, java.sql.Types.TIMESTAMP);
+			}
+
+			if (reparacion_a_editar.getFechadereparacion() != null) {
+				try {
+
+					// Convierte la fecha de entrada al formato requerido
+					Date parsedDate = inputFormat.parse(reparacion_a_editar.getFechadereparacion());
+					String formattedDate = outputFormat.format(parsedDate) + " 00:00:00"; // Agrega la hora
+																							// predeterminada
+
+					// Usa el formato correcto para crear el Timestamp
+					statement.setTimestamp(2, Timestamp.valueOf(formattedDate));
+				} catch (Exception e) {
+					throw new RuntimeException(
+							"El formato de la fecha de entrada no es válido o no se pudo convertir. Verifica los datos.",
+							e);
+				}
+			} else {
+				// Si la fecha es nula o vacía, establece el valor como NULL
+				statement.setNull(2, java.sql.Types.TIMESTAMP);
+			}
+
+			if (reparacion_a_editar.getFechAceptacion() != null) {
+				try {
+
+					// Convierte la fecha de entrada al formato requerido
+					Date parsedDate = inputFormat.parse(reparacion_a_editar.getFechAceptacion());
+					String formattedDate = outputFormat.format(parsedDate) + " 00:00:00"; // Agrega la hora
+																							// predeterminada
+
+					// Usa el formato correcto para crear el Timestamp
+					statement.setTimestamp(20, Timestamp.valueOf(formattedDate));
+				} catch (Exception e) {
+					throw new RuntimeException(
+							"El formato de la fecha de entrada no es válido o no se pudo convertir. Verifica los datos.",
+							e);
+				}
+			} else {
+				// Si la fecha es nula o vacía, establece el valor como NULL
+				statement.setNull(20, java.sql.Types.TIMESTAMP);
+			}
+
 			if (reparacion_a_editar.getFecha_Salida() != null) {
-				fechaSalida = reparacion_a_editar.getFecha_Salida();
-			} 
-			
+				try {
 
-			
+					// Convierte la fecha de entrada al formato requerido
+					Date parsedDate = inputFormat.parse(reparacion_a_editar.getFecha_Salida());
+					String formattedDate = outputFormat.format(parsedDate) + " 00:00:00"; // Agrega la hora
+																							// predeterminada
 
-			if (reparacion_a_editar.getFechAceptacion() != null
-					&& reparacion_a_editar.getFecha_Entrada() != null && reparacion_a_editar.getFecha_Salida() == null ) {
-				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
-						+ reparacion_a_editar.getFecha_Entrada() + "' , " + "FechadeDiagnostico = '"
-						+ fechaReparacion + "' ," + "Falla = '"
-						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
-						+ "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario() + "' ," + "NombreUsuario = '"
-						+ reparacion_a_editar.getNombreUsuario() + "' ," + "Enviado = '" + enviado + "' ,"
-						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "EstadoFisico = '"
-						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
-						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
-						+ "' ," + "PrecioDolar = '" + reparacion_a_editar.getPrecioDolar() + "' ," + "PrecioPeso = '"
-						+ reparacion_a_editar.getPrecioPeso() + "' ," + "EstadoComercial = '"
-						+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
-						+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "RemitoCliente = '"
-						+ reparacion_a_editar.getRemitoCliente() + "' ," + "PresupuestoGenerado = '" + PresupGenerado
-						+ "' ," + "OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ,"
-						+ "AvisoEnviado = '" + AvisoEnviado + "' ," + "PresupuestoEnviado = '" + PresupEnviado + "' ,"
-						+ "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
-						+ reparacion_a_editar.getELS() + "");
-
-				System.out.println("0");
-
-			} else if (reparacion_a_editar.getFechadereparacion() != null
-					&& reparacion_a_editar.getFechAceptacion() == null
-					&& reparacion_a_editar.getFecha_Entrada() != null) {
-				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
-						+ reparacion_a_editar.getFecha_Entrada() + "' , " + "FechadeDiagnostico = '"
-						+ reparacion_a_editar.getFechadereparacion() + "' ," + "Falla = '"
-						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
-						+ "' ," + "OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ," + "idUsuario = '"
-						+ reparacion_a_editar.getidUsuario() + "' ," + "NombreUsuario = '"
-						+ reparacion_a_editar.getNombreUsuario() + "' ," + "Enviado = '" + enviado + "' ,"
-						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "PrecioDolar = '"
-						+ reparacion_a_editar.getPrecioDolar() + "' ," + "PrecioPeso = '"
-						+ reparacion_a_editar.getPrecioPeso() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
-						+ "' ," + "PresupuestoGenerado = '" + PresupGenerado + "' ," + "EstadoFisico = '"
-						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
-						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
-						+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
-						+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "RemitoCliente = '"
-						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = null " + "WHERE ELS = "
-						+ reparacion_a_editar.getELS() + "");
-
-				System.out.println("1");
-
+					// Usa el formato correcto para crear el Timestamp
+					statement.setTimestamp(28, Timestamp.valueOf(formattedDate));
+				} catch (Exception e) {
+					throw new RuntimeException(
+							"El formato de la fecha de entrada no es válido o no se pudo convertir. Verifica los datos.",
+							e);
+				}
+			} else {
+				// Si la fecha es nula o vacía, establece el valor como NULL
+				statement.setNull(28, java.sql.Types.TIMESTAMP);
 			}
 
-			else if (reparacion_a_editar.getFechadereparacion() == null
-					&& reparacion_a_editar.getFechAceptacion() != null
-					&& reparacion_a_editar.getFecha_Entrada() != null
-					) {
+			statement.setString(3, reparacion_a_editar.getFalla());
+			statement.setString(4, reparacion_a_editar.getSolucion());
+			statement.setString(5, reparacion_a_editar.getInformecliente());
+			statement.setInt(6, reparacion_a_editar.getidUsuario());
+			statement.setString(7, reparacion_a_editar.getNombreUsuario());
+			statement.setString(8, reparacion_a_editar.getEstadoFisico());
+			statement.setString(9, reparacion_a_editar.getEstadoTecnico());
+			statement.setString(10, reparacion_a_editar.getEstadoComercial());
+			statement.setString(11, reparacion_a_editar.getRemitoCliente());
+			statement.setString(12, reparacion_a_editar.getOrdendeCompra());
 
-				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
-						+ reparacion_a_editar.getFecha_Entrada() + "' ," + "FechadeDiagnostico = null ," + "Falla = '"
-						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
-						+ "' ," + "Enviado = '" + enviado + "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario()
-						+ "' ," + "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ,"
-						+ "EstadoFisico = '" + reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
-						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
-						+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
-						+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "' ," + "RemitoCliente = '"
-						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = '"
-						+ reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = " + reparacion_a_editar.getELS()
-						+ "");
-
-				System.out.println("2");
-
+			if (reparacion_a_editar.getAgregadoaremito() != null) {
+				statement.setBoolean(13, reparacion_a_editar.getAgregadoaremito());
+			} else {
+				statement.setNull(13, java.sql.Types.BOOLEAN);
 			}
 
-			else if (reparacion_a_editar.getFechAceptacion() == null
-					&& reparacion_a_editar.getFecha_Entrada() != null) {
-				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
-						+ reparacion_a_editar.getFecha_Entrada() + "' ," + "FechadeDiagnostico = null ," + "Falla = '"
-						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
-						+ "' ," + "Enviado = '" + enviado + "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario()
-						+ "' ," + "NombreUsuario = '" + reparacion_a_editar.getNombreUsuario() + "' ,"
-						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "EstadoFisico = '"
-						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
-						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
-						+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
-						+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "RemitoCliente = '"
-						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = null " + "WHERE ELS = "
-						+ reparacion_a_editar.getELS() + "");
-
-				System.out.println("3");
+			if (reparacion_a_editar.getRemitoGenerado() != null) {
+				statement.setBoolean(14, reparacion_a_editar.getRemitoGenerado());
+			} else {
+				statement.setNull(14, java.sql.Types.BOOLEAN);
 			}
 
-			else if (reparacion_a_editar.getFechadereparacion() == null
-					&& reparacion_a_editar.getFechAceptacion() == null && reparacion_a_editar.getFecha_Entrada() == null
-					&& reparacion_a_editar.getNombreEquipo() == null
-					&& reparacion_a_editar.getAgregadoaremito() == null) {
-
-				if (reparacion_a_editar.getPrecioPeso() != null && reparacion_a_editar.getInformecliente() != null) {
-
-					statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET Informecliente = '"
-							+ reparacion_a_editar.getInformecliente() + "' ," + "PrecioPeso = '"
-							+ reparacion_a_editar.getPrecioPeso() + "' ," + "PresupuestoEnviado = '" + PresupEnviado
-//								+ "' ," + "Pago = '"
-//								+ reparacion_a_editar.getPago()
-							+ "' ," + "PresupuestoGenerado = '" + PresupGenerado + "' ," + "PrecioDolar = '"
-							+ reparacion_a_editar.getPrecioDolar() + "' ," + "WordGenerado = '" + informeWordGenerado
-							+ "' ," + "WordEnviado = '" + informeWordEnviado + "'" + "WHERE ELS = "
-							+ reparacion_a_editar.getELS() + "");
-
-					System.out.println("4");
+			statement.setInt(15, reparacion_a_editar.getIDEquipo());
+			statement.setInt(16, reparacion_a_editar.getidRemito());
+			try {
+				if (reparacion_a_editar.getPago() != null) {
+				    statement.setBigDecimal(27, new BigDecimal(reparacion_a_editar.getPago()));
+				} else {
+				    statement.setNull(27, java.sql.Types.DECIMAL);
+				}
+				if (reparacion_a_editar.getPrecioDolar() != null) {
+				    statement.setBigDecimal(18, new BigDecimal(reparacion_a_editar.getPrecioDolar()));
+				} else {
+				    statement.setNull(18, java.sql.Types.DECIMAL);
 				}
 
-				else if (reparacion_a_editar.getidUsuario() == 1) {
-
-					statement = conexion.getSQLConexion().prepareStatement(
-							"UPDATE reparaciones SET idUsuario = '" + reparacion_a_editar.getidUsuario() + "'"
-									+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
-
-					System.out.println("4.1.1");
-
+				if (reparacion_a_editar.getPrecioPeso() != null) {
+				    statement.setBigDecimal(17, new BigDecimal(reparacion_a_editar.getPrecioPeso()));
+				} else {
+				    statement.setNull(17, java.sql.Types.DECIMAL);
 				}
-				
-				else if (reparacion_a_editar.getFechadereparacion() != null && reparacion_a_editar.getFechAceptacion() != null
-						&& reparacion_a_editar.getFecha_Entrada() != null && reparacion_a_editar.getFecha_Salida() != null) {
-					statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
-							+ reparacion_a_editar.getFecha_Entrada() + "' , " + "FechadeDiagnostico = '"
-							+ reparacion_a_editar.getFechadereparacion() + "' ," + "Falla = '"
-							+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
-							+ "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario() + "' ," + "NombreUsuario = '"
-							+ reparacion_a_editar.getNombreUsuario() + "' ," + "Enviado = '" + enviado + "' ,"
-							+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "EstadoFisico = '"
-							+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
-							+ reparacion_a_editar.getEstadoTecnico() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
-							+ "' ," + "PrecioDolar = '" + reparacion_a_editar.getPrecioDolar() + "' ," + "PrecioPeso = '"
-							+ reparacion_a_editar.getPrecioPeso() + "' ," + "EstadoComercial = '"
-							+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
-							+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "RemitoCliente = '"
-							+ reparacion_a_editar.getRemitoCliente() + "' ," + "PresupuestoGenerado = '" + PresupGenerado
-							+ "' ," + "OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ,"
 
-							+ "FechaSalida = '" + reparacion_a_editar.getFecha_Salida() + "' ,"
-
-							+ "AvisoEnviado = '" + AvisoEnviado + "' ," + "PresupuestoEnviado = '" + PresupEnviado + "' ,"
-							+ "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
-							+ reparacion_a_editar.getELS() + "");
-
-					System.out.println("4.1.1.2");
-					}
-
-				else {
-
-					statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET EstadoComercial = '"
-							+ reparacion_a_editar.getEstadoComercial() + "' ," + "PrecioDolar = '"
-							+ reparacion_a_editar.getPrecioDolar() + "' ," + "PrecioPeso = '"
-							+ reparacion_a_editar.getPrecioPeso() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
-							+ "'" + "WHERE ELS = " + reparacion_a_editar.getELS() + "");
-
-					System.out.println("4.2");
-
-				}
+			} catch (NumberFormatException e) {
+				throw new SQLException("Error al convertir los valores a DECIMAL", e);
 			}
 
-			else if (reparacion_a_editar.getFechAceptacion() != null
-					&& reparacion_a_editar.getEstadoComercial() != null) {
-
-				statement = conexion.getSQLConexion().prepareStatement(
-
-						"UPDATE reparaciones SET EstadoComercial = '" + reparacion_a_editar.getEstadoComercial() + "' ,"
-								+ "FechaSalida = '" + reparacion_a_editar.getFecha_Salida() + "' ,"
-								+ "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
-								+ reparacion_a_editar.getELS() + "");
-
-				System.out.println("4.9");
-
+			if (reparacion_a_editar.getInformeEnviado() != null) {
+				statement.setBoolean(19, reparacion_a_editar.getInformeEnviado());
+			} else {
+				statement.setNull(19, java.sql.Types.BOOLEAN);
 			}
 
-			else if (reparacion_a_editar.getAgregadoaremito() == true && reparacion_a_editar.getEnviado() == null
-					&& reparacion_a_editar.getidRemito() != 0) {
-
-				statement = conexion.getSQLConexion()
-						.prepareStatement("UPDATE reparaciones SET Agregadoaremito = '" + 1 + "' ," + "idRemito = '"
-								+ reparacion_a_editar.getidRemito() + "'" + "WHERE ELS = "
-								+ reparacion_a_editar.getELS() + "");
-
-				System.out.println("5");
-
+			if (reparacion_a_editar.getPresupuestoGenerado() != null) {
+				statement.setBoolean(21, reparacion_a_editar.getPresupuestoGenerado());
+			} else {
+				statement.setNull(21, java.sql.Types.BOOLEAN);
 			}
 
-			else if (reparacion_a_editar.getEnviado() != null && reparacion_a_editar.getEstadoFisico() == "Enviado") {
-				statement = conexion.getSQLConexion()
-						.prepareStatement("UPDATE reparaciones SET EstadoFisico = '"
-								+ reparacion_a_editar.getEstadoFisico() + "'," + "Enviado = '" + enviado + "'"
-								+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
-
-				System.out.println("6");
-
+			if (reparacion_a_editar.getPresupuestoEnviado() != null) {
+				statement.setBoolean(22, reparacion_a_editar.getPresupuestoEnviado());
+			} else {
+				statement.setNull(22, java.sql.Types.BOOLEAN);
 			}
 
-			else if (reparacion_a_editar.getAgregadoaremito() == true && reparacion_a_editar.getRemitoGenerado() == true
-					&& reparacion_a_editar.getidRemito() == 0) {
-
-				statement = conexion.getSQLConexion()
-						.prepareStatement("UPDATE reparaciones SET Agregadoaremito = '" + 0 + "' ," + "idRemito = '"
-								+ reparacion_a_editar.getidRemito() + "' ," + "EstadoFisico = '"
-								+ reparacion_a_editar.getEstadoFisico() + "'," + "Enviado = '" + enviado + "'"
-								+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
-
-				System.out.println("7");
-
+			if (reparacion_a_editar.getWORDgenerado() != null) {
+				statement.setBoolean(23, reparacion_a_editar.getWORDgenerado());
+			} else {
+				statement.setNull(23, java.sql.Types.BOOLEAN);
 			}
 
-			if (statement.executeUpdate() > 0) // Si se ejecut� devuelvo true
+			if (reparacion_a_editar.getWORDenviado() != null) {
+				statement.setBoolean(24, reparacion_a_editar.getWORDenviado());
+			} else {
+				statement.setNull(24, java.sql.Types.BOOLEAN);
+			}
 
-				return true;
+			if (reparacion_a_editar.getEnviado() != null) {
+				statement.setBoolean(25, reparacion_a_editar.getEnviado());
+			} else {
+				statement.setNull(25, java.sql.Types.BOOLEAN);
+			}
+
+			if (reparacion_a_editar.getAvisoEnviado() != null) {
+				statement.setBoolean(26, reparacion_a_editar.getAvisoEnviado());
+			} else {
+				statement.setNull(26, java.sql.Types.BOOLEAN);
+			}
+
+			// Llave primaria
+			statement.setInt(29, reparacion_a_editar.getELS());
+
+			// Ejecución de la consulta
+			return statement.executeUpdate() > 0;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			
 		} finally // Se ejecuta siempre
 		{
 			conexion.cerrarConexion();
 		}
 		return false;
 	}
+	
+	
+	
+	
+	
+	
+	@Override
+	public void editPresupuesto(ReparacionDTO reparacionAeditar) {
+
+
+		PreparedStatement statement = null;
+
+		String query = "UPDATE reparaciones SET "
+				+ "Informecliente = ?, "
+				+ "PrecioPeso = ?, " 
+				+ "PrecioDolar = ?,"
+				+ "PresupuestoGenerado = ?, " 
+				+ "PresupuestoEnviado = ?, "
+				+ "WordGenerado = ?, " 
+				+ "WordEnviado = ? " 
+				+ "WHERE ELS = ?";
+		
+		
+		try {
+
+			statement = conexion.getSQLConexion().prepareStatement(query);
+			
+			statement.setString(1, reparacionAeditar.getInformecliente());
+			
+			try {
+			
+				
+				
+				if (reparacionAeditar.getPrecioPeso() != null) {
+				    statement.setBigDecimal(2, new BigDecimal(reparacionAeditar.getPrecioPeso()));
+				} else {
+				    statement.setNull(2, java.sql.Types.DECIMAL);
+				}
+				
+				if (reparacionAeditar.getPrecioDolar() != null) {
+				    statement.setBigDecimal(3, new BigDecimal(reparacionAeditar.getPrecioDolar()));
+				} else {
+				    statement.setNull(3, java.sql.Types.DECIMAL);
+				}
+
+		
+
+			} catch (NumberFormatException e) {
+				throw new SQLException("Error al convertir los valores a DECIMAL", e);
+			}
+			
+			if (reparacionAeditar.getPresupuestoGenerado() != null) {
+				statement.setBoolean(4, reparacionAeditar.getPresupuestoGenerado());
+			} else {
+				statement.setNull(4, java.sql.Types.BOOLEAN);
+			}
+
+			if (reparacionAeditar.getPresupuestoEnviado() != null) {
+				statement.setBoolean(5, reparacionAeditar.getPresupuestoEnviado());
+			} else {
+				statement.setNull(5, java.sql.Types.BOOLEAN);
+			}
+
+			if (reparacionAeditar.getWORDgenerado() != null) {
+				statement.setBoolean(6, reparacionAeditar.getWORDgenerado());
+			} else {
+				statement.setNull(6, java.sql.Types.BOOLEAN);
+			}
+
+			if (reparacionAeditar.getWORDenviado() != null) {
+				statement.setBoolean(7, reparacionAeditar.getWORDenviado());
+			} else {
+				statement.setNull(7, java.sql.Types.BOOLEAN);
+			}
+			
+			// Llave primaria
+			statement.setInt(8, reparacionAeditar.getELS());
+
+			statement.executeUpdate();
+		
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+	
+	}
+		
+		
+	
+	
+	
+	
+
+//	public boolean edit(ReparacionDTO reparacion_a_editar) {
+//		PreparedStatement statement = null;
+//		int enviado = 0;
+//		int PresupGenerado = 0;
+//		int PresupEnviado = 0;
+//		int informeWordGenerado = 0;
+//		int informeWordEnviado = 0;
+//		int AvisoEnviado = 0;
+//		String fechaReparacion="";
+//		String fechaEntrada="";
+//		String fechaRespuesta="";
+//		String fechaSalida="";
+//
+//		try {
+//
+//			if (reparacion_a_editar.getEnviado() == null) {
+//				enviado = 0;
+//			} else if (reparacion_a_editar.getEnviado() == true) {
+//				enviado = 1;
+//			} else if (reparacion_a_editar.getEnviado() == false) {
+//				enviado = 0;
+//			}
+//
+//			if (reparacion_a_editar.getPresupuestoGenerado() == null) {
+//				PresupGenerado = 0;
+//			} else if (reparacion_a_editar.getPresupuestoGenerado() == true) {
+//				PresupGenerado = 1;
+//			} else if (reparacion_a_editar.getPresupuestoGenerado() == false) {
+//				PresupGenerado = 0;
+//			}
+//
+//			if (reparacion_a_editar.getPresupuestoEnviado() == null) {
+//				PresupEnviado = 0;
+//			} else if (reparacion_a_editar.getPresupuestoEnviado() == true) {
+//				PresupEnviado = 1;
+//			} else if (reparacion_a_editar.getPresupuestoEnviado() == false) {
+//				PresupEnviado = 0;
+//			}
+//
+//			if (reparacion_a_editar.getWORDgenerado() == null) {
+//				informeWordGenerado = 0;
+//			} else if (reparacion_a_editar.getWORDgenerado() == true) {
+//				informeWordGenerado = 1;
+//			} else if (reparacion_a_editar.getWORDgenerado() == false) {
+//				informeWordGenerado = 0;
+//			}
+//
+//			if (reparacion_a_editar.getWORDenviado() == null) {
+//				informeWordEnviado = 0;
+//			} else if (reparacion_a_editar.getWORDenviado() == true) {
+//				informeWordEnviado = 1;
+//			} else if (reparacion_a_editar.getWORDenviado() == false) {
+//				informeWordEnviado = 0;
+//			}
+//
+//			if (reparacion_a_editar.getAvisoEnviado() == null) {
+//				AvisoEnviado = 0;
+//			} else if (reparacion_a_editar.getAvisoEnviado() == true) {
+//				AvisoEnviado = 1;
+//			} else if (reparacion_a_editar.getAvisoEnviado() == false) {
+//				AvisoEnviado = 0;
+//			}
+//			
+//			
+//			if (reparacion_a_editar.getFechadereparacion() != null) {
+//				fechaReparacion = reparacion_a_editar.getFechadereparacion();
+//			} 
+//			
+//			if (reparacion_a_editar.getFechAceptacion() != null) {
+//				fechaRespuesta = reparacion_a_editar.getFechAceptacion();
+//			} 
+//			
+//			if (reparacion_a_editar.getFecha_Entrada() != null) {
+//				fechaEntrada = reparacion_a_editar.getFecha_Entrada();
+//			} 
+//			
+//			if (reparacion_a_editar.getFecha_Salida() != null) {
+//				fechaSalida = reparacion_a_editar.getFecha_Salida();
+//			} 
+//			
+//
+//			
+//
+//			if (reparacion_a_editar.getFechAceptacion() != null
+//					&& reparacion_a_editar.getFecha_Entrada() != null && reparacion_a_editar.getFecha_Salida() == null ) {
+//				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET "+ 
+//					
+//						"FechaEntrada = '"+ reparacion_a_editar.getFecha_Entrada() + "' , " + 
+//						"FechadeDiagnostico = '"+ fechaReparacion + "' ," +
+//						"Falla = '"+ reparacion_a_editar.getFalla() + "' ," + 
+//						"Solucion = '" + reparacion_a_editar.getSolucion()+ "' ," + 
+//						"idUsuario = '" + reparacion_a_editar.getidUsuario() + "' ," + 
+//						"NombreUsuario = '"+ reparacion_a_editar.getNombreUsuario() + "' ," + 
+//						"Enviado = '" + enviado + "' ,"+
+//						"Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + 
+//						"EstadoFisico = '" + reparacion_a_editar.getEstadoFisico() + "' ," + 
+//						"EstadoTecnico = '" + reparacion_a_editar.getEstadoTecnico() + "' ," + 
+//						"Pago = '" + reparacion_a_editar.getPago() + "' ," + 
+//						"PrecioDolar = '" + reparacion_a_editar.getPrecioDolar() + "' ," + 
+//						"PrecioPeso = '" + reparacion_a_editar.getPrecioPeso() + "' ," + 
+//						"EstadoComercial = '" + reparacion_a_editar.getEstadoComercial() + "' ," + 
+//						"lugar_de_ingreso = '" + reparacion_a_editar.getLugarDeIngreso() + "' ," + 
+//						"RemitoCliente = '" + reparacion_a_editar.getRemitoCliente() +"' ," + 
+//						"PresupuestoGenerado = '" + PresupGenerado + "' ," + 
+//						"OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ," +
+//						"AvisoEnviado = '" + AvisoEnviado + "' ," + 
+//						"PresupuestoEnviado = '" + PresupEnviado + "' ,"+
+//						"FechaSalida = '" + reparacion_a_editar.getFecha_Salida() + "' ,"+
+//						"FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + 				
+//						"WHERE ELS = "+ reparacion_a_editar.getELS() + "");
+//
+//				System.out.println("0");
+//
+//			} else if (reparacion_a_editar.getFechadereparacion() != null
+//					&& reparacion_a_editar.getFechAceptacion() == null
+//					&& reparacion_a_editar.getFecha_Entrada() != null) {
+//				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
+//						+ reparacion_a_editar.getFecha_Entrada() + "' , " + "FechadeDiagnostico = '"
+//						+ reparacion_a_editar.getFechadereparacion() + "' ," + "Falla = '"
+//						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
+//						+ "' ," + "OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ," + "idUsuario = '"
+//						+ reparacion_a_editar.getidUsuario() + "' ," + "NombreUsuario = '"
+//						+ reparacion_a_editar.getNombreUsuario() + "' ," + "Enviado = '" + enviado + "' ,"
+//						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "PrecioDolar = '"
+//						+ reparacion_a_editar.getPrecioDolar() + "' ," + "PrecioPeso = '"
+//						+ reparacion_a_editar.getPrecioPeso() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
+//						+ "' ," + "PresupuestoGenerado = '" + PresupGenerado + "' ," + "EstadoFisico = '"
+//						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
+//						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
+//						+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
+//						+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "RemitoCliente = '"
+//						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = null " + "WHERE ELS = "
+//						+ reparacion_a_editar.getELS() + "");
+//
+//				System.out.println("1");
+//
+//			}
+//
+//			else if (reparacion_a_editar.getFechadereparacion() == null
+//					&& reparacion_a_editar.getFechAceptacion() != null
+//					&& reparacion_a_editar.getFecha_Entrada() != null
+//					) {
+//
+//				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
+//						+ reparacion_a_editar.getFecha_Entrada() + "' ," + "FechadeDiagnostico = null ," + "Falla = '"
+//						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
+//						+ "' ," + "Enviado = '" + enviado + "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario()
+//						+ "' ," + "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ,"
+//						+ "EstadoFisico = '" + reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
+//						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
+//						+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
+//						+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "' ," + "RemitoCliente = '"
+//						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = '"
+//						+ reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = " + reparacion_a_editar.getELS()
+//						+ "");
+//
+//				System.out.println("2");
+//
+//			}
+//
+//			else if (reparacion_a_editar.getFechAceptacion() == null
+//					&& reparacion_a_editar.getFecha_Entrada() != null) {
+//				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
+//						+ reparacion_a_editar.getFecha_Entrada() + "' ," + "FechadeDiagnostico = null ," + "Falla = '"
+//						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
+//						+ "' ," + "Enviado = '" + enviado + "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario()
+//						+ "' ," + "NombreUsuario = '" + reparacion_a_editar.getNombreUsuario() + "' ,"
+//						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "EstadoFisico = '"
+//						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
+//						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
+//						+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
+//						+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "RemitoCliente = '"
+//						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = null " + "WHERE ELS = "
+//						+ reparacion_a_editar.getELS() + "");
+//
+//				System.out.println("3");
+//			}
+//
+//			else if (reparacion_a_editar.getFechadereparacion() == null
+//					&& reparacion_a_editar.getFechAceptacion() == null && reparacion_a_editar.getFecha_Entrada() == null
+//					&& reparacion_a_editar.getNombreEquipo() == null
+//					&& reparacion_a_editar.getAgregadoaremito() == null) {
+//
+//				if (reparacion_a_editar.getPrecioPeso() != null && reparacion_a_editar.getInformecliente() != null) {
+//
+//					statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET Informecliente = '"
+//							+ reparacion_a_editar.getInformecliente() + "' ," + "PrecioPeso = '"
+//							+ reparacion_a_editar.getPrecioPeso() + "' ," + "PresupuestoEnviado = '" + PresupEnviado
+////								+ "' ," + "Pago = '"
+////								+ reparacion_a_editar.getPago()
+//							+ "' ," + "PresupuestoGenerado = '" + PresupGenerado + "' ," + "PrecioDolar = '"
+//							+ reparacion_a_editar.getPrecioDolar() + "' ," + "WordGenerado = '" + informeWordGenerado
+//							+ "' ," + "WordEnviado = '" + informeWordEnviado + "'" + "WHERE ELS = "
+//							+ reparacion_a_editar.getELS() + "");
+//
+//					System.out.println("4");
+//				}
+//
+//				else if (reparacion_a_editar.getidUsuario() == 1) {
+//
+//					statement = conexion.getSQLConexion().prepareStatement(
+//							"UPDATE reparaciones SET idUsuario = '" + reparacion_a_editar.getidUsuario() + "'"
+//									+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
+//
+//					System.out.println("4.1.1");
+//
+//				}
+//				
+//				else if (reparacion_a_editar.getFechadereparacion() != null && reparacion_a_editar.getFechAceptacion() != null
+//						&& reparacion_a_editar.getFecha_Entrada() != null && reparacion_a_editar.getFecha_Salida() != null) {
+//					statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
+//							+ reparacion_a_editar.getFecha_Entrada() + "' , " + "FechadeDiagnostico = '"
+//							+ reparacion_a_editar.getFechadereparacion() + "' ," + "Falla = '"
+//							+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
+//							+ "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario() + "' ," + "NombreUsuario = '"
+//							+ reparacion_a_editar.getNombreUsuario() + "' ," + "Enviado = '" + enviado + "' ,"
+//							+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "EstadoFisico = '"
+//							+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
+//							+ reparacion_a_editar.getEstadoTecnico() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
+//							+ "' ," + "PrecioDolar = '" + reparacion_a_editar.getPrecioDolar() + "' ," + "PrecioPeso = '"
+//							+ reparacion_a_editar.getPrecioPeso() + "' ," + "EstadoComercial = '"
+//							+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
+//							+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "RemitoCliente = '"
+//							+ reparacion_a_editar.getRemitoCliente() + "' ," + "PresupuestoGenerado = '" + PresupGenerado
+//							+ "' ," + "OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ,"
+//
+//							+ "FechaSalida = '" + reparacion_a_editar.getFecha_Salida() + "' ,"
+//
+//							+ "AvisoEnviado = '" + AvisoEnviado + "' ," + "PresupuestoEnviado = '" + PresupEnviado + "' ,"
+//							+ "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
+//							+ reparacion_a_editar.getELS() + "");
+//
+//					System.out.println("4.1.1.2");
+//					}
+//
+//				else {
+//
+//					statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET EstadoComercial = '"
+//							+ reparacion_a_editar.getEstadoComercial() + "' ," + "PrecioDolar = '"
+//							+ reparacion_a_editar.getPrecioDolar() + "' ," + "PrecioPeso = '"
+//							+ reparacion_a_editar.getPrecioPeso() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
+//							+ "'" + "WHERE ELS = " + reparacion_a_editar.getELS() + "");
+//
+//					System.out.println("4.2");
+//
+//				}
+//			}
+//
+//			else if (reparacion_a_editar.getFechAceptacion() != null
+//					&& reparacion_a_editar.getEstadoComercial() != null) {
+//
+//				statement = conexion.getSQLConexion().prepareStatement(
+//
+//						"UPDATE reparaciones SET EstadoComercial = '" + reparacion_a_editar.getEstadoComercial() + "' ,"
+//								+ "FechaSalida = '" + reparacion_a_editar.getFecha_Salida() + "' ,"
+//								+ "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
+//								+ reparacion_a_editar.getELS() + "");
+//
+//				System.out.println("4.9");
+//
+//			}
+//
+//			else if (reparacion_a_editar.getAgregadoaremito() == true && reparacion_a_editar.getEnviado() == null
+//					&& reparacion_a_editar.getidRemito() != 0) {
+//
+//				statement = conexion.getSQLConexion()
+//						.prepareStatement("UPDATE reparaciones SET Agregadoaremito = '" + 1 + "' ," + "idRemito = '"
+//								+ reparacion_a_editar.getidRemito() + "'" + "WHERE ELS = "
+//								+ reparacion_a_editar.getELS() + "");
+//
+//				System.out.println("5");
+//
+//			}
+//
+//			else if (reparacion_a_editar.getEnviado() != null && reparacion_a_editar.getEstadoFisico() == "Enviado") {
+//				statement = conexion.getSQLConexion()
+//						.prepareStatement("UPDATE reparaciones SET EstadoFisico = '"
+//								+ reparacion_a_editar.getEstadoFisico() + "'," + "Enviado = '" + enviado + "'"
+//								+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
+//
+//				System.out.println("6");
+//
+//			}
+//
+//			else if (reparacion_a_editar.getAgregadoaremito() == true && reparacion_a_editar.getRemitoGenerado() == true
+//					&& reparacion_a_editar.getidRemito() == 0) {
+//
+//				statement = conexion.getSQLConexion()
+//						.prepareStatement("UPDATE reparaciones SET Agregadoaremito = '" + 0 + "' ," + "idRemito = '"
+//								+ reparacion_a_editar.getidRemito() + "' ," + "EstadoFisico = '"
+//								+ reparacion_a_editar.getEstadoFisico() + "'," + "Enviado = '" + enviado + "'"
+//								+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
+//
+//				System.out.println("7");
+//
+//			}
+//
+//			if (statement.executeUpdate() > 0) // Si se ejecut� devuelvo true
+//
+//				return true;
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally // Se ejecuta siempre
+//		{
+//			conexion.cerrarConexion();
+//		}
+//		return false;
+//	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -2945,5 +3261,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		);
 		return camposPermitidos.contains(campo);
 	}
+
+
 
 }

@@ -2271,7 +2271,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-
+		SimpleDateFormat outputFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		
 		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
 
 			ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicial));
@@ -2322,7 +2324,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		if (reparacion.getFecha_Salida() == null)
 			ventanaVisualizarEquipos.setTextFechaSalida(null);
 		else
-			ventanaVisualizarEquipos.setTextFechaSalida((dateFormat.parse(reparacion.getFecha_Salida())));
+			ventanaVisualizarEquipos.setTextFechaSalida((outputFormatter.parse(reparacion.getFecha_Salida())));
+		
+		
+		
 		
 		
 		ventanaVisualizarEquipos.setTextEstadoFisico(reparacion.getEstadoFisico());
@@ -2388,6 +2393,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.setChckWORDEnviado(reparacion.getWORDenviado());
 
 		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
+		
+		System.out.println(reparacion.getFecha_Salida() + " - " + reparacion.getFecha_Entrada()+ " - " +reparacion.getFechadereparacion()+ " - " + reparacion.getFechAceptacion());
 
 		verificarPresupuesto(ventanaVisualizarEquipos);
 		deshabilitarCampos(ventanaVisualizarEquipos);

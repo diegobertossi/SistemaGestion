@@ -323,8 +323,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 				ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
 
-				this.agenda.editarReparacionR(reparacionAeditar);
+				this.agenda.editarReparacionPresupuesto(reparacionAeditar);
 
+				
 				ventanaGenerarPresupuesto.getTextInforme().setEditable(false);
 				ventanaGenerarPresupuesto.getTextInforme().setBackground(Color.LIGHT_GRAY);
 
@@ -522,7 +523,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				ventanaGenerarPresupuesto.setChckPDFGenerado(true);
 
 				ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
-				this.agenda.editarReparacionR(reparacionAeditar);
+				this.agenda.editarReparacionPresupuesto(reparacionAeditar);
 
 				int seleccion3 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
 						"Desea enviar el Presupuesto por correo?", "Confirmación", JOptionPane.YES_NO_OPTION,
@@ -625,7 +626,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaGenerarPresupuesto.setChckWORDGenerado(true);
 
 					ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
-					this.agenda.editarReparacionR(reparacionAeditar);
+					this.agenda.editarReparacionPresupuesto(reparacionAeditar);
 
 					int seleccion3 = JOptionPane.showConfirmDialog(null, "Desea enviar el informe WORD por correo?",
 							"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -887,7 +888,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					}
 
 					ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
-					agenda.editarReparacionR(reparacionAeditar);
+					agenda.editarReparacionPresupuesto(reparacionAeditar);
 
 				} catch (Exception ex) {
 					

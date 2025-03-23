@@ -58,7 +58,7 @@ public class ReparacionDTO {
 			Boolean PresupuestoGenerado, Boolean Enviado, Double Pago, Boolean PresupuestoEnviado, String Nombre,
 			String Correo, String Modelo, String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente,
 			int IDCliente, int IDSuc, String Cliente, String Sucursal, String NombreUsuario, int Codigo,
-			int NumeroRemitoSalida, String FechaFabr, Boolean AvisoEnviado, Boolean WordGenerado, Boolean WordEnviado, String LugarDeIngreso,String FechaDeSalida ) {
+			int NumeroRemitoSalida, String FechaFabr, Boolean AvisoEnviado, Boolean WordGenerado, Boolean WordEnviado, String LugarDeIngreso,String fecha_Salida ) {
 
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
@@ -86,7 +86,7 @@ public class ReparacionDTO {
 		this.wordGenerado = WordGenerado;
 		this.wordEnviado = WordEnviado;
 		this.LugarDeIngreso = LugarDeIngreso;
-		this.FechaSalida = FechaDeSalida;
+		this.FechaSalida = fecha_Salida;
 
 		this.Enviado = Enviado;
 		this.Pago = Pago;
@@ -144,7 +144,7 @@ public class ReparacionDTO {
 			String RemitoCliente, int IDEquipo, String Cliente, String Sucursal, String FechAceptacion, String Nombre,
 			String Modelo, String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente, int IDCliente,
 			int IDSuc, String FechaFabr, int idUsuario, String nombreUsuario,boolean enviado, double presupuesto,double presupuestoDolar, double pago,
-			boolean PresupuestoGenerado, boolean avisoEnviao, boolean PresupuestoEnviado, String ordenDeCompra, String LugarDeIngreso, String FechaDeSalida ) {
+			boolean PresupuestoGenerado, boolean avisoEnviao, boolean PresupuestoEnviado, String ordenDeCompra, String LugarDeIngreso, String fecha_Salida ) {
 
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
@@ -180,7 +180,7 @@ public class ReparacionDTO {
 		this.OrdendeCompra = ordenDeCompra;
 		this.NombreUsuario = nombreUsuario;
 		this.LugarDeIngreso = LugarDeIngreso;
-		this.FechaSalida = FechaDeSalida;
+		this.FechaSalida = fecha_Salida;
 
 	}
 
@@ -270,7 +270,7 @@ public class ReparacionDTO {
 	}
 
 	public ReparacionDTO(int IDEquipo, String Nombre, String Modelo, String Marca, String NumeroDeSerie, String Aviso,
-			String ClienteCliente, int IDCliente, int IDSuc, String lugarDeIngreso, String FechaDeSalida ) {
+			String ClienteCliente, int IDCliente, int IDSuc, String lugarDeIngreso, String fecha_Salida ) {
 		this.idEquipo = IDEquipo;
 		this.NombreEquipo = Nombre;
 		this.Modelo = Modelo;
@@ -281,7 +281,7 @@ public class ReparacionDTO {
 		this.idCliente = IDCliente;
 		this.idSucursal = IDSuc;
 		this.LugarDeIngreso = lugarDeIngreso;
-		this.FechaSalida = FechaDeSalida;
+		this.FechaSalida = fecha_Salida;
 		
 
 	}
@@ -488,6 +488,16 @@ public class ReparacionDTO {
 		ELS = eLS;
 	}
 
+	
+	
+	public String getFecha_Salida() {
+		return FechaSalida;
+	}
+
+	public void setFecha_Salida(String fecha_Salida) {
+		FechaSalida = fecha_Salida;
+	}
+	
 	public String getFecha_Entrada() {
 		return FechaEntrada;
 	}
@@ -732,14 +742,7 @@ public class ReparacionDTO {
 	}
 
 
-	
-	public String getFecha_Salida() {
-		return FechaSalida;
-	}
 
-	public void setFecha_Salida(String fecha_Salida) {
-		FechaSalida = getFecha_Salida();
-	}
 
 
 

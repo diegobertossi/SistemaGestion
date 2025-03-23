@@ -19,6 +19,8 @@ public interface ReparacionDAO
 
 	public boolean edit(ReparacionDTO reparacion_a_editar);
 	
+	public void editPresupuesto(ReparacionDTO reparacionAeditar);
+	
 	public boolean editEquipo(ReparacionDTO reparacion_a_editar);
 		
 	public boolean delete(ReparacionDTO Reparacion_a_eliminar);
@@ -181,6 +183,8 @@ public interface ReparacionDAO
 	public int obtenerNumeroELSbsas();
 
 	public List<Integer> buscarEnCampos(String campo, String texto);
+
+	
 
 	
 
