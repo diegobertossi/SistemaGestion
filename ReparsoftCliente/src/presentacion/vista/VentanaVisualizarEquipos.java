@@ -68,7 +68,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JButton btnenviarCorreoOwsp;
 
 	private JButton btnBuscarELS;
-	
+
 	private JButton btnBuscar;
 
 	private JCheckBox chckbxAvisoEnviado;
@@ -196,10 +196,9 @@ public class VentanaVisualizarEquipos extends JFrame {
 		setResizable(false);
 		this.controladorReparacion = controladorReparacion;
 
-		
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
-		
+
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 1195, 701);
 		this.setLocationRelativeTo(null);
@@ -469,8 +468,6 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textClienteCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
 		textClienteCliente.setEditable(false);
 		textClienteCliente.setColumns(10);
-		
-		
 
 		textRemitoCliente = new JTextField();
 		textRemitoCliente.setBackground(Color.WHITE);
@@ -588,6 +585,25 @@ public class VentanaVisualizarEquipos extends JFrame {
 		FechaRespuesta.setBounds(1045, 85, 131, 17);
 		panel.add(FechaRespuesta);
 		FechaRespuesta.setFocusable(false);
+		
+		
+		
+		lblFechaDeSalida = new JLabel("Fecha de Salida: ");
+		lblFechaDeSalida.setFont(new Font("Cambria", Font.BOLD, 14));
+		lblFechaDeSalida.setBounds(7, 81, 121, 14);
+		panel_4.add(lblFechaDeSalida);
+
+		FechaSalida = new JDateChooser("dd/MM/yyyy", "##-##-####", '-');
+		FechaSalida.getCalendarButton().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		FechaSalida.setFont(new Font("Cambria", Font.BOLD, 14));
+		FechaSalida.setFocusable(false);
+		((JTextFieldDateEditor) FechaSalida.getDateEditor()).setDisabledTextColor(Color.darkGray);
+		FechaSalida.setEnabled(false);
+		FechaSalida.setBounds(138, 80, 159, 17);
+		panel_4.add(FechaSalida);
+		
+		
+		
 
 		lblFechaFabr = new JLabel("Fecha Fabr: ");
 		lblFechaFabr.setFont(new Font("Cambria", Font.BOLD, 14));
@@ -671,18 +687,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnGenerarRemito.setBounds(138, 56, 159, 20);
 		panel_4.add(btnGenerarRemito);
 
-		lblFechaDeSalida = new JLabel("Fecha de Salida: ");
-		lblFechaDeSalida.setFont(new Font("Cambria", Font.BOLD, 14));
-		lblFechaDeSalida.setBounds(7, 81, 121, 14);
-		panel_4.add(lblFechaDeSalida);
 
-		FechaSalida = new JDateChooser("dd/MM/yyyy", "##-##-####", '-');
-		FechaSalida.getCalendarButton().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		FechaSalida.setFont(new Font("Cambria", Font.BOLD, 14));
-		FechaSalida.setFocusable(false);
-		FechaSalida.setEnabled(false);
-		FechaSalida.setBounds(138, 80, 159, 17);
-		panel_4.add(FechaSalida);
 
 		panel_7 = new JPanel();
 		panel_7.setBorder(new BevelBorder(BevelBorder.RAISED, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE));
@@ -919,8 +924,6 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
 		textCliente.setEditable(false);
 		textCliente.setColumns(10);
-		
-		
 
 		textSucursal = new JTextField();
 		textSucursal.setBounds(133, 39, 211, 20);
@@ -1027,185 +1030,185 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnBuscarELS.setFont(new Font("Cambria", Font.BOLD, 13));
 		btnBuscarELS.setBounds(440, 6, 159, 35);
 		panel.add(btnBuscarELS);
-		
+
 		btnBuscar = new JButton("BUSQUEDA GENERAL");
 		btnBuscar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnBuscar.setBackground(new Color(224, 255, 255));
 		btnBuscar.setFont(new Font("Cambria", Font.BOLD, 13));
 		btnBuscar.setBounds(642, 6, 159, 35);
 		panel.add(btnBuscar);
-		
-				panel_presupuesto = new JPanel();
-				panel_presupuesto.setBounds(834, 264, 344, 172);
-				panel.add(panel_presupuesto);
-				panel_presupuesto.setBackground(SystemColor.activeCaption);
-				panel_presupuesto.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-				panel_presupuesto.setLayout(null);
-				
-						BotonPresupuestar = new JButton("<html><center>PRESUPUESTAR<html>");
-						BotonPresupuestar.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg0) {
-							}
-						});
-						BotonPresupuestar.setBackground(SystemColor.textHighlight);
-						BotonPresupuestar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-						BotonPresupuestar.setBounds(210, 11, 125, 43);
-						panel_presupuesto.add(BotonPresupuestar);
-						BotonPresupuestar.setForeground(SystemColor.text);
-						BotonPresupuestar.setFont(new Font("Cambria", Font.BOLD, 14));
-						BotonPresupuestar.setIcon(null);
-						
-								chckPDFgenerado = new JCheckBox("");
-								chckPDFgenerado.setEnabled(false);
-								chckPDFgenerado.setBounds(5, 118, 21, 23);
-								panel_presupuesto.add(chckPDFgenerado);
-								chckPDFgenerado.setBackground(SystemColor.activeCaption);
-								chckPDFgenerado.setFont(new Font("Cambria", Font.PLAIN, 12));
-								chckPDFgenerado.setForeground(Color.BLUE);
-								
-										chckPDFenviado = new JCheckBox("");
-										chckPDFenviado.setEnabled(false);
-										chckPDFenviado.setBounds(5, 138, 21, 23);
-										panel_presupuesto.add(chckPDFenviado);
-										chckPDFenviado.setBackground(SystemColor.activeCaption);
-										chckPDFenviado.setFont(new Font("Cambria", Font.PLAIN, 12));
-										chckPDFenviado.setForeground(Color.BLUE);
-										
-												chckWORDgenerado = new JCheckBox("");
-												chckWORDgenerado.setEnabled(false);
-												chckWORDgenerado.setBounds(163, 118, 21, 23);
-												panel_presupuesto.add(chckWORDgenerado);
-												chckWORDgenerado.setBackground(SystemColor.activeCaption);
-												chckWORDgenerado.setFont(new Font("Cambria", Font.PLAIN, 12));
-												chckWORDgenerado.setForeground(Color.BLUE);
-												
-														chckWORDenviado = new JCheckBox("");
-														chckWORDenviado.setEnabled(false);
-														chckWORDenviado.setBounds(163, 138, 21, 23);
-														panel_presupuesto.add(chckWORDenviado);
-														chckWORDenviado.setBackground(SystemColor.activeCaption);
-														chckWORDenviado.setFont(new Font("Cambria", Font.PLAIN, 12));
-														chckWORDenviado.setForeground(Color.BLUE);
-														
-																panel_MontoPresupuesto = new JPanel();
-																panel_MontoPresupuesto.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-																panel_MontoPresupuesto.setBackground(SystemColor.inactiveCaption);
-																panel_MontoPresupuesto.setBounds(5, 11, 202, 89);
-																panel_presupuesto.add(panel_MontoPresupuesto);
-																panel_MontoPresupuesto.setLayout(null);
-																
-																//		DecimalFormat decimalFormat = new DecimalFormat("'$',###,###.00");
-																//        NumberFormat numberFormat = NumberFormat.getNumberInstance();
-																//        NumberFormatter formatter = new NumberFormatter(decimalFormat);
-																//        formatter.setValueClass(Double.class);
-																//        formatter.setAllowsInvalid(false);
-																//        formatter.setFormat(decimalFormat);
-																//        formatter.setDecimalSeparatorAlwaysShown(true);
-																
-																//		textPresupuesto = new JTextDouble(formatter,10);
-																//		textPresupuesto.setColumns(10);
-																		textPresupuesto = new JTextField(10);
-																		textPresupuesto.setForeground(SystemColor.desktop);
-																		textPresupuesto.setHorizontalAlignment(SwingConstants.RIGHT);
-																		textPresupuesto.setFont(new Font("Cambria", Font.BOLD, 12));
-																		textPresupuesto.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
-																		textPresupuesto.setBackground(SystemColor.inactiveCaption);
-																		textPresupuesto.setBounds(97, 4, 95, 15);
-																		panel_MontoPresupuesto.add(textPresupuesto);
-																		textPresupuesto.setColumns(10);
-																		
-																				JLabel lblPresupuesto = new JLabel("EN PESOS : ");
-																				lblPresupuesto.setHorizontalAlignment(SwingConstants.LEFT);
-																				lblPresupuesto.setForeground(SystemColor.desktop);
-																				lblPresupuesto.setBorder(null);
-																				lblPresupuesto.setBounds(7, 4, 80, 15);
-																				panel_MontoPresupuesto.add(lblPresupuesto);
-																				lblPresupuesto.setFont(new Font("Cambria", Font.BOLD, 12));
-																				
-																						textPago = new JTextField(10);
-																						textPago.setForeground(SystemColor.desktop);
-																						textPago.setHorizontalAlignment(SwingConstants.RIGHT);
-																						textPago.setFont(new Font("Cambria", Font.BOLD, 12));
-																						textPago.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
-																						textPago.setBackground(SystemColor.inactiveCaption);
-																						textPago.setBounds(97, 44, 95, 15);
-																						panel_MontoPresupuesto.add(textPago);
-																						textPago.setColumns(10);
-																						
-																								lblPago = new JLabel("PAGO:");
-																								lblPago.setHorizontalAlignment(SwingConstants.LEFT);
-																								lblPago.setForeground(SystemColor.desktop);
-																								lblPago.setBorder(null);
-																								lblPago.setBounds(7, 44, 80, 15);
-																								panel_MontoPresupuesto.add(lblPago);
-																								lblPago.setFont(new Font("Cambria", Font.BOLD, 12));
-																								
-																										textEquipoPagado = new JTextField();
-																										textEquipoPagado.setEditable(false);
-																										textEquipoPagado.setForeground(SystemColor.desktop);
-																										textEquipoPagado.setVisible(false);
-																										textEquipoPagado.setFont(new Font("Cambria", Font.BOLD, 12));
-																										textEquipoPagado.setHorizontalAlignment(SwingConstants.CENTER);
-																										textEquipoPagado.setBorder(null);
-																										textEquipoPagado.setBackground(SystemColor.inactiveCaption);
-																										textEquipoPagado.setBounds(7, 64, 190, 20);
-																										panel_MontoPresupuesto.add(textEquipoPagado);
-																										textEquipoPagado.setColumns(10);
-																										
-																												JLabel lblPresupuestoUs = new JLabel("EN DOLARES : ");
-																												lblPresupuestoUs.setHorizontalAlignment(SwingConstants.LEFT);
-																												lblPresupuestoUs.setForeground(SystemColor.desktop);
-																												lblPresupuestoUs.setFont(new Font("Cambria", Font.BOLD, 12));
-																												lblPresupuestoUs.setBorder(null);
-																												lblPresupuestoUs.setBounds(7, 24, 80, 15);
-																												panel_MontoPresupuesto.add(lblPresupuestoUs);
-																												
-																														textPresupuestoDolar = new JTextField(10);
-																														textPresupuestoDolar.setHorizontalAlignment(SwingConstants.RIGHT);
-																														textPresupuestoDolar.setForeground(SystemColor.desktop);
-																														textPresupuestoDolar.setFont(new Font("Cambria", Font.BOLD, 12));
-																														textPresupuestoDolar.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
-																														textPresupuestoDolar.setBackground(SystemColor.inactiveCaption);
-																														textPresupuestoDolar.setBounds(97, 24, 95, 15);
-																														panel_MontoPresupuesto.add(textPresupuestoDolar);
-																														
-																																JLabel lblPresupuestoGenerado = new JLabel("PRESUPUESTO GENERADO");
-																																lblPresupuestoGenerado.setForeground(Color.BLUE);
-																																lblPresupuestoGenerado.setFont(new Font("Cambria", Font.BOLD, 10));
-																																lblPresupuestoGenerado.setBounds(29, 121, 136, 17);
-																																panel_presupuesto.add(lblPresupuestoGenerado);
-																																
-																																		JLabel lblPresupuestoEnviado = new JLabel("PRESUPUESTO ENVIADO");
-																																		lblPresupuestoEnviado.setForeground(Color.BLUE);
-																																		lblPresupuestoEnviado.setFont(new Font("Cambria", Font.BOLD, 10));
-																																		lblPresupuestoEnviado.setBounds(29, 142, 136, 17);
-																																		panel_presupuesto.add(lblPresupuestoEnviado);
-																																		
-																																				lblInformeSiemensGenerado = new JLabel("INFORME SIEMENS GENERADO");
-																																				lblInformeSiemensGenerado.setBounds(186, 121, 156, 17);
-																																				panel_presupuesto.add(lblInformeSiemensGenerado);
-																																				lblInformeSiemensGenerado.setForeground(Color.BLUE);
-																																				lblInformeSiemensGenerado.setFont(new Font("Cambria", Font.BOLD, 10));
-																																				
-																																						lblInformeSiemensEnviado = new JLabel("INFORME SIEMENS ENVIADO");
-																																						lblInformeSiemensEnviado.setForeground(Color.BLUE);
-																																						lblInformeSiemensEnviado.setFont(new Font("Cambria", Font.BOLD, 10));
-																																						lblInformeSiemensEnviado.setBounds(186, 142, 156, 17);
-																																						panel_presupuesto.add(lblInformeSiemensEnviado);
-																																						
-																																								btnenviarCorreoOwsp = new JButton("<html><center>ENVIAR PRESUPUESTO</html>");
-																																								btnenviarCorreoOwsp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-																																								btnenviarCorreoOwsp.setForeground(Color.WHITE);
-																																								btnenviarCorreoOwsp.setFont(new Font("Cambria", Font.BOLD, 14));
-																																								btnenviarCorreoOwsp.setBackground(SystemColor.textHighlight);
-																																								btnenviarCorreoOwsp.setBounds(210, 57, 125, 43);
-																																								panel_presupuesto.add(btnenviarCorreoOwsp);
-																																								
-																																										labelPresupuesto = new JLabel("PRESUPUESTO: ");
-																																										labelPresupuesto.setBounds(834, 236, 150, 17);
-																																										panel.add(labelPresupuesto);
-																																										labelPresupuesto.setForeground(new Color(0, 0, 128));
-																																										labelPresupuesto.setFont(new Font("Cambria", Font.BOLD, 20));
+
+		panel_presupuesto = new JPanel();
+		panel_presupuesto.setBounds(834, 264, 344, 172);
+		panel.add(panel_presupuesto);
+		panel_presupuesto.setBackground(SystemColor.activeCaption);
+		panel_presupuesto.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		panel_presupuesto.setLayout(null);
+
+		BotonPresupuestar = new JButton("<html><center>PRESUPUESTAR<html>");
+		BotonPresupuestar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		BotonPresupuestar.setBackground(SystemColor.textHighlight);
+		BotonPresupuestar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		BotonPresupuestar.setBounds(210, 11, 125, 43);
+		panel_presupuesto.add(BotonPresupuestar);
+		BotonPresupuestar.setForeground(SystemColor.text);
+		BotonPresupuestar.setFont(new Font("Cambria", Font.BOLD, 14));
+		BotonPresupuestar.setIcon(null);
+
+		chckPDFgenerado = new JCheckBox("");
+		chckPDFgenerado.setEnabled(false);
+		chckPDFgenerado.setBounds(5, 118, 21, 23);
+		panel_presupuesto.add(chckPDFgenerado);
+		chckPDFgenerado.setBackground(SystemColor.activeCaption);
+		chckPDFgenerado.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckPDFgenerado.setForeground(Color.BLUE);
+
+		chckPDFenviado = new JCheckBox("");
+		chckPDFenviado.setEnabled(false);
+		chckPDFenviado.setBounds(5, 138, 21, 23);
+		panel_presupuesto.add(chckPDFenviado);
+		chckPDFenviado.setBackground(SystemColor.activeCaption);
+		chckPDFenviado.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckPDFenviado.setForeground(Color.BLUE);
+
+		chckWORDgenerado = new JCheckBox("");
+		chckWORDgenerado.setEnabled(false);
+		chckWORDgenerado.setBounds(163, 118, 21, 23);
+		panel_presupuesto.add(chckWORDgenerado);
+		chckWORDgenerado.setBackground(SystemColor.activeCaption);
+		chckWORDgenerado.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckWORDgenerado.setForeground(Color.BLUE);
+
+		chckWORDenviado = new JCheckBox("");
+		chckWORDenviado.setEnabled(false);
+		chckWORDenviado.setBounds(163, 138, 21, 23);
+		panel_presupuesto.add(chckWORDenviado);
+		chckWORDenviado.setBackground(SystemColor.activeCaption);
+		chckWORDenviado.setFont(new Font("Cambria", Font.PLAIN, 12));
+		chckWORDenviado.setForeground(Color.BLUE);
+
+		panel_MontoPresupuesto = new JPanel();
+		panel_MontoPresupuesto.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_MontoPresupuesto.setBackground(SystemColor.inactiveCaption);
+		panel_MontoPresupuesto.setBounds(5, 11, 202, 89);
+		panel_presupuesto.add(panel_MontoPresupuesto);
+		panel_MontoPresupuesto.setLayout(null);
+
+		// DecimalFormat decimalFormat = new DecimalFormat("'$',###,###.00");
+		// NumberFormat numberFormat = NumberFormat.getNumberInstance();
+		// NumberFormatter formatter = new NumberFormatter(decimalFormat);
+		// formatter.setValueClass(Double.class);
+		// formatter.setAllowsInvalid(false);
+		// formatter.setFormat(decimalFormat);
+		// formatter.setDecimalSeparatorAlwaysShown(true);
+
+		// textPresupuesto = new JTextDouble(formatter,10);
+		// textPresupuesto.setColumns(10);
+		textPresupuesto = new JTextField(10);
+		textPresupuesto.setForeground(SystemColor.desktop);
+		textPresupuesto.setHorizontalAlignment(SwingConstants.RIGHT);
+		textPresupuesto.setFont(new Font("Cambria", Font.BOLD, 12));
+		textPresupuesto.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
+		textPresupuesto.setBackground(SystemColor.inactiveCaption);
+		textPresupuesto.setBounds(97, 4, 95, 15);
+		panel_MontoPresupuesto.add(textPresupuesto);
+		textPresupuesto.setColumns(10);
+
+		JLabel lblPresupuesto = new JLabel("EN PESOS : ");
+		lblPresupuesto.setHorizontalAlignment(SwingConstants.LEFT);
+		lblPresupuesto.setForeground(SystemColor.desktop);
+		lblPresupuesto.setBorder(null);
+		lblPresupuesto.setBounds(7, 4, 80, 15);
+		panel_MontoPresupuesto.add(lblPresupuesto);
+		lblPresupuesto.setFont(new Font("Cambria", Font.BOLD, 12));
+
+		textPago = new JTextField(10);
+		textPago.setForeground(SystemColor.desktop);
+		textPago.setHorizontalAlignment(SwingConstants.RIGHT);
+		textPago.setFont(new Font("Cambria", Font.BOLD, 12));
+		textPago.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
+		textPago.setBackground(SystemColor.inactiveCaption);
+		textPago.setBounds(97, 44, 95, 15);
+		panel_MontoPresupuesto.add(textPago);
+		textPago.setColumns(10);
+
+		lblPago = new JLabel("PAGO:");
+		lblPago.setHorizontalAlignment(SwingConstants.LEFT);
+		lblPago.setForeground(SystemColor.desktop);
+		lblPago.setBorder(null);
+		lblPago.setBounds(7, 44, 80, 15);
+		panel_MontoPresupuesto.add(lblPago);
+		lblPago.setFont(new Font("Cambria", Font.BOLD, 12));
+
+		textEquipoPagado = new JTextField();
+		textEquipoPagado.setEditable(false);
+		textEquipoPagado.setForeground(SystemColor.desktop);
+		textEquipoPagado.setVisible(false);
+		textEquipoPagado.setFont(new Font("Cambria", Font.BOLD, 12));
+		textEquipoPagado.setHorizontalAlignment(SwingConstants.CENTER);
+		textEquipoPagado.setBorder(null);
+		textEquipoPagado.setBackground(SystemColor.inactiveCaption);
+		textEquipoPagado.setBounds(7, 64, 190, 20);
+		panel_MontoPresupuesto.add(textEquipoPagado);
+		textEquipoPagado.setColumns(10);
+
+		JLabel lblPresupuestoUs = new JLabel("EN DOLARES : ");
+		lblPresupuestoUs.setHorizontalAlignment(SwingConstants.LEFT);
+		lblPresupuestoUs.setForeground(SystemColor.desktop);
+		lblPresupuestoUs.setFont(new Font("Cambria", Font.BOLD, 12));
+		lblPresupuestoUs.setBorder(null);
+		lblPresupuestoUs.setBounds(7, 24, 80, 15);
+		panel_MontoPresupuesto.add(lblPresupuestoUs);
+
+		textPresupuestoDolar = new JTextField(10);
+		textPresupuestoDolar.setHorizontalAlignment(SwingConstants.RIGHT);
+		textPresupuestoDolar.setForeground(SystemColor.desktop);
+		textPresupuestoDolar.setFont(new Font("Cambria", Font.BOLD, 12));
+		textPresupuestoDolar.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
+		textPresupuestoDolar.setBackground(SystemColor.inactiveCaption);
+		textPresupuestoDolar.setBounds(97, 24, 95, 15);
+		panel_MontoPresupuesto.add(textPresupuestoDolar);
+
+		JLabel lblPresupuestoGenerado = new JLabel("PRESUPUESTO GENERADO");
+		lblPresupuestoGenerado.setForeground(Color.BLUE);
+		lblPresupuestoGenerado.setFont(new Font("Cambria", Font.BOLD, 10));
+		lblPresupuestoGenerado.setBounds(29, 121, 136, 17);
+		panel_presupuesto.add(lblPresupuestoGenerado);
+
+		JLabel lblPresupuestoEnviado = new JLabel("PRESUPUESTO ENVIADO");
+		lblPresupuestoEnviado.setForeground(Color.BLUE);
+		lblPresupuestoEnviado.setFont(new Font("Cambria", Font.BOLD, 10));
+		lblPresupuestoEnviado.setBounds(29, 142, 136, 17);
+		panel_presupuesto.add(lblPresupuestoEnviado);
+
+		lblInformeSiemensGenerado = new JLabel("INFORME SIEMENS GENERADO");
+		lblInformeSiemensGenerado.setBounds(186, 121, 156, 17);
+		panel_presupuesto.add(lblInformeSiemensGenerado);
+		lblInformeSiemensGenerado.setForeground(Color.BLUE);
+		lblInformeSiemensGenerado.setFont(new Font("Cambria", Font.BOLD, 10));
+
+		lblInformeSiemensEnviado = new JLabel("INFORME SIEMENS ENVIADO");
+		lblInformeSiemensEnviado.setForeground(Color.BLUE);
+		lblInformeSiemensEnviado.setFont(new Font("Cambria", Font.BOLD, 10));
+		lblInformeSiemensEnviado.setBounds(186, 142, 156, 17);
+		panel_presupuesto.add(lblInformeSiemensEnviado);
+
+		btnenviarCorreoOwsp = new JButton("<html><center>ENVIAR PRESUPUESTO</html>");
+		btnenviarCorreoOwsp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnenviarCorreoOwsp.setForeground(Color.WHITE);
+		btnenviarCorreoOwsp.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnenviarCorreoOwsp.setBackground(SystemColor.textHighlight);
+		btnenviarCorreoOwsp.setBounds(210, 57, 125, 43);
+		panel_presupuesto.add(btnenviarCorreoOwsp);
+
+		labelPresupuesto = new JLabel("PRESUPUESTO: ");
+		labelPresupuesto.setBounds(834, 236, 150, 17);
+		panel.add(labelPresupuesto);
+		labelPresupuesto.setForeground(new Color(0, 0, 128));
+		labelPresupuesto.setFont(new Font("Cambria", Font.BOLD, 20));
 
 		setLocationCenter();
 		this.setVisible(true);
@@ -1225,14 +1228,10 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 	}
 
-	
-
-	
 	public void setLocationCenter() {
 		setLocationMove(0, 0);
 	}
-	
-	
+
 	public void setLocationMove(int moveWidth, int moveHeight) {
 		// Obtenemos el tama�o de la pantalla.
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -1285,11 +1284,12 @@ public class VentanaVisualizarEquipos extends JFrame {
 		return (Date) FechaEntrada.getDate();
 
 	}
-	
+
 	public Date getFecha_Salida() {
 		return (Date) FechaSalida.getDate();
 
 	}
+
 	public JDateChooser getFechaSalida() {
 		return FechaSalida;
 	}
@@ -1568,9 +1568,12 @@ public class VentanaVisualizarEquipos extends JFrame {
 		this.FechaEntrada.setDate(date);
 	}
 
-	
 	public void setTextFechaSalida(java.util.Date date) {
 		this.FechaSalida.setDate(date);
+	}
+
+	public void setTextFechaSalida2(JDateChooser fecha) {
+		this.FechaSalida=fecha;
 	}
 	
 	public void setTextEstadoFisico(String string) {
@@ -1896,21 +1899,12 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 	}
 
-
-
-
 	public JButton getBtnBuscar() {
 		return btnBuscar;
 	}
-
-
-
 
 	public void setBtnBuscar(JButton btnBuscar) {
 		this.btnBuscar = btnBuscar;
 	}
 
-
-
-	
 }
