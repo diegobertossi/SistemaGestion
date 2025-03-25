@@ -25,278 +25,293 @@ import net.miginfocom.swing.MigLayout;
 
 public class VentanaListadoReparaciones extends JFrame {
 
-    private static final long serialVersionUID = 1L;
-    private JTable tblListado;
-    private DefaultTableModel modelReparaciones;
+	private static final long serialVersionUID = 1L;
+	private JTable tblListado;
+	private DefaultTableModel modelReparaciones;
 
-    private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
-            "N° SERIE", "AVISO", "REVISIÓN", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS", "TÉCNICO",
-            "UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO", "INGRESO" };
-    public static int est;
+	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
+			"N° SERIE", "AVISO", "REVISIÓN", "SALIDA", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS",
+			"TÉCNICO", "UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO",
+			"INGRESO" };
+	public static int est;
 
-    private JPanel panelPrincipal;
-    private JPanel panelFiltros;
-    private JPanel panelSuperior;
-    private JPanel panelTitulo;
-    private JPanel panelInferior;
-    private JPanel panelCentral;
-    private JScrollPane scrollPane;
+	private JPanel panelPrincipal;
+	private JPanel panelFiltros;
+	private JPanel panelSuperior;
+	private JPanel panelTitulo;
+	private JPanel panelInferior;
+	private JPanel panelCentral;
+	private JScrollPane scrollPane;
 
-    @SuppressWarnings("unused")
-    private ControladorListados controlador;
+	@SuppressWarnings("unused")
+	private ControladorListados controlador;
 
-    private JPanel panelBotonera;
-    private JPanel panelBotones;
-    private JPanel panelColumnas;
-    private JCheckBox chckbxSucursal;
-    private JCheckBox chckbxModelo;
-    private JCheckBox chckbxRevisión;
-    private JCheckBox chckbxEntrada;
-    private JCheckBox chckbxEquipo;
-    private JCheckBox chckbxELS;
-    private JCheckBox chckbxClienteCliente;
-    private JCheckBox chckbxSerie;
-    private JCheckBox chckbxCliente;
-    private JCheckBox chckbxMarca;
-    private JCheckBox chckbxAviso;
-    private JCheckBox chckbxEstadoTec;
-    private JCheckBox chckbxEstadoCom;
-    private JCheckBox chckbxEstadoFis;
-    private JCheckBox chckbxTecnico;
-    private JCheckBox chckbxUbicacionRemito;
-    private JCheckBox chckbxNumeroRemito;
-    private JCheckBox chckbxPresupuestoGeneradoColumna;
-    private JCheckBox chckbxPresupuestoEnviadoColumna;
-    private JCheckBox chckbxIngreso;
-    private JCheckBox chckbxPrecioDolar;
-    private JLabel lblNewLabel_3;
-    private JLabel lblNewLabel_4;
-    private JLabel lblNewLabel_5;
-    private JLabel lblNewLabel_6;
-    private JLabel lblNewLabel_2;
-    private JLabel lblNewLabel_7;
-    private JLabel lblNewLabel_10;
-    private JCheckBox chckbxPago;
-    private JCheckBox chckbxPrecioPeso;
-    private JLabel lbTitulo;
-    private JButton btnEstadisticas;
+	private JPanel panelBotonera;
+	private JPanel panelBotones;
+	private JPanel panelColumnas;
+	private JCheckBox chckbxSucursal;
+	private JCheckBox chckbxModelo;
+	private JCheckBox chckbxRevisión;
+	private JCheckBox chckbxEntrada;
+	private JCheckBox chckbxSalida;
+	private JCheckBox chckbxEquipo;
+	private JCheckBox chckbxELS;
+	private JCheckBox chckbxClienteCliente;
+	private JCheckBox chckbxSerie;
+	private JCheckBox chckbxCliente;
+	private JCheckBox chckbxMarca;
+	private JCheckBox chckbxAviso;
+	private JCheckBox chckbxEstadoTec;
+	private JCheckBox chckbxEstadoCom;
+	private JCheckBox chckbxEstadoFis;
+	private JCheckBox chckbxTecnico;
+	private JCheckBox chckbxUbicacionRemito;
+	private JCheckBox chckbxNumeroRemito;
+	private JCheckBox chckbxPresupuestoGeneradoColumna;
+	private JCheckBox chckbxPresupuestoEnviadoColumna;
+	private JCheckBox chckbxIngreso;
+	private JCheckBox chckbxPrecioDolar;
+	private JLabel lblNewLabel_3;
+	private JLabel lblNewLabel_4;
+	private JLabel lblNewLabel_5;
+	private JLabel lblNewLabel_6;
+	private JLabel lblNewLabel_2;
+	private JLabel lblNewLabel_7;
+	private JLabel lblNewLabel_10;
+	private JCheckBox chckbxPago;
+	private JCheckBox chckbxPrecioPeso;
+	private JLabel lbTitulo;
+	private JButton btnEstadisticas;
 
-    protected void this_windowOpened(WindowEvent e) {
-        centrarVentana();
-    }
+	protected void this_windowOpened(WindowEvent e) {
+		centrarVentana();
+	}
 
-    private void centrarVentana() {
-        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension ventana = getSize();
-        setLocation((pantalla.width - ventana.width) / 2, (pantalla.height - ventana.height) / 2);
-    }
+	private void centrarVentana() {
+		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension ventana = getSize();
+		setLocation((pantalla.width - ventana.width) / 2, (pantalla.height - ventana.height) / 2);
+	}
 
-    @SuppressWarnings("serial")
-    public VentanaListadoReparaciones(ControladorListados controlador) {
-        super();
-        this.controlador = controlador;
+	@SuppressWarnings("serial")
+	public VentanaListadoReparaciones(ControladorListados controlador) {
+		super();
+		this.controlador = controlador;
 
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
-        
-        this.this_windowOpened(null);
-        setSize(1200, 680);
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        this.setLocationRelativeTo(null);
 
-        getContentPane().setLayout(new BorderLayout(0, 0));
+		this.this_windowOpened(null);
+		setSize(1200, 680);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setLocationRelativeTo(null);
 
-        panelPrincipal = new JPanel();
-        panelPrincipal.setBorder(new LineBorder(new Color(0, 128, 128)));
-        getContentPane().add(panelPrincipal, BorderLayout.CENTER);
-        panelPrincipal.setLayout(new BorderLayout(0, 0));
+		getContentPane().setLayout(new BorderLayout(0, 0));
 
-        panelSuperior = new JPanel();
-        panelPrincipal.add(panelSuperior, BorderLayout.NORTH);
-        panelSuperior.setLayout(new BorderLayout(0, 0));
+		panelPrincipal = new JPanel();
+		panelPrincipal.setBorder(new LineBorder(new Color(0, 128, 128)));
+		getContentPane().add(panelPrincipal, BorderLayout.CENTER);
+		panelPrincipal.setLayout(new BorderLayout(0, 0));
 
-        panelFiltros = new JPanel();
-        panelFiltros.setFont(new Font("Cambria", Font.PLAIN, 10));
-        panelFiltros.setBackground(new Color(176, 196, 222));
-        panelFiltros.setBorder(new CompoundBorder(new MatteBorder(0, 1, 0, 1, (Color) new Color(0, 128, 128)), new EmptyBorder(0, 5, 5, 10)));
-        panelSuperior.add(panelFiltros, BorderLayout.CENTER);
-        panelFiltros.setLayout(new FlowLayout(FlowLayout.LEFT));
-        
-        lbTitulo = new JLabel("OCULTAR COLUMNAS");
-        lbTitulo.setHorizontalTextPosition(SwingConstants.CENTER);
-        lbTitulo.setHorizontalAlignment(SwingConstants.LEFT);
-        lbTitulo.setFont(new Font("Cambria", Font.BOLD, 22));
-        panelFiltros.add(lbTitulo);
-        
+		panelSuperior = new JPanel();
+		panelPrincipal.add(panelSuperior, BorderLayout.NORTH);
+		panelSuperior.setLayout(new BorderLayout(0, 0));
 
-        
-        panelTitulo = new JPanel();
-        panelTitulo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 128, 128)));
-        panelTitulo.setBackground(new Color(176, 196, 222));
-        panelSuperior.add(panelTitulo, BorderLayout.NORTH);
-        panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
+		panelFiltros = new JPanel();
+		panelFiltros.setFont(new Font("Cambria", Font.PLAIN, 10));
+		panelFiltros.setBackground(new Color(176, 196, 222));
+		panelFiltros.setBorder(new CompoundBorder(new MatteBorder(0, 1, 0, 1, (Color) new Color(0, 128, 128)),
+				new EmptyBorder(0, 5, 5, 10)));
+		panelSuperior.add(panelFiltros, BorderLayout.CENTER);
+		panelFiltros.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        JLabel lbTitulo_1 = new JLabel("LISTADO DE EQUIPOS");
-        lbTitulo_1.setHorizontalTextPosition(SwingConstants.CENTER);
-        lbTitulo_1.setHorizontalAlignment(SwingConstants.LEFT);
-        lbTitulo_1.setFont(new Font("Cambria", Font.BOLD, 30));
-        panelTitulo.add(lbTitulo_1);
+		lbTitulo = new JLabel("OCULTAR COLUMNAS");
+		lbTitulo.setHorizontalTextPosition(SwingConstants.CENTER);
+		lbTitulo.setHorizontalAlignment(SwingConstants.LEFT);
+		lbTitulo.setFont(new Font("Cambria", Font.BOLD, 22));
+		panelFiltros.add(lbTitulo);
 
-        panelBotonera = new JPanel();
-        panelSuperior.add(panelBotonera, BorderLayout.SOUTH);
-        panelBotonera.setLayout(new BorderLayout(0, 0));
+		panelTitulo = new JPanel();
+		panelTitulo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 128, 128)));
+		panelTitulo.setBackground(new Color(176, 196, 222));
+		panelSuperior.add(panelTitulo, BorderLayout.NORTH);
+		panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        panelBotones = new JPanel();
-        panelBotones.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new EmptyBorder(5, 10, 5, 0)));
-        panelBotones.setBackground(new Color(176, 196, 222));
-        panelBotonera.add(panelBotones, BorderLayout.SOUTH);
-        panelBotones.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        
-        btnEstadisticas = new JButton("ESTADÍSTICAS");
-        btnEstadisticas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnEstadisticas.setPreferredSize(new Dimension(150, 30));
-        btnEstadisticas.setMargin(new Insets(0, 10, 0, 10));
-        btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 14));
-        panelBotones.add(btnEstadisticas);
+		JLabel lbTitulo_1 = new JLabel("LISTADO DE EQUIPOS");
+		lbTitulo_1.setHorizontalTextPosition(SwingConstants.CENTER);
+		lbTitulo_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lbTitulo_1.setFont(new Font("Cambria", Font.BOLD, 30));
+		panelTitulo.add(lbTitulo_1);
 
-        panelColumnas = new JPanel();
-        panelColumnas.setBorder(new CompoundBorder(new MatteBorder(0, 1, 0, 1, (Color) new Color(0, 128, 128)), new EmptyBorder(5, 5, 5, 5)));
-        panelColumnas.setBackground(new Color(176, 196, 222));
-        panelBotonera.add(panelColumnas, BorderLayout.NORTH);
-        panelColumnas.setLayout(new GridLayout(3, 6, 5, 5));
+		panelBotonera = new JPanel();
+		panelSuperior.add(panelBotonera, BorderLayout.SOUTH);
+		panelBotonera.setLayout(new BorderLayout(0, 0));
 
-        // Checkboxes para ocultar columnas
-        chckbxELS = new JCheckBox("ELS");
-        darFormatoOcultarColumnas(chckbxELS);
-        panelColumnas.add(chckbxELS);
-        chckbxSucursal = new JCheckBox("SUCURSAL");
-        darFormatoOcultarColumnas(chckbxSucursal);
-        panelColumnas.add(chckbxSucursal);
-        chckbxModelo = new JCheckBox("MODELO");
-        darFormatoOcultarColumnas(chckbxModelo);
-        panelColumnas.add(chckbxModelo);
-        chckbxRevisión = new JCheckBox("REVISIÓN");
-        darFormatoOcultarColumnas(chckbxRevisión);
-        panelColumnas.add(chckbxRevisión);
-        chckbxEstadoCom = new JCheckBox("ESTADO COM");
-        darFormatoOcultarColumnas(chckbxEstadoCom);
-        panelColumnas.add(chckbxEstadoCom);
-        chckbxUbicacionRemito = new JCheckBox("UBICACIÓN REMITO");
-        darFormatoOcultarColumnas(chckbxUbicacionRemito);
-        panelColumnas.add(chckbxUbicacionRemito);
-        chckbxPresupuestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENV");
-        darFormatoOcultarColumnas(chckbxPresupuestoEnviadoColumna);
-        panelColumnas.add(chckbxPresupuestoEnviadoColumna);
-        chckbxPago = new JCheckBox("PAGO");
-        darFormatoOcultarColumnas(chckbxPago);
-        panelColumnas.add(chckbxPago);
-        
-        chckbxEntrada = new JCheckBox("ENTRADA");
-        darFormatoOcultarColumnas(chckbxEntrada);
-        panelColumnas.add(chckbxEntrada);
-        chckbxEquipo = new JCheckBox("EQUIPO");
-        darFormatoOcultarColumnas(chckbxEquipo);
-        panelColumnas.add(chckbxEquipo);
-        chckbxSerie = new JCheckBox("SERIE");
-        darFormatoOcultarColumnas(chckbxSerie);
-        panelColumnas.add(chckbxSerie);
-        chckbxClienteCliente = new JCheckBox("CLIENTE/CLIENTE");
-        darFormatoOcultarColumnas(chckbxClienteCliente);
-        panelColumnas.add(chckbxClienteCliente);
-        chckbxEstadoFis = new JCheckBox("ESTADO FÍS");
-        darFormatoOcultarColumnas(chckbxEstadoFis);
-        panelColumnas.add(chckbxEstadoFis);
-        chckbxNumeroRemito = new JCheckBox("NÚMERO REMITO");
-        darFormatoOcultarColumnas(chckbxNumeroRemito);
-        panelColumnas.add(chckbxNumeroRemito);
-        chckbxPrecioPeso = new JCheckBox("PRECIO PESO");
-        darFormatoOcultarColumnas(chckbxPrecioPeso);
-        panelColumnas.add(chckbxPrecioPeso); 
-        chckbxIngreso = new JCheckBox("INGRESO");
-        darFormatoOcultarColumnas(chckbxIngreso);
-        panelColumnas.add(chckbxIngreso);        
-        chckbxCliente = new JCheckBox("CLIENTE");
-        darFormatoOcultarColumnas(chckbxCliente);
-        panelColumnas.add(chckbxCliente);
-        chckbxMarca = new JCheckBox("MARCA");
-        darFormatoOcultarColumnas(chckbxMarca);
-        panelColumnas.add(chckbxMarca);
-        chckbxAviso = new JCheckBox("AVISO");
-        darFormatoOcultarColumnas(chckbxAviso);
-        panelColumnas.add(chckbxAviso);
-        chckbxEstadoTec = new JCheckBox("ESTADO TÉC");
-        darFormatoOcultarColumnas(chckbxEstadoTec);
-        panelColumnas.add(chckbxEstadoTec);
-        chckbxTecnico = new JCheckBox("TÉCNICO");
-        darFormatoOcultarColumnas(chckbxTecnico);
-        panelColumnas.add(chckbxTecnico);
+		panelBotones = new JPanel();
+		panelBotones
+				.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new EmptyBorder(5, 10, 5, 0)));
+		panelBotones.setBackground(new Color(176, 196, 222));
+		panelBotonera.add(panelBotones, BorderLayout.SOUTH);
+		panelBotones.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
+		btnEstadisticas = new JButton("ESTADÍSTICAS");
+		btnEstadisticas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnEstadisticas.setPreferredSize(new Dimension(150, 30));
+		btnEstadisticas.setMargin(new Insets(0, 10, 0, 10));
+		btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 14));
+		panelBotones.add(btnEstadisticas);
 
-        chckbxPresupuestoGeneradoColumna = new JCheckBox("PRESUPUESTO GEN");
-        darFormatoOcultarColumnas(chckbxPresupuestoGeneradoColumna);
-        panelColumnas.add(chckbxPresupuestoGeneradoColumna);
+		panelColumnas = new JPanel();
+		panelColumnas.setBorder(new CompoundBorder(new MatteBorder(0, 1, 0, 1, (Color) new Color(0, 128, 128)),
+				new EmptyBorder(5, 5, 5, 5)));
+		panelColumnas.setBackground(new Color(176, 196, 222));
+		panelBotonera.add(panelColumnas, BorderLayout.NORTH);
+		panelColumnas.setLayout(new GridLayout(3, 6, 5, 5));
 
-       
-        chckbxPrecioDolar = new JCheckBox("PRECIO DOLAR");
-        darFormatoOcultarColumnas(chckbxPrecioDolar);
-        panelColumnas.add(chckbxPrecioDolar);
+		// Checkboxes para ocultar columnas
+		chckbxELS = new JCheckBox("ELS");
+		darFormatoOcultarColumnas(chckbxELS);
+		panelColumnas.add(chckbxELS);
 
+		chckbxSucursal = new JCheckBox("SUCURSAL");
+		darFormatoOcultarColumnas(chckbxSucursal);
+		panelColumnas.add(chckbxSucursal);
 
+		chckbxModelo = new JCheckBox("MODELO");
+		darFormatoOcultarColumnas(chckbxModelo);
+		panelColumnas.add(chckbxModelo);
 
-        panelCentral = new JPanel();
-        panelCentral.setBorder(new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 128, 128)), new EmptyBorder(3, 5, 0, 5)));
-        panelCentral.setBackground(new Color(176, 196, 222));
-        panelPrincipal.add(panelCentral, BorderLayout.CENTER);
-        panelCentral.setLayout(new BorderLayout(0, 0));
+		chckbxRevisión = new JCheckBox("REVISIÓN");
+		darFormatoOcultarColumnas(chckbxRevisión);
+		panelColumnas.add(chckbxRevisión);
 
-        modelReparaciones = new DefaultTableModel(new Object[][] {}, nombreColumnas) {
-            private static final long serialVersionUID = 1L;
-            Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
-                    String.class, String.class, String.class, String.class, String.class, String.class, String.class,
-                    String.class, String.class, String.class, String.class, String.class, Boolean.class, Boolean.class,
-                    double.class, double.class, double.class, String.class };
+		chckbxEstadoCom = new JCheckBox("ESTADO COM");
+		darFormatoOcultarColumnas(chckbxEstadoCom);
+		panelColumnas.add(chckbxEstadoCom);
 
-            public Class<?> getColumnClass(int columnIndex) {
-                return columnTypes[columnIndex];
-            }
+		chckbxUbicacionRemito = new JCheckBox("UBICACIÓN REMITO");
+		darFormatoOcultarColumnas(chckbxUbicacionRemito);
+		panelColumnas.add(chckbxUbicacionRemito);
 
-            boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false,
-                    false, false, false, false, false, false, false, false, false, false, false, false, false, false };
+		chckbxPago = new JCheckBox("PAGO");
+		darFormatoOcultarColumnas(chckbxPago);
+		panelColumnas.add(chckbxPago);
 
-            public boolean isCellEditable(int row, int column) {
-                return columnEditables[column];
-            }
-        };
-        
-      
-   
-        tblListado = new JTable(modelReparaciones);
+		chckbxIngreso = new JCheckBox("INGRESO");
+		darFormatoOcultarColumnas(chckbxIngreso);
+		panelColumnas.add(chckbxIngreso);
 
+		chckbxEntrada = new JCheckBox("ENTRADA");
+		darFormatoOcultarColumnas(chckbxEntrada);
+		panelColumnas.add(chckbxEntrada);
 
-        tblListado.setCellSelectionEnabled(true);
-        tblListado.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        
-        
+		chckbxEquipo = new JCheckBox("EQUIPO");
+		darFormatoOcultarColumnas(chckbxEquipo);
+		panelColumnas.add(chckbxEquipo);
 
-       
-        
-        scrollPane = new JScrollPane(tblListado);
-        scrollPane.setViewportView(tblListado);
-        panelCentral.add(scrollPane, BorderLayout.CENTER);
-        
+		chckbxSerie = new JCheckBox("SERIE");
+		darFormatoOcultarColumnas(chckbxSerie);
+		panelColumnas.add(chckbxSerie);
 
+		chckbxSalida = new JCheckBox("SALIDA");
+		darFormatoOcultarColumnas(chckbxSalida);
+		panelColumnas.add(chckbxSalida);
 
-        int[] anchos = { 60, 80, 150, 150, 200, 100, 150, 100, 100, 80, 110, 120, 150, 100, 100, 100, 100, 80, 80, 100,
-                100, 100, 80 };
+		chckbxEstadoFis = new JCheckBox("ESTADO FÍS");
+		darFormatoOcultarColumnas(chckbxEstadoFis);
+		panelColumnas.add(chckbxEstadoFis);
 
-        for (int i = 0; i < tblListado.getColumnCount(); i++) {
-            tblListado.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
-        }
+		chckbxNumeroRemito = new JCheckBox("NÚMERO REMITO");
+		darFormatoOcultarColumnas(chckbxNumeroRemito);
+		panelColumnas.add(chckbxNumeroRemito);
 
-        this.setVisible(true);
-    }
+		chckbxPrecioPeso = new JCheckBox("PRECIO PESO");
+		darFormatoOcultarColumnas(chckbxPrecioPeso);
+		panelColumnas.add(chckbxPrecioPeso);
 
-   public void setCellRender(JTable table) {
+		chckbxPresupuestoGeneradoColumna = new JCheckBox("PRESUPUESTO GEN");
+		darFormatoOcultarColumnas(chckbxPresupuestoGeneradoColumna);
+		panelColumnas.add(chckbxPresupuestoGeneradoColumna);
+
+		chckbxCliente = new JCheckBox("CLIENTE");
+		darFormatoOcultarColumnas(chckbxCliente);
+		panelColumnas.add(chckbxCliente);
+
+		chckbxMarca = new JCheckBox("MARCA");
+		darFormatoOcultarColumnas(chckbxMarca);
+		panelColumnas.add(chckbxMarca);
+
+		chckbxAviso = new JCheckBox("AVISO");
+		darFormatoOcultarColumnas(chckbxAviso);
+		panelColumnas.add(chckbxAviso);
+
+		chckbxTecnico = new JCheckBox("TÉCNICO");
+		darFormatoOcultarColumnas(chckbxTecnico);
+		panelColumnas.add(chckbxTecnico);
+
+		chckbxEstadoTec = new JCheckBox("ESTADO TÉC");
+		darFormatoOcultarColumnas(chckbxEstadoTec);
+		panelColumnas.add(chckbxEstadoTec);
+
+		chckbxClienteCliente = new JCheckBox("CLIENTE/CLIENTE");
+		darFormatoOcultarColumnas(chckbxClienteCliente);
+		panelColumnas.add(chckbxClienteCliente);
+
+		chckbxPrecioDolar = new JCheckBox("PRECIO DOLAR");
+		darFormatoOcultarColumnas(chckbxPrecioDolar);
+		panelColumnas.add(chckbxPrecioDolar);
+
+		chckbxPresupuestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENV");
+		darFormatoOcultarColumnas(chckbxPresupuestoEnviadoColumna);
+		panelColumnas.add(chckbxPresupuestoEnviadoColumna);
+
+		panelCentral = new JPanel();
+		panelCentral.setBorder(new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 128, 128)),
+				new EmptyBorder(3, 5, 0, 5)));
+		panelCentral.setBackground(new Color(176, 196, 222));
+		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
+		panelCentral.setLayout(new BorderLayout(0, 0));
+
+		modelReparaciones = new DefaultTableModel(new Object[][] {}, nombreColumnas) {
+			private static final long serialVersionUID = 1L;
+			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
+					String.class, String.class, String.class, String.class, String.class, String.class, String.class,
+					String.class, String.class, String.class, String.class, String.class, String.class, Boolean.class,
+					Boolean.class, double.class, double.class, double.class, String.class };
+
+			public Class<?> getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false,
+					false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+					false };
+
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		};
+
+		tblListado = new JTable(modelReparaciones);
+
+		tblListado.setCellSelectionEnabled(true);
+		tblListado.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+		scrollPane = new JScrollPane(tblListado);
+		scrollPane.setViewportView(tblListado);
+		panelCentral.add(scrollPane, BorderLayout.CENTER);
+
+		int[] anchos = { 60, 80, 150, 150, 200, 100, 150, 100, 100, 80, 80, 110, 120, 150, 100, 100, 100, 100, 80, 80,
+				100, 100, 100, 80 };
+
+		for (int i = 0; i < tblListado.getColumnCount(); i++) {
+			tblListado.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+		}
+
+		this.setVisible(true);
+	}
+
+	public void setCellRender(JTable table) {
 		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
 		while (en.hasMoreElements()) {
 			TableColumn tc = en.nextElement();
@@ -308,45 +323,41 @@ public class VentanaListadoReparaciones extends JFrame {
 		return modelReparaciones;
 	}
 
-	
-	 public static void darFormatoFiltros(JLabel label, JComboBox<?> comboBox, JRadioButton radioButton) {
-	        // Formatear JLabel
-	        if (label != null) {
-	            label.setBackground(new Color(176, 196, 222));
-	            label.setHorizontalAlignment(SwingConstants.LEFT);
-	            label.setFont(new Font("Cambria", Font.BOLD, 12));
-	        }
+	public static void darFormatoFiltros(JLabel label, JComboBox<?> comboBox, JRadioButton radioButton) {
+		// Formatear JLabel
+		if (label != null) {
+			label.setBackground(new Color(176, 196, 222));
+			label.setHorizontalAlignment(SwingConstants.LEFT);
+			label.setFont(new Font("Cambria", Font.BOLD, 12));
+		}
 
-	        // Formatear JComboBox
-	        if (comboBox != null) {
-	            comboBox.setEnabled(false);
-	            comboBox.setBackground(new Color(176, 196, 222));
-	            comboBox.setFont(new Font("Cambria", Font.PLAIN, 12));
-	            comboBox.setPreferredSize(new Dimension(150, 15));
-	        }
+		// Formatear JComboBox
+		if (comboBox != null) {
+			comboBox.setEnabled(false);
+			comboBox.setBackground(new Color(176, 196, 222));
+			comboBox.setFont(new Font("Cambria", Font.PLAIN, 12));
+			comboBox.setPreferredSize(new Dimension(150, 15));
+		}
 
-	        // Formatear JRadioButton
-	        if (radioButton != null) {
-	            radioButton.setBackground(new Color(176, 196, 222));
-	            radioButton.setFont(new Font("Cambria", Font.BOLD, 12));
-	            radioButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	            
-	        }
-	    }
-	
-	 
-	 public static void darFormatoOcultarColumnas(JCheckBox check) {
-	        // Formatear JCheckBox
-	        if (check != null) {
-	        	check.setOpaque(false);
-	        	check.setFont(new Font("Cambria", Font.BOLD, 12));
-	        	check.setHorizontalAlignment(SwingConstants.LEFT);
-	        	check.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	        }
+		// Formatear JRadioButton
+		if (radioButton != null) {
+			radioButton.setBackground(new Color(176, 196, 222));
+			radioButton.setFont(new Font("Cambria", Font.BOLD, 12));
+			radioButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-	       
-	    }
-	
+		}
+	}
+
+	public static void darFormatoOcultarColumnas(JCheckBox check) {
+		// Formatear JCheckBox
+		if (check != null) {
+			check.setOpaque(false);
+			check.setFont(new Font("Cambria", Font.BOLD, 12));
+			check.setHorizontalAlignment(SwingConstants.LEFT);
+			check.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		}
+
+	}
 
 	public void setModelReparaciones(DefaultTableModel modelReparaciones) {
 		this.modelReparaciones = modelReparaciones;
@@ -584,6 +595,12 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.chckbxIngreso = chckbxIngreso;
 	}
 
+	public JCheckBox getChckbxSalida() {
+		return chckbxSalida;
+	}
 
+	public void setChckbxSalida(JCheckBox chckbxSalida) {
+		this.chckbxSalida = chckbxSalida;
+	}
 
 }

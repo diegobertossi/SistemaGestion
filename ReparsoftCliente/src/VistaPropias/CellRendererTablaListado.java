@@ -89,13 +89,13 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 
 		setFont(fuenteCeldas);
 
-		if (column == 0 || column == 1 || column == 8 || column == 9 || column == 11 || column == 12 || column == 13
+		if (column == 0 || column == 1 || column == 8 || column == 9 ||  column == 10  || column == 12 || column == 13
 				|| column == 14 || column == 17 || column == 18 || column == 19 || column == 20 || column == 21
-				|| column == 22) {
+				|| column == 22||column == 23) {
 			setHorizontalAlignment(SwingConstants.CENTER);
 		}
 
-		if (column == 15) {
+		if (column == 16) {
 
 			String codigoRemitoVisual ="";
 			if (Integer.parseInt(value.toString()) == 2 || Integer.parseInt(value.toString()) == 5
@@ -116,7 +116,7 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 
 		}
 
-		if (column == 16) {
+		if (column == 17) {
 			
 			String numeroRemitoVisual ="";
 			if (Integer.parseInt(value.toString()) > 0) {
@@ -128,7 +128,7 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 			
 		}
 
-		if (column == 17 || column == 18) {
+		if (column == 18 || column == 19) {
 			Boolean bol = Boolean.valueOf(String.valueOf(value));
 			check.setHorizontalAlignment(JLabel.CENTER);
 			check.setBackground(isSelected ? fondoSeleccionado : (oddRow ? fondoImpar : fondoPar));
@@ -136,13 +136,13 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 			return check;
 		}
 
-		if (column == 19 || column == 21) {
+		if (column == 20 || column == 22) {
 			monedaFormatter = new MonedaFormatter();
 			String valor = monedaFormatter.formatPeso(value.toString());
 			setText((value == null) ? "" : valor);
 		}
 
-		if (column == 20) {
+		if (column == 21) {
 			monedaFormatter = new MonedaFormatter();
 			String valor = monedaFormatter.formatDolar(value.toString());
 			setText((value == null) ? "" : valor);
@@ -156,7 +156,7 @@ public class CellRendererTablaListado extends DefaultTableCellRenderer implement
 			setForeground(Color.blue);
 		}
 
-		if ((column == 1 || column == 9) && (value != null && value != "")) {
+		if ((column == 1 || column == 9|| column == 10) && (value != null && value != "")) {
 
 			SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
 			Date fechaDate = null;
