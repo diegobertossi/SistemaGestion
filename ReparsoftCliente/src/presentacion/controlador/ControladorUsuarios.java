@@ -653,6 +653,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		}
 
 		ventanaRolesUsuarios.setCellRender(this.ventanaRolesUsuarios.getTablaUsuarios());
+		
+		
 		this.ventanaRolesUsuarios.show();
 	}
 

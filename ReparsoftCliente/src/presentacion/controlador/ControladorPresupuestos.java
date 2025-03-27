@@ -140,6 +140,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			btnpago = true;
 
 			ventanaSeleccionarELS = new VentanaSeleccionarELS(this);
+			
 			ventanaSeleccionarELS.getComboELS().addActionListener(this);
 			ventanaSeleccionarELS.getBtnAceptar().addActionListener(this);
 			ventanaSeleccionarELS.getBtnCancelar().addActionListener(this);
@@ -214,6 +215,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						&& ventanaSeleccionarELS.getComboELS().getSelectedIndex() != -1) {
 
 					ventanaIngresoDePago = new VentanaIngresoDePago(this);
+					cerraVentanaAgregarPrecio();
 					monedaFormatter = new MonedaFormatter();
 
 					TomarDatosDeTablas();
@@ -960,6 +962,27 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 					ventanaMarcarAceptaciones.dispose();
 					ventanaMarcarAceptaciones = null;
+
+				}
+
+			}
+
+		});
+
+	}
+	
+	
+	public void cerraVentanaAgregarPrecio() {
+
+		this.ventanaIngresoDePago.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				int opcion = JOptionPane.showConfirmDialog(ventanaIngresoDePago,
+						"¿Desea salir de la ventana 'INGRESO DE PAGO'?", "Aviso", JOptionPane.YES_NO_OPTION);
+
+				if (opcion == JOptionPane.YES_OPTION) {
+
+					ventanaIngresoDePago.dispose();
+					ventanaIngresoDePago = null;
 
 				}
 
