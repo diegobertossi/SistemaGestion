@@ -13,6 +13,8 @@ import presentacion.controlador.ControladorUsuarios;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -102,15 +104,15 @@ public class VentanaPermisos extends JFrame {
 
 		this.tblPermisosTenidos = new JTable(modelPermisosTenidos);
 		tblPermisosTenidos.getTableHeader().setReorderingAllowed(false);
-		
-				
+		tblPermisosTenidos.getTableHeader().setResizingAllowed(false);
+			
 		int[] anchos = {20, 60, 60};
-	
-
 		scrollPane.setViewportView(tblPermisosTenidos);
 
+		
+		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 114, 311, 215);
+		scrollPane_1.setBounds(16, 114, 311, 215);
 		panel.add(scrollPane_1);
 
 		this.modelPermisosFaltantes = new DefaultTableModel(new Object[][] {},
@@ -133,60 +135,63 @@ public class VentanaPermisos extends JFrame {
 
 		tblPermisosFaltantes = new JTable(modelPermisosFaltantes);
 		tblPermisosFaltantes.getTableHeader().setReorderingAllowed(false);
+		tblPermisosFaltantes.getTableHeader().setResizingAllowed(false);
 
 		
-
+		
 		scrollPane_1.setViewportView(tblPermisosFaltantes);
-		
-		
-		for (int i = 0; i < tblPermisosTenidos.getColumnCount(); i++) {
-		    tblPermisosTenidos.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
-		    tblPermisosFaltantes.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
-		}
-
-
+				
 		
 		
 		cmbRoles = new JComboBox<Object>();
 		cmbRoles.setBounds(58, 53, 215, 20);
 		panel.add(cmbRoles);
 
-		JLabel lblRol = new JLabel("Rol:");
+		JLabel lblRol = new JLabel("ROL:");
 		lblRol.setForeground(new Color(0, 0, 128));
 		lblRol.setFont(new Font("Cambria", Font.BOLD, 14));
-		lblRol.setBounds(10, 55, 46, 14);
+		lblRol.setBounds(16, 55, 46, 14);
 		panel.add(lblRol);
 
 		btnAgregar = new JButton("");
 		btnAgregar.setBackground(new Color(60, 179, 113));
-		btnAgregar.setBounds(333, 183, 46, 33);
+		btnAgregar.setBounds(336, 183, 46, 33);
 		btnAgregar.setIcon(new ImageIcon(this.getClass().getResource("/siguiente.png")));
 		panel.add(btnAgregar);
 
 		btnRemover = new JButton("");
 		btnRemover.setForeground(new Color(255, 255, 255));
 		btnRemover.setBackground(new Color(255, 99, 71));
-		btnRemover.setBounds(333, 225, 46, 33);
+		btnRemover.setBounds(336, 225, 46, 33);
 		btnRemover.setIcon(new ImageIcon(this.getClass().getResource("/anterior.png")));
 		panel.add(btnRemover);
 
 		JLabel lblPermisosPorRol = new JLabel("PERMISOS POR ROL");
 		lblPermisosPorRol.setForeground(new Color(0, 0, 128));
 		lblPermisosPorRol.setFont(new Font("Cambria", Font.BOLD, 18));
-		lblPermisosPorRol.setBounds(10, 11, 182, 20);
+		lblPermisosPorRol.setBounds(16, 11, 182, 20);
 		panel.add(lblPermisosPorRol);
 
-		lblSinAccesoA = new JLabel("Sin acceso a:");
+		lblSinAccesoA = new JLabel("SIN ACCESO A:");
 		lblSinAccesoA.setForeground(new Color(0, 0, 255));
 		lblSinAccesoA.setFont(new Font("Cambria", Font.BOLD, 14));
-		lblSinAccesoA.setBounds(10, 88, 87, 14);
+		lblSinAccesoA.setBounds(16, 92, 107, 14);
 		panel.add(lblSinAccesoA);
 
-		lblConAccesoA = new JLabel("Con acceso a:");
+		lblConAccesoA = new JLabel("CON ACCESO A:");
 		lblConAccesoA.setForeground(new Color(0, 0, 255));
 		lblConAccesoA.setFont(new Font("Cambria", Font.BOLD, 14));
-		lblConAccesoA.setBounds(389, 88, 87, 14);
+		lblConAccesoA.setBounds(389, 92, 107, 14);
 		panel.add(lblConAccesoA);
+		
+
+		for (int i = 0; i < tblPermisosTenidos.getColumnCount(); i++) {
+			tblPermisosTenidos.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+			tblPermisosFaltantes.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+			
+		}
+		
+		
 
 		setVisible(true);
 
@@ -197,9 +202,10 @@ public class VentanaPermisos extends JFrame {
 		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
 		while (en.hasMoreElements()) {
 			TableColumn tc = en.nextElement();
-			tc.setCellRenderer(new CellRendererTablaRoles());
+			tc.setCellRenderer(new CellRendererTablaRoles(table));
 		}
 	}
+	
 
 	@SuppressWarnings("rawtypes")
 	public JComboBox getCmbRoles() {

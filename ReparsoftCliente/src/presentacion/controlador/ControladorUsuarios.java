@@ -488,6 +488,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	}
 
 	private void cargarTablaPermisos() {
+		
+		
 		// TODO Auto-generated method stub
 		int pos = ventanaPermisos.getCmbRoles().getSelectedIndex();
 
@@ -511,6 +513,10 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				ventanaPermisos.getModelPermisosFaltantes().addRow(fila);
 			}
 		}
+		
+		
+		ventanaPermisos.setCellRender(this.ventanaPermisos.getTblPermisosFaltantes());
+		ventanaPermisos.setCellRender(this.ventanaPermisos.getTblPermisosTenidos());
 	}
 
 	@SuppressWarnings("unchecked")
