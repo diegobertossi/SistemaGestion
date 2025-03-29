@@ -147,8 +147,8 @@ public class ControladorUsuLogin {
 	            if (!tienePermisoPresupuestos) {
 	                System.out.println("NO TIENE PERMISO");
 
-	                // Ocultar las columnas 19, 20 y 21
-	                int[] columnas = {19, 20, 21};
+	                // Ocultar las columnas  20, 21, 22
+	                int[] columnas = {20, 21, 22};
 	                for (int columna : columnas) {
 	                    ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columna).setMaxWidth(0);
 	                    ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columna).setMinWidth(0);

@@ -8,6 +8,7 @@ import javax.swing.text.MaskFormatter;
 
 import VistaPropias.JTextNum;
 import VistaPropias.CellRendererTablaRemitos;
+import VistaPropias.CellRendererTablaRemitosAgenerar;
 import presentacion.controlador.ControladorSalidas;
 
 import javax.swing.JScrollPane;
@@ -153,51 +154,24 @@ public class VentanaRemitos extends JFrame {
 				return columnEditables[column];
 			}
 		};
-
-		try {
-			UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
-			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		Font fuenteCabecera = new Font("Cambria", Font.BOLD, 14);
-		Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 12);
-
+		
+		
+		
+				
 		tblEquiposParaRemito = new JTable(modelEquiposParaRemito);
-
-		tblEquiposParaRemito.setFont(fuenteCeldas);
-
-		tblEquiposParaRemito.getTableHeader().setForeground(Color.BLACK);
-		tblEquiposParaRemito.getTableHeader().setFont(fuenteCabecera);
 		tblEquiposParaRemito.getTableHeader().setReorderingAllowed(false);
+		tblEquiposParaRemito.getTableHeader().setResizingAllowed(false);
 
-		((DefaultTableCellRenderer) tblEquiposParaRemito.getTableHeader().getDefaultRenderer())
-				.setHorizontalAlignment(JLabel.CENTER);
+//	
+//		tblEquiposParaRemito.setShowGrid(true);
+//		tblEquiposParaRemito.setCellSelectionEnabled(true);
+//
+//		tblEquiposParaRemito.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	
-
-		tblEquiposParaRemito.setShowGrid(true);
-		tblEquiposParaRemito.setCellSelectionEnabled(true);
-
-		tblEquiposParaRemito.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		tblEquiposParaRemito.doLayout();
-
+		int[] anchos = { 60, 200, 150, 100, 100, 60, 100, 100, 150};
+		
 		scrollPane.setViewportView(tblEquiposParaRemito);
 
-		try {
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		tblEquiposParaRemito.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		tblEquiposParaRemito.setAutoCreateColumnsFromModel(false);
 
 		DimTblReparaciones = tblEquiposParaRemito.getSize();
 
@@ -334,9 +308,7 @@ public class VentanaRemitos extends JFrame {
 		
 		
 
-		tblEquiposParaRemito.getTableHeader().setReorderingAllowed(false);
-
-		int[] anchos = { 60, 200, 150, 100, 100, 60, 100, 100, 150};
+		
 
 		for (int i = 0; i < tblEquiposParaRemito.getColumnCount(); i++) {
 
@@ -364,7 +336,7 @@ public class VentanaRemitos extends JFrame {
 		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
 		while (en.hasMoreElements()) {
 			TableColumn tc = en.nextElement();
-			tc.setCellRenderer(new CellRendererTablaRemitos());
+			tc.setCellRenderer(new CellRendererTablaRemitosAgenerar(table));
 		}
 	}
 	

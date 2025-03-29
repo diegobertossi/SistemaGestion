@@ -7,6 +7,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.text.MaskFormatter;
 
 import VistaPropias.CellRenderer;
+import VistaPropias.CellRendererTablaRemitos;
+import VistaPropias.CellRendererTablaRoles;
 import presentacion.controlador.ControladorSalidas;
 
 import javax.swing.JScrollPane;
@@ -124,9 +126,6 @@ public class VentanaRemitoGenerado extends JFrame {
 		modelEquiposParaRemito = new DefaultTableModel(new Object[][] {},
 				new String[] { "ELS", "EQUIPO", "MODELO", "N° SERIE","ENVIADO" }) {
 
-			/**
-					 * 
-					 */
 					private static final long serialVersionUID = 1L;
 
 			public int getColumnCount() {
@@ -138,10 +137,6 @@ public class VentanaRemitoGenerado extends JFrame {
 				return nombreColumnas[col];
 			}
 
-			/*
-			 * Este metodo sirve para determinar el editor predeterminado para
-			 * cada columna de celdas
-			 */
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int c) {
 				return getValueAt(0, c).getClass();
@@ -154,61 +149,16 @@ public class VentanaRemitoGenerado extends JFrame {
 			}
 		};
 
-		try {
-			//UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
-			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-			//UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		Font fuenteCabecera = new Font("Cambria", Font.BOLD, 14);
-		Font fuenteCeldas = new Font("Cambria", Font.PLAIN, 12);
-
+		
+		
 		tblEquiposParaRemito = new JTable(modelEquiposParaRemito);
 
-		tblEquiposParaRemito.setFont(fuenteCeldas);
 
-		
-		
-		tblEquiposParaRemito.getTableHeader().setForeground(Color.BLACK);
-		tblEquiposParaRemito.getTableHeader().setFont(fuenteCabecera);
-		tblEquiposParaRemito.getTableHeader().setReorderingAllowed(false);
-		tblEquiposParaRemito.getTableHeader().setAlignmentX(JLabel.CENTER);
-
-		((DefaultTableCellRenderer) tblEquiposParaRemito.getTableHeader().getDefaultRenderer())
-				.setHorizontalAlignment(JLabel.CENTER);
-
-		tblEquiposParaRemito.setShowGrid(true);
-		tblEquiposParaRemito.setCellSelectionEnabled(true);
-
-		tblEquiposParaRemito.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		tblEquiposParaRemito.doLayout();
-
-		
-		
+	
 		scrollPane.setViewportView(tblEquiposParaRemito);
 
 		
-
-		try {
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-		
-		tblEquiposParaRemito.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		tblEquiposParaRemito.setAutoCreateColumnsFromModel(false);
 
 		DimTblReparaciones = tblEquiposParaRemito.getSize();
 
@@ -299,7 +249,7 @@ public class VentanaRemitoGenerado extends JFrame {
 		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
 		while (en.hasMoreElements()) {
 			TableColumn tc = en.nextElement();
-			tc.setCellRenderer(new CellRenderer());
+			tc.setCellRenderer(new CellRendererTablaRemitos(table));
 		}
 	}
 

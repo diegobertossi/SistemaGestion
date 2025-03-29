@@ -2231,7 +2231,10 @@ public class ControladorListados
 		map.put(ventanaListadoReparaciones.getChckbxNumeroRemito(), new ColumnConfig(17, 100, 100, 150));
 		map.put(ventanaListadoReparaciones.getChckbxPresupuestoGeneradoColumna(), new ColumnConfig(18, 80, 80, 80));
 		map.put(ventanaListadoReparaciones.getChckbxPresupuestoEnviadoColumna(), new ColumnConfig(19, 80, 80, 80));
-		map.put(ventanaListadoReparaciones.getChckbxIngreso(), new ColumnConfig(23, 80, 80, 80));
+		map.put(ventanaListadoReparaciones.getChckbxPrecioPeso(), new ColumnConfig(20, 100, 100, 100));
+		map.put(ventanaListadoReparaciones.getChckbxPrecioDolar(), new ColumnConfig(21, 100, 100, 100));
+		map.put(ventanaListadoReparaciones.getChckbxPago(), new ColumnConfig(22, 100, 100, 100));
+		map.put(ventanaListadoReparaciones.getChckbxIngreso(), new ColumnConfig(23, 100, 100, 100));
 
 		return map;
 	}

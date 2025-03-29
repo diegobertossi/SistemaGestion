@@ -757,6 +757,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 							this.Reparaciones_en_tabla.get(i).getEnviado() };
 					this.ventanaRemitoGenerado.getModelEquiposParaRemito().addRow(fila);
 				}
+				
+				ventanaRemitoGenerado.setCellRender(this.ventanaRemitoGenerado.getTblEquiposParaRemito());
 				this.ventanaRemitoGenerado.show();
 			}
 		} else if (!btnMarcarEnviados && btnDesvincularRemito) {
@@ -791,6 +793,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 							this.Reparaciones_en_tabla.get(i).getEnviado() };
 					this.ventanaEliminarRemito.getModelEquiposParaRemito().addRow(fila);
 				}
+				ventanaRemitoGenerado.setCellRender(this.ventanaRemitoGenerado.getTblEquiposParaRemito());
 				this.ventanaEliminarRemito.show();
 
 			}
