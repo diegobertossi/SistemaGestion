@@ -34,7 +34,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente)) And ((Sucursal.IdSucursal)=Equipos.idSucursal) and reparaciones.EstadoComercial = 'A la Espera de Aceptación' and PresupuestoGenerado = true and ((usuario.IdUsuario)=reparaciones.idUsuario)  ORDER BY reparaciones.ELS ASC";
 
 	private static final String readall = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
-			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente, reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado,reparaciones.WordGenerado,reparaciones.WordEnviado, reparaciones.idUsuario,reparaciones.NombreUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.Pago, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca, DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, reparaciones.Enviado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
+			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente, reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado,reparaciones.WordGenerado,reparaciones.WordEnviado, reparaciones.idUsuario,reparaciones.NombreUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.Pago, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca, DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
 			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
 			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente)) and ((Sucursal.IdSucursal)=Equipos.idSucursal) And ((usuario.IdUsuario)=reparaciones.idUsuario)  ORDER BY reparaciones.ELS ASC";
 
@@ -58,17 +58,17 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	private static final String readallSeriexModelo = "SELECT Equipos.NumeroDeSerie FROM Equipos where Equipos.Modelo = ? group by Equipos.NumeroDeSerie";
 
 	private static final String readallxELS = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
-			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado,reparaciones.WordGenerado,reparaciones.WordEnviado, reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.NombreUsuario,reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, reparaciones.Enviado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
+			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado,reparaciones.WordGenerado,reparaciones.WordEnviado, reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.NombreUsuario,reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
 			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
 			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente)) and ((Sucursal.IdSucursal)=Equipos.idSucursal) And ((usuario.IdUsuario)=reparaciones.idUsuario)  and ELS = ?";
 
 	private static final String readallxIDClienteIDSucursal = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
-			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente,reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado, reparaciones.WordGenerado,reparaciones.WordEnviado,reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, reparaciones.Enviado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
+			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente,reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado, reparaciones.WordGenerado,reparaciones.WordEnviado,reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
 			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
-			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente) And (Sucursal.IdSucursal)=Equipos.idSucursal) and ((usuario.IdUsuario)=reparaciones.idUsuario) and (reparaciones.EstadoComercial='Aceptado' || reparaciones.EstadoComercial='NO Aceptado' ) and reparaciones.EstadoFisico != 'ENVIADO' and reparaciones.Agregadoaremito != 1 and Cliente.idCliente = ? and Sucursal.IdSucursal = ? order by ELS";
+			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente) And (Sucursal.IdSucursal)=Equipos.idSucursal) and ((usuario.IdUsuario)=reparaciones.idUsuario) and (reparaciones.EstadoComercial='Aceptado' || reparaciones.EstadoComercial='NO Aceptado' ) and reparaciones.EstadoFisico != 'Enviado' and reparaciones.Agregadoaremito != 1 and Cliente.idCliente = ? and Sucursal.IdSucursal = ? order by ELS";
 
 	private static final String readallxSerie = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
-			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion,reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado, reparaciones.WordGenerado,reparaciones.WordEnviado,reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, reparaciones.Enviado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
+			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion,reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado, reparaciones.WordGenerado,reparaciones.WordEnviado,reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
 			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
 			+ " WHERE ((Cliente.idCliente)=Equipos.idCliente) and ((Sucursal.IdSucursal)=Equipos.idSucursal) and ((usuario.IdUsuario)=reparaciones.idUsuario) and Equipos.NumeroDeSerie = ?";
 
@@ -80,12 +80,12 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	private static final String maximoIDequipo = "Select MAX(IdEquipo) from Equipos";
 
 	private static final String readallxCompOriginal = "SELECT reemplazos.original,reemplazos.reemplazo, Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
-			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, reparaciones.Enviado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
+			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
 			+ " FROM (UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion ) INNER JOIN reemplazos ON reparaciones.ELS = reemplazos.ELS"
 			+ " WHERE ((Cliente.idCliente)=Equipos.idCliente) And ((Sucursal.IdSucursal)=Equipos.idSucursal)and ((usuario.IdUsuario)=reparaciones.idUsuario) and reemplazos.original = ?";
 
 	private static final String readallxCompReemplazado = "SELECT reemplazos.original, reemplazos.reemplazo, Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
-			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, reparaciones.Enviado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
+			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.InformeEnviado, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
 			+ " FROM (UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion ) INNER JOIN reemplazos ON reparaciones.ELS = reemplazos.ELS"
 			+ " WHERE ((Cliente.idCliente)=Equipos.idCliente) and ((Sucursal.IdSucursal)=Equipos.idSucursal) and ((usuario.IdUsuario)=reparaciones.idUsuario) and reemplazos.reemplazo = ?";
 
@@ -269,7 +269,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
 						resultSet.getDouble("PrecioDolar"), resultSet.getBoolean("InformeEnviado"),
 						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getBoolean("Enviado"), resultSet.getDouble("Pago"),
+						resultSet.getDouble("Pago"),
 						resultSet.getBoolean("PresupuestoEnviado"), resultSet.getString("Equipos.Nombre"),
 						resultSet.getString("email"), resultSet.getString("Modelo"), resultSet.getString("Marca"),
 						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
@@ -315,7 +315,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
 						resultSet.getDouble("PrecioDolar"), resultSet.getBoolean("InformeEnviado"),
 						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getBoolean("Enviado"), resultSet.getDouble("Pago"),
+						resultSet.getDouble("Pago"),
 						resultSet.getBoolean("PresupuestoEnviado"), resultSet.getString("Equipos.Nombre"),
 						resultSet.getString("email"), resultSet.getString("Modelo"), resultSet.getString("Marca"),
 						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
@@ -357,7 +357,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
 						resultSet.getDouble("PrecioDolar"), resultSet.getBoolean("InformeEnviado"),
 						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getBoolean("Enviado"), resultSet.getDouble("Pago"),
+						resultSet.getDouble("Pago"),
 						resultSet.getBoolean("PresupuestoEnviado"), resultSet.getString("Equipos.Nombre"),
 						resultSet.getString("email"), resultSet.getString("Modelo"), resultSet.getString("Marca"),
 						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
@@ -2088,7 +2088,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 				+ "OrdendeCompra = ?, " + "Agregadoaremito = ?, " + "RemitoGenerado = ?, " + "idEquipo = ?, "
 				+ "idRemito = ?, " + "PrecioPeso = ?, " + "PrecioDolar = ?, " + "InformeEnviado = ?, "
 				+ "FechAceptacion = ?, " + "PresupuestoGenerado = ?, " + "PresupuestoEnviado = ?, "
-				+ "WordGenerado = ?, " + "WordEnviado = ?, " + "Enviado = ?, " + "AvisoEnviado = ?, " + "Pago = ?, "
+				+ "WordGenerado = ?, " + "WordEnviado = ?, " + "AvisoEnviado = ?, " + "Pago = ?, "
 				+ "FechaSalida = ? " + "WHERE ELS = ?";
 
 		// Define el formato en el que llega la fecha
@@ -2169,7 +2169,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 																							// predeterminada
 
 					// Usa el formato correcto para crear el Timestamp
-					statement.setTimestamp(28, Timestamp.valueOf(formattedDate));
+					statement.setTimestamp(27, Timestamp.valueOf(formattedDate));
 				} catch (Exception e) {
 					throw new RuntimeException(
 							"El formato de la fecha de entrada no es válido o no se pudo convertir. Verifica los datos.",
@@ -2177,7 +2177,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 				}
 			} else {
 				// Si la fecha es nula o vacía, establece el valor como NULL
-				statement.setNull(28, java.sql.Types.TIMESTAMP);
+				statement.setNull(27, java.sql.Types.TIMESTAMP);
 			}
 
 			statement.setString(3, reparacion_a_editar.getFalla());
@@ -2186,6 +2186,9 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			statement.setInt(6, reparacion_a_editar.getidUsuario());
 			statement.setString(7, reparacion_a_editar.getNombreUsuario());
 			statement.setString(8, reparacion_a_editar.getEstadoFisico());
+			
+			
+			
 			statement.setString(9, reparacion_a_editar.getEstadoTecnico());
 			statement.setString(10, reparacion_a_editar.getEstadoComercial());
 			statement.setString(11, reparacion_a_editar.getRemitoCliente());
@@ -2207,9 +2210,9 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			statement.setInt(16, reparacion_a_editar.getidRemito());
 			try {
 				if (reparacion_a_editar.getPago() != null) {
-				    statement.setBigDecimal(27, new BigDecimal(reparacion_a_editar.getPago()));
+				    statement.setBigDecimal(26, new BigDecimal(reparacion_a_editar.getPago()));
 				} else {
-				    statement.setNull(27, java.sql.Types.DECIMAL);
+				    statement.setNull(26, java.sql.Types.DECIMAL);
 				}
 				if (reparacion_a_editar.getPrecioDolar() != null) {
 				    statement.setBigDecimal(18, new BigDecimal(reparacion_a_editar.getPrecioDolar()));
@@ -2257,21 +2260,50 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 				statement.setNull(24, java.sql.Types.BOOLEAN);
 			}
 
-			if (reparacion_a_editar.getEnviado() != null) {
-				statement.setBoolean(25, reparacion_a_editar.getEnviado());
+		
+			if (reparacion_a_editar.getAvisoEnviado() != null) {
+				statement.setBoolean(25, reparacion_a_editar.getAvisoEnviado());
 			} else {
 				statement.setNull(25, java.sql.Types.BOOLEAN);
 			}
 
-			if (reparacion_a_editar.getAvisoEnviado() != null) {
-				statement.setBoolean(26, reparacion_a_editar.getAvisoEnviado());
-			} else {
-				statement.setNull(26, java.sql.Types.BOOLEAN);
-			}
-
 			// Llave primaria
-			statement.setInt(29, reparacion_a_editar.getELS());
+			statement.setInt(28, reparacion_a_editar.getELS());
+				
+			
+//			
+//			System.out.println(
+//				    reparacion_a_editar.getFecha_Entrada() + " - " +
+//				    reparacion_a_editar.getFechadereparacion() + " - " +
+//				    reparacion_a_editar.getFalla() + " - " +
+//				    reparacion_a_editar.getSolucion() + " - " +
+//				    reparacion_a_editar.getInformecliente() + " - " +
+//				    reparacion_a_editar.getidUsuario() + " - " +
+//				    reparacion_a_editar.getNombreUsuario() + " - " +
+//				    reparacion_a_editar.getEstadoFisico() + " - " +
+//				    reparacion_a_editar.getEstadoTecnico() + " - " +
+//				    reparacion_a_editar.getEstadoComercial() + " - " +
+//				    reparacion_a_editar.getRemitoCliente() + " - " +
+//				    reparacion_a_editar.getOrdendeCompra() + " - " +
+//				    reparacion_a_editar.getAgregadoaremito() + " - " +
+//				    reparacion_a_editar.getRemitoGenerado() + " - " +
+//				    reparacion_a_editar.getIDEquipo() + " - " +
+//				    reparacion_a_editar.getidRemito() + " - " +
+//				    reparacion_a_editar.getPrecioPeso() + " - " +
+//				    reparacion_a_editar.getPrecioDolar() + " - " +
+//				    reparacion_a_editar.getInformeEnviado() + " - " +
+//				    reparacion_a_editar.getFechAceptacion() + " - " +
+//				    reparacion_a_editar.getPresupuestoGenerado() + " - " +
+//				    reparacion_a_editar.getPresupuestoEnviado() + " - " +
+//				    reparacion_a_editar.getWORDgenerado() + " - " +
+//				    reparacion_a_editar.getWORDenviado() + " - " +
+//				    reparacion_a_editar.getAvisoEnviado() + " - " +
+//				    reparacion_a_editar.getPago() + " - " +
+//				    reparacion_a_editar.getFecha_Salida() + " - " +
+//				    reparacion_a_editar.getELS()
+//				);
 
+		
 			// Ejecución de la consulta
 			return statement.executeUpdate() > 0;
 
@@ -2286,6 +2318,126 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	}
 	
 	
+	@Override
+	public void editarReparacionAgregarRemito(ReparacionDTO reparacionAeditar) {
+
+		PreparedStatement statement = null;
+		
+		String query = "UPDATE reparaciones SET "
+				
+				+ "Agregadoaremito = ?," 
+				+ "RemitoGenerado = ?,"
+				+ "idRemito = ? " 
+				+ "WHERE ELS = ?";
+		
+		
+		try {
+
+			statement = conexion.getSQLConexion().prepareStatement(query);
+			
+			
+			statement.setBoolean(1, reparacionAeditar.getAgregadoaremito());
+			statement.setBoolean(2, reparacionAeditar.getRemitoGenerado());
+			statement.setInt(3, reparacionAeditar.getidRemito());
+			
+			// Llave primaria
+			statement.setInt(4, reparacionAeditar.getELS());
+			
+			//System.out.println( reparacionAeditar.getEstadoFisico() + " - " + reparacionAeditar.getAgregadoaremito() + " - " + reparacionAeditar.getRemitoGenerado() + " - " +  reparacionAeditar.getidRemito()+ " - " + reparacionAeditar.getELS() );
+
+			statement.executeUpdate();
+		
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+		
+		
+	}
+
+	
+	
+	@Override
+	public void editMarcarEnviados(ReparacionDTO reparacionAeditar) {
+
+
+		PreparedStatement statement = null;
+
+		String query = "UPDATE reparaciones SET EstadoFisico = ? WHERE ELS = ?";
+		
+		
+		try {
+
+			statement = conexion.getSQLConexion().prepareStatement(query);
+			
+			statement.setString(1, reparacionAeditar.getEstadoFisico());
+					
+			// Llave primaria
+			statement.setInt(2, reparacionAeditar.getELS());
+
+			statement.executeUpdate();
+		
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+		
+		
+		
+	}
+
+	
+	@Override
+	public void editarReparacionAnularRemito(ReparacionDTO reparacionAeditar) {
+
+
+		PreparedStatement statement = null;
+	
+		String query = "UPDATE reparaciones SET "
+				+ "EstadoFisico = ?,"
+				+ "Agregadoaremito = ?," 
+				+ "RemitoGenerado = ?,"
+				+ "idRemito = ? " 
+				+ "WHERE ELS = ?";
+		
+		
+		try {
+
+			statement = conexion.getSQLConexion().prepareStatement(query);
+			
+			statement.setString(1, reparacionAeditar.getEstadoFisico());
+			statement.setBoolean(2, reparacionAeditar.getAgregadoaremito());
+			statement.setBoolean(3, reparacionAeditar.getRemitoGenerado());
+			statement.setInt(4, reparacionAeditar.getidRemito());
+			
+			// Llave primaria
+			statement.setInt(5, reparacionAeditar.getELS());
+			
+			System.out.println( reparacionAeditar.getEstadoFisico() + " - " + reparacionAeditar.getAgregadoaremito() + " - " + reparacionAeditar.getRemitoGenerado() + " - " +  reparacionAeditar.getidRemito()+ " - " + reparacionAeditar.getELS() );
+
+			statement.executeUpdate();
+		
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+		
+		
+		
+	}
+
 	
 	
 	
@@ -3037,7 +3189,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
 						resultSet.getDouble("PrecioDolar"), resultSet.getBoolean("InformeEnviado"),
 						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getBoolean("Enviado"), resultSet.getDouble("Pago"),
+					    resultSet.getDouble("Pago"),
 						resultSet.getBoolean("PresupuestoEnviado"), resultSet.getString("Equipos.Nombre"),
 						resultSet.getString("email"), resultSet.getString("Modelo"), resultSet.getString("Marca"),
 						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
@@ -3086,7 +3238,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
 						resultSet.getDouble("PrecioDolar"), resultSet.getBoolean("InformeEnviado"),
 						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getBoolean("Enviado"), resultSet.getDouble("Pago"),
+						resultSet.getDouble("Pago"),
 						resultSet.getBoolean("PresupuestoEnviado"), resultSet.getString("Equipos.Nombre"),
 						resultSet.getString("email"), resultSet.getString("Modelo"), resultSet.getString("Marca"),
 						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
@@ -3261,6 +3413,9 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		);
 		return camposPermitidos.contains(campo);
 	}
+
+
+
 
 
 

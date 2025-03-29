@@ -83,6 +83,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 	private boolean btnMarcarEnviados = false;
 	private boolean btnDesvincularRemito = false;
+	private boolean enviado;
 
 	public ControladorSalidas(VentanaSalidas ventanaSalidas, Agenda agenda) {
 
@@ -206,7 +207,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 							break;
 						case 4:
 							IDubicacion = 8;
-							
+
 						case 5:
 							IDubicacion = 3;
 							break;
@@ -343,7 +344,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				for (int i = 0; i < filas; i++) {
 
 					ReparacionDTO reparacionAeditar = quitarRemito(i);
-					this.agenda.editarReparacionR(reparacionAeditar);
+					this.agenda.editarReparacionAnularRemito(reparacionAeditar);
 
 				}
 
@@ -368,7 +369,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				for (int i = 0; i < filas; i++) {
 
 					ReparacionDTO reparacionAeditar = quitarRemito(i);
-					this.agenda.editarReparacionR(reparacionAeditar);
+					this.agenda.editarReparacionAnularRemito(reparacionAeditar);
 
 				}
 
@@ -409,7 +410,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				if (enviado != null) {
 
 					ReparacionDTO reparacionAeditar = marcarEnviado(i);
-					this.agenda.editarReparacionR(reparacionAeditar);
+					this.agenda.editarReparacionMarcarEnviados(reparacionAeditar);
 
 				}
 			}
@@ -454,8 +455,6 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 						ubicacion = ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex();
 
 						switch (ubicacion) {
-						
-						
 
 						case 1:
 							IDubicacion = 2;
@@ -468,7 +467,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 							break;
 						case 4:
 							IDubicacion = 8;
-							
+
 						case 5:
 							IDubicacion = 3;
 							break;
@@ -640,7 +639,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 								if (agregar) {
 
 									ReparacionDTO reparacionAeditar = TomarDatosPantalla(i);
-									agenda.editarReparacionR(reparacionAeditar);
+									agenda.editarReparacionAgregarRemito(reparacionAeditar);
 
 								}
 							}
@@ -747,19 +746,28 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				String cliente = this.Reparaciones_en_tabla.get(0).getCliente();
 				ventanaRemitoGenerado.getTxtCliente().setText(cliente);
 
+				boolean enviado;
+
 				for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
+
+					if (this.Reparaciones_en_tabla.get(i).getEstadoFisico().compareTo("Enviado") == 0) {
+
+						enviado = true;
+					} else {
+						enviado = false;
+					}
 
 					Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
 
 							this.Reparaciones_en_tabla.get(i).getNombreEquipo(),
 							this.Reparaciones_en_tabla.get(i).getModelo(),
 							this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
-							this.Reparaciones_en_tabla.get(i).getEnviado() };
+							enviado };
 					this.ventanaRemitoGenerado.getModelEquiposParaRemito().addRow(fila);
 				}
-				
+
 				ventanaRemitoGenerado.setCellRender(this.ventanaRemitoGenerado.getTblEquiposParaRemito());
-				this.ventanaRemitoGenerado.show();
+				// this.ventanaRemitoGenerado.show();
 			}
 		} else if (!btnMarcarEnviados && btnDesvincularRemito) {
 
@@ -784,16 +792,23 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				ventanaEliminarRemito.getTxtCliente().setText(cliente);
 
 				for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
+					
+					if (this.Reparaciones_en_tabla.get(i).getEstadoFisico().compareTo("Enviado") == 0) {
+
+						enviado = true;
+					} else {
+						enviado = false;
+					}
 
 					Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
 
 							this.Reparaciones_en_tabla.get(i).getNombreEquipo(),
 							this.Reparaciones_en_tabla.get(i).getModelo(),
 							this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
-							this.Reparaciones_en_tabla.get(i).getEnviado() };
+							enviado };
 					this.ventanaEliminarRemito.getModelEquiposParaRemito().addRow(fila);
 				}
-				ventanaRemitoGenerado.setCellRender(this.ventanaRemitoGenerado.getTblEquiposParaRemito());
+				// ventanaRemitoGenerado.setCellRender(this.ventanaEliminarRemito.getTblEquiposParaRemito());
 				this.ventanaEliminarRemito.show();
 
 			}
@@ -804,9 +819,12 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 		int ELS = Integer.parseInt(this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 0).toString());
 		boolean agregadoAremito = (Boolean) this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8);
-		int idRemito = this.agenda.dameIDRemito();
+		boolean remitoGenerado = true;
 
-		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, agregadoAremito, idRemito);
+		int idRemito = this.agenda.dameIDRemito();
+		
+
+		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, agregadoAremito,remitoGenerado, idRemito);
 
 		return reparacionAeditar;
 
@@ -815,12 +833,10 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 	private ReparacionDTO marcarEnviado(int i) {
 
 		int ELS = Integer.parseInt(this.ventanaRemitoGenerado.getModelEquiposParaRemito().getValueAt(i, 0).toString());
-		boolean enviado;
-		enviado = (Boolean) this.ventanaRemitoGenerado.getModelEquiposParaRemito().getValueAt(i, 4);
 		boolean agregadoAremito = true;
 		String estadoFisico = "Enviado";
 
-		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, estadoFisico, enviado, agregadoAremito);
+		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, estadoFisico,agregadoAremito);
 
 		return reparacionAeditar;
 
@@ -829,13 +845,13 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 	private ReparacionDTO quitarRemito(int i) {
 
 		int ELS = Integer.parseInt(this.ventanaEliminarRemito.getModelEquiposParaRemito().getValueAt(i, 0).toString());
-		boolean agregado = true;
-		boolean generado = true;
+		boolean agregado = false;
+		boolean generado = false;
 		Integer idRemito = 0;
-		boolean enviado = false;
-		String estadoFisico = "BRC";
+		
+		String estadoFisico = this.Reparaciones_en_tabla.get(0).getLugarDeIngreso();
 
-		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, estadoFisico, generado, agregado, idRemito, enviado);
+		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, estadoFisico, generado, agregado, idRemito);
 		return reparacionAeditar;
 	}
 
@@ -868,33 +884,21 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 			}
 
 		}
-	
-		
-		//String NombreCliente = this.ventanaRemitos.getTxtCliente().getText();
-		
-		//String NombreCliente = "Hugo Rega";
-		//System.out.println(NombreCliente);
+
 		String texto = ventanaRemitos.getTxtCliente().getText(); // Obtiene el texto completo
 		String NombreCliente = texto.split(" \\_")[0]; // Divide por " _" y toma la primera parte
-		
-		
-		
-		
+
 		String RemitoConformado = this.ventanaRemitos.getTextRemitoConformado().getText();
 		int cantBultos = Integer.parseInt(this.ventanaRemitos.getTextCantBultos().getText());
-		
-		List<ClienteDTO> clientes =agenda.obtenerCliente();
-		
-		 Optional<ClienteDTO> clienteEncontrado = clientes.stream()
-		            .filter(cliente -> cliente.getRazon_Social().equalsIgnoreCase(NombreCliente))
-		            .findFirst();
-		 
 
-		
+		List<ClienteDTO> clientes = agenda.obtenerCliente();
+
+		Optional<ClienteDTO> clienteEncontrado = clientes.stream()
+				.filter(cliente -> cliente.getRazon_Social().equalsIgnoreCase(NombreCliente)).findFirst();
 
 		RemitoDTO nuevoRemito = new RemitoDTO(IdUbicacion, codigoUbicacion, IdRemito, numeroRemitoSalida, descripcion,
-				NombreCliente, RemitoConformado, cantBultos, clienteEncontrado.get().getCUIT(),clienteEncontrado.get().getDomicilio());
-		
+				NombreCliente, RemitoConformado, cantBultos, clienteEncontrado.get().getCUIT(),
+				clienteEncontrado.get().getDomicilio());
 
 		return nuevoRemito;
 	}

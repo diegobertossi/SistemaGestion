@@ -3211,7 +3211,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			reparacionAeditar = new ReparacionDTO(ELS, fechaentradavisual, fechareparacionvisual, falla, solucion,
 					informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo, Cliente,
 					Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
-					idCliente, idSucursal, fechafabrvisual, idUsuario, nombreTecnico, enviado, presupuesto,
+					idCliente, idSucursal, fechafabrvisual, idUsuario, nombreTecnico, presupuesto,
 					presupuestoDolar, pago, presupuestoGenerado, avisoEnviado, presupuestoEnviado, OrdenDeCompra,
 					lugarIngreso, fechasalidaVisual);
 		}

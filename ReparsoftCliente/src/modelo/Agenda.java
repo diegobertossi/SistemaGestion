@@ -338,11 +338,28 @@ public class Agenda {
 
 	}
 	
+
+	public void editarReparacionMarcarEnviados(ReparacionDTO reparacionAeditar) {
+		
+		ReparacionR.editMarcarEnviados(reparacionAeditar);
+	}
+	
+	
+	
+	public void editarReparacionAnularRemito(ReparacionDTO reparacionAeditar) {
+		
+		ReparacionR.editarReparacionAnularRemito(reparacionAeditar);
+	}
+	
+	
+	public void editarReparacionAgregarRemito(ReparacionDTO reparacionAeditar) {
+		
+		ReparacionR.editarReparacionAgregarRemito(reparacionAeditar);
+	}
+	
 	public void editarReparacionPresupuesto(ReparacionDTO reparacionAeditar) {
 		
 		ReparacionR.editPresupuesto(reparacionAeditar);
-		//ReparacionR.editEquipo(Reparacion_a_editar);
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -710,6 +727,7 @@ public class Agenda {
 	
 	public void agregarRemito(RemitoDTO nuevoRemito) {
 		remito.insert(nuevoRemito);
+	
 	}
 
 	public void ListarUbicacion(JComboBox<?> comboUbicacion) {
@@ -758,6 +776,9 @@ public class Agenda {
 	public List<FacturacionXclienteDTO> dameFacturacionXcliente(int anio) {
 		return facturacionXcliente.readAll(anio);
 	}
+
+
+
 
 
 
