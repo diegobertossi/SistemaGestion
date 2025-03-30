@@ -140,10 +140,11 @@ public class ReparacionDTO {
 
 	public ReparacionDTO(int ELS, String Fecha_Entrada, String Fechadereparacion, String Falla, String Solucion,
 			String Informecliente, String EstadoFisico, String EstadoTecnico, String EstadoComercial,
-			String RemitoCliente, int IDEquipo, String Cliente, String Sucursal, String FechAceptacion, String Nombre,
+			String RemitoCliente, int IDEquipo, int IDremito, String Cliente, String Sucursal, String FechAceptacion, String Nombre,
 			String Modelo, String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente, int IDCliente,
 			int IDSuc, String FechaFabr, int idUsuario, String nombreUsuario, double presupuesto,double presupuestoDolar, double pago,
-			boolean PresupuestoGenerado, boolean avisoEnviao, boolean PresupuestoEnviado, String ordenDeCompra, String LugarDeIngreso, String fecha_Salida ) {
+			boolean PresupuestoGenerado, boolean avisoEnviao, boolean PresupuestoEnviado, String ordenDeCompra, 
+			String LugarDeIngreso, String fecha_Salida ) {
 
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
@@ -176,6 +177,7 @@ public class ReparacionDTO {
 		this.AvisoEnviado = avisoEnviao;
 		this.PresupuestoEnviado = PresupuestoEnviado;
 		this.OrdendeCompra = ordenDeCompra;
+		this.idRemito = IDremito;
 		this.NombreUsuario = nombreUsuario;
 		this.LugarDeIngreso = LugarDeIngreso;
 		this.FechaSalida = fecha_Salida;

@@ -335,6 +335,7 @@ public class Agenda {
 
 		ReparacionR.edit(Reparacion_a_editar);
 		ReparacionR.editEquipo(Reparacion_a_editar);
+		
 
 	}
 	

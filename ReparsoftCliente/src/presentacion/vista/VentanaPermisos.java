@@ -148,7 +148,7 @@ public class VentanaPermisos extends JFrame {
 		panel.add(cmbRoles);
 
 		JLabel lblRol = new JLabel("ROL:");
-		lblRol.setForeground(new Color(0, 0, 128));
+		lblRol.setForeground(new Color(25, 25, 112));
 		lblRol.setFont(new Font("Cambria", Font.BOLD, 14));
 		lblRol.setBounds(16, 55, 46, 14);
 		panel.add(lblRol);
@@ -167,19 +167,19 @@ public class VentanaPermisos extends JFrame {
 		panel.add(btnRemover);
 
 		JLabel lblPermisosPorRol = new JLabel("PERMISOS POR ROL");
-		lblPermisosPorRol.setForeground(new Color(0, 0, 128));
-		lblPermisosPorRol.setFont(new Font("Cambria", Font.BOLD, 18));
-		lblPermisosPorRol.setBounds(16, 11, 182, 20);
+		lblPermisosPorRol.setForeground(new Color(25, 25, 112));
+		lblPermisosPorRol.setFont(new Font("Cambria", Font.BOLD, 20));
+		lblPermisosPorRol.setBounds(16, 11, 190, 20);
 		panel.add(lblPermisosPorRol);
 
 		lblSinAccesoA = new JLabel("SIN ACCESO A:");
-		lblSinAccesoA.setForeground(new Color(0, 0, 255));
+		lblSinAccesoA.setForeground(new Color(25, 25, 112));
 		lblSinAccesoA.setFont(new Font("Cambria", Font.BOLD, 14));
 		lblSinAccesoA.setBounds(16, 92, 107, 14);
 		panel.add(lblSinAccesoA);
 
 		lblConAccesoA = new JLabel("CON ACCESO A:");
-		lblConAccesoA.setForeground(new Color(0, 0, 255));
+		lblConAccesoA.setForeground(new Color(25, 25, 112));
 		lblConAccesoA.setFont(new Font("Cambria", Font.BOLD, 14));
 		lblConAccesoA.setBounds(389, 92, 107, 14);
 		panel.add(lblConAccesoA);

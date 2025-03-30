@@ -3068,6 +3068,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		String RemitoCLiente = ventanaVisualizarEquipos.getTextRemitoCliente().getText();
 		int IDEquipo = reparacion.getIDEquipo();
+		int IDremito = reparacion.getidRemito();
 		String NombreEquipo = ventanaVisualizarEquipos.getTextNombreEquipo().getText();
 		String Modelo = ventanaVisualizarEquipos.getTextModelo().getText();
 		String Marca = ventanaVisualizarEquipos.getTextMarca().getText();
@@ -3075,7 +3076,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		String aviso = ventanaVisualizarEquipos.getTextAvisoCliente().getText();
 		String ClienteCliente = ventanaVisualizarEquipos.getTextClienteCliente().getText();
-
+			
+		
+		
 		if (!guardado) {
 			ventanaVisualizarEquipos.getTextCliente()
 					.setText(ventanaVisualizarEquipos.getComboClientes().getSelectedItem().toString());
@@ -3209,7 +3212,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		} else {
 
 			reparacionAeditar = new ReparacionDTO(ELS, fechaentradavisual, fechareparacionvisual, falla, solucion,
-					informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo, Cliente,
+					informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo,IDremito, Cliente,
 					Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
 					idCliente, idSucursal, fechafabrvisual, idUsuario, nombreTecnico, presupuesto,
 					presupuestoDolar, pago, presupuestoGenerado, avisoEnviado, presupuestoEnviado, OrdenDeCompra,
