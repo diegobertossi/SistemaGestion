@@ -358,6 +358,12 @@ public class Agenda {
 		ReparacionR.editarReparacionAgregarRemito(reparacionAeditar);
 	}
 	
+	
+	public void editarReparacionAceptacion(ReparacionDTO reparacionAeditar) {
+		
+		ReparacionR.editarReparacionAceptacion(reparacionAeditar);
+		
+	}
 	public void editarReparacionPresupuesto(ReparacionDTO reparacionAeditar) {
 		
 		ReparacionR.editPresupuesto(reparacionAeditar);
@@ -777,6 +783,8 @@ public class Agenda {
 	public List<FacturacionXclienteDTO> dameFacturacionXcliente(int anio) {
 		return facturacionXcliente.readAll(anio);
 	}
+
+	
 
 
 

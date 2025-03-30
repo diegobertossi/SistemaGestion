@@ -844,7 +844,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				if (estadoComercial.compareTo("A la Espera de Aceptación") > 0) {
 
 					ReparacionDTO reparacionAeditar = TomarDatosVentanaMarcarAceptaciones(i);
-					this.agenda.editarReparacionR(reparacionAeditar);
+					this.agenda.editarReparacionAceptacion(reparacionAeditar);
 
 				}
 			}
@@ -1736,7 +1736,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		String estadoComercial;
 		String fechaAceptacion;
 
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd");
 
 		fechaAceptacion = dtf.format(LocalDateTime.now());
 

@@ -269,9 +269,9 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
 						resultSet.getDouble("PrecioDolar"), resultSet.getBoolean("InformeEnviado"),
 						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getDouble("Pago"),
-						resultSet.getBoolean("PresupuestoEnviado"), resultSet.getString("Equipos.Nombre"),
-						resultSet.getString("email"), resultSet.getString("Modelo"), resultSet.getString("Marca"),
+						resultSet.getDouble("Pago"), resultSet.getBoolean("PresupuestoEnviado"),
+						resultSet.getString("Equipos.Nombre"), resultSet.getString("email"),
+						resultSet.getString("Modelo"), resultSet.getString("Marca"),
 						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
 						resultSet.getString("ClienteCliente"), resultSet.getInt("idCliente"),
 						resultSet.getInt("idSucursal"), resultSet.getString("nombre"),
@@ -315,9 +315,9 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
 						resultSet.getDouble("PrecioDolar"), resultSet.getBoolean("InformeEnviado"),
 						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getDouble("Pago"),
-						resultSet.getBoolean("PresupuestoEnviado"), resultSet.getString("Equipos.Nombre"),
-						resultSet.getString("email"), resultSet.getString("Modelo"), resultSet.getString("Marca"),
+						resultSet.getDouble("Pago"), resultSet.getBoolean("PresupuestoEnviado"),
+						resultSet.getString("Equipos.Nombre"), resultSet.getString("email"),
+						resultSet.getString("Modelo"), resultSet.getString("Marca"),
 						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
 						resultSet.getString("ClienteCliente"), resultSet.getInt("idCliente"),
 						resultSet.getInt("idSucursal"), resultSet.getString("nombre"),
@@ -357,9 +357,9 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
 						resultSet.getDouble("PrecioDolar"), resultSet.getBoolean("InformeEnviado"),
 						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getDouble("Pago"),
-						resultSet.getBoolean("PresupuestoEnviado"), resultSet.getString("Equipos.Nombre"),
-						resultSet.getString("email"), resultSet.getString("Modelo"), resultSet.getString("Marca"),
+						resultSet.getDouble("Pago"), resultSet.getBoolean("PresupuestoEnviado"),
+						resultSet.getString("Equipos.Nombre"), resultSet.getString("email"),
+						resultSet.getString("Modelo"), resultSet.getString("Marca"),
 						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
 						resultSet.getString("ClienteCliente"), resultSet.getInt("idCliente"),
 						resultSet.getInt("idSucursal"), resultSet.getString("nombre"),
@@ -2088,8 +2088,8 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 				+ "OrdendeCompra = ?, " + "Agregadoaremito = ?, " + "RemitoGenerado = ?, " + "idEquipo = ?, "
 				+ "idRemito = ?, " + "PrecioPeso = ?, " + "PrecioDolar = ?, " + "InformeEnviado = ?, "
 				+ "FechAceptacion = ?, " + "PresupuestoGenerado = ?, " + "PresupuestoEnviado = ?, "
-				+ "WordGenerado = ?, " + "WordEnviado = ?, " + "AvisoEnviado = ?, " + "Pago = ?, "
-				+ "FechaSalida = ? " + "WHERE ELS = ?";
+				+ "WordGenerado = ?, " + "WordEnviado = ?, " + "AvisoEnviado = ?, " + "Pago = ?, " + "FechaSalida = ? "
+				+ "WHERE ELS = ?";
 
 		// Define el formato en el que llega la fecha
 		SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
@@ -2098,8 +2098,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		try {
 
 			statement = conexion.getSQLConexion().prepareStatement(query);
-			
-			
+
 			if (reparacion_a_editar.getFecha_Entrada() != null) {
 				try {
 
@@ -2186,9 +2185,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			statement.setInt(6, reparacion_a_editar.getidUsuario());
 			statement.setString(7, reparacion_a_editar.getNombreUsuario());
 			statement.setString(8, reparacion_a_editar.getEstadoFisico());
-			
-			
-			
+
 			statement.setString(9, reparacion_a_editar.getEstadoTecnico());
 			statement.setString(10, reparacion_a_editar.getEstadoComercial());
 			statement.setString(11, reparacion_a_editar.getRemitoCliente());
@@ -2210,20 +2207,20 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			statement.setInt(16, reparacion_a_editar.getidRemito());
 			try {
 				if (reparacion_a_editar.getPago() != null) {
-				    statement.setBigDecimal(26, new BigDecimal(reparacion_a_editar.getPago()));
+					statement.setBigDecimal(26, new BigDecimal(reparacion_a_editar.getPago()));
 				} else {
-				    statement.setNull(26, java.sql.Types.DECIMAL);
+					statement.setNull(26, java.sql.Types.DECIMAL);
 				}
 				if (reparacion_a_editar.getPrecioDolar() != null) {
-				    statement.setBigDecimal(18, new BigDecimal(reparacion_a_editar.getPrecioDolar()));
+					statement.setBigDecimal(18, new BigDecimal(reparacion_a_editar.getPrecioDolar()));
 				} else {
-				    statement.setNull(18, java.sql.Types.DECIMAL);
+					statement.setNull(18, java.sql.Types.DECIMAL);
 				}
 
 				if (reparacion_a_editar.getPrecioPeso() != null) {
-				    statement.setBigDecimal(17, new BigDecimal(reparacion_a_editar.getPrecioPeso()));
+					statement.setBigDecimal(17, new BigDecimal(reparacion_a_editar.getPrecioPeso()));
 				} else {
-				    statement.setNull(17, java.sql.Types.DECIMAL);
+					statement.setNull(17, java.sql.Types.DECIMAL);
 				}
 
 			} catch (NumberFormatException e) {
@@ -2260,7 +2257,6 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 				statement.setNull(24, java.sql.Types.BOOLEAN);
 			}
 
-		
 			if (reparacion_a_editar.getAvisoEnviado() != null) {
 				statement.setBoolean(25, reparacion_a_editar.getAvisoEnviado());
 			} else {
@@ -2269,8 +2265,7 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 			// Llave primaria
 			statement.setInt(28, reparacion_a_editar.getELS());
-				
-			
+
 //			
 //			System.out.println(
 //				    reparacion_a_editar.getFecha_Entrada() + " - " +
@@ -2303,190 +2298,153 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 //				    reparacion_a_editar.getELS()
 //				);
 
-		
 			// Ejecución de la consulta
 			return statement.executeUpdate() > 0;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+
 		} finally // Se ejecuta siempre
 		{
 			conexion.cerrarConexion();
 		}
 		return false;
 	}
-	
-	
+
 	@Override
 	public void editarReparacionAgregarRemito(ReparacionDTO reparacionAeditar) {
 
 		PreparedStatement statement = null;
-		
+
 		String query = "UPDATE reparaciones SET "
-				
-				+ "Agregadoaremito = ?," 
-				+ "RemitoGenerado = ?,"
-				+ "idRemito = ? " 
-				+ "WHERE ELS = ?";
-		
-		
+
+				+ "Agregadoaremito = ?," + "RemitoGenerado = ?," + "idRemito = ? " + "WHERE ELS = ?";
+
 		try {
 
 			statement = conexion.getSQLConexion().prepareStatement(query);
-			
-			
+
 			statement.setBoolean(1, reparacionAeditar.getAgregadoaremito());
 			statement.setBoolean(2, reparacionAeditar.getRemitoGenerado());
 			statement.setInt(3, reparacionAeditar.getidRemito());
-			
+
 			// Llave primaria
 			statement.setInt(4, reparacionAeditar.getELS());
-			
-			//System.out.println( reparacionAeditar.getEstadoFisico() + " - " + reparacionAeditar.getAgregadoaremito() + " - " + reparacionAeditar.getRemitoGenerado() + " - " +  reparacionAeditar.getidRemito()+ " - " + reparacionAeditar.getELS() );
+
+			// System.out.println( reparacionAeditar.getEstadoFisico() + " - " +
+			// reparacionAeditar.getAgregadoaremito() + " - " +
+			// reparacionAeditar.getRemitoGenerado() + " - " +
+			// reparacionAeditar.getidRemito()+ " - " + reparacionAeditar.getELS() );
 
 			statement.executeUpdate();
-		
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+
 		} finally // Se ejecuta siempre
 		{
 			conexion.cerrarConexion();
 		}
-		
-		
+
 	}
 
-	
-	
 	@Override
 	public void editMarcarEnviados(ReparacionDTO reparacionAeditar) {
-
 
 		PreparedStatement statement = null;
 
 		String query = "UPDATE reparaciones SET EstadoFisico = ? WHERE ELS = ?";
-		
-		
+
 		try {
 
 			statement = conexion.getSQLConexion().prepareStatement(query);
-			
+
 			statement.setString(1, reparacionAeditar.getEstadoFisico());
-					
+
 			// Llave primaria
 			statement.setInt(2, reparacionAeditar.getELS());
 
 			statement.executeUpdate();
-		
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+
 		} finally // Se ejecuta siempre
 		{
 			conexion.cerrarConexion();
 		}
-		
-		
-		
+
 	}
 
-	
 	@Override
 	public void editarReparacionAnularRemito(ReparacionDTO reparacionAeditar) {
 
-
 		PreparedStatement statement = null;
-	
-		String query = "UPDATE reparaciones SET "
-				+ "EstadoFisico = ?,"
-				+ "Agregadoaremito = ?," 
-				+ "RemitoGenerado = ?,"
-				+ "idRemito = ? " 
-				+ "WHERE ELS = ?";
-		
-		
+
+		String query = "UPDATE reparaciones SET " + "EstadoFisico = ?," + "Agregadoaremito = ?," + "RemitoGenerado = ?,"
+				+ "idRemito = ? " + "WHERE ELS = ?";
+
 		try {
 
 			statement = conexion.getSQLConexion().prepareStatement(query);
-			
+
 			statement.setString(1, reparacionAeditar.getEstadoFisico());
 			statement.setBoolean(2, reparacionAeditar.getAgregadoaremito());
 			statement.setBoolean(3, reparacionAeditar.getRemitoGenerado());
 			statement.setInt(4, reparacionAeditar.getidRemito());
-			
+
 			// Llave primaria
 			statement.setInt(5, reparacionAeditar.getELS());
-			
-			System.out.println( reparacionAeditar.getEstadoFisico() + " - " + reparacionAeditar.getAgregadoaremito() + " - " + reparacionAeditar.getRemitoGenerado() + " - " +  reparacionAeditar.getidRemito()+ " - " + reparacionAeditar.getELS() );
+
+			System.out.println(reparacionAeditar.getEstadoFisico() + " - " + reparacionAeditar.getAgregadoaremito()
+					+ " - " + reparacionAeditar.getRemitoGenerado() + " - " + reparacionAeditar.getidRemito() + " - "
+					+ reparacionAeditar.getELS());
 
 			statement.executeUpdate();
-		
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+
 		} finally // Se ejecuta siempre
 		{
 			conexion.cerrarConexion();
 		}
-		
-		
-		
+
 	}
 
-	
-	
-	
-	
 	@Override
 	public void editPresupuesto(ReparacionDTO reparacionAeditar) {
 
-
 		PreparedStatement statement = null;
 
-		String query = "UPDATE reparaciones SET "
-				+ "Informecliente = ?, "
-				+ "PrecioPeso = ?, " 
-				+ "PrecioDolar = ?,"
-				+ "PresupuestoGenerado = ?, " 
-				+ "PresupuestoEnviado = ?, "
-				+ "WordGenerado = ?, " 
-				+ "WordEnviado = ? " 
+		String query = "UPDATE reparaciones SET " + "Informecliente = ?, " + "PrecioPeso = ?, " + "PrecioDolar = ?,"
+				+ "PresupuestoGenerado = ?, " + "PresupuestoEnviado = ?, " + "WordGenerado = ?, " + "WordEnviado = ? "
 				+ "WHERE ELS = ?";
-		
-		
+
 		try {
 
 			statement = conexion.getSQLConexion().prepareStatement(query);
-			
+
 			statement.setString(1, reparacionAeditar.getInformecliente());
-			
+
 			try {
-			
-				
-				
+
 				if (reparacionAeditar.getPrecioPeso() != null) {
-				    statement.setBigDecimal(2, new BigDecimal(reparacionAeditar.getPrecioPeso()));
+					statement.setBigDecimal(2, new BigDecimal(reparacionAeditar.getPrecioPeso()));
 				} else {
-				    statement.setNull(2, java.sql.Types.DECIMAL);
-				}
-				
-				if (reparacionAeditar.getPrecioDolar() != null) {
-				    statement.setBigDecimal(3, new BigDecimal(reparacionAeditar.getPrecioDolar()));
-				} else {
-				    statement.setNull(3, java.sql.Types.DECIMAL);
+					statement.setNull(2, java.sql.Types.DECIMAL);
 				}
 
-		
+				if (reparacionAeditar.getPrecioDolar() != null) {
+					statement.setBigDecimal(3, new BigDecimal(reparacionAeditar.getPrecioDolar()));
+				} else {
+					statement.setNull(3, java.sql.Types.DECIMAL);
+				}
 
 			} catch (NumberFormatException e) {
 				throw new SQLException("Error al convertir los valores a DECIMAL", e);
 			}
-			
+
 			if (reparacionAeditar.getPresupuestoGenerado() != null) {
 				statement.setBoolean(4, reparacionAeditar.getPresupuestoGenerado());
 			} else {
@@ -2510,28 +2468,76 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			} else {
 				statement.setNull(7, java.sql.Types.BOOLEAN);
 			}
-			
+
 			// Llave primaria
 			statement.setInt(8, reparacionAeditar.getELS());
 
 			statement.executeUpdate();
-		
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+
 		} finally // Se ejecuta siempre
 		{
 			conexion.cerrarConexion();
 		}
-	
+
 	}
-		
-		
-	
-	
-	
-	
+
+	@Override
+	public void editarReparacionAceptacion(ReparacionDTO reparacionAeditar) {
+
+		PreparedStatement statement = null;
+
+		String query = "UPDATE reparaciones SET " + "FechAceptacion = ?, " + "EstadoComercial = ? " + "WHERE ELS = ?";
+
+		// Define el formato en el que llega la fecha
+		SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		try {
+
+			statement = conexion.getSQLConexion().prepareStatement(query);
+
+			if (reparacionAeditar.getFechAceptacion() != null) {
+			
+				try {
+
+					 
+					// Convierte la fecha de entrada al formato requerido
+					Date parsedDate = inputFormat.parse(reparacionAeditar.getFechAceptacion());
+					String formattedDate = outputFormat.format(parsedDate) + " 00:00:00"; // Agrega la hora
+																							// predeterminada
+
+					// Usa el formato correcto para crear el Timestamp
+					statement.setTimestamp(1, Timestamp.valueOf(formattedDate));
+				} catch (Exception e) {
+					throw new RuntimeException(
+							"El formato de la fecha de entrada no es válido o no se pudo convertir. Verifica los datos.",
+							e);
+				}
+			} else {
+				// Si la fecha es nula o vacía, establece el valor como NULL
+				statement.setNull(1, java.sql.Types.TIMESTAMP);
+			}
+
+			statement.setString(2, reparacionAeditar.getEstadoComercial());
+
+			// Llave primaria
+			statement.setInt(3, reparacionAeditar.getELS());
+
+			// Ejecución de la consulta
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+	}
 
 //	public boolean edit(ReparacionDTO reparacion_a_editar) {
 //		PreparedStatement statement = null;
@@ -3189,9 +3195,9 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
 						resultSet.getDouble("PrecioDolar"), resultSet.getBoolean("InformeEnviado"),
 						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-					    resultSet.getDouble("Pago"),
-						resultSet.getBoolean("PresupuestoEnviado"), resultSet.getString("Equipos.Nombre"),
-						resultSet.getString("email"), resultSet.getString("Modelo"), resultSet.getString("Marca"),
+						resultSet.getDouble("Pago"), resultSet.getBoolean("PresupuestoEnviado"),
+						resultSet.getString("Equipos.Nombre"), resultSet.getString("email"),
+						resultSet.getString("Modelo"), resultSet.getString("Marca"),
 						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
 						resultSet.getString("ClienteCliente"), resultSet.getInt("idCliente"),
 						resultSet.getInt("idSucursal"), resultSet.getString("nombre"),
@@ -3238,9 +3244,9 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
 						resultSet.getDouble("PrecioDolar"), resultSet.getBoolean("InformeEnviado"),
 						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getDouble("Pago"),
-						resultSet.getBoolean("PresupuestoEnviado"), resultSet.getString("Equipos.Nombre"),
-						resultSet.getString("email"), resultSet.getString("Modelo"), resultSet.getString("Marca"),
+						resultSet.getDouble("Pago"), resultSet.getBoolean("PresupuestoEnviado"),
+						resultSet.getString("Equipos.Nombre"), resultSet.getString("email"),
+						resultSet.getString("Modelo"), resultSet.getString("Marca"),
 						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
 						resultSet.getString("ClienteCliente"), resultSet.getInt("idCliente"),
 						resultSet.getInt("idSucursal"), resultSet.getString("nombre"),
@@ -3413,10 +3419,5 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 		);
 		return camposPermitidos.contains(campo);
 	}
-
-
-
-
-
 
 }
