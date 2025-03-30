@@ -291,7 +291,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 				ReparacionDTO reparacionAeditar = TomarDatosPago();
 
-				this.agenda.editarReparacionR(reparacionAeditar);
+				this.agenda.editarReparacionPago(reparacionAeditar);
 			}
 
 		}

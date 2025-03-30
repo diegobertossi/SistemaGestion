@@ -2500,10 +2500,9 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			statement = conexion.getSQLConexion().prepareStatement(query);
 
 			if (reparacionAeditar.getFechAceptacion() != null) {
-			
+
 				try {
 
-					 
 					// Convierte la fecha de entrada al formato requerido
 					Date parsedDate = inputFormat.parse(reparacionAeditar.getFechAceptacion());
 					String formattedDate = outputFormat.format(parsedDate) + " 00:00:00"; // Agrega la hora
@@ -2527,6 +2526,59 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			statement.setInt(3, reparacionAeditar.getELS());
 
 			// Ejecución de la consulta
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+	}
+
+	@Override
+	public void editarReparacionPago(ReparacionDTO reparacionAeditar) {
+
+		PreparedStatement statement = null;
+
+		String query = "UPDATE reparaciones SET " + "PrecioPeso = ?, " + "PrecioDolar = ?," + "Pago = ?, "
+				+ "EstadoComercial = ?" + " WHERE ELS = ?";
+
+		try {
+
+			statement = conexion.getSQLConexion().prepareStatement(query);
+
+			try {
+
+				if (reparacionAeditar.getPrecioPeso() != null) {
+					statement.setBigDecimal(1, new BigDecimal(reparacionAeditar.getPrecioPeso()));
+				} else {
+					statement.setNull(1, java.sql.Types.DECIMAL);
+				}
+
+				if (reparacionAeditar.getPrecioDolar() != null) {
+					statement.setBigDecimal(2, new BigDecimal(reparacionAeditar.getPrecioDolar()));
+				} else {
+					statement.setNull(2, java.sql.Types.DECIMAL);
+				}
+
+				if (reparacionAeditar.getPago() != null) {
+					statement.setBigDecimal(3, new BigDecimal(reparacionAeditar.getPago()));
+				} else {
+					statement.setNull(3, java.sql.Types.DECIMAL);
+				}
+
+			} catch (NumberFormatException e) {
+				throw new SQLException("Error al convertir los valores a DECIMAL", e);
+			}
+
+			statement.setString(4, reparacionAeditar.getEstadoComercial());
+			
+			// Llave primaria
+			statement.setInt(5, reparacionAeditar.getELS());
+
 			statement.executeUpdate();
 
 		} catch (SQLException e) {
