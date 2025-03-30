@@ -107,7 +107,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private VentanaClientesWSP ventanaClientesWSP;
 
 	private VentanaBusquedaEquipo ventanaBusquedaEquipo;
-	
 
 	private ControladorUsuLogin controladorUsuLogin;
 	private ControladorPresupuestos controladorpresupuestos;
@@ -171,9 +170,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private List<VentanaVisualizarEquipos> ventanasAbiertas = new ArrayList<>();
 	// private VentanaVisualizarEquipos ventanaConFoco; // Referencia a la ventana
 	// que tiene el foco actualmente
-	
-	
-	
+
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
 	public ControladorReparacion(VentanaEquipos ventanaEquipos, ControladorUsuLogin controladorUsuLogin, Agenda agendas,
@@ -2203,7 +2200,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	public void generarRemito(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
-		if (ventanaVisualizarEquipos.getTextNumeroRemito().getText().compareTo("") == 0 ) {
+		if (ventanaVisualizarEquipos.getTextNumeroRemito().getText().compareTo("") == 0) {
 			NumeroELSParaRemito = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
 			controladorSalidas.cargarRemitoVisualizacion(NumeroELSParaRemito);
 			controladorSalidas.agregarListenersVentanaRemitos();
@@ -2269,138 +2266,140 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	
-	
 	private void TomarDatosDeTablas(VentanaVisualizarEquipos ventanaVisualizarEquipos) throws ParseException {
-	    // Configuración inicial específica para esta función
-	    if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
-	        ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicial));
-	    } else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
-	        ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicialBSAS));
-	    }
+		// Configuración inicial específica para esta función
+		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
+			ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicial));
+		} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
+			ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicialBSAS));
+		}
 
-	    int NumeroELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS().toString());
-	    cargarDatosComunes(ventanaVisualizarEquipos, NumeroELS);
+		int NumeroELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS().toString());
+		cargarDatosComunes(ventanaVisualizarEquipos, NumeroELS);
 	}
 
 	private void TomarDatosDeTablasBusquedaOrden(int numeroELSSeleccionado) throws ParseException {
-	    // Configuración inicial específica para esta función
-	    ventanaVisualizarEquipos.dispose();
-	    ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
-	    cerraVentanaVisualizarEquipo();
+		// Configuración inicial específica para esta función
+		ventanaVisualizarEquipos.dispose();
+		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
+		cerraVentanaVisualizarEquipo();
 
-	    controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
-	    SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
-	    monedaFormatter = new MonedaFormatter();
+		controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
+		SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
+		monedaFormatter = new MonedaFormatter();
 
-	    ventanaVisualizarEquipos.setTextELS(Integer.toString(numeroELSSeleccionado));
-	    cargarDatosComunes(ventanaVisualizarEquipos, numeroELSSeleccionado);
-	    ELSinicial = numeroELSSeleccionado;
+		ventanaVisualizarEquipos.setTextELS(Integer.toString(numeroELSSeleccionado));
+		cargarDatosComunes(ventanaVisualizarEquipos, numeroELSSeleccionado);
+		ELSinicial = numeroELSSeleccionado;
 	}
 
-	public VentanaVisualizarEquipos TomarDatosDeTablasListado(int numeroELSSeleccionado2, VentanaVisualizarEquipos ventanaVisualizarEquipos) throws ParseException {
-	    // Configuración inicial específica para esta función
-	    if (!banderarefrescarPantalla) {
-	        ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
-	        ventanaVisualizarEquipos.setTitle(String.valueOf(numeroELSSeleccionado2));
-	        ventanasAbiertas.add(ventanaVisualizarEquipos);
-	        cerraVentanaVisualizarEquipoListado(ventanaVisualizarEquipos);
-	    }
+	public VentanaVisualizarEquipos TomarDatosDeTablasListado(int numeroELSSeleccionado2,
+			VentanaVisualizarEquipos ventanaVisualizarEquipos) throws ParseException {
+		// Configuración inicial específica para esta función
+		if (!banderarefrescarPantalla) {
+			ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
+			ventanaVisualizarEquipos.setTitle(String.valueOf(numeroELSSeleccionado2));
+			ventanasAbiertas.add(ventanaVisualizarEquipos);
+			cerraVentanaVisualizarEquipoListado(ventanaVisualizarEquipos);
+		}
 
-	    monedaFormatter = new MonedaFormatter();
-	    controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
-	    SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
+		monedaFormatter = new MonedaFormatter();
+		controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
+		SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
 
-	    ventanaVisualizarEquipos.setTextELS(Integer.toString(numeroELSSeleccionado2));
-	    cargarDatosComunes(ventanaVisualizarEquipos, numeroELSSeleccionado2);
+		ventanaVisualizarEquipos.setTextELS(Integer.toString(numeroELSSeleccionado2));
+		cargarDatosComunes(ventanaVisualizarEquipos, numeroELSSeleccionado2);
 
-	    return ventanaVisualizarEquipos;
+		return ventanaVisualizarEquipos;
 	}
 
 	// Método privado para cargar los datos comunes
-	private void cargarDatosComunes(VentanaVisualizarEquipos ventanaVisualizarEquipos, int numeroELS) throws ParseException {
-	    reparacion = agenda.dameReparacionXels(numeroELS);
+	private void cargarDatosComunes(VentanaVisualizarEquipos ventanaVisualizarEquipos, int numeroELS)
+			throws ParseException {
+		reparacion = agenda.dameReparacionXels(numeroELS);
 
-	    // Llenar campos de texto
-	    ventanaVisualizarEquipos.setTextNombreEquipo(reparacion.getNombreEquipo());
-	    ventanaVisualizarEquipos.setTextMarca(reparacion.getMarca());
-	    ventanaVisualizarEquipos.setTextModelo(reparacion.getModelo());
-	    ventanaVisualizarEquipos.setTextNSerie(reparacion.getNumeroDeSerie());
-	    ventanaVisualizarEquipos.setTextLugarDeIngreso(reparacion.getLugarDeIngreso());
+		// Llenar campos de texto
+		ventanaVisualizarEquipos.setTextNombreEquipo(reparacion.getNombreEquipo());
+		ventanaVisualizarEquipos.setTextMarca(reparacion.getMarca());
+		ventanaVisualizarEquipos.setTextModelo(reparacion.getModelo());
+		ventanaVisualizarEquipos.setTextNSerie(reparacion.getNumeroDeSerie());
+		ventanaVisualizarEquipos.setTextLugarDeIngreso(reparacion.getLugarDeIngreso());
 
-	    // Campos opcionales (pueden ser nulos)
-	    ventanaVisualizarEquipos.setTextFalla(reparacion.getFalla() == null ? "" : reparacion.getFalla());
-	    ventanaVisualizarEquipos.setTextAvisoCliente(reparacion.getAviso());
-	    ventanaVisualizarEquipos.setTextClienteCliente(reparacion.getClienteCliente());
-	    ventanaVisualizarEquipos.setTextRemitoCliente(reparacion.getRemitoCliente());
-	    ventanaVisualizarEquipos.setTextCliente(reparacion.getCliente());
-	    ventanaVisualizarEquipos.setTextSucursal(reparacion.getSucursal());
+		// Campos opcionales (pueden ser nulos)
+		ventanaVisualizarEquipos.setTextFalla(reparacion.getFalla() == null ? "" : reparacion.getFalla());
+		ventanaVisualizarEquipos.setTextAvisoCliente(reparacion.getAviso());
+		ventanaVisualizarEquipos.setTextClienteCliente(reparacion.getClienteCliente());
+		ventanaVisualizarEquipos.setTextRemitoCliente(reparacion.getRemitoCliente());
+		ventanaVisualizarEquipos.setTextCliente(reparacion.getCliente());
+		ventanaVisualizarEquipos.setTextSucursal(reparacion.getSucursal());
 
-	    // Fechas (manejo de valores nulos)
-	    ventanaVisualizarEquipos.setTextFechaEntrada2(reparacion.getFecha_Entrada() == null ? null : dateFormat.parse(reparacion.getFecha_Entrada()));
-	    ventanaVisualizarEquipos.setTextFechaSalida(reparacion.getFecha_Salida() == null ? null : dateFormat.parse(reparacion.getFecha_Salida()));
-	    ventanaVisualizarEquipos.setTextFechaReparacion2(reparacion.getFechadereparacion() == null ? null : dateFormat.parse(reparacion.getFechadereparacion()));
-	    ventanaVisualizarEquipos.setTextFechaRespuesta2(reparacion.getFechAceptacion() == null ? null : dateFormat.parse(reparacion.getFechAceptacion()));
-	    ventanaVisualizarEquipos.setFechaFabr2(reparacion.getFechaFabr() == null ? null : dateFormat.parse(reparacion.getFechaFabr()));
+		// Fechas (manejo de valores nulos)
+		ventanaVisualizarEquipos.setTextFechaEntrada2(
+				reparacion.getFecha_Entrada() == null ? null : dateFormat.parse(reparacion.getFecha_Entrada()));
+		ventanaVisualizarEquipos.setTextFechaSalida(
+				reparacion.getFecha_Salida() == null ? null : dateFormat.parse(reparacion.getFecha_Salida()));
+		ventanaVisualizarEquipos.setTextFechaReparacion2(
+				reparacion.getFechadereparacion() == null ? null : dateFormat.parse(reparacion.getFechadereparacion()));
+		ventanaVisualizarEquipos.setTextFechaRespuesta2(
+				reparacion.getFechAceptacion() == null ? null : dateFormat.parse(reparacion.getFechAceptacion()));
+		ventanaVisualizarEquipos
+				.setFechaFabr2(reparacion.getFechaFabr() == null ? null : dateFormat.parse(reparacion.getFechaFabr()));
 
-	    // Estados y diagnósticos
-	    ventanaVisualizarEquipos.setTextEstadoFisico(reparacion.getEstadoFisico());
-	    ventanaVisualizarEquipos.setTextEstadoTecnico(reparacion.getEstadoTecnico());
-	    ventanaVisualizarEquipos.setTextEstadoComercial(reparacion.getEstadoComercial());
-	    ventanaVisualizarEquipos.setTextDiagnostico(reparacion.getSolucion());
-	    ventanaVisualizarEquipos.setTextInformeCliente(reparacion.getInformecliente());
+		// Estados y diagnósticos
+		ventanaVisualizarEquipos.setTextEstadoFisico(reparacion.getEstadoFisico());
+		ventanaVisualizarEquipos.setTextEstadoTecnico(reparacion.getEstadoTecnico());
+		ventanaVisualizarEquipos.setTextEstadoComercial(reparacion.getEstadoComercial());
+		ventanaVisualizarEquipos.setTextDiagnostico(reparacion.getSolucion());
+		ventanaVisualizarEquipos.setTextInformeCliente(reparacion.getInformecliente());
 
-	    // Información del técnico y OC
-	    ventanaVisualizarEquipos.setTextNombreTecnico(reparacion.getNombreUsuario());
-	    ventanaVisualizarEquipos.setTextOC(reparacion.getOrdendeCompra());
+		// Información del técnico y OC
+		ventanaVisualizarEquipos.setTextNombreTecnico(reparacion.getNombreUsuario());
+		ventanaVisualizarEquipos.setTextOC(reparacion.getOrdendeCompra());
 
-	    // Código y número de remito
-	    int codigoRemitoBase = reparacion.getCodigo();
-	    String codigoRemitoVisual = obtenerCodigoRemitoVisual(codigoRemitoBase);
-	    ventanaVisualizarEquipos.setTextUbicacionRemito(codigoRemitoVisual);
+		// Código y número de remito
+		int codigoRemitoBase = reparacion.getCodigo();
+		String codigoRemitoVisual = obtenerCodigoRemitoVisual(codigoRemitoBase);
+		ventanaVisualizarEquipos.setTextUbicacionRemito(codigoRemitoVisual);
 
-	    int numeroRemitoBase = reparacion.getNumeroRemitoSalida();
-	    String numeroRemitoVisual = numeroRemitoBase > 0 ? String.format("%08d", numeroRemitoBase) : "";
-	    ventanaVisualizarEquipos.setTextNumeroRemito(numeroRemitoVisual);
+		int numeroRemitoBase = reparacion.getNumeroRemitoSalida();
+		String numeroRemitoVisual = numeroRemitoBase > 0 ? String.format("%08d", numeroRemitoBase) : "";
+		ventanaVisualizarEquipos.setTextNumeroRemito(numeroRemitoVisual);
 
-	    // Llenar tabla de repuestos
-	    llenarTablaRepuestos(ventanaVisualizarEquipos);
-	    ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
+		// Llenar tabla de repuestos
+		llenarTablaRepuestos(ventanaVisualizarEquipos);
+		ventanaVisualizarEquipos.getTextNombreEquipo().moveCaretPosition(0);
 
-	    // Formatear y mostrar valores monetarios
-	    String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
-	    String presupuestoDolar = monedaFormatter.formatDolar(reparacion.getPrecioDolar().toString());
-	    String pagoPeso = monedaFormatter.formatPeso(reparacion.getPago().toString());
+		// Formatear y mostrar valores monetarios
+		String presupuestoPeso = monedaFormatter.formatPeso(reparacion.getPrecioPeso().toString());
+		String presupuestoDolar = monedaFormatter.formatDolar(reparacion.getPrecioDolar().toString());
+		String pagoPeso = monedaFormatter.formatPeso(reparacion.getPago().toString());
 
-	    ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);
-	    ventanaVisualizarEquipos.setTextPresupuestoDolar(presupuestoDolar);
-	    ventanaVisualizarEquipos.setTextPago(pagoPeso);
+		ventanaVisualizarEquipos.setTextPresupuesto(presupuestoPeso);
+		ventanaVisualizarEquipos.setTextPresupuestoDolar(presupuestoDolar);
+		ventanaVisualizarEquipos.setTextPago(pagoPeso);
 
-	    // Checkboxes
-	    ventanaVisualizarEquipos.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
-	    ventanaVisualizarEquipos.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
-	    ventanaVisualizarEquipos.setChckWORDGenerado(reparacion.getWORDgenerado());
-	    ventanaVisualizarEquipos.setChckWORDEnviado(reparacion.getWORDenviado());
-	    ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
+		// Checkboxes
+		ventanaVisualizarEquipos.setChckPDFGenerado(reparacion.getPresupuestoGenerado());
+		ventanaVisualizarEquipos.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
+		ventanaVisualizarEquipos.setChckWORDGenerado(reparacion.getWORDgenerado());
+		ventanaVisualizarEquipos.setChckWORDEnviado(reparacion.getWORDenviado());
+		ventanaVisualizarEquipos.setChckbxAvisoEnviado(reparacion.getAvisoEnviado());
 
-	    // Verificar y deshabilitar campos
-	    verificarPresupuesto(ventanaVisualizarEquipos);
-	    deshabilitarCampos(ventanaVisualizarEquipos);
+		// Verificar y deshabilitar campos
+		verificarPresupuesto(ventanaVisualizarEquipos);
+		deshabilitarCampos(ventanaVisualizarEquipos);
 	}
 
 	// Método auxiliar para formatear el código de remito
 	private String obtenerCodigoRemitoVisual(int codigoRemitoBase) {
-	    if (codigoRemitoBase == 2 || codigoRemitoBase == 5 || codigoRemitoBase == 6 || codigoRemitoBase == 7) {
-	        return String.format("%04d", codigoRemitoBase); // Agrega ceros al inicio hasta 4 dígitos
-	    } else if (codigoRemitoBase == 1000 || codigoRemitoBase == 2000 || codigoRemitoBase == 3000) {
-	        return String.valueOf(codigoRemitoBase); // Si es 1000, 2000 o 3000, lo guarda tal cual
-	    } else {
-	        return ""; // Manejo para valores inesperados
-	    }
+		if (codigoRemitoBase == 2 || codigoRemitoBase == 5 || codigoRemitoBase == 6 || codigoRemitoBase == 7) {
+			return String.format("%04d", codigoRemitoBase); // Agrega ceros al inicio hasta 4 dígitos
+		} else if (codigoRemitoBase == 1000 || codigoRemitoBase == 2000 || codigoRemitoBase == 3000) {
+			return String.valueOf(codigoRemitoBase); // Si es 1000, 2000 o 3000, lo guarda tal cual
+		} else {
+			return ""; // Manejo para valores inesperados
+		}
 	}
-	
-	
-
 
 	public int cantidadVentanasAbiertas() {
 
@@ -3069,6 +3068,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		String RemitoCLiente = ventanaVisualizarEquipos.getTextRemitoCliente().getText();
 		int IDEquipo = reparacion.getIDEquipo();
 		int IDremito = reparacion.getidRemito();
+		
+	
 		String NombreEquipo = ventanaVisualizarEquipos.getTextNombreEquipo().getText();
 		String Modelo = ventanaVisualizarEquipos.getTextModelo().getText();
 		String Marca = ventanaVisualizarEquipos.getTextMarca().getText();
@@ -3076,9 +3077,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		String aviso = ventanaVisualizarEquipos.getTextAvisoCliente().getText();
 		String ClienteCliente = ventanaVisualizarEquipos.getTextClienteCliente().getText();
-			
-		
-		
+
 		if (!guardado) {
 			ventanaVisualizarEquipos.getTextCliente()
 					.setText(ventanaVisualizarEquipos.getComboClientes().getSelectedItem().toString());
@@ -3141,14 +3140,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			fechaaceptacionvisual = dateFormat.format(fechaAceptacionVisual);
 		}
-		
+
 		String fechasalidaVisual = null;
 		java.util.Date fechaSalidaVisual = ventanaVisualizarEquipos.getFechaSalida().getDate();
 		if (fechaSalidaVisual != null) {
 
 			fechasalidaVisual = dateFormat.format(fechaSalidaVisual);
 		}
-		
 
 		String fechafabrvisual = null;
 		java.util.Date fechaFabrvisual = ventanaVisualizarEquipos.getFechaFabr().getDate();
@@ -3202,6 +3200,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		String OrdenDeCompra = ventanaVisualizarEquipos.getTextOC().getText();
 
+		boolean wordGenerado = ventanaVisualizarEquipos.getChckWORDGenerado();
+		boolean wordEnviado = ventanaVisualizarEquipos.getChckWORDEnviado();
+
+		
+		boolean agregadoAremito = reparacion.getAgregadoaremito();
+		boolean remitoGenerado = reparacion.getRemitoGenerado();
+
 		if (verificarCaracteresPermitidos(falla) || verificarCaracteresPermitidos(solucion)
 				|| verificarCaracteresPermitidos(informeCliente) || verificarCaracteresPermitidos(NombreEquipo)
 				|| verificarCaracteresPermitidos(Modelo) || verificarCaracteresPermitidos(Marca)
@@ -3212,11 +3217,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		} else {
 
 			reparacionAeditar = new ReparacionDTO(ELS, fechaentradavisual, fechareparacionvisual, falla, solucion,
-					informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo,IDremito, Cliente,
-					Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
-					idCliente, idSucursal, fechafabrvisual, idUsuario, nombreTecnico, presupuesto,
-					presupuestoDolar, pago, presupuestoGenerado, avisoEnviado, presupuestoEnviado, OrdenDeCompra,
-					lugarIngreso, fechasalidaVisual);
+					informeCliente, estadoFisico, estadoTecnico, estadoComercial, RemitoCLiente, IDEquipo, IDremito,
+					Cliente, Sucursal, fechaaceptacionvisual, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente,
+					idCliente, idSucursal, fechafabrvisual, idUsuario, nombreTecnico, presupuesto, presupuestoDolar,
+					pago, presupuestoGenerado, avisoEnviado, presupuestoEnviado, wordGenerado, wordEnviado,
+					OrdenDeCompra, agregadoAremito, remitoGenerado, lugarIngreso, fechasalidaVisual);
 		}
 		return reparacionAeditar;
 
