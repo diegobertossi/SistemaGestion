@@ -1556,6 +1556,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			ventanaVisualizarEquipos.setTextEstadoFisico(estadoFisico);
 
+			if (estadoFisico == "Enviado") {
+
+				ventanaVisualizarEquipos.getFechaSalida().setDate(fechaParseadaHOY);
+
+			}
+
 		}
 
 		if (ventanaVisualizarEquipos.getTextEstadoTecnico().getText().compareTo(estadoTecnico) != 0) {
@@ -3068,8 +3074,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		String RemitoCLiente = ventanaVisualizarEquipos.getTextRemitoCliente().getText();
 		int IDEquipo = reparacion.getIDEquipo();
 		int IDremito = reparacion.getidRemito();
-		
-	
+
 		String NombreEquipo = ventanaVisualizarEquipos.getTextNombreEquipo().getText();
 		String Modelo = ventanaVisualizarEquipos.getTextModelo().getText();
 		String Marca = ventanaVisualizarEquipos.getTextMarca().getText();
@@ -3203,7 +3208,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		boolean wordGenerado = ventanaVisualizarEquipos.getChckWORDGenerado();
 		boolean wordEnviado = ventanaVisualizarEquipos.getChckWORDEnviado();
 
-		
 		boolean agregadoAremito = reparacion.getAgregadoaremito();
 		boolean remitoGenerado = reparacion.getRemitoGenerado();
 

@@ -305,11 +305,12 @@ public class ReparacionDTO {
 
 	}
 
-	public ReparacionDTO(int ELS, String estadoFisico, boolean agregadoAremito) {
+	public ReparacionDTO(int ELS, String estadoFisico, boolean agregadoAremito,String fecha_Salida ) {
 
 		this.ELS = ELS;
 		this.EstadoFisico = estadoFisico;
 		this.Agregadoaremito = agregadoAremito;
+		this.FechaSalida = fecha_Salida;
 
 	}
 

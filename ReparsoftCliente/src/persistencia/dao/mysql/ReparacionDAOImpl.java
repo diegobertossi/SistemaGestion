@@ -2352,8 +2352,11 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	public void editMarcarEnviados(ReparacionDTO reparacionAeditar) {
 
 		PreparedStatement statement = null;
+		
+		SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-		String query = "UPDATE reparaciones SET EstadoFisico = ? WHERE ELS = ?";
+		String query = "UPDATE reparaciones SET EstadoFisico = ?, FechaSalida = ? WHERE ELS = ?";
 
 		try {
 
@@ -2361,8 +2364,30 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
 			statement.setString(1, reparacionAeditar.getEstadoFisico());
 
+			if (reparacionAeditar.getFecha_Salida() != null) {
+				try {
+
+					// Convierte la fecha de entrada al formato requerido
+					Date parsedDate = inputFormat.parse(reparacionAeditar.getFecha_Salida());
+					String formattedDate = outputFormat.format(parsedDate) + " 00:00:00"; // Agrega la hora
+																							// predeterminada
+
+					// Usa el formato correcto para crear el Timestamp
+					statement.setTimestamp(2, Timestamp.valueOf(formattedDate));
+				} catch (Exception e) {
+					throw new RuntimeException(
+							"El formato de la fecha de entrada no es válido o no se pudo convertir. Verifica los datos.",
+							e);
+				}
+			} else {
+				// Si la fecha es nula o vacía, establece el valor como NULL
+				statement.setNull(2, java.sql.Types.TIMESTAMP);
+			}
+
+			
+
 			// Llave primaria
-			statement.setInt(2, reparacionAeditar.getELS());
+			statement.setInt(3, reparacionAeditar.getELS());
 
 			statement.executeUpdate();
 

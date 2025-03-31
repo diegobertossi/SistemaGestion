@@ -13,7 +13,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -761,8 +766,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 							this.Reparaciones_en_tabla.get(i).getNombreEquipo(),
 							this.Reparaciones_en_tabla.get(i).getModelo(),
-							this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
-							enviado };
+							this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(), enviado };
 					this.ventanaRemitoGenerado.getModelEquiposParaRemito().addRow(fila);
 				}
 
@@ -792,7 +796,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				ventanaEliminarRemito.getTxtCliente().setText(cliente);
 
 				for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
-					
+
 					if (this.Reparaciones_en_tabla.get(i).getEstadoFisico().compareTo("Enviado") == 0) {
 
 						enviado = true;
@@ -804,8 +808,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 							this.Reparaciones_en_tabla.get(i).getNombreEquipo(),
 							this.Reparaciones_en_tabla.get(i).getModelo(),
-							this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
-							enviado };
+							this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(), enviado };
 					this.ventanaEliminarRemito.getModelEquiposParaRemito().addRow(fila);
 				}
 				// ventanaRemitoGenerado.setCellRender(this.ventanaEliminarRemito.getTblEquiposParaRemito());
@@ -822,9 +825,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		boolean remitoGenerado = true;
 
 		int idRemito = this.agenda.dameIDRemito();
-		
 
-		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, agregadoAremito,remitoGenerado, idRemito);
+		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, agregadoAremito, remitoGenerado, idRemito);
 
 		return reparacionAeditar;
 
@@ -832,11 +834,19 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 	private ReparacionDTO marcarEnviado(int i) {
 
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+
+		Date today = new Date();
+
+		// Formatear la fecha
+		String fechasalida = dateFormat.format(today);
+
 		int ELS = Integer.parseInt(this.ventanaRemitoGenerado.getModelEquiposParaRemito().getValueAt(i, 0).toString());
 		boolean agregadoAremito = true;
+
 		String estadoFisico = "Enviado";
 
-		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, estadoFisico,agregadoAremito);
+		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, estadoFisico, agregadoAremito, fechasalida);
 
 		return reparacionAeditar;
 
@@ -848,7 +858,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		boolean agregado = false;
 		boolean generado = false;
 		Integer idRemito = 0;
-		
+
 		String estadoFisico = this.Reparaciones_en_tabla.get(0).getLugarDeIngreso();
 
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, estadoFisico, generado, agregado, idRemito);
