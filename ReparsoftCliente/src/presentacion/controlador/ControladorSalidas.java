@@ -168,70 +168,11 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 			btnMarcarEnviados = true;
 			btnDesvincularRemito = false;
+			
+			
+			abrirVentanaSeleccionarRemito();
 
-			ventanaSeleccionarRemito = new VentanaSeleccionarRemito(this);
-
-			ventanaSeleccionarRemito.getBtnAceptar().addActionListener(this);
-			ventanaSeleccionarRemito.getBtnCancelar().addActionListener(this);
-
-			agenda.ListarUbicacion(ventanaSeleccionarRemito.getComboUbicacion());
-
-			if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex() == 0) {
-
-				ventanaSeleccionarRemito.getComboUbicacion().setFont(new Font("Cambria", Font.PLAIN, 12));
-
-			}
-
-			ventanaSeleccionarRemito.getComboUbicacion().addItemListener(new ItemListener() {
-				public void itemStateChanged(ItemEvent e) {
-
-					if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex() == 0) {
-
-						ventanaSeleccionarRemito.getComboUbicacion().setFont(new Font("Cambria", Font.PLAIN, 12));
-
-					} else
-						ventanaSeleccionarRemito.getComboUbicacion().setFont(new Font("Cambria", Font.PLAIN, 14));
-
-					if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedItem() != null) {
-
-						int ubicacion;
-						int IDubicacion = 0;
-
-						ubicacion = ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex();
-
-						switch (ubicacion) {
-
-						case 1:
-							IDubicacion = 2;
-							break;
-						case 2:
-							IDubicacion = 1;
-							break;
-						case 3:
-							IDubicacion = 7;
-							break;
-						case 4:
-							IDubicacion = 8;
-
-						case 5:
-							IDubicacion = 3;
-							break;
-						case 6:
-							IDubicacion = 4;
-							break;
-						case 7:
-							IDubicacion = 5;
-							break;
-						default:
-							break;
-						}
-
-						agenda.ListarRemitoPorUbicacion(ventanaSeleccionarRemito.getComboNumRemito(), IDubicacion);
-
-					}
-
-				}
-			});
+			
 
 		}
 
@@ -429,70 +370,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 			btnMarcarEnviados = false;
 			btnDesvincularRemito = true;
 
-			ventanaSeleccionarRemito = new VentanaSeleccionarRemito(this);
-
-			ventanaSeleccionarRemito.getBtnAceptar().addActionListener(this);
-			ventanaSeleccionarRemito.getBtnCancelar().addActionListener(this);
-
-			agenda.ListarUbicacion(ventanaSeleccionarRemito.getComboUbicacion());
-
-			if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex() == 0) {
-
-				ventanaSeleccionarRemito.getComboUbicacion().setFont(new Font("Cambria", Font.PLAIN, 12));
-
-			}
-
-			ventanaSeleccionarRemito.getComboUbicacion().addItemListener(new ItemListener() {
-				public void itemStateChanged(ItemEvent e) {
-
-					if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex() == 0) {
-
-						ventanaSeleccionarRemito.getComboUbicacion().setFont(new Font("Cambria", Font.PLAIN, 12));
-
-					} else
-						ventanaSeleccionarRemito.getComboUbicacion().setFont(new Font("Cambria", Font.PLAIN, 14));
-
-					if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedItem() != null) {
-
-						int ubicacion;
-						int IDubicacion = 0;
-
-						ubicacion = ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex();
-
-						switch (ubicacion) {
-
-						case 1:
-							IDubicacion = 2;
-							break;
-						case 2:
-							IDubicacion = 1;
-							break;
-						case 3:
-							IDubicacion = 7;
-							break;
-						case 4:
-							IDubicacion = 8;
-
-						case 5:
-							IDubicacion = 3;
-							break;
-						case 6:
-							IDubicacion = 4;
-							break;
-						case 7:
-							IDubicacion = 5;
-							break;
-						default:
-							break;
-
-						}
-
-						agenda.ListarRemitoPorUbicacion(ventanaSeleccionarRemito.getComboNumRemito(), IDubicacion);
-
-					}
-
-				}
-			});
+			abrirVentanaSeleccionarRemito();
 
 		}
 
@@ -604,6 +482,75 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 			this.ventanaRemitos.getTxtNumeroRemito().setEditable(true);
 
 		}
+	}
+
+	private void abrirVentanaSeleccionarRemito() {
+		
+		
+		ventanaSeleccionarRemito = new VentanaSeleccionarRemito(this);
+
+		ventanaSeleccionarRemito.getBtnAceptar().addActionListener(this);
+		ventanaSeleccionarRemito.getBtnCancelar().addActionListener(this);
+
+		agenda.ListarUbicacion(ventanaSeleccionarRemito.getComboUbicacion());
+
+		if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex() == 0) {
+
+			ventanaSeleccionarRemito.getComboUbicacion().setFont(new Font("Cambria", Font.PLAIN, 12));
+
+		}
+
+		ventanaSeleccionarRemito.getComboUbicacion().addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+
+				if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex() == 0) {
+
+					ventanaSeleccionarRemito.getComboUbicacion().setFont(new Font("Cambria", Font.PLAIN, 12));
+
+				} else
+					ventanaSeleccionarRemito.getComboUbicacion().setFont(new Font("Cambria", Font.PLAIN, 14));
+
+				if (ventanaSeleccionarRemito.getComboUbicacion().getSelectedItem() != null) {
+
+					int ubicacion;
+					int IDubicacion = 0;
+
+					ubicacion = ventanaSeleccionarRemito.getComboUbicacion().getSelectedIndex();
+
+					switch (ubicacion) {
+
+					case 1:
+						IDubicacion = 2;
+						break;
+					case 2:
+						IDubicacion = 1;
+						break;
+					case 3:
+						IDubicacion = 7;
+						break;
+					case 4:
+						IDubicacion = 8;
+						break;
+					case 5:
+						IDubicacion = 3;
+						break;
+					case 6:
+						IDubicacion = 4;
+						break;
+					case 7:
+						IDubicacion = 5;
+						break;
+					default:
+						break;
+					}
+
+					agenda.ListarRemitoPorUbicacion(ventanaSeleccionarRemito.getComboNumRemito(), IDubicacion);
+
+				}
+
+			}
+		});
+		
 	}
 
 	private void generarRemito(VentanaRemitos ventanaRemitos, int filas) {
