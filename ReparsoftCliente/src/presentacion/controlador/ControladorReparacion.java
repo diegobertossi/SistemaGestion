@@ -13,10 +13,12 @@ import java.time.temporal.ChronoUnit;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -30,25 +32,36 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.List;
-
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.Timer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
@@ -2258,13 +2271,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		llenarComboMarca();
 		llenarComboModelo();
 		llenarComboSerie();
+		
 
-		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboClientes());
-		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboSucursal());
-		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboNombreEquipo());
-		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboMarca());
-		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboModelo());
-		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboSerie());
+		enableAutoComplete(ventanaAgregarEquipo.getComboClientes());
+		
+		
+//		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboClientes());
+//		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboSucursal());
+//		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboNombreEquipo());
+//		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboMarca());
+//		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboModelo());
+//		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboSerie());
 
 		ventanaAgregarEquipo.getGrupoEstadoFisico().setSelected(ventanaAgregarEquipo.getRdbtnBRC().getModel(), true);
 
@@ -2889,7 +2906,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getComboClientes().addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 
-				if (ventanaAgregarEquipo.getComboClientes().getSelectedItem() != null) {
+				if (ventanaAgregarEquipo.getComboClientes().getSelectedItem() != null && ventanaAgregarEquipo.getComboClientes().getSelectedItem().toString().compareTo("")!= 0) {
+						
+					
 					Cliente = (ClienteDTO) ventanaAgregarEquipo.getComboClientes().getSelectedItem();
 					int id = Cliente.getId();
 
@@ -3539,6 +3558,257 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
+	public static <T> void enableAutoComplete(JComboBox<T> comboBox) {
+	    if (comboBox == null || comboBox.getItemCount() == 0) {
+	        throw new IllegalArgumentException("ComboBox no puede ser nulo o vacío");
+	    }
+
+	    JTextField textField = (JTextField) comboBox.getEditor().getEditorComponent();
+	    comboBox.setEditable(true);
+
+	    // Guardamos los elementos originales
+	    List<T> originalItems = new ArrayList<>();
+	    for (int i = 0; i < comboBox.getItemCount(); i++) {
+	        originalItems.add(comboBox.getItemAt(i));
+	    }
+	    
+	    // Variable estática para controlar que el mensaje de error solo se muestre una vez
+	    // Debe ser final y compartida por todos los listeners
+	    final AtomicBoolean errorMostrado = new AtomicBoolean(false);
+	    
+	    textField.addFocusListener(new FocusAdapter() {
+	        @Override
+	        public void focusGained(FocusEvent e) {
+	            if (textField.getText().equals(originalItems.get(0).toString())) {
+	                textField.setText(""); // Borra el texto inicial
+	            }
+	            textField.setCaretPosition(0);
+	            comboBox.showPopup(); // Despliega automáticamente el JComboBox
+	        }
+
+	        @Override
+	        public void focusLost(FocusEvent e) {
+	            seleccionarMejorCoincidencia(comboBox, textField, originalItems, errorMostrado);
+	            textField.setCaretPosition(0);
+	        }
+	    });
+
+	    // Listener para resetear el control de error cuando el usuario escribe
+	    textField.getDocument().addDocumentListener(new DocumentListener() {
+	        @Override
+	        public void insertUpdate(DocumentEvent e) {
+	            errorMostrado.set(false);
+	        }
+
+	        @Override
+	        public void removeUpdate(DocumentEvent e) {
+	            errorMostrado.set(false);
+	        }
+
+	        @Override
+	        public void changedUpdate(DocumentEvent e) {
+	            errorMostrado.set(false);
+	        }
+	    });
+
+	    textField.addKeyListener(new KeyAdapter() {
+	        @Override
+	        public void keyReleased(KeyEvent e) {
+	            if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_UP) {
+	                return; // Dejamos que el JComboBox maneje la navegación con las flechas
+	            }
+	            
+	            if (e.getKeyCode() == KeyEvent.VK_TAB) {
+	                seleccionarMejorCoincidencia(comboBox, textField, originalItems, errorMostrado);
+	                return;
+	            }
+
+	            String text = textField.getText().trim();
+	            DefaultComboBoxModel<T> model = new DefaultComboBoxModel<>();
+
+	            if (text.isEmpty()) {
+	                restaurarLista(comboBox, originalItems);
+	            } else {
+	                // Filtramos los elementos sin incluir el primer ítem
+	                boolean hasMatches = false;
+	                for (int i = 1; i < originalItems.size(); i++) {
+	                    T item = originalItems.get(i);
+	                    if (item.toString().toLowerCase().contains(text.toLowerCase())) {
+	                        model.addElement(item);
+	                        hasMatches = true;
+	                    }
+	                }
+	                if (hasMatches) {
+	                    comboBox.setModel(model);
+	                    textField.setText(text); // Mantiene el texto ingresado
+	                    comboBox.setPopupVisible(true);
+	                } else {
+	                    comboBox.setPopupVisible(false);
+	                }
+	            }
+	        }
+
+	        @Override
+	        public void keyPressed(KeyEvent e) {
+	            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+	                manejarTeclaEnter(comboBox, textField, originalItems, errorMostrado);
+	            } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+	                // Restaurar valor por defecto al presionar ESC
+	                textField.setText(originalItems.get(0).toString());
+	                comboBox.setSelectedItem(originalItems.get(0));
+	                comboBox.setPopupVisible(false);
+	            }
+	        }
+	    });
+	    
+	    // Evitar que se ingresen valores que no están en la lista
+	    comboBox.addActionListener(e -> {
+	        if (e.getActionCommand().equals("comboBoxEdited")) {
+	            String currentText = textField.getText().trim();
+	            
+	            // Verificar si el texto está en la lista
+	            boolean found = false;
+	            for (T item : originalItems) {
+	                if (item.toString().equalsIgnoreCase(currentText)) {
+	                    found = true;
+	                    comboBox.setSelectedItem(item);
+	                    break;
+	                }
+	            }
+	            
+	            // Si no está en la lista y no es el valor por defecto
+	            if (!found && !currentText.equals(originalItems.get(0).toString()) && !currentText.isEmpty()) {
+	                if (!errorMostrado.getAndSet(true)) {  // Atómicamente establece en true y devuelve el valor anterior
+	                    JOptionPane.showMessageDialog(comboBox, 
+	                                            "El ítem no está en la lista", 
+	                                            "Error", 
+	                                            JOptionPane.ERROR_MESSAGE);
+	                }
+	                // Restaurar valor por defecto
+	                textField.setText(originalItems.get(0).toString());
+	                comboBox.setSelectedItem(originalItems.get(0));
+	            }
+	        }
+	    });
+	}
+
+	private static <T> void manejarTeclaEnter(JComboBox<T> comboBox, JTextField textField, 
+	                                          List<T> originalItems, AtomicBoolean errorMostrado) {
+	    if (comboBox.isPopupVisible()) {
+	        // Si el popup está visible, selecciona el ítem resaltado
+	        Object selectedItem = comboBox.getSelectedItem();
+	        if (selectedItem != null) {
+	            textField.setText(selectedItem.toString());
+	            comboBox.setSelectedItem(selectedItem);
+	        }
+	        comboBox.setPopupVisible(false);
+	    } else {
+	        // Validar la selección actual
+	        validarSeleccion(comboBox, textField, originalItems, errorMostrado);
+	    }
+	}
+
+	private static <T> void validarSeleccion(JComboBox<T> comboBox, JTextField textField, 
+	                                         List<T> originalItems, AtomicBoolean errorMostrado) {
+	    String text = textField.getText().trim();
+	    boolean found = false;
+
+	    for (T item : originalItems) {
+	        if (item.toString().equalsIgnoreCase(text)) {
+	            found = true;
+	            comboBox.setSelectedItem(item);
+	            break;
+	        }
+	    }
+
+	    if (!found && !text.isEmpty() && !text.equals(originalItems.get(0).toString())) {
+	        if (!errorMostrado.getAndSet(true)) {  // Usa getAndSet para atómicamente cambiar y obtener el valor previo
+	            JOptionPane.showMessageDialog(comboBox, 
+	                                      "El ítem no está en la lista", 
+	                                      "Error", 
+	                                      JOptionPane.ERROR_MESSAGE);
+	        }
+	        // Restaurar valor por defecto
+	        textField.setText(originalItems.get(0).toString());
+	        comboBox.setSelectedItem(originalItems.get(0));
+	    }
+
+	    comboBox.setPopupVisible(false);
+	}
+
+	private static <T> void seleccionarMejorCoincidencia(JComboBox<T> comboBox, JTextField textField, 
+	                                                    List<T> originalItems, AtomicBoolean errorMostrado) {
+	    String text = textField.getText().trim();
+	    
+	    if (text.isEmpty()) {
+	        // Si está vacío, restaurar valor por defecto
+	        textField.setText(originalItems.get(0).toString());
+	        comboBox.setSelectedItem(originalItems.get(0));
+	        return;
+	    }
+	    
+	    // Buscar coincidencia exacta primero (ignorando el primer elemento)
+	    for (int i = 1; i < originalItems.size(); i++) {
+	        T item = originalItems.get(i);
+	        if (item.toString().equalsIgnoreCase(text)) {
+	            textField.setText(item.toString());
+	            comboBox.setSelectedItem(item);
+	            return;
+	        }
+	    }
+	    
+	    // Buscar mejor coincidencia parcial
+	    List<T> coincidencias = new ArrayList<>();
+	    for (int i = 1; i < originalItems.size(); i++) {
+	        T item = originalItems.get(i);
+	        if (item.toString().toLowerCase().contains(text.toLowerCase())) {
+	            coincidencias.add(item);
+	        }
+	    }
+	    
+	    if (!coincidencias.isEmpty()) {
+	        // Ordenar por relevancia: primero las que comienzan con el texto
+	        coincidencias.sort((item1, item2) -> {
+	            boolean starts1 = item1.toString().toLowerCase().startsWith(text.toLowerCase());
+	            boolean starts2 = item2.toString().toLowerCase().startsWith(text.toLowerCase());
+	            
+	            if (starts1 && !starts2) return -1;
+	            if (!starts1 && starts2) return 1;
+	            
+	            // Si ambas empiezan o no empiezan con el texto, comparar por longitud más cercana
+	            return Integer.compare(
+	                Math.abs(item1.toString().length() - text.length()),
+	                Math.abs(item2.toString().length() - text.length())
+	            );
+	        });
+	        
+	        // Seleccionar la mejor coincidencia
+	        T bestMatch = coincidencias.get(0);
+	        textField.setText(bestMatch.toString());
+	        comboBox.setSelectedItem(bestMatch);
+	    } else {
+	        // Si no hay coincidencias, mostrar mensaje y restaurar valor por defecto
+	        if (!errorMostrado.getAndSet(true)) {  // Usa getAndSet para atómicamente cambiar y obtener el valor previo
+	            JOptionPane.showMessageDialog(comboBox, 
+	                                      "El ítem no está en la lista", 
+	                                      "Error", 
+	                                      JOptionPane.ERROR_MESSAGE);
+	        }
+	        textField.setText(originalItems.get(0).toString());
+	        comboBox.setSelectedItem(originalItems.get(0));
+	    }
+	}
+
+	private static <T> void restaurarLista(JComboBox<T> comboBox, List<T> originalItems) {
+	    DefaultComboBoxModel<T> model = new DefaultComboBoxModel<>();
+	    for (T item : originalItems) {
+	        model.addElement(item);
+	    }
+	    comboBox.setModel(model);
+	    comboBox.setPopupVisible(true);
+	}
+
+	
 	public void cerraVentanaVisualizarEquipoListado(VentanaVisualizarEquipos ventana) {
 
 		ventana.addWindowListener(new WindowAdapter() {
