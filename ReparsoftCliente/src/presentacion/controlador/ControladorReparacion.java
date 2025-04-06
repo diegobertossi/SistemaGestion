@@ -2943,6 +2943,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private void validarSeleccion(JComboBox comboClientes) {
 		
 		ventanaAgregarEquipo.getComboSucursal().removeAllItems();
+		
 	    if (VistaPropias.AutoCompletarComboBox.esItemValido(comboClientes)) {
 	        comboClientes.setPopupVisible(false); // 🔻 Ocultar lista desplegable al confirmar selección
 	        procesarClienteSeleccionado();
