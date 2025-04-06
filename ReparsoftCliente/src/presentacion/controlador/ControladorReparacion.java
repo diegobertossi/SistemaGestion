@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.time.LocalDate;
@@ -2901,44 +2903,67 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	private void llenarComboCliente() {
+	    agenda.ListarCliente(ventanaAgregarEquipo.getComboClientes());
+	    JComboBox comboClientes = ventanaAgregarEquipo.getComboClientes();
 
-		agenda.ListarCliente(ventanaAgregarEquipo.getComboClientes());
+	    // ItemListener para selección por mouse o teclas
+	    comboClientes.addItemListener(new ItemListener() {
+	        public void itemStateChanged(ItemEvent e) {
+	            if (e.getStateChange() == ItemEvent.SELECTED && VistaPropias.AutoCompletarComboBox.esItemValido(comboClientes)) {
+	                procesarClienteSeleccionado();
+	            }
+	        }
+	    });
 
-		ventanaAgregarEquipo.getComboClientes().addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
+	    // Editor del combo
+	    JTextComponent editor = (JTextComponent) comboClientes.getEditor().getEditorComponent();
 
-				
-				if (VistaPropias.AutoCompletarComboBox.esItemValido(ventanaAgregarEquipo.getComboClientes())) {
+	    // Validación con ENTER
+	    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+	        @Override
+	        public boolean dispatchKeyEvent(KeyEvent e) {
+	            if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == KeyEvent.VK_ENTER) {
+	                if (editor.isFocusOwner()) {
+	                    SwingUtilities.invokeLater(() -> validarSeleccion(comboClientes));
+	                }
+	            }
+	            return false;
+	        }
+	    });
 
-					Cliente = (ClienteDTO) ventanaAgregarEquipo.getComboClientes().getSelectedItem();
-					int id = Cliente.getId();
+	    // Validación con TAB (focusLost)
+	    editor.addFocusListener(new FocusAdapter() {
+	        @Override
+	        public void focusLost(FocusEvent e) {
+	            SwingUtilities.invokeLater(() -> validarSeleccion(comboClientes));
+	        }
+	    });
+	}
 
-					agenda.ListarSucursalesxCliente(ventanaAgregarEquipo.getComboSucursal(), id);
-					idCli = id;
-					
-					System.out.println("existe");
+	private void validarSeleccion(JComboBox comboClientes) {
+		
+		ventanaAgregarEquipo.getComboSucursal().removeAllItems();
+	    if (VistaPropias.AutoCompletarComboBox.esItemValido(comboClientes)) {
+	        comboClientes.setPopupVisible(false); // 🔻 Ocultar lista desplegable al confirmar selección
+	        procesarClienteSeleccionado();
+	    } else {
+	        if (!comboClientes.isEditable()) {
+	            JOptionPane.showMessageDialog(null, "Item no encontrado");
+	            comboClientes.setSelectedIndex(0);
+	        }
+	    }
+	}
 
-				} else {
-					System.out.println("NO existe");
-				}
-				
-				
-//				if (ventanaAgregarEquipo.getComboClientes().getSelectedItem() != null
-//						&& ventanaAgregarEquipo.getComboClientes().getSelectedItem().toString().compareTo("") != 0) {
-//
-//					
-//
-//					Cliente = (ClienteDTO) ventanaAgregarEquipo.getComboClientes().getSelectedItem();
-//					int id = Cliente.getId();
-//
-//					agenda.ListarSucursalesxCliente(ventanaAgregarEquipo.getComboSucursal(), id);
-//					idCli = id;
-//
-//				}
 
-			}
-		});
+	private void procesarClienteSeleccionado() {
+		JComboBox comboClientes = ventanaAgregarEquipo.getComboClientes();
+		ClienteDTO Cliente = (ClienteDTO) comboClientes.getSelectedItem();
 
+		if (Cliente != null) {
+			int id = Cliente.getId();
+			agenda.ListarSucursalesxCliente(ventanaAgregarEquipo.getComboSucursal(), id);
+			idCli = id;
+		}
 	}
 
 	private void llenarComboTecnico(VentanaVisualizarEquipos ventanaVisualizarEquipos) {

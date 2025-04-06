@@ -1,18 +1,10 @@
 package VistaPropias;
 
-import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import javax.swing.*;
 import javax.swing.text.*;
+import java.awt.event.*;
 
-/**
- * Clase para habilitar autocompletado en JComboBox, permitiendo entrada libre
- * si es editable.
- */
 public class AutoCompletarComboBox extends PlainDocument {
-
     private final JComboBox comboBox;
     private ComboBoxModel model;
     private JTextComponent editor;
@@ -31,7 +23,6 @@ public class AutoCompletarComboBox extends PlainDocument {
         this.mostrarMensaje = mostrarMensaje;
 
         comboBox.setEditable(true);
-
         comboBox.addActionListener(e -> {
             if (!selecting) {
                 highlightCompletedText(0);
@@ -48,7 +39,6 @@ public class AutoCompletarComboBox extends PlainDocument {
         });
 
         hidePopupOnFocusLoss = false;
-
         configureEditor(comboBox.getEditor());
 
         Object selected = comboBox.getSelectedItem();
@@ -80,20 +70,31 @@ public class AutoCompletarComboBox extends PlainDocument {
     private final KeyListener editorKeyListener = new KeyAdapter() {
         @Override
         public void keyPressed(KeyEvent e) {
-            if (comboBox.isDisplayable()) comboBox.setPopupVisible(true);
-            hitBackspace = false;
+            hitBackspace = e.getKeyCode() == KeyEvent.VK_BACK_SPACE;
+            hitBackspaceOnSelection = editor.getSelectionStart() != editor.getSelectionEnd();
 
             switch (e.getKeyCode()) {
-                case KeyEvent.VK_BACK_SPACE:
-                    hitBackspace = true;
-                    hitBackspaceOnSelection = editor.getSelectionStart() != editor.getSelectionEnd();
-                    break;
                 case KeyEvent.VK_ENTER:
-                case KeyEvent.VK_TAB:
+                	comboBox.setPopupVisible(false);
                     verificarItemNoEncontrado();
+                    // Forzar validación inmediata para Enter
+                    if (!findExactMatch(editor.getText())) {
+                    	
+                        e.consume(); // Evitar comportamiento por defecto
+                    }
+                    break;
+                case KeyEvent.VK_TAB:
+                	comboBox.setPopupVisible(false);
+                    verificarItemNoEncontrado();
+                    // Forzar validación y mantener el foco si no es válido
+                    if (!findExactMatch(editor.getText())) {
+                        e.consume(); // Evitar que pierda el foco
+                        editor.requestFocusInWindow();
+                    }
                     break;
             }
         }
+  
 
         @Override
         public void keyReleased(KeyEvent e) {
@@ -103,7 +104,11 @@ public class AutoCompletarComboBox extends PlainDocument {
             if (item == null) {
                 comboBox.setPopupVisible(false);
             } else {
-                comboBox.setPopupVisible(true);
+                if (e.getKeyCode() != KeyEvent.VK_ENTER && 
+                        e.getKeyCode() != KeyEvent.VK_TAB && 
+                        !text.isEmpty()) {
+                        comboBox.setPopupVisible(true);
+                    }
             }
         }
     };
@@ -111,7 +116,8 @@ public class AutoCompletarComboBox extends PlainDocument {
     private final FocusListener editorFocusListener = new FocusAdapter() {
         @Override
         public void focusGained(FocusEvent e) {
-            highlightCompletedText(0);
+            editor.selectAll();
+            mensajeMostrado = false; // reset para permitir mostrar mensaje de nuevo
         }
 
         @Override
@@ -132,8 +138,8 @@ public class AutoCompletarComboBox extends PlainDocument {
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
         if (selecting || str == null) return;
-        super.insertString(offs, str, a);
 
+        super.insertString(offs, str, a);
         String content = getText(0, getLength());
         Object item = lookupItem(content);
 
@@ -165,49 +171,51 @@ public class AutoCompletarComboBox extends PlainDocument {
     }
 
     private Object lookupItem(String pattern) {
-        Object selectedItem = model.getSelectedItem();
-        if (selectedItem != null && startsWithIgnoreCase(selectedItem.toString(), pattern)) {
-            return selectedItem;
-        } else {
-            for (int i = 0, n = model.getSize(); i < n; i++) {
-                Object currentItem = model.getElementAt(i);
-                if (currentItem != null && startsWithIgnoreCase(currentItem.toString(), pattern)) {
-                    return currentItem;
-                }
-            }
-        }
-        return null;
-    }
-
-    private boolean startsWithIgnoreCase(String str1, String str2) {
-        return str1.toLowerCase().startsWith(str2.toLowerCase());
-    }
-
-    private void verificarItemNoEncontrado() {
-        String text = editor.getText();
-        Object item = findExactMatch(text);
-
-        if (item == null && !mensajeMostrado) {
-            mensajeMostrado = true;
-
-            if (!editable) {
-                if (mostrarMensaje) {
-                    JOptionPane.showMessageDialog(null, "Item no encontrado");
-                }
-                comboBox.setSelectedIndex(-1); // NO selecciona nada
-            }
-        }
-    }
-
-    private Object findExactMatch(String text) {
         for (int i = 0; i < model.getSize(); i++) {
             Object item = model.getElementAt(i);
-            if (item != null && item.toString().equalsIgnoreCase(text)) {
+            if (item != null && item.toString().toLowerCase().startsWith(pattern.toLowerCase())) {
                 return item;
             }
         }
         return null;
     }
+
+    private boolean findExactMatch(String text) {
+        for (int i = 0; i < model.getSize(); i++) {
+            Object item = model.getElementAt(i);
+            if (item != null && item.toString().equalsIgnoreCase(text)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
+    
+    
+    private void verificarItemNoEncontrado() {
+        String text = editor.getText();
+        boolean exacto = findExactMatch(text);
+
+        if (!exacto && !mensajeMostrado) {
+            mensajeMostrado = true;
+
+            if (mostrarMensaje) {
+                JOptionPane.showMessageDialog(null, "Item no encontrado");
+            }
+
+            if (!editable) {
+                if (comboBox.getItemCount() > 0) {
+                    Object primerItem = comboBox.getItemAt(0);
+                    setSelectedItem(primerItem);
+                    setText(primerItem.toString());
+                    highlightCompletedText(0);
+                }
+            }
+        }
+    }
+
+    
 
     public static boolean esItemValido(JComboBox comboBox) {
         ComboBoxModel model = comboBox.getModel();
@@ -224,3 +232,4 @@ public class AutoCompletarComboBox extends PlainDocument {
         return false;
     }
 }
+
