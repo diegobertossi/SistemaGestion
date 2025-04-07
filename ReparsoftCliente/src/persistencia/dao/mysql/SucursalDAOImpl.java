@@ -23,7 +23,7 @@ public class SucursalDAOImpl implements SucursalDAO {
 
 	private static final String cantidadReparacionesxSuc = "Select count(*) as total from Sucursal INNER JOIN Equipos ON Sucursal.idsucursal = Equipos.IdSucursal where Sucursal.idsucursal = ?";
 
-	private static final String readallxCliente = "SELECT * FROM Sucursal where idCliente = ?";
+	private static final String readallxCliente = "SELECT * FROM Sucursal where idCliente = ? ORDER BY NombreSucursal ASC";
 	private static final String readallSucursal = "SELECT Sucursal.NombreSucursal FROM Sucursal group by Sucursal.NombreSucursal";
 
 	private static final String IDporNombre = "Select IdSucursal from Sucursal where NombreSucursal =? and idCliente=? ";

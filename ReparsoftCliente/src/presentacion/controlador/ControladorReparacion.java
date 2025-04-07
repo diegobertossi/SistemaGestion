@@ -3122,7 +3122,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		JComboBox comboMarca = ventanaAgregarEquipo.getComboClientes();
 
 		if (comboMarca.getSelectedItem() != null) {
-			// Marca = ventanaAgregarEquipo.getComboMarca().getSelectedItem().toString();
+			Marca = ventanaAgregarEquipo.getComboMarca().getSelectedItem().toString();
 			agenda.ListarModelosxMarca(ventanaAgregarEquipo.getComboModelo(), Marca);
 
 		}
@@ -3136,7 +3136,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		JComboBox comboModelo = ventanaAgregarEquipo.getComboModelo();
 
 		if (comboModelo.getSelectedItem() != null) {
-			// Modelo = ventanaAgregarEquipo.getComboModelo().getSelectedItem().toString();
+			Modelo = ventanaAgregarEquipo.getComboModelo().getSelectedItem().toString();
 			agenda.ListarSeriexModelo(ventanaAgregarEquipo.getComboSerie(), Modelo);
 			ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
 

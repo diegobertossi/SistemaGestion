@@ -161,21 +161,21 @@ public class VentanaAgregarEquipo extends JFrame {
 		comboSerie.setEditable(true);
 
 		comboModelo = new JComboBox<Object>();
-		comboModelo.setBounds(125, 79, 229, 20);
+		comboModelo.setBounds(125, 79, 347, 20);
 		panel_6.add(comboModelo);
 		comboModelo.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboModelo.setBackground(SystemColor.inactiveCaptionBorder);
 		comboModelo.setEditable(true);
 
 		comboMarca = new JComboBox<Object>();
-		comboMarca.setBounds(125, 48, 229, 20);
+		comboMarca.setBounds(125, 48, 347, 20);
 		panel_6.add(comboMarca);
 		comboMarca.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboMarca.setBackground(SystemColor.inactiveCaptionBorder);
 		comboMarca.setEditable(true);
 
 		comboNombreEquipo = new JComboBox<Object>();
-		comboNombreEquipo.setBounds(125, 17, 229, 20);
+		comboNombreEquipo.setBounds(125, 17, 347, 20);
 		panel_6.add(comboNombreEquipo);
 		comboNombreEquipo.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboNombreEquipo.setBackground(SystemColor.inactiveCaptionBorder);
@@ -249,7 +249,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		lblFalla.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(24, 197, 411, 56);
+		scrollPane.setBounds(24, 197, 448, 56);
 		panel_6.add(scrollPane);
 
 		textFalla = new JTextAreaCustom();
@@ -334,19 +334,19 @@ public class VentanaAgregarEquipo extends JFrame {
 		lblCliente.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblSucursal = new JLabel("Sucursal: ");
-		lblSucursal.setBounds(315, 20, 61, 14);
+		lblSucursal.setBounds(376, 20, 61, 14);
 		panel_5.add(lblSucursal);
 		lblSucursal.setBorder(null);
 		lblSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		comboClientes = new JComboBox<Object>();
-		comboClientes.setBounds(75, 17, 229, 20);
+		comboClientes.setBounds(75, 17, 289, 20);
 		panel_5.add(comboClientes);
 		comboClientes.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboClientes.setBackground(SystemColor.inactiveCaptionBorder);
 
 		comboSucursal = new JComboBox<Object>();
-		comboSucursal.setBounds(377, 17, 229, 20);
+		comboSucursal.setBounds(435, 17, 289, 20);
 		panel_5.add(comboSucursal);
 		comboSucursal.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboSucursal.setBackground(SystemColor.inactiveCaptionBorder);

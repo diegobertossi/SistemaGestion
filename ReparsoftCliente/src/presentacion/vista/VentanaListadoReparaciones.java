@@ -22,6 +22,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
 import net.miginfocom.swing.MigLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class VentanaListadoReparaciones extends JFrame {
 
@@ -120,16 +124,48 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros = new JPanel();
 		panelFiltros.setFont(new Font("Cambria", Font.PLAIN, 10));
 		panelFiltros.setBackground(new Color(176, 196, 222));
-		panelFiltros.setBorder(new CompoundBorder(new MatteBorder(0, 1, 0, 1, (Color) new Color(0, 128, 128)),
-				new EmptyBorder(0, 5, 5, 10)));
+		panelFiltros.setBorder(new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 128, 128)), new EmptyBorder(0, 5, 5, 10)));
 		panelSuperior.add(panelFiltros, BorderLayout.CENTER);
-		panelFiltros.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-		lbTitulo = new JLabel("OCULTAR COLUMNAS");
-		lbTitulo.setHorizontalTextPosition(SwingConstants.CENTER);
-		lbTitulo.setHorizontalAlignment(SwingConstants.LEFT);
-		lbTitulo.setFont(new Font("Cambria", Font.BOLD, 22));
-		panelFiltros.add(lbTitulo);
+				
+						lbTitulo = new JLabel("OCULTAR COLUMNAS");
+						lbTitulo.setHorizontalTextPosition(SwingConstants.CENTER);
+						lbTitulo.setHorizontalAlignment(SwingConstants.LEFT);
+						lbTitulo.setFont(new Font("Cambria", Font.BOLD, 22));
+		
+				btnEstadisticas = new JButton("ESTADÍSTICAS");
+				btnEstadisticas.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					}
+				});
+				btnEstadisticas.setBorder(new LineBorder(new Color(0, 128, 128)));
+				btnEstadisticas.setForeground(new Color(255, 255, 255));
+				btnEstadisticas.setBackground(new Color(95, 158, 160));
+				btnEstadisticas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				btnEstadisticas.setPreferredSize(new Dimension(150, 30));
+				btnEstadisticas.setMargin(new Insets(0, 10, 0, 10));
+				btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 22));
+				GroupLayout gl_panelFiltros = new GroupLayout(panelFiltros);
+				gl_panelFiltros.setHorizontalGroup(
+					gl_panelFiltros.createParallelGroup(Alignment.TRAILING)
+						.addGroup(Alignment.LEADING, gl_panelFiltros.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(lbTitulo, GroupLayout.PREFERRED_SIZE, 574, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
+							.addComponent(btnEstadisticas, GroupLayout.PREFERRED_SIZE, 215, GroupLayout.PREFERRED_SIZE)
+							.addGap(135))
+				);
+				gl_panelFiltros.setVerticalGroup(
+					gl_panelFiltros.createParallelGroup(Alignment.LEADING)
+						.addGroup(Alignment.TRAILING, gl_panelFiltros.createSequentialGroup()
+							.addContainerGap(15, Short.MAX_VALUE)
+							.addGroup(gl_panelFiltros.createParallelGroup(Alignment.LEADING)
+								.addComponent(lbTitulo, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+								.addGroup(Alignment.TRAILING, gl_panelFiltros.createSequentialGroup()
+									.addComponent(btnEstadisticas, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+									.addGap(4)))
+							.addGap(9))
+				);
+				panelFiltros.setLayout(gl_panelFiltros);
 
 		panelTitulo = new JPanel();
 		panelTitulo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 128, 128)));
@@ -152,14 +188,7 @@ public class VentanaListadoReparaciones extends JFrame {
 				.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new EmptyBorder(5, 10, 5, 0)));
 		panelBotones.setBackground(new Color(176, 196, 222));
 		panelBotonera.add(panelBotones, BorderLayout.SOUTH);
-		panelBotones.setLayout(new FlowLayout(FlowLayout.RIGHT));
-
-		btnEstadisticas = new JButton("ESTADÍSTICAS");
-		btnEstadisticas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnEstadisticas.setPreferredSize(new Dimension(150, 30));
-		btnEstadisticas.setMargin(new Insets(0, 10, 0, 10));
-		btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 14));
-		panelBotones.add(btnEstadisticas);
+		panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		panelColumnas = new JPanel();
 		panelColumnas.setBorder(new CompoundBorder(new MatteBorder(0, 1, 0, 1, (Color) new Color(0, 128, 128)),
