@@ -147,6 +147,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 			ventanaSeleccionarCliente.getBtnCancelar().addActionListener(this);
 
 			agenda.ListarCliente(ventanaSeleccionarCliente.getComboCliente());
+			
+			VistaPropias.AutoCompletarComboBox.enable(ventanaSeleccionarCliente.getComboCliente(), false, true);
 
 			ventanaSeleccionarCliente.getComboCliente().addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
