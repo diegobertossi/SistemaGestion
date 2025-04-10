@@ -21,6 +21,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 	private static String insert = "";
 	private static String delete = "";
 	private static String readall = "";
+	private static String readallV = "";
 	private static String maximoIDcliente = "";
 	private static String IDporNombre = "";
 	private static String ContactoPorNombre = "";
@@ -38,6 +39,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 		insert = "INSERT INTO Cliente(idCliente,nombre, CUIT,Domicilio,TelefonoEmpresa,Contacto,TelefonoContacto,CorreoElectronico) VALUES(? , ? , ? , ? , ? , ? , ? , ?)";
 		delete = "DELETE FROM Cliente WHERE idCliente = ?";
 		readall = "SELECT * FROM Cliente ORDER BY Nombre ASC";
+		readallV = "SELECT * FROM Cliente";
 		maximoIDcliente = "Select MAX(idCliente) from Cliente";
 		IDporNombre = "Select idCliente from Cliente where nombre =? ";
 		ContactoPorNombre = "Select Contacto from Cliente where nombre =? ";

@@ -2799,10 +2799,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	@SuppressWarnings("unused")
 	private void habilitarCampos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
-		String nombreCliente = "";
-		String nombreSucursal = "";
+		//String nombreCliente = "";
+		//String nombreSucursal = "";
 		String nombreTecnico = "";
-
+		
+		
+		String nombreCliente = ventanaVisualizarEquipos.getTextCliente().getText(); // Obtener el texto actual del JTextField
+		DefaultComboBoxModel<ClienteDTO> model = (DefaultComboBoxModel<ClienteDTO>) ventanaVisualizarEquipos.getComboClientes().getModel();
+		String nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
+        DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventanaVisualizarEquipos.getComboSucursal().getModel();
+		
+		
 		ventanaVisualizarEquipos.getTextNombreEquipo().setEditable(true);
 		ventanaVisualizarEquipos.getTextModelo().setEditable(true);
 		ventanaVisualizarEquipos.getTextMarca().setEditable(true);
@@ -2836,17 +2843,41 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getComboClientes().setVisible(true);
 		ventanaVisualizarEquipos.getComboSucursal().setVisible(true);
 		ventanaVisualizarEquipos.getComboTecnico().setVisible(true);
+		
+		
+		
+		 // Configurar el comportamiento para seleccionar automáticamente el cliente del JTextField
+	   
 
-		nombreCliente = ventanaVisualizarEquipos.getTextCliente().getText();
-		nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
+	    for (int i = 0; i < model.getSize(); i++) {
+	        ClienteDTO cliente = model.getElementAt(i);
+	        if (cliente.getRazon_Social().equalsIgnoreCase(nombreCliente)) { // Comparar nombres (ignorar mayúsculas/minúsculas)
+	        	ventanaVisualizarEquipos.getComboClientes().setSelectedItem(cliente); // Seleccionar el cliente correspondiente
+	            break;
+	        }
+	    }
+				
+	    
+	    
+	    
+        for (int i = 0; i < modelSucursal.getSize(); i++) {
+            SucursalDTO sucursal = modelSucursal.getElementAt(i);
+            if (sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal)) {
+            	ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(sucursal);
+                break;
+            }
+        }
+
+		//nombreCliente = ventanaVisualizarEquipos.getTextCliente().getText();
+		//nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
 		nombreTecnico = ventanaVisualizarEquipos.getTextNombreTecnico().getText();
 
 		int idcliente = IDClientePorNombre(nombreCliente);
 		int idSucursal = IDSucursalPorNombre(nombreSucursal, idcliente);
 		int idtecnico = IDUsuarioPorNombre(nombreTecnico) - 1;
 
-		ventanaVisualizarEquipos.getComboClientes().setSelectedIndex(idcliente);
-		ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(nombreSucursal);
+		//ventanaVisualizarEquipos.getComboClientes().setSelectedIndex(idcliente);
+		//ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(nombreSucursal);
 		ventanaVisualizarEquipos.getComboTecnico().setSelectedIndex(idtecnico);
 
 	}
@@ -2887,6 +2918,19 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 					agenda.ListarSucursalesxCliente(ventanaVisualizarEquipos.getComboSucursal(), id);
 					idCli = id;
+					
+					// Seleccionar nuevamente la sucursal basada en el texto del JTextField
+	                String nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
+	                DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventanaVisualizarEquipos.getComboSucursal().getModel();
+	                for (int i = 0; i < modelSucursal.getSize(); i++) {
+	                    SucursalDTO sucursal = modelSucursal.getElementAt(i);
+	                    if (sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal)) {
+	                    	ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(sucursal);
+	                        break;
+	                    }
+	                }
+					
+					
 
 				}
 
