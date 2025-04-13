@@ -69,12 +69,12 @@ public class VentanaCodigoSeguridad extends JFrame {
 		panelCodigo.add(lblPresupuestoEnviado);
 
 		btnCancelar = new JButton("CANCELAR");
-		btnCancelar.setBounds(15, 86, 111, 27);
+		btnCancelar.setBounds(141, 86, 111, 27);
 		panelCodigo.add(btnCancelar);
 		btnCancelar.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		btnAceptar = new JButton("ACEPTAR");
-		btnAceptar.setBounds(141, 86, 111, 27);
+		btnAceptar.setBounds(15, 86, 111, 27);
 		panelCodigo.add(btnAceptar);
 		btnAceptar.setFont(new Font("Cambria", Font.BOLD, 12));
 		

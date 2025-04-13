@@ -9,11 +9,11 @@ import java.awt.event.*;
 public class CodigoSeguridadHandler {
 
 	private VentanaCodigoSeguridad ventanaCodigoSeguridad;
-	private String seleccionDetalleEstadisticas;
+	private String nombreVentana;
 	private boolean acceso;
 
-	public CodigoSeguridadHandler(String seleccionDetalleEstadisticas) {
-		this.seleccionDetalleEstadisticas = seleccionDetalleEstadisticas;
+	public CodigoSeguridadHandler(String nombreVentana) {
+		this.nombreVentana = nombreVentana;
 	}
 
 	// Configura y muestra la ventana de código de seguridad
@@ -27,58 +27,46 @@ public class CodigoSeguridadHandler {
 			char[] codigoIngresado = ventanaCodigoSeguridad.getTxtCodigoSeguridad().getPassword();
 			String codigo = new String(codigoIngresado);
 
-			if (verificarCodigoSeguridad(codigo)) {
-				acceso = true;
-				//System.out.println("entro");
-				habitar();
-			} else {
-				acceso = false;
-			}
+			verificarCodigoSeguridad(codigo);
 		});
 
-		ventanaCodigoSeguridad.setVisible(true);
+
 	}
 
 	// Verifica el código de seguridad
-	private boolean verificarCodigoSeguridad(String codigo) {
-		if (codigo.equals("0000")) {
-			ventanaCodigoSeguridad.getPanelCodigo().setVisible(false);
-			ventanaCodigoSeguridad.getPanelDetalle().setVisible(true);
-
-			if ("MOSTRAR DETALLE".equals(seleccionDetalleEstadisticas)) {
-				ventanaCodigoSeguridad.getRdbtnMostrar().setSelected(true);
-			} else {
-				ventanaCodigoSeguridad.getRdbtnOcultar().setSelected(true);
-			}
-
+	protected boolean verificarCodigoSeguridad(String codigo) {
+		if (codigo.compareTo("0000") == 0) {
+			
+			acceso=true;
 			return true;
+			
+
 		} else {
 			JOptionPane.showMessageDialog(null, "Código Incorrecto!", "Acceso denegado",
 					JOptionPane.INFORMATION_MESSAGE);
-			ventanaCodigoSeguridad.getPanelCodigo().setVisible(true);
-			ventanaCodigoSeguridad.getPanelDetalle().setVisible(false);
+			acceso=false;
 			return false;
 		}
 	}
-
-	// Habilita los detalles tras la verificación exitosa
-	public boolean habitar() {
+	
+	public boolean acceso() {
 		
-//		System.out.println("Entro  " + acceso);
 		return acceso;
 		
 	}
 
 	// Acciones al presionar el botón Aceptar
 	private void accionAceptar(ActionEvent e) {
+			
+		
 		char[] codigoIngresado = ventanaCodigoSeguridad.getTxtCodigoSeguridad().getPassword();
 		String codigo = new String(codigoIngresado);
 
-		if (verificarCodigoSeguridad(codigo)) {
-			acceso = true;
-		} else {
-			acceso = false;
-		}
+		verificarCodigoSeguridad(codigo);
+		
+		
+		cerrarVentana();
+
 	}
 
 	// Cierra la ventana de código de seguridad

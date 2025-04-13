@@ -25,6 +25,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.UndoManager;
 
+import VistaPropias.CodigoSeguridadHandler;
 import dto.PermisoDTO;
 import dto.ReparacionDTO;
 import dto.RolDTO;
@@ -51,6 +52,9 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	private List<ReparacionDTO> Reparaciones;
 	private boolean passwordVisible = false;
 
+	
+	private CodigoSeguridadHandler codigoSeguridadHandler = new CodigoSeguridadHandler("ventana Usuarios");
+	
 //	private final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 //			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[com]{2,})$";
 
@@ -79,9 +83,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		this.ventanaRolesUsuarios.getBtnEliminarUsuario().addActionListener(this);
 		this.ventanaRolesUsuarios.getBtnPermisosXrol().addActionListener(this);
 		this.ventanaRolesUsuarios.getBtnMostrarContraseña().addActionListener(this);
-		
+
 		performActionOnTextComponents(ventanaRolesUsuarios);
-		
 
 		llenarComboRoles();
 		llenarTablaUsuarios();
@@ -371,8 +374,6 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						this.ventanaRolesUsuarios.getTextRol().setText("");
 						this.ventanaRolesUsuarios.getTxtLogin().setText("");
 						this.ventanaRolesUsuarios.getTxtPass().setText("");
-						
-						
 
 						usuarioElegido = null;
 						rolElegido = null;
@@ -406,24 +407,25 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 			else if (e.getSource() == this.ventanaRolesUsuarios.getBtnMostrarContraseña()) {
 
 				
-				if (usuarioElegido.getIdUsuario() != 1) {
+
+				if (usuarioElegido != null &&  usuarioElegido.getIdUsuario() == 2) {
+
+					codigoSeguridadHandler.mostrarVentana();
 					
-					
-					
+									
+					if (codigoSeguridadHandler.acceso()) {
+
+						mostrar();
+
+					}
+
+				}
+				else {
+					mostrar();
+
 				}
 
-				if (passwordVisible) {
-					// Si la contraseña es visible, ocultarla
-					ventanaRolesUsuarios.getTxtPass().setEchoChar('\u2022');
-					passwordVisible = false;
-
-				} else {
-					// Si la contraseña está oculta, mostrarla
-					ventanaRolesUsuarios.getTxtPass().setEchoChar((char) 0);
-					passwordVisible = true;
-				}
-
-
+				
 			}
 
 			if (ventanaPermisos != null) {
@@ -438,6 +440,21 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				}
 			}
 
+		}
+
+	}
+
+	private void mostrar() {
+
+		if (passwordVisible) {
+			// Si la contraseña es visible, ocultarla
+			ventanaRolesUsuarios.getTxtPass().setEchoChar('\u2022');
+			passwordVisible = false;
+
+		} else {
+			// Si la contraseña está oculta, mostrarla
+			ventanaRolesUsuarios.getTxtPass().setEchoChar((char) 0);
+			passwordVisible = true;
 		}
 
 	}
@@ -493,8 +510,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	}
 
 	private void cargarTablaPermisos() {
-		
-		
+
 		// TODO Auto-generated method stub
 		int pos = ventanaPermisos.getCmbRoles().getSelectedIndex();
 
@@ -518,8 +534,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				ventanaPermisos.getModelPermisosFaltantes().addRow(fila);
 			}
 		}
-		
-		
+
 		ventanaPermisos.setCellRender(this.ventanaPermisos.getTblPermisosFaltantes());
 		ventanaPermisos.setCellRender(this.ventanaPermisos.getTblPermisosTenidos());
 	}
@@ -664,8 +679,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		}
 
 		ventanaRolesUsuarios.setCellRender(this.ventanaRolesUsuarios.getTablaUsuarios());
-		
-		
+
 		this.ventanaRolesUsuarios.show();
 	}
 
@@ -762,74 +776,70 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 
 	}
-	
-	
-	
-	
+
 	@SuppressWarnings({ "serial", "deprecation" })
 	private static void configureUndoManager(JTextComponent textComponent) {
-	    UndoManager undoManager = new UndoManager();
-	    textComponent.getDocument().addUndoableEditListener(undoManager);
+		UndoManager undoManager = new UndoManager();
+		textComponent.getDocument().addUndoableEditListener(undoManager);
 
-	    // Crear una acción de deshacer
-	    AbstractAction undoAction = new AbstractAction("Deshacer") {
-	        public void actionPerformed(ActionEvent e) {
-	            if (undoManager.canUndo()) {
-	                undoManager.undo();
-	            }
-	        }
-	    };
+		// Crear una acción de deshacer
+		AbstractAction undoAction = new AbstractAction("Deshacer") {
+			public void actionPerformed(ActionEvent e) {
+				if (undoManager.canUndo()) {
+					undoManager.undo();
+				}
+			}
+		};
 
-	    // Asignar la tecla de acceso directo (Ctrl + Z) para la acción de deshacer
-	    undoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		// Asignar la tecla de acceso directo (Ctrl + Z) para la acción de deshacer
+		undoAction.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-	    // Agregar la acción de deshacer al componente
-	    textComponent.getActionMap().put("Undo", undoAction);
-	    textComponent.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
+		// Agregar la acción de deshacer al componente
+		textComponent.getActionMap().put("Undo", undoAction);
+		textComponent.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
 
-	    // Crear una acción de rehacer
-	    AbstractAction redoAction = new AbstractAction("Rehacer") {
-	        public void actionPerformed(ActionEvent e) {
-	            if (undoManager.canRedo()) {
-	                undoManager.redo();
-	            }
-	        }
-	    };
+		// Crear una acción de rehacer
+		AbstractAction redoAction = new AbstractAction("Rehacer") {
+			public void actionPerformed(ActionEvent e) {
+				if (undoManager.canRedo()) {
+					undoManager.redo();
+				}
+			}
+		};
 
-	    // Asignar la tecla de acceso directo (Ctrl + Y) para la acción de rehacer
-	    redoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		// Asignar la tecla de acceso directo (Ctrl + Y) para la acción de rehacer
+		redoAction.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-	    // Agregar la acción de rehacer al componente
-	    textComponent.getActionMap().put("Redo", redoAction);
-	    textComponent.getInputMap().put((KeyStroke) redoAction.getValue(Action.ACCELERATOR_KEY), "Redo");
+		// Agregar la acción de rehacer al componente
+		textComponent.getActionMap().put("Redo", redoAction);
+		textComponent.getInputMap().put((KeyStroke) redoAction.getValue(Action.ACCELERATOR_KEY), "Redo");
 	}
-	
-	
-	
-	
-    // Método para realizar una acción sobre todos los JTextField y JTextArea en un JFrame
-    private void performActionOnTextComponents(JFrame frame) {
-        List<JTextComponent> textComponents = getAllTextComponents(frame);
-        // Realiza la acción deseada sobre cada JTextComponent
-        for (JTextComponent textComponent : textComponents) {
-        	configureUndoManager(textComponent);
-        }
-    }
 
-    // Método para obtener todos los JTextField y JTextArea en un JFrame
-    private List<JTextComponent> getAllTextComponents(Container container) {
-        List<JTextComponent> textComponents = new ArrayList<>();
-        Component[] components = container.getComponents();
-        // Itera sobre los componentes y filtra los JTextField y JTextArea
-        for (Component component : components) {
-            if (component instanceof JTextComponent) {
-                textComponents.add((JTextComponent) component);
-            } else if (component instanceof Container) {
-                textComponents.addAll(getAllTextComponents((Container) component));
-            }
-        }
-        return textComponents;
-    }
-	
+	// Método para realizar una acción sobre todos los JTextField y JTextArea en un
+	// JFrame
+	private void performActionOnTextComponents(JFrame frame) {
+		List<JTextComponent> textComponents = getAllTextComponents(frame);
+		// Realiza la acción deseada sobre cada JTextComponent
+		for (JTextComponent textComponent : textComponents) {
+			configureUndoManager(textComponent);
+		}
+	}
+
+	// Método para obtener todos los JTextField y JTextArea en un JFrame
+	private List<JTextComponent> getAllTextComponents(Container container) {
+		List<JTextComponent> textComponents = new ArrayList<>();
+		Component[] components = container.getComponents();
+		// Itera sobre los componentes y filtra los JTextField y JTextArea
+		for (Component component : components) {
+			if (component instanceof JTextComponent) {
+				textComponents.add((JTextComponent) component);
+			} else if (component instanceof Container) {
+				textComponents.addAll(getAllTextComponents((Container) component));
+			}
+		}
+		return textComponents;
+	}
 
 }
