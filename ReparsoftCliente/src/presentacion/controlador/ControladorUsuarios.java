@@ -406,6 +406,11 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 			else if (e.getSource() == this.ventanaRolesUsuarios.getBtnMostrarContraseña()) {
 
 				
+				if (usuarioElegido.getIdUsuario() != 1) {
+					
+					
+					
+				}
 
 				if (passwordVisible) {
 					// Si la contraseña es visible, ocultarla

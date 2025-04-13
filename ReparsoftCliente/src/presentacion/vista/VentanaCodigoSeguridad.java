@@ -35,7 +35,7 @@ public class VentanaCodigoSeguridad extends JFrame {
 	private JRadioButton rdbtnOcultar;
 	private ButtonGroup buttonGroupDetalle;
 
-	public VentanaCodigoSeguridad(ControladorListados controlador) {
+	public VentanaCodigoSeguridad() {
 		super();
 		setResizable(false);
 		this.controlador = controlador;

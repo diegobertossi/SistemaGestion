@@ -199,7 +199,7 @@ public class ControladorListados
 
 			else {
 
-				ventanaCodigoSeguridad = new VentanaCodigoSeguridad(this);
+				ventanaCodigoSeguridad = new VentanaCodigoSeguridad();
 				ventanaCodigoSeguridad.getBtnAceptar().addActionListener(this);
 				ventanaCodigoSeguridad.getBtnCancelar().addActionListener(this);
 
