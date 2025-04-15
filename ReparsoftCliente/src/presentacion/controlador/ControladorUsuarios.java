@@ -413,11 +413,11 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 					codigoSeguridadHandler.mostrarVentana();
 					
 									
-					if (codigoSeguridadHandler.acceso()) {
-
-						mostrar();
-
-					}
+//					if (codigoSeguridadHandler.acceso()) {
+//
+//						mostrar();
+//
+//					}
 
 				}
 				else {
@@ -444,7 +444,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 	}
 
-	private void mostrar() {
+	public void mostrar() {
 
 		if (passwordVisible) {
 			// Si la contraseña es visible, ocultarla

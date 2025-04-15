@@ -2,6 +2,8 @@ package VistaPropias;
 
 import javax.swing.*;
 
+import presentacion.controlador.ControladorReparacion;
+import presentacion.controlador.ControladorUsuarios;
 import presentacion.vista.VentanaCodigoSeguridad;
 
 import java.awt.event.*;
@@ -9,6 +11,8 @@ import java.awt.event.*;
 public class CodigoSeguridadHandler {
 
 	private VentanaCodigoSeguridad ventanaCodigoSeguridad;
+	private ControladorUsuarios controladorusuarios;
+	
 	private String nombreVentana;
 	private boolean acceso;
 
@@ -37,6 +41,7 @@ public class CodigoSeguridadHandler {
 	protected boolean verificarCodigoSeguridad(String codigo) {
 		if (codigo.compareTo("0000") == 0) {
 			
+			controladorusuarios.mostrar();
 			acceso=true;
 			return true;
 			
@@ -63,8 +68,7 @@ public class CodigoSeguridadHandler {
 		String codigo = new String(codigoIngresado);
 
 		verificarCodigoSeguridad(codigo);
-		
-		
+				
 		cerrarVentana();
 
 	}
