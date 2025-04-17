@@ -33,6 +33,7 @@ import dto.UsuarioDTO;
 import modelo.Agenda;
 import modelo.Permisos;
 import presentacion.vista.VentanaRolesUsuarios;
+import presentacion.vista.VentanaCodigoSeguridad;
 import presentacion.vista.VentanaPermisos;
 
 public class ControladorUsuarios implements ActionListener, MouseListener {
@@ -52,9 +53,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	private List<ReparacionDTO> Reparaciones;
 	private boolean passwordVisible = false;
 
-	
-	private CodigoSeguridadHandler codigoSeguridadHandler = new CodigoSeguridadHandler("ventana Usuarios");
-	
+	private VentanaCodigoSeguridad ventanaCodigoSeguridad;
+
 //	private final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 //			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[com]{2,})$";
 
@@ -406,26 +406,28 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 			else if (e.getSource() == this.ventanaRolesUsuarios.getBtnMostrarContraseña()) {
 
-				
+				if (usuarioElegido != null && usuarioElegido.getIdUsuario() == 2) {
 
-				if (usuarioElegido != null &&  usuarioElegido.getIdUsuario() == 2) {
+					ventanaCodigoSeguridad = new VentanaCodigoSeguridad();
+					ventanaCodigoSeguridad.getBtnAceptar().addActionListener(this::accionAceptar);
+					ventanaCodigoSeguridad.getBtnCancelar().addActionListener(f -> cerrarVentana());
 
-					codigoSeguridadHandler.mostrarVentana();
-					
-									
-//					if (codigoSeguridadHandler.acceso()) {
-//
-//						mostrar();
-//
-//					}
+					ventanaCodigoSeguridad.getTxtCodigoSeguridad().addActionListener(f -> {
+						char[] codigoIngresado = ventanaCodigoSeguridad.getTxtCodigoSeguridad().getPassword();
+						String codigo = new String(codigoIngresado);
+
+						if (verificarCodigoSeguridad(codigo)) {
+
+							mostrarOcultar();
+
+						}
+					});
+
+				} else {
+					mostrarOcultar();
 
 				}
-				else {
-					mostrar();
 
-				}
-
-				
 			}
 
 			if (ventanaPermisos != null) {
@@ -434,9 +436,16 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 					cargarTablaPermisos();
 
 				} else if (e.getSource() == ventanaPermisos.getBtnAgregar()) {
-					guardarPermisos();
+					if (ventanaPermisos.getCmbRoles().getSelectedIndex() != 0) {
+						guardarPermisos();
+					}
+
 				} else if (e.getSource() == ventanaPermisos.getBtnRemover()) {
-					borrarPermiso();
+
+					if (ventanaPermisos.getCmbRoles().getSelectedIndex() != 0) {
+						borrarPermiso();
+					}
+
 				}
 			}
 
@@ -444,7 +453,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 	}
 
-	public void mostrar() {
+	public void mostrarOcultar() {
 
 		if (passwordVisible) {
 			// Si la contraseña es visible, ocultarla
@@ -457,6 +466,42 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 			passwordVisible = true;
 		}
 
+	}
+
+	// Verifica el código de seguridad
+	protected boolean verificarCodigoSeguridad(String codigo) {
+		if (codigo.compareTo("0000") == 0) {
+
+			ventanaCodigoSeguridad.dispose();
+			ventanaCodigoSeguridad = null;
+			return true;
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Código Incorrecto!", "Acceso denegado",
+					JOptionPane.INFORMATION_MESSAGE);
+
+			return false;
+		}
+	}
+
+	// Acciones al presionar el botón Aceptar
+	private void accionAceptar(ActionEvent e) {
+
+		char[] codigoIngresado = ventanaCodigoSeguridad.getTxtCodigoSeguridad().getPassword();
+		String codigo = new String(codigoIngresado);
+
+		verificarCodigoSeguridad(codigo);
+
+		cerrarVentana();
+
+	}
+
+	// Cierra la ventana de código de seguridad
+	private void cerrarVentana() {
+		if (ventanaCodigoSeguridad != null) {
+			ventanaCodigoSeguridad.dispose();
+			ventanaCodigoSeguridad = null;
+		}
 	}
 
 	private void editarReparacionesSinTecnico(int idTecnico) {
@@ -703,6 +748,9 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						this.ventanaRolesUsuarios.getTxtEmailUsuario().setText(usuarioElegido.getEmail());
 						this.ventanaRolesUsuarios.getTxtLogin().setText(usuarioElegido.getLogin());
 						this.ventanaRolesUsuarios.getTxtPass().setText(usuarioElegido.getPass());
+						ventanaRolesUsuarios.getTxtPass().setEchoChar('\u2022');
+						passwordVisible = false;
+
 						this.ventanaRolesUsuarios.getTextRol().setText(agenda.obtenerRolXid(indiceRol));
 
 						this.ventanaRolesUsuarios.getBtnGuardarEdicion().setVisible(false);
@@ -751,6 +799,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		this.ventanaRolesUsuarios.getTxtDNI().setText("");
 		this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setText("");
 		this.ventanaRolesUsuarios.getTxtEmailUsuario().setText("");
+
 	}
 
 	@Override
