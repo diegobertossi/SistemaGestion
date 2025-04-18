@@ -105,9 +105,6 @@ public class ControladorListados
 	private VentanaFacturacionXcliente ventanaFacturacionXcliente;
 	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
 
-	// private int clickMax = 1;
-	// private int clickMin = 1;
-
 	public int NumeroELSSeleccionado;
 
 	private List<ReparacionDTO> Reparaciones_en_tabla;
@@ -553,58 +550,64 @@ public class ControladorListados
 
 		}
 	}
+	
+
+
 
 	private void cargarTablaListadoReparaciones() {
 
-		/* con ese código no respeta las restricciones de los permisos */
+	    // Limpia todas las filas del modelo de la tabla
+	    DefaultTableModel modeloTabla = (DefaultTableModel) ventanaListadoReparaciones.getModelReparaciones();
+	    modeloTabla.setRowCount(0); // Esto elimina todas las filas existentes
 
-//		this.ventanaListadoReparaciones.getModelReparaciones().setRowCount(0); // Para
-//		// vaciar
-//		// tabla
-//		this.ventanaListadoReparaciones.getModelReparaciones().setColumnCount(0);
-//		this.ventanaListadoReparaciones.getModelReparaciones()
-//				.setColumnIdentifiers(this.ventanaListadoReparaciones.getNombreColumnas());
+	    // Obtiene las reparaciones actualizadas
+	    this.Reparaciones_en_tabla = modelo.obtenerReparacion();
 
-		this.Reparaciones_en_tabla = (List<ReparacionDTO>) modelo.obtenerReparacion();
+	    // Vuelve a llenar la tabla con las reparaciones actualizadas
+	    for (int i = this.Reparaciones_en_tabla.size() - 1; i >= 0; i--) {
 
-		// for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
-		for (int i = this.Reparaciones_en_tabla.size() - 1; i >= 0; i--) {
+	        Object[] fila = {
+	            this.Reparaciones_en_tabla.get(i).getELS(),
+	            this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
+	            this.Reparaciones_en_tabla.get(i).getCliente(),
+	            this.Reparaciones_en_tabla.get(i).getSucursal(),
+	            this.Reparaciones_en_tabla.get(i).getNombreEquipo(),
+	            this.Reparaciones_en_tabla.get(i).getMarca(),
+	            this.Reparaciones_en_tabla.get(i).getModelo(),
+	            this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
+	            this.Reparaciones_en_tabla.get(i).getAviso(),
+	            this.Reparaciones_en_tabla.get(i).getFechadereparacion(),
+	            this.Reparaciones_en_tabla.get(i).getFecha_Salida(),
+	            this.Reparaciones_en_tabla.get(i).getClienteCliente(),
+	            this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
+	            this.Reparaciones_en_tabla.get(i).getEstadoComercial(),
+	            this.Reparaciones_en_tabla.get(i).getEstadoFisico(),
+	            this.Reparaciones_en_tabla.get(i).getNombreUsuario(),
+	            this.Reparaciones_en_tabla.get(i).getCodigo(),
+	            this.Reparaciones_en_tabla.get(i).getNumeroRemitoSalida(),
+	            this.Reparaciones_en_tabla.get(i).getPresupuestoGenerado(),
+	            this.Reparaciones_en_tabla.get(i).getPresupuestoEnviado(),
+	            this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
+	            this.Reparaciones_en_tabla.get(i).getPrecioDolar(),
+	            this.Reparaciones_en_tabla.get(i).getPago(),
+	            this.Reparaciones_en_tabla.get(i).getLugarDeIngreso()
+	        };
 
-			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
-					this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
-					this.Reparaciones_en_tabla.get(i).getCliente(), this.Reparaciones_en_tabla.get(i).getSucursal(),
-					this.Reparaciones_en_tabla.get(i).getNombreEquipo(), this.Reparaciones_en_tabla.get(i).getMarca(),
-					this.Reparaciones_en_tabla.get(i).getModelo(), this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
-					this.Reparaciones_en_tabla.get(i).getAviso(),
-					this.Reparaciones_en_tabla.get(i).getFechadereparacion(),
-					this.Reparaciones_en_tabla.get(i).getFecha_Salida(),
-					this.Reparaciones_en_tabla.get(i).getClienteCliente(),
-					this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
-					this.Reparaciones_en_tabla.get(i).getEstadoComercial(),
-					this.Reparaciones_en_tabla.get(i).getEstadoFisico(),
-					this.Reparaciones_en_tabla.get(i).getNombreUsuario(), this.Reparaciones_en_tabla.get(i).getCodigo(),
-					this.Reparaciones_en_tabla.get(i).getNumeroRemitoSalida(),
-					this.Reparaciones_en_tabla.get(i).getPresupuestoGenerado(),
-					this.Reparaciones_en_tabla.get(i).getPresupuestoEnviado(),
-					this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
-					this.Reparaciones_en_tabla.get(i).getPrecioDolar(), this.Reparaciones_en_tabla.get(i).getPago(),
-					this.Reparaciones_en_tabla.get(i).getLugarDeIngreso() };
+	        modeloTabla.addRow(fila);
+	    }
 
-			this.ventanaListadoReparaciones.getModelReparaciones().addRow(fila);
+	    // Configura renderers, filtros, y hace visible la ventana
+	    ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTblListado());
+	    TablaFiltros tablaFiltros = new TablaFiltros();
+	    tablaFiltros.agregarAutofiltros(this.ventanaListadoReparaciones.getTblListado());
 
-		}
+	    this.ventanaListadoReparaciones.setVisible(true);
 
-		ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTblListado());
-		TablaFiltros tablaFiltros = new TablaFiltros();
-		
-		tablaFiltros.agregarAutofiltros(this.ventanaListadoReparaciones.getTblListado());
-
-		this.ventanaListadoReparaciones.setVisible(true);
-
+	    System.out.println("actualizar");
 	}
 
 	
-	
+
 
 	public void agregarListenerVentanaListados() {
 
@@ -2050,11 +2053,22 @@ public class ControladorListados
 			try {
 				ventanaVisualizarEquipos = controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado,
 						this.ventanaVisualizarEquipos);
+				ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
+					@Override
+					public void windowClosed(WindowEvent e) {
+						actualizarTabla();
+					}
+				});
+
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 			controladorReparacion.agregarListenersVentanaVisualizarEquiposListado(ventanaVisualizarEquipos);
 		}
+	}
+
+	public void actualizarTabla() {
+		cargarTablaListadoReparaciones();
 	}
 
 	// Los demás métodos del MouseListener pueden dejarse como están o implementarse
