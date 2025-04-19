@@ -218,7 +218,7 @@ public class TablaFiltros {
 	    }
 	}
 
-	private void filtrarTabla(JTable tabla, JComboBox<String>[] filterCombos) {
+	public void filtrarTabla(JTable tabla, JComboBox<String>[] filterCombos) {
 	    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
 	    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
 	    tabla.setRowSorter(sorter);
@@ -330,36 +330,7 @@ public class TablaFiltros {
 		return str;
 	}
 
-	/* FUNCIONA OK */
 
-//    private void filtrarTabla(JTable tabla, JComboBox<String>[] filterCombos) {
-//        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-//        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-//        tabla.setRowSorter(sorter);
-//
-//        ArrayList<RowFilter<Object, Object>> rowFilters = new ArrayList<>();
-//
-//        for (int columnIndex = 0; columnIndex < filterCombos.length; columnIndex++) {
-//            if (filterCombos[columnIndex] != null) {
-//                String filterValue = (String) filterCombos[columnIndex].getSelectedItem();
-//
-//
-//                    if (filterValue != null && !"Todos".equals(filterValue)) {
-//                        String regex = Pattern.quote(obtenerFechaOriginal(filterValue)).replace("*", ".*");
-//                        rowFilters.add(RowFilter.regexFilter("(?i)" + regex, columnIndex));
-//                    }
-//                    
-//
-//            }
-//        }
-//
-//        if (rowFilters.isEmpty()) {
-//            sorter.setRowFilter(null);
-//        } else {
-//            RowFilter<Object, Object> combinedFilter = RowFilter.andFilter(rowFilters);
-//            sorter.setRowFilter(combinedFilter);
-//        }
-//    }
 
 	private String obtenerFechaOriginal(String fechaFormateada) {
 		try {
