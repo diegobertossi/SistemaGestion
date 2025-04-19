@@ -1464,7 +1464,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
-	public void TomarDatosDeTablasParaVisualizacion(int numeroELS) {
+	public VentanaGenerarPresupuesto TomarDatosDeTablasParaVisualizacion(int numeroELS) {
 
 		monedaFormatter = new MonedaFormatter();
 
@@ -1522,6 +1522,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaGenerarPresupuesto.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
 		ventanaGenerarPresupuesto.setChckWORDGenerado(reparacion.getWORDgenerado());
 		ventanaGenerarPresupuesto.setChckWORDEnviado(reparacion.getWORDenviado());
+		return ventanaGenerarPresupuesto;
 
 	}
 

@@ -907,7 +907,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 	}
 
 	@SuppressWarnings("deprecation")
-	public void cargarRemitoVisualizacion(int els) {
+	public VentanaRemitos cargarRemitoVisualizacion(int els) {
 
 		ventanaRemitos = new VentanaRemitos(this);
 
@@ -935,6 +935,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		this.ventanaRemitos.show();
 
 		llenarComboUbicacion();
+		return ventanaRemitos;
 
 	}
 

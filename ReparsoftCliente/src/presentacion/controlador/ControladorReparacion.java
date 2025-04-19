@@ -88,7 +88,8 @@ import presentacion.vista.VentanaAgregarRepuesto;
 import presentacion.vista.VentanaBusquedaEquipo;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaEstados;
-
+import presentacion.vista.VentanaGenerarPresupuesto;
+import presentacion.vista.VentanaRemitos;
 import presentacion.vista.VentanaVerificarIngresoAnterior;
 import presentacion.vista.VentanaVisualizarEquipos;
 import presentacion.vista.VentanaWSP;
@@ -126,7 +127,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private ControladorUsuLogin controladorUsuLogin;
 	private ControladorPresupuestos controladorpresupuestos;
+	private VentanaGenerarPresupuesto ventanaGenerarPresupuesto;
 	private ControladorSalidas controladorSalidas;
+
+	private VentanaRemitos ventanaRemitos;
+
 	private ControladorCliente controladorCliente;
 
 	@SuppressWarnings("unused")
@@ -771,7 +776,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnGenerarRemito()) {
 
-			System.out.println(ventanaVisualizarEquipos.getTextNumeroRemito().getText());
+			// System.out.println(ventanaVisualizarEquipos.getTextNumeroRemito().getText());
 
 			generarRemito(ventanaVisualizarEquipos);
 
@@ -1702,8 +1707,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		} else {
 
 			NumeroELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
-			controladorpresupuestos.TomarDatosDeTablasParaVisualizacion(NumeroELS);
+
+			ventanaGenerarPresupuesto = controladorpresupuestos.TomarDatosDeTablasParaVisualizacion(NumeroELS);
 			controladorpresupuestos.agregarListenersVentanaGenerarPresupuesto();
+
+			ventanaGenerarPresupuesto.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosed(WindowEvent e) {
+					refrescarPantalla(ventanaVisualizarEquipos);
+				}
+			});
+
 		}
 
 	}
@@ -2224,8 +2238,17 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		if (ventanaVisualizarEquipos.getTextNumeroRemito().getText().compareTo("") == 0) {
 			NumeroELSParaRemito = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
-			controladorSalidas.cargarRemitoVisualizacion(NumeroELSParaRemito);
+
+			ventanaRemitos = controladorSalidas.cargarRemitoVisualizacion(NumeroELSParaRemito);
 			controladorSalidas.agregarListenersVentanaRemitos();
+
+			ventanaRemitos.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosed(WindowEvent e) {
+					refrescarPantalla(ventanaVisualizarEquipos);
+				}
+			});
+
 		} else {
 			Object mje = "Este equipo ya posee remito. Deberá ANULARLO o ELIMINARLO para generar una nuevo.";
 			JOptionPane.showMessageDialog(null, mje, "Remito existente", JOptionPane.INFORMATION_MESSAGE);
@@ -2799,17 +2822,18 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	@SuppressWarnings("unused")
 	private void habilitarCampos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
-		//String nombreCliente = "";
-		//String nombreSucursal = "";
+		// String nombreCliente = "";
+		// String nombreSucursal = "";
 		String nombreTecnico = "";
-		
-		
-		String nombreCliente = ventanaVisualizarEquipos.getTextCliente().getText(); // Obtener el texto actual del JTextField
-		DefaultComboBoxModel<ClienteDTO> model = (DefaultComboBoxModel<ClienteDTO>) ventanaVisualizarEquipos.getComboClientes().getModel();
+
+		String nombreCliente = ventanaVisualizarEquipos.getTextCliente().getText(); // Obtener el texto actual del
+																					// JTextField
+		DefaultComboBoxModel<ClienteDTO> model = (DefaultComboBoxModel<ClienteDTO>) ventanaVisualizarEquipos
+				.getComboClientes().getModel();
 		String nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
-        DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventanaVisualizarEquipos.getComboSucursal().getModel();
-		
-		
+		DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventanaVisualizarEquipos
+				.getComboSucursal().getModel();
+
 		ventanaVisualizarEquipos.getTextNombreEquipo().setEditable(true);
 		ventanaVisualizarEquipos.getTextModelo().setEditable(true);
 		ventanaVisualizarEquipos.getTextMarca().setEditable(true);
@@ -2843,41 +2867,38 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getComboClientes().setVisible(true);
 		ventanaVisualizarEquipos.getComboSucursal().setVisible(true);
 		ventanaVisualizarEquipos.getComboTecnico().setVisible(true);
-		
-		
-		
-		 // Configurar el comportamiento para seleccionar automáticamente el cliente del JTextField
-	   
 
-	    for (int i = 0; i < model.getSize(); i++) {
-	        ClienteDTO cliente = model.getElementAt(i);
-	        if (cliente.getRazon_Social().equalsIgnoreCase(nombreCliente)) { // Comparar nombres (ignorar mayúsculas/minúsculas)
-	        	ventanaVisualizarEquipos.getComboClientes().setSelectedItem(cliente); // Seleccionar el cliente correspondiente
-	            break;
-	        }
-	    }
-				
-	    
-	    
-	    
-        for (int i = 0; i < modelSucursal.getSize(); i++) {
-            SucursalDTO sucursal = modelSucursal.getElementAt(i);
-            if (sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal)) {
-            	ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(sucursal);
-                break;
-            }
-        }
+		// Configurar el comportamiento para seleccionar automáticamente el cliente del
+		// JTextField
 
-		//nombreCliente = ventanaVisualizarEquipos.getTextCliente().getText();
-		//nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
+		for (int i = 0; i < model.getSize(); i++) {
+			ClienteDTO cliente = model.getElementAt(i);
+			if (cliente.getRazon_Social().equalsIgnoreCase(nombreCliente)) { // Comparar nombres (ignorar
+																				// mayúsculas/minúsculas)
+				ventanaVisualizarEquipos.getComboClientes().setSelectedItem(cliente); // Seleccionar el cliente
+																						// correspondiente
+				break;
+			}
+		}
+
+		for (int i = 0; i < modelSucursal.getSize(); i++) {
+			SucursalDTO sucursal = modelSucursal.getElementAt(i);
+			if (sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal)) {
+				ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(sucursal);
+				break;
+			}
+		}
+
+		// nombreCliente = ventanaVisualizarEquipos.getTextCliente().getText();
+		// nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
 		nombreTecnico = ventanaVisualizarEquipos.getTextNombreTecnico().getText();
 
 		int idcliente = IDClientePorNombre(nombreCliente);
 		int idSucursal = IDSucursalPorNombre(nombreSucursal, idcliente);
 		int idtecnico = IDUsuarioPorNombre(nombreTecnico) - 1;
 
-		//ventanaVisualizarEquipos.getComboClientes().setSelectedIndex(idcliente);
-		//ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(nombreSucursal);
+		// ventanaVisualizarEquipos.getComboClientes().setSelectedIndex(idcliente);
+		// ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(nombreSucursal);
 		ventanaVisualizarEquipos.getComboTecnico().setSelectedIndex(idtecnico);
 
 	}
@@ -2918,19 +2939,18 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 					agenda.ListarSucursalesxCliente(ventanaVisualizarEquipos.getComboSucursal(), id);
 					idCli = id;
-					
+
 					// Seleccionar nuevamente la sucursal basada en el texto del JTextField
-	                String nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
-	                DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventanaVisualizarEquipos.getComboSucursal().getModel();
-	                for (int i = 0; i < modelSucursal.getSize(); i++) {
-	                    SucursalDTO sucursal = modelSucursal.getElementAt(i);
-	                    if (sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal)) {
-	                    	ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(sucursal);
-	                        break;
-	                    }
-	                }
-					
-					
+					String nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
+					DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventanaVisualizarEquipos
+							.getComboSucursal().getModel();
+					for (int i = 0; i < modelSucursal.getSize(); i++) {
+						SucursalDTO sucursal = modelSucursal.getElementAt(i);
+						if (sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal)) {
+							ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(sucursal);
+							break;
+						}
+					}
 
 				}
 
@@ -3031,10 +3051,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getComboModelo().setSelectedIndex(-1);
 		ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
 
-
 	}
-
-
 
 	private void escuchaDeEnterYtab(JComboBox combo) {
 
@@ -3066,7 +3083,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private void validarSeleccion(JComboBox combo) {
 
-	
 		if (combo.getName().compareTo("comboCliente") == 0) {
 
 			ventanaAgregarEquipo.getComboSucursal().removeAllItems();
@@ -3728,7 +3744,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-
 	public void cerraVentanaVisualizarEquipoListado(VentanaVisualizarEquipos ventana) {
 
 		ventana.addWindowListener(new WindowAdapter() {
@@ -3742,14 +3757,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 					ventana.dispose();
 
-
 					;
 
 				}
 
 			}
 		});
-
 
 	}
 
