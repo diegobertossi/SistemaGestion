@@ -161,6 +161,9 @@ public class ControladorListados
 		agregarListenerVentanaListados();
 
 		cargarTablaListadoReparaciones();
+		
+		
+		
 
 	}
 
@@ -2170,6 +2173,8 @@ public class ControladorListados
 			controladorReparacion.agregarListenersVentanaVisualizarEquiposListado(ventanaVisualizarEquipos);
 		}
 	}
+
+	
 
 	public void actualizarTabla() {
 		cargarTablaListadoReparaciones();

@@ -217,6 +217,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel.setBounds(0, 0, 1188, 664);
 		contentPane.add(panel);
 		panel.setLayout(null);
+	
 
 		this.setVisible(true);
 

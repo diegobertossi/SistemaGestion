@@ -89,7 +89,6 @@ import presentacion.vista.VentanaBusquedaEquipo;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaEstados;
 import presentacion.vista.VentanaGenerarPresupuesto;
-import presentacion.vista.VentanaListadoReparaciones;
 import presentacion.vista.VentanaRemitos;
 import presentacion.vista.VentanaVerificarIngresoAnterior;
 import presentacion.vista.VentanaVisualizarEquipos;
@@ -180,8 +179,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private int idCli;
 	private int idSuc;
 
-	private boolean banderarefrescarPantalla = false;
-	private boolean actualizarEnListado = false;
+	private boolean actualizarEnlistado = false;
 
 	private String fechaentrada;
 	private String fechaFarbricacion;
@@ -475,7 +473,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (ventanaVisualizarEquipos != null && e.getSource() == ventanaVisualizarEquipos.getBotonPresupuestar()) {
 
-			presupuestar(ventanaVisualizarEquipos, actualizarEnListado);
+			presupuestar(ventanaVisualizarEquipos);
 
 		}
 
@@ -1690,7 +1688,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private void refrescarPantallaListados(int ELS, VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
 		try {
-			TomarDatosDeTablasListado(Integer.parseInt(ventanaVisualizarEquipos.getTextELS()),
+			ActualizarDatosDeTablasListado(Integer.parseInt(ventanaVisualizarEquipos.getTextELS()),
 					ventanaVisualizarEquipos);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
@@ -1699,7 +1697,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		}
 	}
 
-	private void presupuestar(VentanaVisualizarEquipos ventanaVisualizarEquipos, boolean actualizarEnListado) {
+	private void presupuestar(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
 		if (ventanaVisualizarEquipos.getBtnGuardarCambios().isEnabled()) {
 
@@ -1714,15 +1712,18 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			controladorpresupuestos.agregarListenersVentanaGenerarPresupuesto();
 
 			ventanaGenerarPresupuesto.addWindowListener(new WindowAdapter() {
-
 				@Override
 				public void windowClosed(WindowEvent e) {
 
-					if (actualizarEnListado) {
-						refrescarPantallaListados(NumeroELS, ventanaVisualizarEquipos);
+					if (actualizarEnlistado) {
+						refrescarPantallaListados(Integer.parseInt(ventanaVisualizarEquipos.getTextELS()),
+								ventanaVisualizarEquipos);
+
 					} else {
+
 						refrescarPantalla(ventanaVisualizarEquipos);
 					}
+
 				}
 			});
 
@@ -2039,7 +2040,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	public void agregarListenersVentanaVisualizarEquiposListado(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
-		actualizarEnListado = true;
+		actualizarEnlistado = true;
 
 		ventanaVisualizarEquipos.getBtnEditar().addActionListener(new ActionListener() {
 			@Override
@@ -2063,7 +2064,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				presupuestar(ventanaVisualizarEquipos, actualizarEnListado);
+				presupuestar(ventanaVisualizarEquipos);
 
 			}
 		});
@@ -2072,10 +2073,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				banderarefrescarPantalla = true;
+				actualizarEnlistado = true;
 				refrescarPantallaListados(Integer.parseInt(ventanaVisualizarEquipos.getTextELS()),
 						ventanaVisualizarEquipos);
-				banderarefrescarPantalla = false;
+				actualizarEnlistado = false;
 			}
 		});
 
@@ -2363,11 +2364,33 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	public VentanaVisualizarEquipos TomarDatosDeTablasListado(int numeroELSSeleccionado2,
 			VentanaVisualizarEquipos ventanaVisualizarEquipos) throws ParseException {
 		// Configuración inicial específica para esta función
-		if (!actualizarEnListado) {
-			ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
-			ventanaVisualizarEquipos.setTitle(String.valueOf(numeroELSSeleccionado2));
-			ventanasAbiertas.add(ventanaVisualizarEquipos);
-			cerraVentanaVisualizarEquipoListado(ventanaVisualizarEquipos);
+		
+		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
+		ventanaVisualizarEquipos.setTitle(String.valueOf(numeroELSSeleccionado2));
+		ventanasAbiertas.add(ventanaVisualizarEquipos);
+		cerraVentanaVisualizarEquipoListado(ventanaVisualizarEquipos);
+		
+
+		monedaFormatter = new MonedaFormatter();
+		controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
+		SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
+
+		ventanaVisualizarEquipos.setTextELS(Integer.toString(numeroELSSeleccionado2));
+		cargarDatosComunes(ventanaVisualizarEquipos, numeroELSSeleccionado2);
+
+		return ventanaVisualizarEquipos;
+	}
+	
+	
+	
+	public VentanaVisualizarEquipos ActualizarDatosDeTablasListado(int numeroELSSeleccionado2,
+			VentanaVisualizarEquipos ventanaVisualizarEquipos) throws ParseException {
+		// Configuración inicial específica para esta función
+		if (!actualizarEnlistado) {
+		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
+		ventanaVisualizarEquipos.setTitle(String.valueOf(numeroELSSeleccionado2));
+		ventanasAbiertas.add(ventanaVisualizarEquipos);
+		cerraVentanaVisualizarEquipoListado(ventanaVisualizarEquipos);
 		}
 
 		monedaFormatter = new MonedaFormatter();
@@ -2379,6 +2402,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		return ventanaVisualizarEquipos;
 	}
+	
+	
 
 	// Método privado para cargar los datos comunes
 	private void cargarDatosComunes(VentanaVisualizarEquipos ventanaVisualizarEquipos, int numeroELS)
@@ -3767,8 +3792,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 					ventana.dispose();
 
-					;
-
+				}
+				
+				if (ventanasAbiertas.size() == 0) {
+					
+					System.out.println("no hay mas ventanas abietas");
+					actualizarEnlistado = false;
 				}
 
 			}
