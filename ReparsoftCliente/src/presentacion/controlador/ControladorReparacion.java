@@ -89,6 +89,7 @@ import presentacion.vista.VentanaBusquedaEquipo;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaEstados;
 import presentacion.vista.VentanaGenerarPresupuesto;
+import presentacion.vista.VentanaListadoReparaciones;
 import presentacion.vista.VentanaRemitos;
 import presentacion.vista.VentanaVerificarIngresoAnterior;
 import presentacion.vista.VentanaVisualizarEquipos;
@@ -180,6 +181,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private int idSuc;
 
 	private boolean banderarefrescarPantalla = false;
+	private boolean actualizarEnListado = false;
 
 	private String fechaentrada;
 	private String fechaFarbricacion;
@@ -473,7 +475,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (ventanaVisualizarEquipos != null && e.getSource() == ventanaVisualizarEquipos.getBotonPresupuestar()) {
 
-			presupuestar(ventanaVisualizarEquipos);
+			presupuestar(ventanaVisualizarEquipos, actualizarEnListado);
 
 		}
 
@@ -1697,7 +1699,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		}
 	}
 
-	private void presupuestar(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+	private void presupuestar(VentanaVisualizarEquipos ventanaVisualizarEquipos, boolean actualizarEnListado) {
 
 		if (ventanaVisualizarEquipos.getBtnGuardarCambios().isEnabled()) {
 
@@ -1712,9 +1714,15 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			controladorpresupuestos.agregarListenersVentanaGenerarPresupuesto();
 
 			ventanaGenerarPresupuesto.addWindowListener(new WindowAdapter() {
+
 				@Override
 				public void windowClosed(WindowEvent e) {
-					refrescarPantalla(ventanaVisualizarEquipos);
+
+					if (actualizarEnListado) {
+						refrescarPantallaListados(NumeroELS, ventanaVisualizarEquipos);
+					} else {
+						refrescarPantalla(ventanaVisualizarEquipos);
+					}
 				}
 			});
 
@@ -2031,6 +2039,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	public void agregarListenersVentanaVisualizarEquiposListado(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
+		actualizarEnListado = true;
+
 		ventanaVisualizarEquipos.getBtnEditar().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -2053,7 +2063,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				presupuestar(ventanaVisualizarEquipos);
+				presupuestar(ventanaVisualizarEquipos, actualizarEnListado);
 
 			}
 		});
@@ -2353,7 +2363,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	public VentanaVisualizarEquipos TomarDatosDeTablasListado(int numeroELSSeleccionado2,
 			VentanaVisualizarEquipos ventanaVisualizarEquipos) throws ParseException {
 		// Configuración inicial específica para esta función
-		if (!banderarefrescarPantalla) {
+		if (!actualizarEnListado) {
 			ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
 			ventanaVisualizarEquipos.setTitle(String.valueOf(numeroELSSeleccionado2));
 			ventanasAbiertas.add(ventanaVisualizarEquipos);
