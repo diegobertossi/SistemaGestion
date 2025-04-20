@@ -434,12 +434,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		}
 
-		else if (this.ventanaVisualizarEquipos != null
-				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonRefrescarPantalla()) {
-
-			refrescarPantalla(ventanaVisualizarEquipos);
-
-		}
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnGuardarCambios()) {
@@ -1852,7 +1846,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getBtnEliminarRepuesto().addActionListener(this);
 		ventanaVisualizarEquipos.getTablaRepuestos().addMouseListener(this);
 		ventanaVisualizarEquipos.getTablaRepuestos().addKeyListener(this);
-		ventanaVisualizarEquipos.getBotonRefrescarPantalla().addActionListener(this);
 
 		ventanaVisualizarEquipos.getTextPresupuesto().addKeyListener(this);
 		ventanaVisualizarEquipos.getTextPresupuestoDolar().addKeyListener(this);
@@ -1979,9 +1972,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getBtnEliminarRepuesto().removeActionListener(this);
 		this.ventanaVisualizarEquipos.getTablaRepuestos().removeMouseListener(this);
 		this.ventanaVisualizarEquipos.getTablaRepuestos().removeKeyListener(this);
-		;
-		this.ventanaVisualizarEquipos.getBotonRefrescarPantalla().removeActionListener(this);
-
+	
 		this.ventanaVisualizarEquipos.getTextPresupuesto().removeKeyListener(this);
 		this.ventanaVisualizarEquipos.getTextPresupuestoDolar().removeKeyListener(this);
 		this.ventanaVisualizarEquipos.getBtnBuscarELS().removeActionListener(this);
@@ -2069,16 +2060,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		});
 
-		ventanaVisualizarEquipos.getBotonRefrescarPantalla().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				actualizarEnlistado = true;
-				refrescarPantallaListados(Integer.parseInt(ventanaVisualizarEquipos.getTextELS()),
-						ventanaVisualizarEquipos);
-				actualizarEnlistado = false;
-			}
-		});
 
 		listenerPrecios(ventanaVisualizarEquipos);
 
@@ -2256,7 +2237,14 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaRemitos.addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosed(WindowEvent e) {
-					refrescarPantalla(ventanaVisualizarEquipos);
+					if (actualizarEnlistado) {
+						refrescarPantallaListados(Integer.parseInt(ventanaVisualizarEquipos.getTextELS()),
+								ventanaVisualizarEquipos);
+
+					} else {
+
+						refrescarPantalla(ventanaVisualizarEquipos);
+					}
 				}
 			});
 
@@ -2499,9 +2487,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	public List<VentanaVisualizarEquipos> ventanasDeVisualizacionAbiertas() {
-		return ventanasAbiertas;
-	}
+
 
 	@SuppressWarnings("deprecation")
 	public void llenarTablaClientesWSP() {
@@ -3803,6 +3789,15 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		});
 
+	}
+	
+
+	public List<VentanaVisualizarEquipos> getVentanasAbiertas() {
+		return ventanasAbiertas;
+	}
+
+	public void setVentanasAbiertas(List<VentanaVisualizarEquipos> ventanasAbiertas) {
+		this.ventanasAbiertas = ventanasAbiertas;
 	}
 
 }

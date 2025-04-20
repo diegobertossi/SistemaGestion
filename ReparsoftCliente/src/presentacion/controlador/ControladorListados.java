@@ -555,67 +555,15 @@ public class ControladorListados
 	}
 	
 
-
-
-//	private void cargarTablaListadoReparaciones() {
-//
-//	    // Limpia todas las filas del modelo de la tabla
-//	    DefaultTableModel modeloTabla = (DefaultTableModel) ventanaListadoReparaciones.getModelReparaciones();
-//	    modeloTabla.setRowCount(0); // Esto elimina todas las filas existentes
-//
-//	    // Obtiene las reparaciones actualizadas
-//	    this.Reparaciones_en_tabla = modelo.obtenerReparacion();
-//
-//	    // Vuelve a llenar la tabla con las reparaciones actualizadas
-//	    for (int i = this.Reparaciones_en_tabla.size() - 1; i >= 0; i--) {
-//
-//	        Object[] fila = {
-//	            this.Reparaciones_en_tabla.get(i).getELS(),
-//	            this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
-//	            this.Reparaciones_en_tabla.get(i).getCliente(),
-//	            this.Reparaciones_en_tabla.get(i).getSucursal(),
-//	            this.Reparaciones_en_tabla.get(i).getNombreEquipo(),
-//	            this.Reparaciones_en_tabla.get(i).getMarca(),
-//	            this.Reparaciones_en_tabla.get(i).getModelo(),
-//	            this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
-//	            this.Reparaciones_en_tabla.get(i).getAviso(),
-//	            this.Reparaciones_en_tabla.get(i).getFechadereparacion(),
-//	            this.Reparaciones_en_tabla.get(i).getFecha_Salida(),
-//	            this.Reparaciones_en_tabla.get(i).getClienteCliente(),
-//	            this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
-//	            this.Reparaciones_en_tabla.get(i).getEstadoComercial(),
-//	            this.Reparaciones_en_tabla.get(i).getEstadoFisico(),
-//	            this.Reparaciones_en_tabla.get(i).getNombreUsuario(),
-//	            this.Reparaciones_en_tabla.get(i).getCodigo(),
-//	            this.Reparaciones_en_tabla.get(i).getNumeroRemitoSalida(),
-//	            this.Reparaciones_en_tabla.get(i).getPresupuestoGenerado(),
-//	            this.Reparaciones_en_tabla.get(i).getPresupuestoEnviado(),
-//	            this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
-//	            this.Reparaciones_en_tabla.get(i).getPrecioDolar(),
-//	            this.Reparaciones_en_tabla.get(i).getPago(),
-//	            this.Reparaciones_en_tabla.get(i).getLugarDeIngreso()
-//	        };
-//
-//	        modeloTabla.addRow(fila);
-//	    }
-//
-//	    // Configura renderers, filtros, y hace visible la ventana
-//	    ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTblListado());
-//	    TablaFiltros tablaFiltros = new TablaFiltros();
-//	    tablaFiltros.agregarAutofiltros(this.ventanaListadoReparaciones.getTblListado());
-//
-//	    this.ventanaListadoReparaciones.setVisible(true);
-//
-//
-//	}
-
-	
-	
 	// En la clase ControladorListados
 	private void cargarTablaListadoReparaciones() {
+	    if (ventanaListadoReparaciones == null) {
+	        return; // Salir si la ventana es null
+	    }
+
 	    // 1. Guardar el estado actual de los filtros
 	    Map<Integer, String> filtrosActuales = guardarEstadoFiltros();
-	    
+
 	    // Limpia todas las filas del modelo de la tabla
 	    DefaultTableModel modeloTabla = (DefaultTableModel) ventanaListadoReparaciones.getModelReparaciones();
 	    modeloTabla.setRowCount(0); // Esto elimina todas las filas existentes
@@ -626,31 +574,31 @@ public class ControladorListados
 	    // Vuelve a llenar la tabla con las reparaciones actualizadas
 	    for (int i = this.Reparaciones_en_tabla.size() - 1; i >= 0; i--) {
 	        Object[] fila = {
-            this.Reparaciones_en_tabla.get(i).getELS(),
-            this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
-            this.Reparaciones_en_tabla.get(i).getCliente(),
-            this.Reparaciones_en_tabla.get(i).getSucursal(),
-            this.Reparaciones_en_tabla.get(i).getNombreEquipo(),
-            this.Reparaciones_en_tabla.get(i).getMarca(),
-            this.Reparaciones_en_tabla.get(i).getModelo(),
-            this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
-            this.Reparaciones_en_tabla.get(i).getAviso(),
-            this.Reparaciones_en_tabla.get(i).getFechadereparacion(),
-            this.Reparaciones_en_tabla.get(i).getFecha_Salida(),
-            this.Reparaciones_en_tabla.get(i).getClienteCliente(),
-            this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
-            this.Reparaciones_en_tabla.get(i).getEstadoComercial(),
-            this.Reparaciones_en_tabla.get(i).getEstadoFisico(),
-            this.Reparaciones_en_tabla.get(i).getNombreUsuario(),
-            this.Reparaciones_en_tabla.get(i).getCodigo(),
-            this.Reparaciones_en_tabla.get(i).getNumeroRemitoSalida(),
-            this.Reparaciones_en_tabla.get(i).getPresupuestoGenerado(),
-            this.Reparaciones_en_tabla.get(i).getPresupuestoEnviado(),
-            this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
-            this.Reparaciones_en_tabla.get(i).getPrecioDolar(),
-            this.Reparaciones_en_tabla.get(i).getPago(),
-            this.Reparaciones_en_tabla.get(i).getLugarDeIngreso()
-        };
+	            this.Reparaciones_en_tabla.get(i).getELS(),
+	            this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
+	            this.Reparaciones_en_tabla.get(i).getCliente(),
+	            this.Reparaciones_en_tabla.get(i).getSucursal(),
+	            this.Reparaciones_en_tabla.get(i).getNombreEquipo(),
+	            this.Reparaciones_en_tabla.get(i).getMarca(),
+	            this.Reparaciones_en_tabla.get(i).getModelo(),
+	            this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
+	            this.Reparaciones_en_tabla.get(i).getAviso(),
+	            this.Reparaciones_en_tabla.get(i).getFechadereparacion(),
+	            this.Reparaciones_en_tabla.get(i).getFecha_Salida(),
+	            this.Reparaciones_en_tabla.get(i).getClienteCliente(),
+	            this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
+	            this.Reparaciones_en_tabla.get(i).getEstadoComercial(),
+	            this.Reparaciones_en_tabla.get(i).getEstadoFisico(),
+	            this.Reparaciones_en_tabla.get(i).getNombreUsuario(),
+	            this.Reparaciones_en_tabla.get(i).getCodigo(),
+	            this.Reparaciones_en_tabla.get(i).getNumeroRemitoSalida(),
+	            this.Reparaciones_en_tabla.get(i).getPresupuestoGenerado(),
+	            this.Reparaciones_en_tabla.get(i).getPresupuestoEnviado(),
+	            this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
+	            this.Reparaciones_en_tabla.get(i).getPrecioDolar(),
+	            this.Reparaciones_en_tabla.get(i).getPago(),
+	            this.Reparaciones_en_tabla.get(i).getLugarDeIngreso()
+	        };
 	        modeloTabla.addRow(fila);
 	    }
 
@@ -667,10 +615,14 @@ public class ControladorListados
 
 	// Método para guardar el estado actual de los filtros
 	private Map<Integer, String> guardarEstadoFiltros() {
+	    if (ventanaListadoReparaciones == null) {
+	        return new HashMap<>(); // Retorna un mapa vacío si la ventana es null
+	    }
+
 	    Map<Integer, String> filtros = new HashMap<>();
 	    JTable tabla = ventanaListadoReparaciones.getTblListado();
 	    TableRowSorter<?> sorter = (TableRowSorter<?>) tabla.getRowSorter();
-	    
+
 	    if (sorter != null && sorter.getRowFilter() != null) {
 	        for (int i = 0; i < tabla.getColumnCount(); i++) {
 	            JComboBox<String> combo = (JComboBox<String>) ((JPanel) tabla.getTableHeader().getParent().getComponent(0)).getComponent(i);
@@ -684,36 +636,144 @@ public class ControladorListados
 
 	// Método para restaurar los filtros guardados
 	private void restaurarFiltros(Map<Integer, String> filtrosGuardados) {
-	    if (filtrosGuardados.isEmpty()) return;
-	    
+	    if (ventanaListadoReparaciones == null || filtrosGuardados.isEmpty()) {
+	        return; // Salir si la ventana es null o si no hay filtros guardados
+	    }
+
 	    JTable tabla = ventanaListadoReparaciones.getTblListado();
 	    JPanel filterPanel = (JPanel) ((JPanel) tabla.getTableHeader().getParent()).getComponent(0);
-	    
+
 	    // Esperar a que los componentes estén listos
 	    SwingUtilities.invokeLater(() -> {
 	        // Crear un array de JComboBox del tamaño adecuado
 	        JComboBox<String>[] combos = new JComboBox[filterPanel.getComponentCount()];
-	        
+
 	        // Recoger todos los combobox del panel
 	        for (int i = 0; i < filterPanel.getComponentCount(); i++) {
 	            combos[i] = (JComboBox<String>) filterPanel.getComponent(i);
 	        }
-	        
+
 	        // Aplicar los filtros guardados
 	        for (Map.Entry<Integer, String> entry : filtrosGuardados.entrySet()) {
 	            int colIndex = entry.getKey();
 	            String valorFiltro = entry.getValue();
-	            
+
 	            if (colIndex < combos.length) {
 	                combos[colIndex].setSelectedItem(valorFiltro);
 	            }
 	        }
-	        
+
 	        // Forzar la aplicación de los filtros
 	        TablaFiltros tablaFiltros = new TablaFiltros();
 	        tablaFiltros.filtrarTabla(tabla, combos);
 	    });
 	}
+
+	
+//	
+//	// En la clase ControladorListados
+//	private void cargarTablaListadoReparaciones() {
+//	    // 1. Guardar el estado actual de los filtros
+//	    Map<Integer, String> filtrosActuales = guardarEstadoFiltros();
+//	    
+//	    // Limpia todas las filas del modelo de la tabla
+//	    DefaultTableModel modeloTabla = (DefaultTableModel) ventanaListadoReparaciones.getModelReparaciones();
+//	    modeloTabla.setRowCount(0); // Esto elimina todas las filas existentes
+//
+//	    // Obtiene las reparaciones actualizadas
+//	    this.Reparaciones_en_tabla = modelo.obtenerReparacion();
+//
+//	    // Vuelve a llenar la tabla con las reparaciones actualizadas
+//	    for (int i = this.Reparaciones_en_tabla.size() - 1; i >= 0; i--) {
+//	        Object[] fila = {
+//            this.Reparaciones_en_tabla.get(i).getELS(),
+//            this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
+//            this.Reparaciones_en_tabla.get(i).getCliente(),
+//            this.Reparaciones_en_tabla.get(i).getSucursal(),
+//            this.Reparaciones_en_tabla.get(i).getNombreEquipo(),
+//            this.Reparaciones_en_tabla.get(i).getMarca(),
+//            this.Reparaciones_en_tabla.get(i).getModelo(),
+//            this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
+//            this.Reparaciones_en_tabla.get(i).getAviso(),
+//            this.Reparaciones_en_tabla.get(i).getFechadereparacion(),
+//            this.Reparaciones_en_tabla.get(i).getFecha_Salida(),
+//            this.Reparaciones_en_tabla.get(i).getClienteCliente(),
+//            this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
+//            this.Reparaciones_en_tabla.get(i).getEstadoComercial(),
+//            this.Reparaciones_en_tabla.get(i).getEstadoFisico(),
+//            this.Reparaciones_en_tabla.get(i).getNombreUsuario(),
+//            this.Reparaciones_en_tabla.get(i).getCodigo(),
+//            this.Reparaciones_en_tabla.get(i).getNumeroRemitoSalida(),
+//            this.Reparaciones_en_tabla.get(i).getPresupuestoGenerado(),
+//            this.Reparaciones_en_tabla.get(i).getPresupuestoEnviado(),
+//            this.Reparaciones_en_tabla.get(i).getPrecioPeso(),
+//            this.Reparaciones_en_tabla.get(i).getPrecioDolar(),
+//            this.Reparaciones_en_tabla.get(i).getPago(),
+//            this.Reparaciones_en_tabla.get(i).getLugarDeIngreso()
+//        };
+//	        modeloTabla.addRow(fila);
+//	    }
+//
+//	    // Configura renderers y filtros
+//	    ventanaListadoReparaciones.setCellRender(this.ventanaListadoReparaciones.getTblListado());
+//	    TablaFiltros tablaFiltros = new TablaFiltros();
+//	    tablaFiltros.agregarAutofiltros(this.ventanaListadoReparaciones.getTblListado());
+//
+//	    // 2. Restaurar los filtros guardados
+//	    restaurarFiltros(filtrosActuales);
+//
+//	    this.ventanaListadoReparaciones.setVisible(true);
+//	}
+//
+//	// Método para guardar el estado actual de los filtros
+//	private Map<Integer, String> guardarEstadoFiltros() {
+//	    Map<Integer, String> filtros = new HashMap<>();
+//	    JTable tabla = ventanaListadoReparaciones.getTblListado();
+//	    TableRowSorter<?> sorter = (TableRowSorter<?>) tabla.getRowSorter();
+//	    
+//	    if (sorter != null && sorter.getRowFilter() != null) {
+//	        for (int i = 0; i < tabla.getColumnCount(); i++) {
+//	            JComboBox<String> combo = (JComboBox<String>) ((JPanel) tabla.getTableHeader().getParent().getComponent(0)).getComponent(i);
+//	            if (combo != null && !"Todos".equals(combo.getSelectedItem())) {
+//	                filtros.put(i, (String) combo.getSelectedItem());
+//	            }
+//	        }
+//	    }
+//	    return filtros;
+//	}
+//
+//	// Método para restaurar los filtros guardados
+//	private void restaurarFiltros(Map<Integer, String> filtrosGuardados) {
+//	    if (filtrosGuardados.isEmpty()) return;
+//	    
+//	    JTable tabla = ventanaListadoReparaciones.getTblListado();
+//	    JPanel filterPanel = (JPanel) ((JPanel) tabla.getTableHeader().getParent()).getComponent(0);
+//	    
+//	    // Esperar a que los componentes estén listos
+//	    SwingUtilities.invokeLater(() -> {
+//	        // Crear un array de JComboBox del tamaño adecuado
+//	        JComboBox<String>[] combos = new JComboBox[filterPanel.getComponentCount()];
+//	        
+//	        // Recoger todos los combobox del panel
+//	        for (int i = 0; i < filterPanel.getComponentCount(); i++) {
+//	            combos[i] = (JComboBox<String>) filterPanel.getComponent(i);
+//	        }
+//	        
+//	        // Aplicar los filtros guardados
+//	        for (Map.Entry<Integer, String> entry : filtrosGuardados.entrySet()) {
+//	            int colIndex = entry.getKey();
+//	            String valorFiltro = entry.getValue();
+//	            
+//	            if (colIndex < combos.length) {
+//	                combos[colIndex].setSelectedItem(valorFiltro);
+//	            }
+//	        }
+//	        
+//	        // Forzar la aplicación de los filtros
+//	        TablaFiltros tablaFiltros = new TablaFiltros();
+//	        tablaFiltros.filtrarTabla(tabla, combos);
+//	    });
+//	}
 
 
 	public void agregarListenerVentanaListados() {
@@ -909,6 +969,13 @@ public class ControladorListados
 						ventanaEquipos = null;
 
 					}
+					
+					 for (VentanaVisualizarEquipos ventana : controladorReparacion.getVentanasAbiertas()) {
+					        if (ventana != null) {
+					            ventana.dispose(); // Cierra la ventana
+					        }
+					    }
+					 controladorReparacion.getVentanasAbiertas().clear(); // Limpia la lista de ventanas abiertas
 
 				}
 
