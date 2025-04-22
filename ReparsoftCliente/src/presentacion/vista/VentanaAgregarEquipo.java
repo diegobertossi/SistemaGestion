@@ -43,8 +43,6 @@ public class VentanaAgregarEquipo extends JFrame {
 	private JButton btnGenerarSerie;
 	private JButton btnFechaDefault;
 
-	private JButton btnrecargarLista;
-
 	private JTextField textELS;
 	@SuppressWarnings("unused")
 	private int ELS = 1;
@@ -453,13 +451,13 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_4 = new JPanel();
 		panel_4.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_4.setBackground(SystemColor.activeCaption);
-		panel_4.setBounds(310, 11, 464, 54);
+		panel_4.setBounds(457, 11, 317, 54);
 		panel.add(panel_4);
 		panel_4.setLayout(null);
 
 		BotonVerificarIngresoAnterior = new JButton("<html><center>VERIFICAR INGRESO</html>");
 		BotonVerificarIngresoAnterior.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		BotonVerificarIngresoAnterior.setBounds(7, 8, 145, 37);
+		BotonVerificarIngresoAnterior.setBounds(10, 8, 145, 37);
 		panel_4.add(BotonVerificarIngresoAnterior);
 		BotonVerificarIngresoAnterior.setBackground(new Color(0, 191, 255));
 		BotonVerificarIngresoAnterior.setForeground(Color.BLACK);
@@ -467,19 +465,11 @@ public class VentanaAgregarEquipo extends JFrame {
 
 		btnaltaCliente = new JButton("<html><center>ALTA CLIENTE<html>");
 		btnaltaCliente.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnaltaCliente.setBounds(159, 8, 145, 37);
+		btnaltaCliente.setBounds(162, 8, 145, 37);
 		panel_4.add(btnaltaCliente);
 		btnaltaCliente.setForeground(Color.BLACK);
 		btnaltaCliente.setFont(new Font("Cambria", Font.BOLD, 12));
 		btnaltaCliente.setBackground(new Color(0, 191, 255));
-
-		btnrecargarLista = new JButton("<html><center>ACTUALIZAR CLIENTES</html>");
-		btnrecargarLista.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnrecargarLista.setBounds(311, 9, 145, 36);
-		panel_4.add(btnrecargarLista);
-		btnrecargarLista.setForeground(Color.BLACK);
-		btnrecargarLista.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnrecargarLista.setBackground(new Color(176, 224, 230));
 
 		this.setVisible(true);
 
@@ -702,12 +692,5 @@ public class VentanaAgregarEquipo extends JFrame {
 		this.btnaltaCliente = btnaltaCliente;
 	}
 
-	public JButton getBtnrecargarLista() {
-		return btnrecargarLista;
-	}
-
-	public void setBtnrecargarLista(JButton btnrecargarLista) {
-		this.btnrecargarLista = btnrecargarLista;
-	}
 
 }

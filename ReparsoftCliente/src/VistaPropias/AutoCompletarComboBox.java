@@ -201,7 +201,7 @@ public class AutoCompletarComboBox extends PlainDocument {
             mensajeMostrado = true;
 
             if (mostrarMensaje) {
-                JOptionPane.showMessageDialog(null, "Item no encontrado");
+                JOptionPane.showMessageDialog(null, "Cliente no encontrado. Deberá darlo de alta");
             }
 
             if (!editable) {

@@ -82,7 +82,7 @@ import com.inet.jortho.SpellChecker;
 import modelo.Agenda;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import presentacion.reportes.ReporteRegistroEntrada;
-
+import presentacion.vista.VentanaAgregarCliente;
 import presentacion.vista.VentanaAgregarEquipo;
 import presentacion.vista.VentanaAgregarRepuesto;
 import presentacion.vista.VentanaBusquedaEquipo;
@@ -129,6 +129,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private ControladorPresupuestos controladorpresupuestos;
 	private VentanaGenerarPresupuesto ventanaGenerarPresupuesto;
 	private ControladorSalidas controladorSalidas;
+	private VentanaAgregarCliente ventanaAgregarCliente;
 
 	private VentanaRemitos ventanaRemitos;
 
@@ -433,7 +434,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			reporte.mostrar();
 
 		}
-
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnGuardarCambios()) {
@@ -778,17 +778,19 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaAgregarEquipo != null && e.getSource() == this.ventanaAgregarEquipo.getBtnaltaCliente()) {
 
-			controladorCliente.agregarListenersVentanaAgregarCliente();
-			// controladorCliente.llenarTabla();
+			ventanaAgregarCliente = controladorCliente.agregarListenersVentanaAgregarCliente();
+
+			ventanaAgregarCliente.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosed(WindowEvent e) {
+
+					llenarComboCliente();
+
+				}
+			});
 
 		}
 
-		else if (this.ventanaAgregarEquipo != null
-				&& e.getSource() == this.ventanaAgregarEquipo.getBtnrecargarLista()) {
-
-			llenarComboCliente();
-
-		}
 
 		else if (this.ventanaAgregarEquipo != null
 				&& e.getSource() == this.ventanaAgregarEquipo.getBotonGenerarRegistro()) {
@@ -1972,7 +1974,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.ventanaVisualizarEquipos.getBtnEliminarRepuesto().removeActionListener(this);
 		this.ventanaVisualizarEquipos.getTablaRepuestos().removeMouseListener(this);
 		this.ventanaVisualizarEquipos.getTablaRepuestos().removeKeyListener(this);
-	
+
 		this.ventanaVisualizarEquipos.getTextPresupuesto().removeKeyListener(this);
 		this.ventanaVisualizarEquipos.getTextPresupuestoDolar().removeKeyListener(this);
 		this.ventanaVisualizarEquipos.getBtnBuscarELS().removeActionListener(this);
@@ -2059,7 +2061,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		});
-
 
 		listenerPrecios(ventanaVisualizarEquipos);
 
@@ -2294,27 +2295,19 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(false);
 		ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().addActionListener(this);
 		ventanaAgregarEquipo.getBtnaltaCliente().addActionListener(this);
-		ventanaAgregarEquipo.getBtnrecargarLista().addActionListener(this);
-
+		
 		llenarComboCliente();
 		llenarComboSucursal();
 		llenarComboNombreEquipo();
 		llenarComboMarca();
 		llenarComboModelo();
-		// llenarComboSerie();
+	
 
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboClientes(), false, true);
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboNombreEquipo(), true, false);
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboMarca(), true, false);
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboModelo(), true, false);
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboSerie(), true, false);
-
-//		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboClientes());
-//		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboSucursal());
-//		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboNombreEquipo());
-//		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboMarca());
-//		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboModelo());
-//		AutoCompleteDecorator.decorate(ventanaAgregarEquipo.getComboSerie());
 
 		ventanaAgregarEquipo.getGrupoEstadoFisico().setSelected(ventanaAgregarEquipo.getRdbtnBRC().getModel(), true);
 
@@ -2352,12 +2345,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	public VentanaVisualizarEquipos TomarDatosDeTablasListado(int numeroELSSeleccionado2,
 			VentanaVisualizarEquipos ventanaVisualizarEquipos) throws ParseException {
 		// Configuración inicial específica para esta función
-		
+
 		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
 		ventanaVisualizarEquipos.setTitle(String.valueOf(numeroELSSeleccionado2));
 		ventanasAbiertas.add(ventanaVisualizarEquipos);
 		cerraVentanaVisualizarEquipoListado(ventanaVisualizarEquipos);
-		
 
 		monedaFormatter = new MonedaFormatter();
 		controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
@@ -2368,17 +2360,15 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		return ventanaVisualizarEquipos;
 	}
-	
-	
-	
+
 	public VentanaVisualizarEquipos ActualizarDatosDeTablasListado(int numeroELSSeleccionado2,
 			VentanaVisualizarEquipos ventanaVisualizarEquipos) throws ParseException {
 		// Configuración inicial específica para esta función
 		if (!actualizarEnlistado) {
-		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
-		ventanaVisualizarEquipos.setTitle(String.valueOf(numeroELSSeleccionado2));
-		ventanasAbiertas.add(ventanaVisualizarEquipos);
-		cerraVentanaVisualizarEquipoListado(ventanaVisualizarEquipos);
+			ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
+			ventanaVisualizarEquipos.setTitle(String.valueOf(numeroELSSeleccionado2));
+			ventanasAbiertas.add(ventanaVisualizarEquipos);
+			cerraVentanaVisualizarEquipoListado(ventanaVisualizarEquipos);
 		}
 
 		monedaFormatter = new MonedaFormatter();
@@ -2390,8 +2380,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		return ventanaVisualizarEquipos;
 	}
-	
-	
 
 	// Método privado para cargar los datos comunes
 	private void cargarDatosComunes(VentanaVisualizarEquipos ventanaVisualizarEquipos, int numeroELS)
@@ -2486,8 +2474,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		return ventanasAbiertas.size() + 1;
 
 	}
-
-
 
 	@SuppressWarnings("deprecation")
 	public void llenarTablaClientesWSP() {
@@ -3745,9 +3731,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		this.ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				int opcion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
-						"¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?", "Aviso", JOptionPane.YES_NO_OPTION,
-						JOptionPane.WARNING_MESSAGE);
+				int opcion = JOptionPane.showConfirmDialog(null,
+						"¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?", "Aviso", JOptionPane.YES_NO_OPTION);
 
 				if (opcion == JOptionPane.YES_OPTION) {
 					ventanaVisualizarEquipos.dispose();
@@ -3770,18 +3755,21 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventana.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 
-				int opcion = JOptionPane.showConfirmDialog(ventana, "¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?",
-						"Aviso", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				int opcion = JOptionPane.showConfirmDialog(null, "¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?",
+						"Aviso", JOptionPane.YES_NO_OPTION);
 
+					
+				
+				
 				if (opcion == JOptionPane.YES_OPTION) {
 					ventanasAbiertas.remove(ventana);
 
 					ventana.dispose();
 
 				}
-				
+
 				if (ventanasAbiertas.size() == 0) {
-					
+
 					System.out.println("no hay mas ventanas abietas");
 					actualizarEnlistado = false;
 				}
@@ -3790,7 +3778,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 	}
-	
 
 	public List<VentanaVisualizarEquipos> getVentanasAbiertas() {
 		return ventanasAbiertas;

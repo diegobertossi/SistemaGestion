@@ -632,12 +632,13 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		return nuevoCliente;
 	}
 
-	public void agregarListenersVentanaAgregarCliente() {
+	public VentanaAgregarCliente agregarListenersVentanaAgregarCliente() {
 
 		this.ventanaAgregarClientes = new VentanaAgregarCliente(this);
 		this.ventanaAgregarClientes.getBtnCancelar().addActionListener(this);
 		this.ventanaAgregarClientes.getBtnAgregarCliente().addActionListener(this);
 		performActionOnTextComponents(ventanaAgregarClientes);
+		return ventanaAgregarClientes;
 
 	}
 
