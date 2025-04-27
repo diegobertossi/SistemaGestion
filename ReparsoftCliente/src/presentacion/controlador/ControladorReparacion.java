@@ -429,7 +429,25 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			RegistroEntradaReporteDTO rep = TomarDatosPantallaVisualizacion();
 
 			lista.add(rep);
+//		
+//			try {
+//			    ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista);
+//			    reporte.mostrar();
+//			} catch (Exception e1) {
+//			    // Muestra el mensaje de error en un cuadro de diálogo
+//			    JOptionPane.showMessageDialog(null, 
+//			        "Se produjo un error al generar o mostrar el reporte: " + e1.getMessage(), 
+//			        "Error", 
+//			        JOptionPane.ERROR_MESSAGE);
+//			    // También puedes imprimir el stack trace en la consola para depuración
+//			    e1.printStackTrace();
+//			}
 
+			
+			
+			
+			
+			
 			ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista);
 			reporte.mostrar();
 
@@ -2388,18 +2406,27 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		// Llenar campos de texto
 		ventanaVisualizarEquipos.setTextNombreEquipo(reparacion.getNombreEquipo());
+		ventanaVisualizarEquipos.getTextNombreEquipo().setCaretPosition(0);
 		ventanaVisualizarEquipos.setTextMarca(reparacion.getMarca());
+		ventanaVisualizarEquipos.getTextMarca().setCaretPosition(0);
 		ventanaVisualizarEquipos.setTextModelo(reparacion.getModelo());
+		ventanaVisualizarEquipos.getTextModelo().setCaretPosition(0);
 		ventanaVisualizarEquipos.setTextNSerie(reparacion.getNumeroDeSerie());
+		ventanaVisualizarEquipos.getTextNSerie().setCaretPosition(0);
 		ventanaVisualizarEquipos.setTextLugarDeIngreso(reparacion.getLugarDeIngreso());
 
 		// Campos opcionales (pueden ser nulos)
 		ventanaVisualizarEquipos.setTextFalla(reparacion.getFalla() == null ? "" : reparacion.getFalla());
+		ventanaVisualizarEquipos.getTextFalla().setCaretPosition(0);
 		ventanaVisualizarEquipos.setTextAvisoCliente(reparacion.getAviso());
 		ventanaVisualizarEquipos.setTextClienteCliente(reparacion.getClienteCliente());
+		ventanaVisualizarEquipos.getTextClienteCliente().setCaretPosition(0);
 		ventanaVisualizarEquipos.setTextRemitoCliente(reparacion.getRemitoCliente());
 		ventanaVisualizarEquipos.setTextCliente(reparacion.getCliente());
+		ventanaVisualizarEquipos.getTextCliente().setCaretPosition(0);
 		ventanaVisualizarEquipos.setTextSucursal(reparacion.getSucursal());
+		ventanaVisualizarEquipos.getTextSucursal().setCaretPosition(0);
+		
 
 		// Fechas (manejo de valores nulos)
 		ventanaVisualizarEquipos.setTextFechaEntrada2(
@@ -3444,7 +3471,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	private RegistroEntradaReporteDTO TomarDatosPantallaVisualizacion() {
-
+		
+		
 		int ELS = Integer.parseInt(this.ventanaVisualizarEquipos.getTextELS());
 		String falla = this.ventanaVisualizarEquipos.getTextFalla().getText();
 		String RemitoCLiente = this.ventanaVisualizarEquipos.getTextRemitoCliente().getText();
@@ -3469,6 +3497,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ClienteCliente, idCliente, idSucursal, Cliente, Sucursal);
 
 		return nuevoReparacion;
+		
+		
 	}
 
 	@SuppressWarnings("unused")

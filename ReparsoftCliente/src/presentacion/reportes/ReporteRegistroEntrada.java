@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JOptionPane;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -68,8 +70,13 @@ public class ReporteRegistroEntrada
     
     public void mostrar()
 	{
+    	
+    	
+    
+    	
     	ReporteRegistroEntrada.reporteViewer = new JasperViewer(ReporteRegistroEntrada.reporteLleno,false);
     	ReporteRegistroEntrada.reporteViewer.setVisible(true);
+    	
 	}
    
 }	

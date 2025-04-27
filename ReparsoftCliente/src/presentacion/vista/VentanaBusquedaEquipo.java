@@ -59,11 +59,12 @@ public class VentanaBusquedaEquipo extends JFrame {
         String[] searchFields = {"Falla", "Diagnóstico", "Informe Cliente"};
 
         comboBuscador = new JComboBox<>(searchFields);
+        comboBuscador.setFont(new Font("Cambria", Font.PLAIN, 13));
         comboBuscador.setBounds(160, 15, 156, 23);
         contentPane.add(comboBuscador);
 
         btnBuscar = new JButton("BUSCAR");
-        btnBuscar.setFont(new Font("Cambria", Font.BOLD, 12));
+        btnBuscar.setFont(new Font("Cambria", Font.BOLD, 13));
         btnBuscar.setBounds(326, 26, 89, 23);
         contentPane.add(btnBuscar);
 
@@ -74,6 +75,7 @@ public class VentanaBusquedaEquipo extends JFrame {
         contentPane.add(lblTextoAbuscar);
 
         textField = new JTextField();
+        textField.setFont(new Font("Cambria", Font.PLAIN, 13));
         textField.setBounds(160, 43, 156, 23);
         contentPane.add(textField);
         textField.setColumns(10);
@@ -86,12 +88,17 @@ public class VentanaBusquedaEquipo extends JFrame {
         panel.setLayout(null);
 
         textPane = new JTextPane();
+        textPane.setMargin(new Insets(5, 5, 5, 5));
+        textPane.setAlignmentY(Component.TOP_ALIGNMENT);
+        textPane.setAlignmentX(Component.RIGHT_ALIGNMENT);
         textPane.setFont(new Font("Cambria", Font.BOLD, 12));
-        textPane.setBorder(null);
+        textPane.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
         textPane.setEditable(false);
         textPane.setBackground(SystemColor.inactiveCaption);
 
         scrollPane = new JScrollPane(textPane);
+        scrollPane.setBounds(new Rectangle(5, 5, 5, 5));
+        scrollPane.setFont(new Font("Cambria", Font.PLAIN, 13));
         scrollPane.setBounds(188, 11, 83, 102);
         panel.add(scrollPane);
         scrollPane.setBorder(null);
