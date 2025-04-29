@@ -429,25 +429,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			RegistroEntradaReporteDTO rep = TomarDatosPantallaVisualizacion();
 
 			lista.add(rep);
-//		
-//			try {
-//			    ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista);
-//			    reporte.mostrar();
-//			} catch (Exception e1) {
-//			    // Muestra el mensaje de error en un cuadro de diálogo
-//			    JOptionPane.showMessageDialog(null, 
-//			        "Se produjo un error al generar o mostrar el reporte: " + e1.getMessage(), 
-//			        "Error", 
-//			        JOptionPane.ERROR_MESSAGE);
-//			    // También puedes imprimir el stack trace en la consola para depuración
-//			    e1.printStackTrace();
-//			}
 
-			
-			
-			
-			
-			
 			ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista);
 			reporte.mostrar();
 
@@ -808,7 +790,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			});
 
 		}
-
 
 		else if (this.ventanaAgregarEquipo != null
 				&& e.getSource() == this.ventanaAgregarEquipo.getBotonGenerarRegistro()) {
@@ -2248,24 +2229,33 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	public void generarRemito(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
 		if (ventanaVisualizarEquipos.getTextNumeroRemito().getText().compareTo("") == 0) {
-			NumeroELSParaRemito = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
 
-			ventanaRemitos = controladorSalidas.cargarRemitoVisualizacion(NumeroELSParaRemito);
-			controladorSalidas.agregarListenersVentanaRemitos();
+			if (ventanaVisualizarEquipos.getBtnGuardarCambios().isEnabled()) {
 
-			ventanaRemitos.addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowClosed(WindowEvent e) {
-					if (actualizarEnlistado) {
-						refrescarPantallaListados(Integer.parseInt(ventanaVisualizarEquipos.getTextELS()),
-								ventanaVisualizarEquipos);
+				Object mje = "Debe guardar los cambios realizados para poder presupuestar.";
+				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 
-					} else {
+			} else {
 
-						refrescarPantalla(ventanaVisualizarEquipos);
+				NumeroELSParaRemito = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
+
+				ventanaRemitos = controladorSalidas.cargarRemitoVisualizacion(NumeroELSParaRemito);
+				controladorSalidas.agregarListenersVentanaRemitos();
+
+				ventanaRemitos.addWindowListener(new WindowAdapter() {
+					@Override
+					public void windowClosed(WindowEvent e) {
+						if (actualizarEnlistado) {
+							refrescarPantallaListados(Integer.parseInt(ventanaVisualizarEquipos.getTextELS()),
+									ventanaVisualizarEquipos);
+
+						} else {
+
+							refrescarPantalla(ventanaVisualizarEquipos);
+						}
 					}
-				}
-			});
+				});
+			}
 
 		} else {
 			Object mje = "Este equipo ya posee remito. Deberá ANULARLO o ELIMINARLO para generar una nuevo.";
@@ -2313,13 +2303,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(false);
 		ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().addActionListener(this);
 		ventanaAgregarEquipo.getBtnaltaCliente().addActionListener(this);
-		
+
 		llenarComboCliente();
 		llenarComboSucursal();
 		llenarComboNombreEquipo();
 		llenarComboMarca();
 		llenarComboModelo();
-	
 
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboClientes(), false, true);
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboNombreEquipo(), true, false);
@@ -2426,7 +2415,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getTextCliente().setCaretPosition(0);
 		ventanaVisualizarEquipos.setTextSucursal(reparacion.getSucursal());
 		ventanaVisualizarEquipos.getTextSucursal().setCaretPosition(0);
-		
 
 		// Fechas (manejo de valores nulos)
 		ventanaVisualizarEquipos.setTextFechaEntrada2(
@@ -3471,8 +3459,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	private RegistroEntradaReporteDTO TomarDatosPantallaVisualizacion() {
-		
-		
+
 		int ELS = Integer.parseInt(this.ventanaVisualizarEquipos.getTextELS());
 		String falla = this.ventanaVisualizarEquipos.getTextFalla().getText();
 		String RemitoCLiente = this.ventanaVisualizarEquipos.getTextRemitoCliente().getText();
@@ -3497,8 +3484,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ClienteCliente, idCliente, idSucursal, Cliente, Sucursal);
 
 		return nuevoReparacion;
-		
-		
+
 	}
 
 	@SuppressWarnings("unused")
@@ -3761,8 +3747,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		this.ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				int opcion = JOptionPane.showConfirmDialog(null,
-						"¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?", "Aviso", JOptionPane.YES_NO_OPTION);
+				int opcion = JOptionPane.showConfirmDialog(null, "¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?",
+						"Aviso", JOptionPane.YES_NO_OPTION);
 
 				if (opcion == JOptionPane.YES_OPTION) {
 					ventanaVisualizarEquipos.dispose();
@@ -3788,9 +3774,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				int opcion = JOptionPane.showConfirmDialog(null, "¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?",
 						"Aviso", JOptionPane.YES_NO_OPTION);
 
-					
-				
-				
 				if (opcion == JOptionPane.YES_OPTION) {
 					ventanasAbiertas.remove(ventana);
 
