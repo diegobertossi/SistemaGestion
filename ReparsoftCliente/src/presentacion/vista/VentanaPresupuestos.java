@@ -47,18 +47,18 @@ public class VentanaPresupuestos extends JFrame
 		
 			
 			btnPresupuestoPorELS = new JButton("<html><center>PRESUPUESTO POR ELS</html>");
-			btnPresupuestoPorELS.setBounds(8, 29, 151, 60);
+			btnPresupuestoPorELS.setBounds(8, 27, 151, 60);
 			contentPane.add(btnPresupuestoPorELS);
 			btnPresupuestoPorELS.setFont(new Font("Cambria", Font.BOLD, 14));
 			
 			btningresarPago = new JButton("<html><center>INGRESAR PAGOS</html>");
 			btningresarPago.setFont(new Font("Cambria", Font.BOLD, 14));
-			btningresarPago.setBounds(326, 29, 151, 60);
+			btningresarPago.setBounds(326, 27, 151, 60);
 			contentPane.add(btningresarPago);
 			
 			btnmarcarAceptaciones = new JButton("<html><center>MARCAR ACEPTACIONES</html>");
 			btnmarcarAceptaciones.setFont(new Font("Cambria", Font.BOLD, 14));
-			btnmarcarAceptaciones.setBounds(167, 29, 151, 60);
+			btnmarcarAceptaciones.setBounds(167, 27, 151, 60);
 			contentPane.add(btnmarcarAceptaciones);
 
 		

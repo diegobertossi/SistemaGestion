@@ -30,7 +30,7 @@ public class VentanaSalidas extends JFrame
 		this.controlador = controlador;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 495, 183);
+		setBounds(100, 100, 504, 153);
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
 		
@@ -44,18 +44,18 @@ public class VentanaSalidas extends JFrame
 		
 				
 		btnGenerarRemito = new JButton("<html><center>GENERAR REMITO POR CLIENTE</html>");
-		btnGenerarRemito.setBounds(10, 47, 147, 63);
+		btnGenerarRemito.setBounds(8, 27, 151, 60);
 		contentPane.add(btnGenerarRemito);
 		btnGenerarRemito.setFont(new Font("Cambria", Font.BOLD, 14));
 		
 			
 			btnMarcarEnviados = new JButton("<html><center>MARCAR ENVIADOS</html>");
-			btnMarcarEnviados.setBounds(173, 47, 147, 63);
+			btnMarcarEnviados.setBounds(326, 27, 151, 60);
 			contentPane.add(btnMarcarEnviados);
 			btnMarcarEnviados.setFont(new Font("Cambria", Font.BOLD, 14));
 			
 			btnDesvincularRemito = new JButton("<html><center>DESVINCULAR REMITO</html>");
-			btnDesvincularRemito.setBounds(332, 47, 147, 63);
+			btnDesvincularRemito.setBounds(167, 27, 151, 60);
 			contentPane.add(btnDesvincularRemito);
 			btnDesvincularRemito.setFont(new Font("Cambria", Font.BOLD, 14));
 
