@@ -127,7 +127,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		else if (e.getSource() == this.ventanaClientes.getBtnEditar()) {
 
 			int fila = this.ventanaClientes.getTablaClientes().getSelectedRow();
-			if (fila != -1) {
+			if (fila != -1 && clienteElegido != null) {
 
 				this.ventanaEditarCliente = new VentanaAgregarCliente(this);
 

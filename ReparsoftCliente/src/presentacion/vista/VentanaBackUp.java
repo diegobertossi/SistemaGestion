@@ -22,12 +22,11 @@ public class VentanaBackUp extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
-	private JButton btnGenerarB;
-	private JButton btnImportarB;
 	
 	@SuppressWarnings("unused")
 	private ControladorBackup controladorBackup;
+	private JButton btnGenerarB;
+	private JButton btnImportarB;
 	
 
 
@@ -37,54 +36,39 @@ public class VentanaBackUp extends JFrame
 		setResizable(false);
 		//this.setDefaultCloseOperation(VentanaBackUp.DO_NOTHING_ON_CLOSE);
 		this.controladorBackup = controladorBackup;
-		setBounds(100, 100, 373, 172);
+		setBounds(100, 100, 306, 155);
 		this.setLocationRelativeTo(null);
 		
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
 		
 		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setAutoscrolls(true);
 		contentPane.setAlignmentY(Component.TOP_ALIGNMENT);
 		contentPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
-		JPanel panel = new JPanel();
-		panel.setBackground(SystemColor.inactiveCaption);
-		panel.setAlignmentY(Component.TOP_ALIGNMENT);
-		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.setBounds(0, 0, 370, 143);
-		contentPane.add(panel);
-		panel.setLayout(null);
+		
+		btnGenerarB = new JButton("<html><center>GENERAR BACKUP</html>");
+		btnGenerarB.setForeground(Color.BLACK);
+		btnGenerarB.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnGenerarB.setBackground(SystemColor.menu);
+		btnGenerarB.setBounds(30, 33, 100, 50);;
+		contentPane.add(btnGenerarB);
+		
+		btnImportarB = new JButton("<html><center>IMPORTAR BACKUP</html>");
+		btnImportarB.setForeground(Color.BLACK);
+		btnImportarB.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnImportarB.setBackground(SystemColor.menu);
+		btnImportarB.setBounds(160, 33, 100, 50);
+		contentPane.add(btnImportarB);
 
 		this.setVisible(true);
 
 		@SuppressWarnings("unused")
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
-		
-		
-		btnGenerarB = new JButton("<html><center>GENERAR BACKUP</html>");
-		btnGenerarB.setForeground(new Color(0, 0, 0));
-		btnGenerarB.setBackground(SystemColor.menu);
-		btnGenerarB.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnGenerarB.setBounds(65, 61, 104, 55);
-		panel.add(btnGenerarB);
-		
-		btnImportarB = new JButton("<html><center>IMPORTAR BACKUP</html>");
-		btnImportarB.setForeground(new Color(0, 0, 0));
-		btnImportarB.setBackground(SystemColor.menu);
-		btnImportarB.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnImportarB.setBounds(199, 61, 104, 55);
-		panel.add(btnImportarB);
-		
-		JLabel lblBackUp = new JLabel("BACKUP");
-		lblBackUp.setForeground(new Color(0, 0, 0));
-		lblBackUp.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBackUp.setFont(new Font("Cambria", Font.BOLD, 22));
-		lblBackUp.setBounds(135, 11, 104, 40);
-		panel.add(lblBackUp);
 		
 	
 		this.setVisible(true);

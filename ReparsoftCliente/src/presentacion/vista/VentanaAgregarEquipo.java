@@ -134,7 +134,7 @@ public class VentanaAgregarEquipo extends JFrame {
 
 		lblEls = new JLabel("ELS: ");
 		lblEls.setForeground(Color.BLUE);
-		lblEls.setBounds(6, 11, 56, 54);
+		lblEls.setBounds(6, 11, 56, 32);
 		panel.add(lblEls);
 		lblEls.setFont(new Font("Cambria", Font.BOLD, 22));
 
@@ -153,21 +153,21 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_6.setLayout(null);
 
 		comboSerie = new JComboBox<Object>();
-		comboSerie.setBounds(125, 110, 190, 20);
+		comboSerie.setBounds(125, 86, 190, 20);
 		panel_6.add(comboSerie);
 		comboSerie.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboSerie.setBackground(SystemColor.inactiveCaptionBorder);
 		comboSerie.setEditable(true);
 
 		comboModelo = new JComboBox<Object>();
-		comboModelo.setBounds(125, 79, 347, 20);
+		comboModelo.setBounds(125, 63, 347, 20);
 		panel_6.add(comboModelo);
 		comboModelo.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboModelo.setBackground(SystemColor.inactiveCaptionBorder);
 		comboModelo.setEditable(true);
 
 		comboMarca = new JComboBox<Object>();
-		comboMarca.setBounds(125, 48, 347, 20);
+		comboMarca.setBounds(125, 40, 347, 20);
 		panel_6.add(comboMarca);
 		comboMarca.setFont(new Font("Cambria", Font.PLAIN, 14));
 		comboMarca.setBackground(SystemColor.inactiveCaptionBorder);
@@ -187,32 +187,32 @@ public class VentanaAgregarEquipo extends JFrame {
 		lblNombreEquipo.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblMarca = new JLabel("Marca:  ");
-		lblMarca.setBounds(24, 51, 87, 14);
+		lblMarca.setBounds(24, 43, 87, 14);
 		panel_6.add(lblMarca);
 		lblMarca.setBorder(null);
 		lblMarca.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblModelo = new JLabel("Modelo: ");
-		lblModelo.setBounds(24, 82, 87, 14);
+		lblModelo.setBounds(24, 67, 87, 14);
 		panel_6.add(lblModelo);
 		lblModelo.setBorder(null);
 		lblModelo.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		lblNserie = new JLabel("N° de Serie: ");
-		lblNserie.setBounds(24, 113, 87, 14);
+		lblNserie.setBounds(24, 89, 87, 14);
 		panel_6.add(lblNserie);
 		lblNserie.setBorder(null);
 		lblNserie.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		JLabel lblFechaDeFabr = new JLabel("Fecha de Fabr.: ");
-		lblFechaDeFabr.setBounds(22, 144, 100, 14);
+		lblFechaDeFabr.setBounds(24, 113, 100, 14);
 		panel_6.add(lblFechaDeFabr);
 		lblFechaDeFabr.setBorder(null);
 		lblFechaDeFabr.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnGenerarSerie = new JButton("<html><center>Generar N° de Serie</html>");
 		btnGenerarSerie.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnGenerarSerie.setBounds(325, 110, 147, 20);
+		btnGenerarSerie.setBounds(325, 86, 147, 20);
 		panel_6.add(btnGenerarSerie);
 		btnGenerarSerie.setForeground(Color.BLACK);
 		btnGenerarSerie.setFont(new Font("Cambria", Font.BOLD, 12));
@@ -220,20 +220,20 @@ public class VentanaAgregarEquipo extends JFrame {
 
 		btnFechaDefault = new JButton("<html><center>Si no se conoce fecha, presionar aquí</html>");
 		btnFechaDefault.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnFechaDefault.setBounds(235, 140, 237, 23);
+		btnFechaDefault.setBounds(235, 109, 237, 23);
 		panel_6.add(btnFechaDefault);
 		btnFechaDefault.setForeground(Color.BLACK);
 		btnFechaDefault.setFont(new Font("Cambria", Font.BOLD, 12));
 		btnFechaDefault.setBackground(new Color(176, 224, 230));
 
 		textFechafabricacion = new JTextFieldDateEditor("dd/MM/yyyy", "##-##-####", '-');
-		textFechafabricacion.setBounds(125, 141, 100, 20);
+		textFechafabricacion.setBounds(125, 110, 100, 20);
 		panel_6.add(textFechafabricacion);
 		textFechafabricacion.setHorizontalAlignment(SwingConstants.CENTER);
 		textFechafabricacion.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		textSerie = new JTextField();
-		textSerie.setBounds(125, 110, 190, 20);
+		textSerie.setBounds(125, 86, 190, 20);
 		panel_6.add(textSerie);
 		textSerie.setHorizontalAlignment(SwingConstants.LEFT);
 		textSerie.setFont(new Font("Cambria", Font.PLAIN, 14));
@@ -243,12 +243,12 @@ public class VentanaAgregarEquipo extends JFrame {
 		textSerie.setAlignmentX(0.0f);
 
 		lblFalla = new JLabel("Falla: ");
-		lblFalla.setBounds(24, 181, 52, 14);
+		lblFalla.setBounds(24, 138, 52, 14);
 		panel_6.add(lblFalla);
 		lblFalla.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(24, 197, 448, 56);
+		scrollPane.setBounds(24, 154, 448, 56);
 		panel_6.add(scrollPane);
 
 		textFalla = new JTextAreaCustom();
@@ -374,7 +374,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		textELS.setForeground(new Color(0, 0, 255));
 		textELS.setEditable(false);
 		textELS.setHorizontalAlignment(SwingConstants.CENTER);
-		textELS.setBounds(60, 11, 115, 54);
+		textELS.setBounds(60, 11,  181, 32);
 		panel.add(textELS);
 		textELS.setFont(new Font("Cambria", Font.BOLD, 22));
 		textELS.setColumns(10);
@@ -389,7 +389,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.activeCaption);
 		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_3.setBounds(372, 473, 402, 66);
+		panel_3.setBounds(372, 485, 402, 54);
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 
@@ -397,29 +397,29 @@ public class VentanaAgregarEquipo extends JFrame {
 		BotonNuevaReparacion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonNuevaReparacion.setEnabled(false);
 		BotonNuevaReparacion.setBackground(new Color(152, 251, 152));
-		BotonNuevaReparacion.setBounds(272, 11, 105, 45);
+		BotonNuevaReparacion.setBounds(272, 8, 105, 37);
 		panel_3.add(BotonNuevaReparacion);
 		BotonNuevaReparacion.setForeground(Color.BLACK);
-		BotonNuevaReparacion.setFont(new Font("Cambria", Font.BOLD, 14));
+		BotonNuevaReparacion.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		BotonGenerarRegistro = new JButton("<html><center>GENERAR REGISTRO<html>");
 		BotonGenerarRegistro.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonGenerarRegistro.setBackground(new Color(152, 251, 152));
-		BotonGenerarRegistro.setBounds(10, 11, 105, 45);
+		BotonGenerarRegistro.setBounds(10, 8, 105, 37);
 		panel_3.add(BotonGenerarRegistro);
 		BotonGenerarRegistro.setForeground(Color.BLACK);
-		BotonGenerarRegistro.setFont(new Font("Cambria", Font.BOLD, 14));
+		BotonGenerarRegistro.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		BotonGuardar = new JButton("<html><center>GUARDAR<html>");
 		BotonGuardar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BotonGuardar.setBackground(new Color(152, 251, 152));
-		BotonGuardar.setBounds(125, 11, 105, 45);
+		BotonGuardar.setBounds(125, 8, 105, 37);
 		panel_3.add(BotonGuardar);
 		BotonGuardar.setForeground(Color.BLACK);
-		BotonGuardar.setFont(new Font("Cambria", Font.BOLD, 14));
+		BotonGuardar.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		panel_2 = new JPanel();
-		panel_2.setBounds(6, 473, 341, 66);
+		panel_2.setBounds(6, 485, 341, 54);
 		panel.add(panel_2);
 		panel_2.setBackground(SystemColor.activeCaption);
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));

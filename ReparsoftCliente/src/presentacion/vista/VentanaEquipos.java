@@ -44,13 +44,13 @@ public class VentanaEquipos extends JFrame
 				
 		btnAgregarEquipos = new JButton("<html><center>AGREGAR EQUIPOS</html>");
 		btnAgregarEquipos.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnAgregarEquipos.setBounds(39, 33, 100, 50);
+		btnAgregarEquipos.setBounds(30, 33, 100, 50);
 		contentPane.add(btnAgregarEquipos);
 		
 			
 			btnVisualizarEquipos = new JButton("<html><center>VISUALIZAR EQUIPOS</html>");
 			btnVisualizarEquipos.setFont(new Font("Cambria", Font.BOLD, 14));
-			btnVisualizarEquipos.setBounds(149, 33, 100, 50);
+			btnVisualizarEquipos.setBounds(160, 33, 100, 50);
 			contentPane.add(btnVisualizarEquipos);
 
 		
