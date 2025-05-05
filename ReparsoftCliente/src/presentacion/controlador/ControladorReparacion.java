@@ -856,6 +856,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 							ventanaAgregarEquipo.getBtnGenerarSerie().setEnabled(false);
 							ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(true);
 							ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().setEnabled(false);
+							ventanaAgregarEquipo.getBotonIRaELS().setEnabled(true);
 
 							Object mje = "Equipo Guardado. Solo se podrá modificar desde la visualización";
 
@@ -880,6 +881,31 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				}
 
 			}
+		}
+
+		else if (this.ventanaAgregarEquipo != null && e.getSource() == this.ventanaAgregarEquipo.getBotonIRaELS()) {
+
+			int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos, "¿Desea ir al ELS generado?",
+					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+			if (seleccion == JOptionPane.YES_OPTION) {
+
+				Integer ELS = Integer.parseInt(ventanaAgregarEquipo.getTextELS());
+
+				ventanaAgregarEquipo.dispose();
+				ventanaAgregarEquipo = null;
+
+				try {
+					TomarDatosDeTablasBusquedaOrden(ELS);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				agregarListenersVentanaVisualizarEquipos(ventanaVisualizarEquipos);
+
+			}
+
 		}
 
 		else if (this.ventanaAgregarEquipo != null
@@ -2303,6 +2329,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(false);
 		ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().addActionListener(this);
 		ventanaAgregarEquipo.getBtnaltaCliente().addActionListener(this);
+		ventanaAgregarEquipo.getBotonIRaELS().addActionListener(this);
 
 		llenarComboCliente();
 		llenarComboSucursal();
@@ -2336,7 +2363,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private void TomarDatosDeTablasBusquedaOrden(int numeroELSSeleccionado) throws ParseException {
 		// Configuración inicial específica para esta función
-		ventanaVisualizarEquipos.dispose();
+
+		if (ventanaVisualizarEquipos != null) {
+			ventanaVisualizarEquipos.dispose();
+		}
+
 		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
 		cerraVentanaVisualizarEquipo();
 

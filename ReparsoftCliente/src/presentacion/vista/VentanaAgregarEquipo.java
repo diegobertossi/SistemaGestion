@@ -95,6 +95,7 @@ public class VentanaAgregarEquipo extends JFrame {
 	private JPanel panel_5;
 	private JPanel panel_6;
 	private JPanel panel_7;
+	private JButton BotonIRaELS;
 
 	public VentanaAgregarEquipo(ControladorReparacion controladorReparacion) {
 
@@ -316,6 +317,14 @@ public class VentanaAgregarEquipo extends JFrame {
 		textRemitoCliente.setAlignmentX(Component.LEFT_ALIGNMENT);
 		textRemitoCliente.setHorizontalAlignment(SwingConstants.LEFT);
 		textRemitoCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
+		
+		BotonIRaELS = new JButton("<html><center>IR A VISUALIZACIÓN<html>");
+		BotonIRaELS.setEnabled(false);
+		BotonIRaELS.setForeground(Color.BLACK);
+		BotonIRaELS.setFont(new Font("Cambria", Font.BOLD, 14));
+		BotonIRaELS.setBackground(new Color(152, 251, 152));
+		BotonIRaELS.setBounds(57, 178, 122, 45);
+		panel_7.add(BotonIRaELS);
 		//textRemitoCliente.setColumns(10);
 
 		panel_5 = new JPanel();
@@ -690,6 +699,14 @@ public class VentanaAgregarEquipo extends JFrame {
 
 	public void setBtnaltaCliente(JButton btnaltaCliente) {
 		this.btnaltaCliente = btnaltaCliente;
+	}
+
+	public JButton getBotonIRaELS() {
+		return BotonIRaELS;
+	}
+
+	public void setBotonIRaELS(JButton botonIRaELS) {
+		BotonIRaELS = botonIRaELS;
 	}
 
 
