@@ -110,7 +110,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		FechaEntrada.getCalendarButton().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 821, 585);
+		setBounds(100, 100, 786, 524);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setAutoscrolls(true);
@@ -124,7 +124,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.setBounds(0, 0, 805, 547);
+		panel.setBounds(0, 0, 778, 501);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -141,14 +141,14 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_1 = new JPanel();
 		panel_1.setBackground(SystemColor.activeCaption);
 		panel_1.setBorder(new LineBorder(null));
-		panel_1.setBounds(6, 106, 768, 361);
+		panel_1.setBounds(6, 106, 765, 312);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 
 		panel_6 = new JPanel();
 		panel_6.setOpaque(false);
 		panel_6.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_6.setBounds(12, 75, 487, 264);
+		panel_6.setBounds(12, 75, 487, 219);
 		panel_1.add(panel_6);
 		panel_6.setLayout(null);
 
@@ -267,7 +267,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_7 = new JPanel();
 		panel_7.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_7.setOpaque(false);
-		panel_7.setBounds(509, 75, 237, 264);
+		panel_7.setBounds(509, 75, 237, 219);
 		panel_1.add(panel_7);
 		panel_7.setLayout(null);
 
@@ -323,7 +323,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		BotonIRaELS.setForeground(Color.BLACK);
 		BotonIRaELS.setFont(new Font("Cambria", Font.BOLD, 14));
 		BotonIRaELS.setBackground(new Color(152, 251, 152));
-		BotonIRaELS.setBounds(57, 178, 122, 45);
+		BotonIRaELS.setBounds(57, 154, 122, 45);
 		panel_7.add(BotonIRaELS);
 		//textRemitoCliente.setColumns(10);
 
@@ -381,7 +381,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		textELS.setAlignmentX(CENTER_ALIGNMENT);
 
 		FechaEntrada.setFont(new Font("Cambria", Font.BOLD, 14));
-		FechaEntrada.setBounds(622, 76, 152, 20);
+		FechaEntrada.setBounds(619, 76, 152, 20);
 		panel.add(FechaEntrada);
 
 		GrupoEstadoFisico = new ButtonGroup();
@@ -389,7 +389,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.activeCaption);
 		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_3.setBounds(372, 485, 402, 54);
+		panel_3.setBounds(372, 426, 399, 54);
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 
@@ -419,7 +419,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		BotonGuardar.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		panel_2 = new JPanel();
-		panel_2.setBounds(6, 485, 341, 54);
+		panel_2.setBounds(6, 426, 341, 54);
 		panel.add(panel_2);
 		panel_2.setBackground(SystemColor.activeCaption);
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -460,7 +460,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_4 = new JPanel();
 		panel_4.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_4.setBackground(SystemColor.activeCaption);
-		panel_4.setBounds(457, 11, 317, 54);
+		panel_4.setBounds(457, 11, 314, 54);
 		panel.add(panel_4);
 		panel_4.setLayout(null);
 
