@@ -25,6 +25,8 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 
 public class VentanaListadoReparaciones extends JFrame {
@@ -96,6 +98,21 @@ public class VentanaListadoReparaciones extends JFrame {
 		Dimension ventana = getSize();
 		setLocation((pantalla.width - ventana.width) / 2, (pantalla.height - ventana.height) / 2);
 	}
+	
+	
+	private JButton btnOcultarColumnas;
+    private JPopupMenu popupMenu;
+
+    // Nombres de las columnas (ajusta según tus necesidades)
+    private String[] nombresColumnas = {
+        "ELS", "SUCURSAL", "MODELO", "REVISIÓN", "ESTADO COM", 
+        "UBICACIÓN REMITO", "PAGO", "INGRESO", "ENTRADA", "EQUIPO",
+        "SERIE", "SALIDA", "ESTADO FÍS", "NÚMERO REMITO", "PRECIO PESO",
+        "PRESUPUESTO GEN", "CLIENTE", "MARCA", "AVISO", "TÉCNICO",
+        "ESTADO TÉC", "CLIENTE/CLIENTE", "PRECIO DOLAR", "PRESUPUESTO ENV"
+    };
+	
+	
 
 	@SuppressWarnings("serial")
 	public VentanaListadoReparaciones(ControladorListados controlador) {
@@ -293,6 +310,45 @@ public class VentanaListadoReparaciones extends JFrame {
 		chckbxPresupuestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENV");
 		darFormatoOcultarColumnas(chckbxPresupuestoEnviadoColumna);
 		panelColumnas.add(chckbxPresupuestoEnviadoColumna);
+		
+		
+		
+		// Botón para activar el menú desplegable
+        btnOcultarColumnas = new JButton("OCULTAR COLUMNAS");
+        add(btnOcultarColumnas, BorderLayout.NORTH);
+
+        // Crear el menú emergente con JCheckBoxMenuItem
+        popupMenu = new JPopupMenu();
+        popupMenu.setLightWeightPopupEnabled(false); // Evita que se cierre al hacer clic
+        
+        // Añadir cada JCheckBoxMenuItem al menú
+        for (String nombreColumna : nombresColumnas) {
+        	JCheckBoxMenuItem item = new JCheckBoxMenuItem(nombreColumna, true);
+            item.addActionListener(e -> {
+                // Evita que el menú se cierre al hacer clic
+                if (e.getSource() instanceof JCheckBoxMenuItem) {
+                    SwingUtilities.invokeLater(() -> {
+                        popupMenu.setVisible(true);
+                    });
+                }
+            });
+            item.addItemListener(e -> actualizarVisibilidadColumnas(nombreColumna));
+            popupMenu.add(item);
+        }
+
+        // Mostrar el menú al hacer clic en el botón
+        btnOcultarColumnas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                popupMenu.show(btnOcultarColumnas, 0, btnOcultarColumnas.getHeight());
+            }
+        });
+
+		
+		
+		
+		
+	
 
 		panelCentral = new JPanel();
 		panelCentral.setBorder(new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 128, 128)),
@@ -351,6 +407,22 @@ public class VentanaListadoReparaciones extends JFrame {
 	public DefaultTableModel getModelReparaciones() {
 		return modelReparaciones;
 	}
+	
+	private void actualizarVisibilidadColumnas(String nombreColumna) {
+		
+		System.out.println(nombreColumna);
+		
+		
+//        for (int i = 0; i < popupMenu.getComponentCount(); i++) {
+//            Component comp = popupMenu.getComponent(i);
+//            if (comp instanceof JCheckBoxMenuItem) {
+//                JCheckBoxMenuItem item = (JCheckBoxMenuItem) comp;
+//                table.getColumnModel().getColumn(i).setResizable(true);
+//                table.getColumnModel().getColumn(i).setMinWidth(item.isSelected() ? 50 : 0);
+//                table.getColumnModel().getColumn(i).setMaxWidth(item.isSelected() ? Integer.MAX_VALUE : 0);
+//            }
+//        }
+    }
 
 	public static void darFormatoFiltros(JLabel label, JComboBox<?> comboBox, JRadioButton radioButton) {
 		// Formatear JLabel
