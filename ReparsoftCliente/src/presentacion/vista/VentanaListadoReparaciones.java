@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -21,12 +24,18 @@ import presentacion.controlador.ControladorListados;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+
 import net.miginfocom.swing.MigLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 
 public class VentanaListadoReparaciones extends JFrame {
@@ -86,8 +95,11 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JLabel lblNewLabel_10;
 	private JCheckBox chckbxPago;
 	private JCheckBox chckbxPrecioPeso;
-	private JLabel lbTitulo;
 	private JButton btnEstadisticas;
+
+	private JToggleButton toggleBtnOcultar;
+	private JWindow windowOpciones;
+	private JPanel panelCheckboxes;
 
 	protected void this_windowOpened(WindowEvent e) {
 		centrarVentana();
@@ -98,21 +110,12 @@ public class VentanaListadoReparaciones extends JFrame {
 		Dimension ventana = getSize();
 		setLocation((pantalla.width - ventana.width) / 2, (pantalla.height - ventana.height) / 2);
 	}
-	
-	
-	private JButton btnOcultarColumnas;
-    private JPopupMenu popupMenu;
 
-    // Nombres de las columnas (ajusta según tus necesidades)
-    private String[] nombresColumnas = {
-        "ELS", "SUCURSAL", "MODELO", "REVISIÓN", "ESTADO COM", 
-        "UBICACIÓN REMITO", "PAGO", "INGRESO", "ENTRADA", "EQUIPO",
-        "SERIE", "SALIDA", "ESTADO FÍS", "NÚMERO REMITO", "PRECIO PESO",
-        "PRESUPUESTO GEN", "CLIENTE", "MARCA", "AVISO", "TÉCNICO",
-        "ESTADO TÉC", "CLIENTE/CLIENTE", "PRECIO DOLAR", "PRESUPUESTO ENV"
-    };
-	
-	
+	// Nombres de las columnas (ajusta según tus necesidades)
+	private String[] nombresColumnas = { "ELS", "SUCURSAL", "MODELO", "REVISIÓN", "ESTADO COM", "UBICACIÓN REMITO",
+			"PAGO", "INGRESO", "ENTRADA", "EQUIPO", "SERIE", "SALIDA", "ESTADO FÍS", "NÚMERO REMITO", "PRECIO PESO",
+			"PRESUPUESTO GEN", "CLIENTE", "MARCA", "AVISO", "TÉCNICO", "ESTADO TÉC", "CLIENTE/CLIENTE", "PRECIO DOLAR",
+			"PRESUPUESTO ENV" };
 
 	@SuppressWarnings("serial")
 	public VentanaListadoReparaciones(ControladorListados controlador) {
@@ -139,50 +142,25 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelSuperior.setLayout(new BorderLayout(0, 0));
 
 		panelFiltros = new JPanel();
+//		panelFiltros.setPreferredSize(new Dimension(20, 50));
 		panelFiltros.setFont(new Font("Cambria", Font.PLAIN, 10));
 		panelFiltros.setBackground(new Color(176, 196, 222));
-		panelFiltros.setBorder(new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 128, 128)), new EmptyBorder(0, 5, 5, 10)));
+//		panelFiltros.setBorder(new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 128, 128)),
+//				new EmptyBorder(0, 5, 5, 10)));
 		panelSuperior.add(panelFiltros, BorderLayout.CENTER);
-				
-						lbTitulo = new JLabel("OCULTAR COLUMNAS");
-						lbTitulo.setHorizontalTextPosition(SwingConstants.CENTER);
-						lbTitulo.setHorizontalAlignment(SwingConstants.LEFT);
-						lbTitulo.setFont(new Font("Cambria", Font.BOLD, 22));
-		
-				btnEstadisticas = new JButton("ESTADÍSTICAS");
-				btnEstadisticas.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-					}
-				});
-				btnEstadisticas.setBorder(new LineBorder(new Color(0, 128, 128)));
-				btnEstadisticas.setForeground(new Color(255, 255, 255));
-				btnEstadisticas.setBackground(new Color(95, 158, 160));
-				btnEstadisticas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				btnEstadisticas.setPreferredSize(new Dimension(150, 30));
-				btnEstadisticas.setMargin(new Insets(0, 10, 0, 10));
-				btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 22));
-				GroupLayout gl_panelFiltros = new GroupLayout(panelFiltros);
-				gl_panelFiltros.setHorizontalGroup(
-					gl_panelFiltros.createParallelGroup(Alignment.TRAILING)
-						.addGroup(Alignment.LEADING, gl_panelFiltros.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lbTitulo, GroupLayout.PREFERRED_SIZE, 574, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
-							.addComponent(btnEstadisticas, GroupLayout.PREFERRED_SIZE, 215, GroupLayout.PREFERRED_SIZE)
-							.addGap(135))
-				);
-				gl_panelFiltros.setVerticalGroup(
-					gl_panelFiltros.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_panelFiltros.createSequentialGroup()
-							.addContainerGap(15, Short.MAX_VALUE)
-							.addGroup(gl_panelFiltros.createParallelGroup(Alignment.LEADING)
-								.addComponent(lbTitulo, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-								.addGroup(Alignment.TRAILING, gl_panelFiltros.createSequentialGroup()
-									.addComponent(btnEstadisticas, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-									.addGap(4)))
-							.addGap(9))
-				);
-				panelFiltros.setLayout(gl_panelFiltros);
+
+		btnEstadisticas = new JButton("ESTADÍSTICAS");
+		btnEstadisticas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnEstadisticas.setBorder(new LineBorder(new Color(0, 128, 128)));
+		btnEstadisticas.setForeground(new Color(255, 255, 255));
+		btnEstadisticas.setBackground(new Color(95, 158, 160));
+		btnEstadisticas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnEstadisticas.setPreferredSize(new Dimension(300, 30));
+		btnEstadisticas.setMargin(new Insets(0, 10, 0, 10));
+		btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 22));
 
 		panelTitulo = new JPanel();
 		panelTitulo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 128, 128)));
@@ -310,45 +288,127 @@ public class VentanaListadoReparaciones extends JFrame {
 		chckbxPresupuestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENV");
 		darFormatoOcultarColumnas(chckbxPresupuestoEnviadoColumna);
 		panelColumnas.add(chckbxPresupuestoEnviadoColumna);
-		
-		
-		
-		// Botón para activar el menú desplegable
-        btnOcultarColumnas = new JButton("OCULTAR COLUMNAS");
-        add(btnOcultarColumnas, BorderLayout.NORTH);
+		panelFiltros.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-        // Crear el menú emergente con JCheckBoxMenuItem
-        popupMenu = new JPopupMenu();
-        popupMenu.setLightWeightPopupEnabled(false); // Evita que se cierre al hacer clic
+		// Configurar el botón toggle
+		toggleBtnOcultar = new JToggleButton("OCULTAR COLUMNAS");
+		
+		toggleBtnOcultar.setIcon(new ImageIcon(this.getClass().getResource("/arrow_down.png")));
+		
+		
+		toggleBtnOcultar.setBorder(new LineBorder(new Color(0, 128, 128)));
+		toggleBtnOcultar.setForeground(new Color(255, 255, 255));
+		toggleBtnOcultar.setBackground(new Color(95, 158, 160));
+		toggleBtnOcultar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		toggleBtnOcultar.setPreferredSize(new Dimension(300, 30));
+		toggleBtnOcultar.setMargin(new Insets(0, 10, 0, 10));
+		toggleBtnOcultar.setFont(new Font("Cambria", Font.BOLD, 22));
+		
+		
+		Dimension maxSize = new Dimension(
+			    Math.max(toggleBtnOcultar.getPreferredSize().width, btnEstadisticas.getPreferredSize().width),
+			    Math.max(toggleBtnOcultar.getPreferredSize().height, btnEstadisticas.getPreferredSize().height)
+			);
+			toggleBtnOcultar.setPreferredSize(maxSize);
+			btnEstadisticas.setPreferredSize(maxSize);
+
+		
+//		toggleBtnOcultar.setBackground(Color.WHITE);
+//		toggleBtnOcultar.setBorder(BorderFactory.createCompoundBorder(
+//		    BorderFactory.createLineBorder(Color.GRAY),
+//		    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+//		));
+		
+		
+		panelFiltros.setLayout(new BoxLayout(panelFiltros, BoxLayout.X_AXIS));
+		panelFiltros.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+		
+//		
+//		panelFiltros.add(toggleBtnOcultar);
+//		panelFiltros.add(btnEstadisticas);
+
+		// Centrar y añadir botones
+        toggleBtnOcultar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnEstadisticas.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        // Añadir cada JCheckBoxMenuItem al menú
-        for (String nombreColumna : nombresColumnas) {
-        	JCheckBoxMenuItem item = new JCheckBoxMenuItem(nombreColumna, true);
-            item.addActionListener(e -> {
-                // Evita que el menú se cierre al hacer clic
-                if (e.getSource() instanceof JCheckBoxMenuItem) {
-                    SwingUtilities.invokeLater(() -> {
-                        popupMenu.setVisible(true);
-                    });
-                }
-            });
-            item.addItemListener(e -> actualizarVisibilidadColumnas(nombreColumna));
-            popupMenu.add(item);
-        }
+        panelFiltros.add(Box.createHorizontalGlue());
+        panelFiltros.add(toggleBtnOcultar);
+        panelFiltros.add(Box.createRigidArea(new Dimension(50, 0)));
+        panelFiltros.add(btnEstadisticas);
+        panelFiltros.add(Box.createHorizontalGlue());
+		
+		
+		// Usar JWindow en lugar de JDialog para mejor control
+		windowOpciones = new JWindow(this);
+		windowOpciones.setFocusableWindowState(false);
 
-        // Mostrar el menú al hacer clic en el botón
-        btnOcultarColumnas.addActionListener(new ActionListener() {
+		// Panel para los checkboxes con scroll
+		panelCheckboxes = new JPanel();
+		panelCheckboxes.setLayout(new GridLayout(0, 1, 0, 2));
+		panelCheckboxes.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		panelCheckboxes.setBackground(new Color(95, 158, 160));
+
+		// Añadir JCheckBox al panel
+		for (String nombreColumna : nombresColumnas) {
+			JCheckBox checkBox = new JCheckBox(nombreColumna, true);
+			checkBox.setFont(new Font("Cambria", Font.PLAIN, 12));
+			checkBox.setBackground(new Color(95, 158, 160));
+			checkBox.addItemListener(e -> actualizarVisibilidadColumnas());
+			panelCheckboxes.add(checkBox);
+		}
+
+		JScrollPane scrollPane = new JScrollPane(panelCheckboxes);
+		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150)));
+		scrollPane.setPreferredSize(new Dimension(200, 300)); // Tamaño fijo para el scroll
+		
+		// Ajustar velocidad del scroll
+		JScrollBar vertical = scrollPane.getVerticalScrollBar();
+		vertical.setUnitIncrement(16);  // Más desplazamiento por giro de rueda
+		vertical.setBlockIncrement(50); // Más desplazamiento al hacer clic en la pista
+
+		windowOpciones.getContentPane().add(scrollPane);
+		windowOpciones.pack();
+
+		// Controlar apertura/cierre
+		toggleBtnOcultar.addActionListener(e -> {
+			if (toggleBtnOcultar.isSelected()) {
+				
+				mostrarPanel();
+				toggleBtnOcultar.setIcon(new ImageIcon(this.getClass().getResource("/arrow_up.png")));
+			} else {
+				ocultarPanel();
+				toggleBtnOcultar.setIcon(new ImageIcon(this.getClass().getResource("/arrow_down.png")));
+			}
+		});
+		 // Manejador para cerrar al hacer clic fuera
+        AWTEventListener clickOutsideListener = new AWTEventListener() {
+            public void eventDispatched(AWTEvent event) {
+                if (event.getID() == MouseEvent.MOUSE_PRESSED && 
+                    windowOpciones.isVisible()) {
+                    
+                    MouseEvent me = (MouseEvent) event;
+                    Component source = me.getComponent();
+                    
+                    // Verificar si el clic fue fuera de la ventana y del botón
+                    if (source != toggleBtnOcultar && 
+                        !isChildOf(windowOpciones, source) && 
+                        source != toggleBtnOcultar) {
+                        
+                        ocultarPanel();
+                        toggleBtnOcultar.setIcon(new ImageIcon(this.getClass().getResource("/arrow_down.png")));
+                    }
+                }
+            }
+        };
+        Toolkit.getDefaultToolkit().addAWTEventListener(clickOutsideListener, AWTEvent.MOUSE_EVENT_MASK);
+        
+        // Limpiar el listener cuando se cierre la ventana principal
+        addWindowListener(new WindowAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                popupMenu.show(btnOcultarColumnas, 0, btnOcultarColumnas.getHeight());
+            public void windowClosed(WindowEvent e) {
+                Toolkit.getDefaultToolkit().removeAWTEventListener(clickOutsideListener);
             }
         });
-
-		
-		
-		
-		
-	
 
 		panelCentral = new JPanel();
 		panelCentral.setBorder(new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 128, 128)),
@@ -396,6 +456,11 @@ public class VentanaListadoReparaciones extends JFrame {
 		this.setVisible(true);
 	}
 
+	private Object actualizarVisibilidadColumnas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public void setCellRender(JTable table) {
 		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
 		while (en.hasMoreElements()) {
@@ -407,22 +472,28 @@ public class VentanaListadoReparaciones extends JFrame {
 	public DefaultTableModel getModelReparaciones() {
 		return modelReparaciones;
 	}
-	
-	private void actualizarVisibilidadColumnas(String nombreColumna) {
-		
-		System.out.println(nombreColumna);
-		
-		
-//        for (int i = 0; i < popupMenu.getComponentCount(); i++) {
-//            Component comp = popupMenu.getComponent(i);
-//            if (comp instanceof JCheckBoxMenuItem) {
-//                JCheckBoxMenuItem item = (JCheckBoxMenuItem) comp;
-//                table.getColumnModel().getColumn(i).setResizable(true);
-//                table.getColumnModel().getColumn(i).setMinWidth(item.isSelected() ? 50 : 0);
-//                table.getColumnModel().getColumn(i).setMaxWidth(item.isSelected() ? Integer.MAX_VALUE : 0);
-//            }
-//        }
+
+	private boolean isChildOf(Component parent, Component child) {
+        while (child != null) {
+            if (child == parent) {
+                return true;
+            }
+            child = child.getParent();
+        }
+        return false;
     }
+	private void mostrarPanel() {
+		Point ubicacionBoton = toggleBtnOcultar.getLocationOnScreen();
+		windowOpciones.setLocation(ubicacionBoton.x, ubicacionBoton.y + toggleBtnOcultar.getHeight());
+		windowOpciones.setVisible(true);
+	}
+
+	private void ocultarPanel() {
+		windowOpciones.setVisible(false);
+		toggleBtnOcultar.setSelected(false);
+	}
+	
+	
 
 	public static void darFormatoFiltros(JLabel label, JComboBox<?> comboBox, JRadioButton radioButton) {
 		// Formatear JLabel
@@ -703,5 +774,4 @@ public class VentanaListadoReparaciones extends JFrame {
 	public void setChckbxSalida(JCheckBox chckbxSalida) {
 		this.chckbxSalida = chckbxSalida;
 	}
-
 }
