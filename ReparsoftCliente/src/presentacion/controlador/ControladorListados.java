@@ -2119,6 +2119,17 @@ public class ControladorListados
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		
+		if (this.ventanaListadoReparaciones == null) {
+			return;
+		}
+
+		// Manejo de clic en la tabla
+		if (arg0.getSource() == this.ventanaListadoReparaciones.getTblReparaciones()) {
+			handleTableClick(arg0);
+			return;
+		}
+		
+		
 		// Mapeo de checkboxes a columnas
 		Map<JCheckBox, ColumnConfig> checkboxConfigMap = createCheckboxConfigMap();
 
