@@ -844,45 +844,11 @@ public class ControladorListados
 				limpiarRecursos();
 			}
 		});
-		configurarEventosCheckboxes();
+
 
 	}
 
-	private void configurarEventosCheckboxes() {
-	    // Guardar los anchos originales de las columnas
-	   
 
-	    for (Component comp : ventanaListadoReparaciones.getCheckboxesColumnas()) {
-	        if (comp instanceof JCheckBox) {
-	            JCheckBox checkbox = (JCheckBox) comp;
-	            int columnIndex = (int) checkbox.getClientProperty("columnIndex");
-	            	            
-	            
-	            TableColumn column = ventanaListadoReparaciones.getTblReparaciones()
-	    				.getColumn(ventanaListadoReparaciones.getTblReparaciones().getColumnName(columnIndex));
-	            
-	            checkbox.addItemListener(e -> {
-	                boolean visible = checkbox.isSelected();
-	                
-	                if (visible) {
-	                	column.setWidth(0);
-		    			column.setMinWidth(0);
-		    			column.setMaxWidth(0);
-
-	                           
-	                    
-	                } else {
-
-	                	column.setWidth(100);
-		    			column.setMinWidth(100);
-		    			column.setMaxWidth(100);
-	                }
-	                
-	       
-	            });
-	        }
-	    }
-	}
 	
 	
 	
@@ -904,18 +870,7 @@ public class ControladorListados
 		return false;
 	}
 
-//	private void actualizarVisibilidadColumnas() {
-//		Component[] components = ventanaListadoReparaciones.getCheckboxesColumnas();
-//		for (int i = 0; i < components.length && i < ventanaListadoReparaciones.getTblListado().getColumnCount(); i++) {
-//			if (components[i] instanceof JCheckBox) {
-//				JCheckBox checkBox = (JCheckBox) components[i];
-//				ventanaListadoReparaciones.getTblListado().getColumnModel().getColumn(i)
-//						.setMinWidth(checkBox.isSelected() ? 50 : 0);
-//				ventanaListadoReparaciones.getTblListado().getColumnModel().getColumn(i)
-//						.setMaxWidth(checkBox.isSelected() ? Integer.MAX_VALUE : 0);
-//			}
-//		}
-//	}
+
 
 	private void cargarTablaFacturacionCliente() {
 		// Limpia la tabla

@@ -62,8 +62,6 @@ public class VentanaListadoReparaciones extends JFrame {
 	private ControladorListados controlador;
 
 	private JPanel panelBotonera;
-	private JPanel panelBotones;
-	private JPanel panelColumnas;
 	private JCheckBox chckbxSucursal;
 	private JCheckBox chckbxModelo;
 	private JCheckBox chckbxRevisión;
@@ -89,13 +87,6 @@ public class VentanaListadoReparaciones extends JFrame {
 	
 	
 	private JCheckBox checkBox;
-	private JLabel lblNewLabel_3;
-	private JLabel lblNewLabel_4;
-	private JLabel lblNewLabel_5;
-	private JLabel lblNewLabel_6;
-	private JLabel lblNewLabel_2;
-	private JLabel lblNewLabel_7;
-	private JLabel lblNewLabel_10;
 	private JCheckBox chckbxPago;
 	private JCheckBox chckbxPrecioPeso;
 	private JButton btnEstadisticas;
@@ -161,8 +152,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		btnEstadisticas.setForeground(new Color(255, 255, 255));
 		btnEstadisticas.setBackground(new Color(95, 158, 160));
 		btnEstadisticas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnEstadisticas.setPreferredSize(new Dimension(300, 30));
-		btnEstadisticas.setMargin(new Insets(0, 10, 0, 10));
+		btnEstadisticas.setPreferredSize(new Dimension(300, 50));
+		btnEstadisticas.setMargin(new Insets(0, 5, 0, 5));
 		btnEstadisticas.setFont(new Font("Cambria", Font.BOLD, 22));
 
 		panelTitulo = new JPanel();
@@ -181,116 +172,99 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelSuperior.add(panelBotonera, BorderLayout.SOUTH);
 		panelBotonera.setLayout(new BorderLayout(0, 0));
 
-		panelBotones = new JPanel();
-		panelBotones
-				.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new EmptyBorder(5, 10, 5, 0)));
-		panelBotones.setBackground(new Color(176, 196, 222));
-		panelBotonera.add(panelBotones, BorderLayout.SOUTH);
-		panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-		panelColumnas = new JPanel();
-		panelColumnas.setBorder(new CompoundBorder(new MatteBorder(0, 1, 0, 1, (Color) new Color(0, 128, 128)),
-				new EmptyBorder(5, 5, 5, 5)));
-		panelColumnas.setBackground(new Color(176, 196, 222));
-		panelBotonera.add(panelColumnas, BorderLayout.NORTH);
-		panelColumnas.setLayout(new GridLayout(3, 6, 5, 5));
 
 		// Checkboxes para ocultar columnas
 		chckbxELS = new JCheckBox("ELS");
 		darFormatoOcultarColumnas(chckbxELS);
-		panelColumnas.add(chckbxELS);
+	
 
 		chckbxSucursal = new JCheckBox("SUCURSAL");
 		darFormatoOcultarColumnas(chckbxSucursal);
-		panelColumnas.add(chckbxSucursal);
+		
 
 		chckbxModelo = new JCheckBox("MODELO");
 		darFormatoOcultarColumnas(chckbxModelo);
-		panelColumnas.add(chckbxModelo);
+
 
 		chckbxRevisión = new JCheckBox("REVISIÓN");
 		darFormatoOcultarColumnas(chckbxRevisión);
-		panelColumnas.add(chckbxRevisión);
-
+	
 		chckbxEstadoCom = new JCheckBox("ESTADO COM");
 		darFormatoOcultarColumnas(chckbxEstadoCom);
-		panelColumnas.add(chckbxEstadoCom);
+
 
 		chckbxUbicacionRemito = new JCheckBox("UBICACIÓN REMITO");
 		darFormatoOcultarColumnas(chckbxUbicacionRemito);
-		panelColumnas.add(chckbxUbicacionRemito);
+
 
 		chckbxPago = new JCheckBox("PAGO");
 		darFormatoOcultarColumnas(chckbxPago);
-		panelColumnas.add(chckbxPago);
+
 
 		chckbxIngreso = new JCheckBox("INGRESO");
 		darFormatoOcultarColumnas(chckbxIngreso);
-		panelColumnas.add(chckbxIngreso);
 
 		chckbxEntrada = new JCheckBox("ENTRADA");
 		darFormatoOcultarColumnas(chckbxEntrada);
-		panelColumnas.add(chckbxEntrada);
 
 		chckbxEquipo = new JCheckBox("EQUIPO");
 		darFormatoOcultarColumnas(chckbxEquipo);
-		panelColumnas.add(chckbxEquipo);
+
 
 		chckbxSerie = new JCheckBox("SERIE");
 		darFormatoOcultarColumnas(chckbxSerie);
-		panelColumnas.add(chckbxSerie);
+	
 
 		chckbxSalida = new JCheckBox("SALIDA");
 		darFormatoOcultarColumnas(chckbxSalida);
-		panelColumnas.add(chckbxSalida);
+	
 
 		chckbxEstadoFis = new JCheckBox("ESTADO FÍS");
 		darFormatoOcultarColumnas(chckbxEstadoFis);
-		panelColumnas.add(chckbxEstadoFis);
 
 		chckbxNumeroRemito = new JCheckBox("NÚMERO REMITO");
 		darFormatoOcultarColumnas(chckbxNumeroRemito);
-		panelColumnas.add(chckbxNumeroRemito);
+
 
 		chckbxPrecioPeso = new JCheckBox("PRECIO PESO");
 		darFormatoOcultarColumnas(chckbxPrecioPeso);
-		panelColumnas.add(chckbxPrecioPeso);
+
 
 		chckbxPresupuestoGeneradoColumna = new JCheckBox("PRESUPUESTO GEN");
 		darFormatoOcultarColumnas(chckbxPresupuestoGeneradoColumna);
-		panelColumnas.add(chckbxPresupuestoGeneradoColumna);
+
 
 		chckbxCliente = new JCheckBox("CLIENTE");
 		darFormatoOcultarColumnas(chckbxCliente);
-		panelColumnas.add(chckbxCliente);
+
 
 		chckbxMarca = new JCheckBox("MARCA");
 		darFormatoOcultarColumnas(chckbxMarca);
-		panelColumnas.add(chckbxMarca);
+	
 
 		chckbxAviso = new JCheckBox("AVISO");
 		darFormatoOcultarColumnas(chckbxAviso);
-		panelColumnas.add(chckbxAviso);
+
 
 		chckbxTecnico = new JCheckBox("TÉCNICO");
 		darFormatoOcultarColumnas(chckbxTecnico);
-		panelColumnas.add(chckbxTecnico);
 
 		chckbxEstadoTec = new JCheckBox("ESTADO TÉC");
 		darFormatoOcultarColumnas(chckbxEstadoTec);
-		panelColumnas.add(chckbxEstadoTec);
+
 
 		chckbxClienteCliente = new JCheckBox("CLIENTE/CLIENTE");
 		darFormatoOcultarColumnas(chckbxClienteCliente);
-		panelColumnas.add(chckbxClienteCliente);
+	
 
 		chckbxPrecioDolar = new JCheckBox("PRECIO DOLAR");
 		darFormatoOcultarColumnas(chckbxPrecioDolar);
-		panelColumnas.add(chckbxPrecioDolar);
+
 
 		chckbxPresupuestoEnviadoColumna = new JCheckBox("PRESUPUESTO ENV");
 		darFormatoOcultarColumnas(chckbxPresupuestoEnviadoColumna);
-		panelColumnas.add(chckbxPresupuestoEnviadoColumna);
+
 		panelFiltros.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		
@@ -304,8 +278,8 @@ public class VentanaListadoReparaciones extends JFrame {
 		toggleBtnOcultar.setForeground(new Color(255, 255, 255));
 		toggleBtnOcultar.setBackground(new Color(95, 158, 160));
 		toggleBtnOcultar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		toggleBtnOcultar.setPreferredSize(new Dimension(300, 30));
-		toggleBtnOcultar.setMargin(new Insets(0, 10, 0, 10));
+		toggleBtnOcultar.setPreferredSize(new Dimension(300, 50));
+		toggleBtnOcultar.setMargin(new Insets(0, 5, 0, 5));
 		toggleBtnOcultar.setFont(new Font("Cambria", Font.BOLD, 22));
 		
 		
@@ -320,15 +294,16 @@ public class VentanaListadoReparaciones extends JFrame {
 		
 		
 		panelFiltros.setLayout(new BoxLayout(panelFiltros, BoxLayout.X_AXIS));
-		panelFiltros.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+		panelFiltros.setBorder(new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 128, 128)), new EmptyBorder(10, 0, 10, 0)));
 
 		// Centrar y añadir botones
 		toggleBtnOcultar.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnEstadisticas.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        panelFiltros.add(Box.createHorizontalGlue());
+        Component horizontalGlue = Box.createHorizontalGlue();
+        panelFiltros.add(horizontalGlue);
         panelFiltros.add(toggleBtnOcultar);
-        panelFiltros.add(Box.createRigidArea(new Dimension(50, 0)));
+        panelFiltros.add(Box.createRigidArea(new Dimension(100, 20)));
         panelFiltros.add(btnEstadisticas);
         panelFiltros.add(Box.createHorizontalGlue());
 		
@@ -343,70 +318,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelCheckboxes.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		panelCheckboxes.setBackground(new Color(95, 158, 160));
 
-//		// Añadir JCheckBox al panel
-//		for (String nombreColumna : nombresColumnas) {
-//			checkBox = new JCheckBox(nombreColumna, true);
-//			checkBox.setFont(new Font("Cambria", Font.PLAIN, 12));
-//			checkBox.setBackground(new Color(95, 158, 160));
-//			checkBox.addItemListener(e -> actualizarVisibilidadColumnas(nombreColumna));
-//			panelCheckboxes.add(checkBox);
-//		}
-//
-//		JScrollPane scrollPane = new JScrollPane(panelCheckboxes);
-//		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150)));
-//		scrollPane.setPreferredSize(new Dimension(200, 300)); // Tamaño fijo para el scroll
-//		
-//		// Ajustar velocidad del scroll
-//		JScrollBar vertical = scrollPane.getVerticalScrollBar();
-//		vertical.setUnitIncrement(16);  // Más desplazamiento por giro de rueda
-//		vertical.setBlockIncrement(50); // Más desplazamiento al hacer clic en la pista
-//
-//		windowOpciones.getContentPane().add(scrollPane);
-//		windowOpciones.pack();
-//
-//		// Controlar apertura/cierre
-//		toggleBtnOcultar.addActionListener(e -> {
-//			if (toggleBtnOcultar.isSelected()) {
-//				
-//				mostrarPanel();
-//				toggleBtnOcultar.setIcon(new ImageIcon(this.getClass().getResource("/arrow_up.png")));
-//			} else {
-//				ocultarPanel();
-//				toggleBtnOcultar.setIcon(new ImageIcon(this.getClass().getResource("/arrow_down.png")));
-//			}
-//		});
-//		 // Manejador para cerrar al hacer clic fuera
-//        AWTEventListener clickOutsideListener = new AWTEventListener() {
-//            public void eventDispatched(AWTEvent event) {
-//                if (event.getID() == MouseEvent.MOUSE_PRESSED && 
-//                    windowOpciones.isVisible()) {
-//                    
-//                    MouseEvent me = (MouseEvent) event;
-//                    Component source = me.getComponent();
-//                    
-//                    // Verificar si el clic fue fuera de la ventana y del botón
-//                    if (source != toggleBtnOcultar && 
-//                        !isChildOf(windowOpciones, source) && 
-//                        source != toggleBtnOcultar) {
-//                        
-//                        ocultarPanel();
-//                        toggleBtnOcultar.setIcon(new ImageIcon(this.getClass().getResource("/arrow_down.png")));
-//                    }
-//                }
-//            }
-//        };
-//        Toolkit.getDefaultToolkit().addAWTEventListener(clickOutsideListener, AWTEvent.MOUSE_EVENT_MASK);
-//        
-//        // Limpiar el listener cuando se cierre la ventana principal
-//        addWindowListener(new WindowAdapter() {
-//            @Override
-//            public void windowClosed(WindowEvent e) {
-//                Toolkit.getDefaultToolkit().removeAWTEventListener(clickOutsideListener);
-//            }
-//        });
-//        
-        
-        
+  
         
 
 		panelCentral = new JPanel();
@@ -472,16 +384,32 @@ public class VentanaListadoReparaciones extends JFrame {
 	public void configurarOpcionesColumnas(String[] nombresColumnas) {
         panelCheckboxes.removeAll();
         
-        for (int i = 0; i < nombresColumnas.length; i++) {
-        	checkBox = new JCheckBox(nombresColumnas[i], true);
-			checkBox.setFont(new Font("Cambria", Font.PLAIN, 12));
-			checkBox.setBackground(new Color(95, 158, 160));
-			
-			// Guardar referencia al índice de la columna
-	        checkBox.putClientProperty("columnIndex", i);
-	        
-            panelCheckboxes.add(checkBox);
-        }
+        
+        panelCheckboxes.add(chckbxELS);
+        panelCheckboxes.add(chckbxEntrada);
+        panelCheckboxes.add(chckbxCliente);
+        panelCheckboxes.add(chckbxSucursal);
+        panelCheckboxes.add(chckbxEquipo);
+        panelCheckboxes.add(chckbxMarca);
+        panelCheckboxes.add(chckbxModelo);
+        panelCheckboxes.add(chckbxSerie);
+        panelCheckboxes.add(chckbxAviso);
+        panelCheckboxes.add(chckbxRevisión);
+        panelCheckboxes.add(chckbxSalida);
+        panelCheckboxes.add(chckbxClienteCliente);
+        panelCheckboxes.add(chckbxEstadoTec);
+        panelCheckboxes.add(chckbxEstadoCom);
+        panelCheckboxes.add(chckbxEstadoFis);
+        panelCheckboxes.add(chckbxTecnico);
+        panelCheckboxes.add(chckbxUbicacionRemito);
+        panelCheckboxes.add(chckbxNumeroRemito);
+        panelCheckboxes.add(chckbxPresupuestoGeneradoColumna);
+        panelCheckboxes.add(chckbxPresupuestoEnviadoColumna);
+        panelCheckboxes.add(chckbxPrecioPeso);
+        panelCheckboxes.add(chckbxPrecioDolar);
+        panelCheckboxes.add(chckbxPago);
+        panelCheckboxes.add(chckbxIngreso);
+       
         
         JScrollPane scrollPane = new JScrollPane(panelCheckboxes);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150)));
@@ -492,7 +420,7 @@ public class VentanaListadoReparaciones extends JFrame {
         vertical.setUnitIncrement(16);
         vertical.setBlockIncrement(50);
 
-        windowOpciones.add(scrollPane);
+        windowOpciones.getContentPane().add(scrollPane);
         windowOpciones.pack();
     }
 	
