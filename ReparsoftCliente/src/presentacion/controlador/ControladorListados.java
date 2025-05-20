@@ -45,6 +45,7 @@ import javax.swing.table.TableRowSorter;
 
 import VistaPropias.AutoCompletarComboBox;
 import VistaPropias.TablaFiltros;
+import VistaPropias.TableCopyHandler;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -685,6 +686,21 @@ public class ControladorListados
 
 		this.ventanaListadoReparaciones.getTblReparaciones().addMouseListener(this);
 		this.ventanaListadoReparaciones.getTblReparaciones().addMouseMotionListener(this);
+		this.ventanaListadoReparaciones.getTblReparaciones().setTransferHandler(new TableCopyHandler());
+		
+		// Configurar atajo de teclado Ctrl+C
+		this.ventanaListadoReparaciones.getTblReparaciones().getInputMap().put(KeyStroke.getKeyStroke("control C"), "copy");
+		ventanaListadoReparaciones.getTblReparaciones().getActionMap().put("copy", new AbstractAction() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Copiar incluyendo cabeceras
+		    	ventanaListadoReparaciones.getTblReparaciones().getTransferHandler().exportToClipboard(
+		    			ventanaListadoReparaciones.getTblReparaciones(), 
+		    			ventanaListadoReparaciones.getTblReparaciones().getToolkit().getSystemClipboard(), 
+		            TransferHandler.COPY
+		        );
+		    }
+		});
 
 		this.ventanaListadoReparaciones.getChckbxELS().addActionListener(this);
 		this.ventanaListadoReparaciones.getChckbxELS().addItemListener(this);
