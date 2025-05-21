@@ -2,7 +2,6 @@ package VistaPropias;
 
 import javax.swing.TransferHandler;
 import javax.swing.*;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
@@ -14,7 +13,9 @@ import java.util.StringJoiner;
 
 public class TableCopyHandler extends TransferHandler {
 
-    @Override
+    private static final long serialVersionUID = 1L;
+
+	@Override
     protected Transferable createTransferable(JComponent c) {
         JTable table = (JTable) c;
         StringBuilder sb = new StringBuilder();
