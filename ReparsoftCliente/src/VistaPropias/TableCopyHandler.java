@@ -28,19 +28,23 @@ public class TableCopyHandler extends TransferHandler {
 
         // Preguntar al usuario si desea incluir cabeceras
         int includeHeaders = JOptionPane.showConfirmDialog(
-            null, 
-            "¿Desea agregar las cabeceras al contenido copiado?", 
-            "Incluir cabeceras", 
+            null,
+            "¿Desea agregar las cabeceras al contenido copiado?",
+            "Incluir cabeceras",
             JOptionPane.YES_NO_OPTION
         );
 
         boolean addHeaders = (includeHeaders == JOptionPane.YES_OPTION);
 
+        TableColumnModel columnModel = table.getColumnModel();
+
         // Cabeceras (si el usuario aceptó)
         if (addHeaders) {
             StringJoiner headerJoiner = new StringJoiner("\t");
             for (int col : cols) {
-                headerJoiner.add(table.getColumnName(col));
+                if (columnModel.getColumn(col).getWidth() > 0) { // Verificar si la columna no está oculta
+                    headerJoiner.add(table.getColumnName(col));
+                }
             }
             sb.append(headerJoiner.toString()).append("\n");
         }
@@ -49,24 +53,28 @@ public class TableCopyHandler extends TransferHandler {
         for (int row : rows) {
             StringJoiner dataJoiner = new StringJoiner("\t");
             for (int col : cols) {
-                Object value = table.getValueAt(row, col);
-                TableCellRenderer renderer = table.getCellRenderer(row, col);
-                Component comp = renderer.getTableCellRendererComponent(
-                    table, value, false, false, row, col);
+                if (columnModel.getColumn(col).getWidth() > 0) { // Verificar si la columna no está oculta
+                    Object value = table.getValueAt(row, col);
+                    TableCellRenderer renderer = table.getCellRenderer(row, col);
+                    Component comp = renderer.getTableCellRendererComponent(
+                        table, value, false, false, row, col);
 
-                String text = "";
-                if (comp instanceof JLabel) {
-                    text = ((JLabel) comp).getText();
-                } else if (comp instanceof JCheckBox) {
-                    text = ((JCheckBox) comp).isSelected() ? "TRUE" : "FALSE";
-                } else if (value instanceof Date) {
-                    text = new SimpleDateFormat("dd/MM/yyyy").format((Date) value);
-                } else {
-                    text = value != null ? value.toString() : "";
+                    String text = "";
+                    if (comp instanceof JLabel) {
+                        text = ((JLabel) comp).getText();
+                    } else if (comp instanceof JCheckBox) {
+                        text = ((JCheckBox) comp).isSelected() ? "TRUE" : "FALSE";
+                    } else if (value instanceof Date) {
+                        text = new SimpleDateFormat("dd/MM/yyyy").format((Date) value);
+                    } else {
+                        text = value != null ? value.toString() : "";
+                    }
+                    dataJoiner.add(text);
                 }
-                dataJoiner.add(text);
             }
-            sb.append(dataJoiner.toString()).append("\n");
+            if (dataJoiner.length() > 0) { // Solo agregar filas con contenido
+                sb.append(dataJoiner.toString()).append("\n");
+            }
         }
 
         return new StringSelection(sb.toString());
@@ -77,3 +85,4 @@ public class TableCopyHandler extends TransferHandler {
         return COPY;
     }
 }
+
