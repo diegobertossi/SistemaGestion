@@ -1172,19 +1172,41 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaAgregarEquipo.setTextELS(Integer.toString(ELS));
 
 			ventanaAgregarEquipo.getTextAvisoCliente().setEditable(true);
+			ventanaAgregarEquipo.getTextAvisoCliente().setEnabled(true);
+			
 			ventanaAgregarEquipo.getTextClienteCliente().setEditable(true);
+			ventanaAgregarEquipo.getTextClienteCliente().setEnabled(true);
+			
 			ventanaAgregarEquipo.getTextFalla().setEditable(true);
 			ventanaAgregarEquipo.getTextFalla().setEnabled(true);
+			
 			ventanaAgregarEquipo.getTextRemitoCliente().setEditable(true);
+			ventanaAgregarEquipo.getTextRemitoCliente().setEnabled(true);
+			
+			ventanaAgregarEquipo.getComboClientes().setEditable(true);
 			ventanaAgregarEquipo.getComboClientes().setEnabled(true);
+						
+			ventanaAgregarEquipo.getComboSucursal().setEditable(true);
 			ventanaAgregarEquipo.getComboSucursal().setEnabled(true);
+			
+			ventanaAgregarEquipo.getComboMarca().setEditable(true);			
 			ventanaAgregarEquipo.getComboMarca().setEnabled(true);
+			
+			ventanaAgregarEquipo.getComboNombreEquipo().setEditable(true);
 			ventanaAgregarEquipo.getComboNombreEquipo().setEnabled(true);
+			
+			ventanaAgregarEquipo.getComboModelo().setEditable(true);
 			ventanaAgregarEquipo.getComboModelo().setEnabled(true);
+			
+			ventanaAgregarEquipo.getComboSerie().setEditable(true);
 			ventanaAgregarEquipo.getComboSerie().setEnabled(true);
+			
 			ventanaAgregarEquipo.getFechaEntrada().setEnabled(true);
+			
 			ventanaAgregarEquipo.getTextFechafabricacion().setEditable(true);
 			ventanaAgregarEquipo.getTextFechafabricacion().setEnabled(true);
+			
+			
 
 			ventanaAgregarEquipo.getRdbtnBRC().setEnabled(true);
 			ventanaAgregarEquipo.getRdbtnCABA().setEnabled(true);
