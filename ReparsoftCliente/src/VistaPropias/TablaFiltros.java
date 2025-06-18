@@ -31,6 +31,7 @@ public class TablaFiltros {
 			filterCombos[i].setFont(fuenteFiltros);
 			filterCombos[i].setEditable(true);
 			filterCombos[i].addItem("Todos");
+			AutoCompletarComboBox.enable(filterCombos[i], true, false);
 
 			JTextField editor = (JTextField) filterCombos[i].getEditor().getEditorComponent();
 			editor.setBackground(fondoFiltros);
@@ -127,6 +128,9 @@ public class TablaFiltros {
 			public void columnSelectionChanged(javax.swing.event.ListSelectionEvent e) {
 			}
 		});
+		
+		
+		
 	}
 
 	private void manejarFiltro(JTable tabla, JComboBox<String> comboBox, JTextField editor, Color fondoFiltros,
