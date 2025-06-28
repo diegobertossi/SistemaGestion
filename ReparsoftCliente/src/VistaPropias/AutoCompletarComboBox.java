@@ -76,7 +76,7 @@ public class AutoCompletarComboBox extends PlainDocument {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_ENTER:
                 	comboBox.setPopupVisible(false);
-                    verificarItemNoEncontrado();
+                    verificarItemNoEncontrado(comboBox.getName());
                     // Forzar validación inmediata para Enter
                     if (!findExactMatch(editor.getText())) {
                     	
@@ -85,7 +85,7 @@ public class AutoCompletarComboBox extends PlainDocument {
                     break;
                 case KeyEvent.VK_TAB:
                 	comboBox.setPopupVisible(false);
-                    verificarItemNoEncontrado();
+                    verificarItemNoEncontrado(comboBox.getName());
                     // Forzar validación y mantener el foco si no es válido
                     if (!findExactMatch(editor.getText())) {
                         e.consume(); // Evitar que pierda el foco
@@ -125,7 +125,7 @@ public class AutoCompletarComboBox extends PlainDocument {
             if (hidePopupOnFocusLoss) {
                 comboBox.setPopupVisible(false);
             }
-            verificarItemNoEncontrado();
+            verificarItemNoEncontrado(comboBox.getName());
         }
     };
 
@@ -193,15 +193,33 @@ public class AutoCompletarComboBox extends PlainDocument {
     
     
     
-    private void verificarItemNoEncontrado() {
+    private void verificarItemNoEncontrado(String mensaje) {
         String text = editor.getText();
+       
         boolean exacto = findExactMatch(text);
+        
+       
 
         if (!exacto && !mensajeMostrado) {
             mensajeMostrado = true;
 
             if (mostrarMensaje) {
-                JOptionPane.showMessageDialog(null, "Cliente no encontrado. Deberá darlo de alta");
+            	
+            	 switch (mensaje) {
+         		
+                 case "comboCliente":
+                 mensaje = "Cliente no encontrado. Deberá darlo de alta";
+         		break;
+         		
+                 case "comboSucursal":
+                 mensaje = "Sucursal no encontrada. Deberá darla de alta";
+             	break;
+
+         		default:
+         			break;
+         		}
+            	
+                JOptionPane.showMessageDialog(null, mensaje);
             }
 
             if (!editable) {

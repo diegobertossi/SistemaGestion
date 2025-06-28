@@ -454,14 +454,14 @@ public class VentanaVisualizarEquipos extends JFrame {
 				panelDatosCliente.add(comboClientes);
 				comboClientes.setBackground(Color.WHITE);
 				comboClientes.setVisible(false);
-				comboClientes.setFont(new Font("Cambria", Font.PLAIN, 14));
+				comboClientes.setFont(new Font("Cambria", Font.BOLD, 14));
 				
 						comboSucursal = new JComboBox();
 						comboSucursal.setBounds(68, 24, 265, 20);
 						panelDatosCliente.add(comboSucursal);
 						comboSucursal.setBackground(Color.WHITE);
 						comboSucursal.setVisible(false);
-						comboSucursal.setFont(new Font("Cambria", Font.PLAIN, 14));
+						comboSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
 						
 								textCliente = new JTextField();
 								textCliente.setBounds(68, 0, 265, 20);
@@ -469,7 +469,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 								textCliente.setAlignmentY(Component.TOP_ALIGNMENT);
 								textCliente.setAlignmentX(Component.LEFT_ALIGNMENT);
 								textCliente.setHorizontalAlignment(SwingConstants.LEFT);
-								textCliente.setFont(new Font("Cambria", Font.PLAIN, 14));
+								textCliente.setFont(new Font("Cambria", Font.BOLD, 14));
 								textCliente.setEditable(false);
 								textCliente.setColumns(10);
 								
@@ -479,7 +479,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 										textSucursal.setAlignmentY(Component.TOP_ALIGNMENT);
 										textSucursal.setAlignmentX(Component.LEFT_ALIGNMENT);
 										textSucursal.setHorizontalAlignment(SwingConstants.LEFT);
-										textSucursal.setFont(new Font("Cambria", Font.PLAIN, 14));
+										textSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
 										textSucursal.setEditable(false);
 										textSucursal.setColumns(10);
 

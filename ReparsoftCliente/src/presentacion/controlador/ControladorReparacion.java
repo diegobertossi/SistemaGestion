@@ -2360,6 +2360,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		llenarComboModelo();
 
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboClientes(), false, true);
+		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboSucursal(), false, true);
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboNombreEquipo(), true, false);
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboMarca(), true, false);
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboModelo(), true, false);
@@ -3017,6 +3018,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 					// Seleccionar nuevamente la sucursal basada en el texto del JTextField
 					String nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
+					@SuppressWarnings("unchecked")
 					DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventanaVisualizarEquipos
 							.getComboSucursal().getModel();
 					for (int i = 0; i < modelSucursal.getSize(); i++) {
@@ -3039,21 +3041,24 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getComboSucursal().addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 
-				if (ventanaAgregarEquipo.getComboSucursal().getSelectedItem() != null) {
+				if (ventanaAgregarEquipo.getComboSucursal().getSelectedItem() != null && VistaPropias.AutoCompletarComboBox.esItemValido(ventanaAgregarEquipo.getComboSucursal())) {
+										
 					Sucursal = (SucursalDTO) ventanaAgregarEquipo.getComboSucursal().getSelectedItem();
 					int idsuc = Sucursal.getIdSucursal();
-
 					idSuc = idsuc;
 
 				}
 			}
 		});
-
+		
+		
 	}
 
 	private void llenarComboCliente() {
-		agenda.ListarCliente(ventanaAgregarEquipo.getComboClientes());
+		
 		JComboBox combo = ventanaAgregarEquipo.getComboClientes();
+		agenda.ListarCliente(combo);
+		
 
 		// ItemListener para selección por mouse o teclas
 		combo.addItemListener(new ItemListener() {
@@ -3072,17 +3077,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private void llenarComboNombreEquipo() {
 
 		agenda.ListarEquipo(ventanaAgregarEquipo.getComboNombreEquipo());
-//		ventanaAgregarEquipo.getComboNombreEquipo().addItemListener(new ItemListener() {
-//			public void itemStateChanged(ItemEvent e) {
-//
-//				if (ventanaAgregarEquipo.getComboNombreEquipo().getSelectedItem() != null) {
-//					NombreEq = ventanaAgregarEquipo.getComboNombreEquipo().getSelectedItem().toString();
-//
-//				}
-//
-//			}
-//		});
-
 		ventanaAgregarEquipo.getComboNombreEquipo().setSelectedIndex(-1);
 
 	}
@@ -3221,13 +3215,14 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			int id = Cliente.getId();
 			agenda.ListarSucursalesxCliente(ventanaAgregarEquipo.getComboSucursal(), id);
 			idCli = id;
+						
 		}
 
 	}
 
 	protected void procesarMarcaSeleccionada() {
 
-		JComboBox comboMarca = ventanaAgregarEquipo.getComboClientes();
+		JComboBox comboMarca = ventanaAgregarEquipo.getComboMarca();
 
 		if (comboMarca.getSelectedItem() != null) {
 			Marca = ventanaAgregarEquipo.getComboMarca().getSelectedItem().toString();

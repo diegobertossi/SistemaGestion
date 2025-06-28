@@ -349,13 +349,13 @@ public class VentanaAgregarEquipo extends JFrame {
 		comboClientes = new JComboBox<Object>();
 		comboClientes.setBounds(75, 17, 289, 20);
 		panel_5.add(comboClientes);
-		comboClientes.setFont(new Font("Cambria", Font.PLAIN, 14));
+		comboClientes.setFont(new Font("Cambria", Font.BOLD, 14));
 		comboClientes.setBackground(SystemColor.inactiveCaptionBorder);
 
 		comboSucursal = new JComboBox<Object>();
 		comboSucursal.setBounds(435, 17, 289, 20);
 		panel_5.add(comboSucursal);
-		comboSucursal.setFont(new Font("Cambria", Font.PLAIN, 14));
+		comboSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
 		comboSucursal.setBackground(SystemColor.inactiveCaptionBorder);
 
 		lblDatosDeEquipo = new JLabel("DATOS DEL EQUIPO: ");
