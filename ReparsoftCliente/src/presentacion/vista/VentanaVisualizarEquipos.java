@@ -61,6 +61,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JButton BotonRespuestaAlTecnico;
 	private JButton BotonAvisoInforme;
 	private JButton BotonPresupuestar;
+	private JButton btnfacturar;
 	private JButton btnGenerarRemito;
 
 	private JButton btnenviarCorreoOwsp;
@@ -1055,10 +1056,10 @@ public class VentanaVisualizarEquipos extends JFrame {
 		});
 		BotonPresupuestar.setBackground(SystemColor.textHighlight);
 		BotonPresupuestar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		BotonPresupuestar.setBounds(210, 11, 125, 43);
+		BotonPresupuestar.setBounds(210, 11, 125, 27);
 		panel_presupuesto.add(BotonPresupuestar);
 		BotonPresupuestar.setForeground(SystemColor.text);
-		BotonPresupuestar.setFont(new Font("Cambria", Font.BOLD, 14));
+		BotonPresupuestar.setFont(new Font("Cambria", Font.BOLD, 12));
 		BotonPresupuestar.setIcon(null);
 
 		chckPDFgenerado = new JCheckBox("");
@@ -1096,7 +1097,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_MontoPresupuesto = new JPanel();
 		panel_MontoPresupuesto.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_MontoPresupuesto.setBackground(SystemColor.inactiveCaption);
-		panel_MontoPresupuesto.setBounds(5, 11, 202, 89);
+		panel_MontoPresupuesto.setBounds(5, 11, 202, 100);
 		panel_presupuesto.add(panel_MontoPresupuesto);
 		panel_MontoPresupuesto.setLayout(null);
 
@@ -1145,7 +1146,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textEquipoPagado.setHorizontalAlignment(SwingConstants.CENTER);
 		textEquipoPagado.setBorder(null);
 		textEquipoPagado.setBackground(SystemColor.inactiveCaption);
-		textEquipoPagado.setBounds(7, 64, 190, 20);
+		textEquipoPagado.setBounds(6, 73, 190, 20);
 		panel_MontoPresupuesto.add(textEquipoPagado);
 		textEquipoPagado.setColumns(10);
 
@@ -1193,10 +1194,17 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnenviarCorreoOwsp = new JButton("<html><center>ENVIAR PRESUPUESTO</html>");
 		btnenviarCorreoOwsp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnenviarCorreoOwsp.setForeground(Color.WHITE);
-		btnenviarCorreoOwsp.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnenviarCorreoOwsp.setFont(new Font("Cambria", Font.BOLD, 12));
 		btnenviarCorreoOwsp.setBackground(SystemColor.textHighlight);
-		btnenviarCorreoOwsp.setBounds(210, 57, 125, 43);
+		btnenviarCorreoOwsp.setBounds(210, 44, 125, 35);
 		panel_presupuesto.add(btnenviarCorreoOwsp);
+		
+		btnfacturar = new JButton("<html><center>FACTURAR</html>");
+		btnfacturar.setForeground(Color.WHITE);
+		btnfacturar.setFont(new Font("Cambria", Font.BOLD, 12));
+		btnfacturar.setBackground(SystemColor.textHighlight);
+		btnfacturar.setBounds(210, 84, 125, 27);
+		panel_presupuesto.add(btnfacturar);
 
 		labelPresupuesto = new JLabel("PRESUPUESTO: ");
 		labelPresupuesto.setBounds(834, 236, 150, 17);
@@ -1918,5 +1926,13 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 	public void setBtnBuscar(JButton btnBuscar) {
 		this.btnBuscar = btnBuscar;
+	}
+
+	public JButton getBtnfacturar() {
+		return btnfacturar;
+	}
+
+	public void setBtnfacturar(JButton btnfacturar) {
+		this.btnfacturar = btnfacturar;
 	}
 }

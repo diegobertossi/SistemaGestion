@@ -2294,9 +2294,10 @@ public class ControladorListados
 		if (this.ventanaListadoReparaciones != null && e.getSource() instanceof JCheckBox) {
 			Map<JCheckBox, ColumnConfig> checkboxConfigMap = createCheckboxConfigMap();
 			JCheckBox sourceCheckbox = (JCheckBox) e.getSource();
-
+			
 			if (checkboxConfigMap.containsKey(sourceCheckbox)) {
 				configureColumn(sourceCheckbox, checkboxConfigMap.get(sourceCheckbox));
+				
 			}
 		}
 	}

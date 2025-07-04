@@ -157,6 +157,12 @@ public class Agenda {
 		
 	}
 	
+	public String dameCuitPorIdCliente(int idCliente) {
+		
+		return Cliente.dameCuitPorIdCliente(idCliente);
+		
+	}
+	
 	public int dameIDcliente() {
 		return Cliente.obtenerIDcliente();
 

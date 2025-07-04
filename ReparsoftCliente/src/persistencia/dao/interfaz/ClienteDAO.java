@@ -32,4 +32,6 @@ public interface ClienteDAO
 	
 	public String obtenerTelefonoPorCliente(String Cliente);
 
+	public String dameCuitPorIdCliente(int idCliente);
+
 }

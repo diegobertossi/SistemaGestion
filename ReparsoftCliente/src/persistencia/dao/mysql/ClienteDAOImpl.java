@@ -24,6 +24,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 	private static String readallV = "";
 	private static String maximoIDcliente = "";
 	private static String IDporNombre = "";
+	private static String cuitPorID = "";
 	private static String ContactoPorNombre = "";
 	private static String EmailPorNombre = "";
 	private static String TelefonolPorNombre = "";
@@ -42,6 +43,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 		readallV = "SELECT * FROM Cliente";
 		maximoIDcliente = "Select MAX(idCliente) from Cliente";
 		IDporNombre = "Select idCliente from Cliente where nombre =? ";
+		cuitPorID = "Select CUIT from Cliente where idCliente =?";
 		ContactoPorNombre = "Select Contacto from Cliente where nombre =? ";
 		EmailPorNombre = "Select CorreoElectronico from Cliente where nombre =? ";
 		TelefonolPorNombre = "Select TelefonoContacto from Cliente where nombre =? ";
@@ -333,6 +335,44 @@ public class ClienteDAOImpl implements ClienteDAO {
 		}
 
 		return telefono;
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public String dameCuitPorIdCliente(int idCliente) {
+		
+		
+		
+		
+		PreparedStatement statement;
+		ResultSet resultSet; // Guarda el resultado de la query
+		String cuit = "";
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(cuitPorID);
+			statement.setInt(1, idCliente);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				cuit = resultSet.getString("CUIT");
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally // Se ejecuta siempre
+		{
+			conexion.cerrarConexion();
+		}
+
+		
+
+		
+		return cuit;
 	}
 
 	

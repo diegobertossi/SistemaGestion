@@ -725,6 +725,13 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		idcliente = agenda.dameIDcliente() + 1;
 		return idcliente;
 	}
+	
+	
+//	private int dameCuitPorID(int id) {
+//		
+//		int cuitCliente = agenda.dameCuitPorIdCliente(id);
+//		return cuitCliente;
+//	}
 
 	private int dameIDsucursal() {
 		int idsucursal = 0;

@@ -470,6 +470,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			presupuestar(ventanaVisualizarEquipos);
 
 		}
+		
+		else if (ventanaVisualizarEquipos != null && e.getSource() == ventanaVisualizarEquipos.getBtnfacturar()) {
+
+			facturar(ventanaVisualizarEquipos);
+
+		}
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnenviarCorreoOwsp()) {
@@ -1273,6 +1279,37 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
+	private void facturar(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		
+		
+		String clienteEquipo =  ventanaVisualizarEquipos.getTextCliente().getText();
+		int idCliente = reparacion.getIDCliente();
+		String cuitCliente =  agenda.dameCuitPorIdCliente(idCliente);
+		
+				
+				
+		String nombreEquipo= ventanaVisualizarEquipos.getTextNombreEquipo().getText();
+		String marcaEquipo= ventanaVisualizarEquipos.getTextMarca().getText();
+		String modeloEquipo= ventanaVisualizarEquipos.getTextModelo().getText();
+		String serieEquipo= ventanaVisualizarEquipos.getTextNSerie().getText();
+		String elsEquipo = ventanaVisualizarEquipos.getTextELS().toString();
+		String Presupuesto= ventanaVisualizarEquipos.getTextPresupuesto().getText();
+		
+		String ItemFactura = "Reparación de"+" "+ nombreEquipo+" "+marcaEquipo+" "+modeloEquipo+" s/n: "+serieEquipo+" ELS: "+elsEquipo ;
+		
+		
+		System.out.println("Cliente: "+ clienteEquipo+"    " +"CUIT: "+cuitCliente);
+		System.out.println( ItemFactura );
+		System.out.println("Total: "+ Presupuesto);
+		
+		
+		
+		
+		
+		
+		
+	}
+
 	private void realizarBusqueda() {
 		// Limpiar el área de texto
 		ventanaBusquedaEquipo.getTextPane().setText("");
@@ -1886,6 +1923,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getBotonRespuestaAlTecnico().addActionListener(this);
 		ventanaVisualizarEquipos.getBtnGenerarRemito().addActionListener(this);
 		ventanaVisualizarEquipos.getBotonPresupuestar().addActionListener(this);
+		ventanaVisualizarEquipos.getBtnfacturar().addActionListener(this);
 		ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(this);
 		ventanaVisualizarEquipos.getComboClientes().addActionListener(this);
 		ventanaVisualizarEquipos.getComboSucursal().addActionListener(this);
