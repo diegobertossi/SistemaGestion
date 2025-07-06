@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
@@ -30,6 +31,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -95,7 +97,7 @@ import presentacion.vista.VentanaVisualizarEquipos;
 import presentacion.vista.VentanaWSP;
 import tiposPropios.MonedaFormatter;
 import presentacion.vista.VentanaClientesWSP;
-
+import presentacion.vista.VentanaDatosFacturacion;
 import presentacion.vista.VentanaEnviarCorreoOwsp;
 import dto.ClienteDTO;
 import dto.ClienteWSPDTO;
@@ -108,6 +110,7 @@ import dto.SucursalDTO;
 
 import java.security.SecureRandom;
 import java.math.BigInteger;
+import java.net.URI;
 
 public class ControladorReparacion implements ActionListener, MouseListener, KeyListener, ItemListener {
 
@@ -117,6 +120,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private VentanaAgregarRepuesto ventanaagregarRepuesto;
 
 	private VentanaEnviarCorreoOwsp ventanaEnviarCorreoOwsp;
+
+	private VentanaDatosFacturacion ventanaDatosFacturacion;
 	private VentanaAgregarEquipo ventanaAgregarEquipo;
 	private VentanaEstados ventanaEstados;
 	private VentanaVerificarIngresoAnterior ventanaVerificarIngresoAnterior;
@@ -470,7 +475,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			presupuestar(ventanaVisualizarEquipos);
 
 		}
-		
+
 		else if (ventanaVisualizarEquipos != null && e.getSource() == ventanaVisualizarEquipos.getBtnfacturar()) {
 
 			facturar(ventanaVisualizarEquipos);
@@ -1179,40 +1184,38 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			ventanaAgregarEquipo.getTextAvisoCliente().setEditable(true);
 			ventanaAgregarEquipo.getTextAvisoCliente().setEnabled(true);
-			
+
 			ventanaAgregarEquipo.getTextClienteCliente().setEditable(true);
 			ventanaAgregarEquipo.getTextClienteCliente().setEnabled(true);
-			
+
 			ventanaAgregarEquipo.getTextFalla().setEditable(true);
 			ventanaAgregarEquipo.getTextFalla().setEnabled(true);
-			
+
 			ventanaAgregarEquipo.getTextRemitoCliente().setEditable(true);
 			ventanaAgregarEquipo.getTextRemitoCliente().setEnabled(true);
-			
+
 			ventanaAgregarEquipo.getComboClientes().setEditable(true);
 			ventanaAgregarEquipo.getComboClientes().setEnabled(true);
-						
+
 			ventanaAgregarEquipo.getComboSucursal().setEditable(true);
 			ventanaAgregarEquipo.getComboSucursal().setEnabled(true);
-			
-			ventanaAgregarEquipo.getComboMarca().setEditable(true);			
+
+			ventanaAgregarEquipo.getComboMarca().setEditable(true);
 			ventanaAgregarEquipo.getComboMarca().setEnabled(true);
-			
+
 			ventanaAgregarEquipo.getComboNombreEquipo().setEditable(true);
 			ventanaAgregarEquipo.getComboNombreEquipo().setEnabled(true);
-			
+
 			ventanaAgregarEquipo.getComboModelo().setEditable(true);
 			ventanaAgregarEquipo.getComboModelo().setEnabled(true);
-			
+
 			ventanaAgregarEquipo.getComboSerie().setEditable(true);
 			ventanaAgregarEquipo.getComboSerie().setEnabled(true);
-			
+
 			ventanaAgregarEquipo.getFechaEntrada().setEnabled(true);
-			
+
 			ventanaAgregarEquipo.getTextFechafabricacion().setEditable(true);
 			ventanaAgregarEquipo.getTextFechafabricacion().setEnabled(true);
-			
-			
 
 			ventanaAgregarEquipo.getRdbtnBRC().setEnabled(true);
 			ventanaAgregarEquipo.getRdbtnCABA().setEnabled(true);
@@ -1280,34 +1283,65 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	private void facturar(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-		
-		
-		String clienteEquipo =  ventanaVisualizarEquipos.getTextCliente().getText();
+
+		String clienteEquipo = ventanaVisualizarEquipos.getTextCliente().getText();
 		int idCliente = reparacion.getIDCliente();
-		String cuitCliente =  agenda.dameCuitPorIdCliente(idCliente);
-		
-				
-				
-		String nombreEquipo= ventanaVisualizarEquipos.getTextNombreEquipo().getText();
-		String marcaEquipo= ventanaVisualizarEquipos.getTextMarca().getText();
-		String modeloEquipo= ventanaVisualizarEquipos.getTextModelo().getText();
-		String serieEquipo= ventanaVisualizarEquipos.getTextNSerie().getText();
+		String cuitCliente = agenda.dameCuitPorIdCliente(idCliente);
+
+		String nombreEquipo = ventanaVisualizarEquipos.getTextNombreEquipo().getText();
+		String marcaEquipo = ventanaVisualizarEquipos.getTextMarca().getText();
+		String modeloEquipo = ventanaVisualizarEquipos.getTextModelo().getText();
+		String serieEquipo = ventanaVisualizarEquipos.getTextNSerie().getText();
 		String elsEquipo = ventanaVisualizarEquipos.getTextELS().toString();
-		String Presupuesto= ventanaVisualizarEquipos.getTextPresupuesto().getText();
-		
-		String ItemFactura = "Reparación de"+" "+ nombreEquipo+" "+marcaEquipo+" "+modeloEquipo+" s/n: "+serieEquipo+" ELS: "+elsEquipo ;
-		
-		
-		System.out.println("Cliente: "+ clienteEquipo+"    " +"CUIT: "+cuitCliente);
-		System.out.println( ItemFactura );
-		System.out.println("Total: "+ Presupuesto);
-		
-		
-		
-		
-		
-		
-		
+		String Presupuesto = ventanaVisualizarEquipos.getTextPresupuesto().getText();
+
+		double presupuestoFactura;
+
+		if (monedaFormatter.tieneFormato(Presupuesto)) {
+
+			presupuestoFactura = monedaFormatter
+					.parseAmountGuardar(ventanaVisualizarEquipos.getTextPresupuesto().getText());
+
+		} else {
+
+			presupuestoFactura = monedaFormatter.parseAmount(ventanaVisualizarEquipos.getTextPresupuesto().getText());
+
+		}
+
+		DecimalFormat df = new DecimalFormat("#");
+		Presupuesto = df.format(presupuestoFactura);
+
+		String ItemFactura = "Reparación de" + " " + nombreEquipo + " " + marcaEquipo + " " + modeloEquipo + " s/n: "
+				+ serieEquipo + " ELS: " + elsEquipo;
+
+		ventanaDatosFacturacion = new VentanaDatosFacturacion(clienteEquipo, cuitCliente, ItemFactura, Presupuesto);
+		ventanaDatosFacturacion.setVisible(true);
+
+		int seleccion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos, " Ir a la Página de ARCA?",
+				"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+		if (seleccion == JOptionPane.YES_OPTION) {
+
+			try {
+				// Verificar si Desktop está soportado (Windows, macOS, Linux)
+				if (Desktop.isDesktopSupported()) {
+					Desktop desktop = Desktop.getDesktop();
+					if (desktop.isSupported(Desktop.Action.BROWSE)) {
+						// Abrir la URL en el navegador predeterminado
+						desktop.browse(new URI("https://www.arca.gob.ar/landing/default.asp"));
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "No se puede abrir el navegador automáticamente.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error al abrir la URL: " + ex.getMessage(), "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+
+		}
+
 	}
 
 	private void realizarBusqueda() {
@@ -1340,12 +1374,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		List<Integer> resultadosFiltrados = new ArrayList<>();
 
 		resultadosFiltrados = agenda.buscarEnCampos(campoBusqueda, textoBusqueda);
-
-//	        for (String resultado : resultadosSimulados) {
-//	            if (resultado.contains(textoBusqueda) || textoBusqueda.contains("*")) {
-//	                resultadosFiltrados.add(resultado);
-//	            }
-//	        }
 
 		// Mostrar resultados en el JTextPane con formato
 		StyledDocument doc = ventanaBusquedaEquipo.textPane.getStyledDocument();
@@ -3079,8 +3107,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getComboSucursal().addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 
-				if (ventanaAgregarEquipo.getComboSucursal().getSelectedItem() != null && VistaPropias.AutoCompletarComboBox.esItemValido(ventanaAgregarEquipo.getComboSucursal())) {
-										
+				if (ventanaAgregarEquipo.getComboSucursal().getSelectedItem() != null
+						&& VistaPropias.AutoCompletarComboBox.esItemValido(ventanaAgregarEquipo.getComboSucursal())) {
+
 					Sucursal = (SucursalDTO) ventanaAgregarEquipo.getComboSucursal().getSelectedItem();
 					int idsuc = Sucursal.getIdSucursal();
 					idSuc = idsuc;
@@ -3088,15 +3117,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				}
 			}
 		});
-		
-		
+
 	}
 
 	private void llenarComboCliente() {
-		
+
 		JComboBox combo = ventanaAgregarEquipo.getComboClientes();
 		agenda.ListarCliente(combo);
-		
 
 		// ItemListener para selección por mouse o teclas
 		combo.addItemListener(new ItemListener() {
@@ -3253,7 +3280,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			int id = Cliente.getId();
 			agenda.ListarSucursalesxCliente(ventanaAgregarEquipo.getComboSucursal(), id);
 			idCli = id;
-						
+
 		}
 
 	}
