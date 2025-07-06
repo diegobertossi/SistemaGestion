@@ -51,6 +51,7 @@ public class VistaPrincipal extends JFrame {
 	private JPanel panel_1;
 	private JButton btncerrarSesion;
 	private JButton botonConfiguracion;
+	private JTextField textLugarBaseDatos;
 
 	public VistaPrincipal() {
 		super();
@@ -66,17 +67,29 @@ public class VistaPrincipal extends JFrame {
 
 	private void initialize() {
 
-		setBounds(100, 10, 500, 451);
+		setBounds(100, 10, 500, 480);
 		// this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		getContentPane().setLayout(null);
 
+		textProgramador = new JTextField();
+		textProgramador.setBounds(0, 427, 166, 16);
+		getContentPane().add(textProgramador);
+		textProgramador.setOpaque(false);
+		textProgramador.setHorizontalAlignment(SwingConstants.RIGHT);
+		textProgramador.setForeground(new Color(65, 105, 225));
+		textProgramador.setFont(new Font("Cambria", Font.PLAIN, 12));
+		textProgramador.setEditable(false);
+		textProgramador.setColumns(10);
+		textProgramador.setBorder(null);
+		textProgramador.setBackground(SystemColor.activeCaption);
+
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(85, 172, 314, 2);
+		separator_1.setBounds(85, 202, 314, 2);
 		getContentPane().add(separator_1);
 
 		JSeparator separator_1_1 = new JSeparator();
-		separator_1_1.setBounds(85, 168, 314, 2);
+		separator_1_1.setBounds(85, 198, 314, 2);
 		getContentPane().add(separator_1_1);
 
 		textUsuario = new JTextField();
@@ -87,25 +100,29 @@ public class VistaPrincipal extends JFrame {
 		textUsuario.setBackground(SystemColor.activeCaption);
 		textUsuario.setForeground(new Color(65, 105, 225));
 		textUsuario.setFont(new Font("Cambria", Font.BOLD, 14));
-		textUsuario.setBounds(143, 0, 198, 27);
+		textUsuario.setBounds(143, 5, 198, 18);
 		getContentPane().add(textUsuario);
 		textUsuario.setColumns(10);
-
-		JSeparator separator_1_1_1 = new JSeparator();
-		separator_1_1_1.setBounds(85, 388, 314, 2);
-		getContentPane().add(separator_1_1_1);
-
-		JSeparator separator_1_2 = new JSeparator();
-		separator_1_2.setBounds(85, 384, 314, 2);
-		getContentPane().add(separator_1_2);
 
 		panel_1 = new JPanel();
 		panel_1.setOpaque(false);
 		panel_1.setBackground(new Color(219, 227, 246));
 		panel_1.setBorder(null);
-		panel_1.setBounds(0, 0, 483, 412);
+		panel_1.setBounds(0, 0, 480, 450);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
+
+		textVersionSoft = new JTextField();
+		textVersionSoft.setBounds(316, 427, 166, 16);
+		panel_1.add(textVersionSoft);
+		textVersionSoft.setOpaque(false);
+		textVersionSoft.setHorizontalAlignment(SwingConstants.RIGHT);
+		textVersionSoft.setForeground(new Color(65, 105, 225));
+		textVersionSoft.setFont(new Font("Cambria", Font.PLAIN, 12));
+		textVersionSoft.setEditable(false);
+		textVersionSoft.setColumns(10);
+		textVersionSoft.setBorder(null);
+		textVersionSoft.setBackground(SystemColor.activeCaption);
 
 		btncerrarSesion = new JButton("<html><center>CERRAR SESIÓN</html>");
 		btncerrarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -132,7 +149,7 @@ public class VistaPrincipal extends JFrame {
 		btnSalir.setHorizontalTextPosition(SwingConstants.RIGHT);
 
 		panelDeControl = new JPanel();
-		panelDeControl.setBounds(10, 179, 462, 201);
+		panelDeControl.setBounds(10, 208, 462, 201);
 		panel_1.add(panelDeControl);
 		panelDeControl.setBackground(new Color(176, 196, 222));
 		panelDeControl.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -220,7 +237,7 @@ public class VistaPrincipal extends JFrame {
 		botonBackUp.setToolTipText("Backup del Sistema.");
 		botonBackUp.setIcon(new ImageIcon(this.getClass().getResource("/Backup.png")));
 		panelDeControl.add(botonBackUp);
-		
+
 		botonConfiguracion = new JButton("CONFIGURACIÓN");
 		botonConfiguracion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonConfiguracion.addActionListener(new ActionListener() {
@@ -240,34 +257,30 @@ public class VistaPrincipal extends JFrame {
 		lblReparacionesEls.setVerticalTextPosition(SwingConstants.TOP);
 		lblReparacionesEls.setHorizontalAlignment(SwingConstants.CENTER);
 		lblReparacionesEls.setBackground(new Color(176, 196, 222));
-		lblReparacionesEls.setBounds(22, 25, 473, 167);
+		lblReparacionesEls.setBounds(25, 58, 473, 153);
 		panel_1.add(lblReparacionesEls);
 		lblReparacionesEls.setForeground(new Color(105, 105, 105));
 		lblReparacionesEls.setFont(new Font("Wide Latin", Font.BOLD, 22));
 
-		textProgramador = new JTextField();
-		textProgramador.setBounds(4, 398, 166, 16);
-		panel_1.add(textProgramador);
-		textProgramador.setOpaque(false);
-		textProgramador.setHorizontalAlignment(SwingConstants.RIGHT);
-		textProgramador.setForeground(new Color(65, 105, 225));
-		textProgramador.setFont(new Font("Cambria", Font.PLAIN, 12));
-		textProgramador.setEditable(false);
-		textProgramador.setColumns(10);
-		textProgramador.setBorder(null);
-		textProgramador.setBackground(SystemColor.activeCaption);
+		JSeparator separator_1_2 = new JSeparator();
+		separator_1_2.setBounds(86, 414, 314, 2);
+		panel_1.add(separator_1_2);
 
-		textVersionSoft = new JTextField();
-		textVersionSoft.setBounds(316, 397, 166, 16);
-		panel_1.add(textVersionSoft);
-		textVersionSoft.setOpaque(false);
-		textVersionSoft.setHorizontalAlignment(SwingConstants.RIGHT);
-		textVersionSoft.setForeground(new Color(65, 105, 225));
-		textVersionSoft.setFont(new Font("Cambria", Font.PLAIN, 12));
-		textVersionSoft.setEditable(false);
-		textVersionSoft.setColumns(10);
-		textVersionSoft.setBorder(null);
-		textVersionSoft.setBackground(SystemColor.activeCaption);
+		JSeparator separator_1_1_1 = new JSeparator();
+		separator_1_1_1.setBounds(86, 418, 314, 2);
+		panel_1.add(separator_1_1_1);
+
+		textLugarBaseDatos = new JTextField();
+		textLugarBaseDatos.setOpaque(false);
+		textLugarBaseDatos.setHorizontalAlignment(SwingConstants.CENTER);
+		textLugarBaseDatos.setForeground(new Color(65, 105, 225));
+		textLugarBaseDatos.setFont(new Font("Cambria", Font.BOLD, 14));
+		textLugarBaseDatos.setEditable(false);
+		textLugarBaseDatos.setColumns(10);
+		textLugarBaseDatos.setBorder(null);
+		textLugarBaseDatos.setBackground(SystemColor.activeCaption);
+		textLugarBaseDatos.setBounds(143, 30, 198, 18);
+		panel_1.add(textLugarBaseDatos);
 
 		setLocationCenter();
 		setVisible(true);
@@ -422,7 +435,6 @@ public class VistaPrincipal extends JFrame {
 		this.btnSalir = btnSalir;
 	}
 
-
 	public JButton getBtncerrarSesion() {
 		return btncerrarSesion;
 	}
@@ -437,5 +449,13 @@ public class VistaPrincipal extends JFrame {
 
 	public void setBotonConfiguracion(JButton botonConfiguracion) {
 		this.botonConfiguracion = botonConfiguracion;
+	}
+
+	public JTextField getTextLugarBaseDatos() {
+		return textLugarBaseDatos;
+	}
+
+	public void setTextLugarBaseDatos(JTextField textLugarBaseDatos) {
+		this.textLugarBaseDatos = textLugarBaseDatos;
 	}
 }

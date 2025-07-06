@@ -80,6 +80,8 @@ public class ControladorPrincipal implements ActionListener {
 
 		controladorUsuLogin = new ControladorUsuLogin(new Permisos(ubicacionBase));
 
+		vistaPrincipal.getTextLugarBaseDatos().setText(ubicacionBase.toUpperCase());
+
 	}
 
 	public void inicializar() {
@@ -222,8 +224,7 @@ public class ControladorPrincipal implements ActionListener {
 			ventanaListadoReparaciones = new VentanaListadoReparaciones(controladorListados);
 
 			controladorUsuLogin.verificarPermisosVentanaListados(ventanaListadoReparaciones);
- 
-			
+
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
 			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);
 
@@ -245,13 +246,12 @@ public class ControladorPrincipal implements ActionListener {
 			ventanaEquipos.setVisible(false);
 			ventanaSalidas.setVisible(false);
 
-	
 		}
 
 		else if (arg0.getSource() == vistaPrincipal.getBotonBackUp()) {
 
 			ventanaBackUp = new VentanaBackUp(controladorBackup);
-			controladorBackup = new ControladorBackup(ventanaBackUp,modelo);
+			controladorBackup = new ControladorBackup(ventanaBackUp, modelo);
 
 		}
 
@@ -280,17 +280,14 @@ public class ControladorPrincipal implements ActionListener {
 			}
 
 		}
-		
-		
-		else if (arg0.getSource() == vistaPrincipal.getBotonConfiguracion()) {
-			
-			ventanaConfiguracion = new VentanaConfiguracion(controladorconfiguraciones);
-			controladorconfiguraciones = new ControladorConfiguraciones(ventanaConfiguracion,controladorUsuLogin,vistaPrincipal);
 
-			
+		else if (arg0.getSource() == vistaPrincipal.getBotonConfiguracion()) {
+
+			ventanaConfiguracion = new VentanaConfiguracion(controladorconfiguraciones);
+			controladorconfiguraciones = new ControladorConfiguraciones(ventanaConfiguracion, controladorUsuLogin,
+					vistaPrincipal);
+
 		}
-		
-		
 
 	}
 

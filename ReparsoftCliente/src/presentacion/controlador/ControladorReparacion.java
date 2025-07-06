@@ -224,12 +224,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			int ELS = DameNumeroELS() - 1;
 
-			if (ELS < 1) {
 
-				Object mje = "No se ha ingresado ningún equipo.";
-				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-
-			} else {
+			if ((agenda.getUbicacionBase().compareTo("Bariloche") == 0 && ELS >= 988)
+					|| (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0 && ELS >= 1)) {
 
 				ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
 				cerraVentanaVisualizarEquipo();
@@ -253,7 +250,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				llenarComboELSvisualizacion();
 
+			} else {
+
+				Object mje = "No se ha ingresado ningún equipo.";
+				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+
 			}
+
 
 		}
 

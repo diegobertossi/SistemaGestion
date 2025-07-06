@@ -56,7 +56,10 @@ public class ControladorUsuLogin {
 			vistaPrincipal.getBotonUsuarios().setEnabled(true);
 			vistaLogin.dispose();
 
+			vistaPrincipal.getTextUsuario().setText("BIENVENIDO/A: " + usu_login.getNombre());			
+					
 			vistaPrincipal.getTextUsuario().setText("BIENVENIDO/A: " + usu_login.getNombre());
+			
 			vistaPrincipal.getTextProgramador().setText("Diseñado por Diego H. Bertossi");
 			vistaPrincipal.getTextVersionSoft().setText("Versión Reparsoft 2.0");
 

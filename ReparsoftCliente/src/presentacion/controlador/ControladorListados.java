@@ -175,7 +175,9 @@ public class ControladorListados
 		this.itemFacturacion_en_tabla = null;
 
 		agregarListenerVentanaListados();
-		cargarTablaListadoReparaciones();	    
+		
+		cargarTablaListadoReparaciones();	
+		
 		configurarVista();
 		configurarEventos();
 
