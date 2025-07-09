@@ -18,9 +18,6 @@ import org.json.JSONObject;
 public class ConsumoAPI {
 	
 	
-	
-	
-	
 	public static double[] consultaCotizacionDolar() {
 	    double[] cotizacionesPromedios = { 0, 0 };
 	    try {
