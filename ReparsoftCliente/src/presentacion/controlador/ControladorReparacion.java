@@ -88,6 +88,7 @@ import presentacion.vista.VentanaAgregarCliente;
 import presentacion.vista.VentanaAgregarEquipo;
 import presentacion.vista.VentanaAgregarRepuesto;
 import presentacion.vista.VentanaBusquedaEquipo;
+import presentacion.vista.VentanaClientes;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaEstados;
 import presentacion.vista.VentanaGenerarPresupuesto;
@@ -135,7 +136,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private VentanaGenerarPresupuesto ventanaGenerarPresupuesto;
 	private ControladorSalidas controladorSalidas;
 	private VentanaAgregarCliente ventanaAgregarCliente;
-
+	
+	
 	private VentanaRemitos ventanaRemitos;
 
 	private ControladorCliente controladorCliente;
@@ -216,6 +218,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.controladorCliente = controladorCliente;
 
 	}
+	
+
 
 	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
@@ -791,8 +795,15 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		}
 
 		else if (this.ventanaAgregarEquipo != null && e.getSource() == this.ventanaAgregarEquipo.getBtnaltaCliente()) {
+			
+			
+			controladorCliente.setLlamadoDesdeAgregarEquipo(true);
+			
 
 			ventanaAgregarCliente = controladorCliente.agregarListenersVentanaAgregarCliente();
+			
+			
+			
 
 			ventanaAgregarCliente.addWindowListener(new WindowAdapter() {
 				@Override
@@ -802,6 +813,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				}
 			});
+			
+			
 
 		}
 

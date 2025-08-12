@@ -62,6 +62,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	private ClienteDTO clienteElegido;
 	private SucursalDTO SucursalesEncliente;
 	private TablaFiltros tablaFiltros = new TablaFiltros();
+	private boolean llamadoDesdeAgregarEquipo = false;
 
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
@@ -77,6 +78,13 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 		llenarTabla();
 	}
+	
+	
+	// Método para setear el flag desde el controlador de reparaciones
+	public void setLlamadoDesdeAgregarEquipo(boolean valor) {
+	    this.llamadoDesdeAgregarEquipo = valor;
+	}
+	
 
 	public void llenarTabla() {
 		this.ventanaClientes.getModelClientes().setRowCount(0); // Para vaciar
@@ -98,8 +106,23 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 		tablaFiltros.agregarAutofiltros(this.ventanaClientes.getTablaClientes());
 
-		this.ventanaClientes.setVisible(true);
+
+		if (llamadoDesdeAgregarEquipo) {
+	        ocultarVentanaClientes();
+	        llamadoDesdeAgregarEquipo = false; // Resetea el flag
+	    } else {
+	        this.ventanaClientes.setVisible(true);
+	    }
+		
+	}	
+	
+	
+	private void ocultarVentanaClientes() {
+	    if (ventanaClientes != null) {
+	        ventanaClientes.setVisible(false);
+	    }
 	}
+	
 
 	private void llenarTablaSucursales(int idCliente) {
 		this.ventanaSucursales.getModelSucursales().setRowCount(0); // Para
@@ -284,6 +307,8 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 						this.ventanaAgregarClientes.dispose();
 						ventanaAgregarClientes = null;
+						
+						
 						llenarTabla();
 
 					}
