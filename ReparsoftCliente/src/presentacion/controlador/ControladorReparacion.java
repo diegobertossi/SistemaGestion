@@ -2076,6 +2076,47 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 		performActionOnTextComponents(ventanaVisualizarEquipos);
+		
+
+		FocusListener cursorAlInicioTF = new FocusAdapter() {
+		    @Override
+		    public void focusLost(FocusEvent e) {
+		        if (e.getComponent() instanceof JTextField) {
+		            JTextField tf = (JTextField) e.getComponent();
+		            tf.setCaretPosition(0);
+		        }
+		    }
+		};
+	
+
+		// Aplica a los JTextField relevantes
+		ventanaVisualizarEquipos.getTextCliente().addFocusListener(cursorAlInicioTF);
+		ventanaVisualizarEquipos.getTextNombreEquipo().addFocusListener(cursorAlInicioTF);
+		ventanaVisualizarEquipos.getTextMarca().addFocusListener(cursorAlInicioTF);
+		ventanaVisualizarEquipos.getTextModelo().addFocusListener(cursorAlInicioTF);
+		ventanaVisualizarEquipos.getTextNSerie().addFocusListener(cursorAlInicioTF);
+		ventanaVisualizarEquipos.getTextPresupuesto().addFocusListener(cursorAlInicioTF);
+		ventanaVisualizarEquipos.getTextPresupuestoDolar().addFocusListener(cursorAlInicioTF);
+		ventanaVisualizarEquipos.getTextPago().addFocusListener(cursorAlInicioTF);
+
+// Java
+		FocusListener cursorAlInicioTA = new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (e.getComponent() instanceof javax.swing.JTextArea) {
+					javax.swing.JTextArea ta = (javax.swing.JTextArea) e.getComponent();
+					ta.setCaretPosition(0);
+				}
+			}
+		};
+
+// Aplica a los JTextArea relevantes
+		ventanaVisualizarEquipos.getTextFalla().addFocusListener(cursorAlInicioTA);
+		ventanaVisualizarEquipos.getTextDiagnostico().addFocusListener(cursorAlInicioTA);
+		ventanaVisualizarEquipos.getTextInformeCliente().addFocusListener(cursorAlInicioTA);
+
+
+
 
 	}
 
@@ -2451,6 +2492,27 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getGrupoEstadoFisico().setSelected(ventanaAgregarEquipo.getRdbtnBRC().getModel(), true);
 
 		performActionOnTextComponents(ventanaAgregarEquipo);
+		
+
+		// Java
+
+		// Java
+		FocusListener cursorAlInicio = new FocusAdapter() {
+		    @Override
+		    public void focusLost(FocusEvent e) {
+		        if (e.getComponent() instanceof JTextField) {
+		            JTextField tf = (JTextField) e.getComponent();
+		            tf.setCaretPosition(0);
+		        }
+		    }
+		};
+
+
+		ventanaAgregarEquipo.getTextAvisoCliente().addFocusListener(cursorAlInicio);
+		ventanaAgregarEquipo.getTextClienteCliente().addFocusListener(cursorAlInicio);
+		ventanaAgregarEquipo.getTextRemitoCliente().addFocusListener(cursorAlInicio);
+        ventanaAgregarEquipo.getTextFalla().addFocusListener(cursorAlInicio);
+        
 
 	}
 

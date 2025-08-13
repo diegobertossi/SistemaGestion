@@ -89,7 +89,6 @@ public class VentanaAgregarEquipo extends JFrame {
 	private ControladorReparacion controladorReparacion;
 	private JPanel panel_2;
 	private JPanel panel_3;
-	private JTextField textSerie;
 	private JButton btnaltaCliente;
 	private JPanel panel_4;
 	private JPanel panel_5;
@@ -231,16 +230,6 @@ public class VentanaAgregarEquipo extends JFrame {
 		panel_6.add(textFechafabricacion);
 		textFechafabricacion.setHorizontalAlignment(SwingConstants.CENTER);
 		textFechafabricacion.setFont(new Font("Cambria", Font.BOLD, 14));
-
-		textSerie = new JTextField();
-		textSerie.setBounds(125, 86, 190, 20);
-		panel_6.add(textSerie);
-		textSerie.setHorizontalAlignment(SwingConstants.LEFT);
-		textSerie.setFont(new Font("Cambria", Font.PLAIN, 14));
-		textSerie.setColumns(10);
-		textSerie.setBackground(SystemColor.inactiveCaptionBorder);
-		textSerie.setAlignmentY(0.0f);
-		textSerie.setAlignmentX(0.0f);
 
 		lblFalla = new JLabel("Falla: ");
 		lblFalla.setBounds(24, 138, 52, 14);
@@ -492,13 +481,7 @@ public class VentanaAgregarEquipo extends JFrame {
 		this.panel_1 = panel_1;
 	}
 
-	public JTextField getTextSerie() {
-		return textSerie;
-	}
 
-	public void setTextSerie(JTextField textSerie) {
-		this.textSerie = textSerie;
-	}
 
 	public JButton getBotonNuevaReparacion() {
 		return BotonNuevaReparacion;
