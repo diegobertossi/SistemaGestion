@@ -885,12 +885,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 							ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().setEnabled(false);
 							ventanaAgregarEquipo.getBotonIRaELS().setEnabled(true);
 
-							Object mje = "Equipo Guardado. Solo se podrá modificar desde la visualización";
-
-							JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo",
-									JOptionPane.INFORMATION_MESSAGE);
-
-							break;
 						}
 					}
 
@@ -1757,13 +1751,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		}
 
-		if (cambioDeEstadoBoolean) {
-			Object mje = "Deberá 'GUARDAR CAMBIOS' para mantener las modificaciones.";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-		} else {
-			Object mje = "No se realizó ningún cambio de estado.";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-		}
+//		if (cambioDeEstadoBoolean) {
+//			Object mje = "Deberá 'GUARDAR CAMBIOS' para mantener las modificaciones.";
+//			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+//		} else {
+//			Object mje = "No se realizó ningún cambio de estado.";
+//			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+//		}
 
 		this.ventanaEstados.dispose();
 		this.ventanaEstados = null;
@@ -2091,6 +2085,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		// Aplica a los JTextField relevantes
 		ventanaVisualizarEquipos.getTextCliente().addFocusListener(cursorAlInicioTF);
+		ventanaVisualizarEquipos.getTextSucursal().addFocusListener(cursorAlInicioTF);
 		ventanaVisualizarEquipos.getTextNombreEquipo().addFocusListener(cursorAlInicioTF);
 		ventanaVisualizarEquipos.getTextMarca().addFocusListener(cursorAlInicioTF);
 		ventanaVisualizarEquipos.getTextModelo().addFocusListener(cursorAlInicioTF);
