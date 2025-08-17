@@ -106,14 +106,11 @@ public class ControladorBackup implements ActionListener, MouseListener {
 				ventanaOpcionesBackup.getBtnResetDatos().addActionListener(this);
 				ventanaOpcionesBackup.getTxtNombreArchivo().setText(NombreBackUp);
 				ventanaOpcionesBackup.getTxtRutaArchivo().setText(rutadefaultBackup);
-				this.ventanaBackUp.dispose();
-				this.ventanaBackUp = null;
+//				this.ventanaBackUp.dispose();
+//				this.ventanaBackUp = null;
 
-			} else if (seleccion == ventanaBackUp.getRdbtnRemoto().getModel()) {
-				
-				
-				
-				
+			} else if (seleccion == ventanaBackUp.getRdbtnRemoto().getModel()) {				
+							
 
 				GenerarBackupMySQLRemoto( agenda.getUbicacionBase(),cleverCloudHost, cleverCloudPort,cleverCloudUser, cleverCloudPassword, cleverCloudDatabase);
 

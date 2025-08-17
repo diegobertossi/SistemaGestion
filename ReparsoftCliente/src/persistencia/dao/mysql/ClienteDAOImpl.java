@@ -186,7 +186,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 		ResultSet resultSet; // Guarda el resultado de la query
 		ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
 		try {
-			statement = conexion.getSQLConexion().prepareStatement(readall);
+			statement = conexion.getSQLConexion().prepareStatement(readallV);
 			resultSet = statement.executeQuery();
 			value = new DefaultComboBoxModel();
 			box.setModel(value);

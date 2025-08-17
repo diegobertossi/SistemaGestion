@@ -216,6 +216,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.controladorpresupuestos = controladorPresupuestos;
 		this.controladorSalidas = controladorSalidas;
 		this.controladorCliente = controladorCliente;
+		
+		
+
 
 	}
 	
@@ -233,6 +236,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					|| (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0 && ELS >= 1)) {
 
 				ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
+				
 				cerraVentanaVisualizarEquipo();
 				monedaFormatter = new MonedaFormatter();
 
@@ -3141,56 +3145,107 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
+	/**
+	 * Método mejorado para llenar combo de clientes - REEMPLAZA tu método actual
+	 * Soluciona el problema de reseteo al presionar "Editar" múltiples veces
+	 */
 	private void llenarComboClienteV(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-
-		agenda.ListarCliente(ventanaVisualizarEquipos.getComboClientes());
-
-		ventanaVisualizarEquipos.getComboClientes().addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-
-				if (ventanaVisualizarEquipos.getComboClientes().getSelectedItem() != null) {
-					Cliente = (ClienteDTO) ventanaVisualizarEquipos.getComboClientes().getSelectedItem();
-					int id = Cliente.getId();
-
-					agenda.ListarSucursalesxCliente(ventanaVisualizarEquipos.getComboSucursal(), id);
-					idCli = id;
-
-					// Seleccionar nuevamente la sucursal basada en el texto del JTextField
-					String nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
-					@SuppressWarnings("unchecked")
-					DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventanaVisualizarEquipos
-							.getComboSucursal().getModel();
-					for (int i = 0; i < modelSucursal.getSize(); i++) {
-						SucursalDTO sucursal = modelSucursal.getElementAt(i);
-						if (sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal)) {
-							ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(sucursal);
-							break;
-						}
-					}
-
-				}
-
-			}
-		});
-
+	    
+	    // PASO 1: Remover todos los listeners existentes para evitar duplicados
+	    ItemListener[] listeners = ventanaVisualizarEquipos.getComboClientes().getItemListeners();
+	    for (ItemListener listener : listeners) {
+	        ventanaVisualizarEquipos.getComboClientes().removeItemListener(listener);
+	    }
+	    
+	    // PASO 2: Guardar la selección actual antes de recargar
+	    ClienteDTO seleccionado = (ClienteDTO) ventanaVisualizarEquipos.getComboClientes().getSelectedItem();
+	    
+	    // PASO 3: Recargar la lista de clientes
+	    agenda.ListarCliente(ventanaVisualizarEquipos.getComboClientes());
+	    
+	    // PASO 4: Restaurar la selección guardada
+	    if (seleccionado != null) {
+	        DefaultComboBoxModel<ClienteDTO> model = (DefaultComboBoxModel<ClienteDTO>) ventanaVisualizarEquipos.getComboClientes().getModel();
+	        for (int i = 0; i < model.getSize(); i++) {
+	            if (model.getElementAt(i).equals(seleccionado)) {
+	                ventanaVisualizarEquipos.getComboClientes().setSelectedIndex(i);
+	                break;
+	            }
+	        }
+	    }
+	    
+	    // PASO 5: Agregar UN SOLO listener nuevo
+	    ventanaVisualizarEquipos.getComboClientes().addItemListener(new ItemListener() {
+	        @Override
+	        public void itemStateChanged(ItemEvent e) {
+	            // Solo procesar cuando se SELECCIONA un item (evitar doble disparo)
+	            if (e.getStateChange() == ItemEvent.SELECTED && 
+	                ventanaVisualizarEquipos.getComboClientes().getSelectedItem() != null) {
+	                
+	                // Obtener cliente seleccionado
+	                Cliente = (ClienteDTO) ventanaVisualizarEquipos.getComboClientes().getSelectedItem();
+	                int id = Cliente.getId();
+	                idCli = id;
+	                
+	                // Cargar sucursales del cliente seleccionado
+	                agenda.ListarSucursalesxCliente(ventanaVisualizarEquipos.getComboSucursal(), id);
+	                
+	                // Seleccionar la sucursal basada en el texto del JTextField
+	                String nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
+	                if (nombreSucursal != null && !nombreSucursal.trim().isEmpty()) {
+	                    @SuppressWarnings("unchecked")
+	                    DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) 
+	                        ventanaVisualizarEquipos.getComboSucursal().getModel();
+	                    
+	                    for (int i = 0; i < modelSucursal.getSize(); i++) {
+	                        SucursalDTO sucursal = modelSucursal.getElementAt(i);
+	                        if (sucursal != null && sucursal.getNombreSucursal() != null && 
+	                            sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal.trim())) {
+	                            ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(sucursal);
+	                            break;
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    });
 	}
 
+	/**
+	 * Método mejorado para llenar combo de sucursales - REEMPLAZA tu método actual
+	 * Evita duplicación de listeners y mejora la validación
+	 */
 	private void llenarComboSucursal() {
-
-		ventanaAgregarEquipo.getComboSucursal().addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-
-				if (ventanaAgregarEquipo.getComboSucursal().getSelectedItem() != null
-						&& VistaPropias.AutoCompletarComboBox.esItemValido(ventanaAgregarEquipo.getComboSucursal())) {
-
-					Sucursal = (SucursalDTO) ventanaAgregarEquipo.getComboSucursal().getSelectedItem();
-					int idsuc = Sucursal.getIdSucursal();
-					idSuc = idsuc;
-
-				}
-			}
-		});
-
+	    
+	    // PASO 1: Remover todos los listeners existentes para evitar duplicados
+	    ItemListener[] listeners = ventanaAgregarEquipo.getComboSucursal().getItemListeners();
+	    for (ItemListener listener : listeners) {
+	        ventanaAgregarEquipo.getComboSucursal().removeItemListener(listener);
+	    }
+	    
+	    // PASO 2: Agregar UN SOLO listener nuevo
+	    ventanaAgregarEquipo.getComboSucursal().addItemListener(new ItemListener() {
+	        @Override
+	        public void itemStateChanged(ItemEvent e) {
+	            // Solo procesar cuando se SELECCIONA un item (evitar doble disparo)
+	            if (e.getStateChange() == ItemEvent.SELECTED && 
+	                ventanaAgregarEquipo.getComboSucursal().getSelectedItem() != null) {
+	                
+	                // Validar que sea un item válido usando tu método personalizado
+	                if (VistaPropias.AutoCompletarComboBox.esItemValido(ventanaAgregarEquipo.getComboSucursal())) {
+	                    
+	                    // Obtener sucursal seleccionada
+	                    Sucursal = (SucursalDTO) ventanaAgregarEquipo.getComboSucursal().getSelectedItem();
+	                    
+	                    // Validar que la sucursal no sea null antes de obtener el ID
+	                    if (Sucursal != null) {
+	                        int idsuc = Sucursal.getIdSucursal();
+	                        idSuc = idsuc;
+	                    }
+	                }
+	            }
+	        }
+	    });
 	}
 
 	private void llenarComboCliente() {

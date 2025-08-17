@@ -16,13 +16,6 @@ public interface UsuarioDAO
 	
 	public List<UsuarioDTO> readAll();
 	
-	public UsuarioDTO obtenerMedico(int dni);
-
-	public List<UsuarioDTO> obtenerMedicoXEspecialidad(int idEspecialidad);
-
-	public List<UsuarioDTO> obtenerMedicoXEspecialidadXAgenda(Integer id, int selectedIndex);
-
-	public UsuarioDTO obtenerMedicoPorID(int id);
 	
 	public List<UsuarioDTO> readAllXRol(int idRol);
 
