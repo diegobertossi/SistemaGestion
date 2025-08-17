@@ -17,6 +17,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import java.awt.Rectangle;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 public class VentanaOpcionesBackup extends JFrame {
 
@@ -24,10 +27,11 @@ public class VentanaOpcionesBackup extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JButton btnAceptar;
+	private JButton btnGuardarLocal;
 	private JButton btnCancelar;
 	private JTextField txtNombreArchivo;
 	private JTextField txtRutaArchivo;
+
 	private JButton btnCambiarNombre;
 	private JButton btnResetDatos;
 
@@ -37,7 +41,7 @@ public class VentanaOpcionesBackup extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setUndecorated(true);
-		setBounds(460, 260, 534, 337);
+		setBounds(460, 260, 548, 354);
 
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
@@ -49,88 +53,94 @@ public class VentanaOpcionesBackup extends JFrame {
 		getContentPane().add(panel);
 		panel.setLayout(null);
 
-		btnAceptar = new JButton("ACEPTAR");
-		btnAceptar.setBounds(98, 268, 120, 29);
-		panel.add(btnAceptar);
-		btnAceptar.setForeground(new Color(0, 0, 0));
-		btnAceptar.setFont(new Font("Cambria", Font.BOLD, 12));
+		btnGuardarLocal = new JButton("GUARDAR LOCAL");
+		btnGuardarLocal.setBounds(104, 278, 141, 34);
+		panel.add(btnGuardarLocal);
+		btnGuardarLocal.setForeground(new Color(0, 0, 0));
+		btnGuardarLocal.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		btnCancelar = new JButton("CANCELAR");
-		btnCancelar.setBounds(316, 268, 120, 29);
+		btnCancelar.setBounds(349, 278, 93, 34);
 		panel.add(btnCancelar);
 		btnCancelar.setForeground(new Color(0, 0, 0));
 		btnCancelar.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		txtNombreArchivo = new JTextField();
-		txtNombreArchivo.setAlignmentY(Component.TOP_ALIGNMENT);
-		txtNombreArchivo.setBorder(new LineBorder(new Color(0, 128, 128)));
+		txtNombreArchivo.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new EmptyBorder(0, 5, 0, 0)));
 		txtNombreArchivo.setHorizontalAlignment(SwingConstants.LEFT);
 		txtNombreArchivo.setEditable(false);
-		txtNombreArchivo.setBounds(25, 128, 383, 20);
+		txtNombreArchivo.setBounds(79, 115, 383, 25);
 		panel.add(txtNombreArchivo);
-		txtNombreArchivo.setBackground(new Color(0, 102, 153));
-		txtNombreArchivo.setForeground(new Color(255, 255, 255));
-		txtNombreArchivo.setFont(new Font("Cambria Math", Font.PLAIN, 12));
+		txtNombreArchivo.setBackground(new Color(255, 248, 220));
+		txtNombreArchivo.setForeground(new Color(0, 0, 139));
+		txtNombreArchivo.setFont(new Font("Cambria", Font.PLAIN, 12));
 
 		txtRutaArchivo = new JTextField();
-		txtRutaArchivo.setAlignmentY(Component.TOP_ALIGNMENT);
-		txtRutaArchivo.setBorder(new LineBorder(new Color(0, 128, 128)));
+		txtRutaArchivo.setBorder(new CompoundBorder(new LineBorder(new Color(0, 128, 128)), new EmptyBorder(0, 5, 0, 0)));
 		txtRutaArchivo.setHorizontalAlignment(SwingConstants.LEFT);
 		txtRutaArchivo.setEditable(false);
-		txtRutaArchivo.setBounds(25, 199, 383, 20);
+		txtRutaArchivo.setBounds(79, 160, 383, 25);
 		panel.add(txtRutaArchivo);
-		txtRutaArchivo.setBackground(new Color(0, 102, 153));
-		txtRutaArchivo.setForeground(new Color(255, 255, 255));
-		txtRutaArchivo.setFont(new Font("Cambria Math", Font.PLAIN, 12));
+		txtRutaArchivo.setBackground(new Color(255, 248, 220));
+		txtRutaArchivo.setForeground(new Color(0, 0, 139));
+		txtRutaArchivo.setFont(new Font("Cambria", Font.PLAIN, 12));
 
-		JLabel lblNewLabel = new JLabel("Se generará el siguiente archivo de backup:");
-		lblNewLabel.setBounds(27, 106, 275, 20);
+		JLabel lblNewLabel = new JLabel("NOMBRE:");
+		lblNewLabel.setBounds(79, 98, 99, 20);
 		panel.add(lblNewLabel);
 		lblNewLabel.setForeground(new Color(0, 0, 0));
 		lblNewLabel.setFont(new Font("Cambria", Font.BOLD, 14));
 
-		JLabel lblNewLabel_1 = new JLabel("Se guardará en el siguiente destino:");
-		lblNewLabel_1.setBounds(27, 176, 295, 20);
+		JLabel lblNewLabel_1 = new JLabel("DESTINO:");
+		lblNewLabel_1.setBounds(79, 143, 99, 20);
 		panel.add(lblNewLabel_1);
 		lblNewLabel_1.setForeground(new Color(0, 0, 0));
 		lblNewLabel_1.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		JLabel lblBackupSistema = new JLabel("BACKUP DEL SISTEMA");
 		lblBackupSistema.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBackupSistema.setBounds(114, 23, 319, 29);
+		lblBackupSistema.setBounds(110, 27, 319, 29);
 		panel.add(lblBackupSistema);
 		lblBackupSistema.setForeground(new Color(0, 0, 139));
 		lblBackupSistema.setFont(new Font("Cambria", Font.BOLD, 26));
 
 		JLabel img = new JLabel("");
-		img.setBounds(40, 7, 70, 73);
+		img.setBounds(40, 3, 70, 73);
 		panel.add(img);
 		img.setIcon(new ImageIcon(this.getClass().getResource("/data-backup.png")));
 
-		btnCambiarNombre = new JButton("<html><center>CAMBIAR NOMBRE Y DESTINO</html>");
+		btnCambiarNombre = new JButton("<html><center>CAMBIAR NOMBRE Y DESTINO LOCAL</html>");
 		btnCambiarNombre.setForeground(new Color(0, 0, 0));
 		btnCambiarNombre.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnCambiarNombre.setBounds(418, 108, 106, 60);
+		btnCambiarNombre.setBounds(79, 212, 146, 34);
 		panel.add(btnCambiarNombre);
 
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(40, 83, 459, 2);
+		separator_1.setBounds(37, 79, 459, 2);
 		panel.add(separator_1);
 		
-		JSeparator separator_1_1 = new JSeparator();
-		separator_1_1.setBounds(40, 250, 459, 2);
-		panel.add(separator_1_1);
-		
 		JLabel img_1 = new JLabel("");
-		img_1.setBounds(429, 7, 70, 73);
+		img_1.setBounds(429, 3, 70, 73);
 		panel.add(img_1);
 		img_1.setIcon(new ImageIcon(this.getClass().getResource("/data-backup.png")));
 		
 		btnResetDatos = new JButton("<html><center>RESET DATOS</html>");
 		btnResetDatos.setForeground(new Color(0, 0, 0));
 		btnResetDatos.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnResetDatos.setBounds(418, 179, 106, 60);
+		btnResetDatos.setBounds(295, 212, 167, 34);
 		panel.add(btnResetDatos);
+		
+		JSeparator separator_1_2 = new JSeparator();
+		separator_1_2.setBounds(37, 83, 459, 2);
+		panel.add(separator_1_2);
+		
+		JSeparator separator_1_2_1 = new JSeparator();
+		separator_1_2_1.setBounds(40, 260, 459, 2);
+		panel.add(separator_1_2_1);
+		
+		JSeparator separator_1_3 = new JSeparator();
+		separator_1_3.setBounds(40, 256, 459, 2);
+		panel.add(separator_1_3);
 		
 		setLocationCenter();
 		setVisible(true);
@@ -153,12 +163,12 @@ public class VentanaOpcionesBackup extends JFrame {
 				(screenSize.height - frameSize.height) / 2 + moveHeight);
 	}
 
-	public JButton getBtnAceptar() {
-		return btnAceptar;
+	public JButton getBtnGuardarLocal() {
+		return btnGuardarLocal;
 	}
 
-	public void setBtnAceptar(JButton btnAceptar) {
-		this.btnAceptar = btnAceptar;
+	public void setBtnGuardarLocal(JButton btnAceptar) {
+		this.btnGuardarLocal = btnAceptar;
 	}
 
 	public JButton getBtnCancelar() {
