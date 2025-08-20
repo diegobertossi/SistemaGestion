@@ -53,11 +53,22 @@ public class ControladorBackup implements ActionListener, MouseListener {
 	private String rutadefaultBackup = "";
 	
 	
-	private String cleverCloudHost = "b1zeyndbfc1bmeiernaw-mysql.services.clever-cloud.com"; 
-	private String cleverCloudPort = "3306" ; 
-	private String cleverCloudUser = "uhhm5ckiyyizik8y";
-	private String cleverCloudPassword = "TXJcnVkA9yW9JDaUNg0a"; 
-	private String cleverCloudDatabase = "b1zeyndbfc1bmeiernaw"; 
+	private String cleverCloudHostBRC = "b1zeyndbfc1bmeiernaw-mysql.services.clever-cloud.com"; 
+	private String cleverCloudPortBRC = "3306" ; 
+	private String cleverCloudUserBRC = "uhhm5ckiyyizik8y";
+	private String cleverCloudPasswordBRC = "TXJcnVkA9yW9JDaUNg0a"; 
+	private String cleverCloudDatabaseBRC = "b1zeyndbfc1bmeiernaw"; 
+	
+	
+	private String cleverCloudHostBSAS = "bewqn4ds4dxour1xkgu6-mysql.services.clever-cloud.com"; 
+	private String cleverCloudPortBSAS = "3306" ; 
+	private String cleverCloudUserBSAS = "uocexuvpspnbuath";
+	private String cleverCloudPasswordBSAS = "waHWGTIYsS52IV0ZiOLU"; 
+	private String cleverCloudDatabaseBSAS = "bewqn4ds4dxour1xkgu6"; 
+	 
+	
+	
+	
 
 	@SuppressWarnings("unused")
 	private Agenda agenda;
@@ -93,7 +104,31 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 		if (ventanaBackUp != null && e.getSource() == ventanaBackUp.getBtnGenerarB()) {
 
-		
+			String cleverCloudHost = ""; 
+			String cleverCloudPort = "" ; 
+			String cleverCloudUser = "";
+			String cleverCloudPassword = ""; 
+			String cleverCloudDatabase = ""; 
+			
+			
+			if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
+				cleverCloudHost = cleverCloudHostBRC;
+				cleverCloudPort = cleverCloudPortBRC;
+				cleverCloudUser = cleverCloudUserBRC;
+				cleverCloudPassword = cleverCloudPasswordBRC;
+				cleverCloudDatabase = cleverCloudDatabaseBRC;
+									
+				
+			} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
+				cleverCloudHost = cleverCloudHostBSAS;
+				cleverCloudPort = cleverCloudPortBSAS;
+				cleverCloudUser = cleverCloudUserBSAS;
+				cleverCloudPassword = cleverCloudPasswordBSAS;
+				cleverCloudDatabase = cleverCloudDatabaseBSAS;
+				
+				
+			}
+
 
 			if (seleccion == ventanaBackUp.getRdbtnLocal().getModel()) {
 
@@ -109,11 +144,27 @@ public class ControladorBackup implements ActionListener, MouseListener {
 //				this.ventanaBackUp.dispose();
 //				this.ventanaBackUp = null;
 
-			} else if (seleccion == ventanaBackUp.getRdbtnRemoto().getModel()) {				
+			} else if (seleccion == ventanaBackUp.getRdbtnRemoto().getModel()) {	
+				
+				
+				// Dentro del ActionListener del botón getBtnGenerarB
+				int opcion = JOptionPane.showConfirmDialog(null,
+						"Se sobre escribirá el archivo anterior remoto. ¿Desea continuar?",
+						"Confirmar Backup Remoto", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+				if (opcion == JOptionPane.YES_OPTION) {
+					
+					
+					// Aquí llamas al método que realiza el backup remoto
+					GenerarBackupMySQLRemoto( agenda.getUbicacionBase(),cleverCloudHost, cleverCloudPort,cleverCloudUser, cleverCloudPassword, cleverCloudDatabase);
+
+				} else {
+					// Cancelar la operación
+					System.out.println("Operación de backup remoto cancelada por el usuario.");
+				}
 							
 
-				GenerarBackupMySQLRemoto( agenda.getUbicacionBase(),cleverCloudHost, cleverCloudPort,cleverCloudUser, cleverCloudPassword, cleverCloudDatabase);
-
+				
 			} else {
 
 				JOptionPane.showMessageDialog(null, "Seleccione una ubicación");
@@ -130,7 +181,24 @@ public class ControladorBackup implements ActionListener, MouseListener {
 				
 			} else if (seleccion == ventanaBackUp.getRdbtnRemoto().getModel()) {
 				
-				ActualizarBackupMySQLremoto(agenda.getUbicacionBase(),cleverCloudHost, cleverCloudPort,cleverCloudUser, cleverCloudPassword, cleverCloudDatabase);
+								
+				// Dentro del ActionListener del botón getBtnGenerarB
+				int opcion = JOptionPane.showConfirmDialog(null,
+						"Se sobre escribirá la base local. ¿Desea continuar?",
+						"Confirmar importación Remota", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+				if (opcion == JOptionPane.YES_OPTION) {
+					// Aquí llamas al método que realiza el backup remoto
+					ActualizarBackupMySQLremoto(agenda.getUbicacionBase(),cleverCloudHostBRC, cleverCloudPortBRC,cleverCloudUserBRC, cleverCloudPasswordBRC, cleverCloudDatabaseBRC);
+
+				} else {
+					// Cancelar la operación
+					System.out.println("Operación de backup remoto cancelada por el usuario.");
+				}
+							
+				
+				
+				
 			    
 			} else {
 				
@@ -560,25 +628,7 @@ private void verificarMigracion(Connection conexionLocal) throws SQLException {
     }
 }
 
-// Imports necesarios - SOLUCIÓN PARA CONFLICTOS:
-/*
-import persistencia.conexion.Conexion;
-import java.io.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-// NO importar Statement - usar nombre completo
-import java.sql.ResultSet;
-import java.sql.PreparedStatement;
-import java.sql.ResultSetMetaData;
-import java.util.List;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
-*/
-	    
-	    
-	    
-	    
+   
 	    
 	    
 	    
@@ -747,23 +797,7 @@ import javax.swing.JOptionPane;
 		});
 
 	}
-	/**
-	 * Genera un backup completo de la base de datos actual y lo sube a Clever Cloud.
-	 * Este método realiza los siguientes pasos:
-	 * 1. Crea un dump SQL de la base de datos actual usando mysqldump
-	 * 2. Se conecta a la instancia MySQL de Clever Cloud
-	 * 3. Crea la base de datos de destino si no existe
-	 * 4. Restaura el dump en Clever Cloud
-	 * 5. Limpia archivos temporales
-	 * 
-	 * @param ubicacion La ubicación para determinar qué base de datos hacer backup (Bariloche/Buenos Aires)
-	 * @param cleverCloudHost Host de la base de datos en Clever Cloud
-	 * @param cleverCloudPort Puerto de la base de datos en Clever Cloud
-	 * @param cleverCloudUser Usuario de la base de datos en Clever Cloud
-	 * @param cleverCloudPassword Contraseña de la base de datos en Clever Cloud
-	 * @param cleverCloudDatabase Nombre de la base de datos destino en Clever Cloud
-	 * @return true si el backup fue exitoso, false en caso contrario
-	 */
+
 	public boolean GenerarBackupMySQLRemoto(String ubicacion, String cleverCloudHost, String cleverCloudPort, 
 	                                       String cleverCloudUser, String cleverCloudPassword, 
 	                                       String cleverCloudDatabase) {
@@ -870,8 +904,12 @@ import javax.swing.JOptionPane;
 	        // PASO 2: Conectar a Clever Cloud (directamente a la base de datos asignada)
 	        System.out.println("🌐 Conectando a Clever Cloud...");
 	        
+	        
+	        
 	        String urlCleverCloud = String.format("jdbc:mysql://%s:%s/%s?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=true&autoReconnect=true",
 	                cleverCloudHost, cleverCloudPort, cleverCloudDatabase);
+	        
+	            
 	        
 	        conexionRemota = DriverManager.getConnection(urlCleverCloud, cleverCloudUser, cleverCloudPassword);
 	        
@@ -1073,18 +1111,7 @@ import javax.swing.JOptionPane;
 	    return exitoso;
 	}
 
-	// Imports necesarios que debes agregar al inicio de tu clase:
-	/*
-	import persistencia.conexion.Conexion;
-	import java.io.*;
-	import java.sql.Connection;
-	import java.sql.SQLException;
-	import java.sql.DriverManager;
-	import java.util.Arrays;
-	import java.util.List;
-	import java.util.ArrayList;
-	import javax.swing.JOptionPane;
-	*/
+
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
