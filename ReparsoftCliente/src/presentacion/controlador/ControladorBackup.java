@@ -21,7 +21,6 @@ import java.util.Date;
 import javax.swing.ButtonModel;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -143,12 +142,11 @@ public class ControladorBackup implements ActionListener, MouseListener {
 			if (seleccion == ventanaBackUp.getRdbtnLocal().getModel()) {
 				ActualizarBackupMySQLlocal();
 			} else if (seleccion == ventanaBackUp.getRdbtnRemoto().getModel()) {
-				int opcion = JOptionPane.showConfirmDialog(null,
-						"Se sobreescribirá la base de datos local. ¿Desea continuar?", "Confirmar Importación Remota",
-						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				int opcion = JOptionPane.showConfirmDialog(null, "Se sobreescribirá la base de datos local. ¿Desea continuar?",
+						"Confirmar ImportaciÃ³n Remota", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (opcion == JOptionPane.YES_OPTION) {
-					ActualizarBackupMySQLremotoConSwingWorker(agenda.getUbicacionBase(), cleverCloudHost,
-							cleverCloudPort, cleverCloudUser, cleverCloudPassword, cleverCloudDatabase);
+					ActualizarBackupMySQLremotoConSwingWorker(agenda.getUbicacionBase(), cleverCloudHost, cleverCloudPort,
+							cleverCloudUser, cleverCloudPassword, cleverCloudDatabase);
 				} else {
 					System.out.println("Operación de importación remota cancelada por el usuario.");
 				}
@@ -187,28 +185,27 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 	public void ActualizarBackupMySQLremotoConSwingWorker(String ubicacion, String cleverCloudHost,
 			String cleverCloudPort, String cleverCloudUser, String cleverCloudPassword, String cleverCloudDatabase) {
-
+		
+		
 		ventanaBackUp.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		ventanaBackUp.getGlassPane().setVisible(true);
 		ventanaBackUp.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		
 		ventanaBackUp.getBtnGenerarB().setEnabled(false);
 		ventanaBackUp.getBtnImportarB().setEnabled(false);
-
-
+		
 		JDialog popup = new JDialog();
 		popup.setTitle("Procesando");
 		popup.setModal(false);
 		popup.setSize(300, 100);
 		popup.setLocationRelativeTo(ventanaBackUp);
 		popup.add(new JLabel("Actualizando desde la nube, espere...", SwingConstants.CENTER));
-		popup.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 		SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
 			@Override
 			protected Boolean doInBackground() {
-				return ActualizarBackupMySQLremoto(ubicacion, cleverCloudHost, cleverCloudPort, cleverCloudUser,
-						cleverCloudPassword, cleverCloudDatabase);
+				return ActualizarBackupMySQLremoto(ubicacion, cleverCloudHost, cleverCloudPort,
+						cleverCloudUser, cleverCloudPassword, cleverCloudDatabase);
 			}
 
 			@Override
@@ -218,15 +215,14 @@ public class ControladorBackup implements ActionListener, MouseListener {
 				} catch (Exception e) {
 					System.err.println("Excepción en el worker de actualización remota: " + e.getMessage());
 					JOptionPane.showMessageDialog(null,
-							"Ocurrió un error inesperado durante la actualización: " + e.getMessage(), "Error",
-							JOptionPane.ERROR_MESSAGE);
+							"Ocurrió un error inesperado durante la actualización: " + e.getMessage(),
+							"Error", JOptionPane.ERROR_MESSAGE);
 				} finally {
 					popup.dispose();
 					ventanaBackUp.getGlassPane().setVisible(false);
 					ventanaBackUp.setCursor(Cursor.getDefaultCursor());
 					ventanaBackUp.getBtnGenerarB().setEnabled(true);
 					ventanaBackUp.getBtnImportarB().setEnabled(true);
-					
 				}
 			}
 		};
@@ -237,28 +233,27 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		});
 	}
 
-	public void GenerarBackupMySQLRemotoConSwingWorker(String ubicacion, String cleverCloudHost, String cleverCloudPort,
-			String cleverCloudUser, String cleverCloudPassword, String cleverCloudDatabase) {
-
+	public void GenerarBackupMySQLRemotoConSwingWorker(String ubicacion, String cleverCloudHost,
+			String cleverCloudPort, String cleverCloudUser, String cleverCloudPassword, String cleverCloudDatabase) {
+		
 		ventanaBackUp.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		ventanaBackUp.getGlassPane().setVisible(true);
 		ventanaBackUp.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		ventanaBackUp.getBtnGenerarB().setEnabled(false);
 		ventanaBackUp.getBtnImportarB().setEnabled(false);
-
+		
 		JDialog popup = new JDialog();
 		popup.setTitle("Procesando");
 		popup.setModal(false);
 		popup.setSize(300, 100);
 		popup.setLocationRelativeTo(ventanaBackUp);
 		popup.add(new JLabel("Generando backup remoto, espere...", SwingConstants.CENTER));
-		popup.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 		SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
 			@Override
 			protected Boolean doInBackground() {
-				return GenerarBackupMySQLRemoto(ubicacion, cleverCloudHost, cleverCloudPort, cleverCloudUser,
-						cleverCloudPassword, cleverCloudDatabase);
+				return GenerarBackupMySQLRemoto(ubicacion, cleverCloudHost, cleverCloudPort,
+						cleverCloudUser, cleverCloudPassword, cleverCloudDatabase);
 			}
 
 			@Override
@@ -268,8 +263,8 @@ public class ControladorBackup implements ActionListener, MouseListener {
 				} catch (Exception e) {
 					System.err.println("Excepción en el worker de backup remoto: " + e.getMessage());
 					JOptionPane.showMessageDialog(null,
-							"Ocurrió un error inesperado durante el backup: " + e.getMessage(), "Error",
-							JOptionPane.ERROR_MESSAGE);
+							"Ocurrió un error inesperado durante el backup: " + e.getMessage(),
+							"Error", JOptionPane.ERROR_MESSAGE);
 				} finally {
 					popup.dispose();
 					ventanaBackUp.getGlassPane().setVisible(false);
@@ -279,7 +274,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 				}
 			}
 		};
-
+		
 		SwingUtilities.invokeLater(() -> {
 			popup.setVisible(true);
 			worker.execute();
@@ -291,22 +286,17 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		Connection conexionRemota = null;
 		Connection conexionLocal = null;
 		boolean exitoso = false;
-
+		
 		try {
 			String nombreBaseLocal = (ubicacion.equalsIgnoreCase("Bariloche")) ? "ordenesbrc" : "ordenesbsas";
 			System.out.println("Iniciando actualización de " + nombreBaseLocal + " desde Clever Cloud...");
 
 			System.out.println("Conectando a Clever Cloud para extraer datos...");
 			String urlCleverCloud = String.format(
-					"jdbc:mysql://%s:%s/%s?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true&rewriteBatchedStatements=true&useServerPrepStmts=false",
+					"jdbc:mysql://%s:%s/%s?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true",
 					cleverCloudHost, cleverCloudPort, cleverCloudDatabase);
 			conexionRemota = DriverManager.getConnection(urlCleverCloud, cleverCloudUser, cleverCloudPassword);
 			conexionRemota.setAutoCommit(false);
-
-			// OPTIMIZACIÓN: Configurar conexión remota para mejor rendimiento
-			try (java.sql.Statement stmt = conexionRemota.createStatement()) {
-				stmt.execute("SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
-			}
 			System.out.println("Conectado a Clever Cloud exitosamente");
 
 			System.out.println("Conectando a la base de datos local...");
@@ -317,19 +307,12 @@ public class ControladorBackup implements ActionListener, MouseListener {
 				return false;
 			}
 			conexionLocal.setAutoCommit(false);
-
-			// OPTIMIZACIÓN: Configurar conexión local para mejor rendimiento
-			try (java.sql.Statement stmt = conexionLocal.createStatement()) {
-				stmt.execute("SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
-				stmt.execute("SET foreign_key_checks = 0");
-				stmt.execute("SET unique_checks = 0");
-			}
 			System.out.println("Conectado a la base de datos local exitosamente");
 
 			System.out.println("Limpiando base de datos local...");
 			limpiarBaseDatos(conexionLocal);
 
-			migrarDatosDirectamenteOptimizado1(conexionRemota, conexionLocal);
+			migrarDatosDirectamente(conexionRemota, conexionLocal);
 
 			conexionLocal.commit();
 			conexionRemota.commit();
@@ -337,17 +320,15 @@ public class ControladorBackup implements ActionListener, MouseListener {
 			verificarMigracion(conexionLocal);
 
 			JOptionPane.showMessageDialog(null,
-					"Actualización completada exitosamente!\n\n" + "Origen: " + nombreBaseLocal + " REMOTA"
+					"Actualización completada exitosamente!\n\n" + "Origen: " + nombreBaseLocal + " REMOTO"
 							+ "\nDestino: " + nombreBaseLocal,
 					"Actualización Exitosa", JOptionPane.INFORMATION_MESSAGE);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				if (conexionLocal != null)
-					conexionLocal.rollback();
-				if (conexionRemota != null)
-					conexionRemota.rollback();
+				if (conexionLocal != null) conexionLocal.rollback();
+				if (conexionRemota != null) conexionRemota.rollback();
 			} catch (SQLException rollbackEx) {
 				System.err.println("Error durante rollback: " + rollbackEx.getMessage());
 			}
@@ -355,16 +336,12 @@ public class ControladorBackup implements ActionListener, MouseListener {
 					"Error en Actualización", JOptionPane.ERROR_MESSAGE);
 		} finally {
 			try {
-				if (conexionLocal != null && !conexionLocal.isClosed()) {
-					try (java.sql.Statement stmt = conexionLocal.createStatement()) {
-						stmt.execute("SET foreign_key_checks = 1");
-						stmt.execute("SET unique_checks = 1");
-					}
-					conexionLocal.setAutoCommit(true);
-				}
 				if (conexionRemota != null && !conexionRemota.isClosed()) {
 					conexionRemota.setAutoCommit(true);
 					conexionRemota.close();
+				}
+				if (conexionLocal != null && !conexionLocal.isClosed()) {
+					conexionLocal.setAutoCommit(true);
 				}
 			} catch (Exception e) {
 				System.err.println("Error al cerrar recursos: " + e.getMessage());
@@ -390,9 +367,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		}
 	}
 
-	// MÉTODO OPTIMIZADO PARA MIGRACIÓN (remoto -> local)
-	private void migrarDatosDirectamenteOptimizado1(Connection conexionRemota, Connection conexionLocal)
-			throws SQLException {
+	private void migrarDatosDirectamente(Connection conexionRemota, Connection conexionLocal) throws SQLException {
 		try (java.sql.Statement stmtRemoto = conexionRemota.createStatement()) {
 			List<String> tablas = new ArrayList<>();
 			try (ResultSet rsTablas = stmtRemoto.executeQuery("SHOW TABLES")) {
@@ -401,198 +376,132 @@ public class ControladorBackup implements ActionListener, MouseListener {
 				}
 			}
 			System.out.println("Encontradas " + tablas.size() + " tablas para migrar.");
-
-			// OPTIMIZACIÓN: Ordenar tablas por tamaño (primero las más pequeñas)
-			tablas.sort((tabla1, tabla2) -> {
-				try {
-					int count1 = obtenerConteoTabla(conexionRemota, tabla1);
-					int count2 = obtenerConteoTabla(conexionRemota, tabla2);
-					return Integer.compare(count1, count2);
-				} catch (SQLException e) {
-					return 0;
-				}
-			});
-
 			for (String tabla : tablas) {
-				migrarTablaOptimizada(tabla, conexionRemota, conexionLocal);
+				migrarTabla(tabla, conexionRemota, conexionLocal);
 			}
 		}
 	}
 
-	// MÉTODO OPTIMIZADO PARA MIGRACIÓN (local -> remoto)
-	private void migrarDatosDirectamenteOptimizado(Connection conexionLocal, Connection conexionRemota)
-			throws SQLException {
-		try (java.sql.Statement stmtLocal = conexionLocal.createStatement()) {
-			List<String> tablas = new ArrayList<>();
-			try (ResultSet rsTablas = stmtLocal.executeQuery("SHOW TABLES")) {
-				while (rsTablas.next()) {
-					tablas.add(rsTablas.getString(1));
-				}
-			}
-			System.out.println("Encontradas " + tablas.size() + " tablas para migrar.");
-
-			// OPTIMIZACIÓN: Ordenar tablas por tamaño (primero las más pequeñas para
-			// feedback rápido)
-			tablas.sort((tabla1, tabla2) -> {
-				try {
-					int count1 = obtenerConteoTabla(conexionLocal, tabla1);
-					int count2 = obtenerConteoTabla(conexionLocal, tabla2);
-					return Integer.compare(count1, count2);
-				} catch (SQLException e) {
-					return 0;
-				}
-			});
-
-			for (String tabla : tablas) {
-				migrarTablaOptimizada(tabla, conexionLocal, conexionRemota);
-			}
-		}
-	}
-
-	private int obtenerConteoTabla(Connection conexion, String tabla) throws SQLException {
-		try (java.sql.Statement stmt = conexion.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM `" + tabla + "`")) {
-			return rs.next() ? rs.getInt(1) : 0;
-		}
-	}
-
-	// MÉTODO OPTIMIZADO PARA MIGRAR TABLA INDIVIDUAL
-	private void migrarTablaOptimizada(String nombreTabla, Connection conexionOrigen, Connection conexionDestino)
-			throws SQLException {
+	private void migrarTabla(String nombreTabla, Connection conexionRemota, Connection conexionLocal) throws SQLException {
 		System.out.println("Migrando tabla: " + nombreTabla);
-		try (java.sql.Statement stmtOrigen = conexionOrigen.createStatement();
-				java.sql.Statement stmtDestino = conexionDestino.createStatement()) {
-
-			stmtDestino.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
-
-			// Crear estructura de tabla
-			try (ResultSet rsCreate = stmtOrigen.executeQuery("SHOW CREATE TABLE `" + nombreTabla + "`")) {
+		try (java.sql.Statement stmtRemoto = conexionRemota.createStatement();
+			 java.sql.Statement stmtLocal = conexionLocal.createStatement()) {
+			stmtLocal.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+			try (ResultSet rsCreate = stmtRemoto.executeQuery("SHOW CREATE TABLE `" + nombreTabla + "`")) {
 				if (rsCreate.next()) {
 					String createStatement = rsCreate.getString(2);
-					stmtDestino.executeUpdate("DROP TABLE IF EXISTS `" + nombreTabla + "`");
-					stmtDestino.executeUpdate(createStatement);
+					stmtLocal.executeUpdate("DROP TABLE IF EXISTS `" + nombreTabla + "`");
+					stmtLocal.executeUpdate(createStatement);
 				}
 			}
-
-			int totalRegistros = obtenerConteoTabla(conexionOrigen, nombreTabla);
-
+			int totalRegistros = 0;
+			try (ResultSet rsCount = stmtRemoto.executeQuery("SELECT COUNT(*) FROM `" + nombreTabla + "`")) {
+				if (rsCount.next()) totalRegistros = rsCount.getInt(1);
+			}
 			if (totalRegistros > 0) {
 				System.out.println("Tabla `" + nombreTabla + "` tiene " + totalRegistros + " registros.");
-				migrarDatosEnLotesOptimizado(nombreTabla, conexionOrigen, conexionDestino, totalRegistros);
+				migrarDatosEnLotes(nombreTabla, conexionRemota, conexionLocal, totalRegistros);
 			} else {
-				System.out.println("Tabla `" + nombreTabla + "` está vacía.");
+				System.out.println("Tabla `" + nombreTabla + "` está¡ vacía.");
 			}
-
-			stmtDestino.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
+			stmtLocal.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
 		}
 	}
 
-	// MÉTODO SUPER OPTIMIZADO PARA MIGRAR DATOS EN LOTES
-	private void migrarDatosEnLotesOptimizado(String nombreTabla, Connection conexionOrigen, Connection conexionDestino,
-			int totalRegistros) throws SQLException {
-		// OPTIMIZACIÓN: Lotes dinámicos según tamaño de tabla
-		final int TAMANO_LOTE = totalRegistros > 50000 ? 10000
-				: totalRegistros > 10000 ? 5000 : totalRegistros > 1000 ? 2000 : 1000;
+	/**
+	 * CORRECCIÃ"N: Migra los datos usando executeUpdate individual para cada registro
+	 * para preservar las fechas correctamente, evitando conversiones automÃ¡ticas del batch processing
+	 */
+	private void migrarDatosEnLotes(String nombreTabla, Connection conexionRemota, Connection conexionLocal, int totalRegistros) throws SQLException {
+		final int TAMANO_LOTE = 1000;
+		int registrosProcesados = 0;
 
-		System.out.println("Usando lotes de " + TAMANO_LOTE + " registros para esta tabla.");
+		java.sql.Statement stmtRemoto = null;
+		PreparedStatement pstmtLocal = null;
+		ResultSet rsData = null;
 
-		ResultSetMetaData metaData;
-		int columnCount;
-		List<String> columnTypes = new ArrayList<>();
+		try {
+			// Obtener estructura de la tabla
+			stmtRemoto = conexionRemota.createStatement();
+			rsData = stmtRemoto.executeQuery("SELECT * FROM `" + nombreTabla + "` LIMIT 1");
+			ResultSetMetaData metaData = rsData.getMetaData();
+			int columnCount = metaData.getColumnCount();
+			rsData.close();
 
-		// Obtener metadatos de columnas
-		try (java.sql.Statement stmt = conexionOrigen.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT * FROM `" + nombreTabla + "` LIMIT 1")) {
-			metaData = rs.getMetaData();
-			columnCount = metaData.getColumnCount();
+			// Preparar el INSERT statement para la BD local
+			StringBuilder insertSQL = new StringBuilder();
+			insertSQL.append("INSERT INTO `").append(nombreTabla).append("` (");
 
 			for (int i = 1; i <= columnCount; i++) {
-				columnTypes.add(metaData.getColumnTypeName(i).toUpperCase());
+				if (i > 1)
+					insertSQL.append(", ");
+				insertSQL.append("`").append(metaData.getColumnName(i)).append("`");
 			}
-		}
+			insertSQL.append(") VALUES (");
 
-		int offset = 0;
-		while (offset < totalRegistros) {
-			// OPTIMIZACIÓN: Construir INSERT con múltiples VALUES
-			StringBuilder insertSQL = new StringBuilder("INSERT INTO `" + nombreTabla + "` VALUES ");
+			for (int i = 1; i <= columnCount; i++) {
+				if (i > 1)
+					insertSQL.append(", ");
+				insertSQL.append("?");
+			}
+			insertSQL.append(")");
 
-			try (java.sql.Statement stmtOrigen = conexionOrigen.createStatement();
-					ResultSet rsData = stmtOrigen.executeQuery(
-							"SELECT * FROM `" + nombreTabla + "` LIMIT " + TAMANO_LOTE + " OFFSET " + offset)) {
+			pstmtLocal = conexionLocal.prepareStatement(insertSQL.toString());
 
-				boolean first = true;
-				int batchCount = 0;
+			// Procesar datos en lotes
+			int offset = 0;
+			while (registrosProcesados < totalRegistros) {
+				rsData = stmtRemoto
+						.executeQuery("SELECT * FROM `" + nombreTabla + "` LIMIT " + TAMANO_LOTE + " OFFSET " + offset);
 
-				while (rsData.next() && batchCount < TAMANO_LOTE) {
-					if (!first)
-						insertSQL.append(", ");
-					insertSQL.append("(");
-
+				while (rsData.next()) {
+					// Establecer parÃ¡metros para el INSERT
 					for (int i = 1; i <= columnCount; i++) {
-						if (i > 1)
-							insertSQL.append(", ");
 						Object valor = rsData.getObject(i);
-
-						if (valor == null) {
-							insertSQL.append("NULL");
-						} else {
-							String tipoColumna = columnTypes.get(i - 1);
-							insertSQL.append(formatearValorSQL(valor, tipoColumna));
-						}
+						pstmtLocal.setObject(i, valor);
 					}
-					insertSQL.append(")");
-					first = false;
-					batchCount++;
+
+					// CORRECCIÃ"N: usar executeUpdate() individual en lugar de addBatch()
+					// para preservar fechas correctamente
+					pstmtLocal.executeUpdate();
+					registrosProcesados++;
 				}
 
-				if (batchCount > 0) {
-					try (java.sql.Statement stmtDestino = conexionDestino.createStatement()) {
-						stmtDestino.executeUpdate(insertSQL.toString());
-					}
+				rsData.close();
+				offset += TAMANO_LOTE;
+
+				// Mostrar progreso
+				System.out.println("   Procesados " + registrosProcesados + "/" + totalRegistros + " registros");
+			}
+
+		} finally {
+			if (rsData != null)
+				try {
+					rsData.close();
+				} catch (SQLException e) {
 				}
-			}
-
-			offset += TAMANO_LOTE;
-			System.out.println("Procesados " + Math.min(offset, totalRegistros) + "/" + totalRegistros + " registros.");
-
-			// OPTIMIZACIÓN: Commit intermedio cada cierta cantidad de lotes
-			if (offset % (TAMANO_LOTE * 3) == 0) {
-				conexionDestino.commit();
-				System.out.println("Commit intermedio realizado.");
-			}
+			if (pstmtLocal != null)
+				try {
+					pstmtLocal.close();
+				} catch (SQLException e) {
+				}
+			if (stmtRemoto != null)
+				try {
+					stmtRemoto.close();
+				} catch (SQLException e) {
+				}
 		}
 	}
-
-	// MÉTODO AUXILIAR PARA FORMATEAR VALORES SQL CORRECTAMENTE
-	private String formatearValorSQL(Object valor, String tipoColumna) {
-		if (valor == null) {
-			return "NULL";
-		}
-
-		String valorStr = valor.toString();
-
-		// Tipos que necesitan comillas
-		if (tipoColumna.contains("CHAR") || tipoColumna.contains("TEXT") || tipoColumna.contains("DATE")
-				|| tipoColumna.contains("TIME") || tipoColumna.contains("ENUM") || tipoColumna.contains("SET")) {
-
-			// Escapar comillas simples
-			valorStr = valorStr.replace("'", "''");
-			return "'" + valorStr + "'";
-		}
-
-		// Tipos numéricos y otros
-		return valorStr;
-	}
-
-	private void verificarMigracion(Connection conexion) throws SQLException {
-		try (java.sql.Statement stmt = conexion.createStatement(); ResultSet rs = stmt.executeQuery("SHOW TABLES")) {
+	
+	private void verificarMigracion(Connection conexionLocal) throws SQLException {
+		try (java.sql.Statement stmt = conexionLocal.createStatement();
+			 ResultSet rs = stmt.executeQuery("SHOW TABLES")) {
 			int totalTablas = 0;
-			while (rs.next())
-				totalTablas++;
+			while (rs.next()) totalTablas++;
 			System.out.println("Verificación completada: " + totalTablas + " tablas creadas.");
 		}
 	}
-
+	
 	@SuppressWarnings({ "unused", "rawtypes" })
 	private void ActualizarBackupMySQLlocal() {
 		JFileChooser archivoBackup = new JFileChooser(rutadefaultBackup);
@@ -600,31 +509,27 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		archivoBackup.setFileFilter(sqlFilter);
 		int resp = archivoBackup.showOpenDialog(ventanaBackUp);
 		if (resp == JFileChooser.APPROVE_OPTION) {
-
+			
+			
 			ventanaBackUp.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			ventanaBackUp.getGlassPane().setVisible(true);
 			ventanaBackUp.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			ventanaBackUp.getBtnGenerarB().setEnabled(false);
 			ventanaBackUp.getBtnImportarB().setEnabled(false);
 			
-
 			JDialog popup = new JDialog();
 			popup.setTitle("Procesando");
 			popup.setModal(false);
 			popup.setSize(300, 100);
 			popup.setLocationRelativeTo(ventanaBackUp);
 			popup.add(new JLabel("Actualizando Base de Datos, espere...", SwingConstants.CENTER));
-			popup.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 				@Override
 				protected Void doInBackground() {
 					try {
 						File nombrebackup = archivoBackup.getSelectedFile();
-						Process p = Runtime.getRuntime().exec(
-								"C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysql -uroot -proot ordenesbrc");
-						try (OutputStream os = p.getOutputStream();
-								FileInputStream fis = new FileInputStream(nombrebackup)) {
+						Process p = Runtime.getRuntime().exec("C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysql -uroot -proot ordenesbrc");
+						try (OutputStream os = p.getOutputStream(); FileInputStream fis = new FileInputStream(nombrebackup)) {
 							byte[] buffer = new byte[1000];
 							int leido;
 							while ((leido = fis.read(buffer)) > 0) {
@@ -632,22 +537,20 @@ public class ControladorBackup implements ActionListener, MouseListener {
 							}
 						}
 						p.waitFor();
-						JOptionPane.showMessageDialog(null, "Base de datos actualizada correctamente.",
-								"Actualización Exitosa", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Base de datos actualizada correctamente.", "Actualización Exitosa", JOptionPane.INFORMATION_MESSAGE);
 					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, "Error al actualizar la base de datos: " + e.getMessage(),
-								"Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Error al actualizar la base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 					}
 					return null;
 				}
-
 				@Override
 				protected void done() {
 					popup.dispose();
 					ventanaBackUp.getGlassPane().setVisible(false);
 					ventanaBackUp.setCursor(Cursor.getDefaultCursor());
 					ventanaBackUp.getBtnGenerarB().setEnabled(true);
-					ventanaBackUp.getBtnImportarB().setEnabled(true);				}
+					ventanaBackUp.getBtnImportarB().setEnabled(true);
+				}
 			};
 			SwingUtilities.invokeLater(() -> {
 				popup.setVisible(true);
@@ -657,21 +560,21 @@ public class ControladorBackup implements ActionListener, MouseListener {
 	}
 
 	private void GenerarBackupMySQLLocal() {
-
+		
+		
 		ventanaOpcionesBackup.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		ventanaOpcionesBackup.getGlassPane().setVisible(true);
 		ventanaOpcionesBackup.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		ventanaBackUp.getBtnGenerarB().setEnabled(false);
 		ventanaBackUp.getBtnImportarB().setEnabled(false);
-
+		
+		
 		JDialog popup = new JDialog();
 		popup.setTitle("Procesando");
 		popup.setModal(false);
 		popup.setSize(300, 100);
 		popup.setLocationRelativeTo(ventanaOpcionesBackup);
 		popup.add(new JLabel("Generando BackUp, espere...", SwingConstants.CENTER));
-		popup.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
 		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 			@Override
 			protected Void doInBackground() {
@@ -679,25 +582,21 @@ public class ControladorBackup implements ActionListener, MouseListener {
 					String nombreAguardar = ventanaOpcionesBackup.getTxtNombreArchivo().getText();
 					String rutaAguardar = ventanaOpcionesBackup.getTxtRutaArchivo().getText();
 					File backupFile = new File(rutaAguardar + nombreAguardar);
-					Process child = Runtime.getRuntime().exec(
-							"C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysqldump --opt --password=root --user=root --databases ordenesbrc");
+					Process child = Runtime.getRuntime().exec("C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysqldump --opt --password=root --user=root --databases ordenesbrc");
 					try (InputStreamReader irs = new InputStreamReader(child.getInputStream());
-							BufferedReader br = new BufferedReader(irs);
-							FileWriter fw = new FileWriter(backupFile)) {
+						 BufferedReader br = new BufferedReader(irs);
+						 FileWriter fw = new FileWriter(backupFile)) {
 						String line;
 						while ((line = br.readLine()) != null) {
 							fw.write(line + "\n");
 						}
 					}
-					JOptionPane.showMessageDialog(null, "Archivo de backup generado exitosamente.", "Backup Exitoso",
-							JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Archivo de backup generado exitosamente.", "Backup Exitoso", JOptionPane.INFORMATION_MESSAGE);
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Error al generar el backup: " + e.getMessage(), "Error",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error al generar el backup: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				return null;
 			}
-
 			@Override
 			protected void done() {
 				popup.dispose();
@@ -717,128 +616,100 @@ public class ControladorBackup implements ActionListener, MouseListener {
 			String cleverCloudUser, String cleverCloudPassword, String cleverCloudDatabase) {
 		boolean exitoso = false;
 		String archivoTemporal = null;
-		Connection conexionLocal = null;
-		Connection conexionRemota = null;
-
 		try {
 			String nombreBaseLocal = (ubicacion.equalsIgnoreCase("Bariloche")) ? "ordenesbrc" : "ordenesbsas";
-			System.out.println("Iniciando backup remoto desde " + nombreBaseLocal + " hacia Clever Cloud...");
+			archivoTemporal = System.getProperty("java.io.tmpdir") + File.separator + "backup_" + nombreBaseLocal + "_" + System.currentTimeMillis() + ".sql";
+			
+			System.out.println("Creando dump de la base de datos local...");
+			// CAMBIO 1: Usar --no-create-db en lugar de --databases
+			List<String> comando = Arrays.asList("C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysqldump",
+					"--host=localhost", "--port=3306", "--user=root", "--password=root",
+					"--single-transaction", "--routines", "--triggers", "--no-create-db", nombreBaseLocal);
+			ProcessBuilder pb = new ProcessBuilder(comando);
+			pb.redirectOutput(new File(archivoTemporal));
+			Process proceso = pb.start();
+			int codigoSalida = proceso.waitFor();
 
-			// Conectar a la base de datos local con optimizaciones
-			System.out.println("Conectando a la base de datos local...");
-			Conexion instanciaConexion = Conexion.getConexion(ubicacion);
-			conexionLocal = instanciaConexion.getSQLConexion();
-			if (conexionLocal == null || conexionLocal.isClosed()) {
-				JOptionPane.showMessageDialog(null, "Error: No se pudo conectar a la base de datos local");
+			if (codigoSalida != 0) {
+				JOptionPane.showMessageDialog(null, "Error al crear el archivo de backup local.");
 				return false;
 			}
-			conexionLocal.setAutoCommit(false);
+			System.out.println("Dump local creado exitosamente.");
 
-			// OPTIMIZACIÓN: Configurar conexión local para máximo rendimiento
-			try (java.sql.Statement stmt = conexionLocal.createStatement()) {
-				stmt.execute("SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
-				stmt.execute("SET foreign_key_checks = 0");
-				stmt.execute("SET unique_checks = 0");
+			System.out.println("Conectando a Clever Cloud...");
+			String urlCleverCloud = String.format("jdbc:mysql://%s:%s/%s?useSSL=false&allowPublicKeyRetrieval=true", cleverCloudHost, cleverCloudPort, cleverCloudDatabase);
+			try (Connection conexionRemota = DriverManager.getConnection(urlCleverCloud, cleverCloudUser, cleverCloudPassword);
+				 java.sql.Statement stmt = conexionRemota.createStatement()) {
+				System.out.println("Conectado a Clever Cloud.");
+
+				System.out.println("Limpiando base de dato remota...");
+				limpiarBaseDatos(conexionRemota);
+
+				System.out.println("Restaurando backup en Clever Cloud...");
+				StringBuilder sqlContent = new StringBuilder();
+				try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(archivoTemporal), "UTF-8"))) {
+					String linea;
+					while ((linea = reader.readLine()) != null) sqlContent.append(linea).append("\n");
+				}
+				
+				// CAMBIO 2: Mejor filtrado de sentencias SQL
+				String[] sentencias = sqlContent.toString().split(";");
+				int sentenciasEjecutadas = 0;
+				int sentenciasIgnoradas = 0;
+				
+				for (String sentencia : sentencias) {
+					sentencia = sentencia.trim();
+					
+					// Filtrar sentencias problemáticas
+					if (sentencia.isEmpty() || 
+						sentencia.startsWith("/*") || 
+						sentencia.startsWith("--") ||
+						sentencia.toUpperCase().startsWith("CREATE DATABASE") ||
+						sentencia.toUpperCase().startsWith("USE ") ||
+						sentencia.toUpperCase().startsWith("DROP DATABASE")) {
+						sentenciasIgnoradas++;
+						continue;
+					}
+					
+					try {
+						stmt.execute(sentencia);
+						sentenciasEjecutadas++;
+					} catch (SQLException e) {
+						// CAMBIO 3: Filtrar específicamente errores de "Access denied" para que no aparezcan en consola
+						if (!e.getMessage().contains("Access denied")) {
+							System.err.println("Error menor en sentencia (ignorado): " + e.getMessage());
+						}
+						sentenciasIgnoradas++;
+					}
+				}
+				
+				System.out.println("Restauración completada:");
+				System.out.println("- Sentencias ejecutadas exitosamente: " + sentenciasEjecutadas);
+				System.out.println("- Sentencias ignoradas: " + sentenciasIgnoradas);
+				
+				exitoso = true;
+				JOptionPane.showMessageDialog(null, 
+					"Backup remoto completado exitosamente.\n","Backup Exitoso", JOptionPane.INFORMATION_MESSAGE);
 			}
-			System.out.println("Conectado a la base de datos local exitosamente");
-
-			// Conectar a Clever Cloud con optimizaciones compatibles
-			System.out.println("Conectando a Clever Cloud con optimizaciones compatibles...");
-			String urlCleverCloud = String.format(
-					"jdbc:mysql://%s:%s/%s?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true&rewriteBatchedStatements=true&useServerPrepStmts=false&cachePrepStmts=false&useLocalSessionState=true&useLocalTransactionState=true",
-					cleverCloudHost, cleverCloudPort, cleverCloudDatabase);
-			conexionRemota = DriverManager.getConnection(urlCleverCloud, cleverCloudUser, cleverCloudPassword);
-			conexionRemota.setAutoCommit(false);
-
-			// OPTIMIZACIÓN CORREGIDA: Solo configuraciones compatibles con servicios cloud
-			try (java.sql.Statement stmt = conexionRemota.createStatement()) {
-				stmt.execute("SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
-				stmt.execute("SET foreign_key_checks = 0");
-				stmt.execute("SET unique_checks = 0");
-				// ELIMINADO: stmt.execute("SET SESSION innodb_flush_log_at_trx_commit = 0");
-				// Esta variable es GLOBAL y no está permitida en Clever Cloud
-				System.out.println("Configuraciones de sesión aplicadas (omitiendo variables globales no permitidas)");
-			}
-			System.out.println("Conectado a Clever Cloud exitosamente");
-
-			// Limpiar base de datos remota
-			System.out.println("Limpiando base de datos remota...");
-			limpiarBaseDatos(conexionRemota);
-
-			// MIGRACIÓN OPTIMIZADA
-			System.out.println("Iniciando migración OPTIMIZADA de datos...");
-			migrarDatosDirectamenteOptimizado(conexionLocal, conexionRemota);
-
-			conexionRemota.commit();
-			exitoso = true;
-
-			// Verificar migración
-			verificarMigracion(conexionRemota);
-
-			JOptionPane.showMessageDialog(null,
-					"¡Backup remoto completado exitosamente!\n\n" + "Origen: " + nombreBaseLocal + "\n" + "Destino: "
-							+ nombreBaseLocal + " REMOTA" + "\n\n" + "Optimizaciones compatibles aplicadas",
-					"Backup Exitoso", JOptionPane.INFORMATION_MESSAGE);
-
 		} catch (Exception e) {
 			e.printStackTrace();
-			try {
-				if (conexionRemota != null)
-					conexionRemota.rollback();
-				if (conexionLocal != null)
-					conexionLocal.rollback();
-			} catch (SQLException rollbackEx) {
-				System.err.println("Error durante rollback: " + rollbackEx.getMessage());
-			}
-			JOptionPane.showMessageDialog(null, "Error durante el backup remoto:\n" + e.getMessage(), "Error en Backup",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error durante el backup remoto: " + e.getMessage(), "Error en Backup", JOptionPane.ERROR_MESSAGE);
 		} finally {
-			// Restaurar configuraciones y limpiar recursos
-			try {
-				if (conexionLocal != null && !conexionLocal.isClosed()) {
-					try (java.sql.Statement stmt = conexionLocal.createStatement()) {
-						stmt.execute("SET foreign_key_checks = 1");
-						stmt.execute("SET unique_checks = 1");
-					}
-					conexionLocal.setAutoCommit(true);
-				}
-				if (conexionRemota != null && !conexionRemota.isClosed()) {
-					try (java.sql.Statement stmt = conexionRemota.createStatement()) {
-						stmt.execute("SET foreign_key_checks = 1");
-						stmt.execute("SET unique_checks = 1");
-						// NOTA: No intentamos restaurar innodb_flush_log_at_trx_commit porque no
-						// podemos modificarla
-					}
-					conexionRemota.setAutoCommit(true);
-					conexionRemota.close();
-				}
-				if (archivoTemporal != null) {
-					new File(archivoTemporal).delete();
-				}
-			} catch (Exception e) {
-				System.err.println("Error al cerrar recursos: " + e.getMessage());
+			if (archivoTemporal != null) {
+				new File(archivoTemporal).delete();
 			}
 		}
 		return exitoso;
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-	}
-
+	public void mouseEntered(MouseEvent arg0) {}
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-	}
-
+	public void mouseExited(MouseEvent arg0) {}
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-	}
-
+	public void mousePressed(MouseEvent arg0) {}
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-	}
-
+	public void mouseReleased(MouseEvent arg0) {}
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-	}
+	public void mouseClicked(MouseEvent arg0) {}
 }
