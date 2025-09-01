@@ -424,6 +424,12 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 				ELS = resultSet.getInt("MAX(ELS)");
 
 			}
+			
+			if (ELS == 0) {
+
+				ELS = 24899;
+			}
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();

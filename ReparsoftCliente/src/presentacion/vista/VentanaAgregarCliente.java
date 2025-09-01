@@ -18,6 +18,7 @@ import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.Color;
+import javax.swing.SwingConstants;
 
 public class VentanaAgregarCliente extends JFrame 
 {
@@ -32,6 +33,8 @@ public class VentanaAgregarCliente extends JFrame
 	private JTextField txtTelefonoContacto;
 	private JButton btnAgregarCliente;
 	private JButton btnCancelar;
+	private JButton btnAgregarCorreo;
+	
 	private JLabel lblContacto;
 	private JTextField txtContacto;
 	private JLabel lblNuevoCliente;
@@ -41,7 +44,7 @@ public class VentanaAgregarCliente extends JFrame
 		super();
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 544, 311);
+		setBounds(100, 100, 544, 341);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -52,7 +55,7 @@ public class VentanaAgregarCliente extends JFrame
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.inactiveCaption);
-		panel.setBounds(0, 0, 528, 276);
+		panel.setBounds(0, 0, 528, 302);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -73,7 +76,7 @@ public class VentanaAgregarCliente extends JFrame
 		
 		JLabel lblTelefonoEMpresa = new JLabel("Teléfono Empresa : ");
 		lblTelefonoEMpresa.setFont(new Font("Cambria", Font.BOLD, 14));
-		lblTelefonoEMpresa.setBounds(22, 199, 130, 14);
+		lblTelefonoEMpresa.setBounds(22, 228, 130, 14);
 		panel.add(lblTelefonoEMpresa);
 		
 		txtCUIT = new JTextField();
@@ -103,32 +106,34 @@ public class VentanaAgregarCliente extends JFrame
 		btnAgregarCliente = new JButton("AGREGAR");
 		btnAgregarCliente.setBackground(new Color(152, 251, 152));
 		btnAgregarCliente.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnAgregarCliente.setBounds(276, 238, 108, 23);
+		btnAgregarCliente.setBounds(276, 267, 108, 23);
 			
 		panel.add(btnAgregarCliente);		
 		
 		txtEmail = new JTextField();
+		txtEmail.setEditable(false);
+		txtEmail.setHorizontalAlignment(SwingConstants.LEFT);
 		txtEmail.setBackground(new Color(220, 220, 220));
-		txtEmail.setFont(new Font("Cambria", Font.PLAIN, 14));
-		txtEmail.setBounds(162, 149, 340, 20);
+		txtEmail.setFont(new Font("Cambria", Font.PLAIN, 12));
+		txtEmail.setBounds(162, 149, 283, 50);
 		panel.add(txtEmail);
 		txtEmail.setColumns(10);		
 		
 		JLabel lbleMail = new JLabel("Correo : ");
 		lbleMail.setFont(new Font("Cambria", Font.BOLD, 14));
-		lbleMail.setBounds(22, 152, 63, 14);
+		lbleMail.setBounds(22, 167, 63, 14);
 		panel.add(lbleMail);
 		
 		JLabel lblTelefonoContacto = new JLabel("Teléfono Contacto : ");
 		lblTelefonoContacto.setFont(new Font("Cambria", Font.BOLD, 14));
-		lblTelefonoContacto.setBounds(22, 176, 130, 14);
+		lblTelefonoContacto.setBounds(22, 205, 130, 14);
 		panel.add(lblTelefonoContacto);
 		
 		txtTelefonoEmpresa = new JTextField();
 		txtTelefonoEmpresa.setBackground(new Color(220, 220, 220));
 		txtTelefonoEmpresa.setFont(new Font("Cambria", Font.PLAIN, 14));
 		txtTelefonoEmpresa.setColumns(10);
-		txtTelefonoEmpresa.setBounds(162, 196, 340, 20);
+		txtTelefonoEmpresa.setBounds(162, 225, 340, 20);
 		panel.add(txtTelefonoEmpresa);
 		soloNumeros(txtTelefonoEmpresa);
 		
@@ -136,7 +141,7 @@ public class VentanaAgregarCliente extends JFrame
 		txtTelefonoContacto.setBackground(new Color(220, 220, 220));
 		txtTelefonoContacto.setFont(new Font("Cambria", Font.PLAIN, 14));
 		txtTelefonoContacto.setColumns(10);
-		txtTelefonoContacto.setBounds(162, 173, 340, 20);
+		txtTelefonoContacto.setBounds(162, 202, 340, 20);
 		panel.add(txtTelefonoContacto);
 		soloNumeros(txtTelefonoContacto);
 		
@@ -164,8 +169,15 @@ public class VentanaAgregarCliente extends JFrame
 		btnCancelar = new JButton("CANCELAR");
 		btnCancelar.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnCancelar.setBackground(new Color(255, 0, 0));
-		btnCancelar.setBounds(394, 239, 108, 23);
+		btnCancelar.setBounds(394, 268, 108, 23);
 		panel.add(btnCancelar);
+		
+		btnAgregarCorreo = new JButton("+");
+		btnAgregarCorreo.setForeground(new Color(0, 139, 139));
+		btnAgregarCorreo.setFont(new Font("Cambria", Font.BOLD, 20));
+		btnAgregarCorreo.setBackground(new Color(220, 220, 220));
+		btnAgregarCorreo.setBounds(452, 154, 50, 40);
+		panel.add(btnAgregarCorreo);
 
 	
 		this.setVisible(true);

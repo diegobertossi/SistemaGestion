@@ -139,8 +139,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private VentanaGenerarPresupuesto ventanaGenerarPresupuesto;
 	private ControladorSalidas controladorSalidas;
 	private VentanaAgregarCliente ventanaAgregarCliente;
-	
-	
+
 	private VentanaRemitos ventanaRemitos;
 
 	private ControladorCliente controladorCliente;
@@ -161,8 +160,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private Agenda agenda;
 	private int ELSinicial = 988; // poner en 1 para arrancar los ELS desde el número 1 //
-	private int ELSinicialBSAS = 1;
-
+	// private int ELSinicialBSAS = 1;
+	private int ELSinicialBSAS = 24900;
 	private int ELS = 1;
 
 	private ReparacionDTO reparacion;
@@ -219,13 +218,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.controladorpresupuestos = controladorPresupuestos;
 		this.controladorSalidas = controladorSalidas;
 		this.controladorCliente = controladorCliente;
-		
-		
-
 
 	}
-	
-
 
 	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
@@ -234,12 +228,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			int ELS = DameNumeroELS() - 1;
 
-
 			if ((agenda.getUbicacionBase().compareTo("Bariloche") == 0 && ELS >= 988)
-					|| (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0 && ELS >= 1)) {
+					|| (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0 && ELS >= 24900)) {
 
 				ventanaVisualizarEquipos = new VentanaVisualizarEquipos(this);
-				
+
 				cerraVentanaVisualizarEquipo();
 				monedaFormatter = new MonedaFormatter();
 
@@ -268,7 +261,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 
-
 		}
 
 		else if (e.getSource() == this.ventanaEquipos.getBtnAgregarEquipos()) {
@@ -288,129 +280,26 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		}
 
+
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonSiguiente()) {
 
-			String ubicacionDeBase = agenda.getUbicacionBase();
-
-			int tam = agenda.obtenerReparacion().size();
-
-			if (ubicacionDeBase.compareTo("Bariloche") == 0) {
-
-				if (!guardado) {
-					ReparacionDTO reparacionAeditar = TomarDatosVisualizacion(ventanaVisualizarEquipos);
-					this.agenda.editarReparacionR(reparacionAeditar);
-
-					guardado = true;
-				}
-
-				if (ELSinicial < tam + 987) {
-					ELSinicial = ELSinicial + 1;
-					try {
-						TomarDatosDeTablas(ventanaVisualizarEquipos);
-
-					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				} else {
-					Object mje = "No hay más reparaciones ";
-					JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-				}
-
-			} else if (ubicacionDeBase.compareTo("Buenos Aires") == 0) {
-
-				if (!guardado) {
-					ReparacionDTO reparacionAeditar = TomarDatosVisualizacion(ventanaVisualizarEquipos);
-					this.agenda.editarReparacionR(reparacionAeditar);
-
-					guardado = true;
-				}
-
-				if (ELSinicialBSAS < tam) {
-					ELSinicialBSAS = ELSinicialBSAS + 1;
-					try {
-						TomarDatosDeTablas(ventanaVisualizarEquipos);
-
-					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				} else {
-					Object mje = "No hay más reparaciones ";
-					JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-				}
-
-			}
+			procesarNavegacion(TipoNavegacion.SIGUIENTE);
 
 		} else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonAnterior()) {
 
-			if (!guardado) {
-				ReparacionDTO reparacionAeditar = TomarDatosVisualizacion(ventanaVisualizarEquipos);
-				this.agenda.editarReparacionR(reparacionAeditar);
+			procesarNavegacion(TipoNavegacion.ANTERIOR);
 
-				guardado = true;
-			}
-			if (ELSinicial > 988) {
-				ELSinicial = ELSinicial - 1;
-				try {
-					TomarDatosDeTablas(ventanaVisualizarEquipos);
-
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-
-		}
-
-		else if (this.ventanaVisualizarEquipos != null
-				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonUltimo()) {
-
-			int eleccion = JOptionPane.YES_OPTION;
-
-			if (!guardado) {
-				ReparacionDTO reparacionAeditar = TomarDatosVisualizacion(ventanaVisualizarEquipos);
-				this.agenda.editarReparacionR(reparacionAeditar);
-
-				guardado = true;
-			}
-			if (eleccion == JOptionPane.YES_OPTION) {
-
-				ELSinicial = agenda.obtenerReparacion().size() + 987;
-				try {
-					TomarDatosDeTablas(ventanaVisualizarEquipos);
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-			}
-		}
-
-		else if (this.ventanaVisualizarEquipos != null
+		} else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonPrimero()) {
 
-			int eleccion = JOptionPane.YES_OPTION;
+			procesarNavegacion(TipoNavegacion.PRIMERO);
 
-			if (!guardado) {
-				ReparacionDTO reparacionAeditar = TomarDatosVisualizacion(ventanaVisualizarEquipos);
-				this.agenda.editarReparacionR(reparacionAeditar);
+		} else if (this.ventanaVisualizarEquipos != null
+				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonUltimo()) {
 
-				guardado = true;
-			}
-			if (eleccion == JOptionPane.YES_OPTION) {
-
-				ELSinicial = 988;
-				try {
-					TomarDatosDeTablas(ventanaVisualizarEquipos);
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-			}
+			procesarNavegacion(TipoNavegacion.ULTIMO);
 		}
 
 		else if (this.ventanaVisualizarEquipos != null
@@ -802,15 +691,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		}
 
 		else if (this.ventanaAgregarEquipo != null && e.getSource() == this.ventanaAgregarEquipo.getBtnaltaCliente()) {
-			
-			
+
 			controladorCliente.setLlamadoDesdeAgregarEquipo(true);
-			
 
 			ventanaAgregarCliente = controladorCliente.agregarListenersVentanaAgregarCliente();
-			
-			
-			
 
 			ventanaAgregarCliente.addWindowListener(new WindowAdapter() {
 				@Override
@@ -820,8 +704,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				}
 			});
-			
-			
 
 		}
 
@@ -1297,6 +1179,125 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		}
 
+	}
+
+	// Enum para los tipos de navegación
+	private enum TipoNavegacion {
+		SIGUIENTE, ANTERIOR, PRIMERO, ULTIMO
+	}
+
+	// Método principal que maneja toda la lógica de navegación
+	private void procesarNavegacion(TipoNavegacion tipoNavegacion) {
+		String ubicacionDeBase = agenda.getUbicacionBase();
+		int tam = agenda.obtenerReparacion().size();
+
+		// Guardar cambios si es necesario
+		guardarCambiosSiEsNecesario();
+
+		// Procesar según la ubicación
+		if (ubicacionDeBase.equals("Bariloche")) {
+			procesarNavegacionBariloche(tipoNavegacion, tam);
+		} else if (ubicacionDeBase.equals("Buenos Aires")) {
+			procesarNavegacionBuenosAires(tipoNavegacion, tam);
+		}
+	}
+
+	// Método para guardar cambios pendientes
+	private void guardarCambiosSiEsNecesario() {
+		if (!guardado) {
+			ReparacionDTO reparacionAeditar = TomarDatosVisualizacion(ventanaVisualizarEquipos);
+			this.agenda.editarReparacionR(reparacionAeditar);
+			guardado = true;
+		}
+	}
+
+	// Método para procesar navegación en Bariloche
+	private void procesarNavegacionBariloche(TipoNavegacion tipoNavegacion, int tam) {
+		boolean actualizarTablas = true;
+
+		switch (tipoNavegacion) {
+		case SIGUIENTE:
+			if (ELSinicial < tam + 987) {
+				ELSinicial = ELSinicial + 1;
+			} else {
+				mostrarMensajeNoMasReparaciones();
+				actualizarTablas = false;
+			}
+			break;
+
+		case ANTERIOR:
+			if (ELSinicial > 988) {
+				ELSinicial = ELSinicial - 1;
+			} else {
+				actualizarTablas = false;
+			}
+			break;
+
+		case PRIMERO:
+			ELSinicial = 988;
+			break;
+
+		case ULTIMO:
+			ELSinicial = tam + 987;
+			break;
+		}
+
+		if (actualizarTablas) {
+			actualizarTablas();
+		}
+	}
+
+	// Método para procesar navegación en Buenos Aires
+	private void procesarNavegacionBuenosAires(TipoNavegacion tipoNavegacion, int tam) {
+		boolean actualizarTablas = true;
+
+		switch (tipoNavegacion) {
+		case SIGUIENTE:
+			if (ELSinicialBSAS < tam + 24899) {
+				ELSinicialBSAS = ELSinicialBSAS + 1;
+			} else {
+				mostrarMensajeNoMasReparaciones();
+				actualizarTablas = false;
+			}
+			break;
+
+		case ANTERIOR:
+			if (ELSinicialBSAS > 24900) {
+				ELSinicialBSAS = ELSinicialBSAS - 1;
+			} else {
+				actualizarTablas = false;
+			}
+			break;
+
+		case PRIMERO:
+			ELSinicialBSAS = 24900;
+			break;
+
+		case ULTIMO:
+			ELSinicialBSAS = tam + 24899;
+			break;
+		}
+
+		if (actualizarTablas) {
+			actualizarTablas();
+		}
+	}
+
+	// Método para mostrar mensaje informativo
+	private void mostrarMensajeNoMasReparaciones() {
+		JOptionPane.showMessageDialog(null, "No hay más reparaciones", "Mensaje Informativo",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	// Método para actualizar tablas con manejo de excepciones
+	private void actualizarTablas() {
+		try {
+			TomarDatosDeTablas(ventanaVisualizarEquipos);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+			// Aquí podrías agregar un logger más sofisticado
+			// logger.error("Error al actualizar tablas", e1);
+		}
 	}
 
 	private void facturar(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
@@ -2077,18 +2078,16 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		});
 
 		performActionOnTextComponents(ventanaVisualizarEquipos);
-		
 
 		FocusListener cursorAlInicioTF = new FocusAdapter() {
-		    @Override
-		    public void focusLost(FocusEvent e) {
-		        if (e.getComponent() instanceof JTextField) {
-		            JTextField tf = (JTextField) e.getComponent();
-		            tf.setCaretPosition(0);
-		        }
-		    }
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (e.getComponent() instanceof JTextField) {
+					JTextField tf = (JTextField) e.getComponent();
+					tf.setCaretPosition(0);
+				}
+			}
 		};
-	
 
 		// Aplica a los JTextField relevantes
 		ventanaVisualizarEquipos.getTextCliente().addFocusListener(cursorAlInicioTF);
@@ -2116,9 +2115,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getTextFalla().addFocusListener(cursorAlInicioTA);
 		ventanaVisualizarEquipos.getTextDiagnostico().addFocusListener(cursorAlInicioTA);
 		ventanaVisualizarEquipos.getTextInformeCliente().addFocusListener(cursorAlInicioTA);
-
-
-
 
 	}
 
@@ -2494,27 +2490,24 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaAgregarEquipo.getGrupoEstadoFisico().setSelected(ventanaAgregarEquipo.getRdbtnBRC().getModel(), true);
 
 		performActionOnTextComponents(ventanaAgregarEquipo);
-		
 
 		// Java
 
 		// Java
 		FocusListener cursorAlInicio = new FocusAdapter() {
-		    @Override
-		    public void focusLost(FocusEvent e) {
-		        if (e.getComponent() instanceof JTextField) {
-		            JTextField tf = (JTextField) e.getComponent();
-		            tf.setCaretPosition(0);
-		        }
-		    }
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (e.getComponent() instanceof JTextField) {
+					JTextField tf = (JTextField) e.getComponent();
+					tf.setCaretPosition(0);
+				}
+			}
 		};
-
 
 		ventanaAgregarEquipo.getTextAvisoCliente().addFocusListener(cursorAlInicio);
 		ventanaAgregarEquipo.getTextClienteCliente().addFocusListener(cursorAlInicio);
 		ventanaAgregarEquipo.getTextRemitoCliente().addFocusListener(cursorAlInicio);
-        ventanaAgregarEquipo.getTextFalla().addFocusListener(cursorAlInicio);
-        
+		ventanaAgregarEquipo.getTextFalla().addFocusListener(cursorAlInicio);
 
 	}
 
@@ -3148,103 +3141,102 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-
 	private void llenarComboClienteV(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-	    
-	    // PASO 1: Remover todos los listeners existentes para evitar duplicados
-	    ItemListener[] listeners = ventanaVisualizarEquipos.getComboClientes().getItemListeners();
-	    for (ItemListener listener : listeners) {
-	        ventanaVisualizarEquipos.getComboClientes().removeItemListener(listener);
-	    }
-	    
-	    // PASO 2: Guardar la selección actual antes de recargar
-	    ClienteDTO seleccionado = (ClienteDTO) ventanaVisualizarEquipos.getComboClientes().getSelectedItem();
-	    
-	    // PASO 3: Recargar la lista de clientes
-	    agenda.ListarCliente(ventanaVisualizarEquipos.getComboClientes());
-	    
-	    // PASO 4: Restaurar la selección guardada
-	    if (seleccionado != null) {
-	        DefaultComboBoxModel<ClienteDTO> model = (DefaultComboBoxModel<ClienteDTO>) ventanaVisualizarEquipos.getComboClientes().getModel();
-	        for (int i = 0; i < model.getSize(); i++) {
-	            if (model.getElementAt(i).equals(seleccionado)) {
-	                ventanaVisualizarEquipos.getComboClientes().setSelectedIndex(i);
-	                break;
-	            }
-	        }
-	    }
-	    
-	    // PASO 5: Agregar UN SOLO listener nuevo
-	    ventanaVisualizarEquipos.getComboClientes().addItemListener(new ItemListener() {
-	        @Override
-	        public void itemStateChanged(ItemEvent e) {
-	            // Solo procesar cuando se SELECCIONA un item (evitar doble disparo)
-	            if (e.getStateChange() == ItemEvent.SELECTED && 
-	                ventanaVisualizarEquipos.getComboClientes().getSelectedItem() != null) {
-	                
-	                // Obtener cliente seleccionado
-	                Cliente = (ClienteDTO) ventanaVisualizarEquipos.getComboClientes().getSelectedItem();
-	                int id = Cliente.getId();
-	                idCli = id;
-	                
-	                // Cargar sucursales del cliente seleccionado
-	                agenda.ListarSucursalesxCliente(ventanaVisualizarEquipos.getComboSucursal(), id);
-	                
-	                // Seleccionar la sucursal basada en el texto del JTextField
-	                String nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
-	                if (nombreSucursal != null && !nombreSucursal.trim().isEmpty()) {
-	                    @SuppressWarnings("unchecked")
-	                    DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) 
-	                        ventanaVisualizarEquipos.getComboSucursal().getModel();
-	                    
-	                    for (int i = 0; i < modelSucursal.getSize(); i++) {
-	                        SucursalDTO sucursal = modelSucursal.getElementAt(i);
-	                        if (sucursal != null && sucursal.getNombreSucursal() != null && 
-	                            sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal.trim())) {
-	                            ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(sucursal);
-	                            break;
-	                        }
-	                    }
-	                }
-	            }
-	        }
-	    });
+
+		// PASO 1: Remover todos los listeners existentes para evitar duplicados
+		ItemListener[] listeners = ventanaVisualizarEquipos.getComboClientes().getItemListeners();
+		for (ItemListener listener : listeners) {
+			ventanaVisualizarEquipos.getComboClientes().removeItemListener(listener);
+		}
+
+		// PASO 2: Guardar la selección actual antes de recargar
+		ClienteDTO seleccionado = (ClienteDTO) ventanaVisualizarEquipos.getComboClientes().getSelectedItem();
+
+		// PASO 3: Recargar la lista de clientes
+		agenda.ListarCliente(ventanaVisualizarEquipos.getComboClientes());
+
+		// PASO 4: Restaurar la selección guardada
+		if (seleccionado != null) {
+			DefaultComboBoxModel<ClienteDTO> model = (DefaultComboBoxModel<ClienteDTO>) ventanaVisualizarEquipos
+					.getComboClientes().getModel();
+			for (int i = 0; i < model.getSize(); i++) {
+				if (model.getElementAt(i).equals(seleccionado)) {
+					ventanaVisualizarEquipos.getComboClientes().setSelectedIndex(i);
+					break;
+				}
+			}
+		}
+
+		// PASO 5: Agregar UN SOLO listener nuevo
+		ventanaVisualizarEquipos.getComboClientes().addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				// Solo procesar cuando se SELECCIONA un item (evitar doble disparo)
+				if (e.getStateChange() == ItemEvent.SELECTED
+						&& ventanaVisualizarEquipos.getComboClientes().getSelectedItem() != null) {
+
+					// Obtener cliente seleccionado
+					Cliente = (ClienteDTO) ventanaVisualizarEquipos.getComboClientes().getSelectedItem();
+					int id = Cliente.getId();
+					idCli = id;
+
+					// Cargar sucursales del cliente seleccionado
+					agenda.ListarSucursalesxCliente(ventanaVisualizarEquipos.getComboSucursal(), id);
+
+					// Seleccionar la sucursal basada en el texto del JTextField
+					String nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
+					if (nombreSucursal != null && !nombreSucursal.trim().isEmpty()) {
+						@SuppressWarnings("unchecked")
+						DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventanaVisualizarEquipos
+								.getComboSucursal().getModel();
+
+						for (int i = 0; i < modelSucursal.getSize(); i++) {
+							SucursalDTO sucursal = modelSucursal.getElementAt(i);
+							if (sucursal != null && sucursal.getNombreSucursal() != null
+									&& sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal.trim())) {
+								ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(sucursal);
+								break;
+							}
+						}
+					}
+				}
+			}
+		});
 	}
 
-	
 	private void llenarComboSucursal() {
-	    
-	    // PASO 1: Remover todos los listeners existentes para evitar duplicados
-	    ItemListener[] listeners = ventanaAgregarEquipo.getComboSucursal().getItemListeners();
-	    for (ItemListener listener : listeners) {
-	        ventanaAgregarEquipo.getComboSucursal().removeItemListener(listener);
-	    }
-	    
-	    // PASO 2: Agregar UN SOLO listener nuevo
-	    ventanaAgregarEquipo.getComboSucursal().addItemListener(new ItemListener() {
-	        @Override
-	        public void itemStateChanged(ItemEvent e) {
-	            // Solo procesar cuando se SELECCIONA un item (evitar doble disparo)
-	            if (e.getStateChange() == ItemEvent.SELECTED && 
-	                ventanaAgregarEquipo.getComboSucursal().getSelectedItem() != null) {
-	                
-	                // Validar que sea un item válido usando tu método personalizado
-	                if (VistaPropias.AutoCompletarComboBox.esItemValido(ventanaAgregarEquipo.getComboSucursal())) {
-	                    
-	                    // Obtener sucursal seleccionada
-	                    Sucursal = (SucursalDTO) ventanaAgregarEquipo.getComboSucursal().getSelectedItem();
-	                    
-	                    // Validar que la sucursal no sea null antes de obtener el ID
-	                    if (Sucursal != null) {
-	                        int idsuc = Sucursal.getIdSucursal();
-	                        idSuc = idsuc;
-	                    }
-	                }
-	            }
-	        }
-	    });
+
+		// PASO 1: Remover todos los listeners existentes para evitar duplicados
+		ItemListener[] listeners = ventanaAgregarEquipo.getComboSucursal().getItemListeners();
+		for (ItemListener listener : listeners) {
+			ventanaAgregarEquipo.getComboSucursal().removeItemListener(listener);
+		}
+
+		// PASO 2: Agregar UN SOLO listener nuevo
+		ventanaAgregarEquipo.getComboSucursal().addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				// Solo procesar cuando se SELECCIONA un item (evitar doble disparo)
+				if (e.getStateChange() == ItemEvent.SELECTED
+						&& ventanaAgregarEquipo.getComboSucursal().getSelectedItem() != null) {
+
+					// Validar que sea un item válido usando tu método personalizado
+					if (VistaPropias.AutoCompletarComboBox.esItemValido(ventanaAgregarEquipo.getComboSucursal())) {
+
+						// Obtener sucursal seleccionada
+						Sucursal = (SucursalDTO) ventanaAgregarEquipo.getComboSucursal().getSelectedItem();
+
+						// Validar que la sucursal no sea null antes de obtener el ID
+						if (Sucursal != null) {
+							int idsuc = Sucursal.getIdSucursal();
+							idSuc = idsuc;
+						}
+					}
+				}
+			}
+		});
 	}
-	
+
 	// Variables de instancia para evitar procesamiento múltiple
 	private boolean procesandoCliente = false;
 	private boolean procesandoMarca = false;
@@ -3257,533 +3249,345 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	// Método para verificar si hay cambio en la selección
 	private boolean hayaCambioEnSeleccion(JComboBox combo) {
-	    String comboName = combo.getName();
-	    Object seleccionActual = combo.getSelectedItem();
-	    
-	    switch (comboName) {
-	        case "comboCliente":
-	            return !Objects.equals(ultimaSeleccionCliente, seleccionActual);
-	        case "comboMarca":
-	            return !Objects.equals(ultimaSeleccionMarca, seleccionActual);
-	        case "comboModelo":
-	            return !Objects.equals(ultimaSeleccionModelo, seleccionActual);
-	        default:
-	            return true; // Para otros combos, siempre validar
-	    }
+		String comboName = combo.getName();
+		Object seleccionActual = combo.getSelectedItem();
+
+		switch (comboName) {
+		case "comboCliente":
+			return !Objects.equals(ultimaSeleccionCliente, seleccionActual);
+		case "comboMarca":
+			return !Objects.equals(ultimaSeleccionMarca, seleccionActual);
+		case "comboModelo":
+			return !Objects.equals(ultimaSeleccionModelo, seleccionActual);
+		default:
+			return true; // Para otros combos, siempre validar
+		}
 	}
 
 	private void llenarComboCliente() {
-	    JComboBox combo = ventanaAgregarEquipo.getComboClientes();
-	    
-	    // Remover listeners anteriores para evitar duplicados
-	    removeAllListeners(combo);
-	    
-	    try {
-	        agenda.ListarCliente(combo);
-	        
-	        // ItemListener para selección por mouse o teclas
-	        combo.addItemListener(new ItemListener() {
-	            public void itemStateChanged(ItemEvent e) {
-	                if (e.getStateChange() == ItemEvent.SELECTED && !procesandoCliente
-	                        && VistaPropias.AutoCompletarComboBox.esItemValido(combo)) {
-	                    
-	                    // Solo procesar si la selección realmente cambió
-	                    Object seleccionActual = combo.getSelectedItem();
-	                    if (!Objects.equals(ultimaSeleccionCliente, seleccionActual)) {
-	                        SwingUtilities.invokeLater(() -> procesarClienteSeleccionado());
-	                    }
-	                }
-	            }
-	        });
+		JComboBox combo = ventanaAgregarEquipo.getComboClientes();
 
-	        escuchaDeEnterYtab(combo);
-	        
-	    } catch (Exception ex) {
-	        System.err.println("Error al llenar combo cliente: " + ex.getMessage());
-	        JOptionPane.showMessageDialog(null, "Error al cargar clientes: " + ex.getMessage());
-	    }
+		// Remover listeners anteriores para evitar duplicados
+		removeAllListeners(combo);
+
+		try {
+			agenda.ListarCliente(combo);
+
+			// ItemListener para selección por mouse o teclas
+			combo.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent e) {
+					if (e.getStateChange() == ItemEvent.SELECTED && !procesandoCliente
+							&& VistaPropias.AutoCompletarComboBox.esItemValido(combo)) {
+
+						// Solo procesar si la selección realmente cambió
+						Object seleccionActual = combo.getSelectedItem();
+						if (!Objects.equals(ultimaSeleccionCliente, seleccionActual)) {
+							SwingUtilities.invokeLater(() -> procesarClienteSeleccionado());
+						}
+					}
+				}
+			});
+
+			escuchaDeEnterYtab(combo);
+
+		} catch (Exception ex) {
+			System.err.println("Error al llenar combo cliente: " + ex.getMessage());
+			JOptionPane.showMessageDialog(null, "Error al cargar clientes: " + ex.getMessage());
+		}
 	}
 
 	private void llenarComboNombreEquipo() {
-	    try {
-	        agenda.ListarEquipo(ventanaAgregarEquipo.getComboNombreEquipo());
-	        ventanaAgregarEquipo.getComboNombreEquipo().setSelectedIndex(-1);
-	    } catch (Exception ex) {
-	        System.err.println("Error al llenar combo equipo: " + ex.getMessage());
-	        JOptionPane.showMessageDialog(null, "Error al cargar equipos: " + ex.getMessage());
-	    }
+		try {
+			agenda.ListarEquipo(ventanaAgregarEquipo.getComboNombreEquipo());
+			ventanaAgregarEquipo.getComboNombreEquipo().setSelectedIndex(-1);
+		} catch (Exception ex) {
+			System.err.println("Error al llenar combo equipo: " + ex.getMessage());
+			JOptionPane.showMessageDialog(null, "Error al cargar equipos: " + ex.getMessage());
+		}
 	}
 
 	private void llenarComboMarca() {
-	    JComboBox combo = ventanaAgregarEquipo.getComboMarca();
-	    
-	    // Remover listeners anteriores
-	    removeAllListeners(combo);
-	    
-	    try {
-	        agenda.ListarMarca(combo);
+		JComboBox combo = ventanaAgregarEquipo.getComboMarca();
 
-	        // ItemListener para selección por mouse o teclas
-	        combo.addItemListener(new ItemListener() {
-	            public void itemStateChanged(ItemEvent e) {
-	                if (e.getStateChange() == ItemEvent.SELECTED && !procesandoMarca
-	                        && VistaPropias.AutoCompletarComboBox.esItemValido(combo)) {
-	                    
-	                    // Solo procesar si la selección realmente cambió
-	                    Object seleccionActual = combo.getSelectedItem();
-	                    if (!Objects.equals(ultimaSeleccionMarca, seleccionActual)) {
-	                        SwingUtilities.invokeLater(() -> procesarMarcaSeleccionada());
-	                    }
-	                }
-	            }
-	        });
+		// Remover listeners anteriores
+		removeAllListeners(combo);
 
-	        escuchaDeEnterYtab(combo);
-	        combo.setSelectedIndex(-1);
-	        
-	    } catch (Exception ex) {
-	        System.err.println("Error al llenar combo marca: " + ex.getMessage());
-	        JOptionPane.showMessageDialog(null, "Error al cargar marcas: " + ex.getMessage());
-	    }
+		try {
+			agenda.ListarMarca(combo);
+
+			// ItemListener para selección por mouse o teclas
+			combo.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent e) {
+					if (e.getStateChange() == ItemEvent.SELECTED && !procesandoMarca
+							&& VistaPropias.AutoCompletarComboBox.esItemValido(combo)) {
+
+						// Solo procesar si la selección realmente cambió
+						Object seleccionActual = combo.getSelectedItem();
+						if (!Objects.equals(ultimaSeleccionMarca, seleccionActual)) {
+							SwingUtilities.invokeLater(() -> procesarMarcaSeleccionada());
+						}
+					}
+				}
+			});
+
+			escuchaDeEnterYtab(combo);
+			combo.setSelectedIndex(-1);
+
+		} catch (Exception ex) {
+			System.err.println("Error al llenar combo marca: " + ex.getMessage());
+			JOptionPane.showMessageDialog(null, "Error al cargar marcas: " + ex.getMessage());
+		}
 	}
 
 	private void llenarComboModelo() {
-	    JComboBox combo = ventanaAgregarEquipo.getComboModelo();
-	    
-	    // Remover listeners anteriores
-	    removeAllListeners(combo);
+		JComboBox combo = ventanaAgregarEquipo.getComboModelo();
 
-	    // ItemListener para selección por mouse o teclas
-	    combo.addItemListener(new ItemListener() {
-	        public void itemStateChanged(ItemEvent e) {
-	            if (e.getStateChange() == ItemEvent.SELECTED && !procesandoModelo
-	                    && VistaPropias.AutoCompletarComboBox.esItemValido(combo)) {
-	                
-	                // Solo procesar si la selección realmente cambió
-	                Object seleccionActual = combo.getSelectedItem();
-	                if (!Objects.equals(ultimaSeleccionModelo, seleccionActual)) {
-	                    SwingUtilities.invokeLater(() -> procesarModeloSeleccionado());
-	                }
-	            }
-	        }
-	    });
+		// Remover listeners anteriores
+		removeAllListeners(combo);
 
-	    escuchaDeEnterYtab(combo);
-	    combo.setSelectedIndex(-1);
-	    ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
+		// ItemListener para selección por mouse o teclas
+		combo.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED && !procesandoModelo
+						&& VistaPropias.AutoCompletarComboBox.esItemValido(combo)) {
+
+					// Solo procesar si la selección realmente cambió
+					Object seleccionActual = combo.getSelectedItem();
+					if (!Objects.equals(ultimaSeleccionModelo, seleccionActual)) {
+						SwingUtilities.invokeLater(() -> procesarModeloSeleccionado());
+					}
+				}
+			}
+		});
+
+		escuchaDeEnterYtab(combo);
+		combo.setSelectedIndex(-1);
+		ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
 	}
 
 	private void escuchaDeEnterYtab(JComboBox combo) {
-	    // Editor del combo
-	    JTextComponent editor = (JTextComponent) combo.getEditor().getEditorComponent();
+		// Editor del combo
+		JTextComponent editor = (JTextComponent) combo.getEditor().getEditorComponent();
 
-	    // NO remover listeners nativos - solo agregar los nuestros
-	    // Solo removemos nuestros listeners personalizados si ya existen
-	    removeCustomListeners(editor, combo);
+		// NO remover listeners nativos - solo agregar los nuestros
+		// Solo removemos nuestros listeners personalizados si ya existen
+		removeCustomListeners(editor, combo);
 
-	    // Crear referencia final para usar en clases anónimas
-	    final JComboBox comboFinal = combo;
+		// Crear referencia final para usar en clases anónimas
+		final JComboBox comboFinal = combo;
 
-	    // Validación con ENTER usando KeyListener
-	    KeyListener enterKeyListener = new KeyAdapter() {
-	        @Override
-	        public void keyPressed(KeyEvent e) {
-	            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-	                SwingUtilities.invokeLater(() -> {
-	                    if (hayaCambioEnSeleccion(comboFinal)) {
-	                        validarSeleccion(comboFinal);
-	                    }
-	                });
-	            }
-	        }
-	    };
-	    
-	    // Validación con TAB (focusLost)
-	    FocusListener customFocusListener = new FocusAdapter() {
-	        @Override
-	        public void focusLost(FocusEvent e) {
-	            // Solo validar si realmente cambió la selección desde la última vez
-	            SwingUtilities.invokeLater(() -> {
-	                if (hayaCambioEnSeleccion(comboFinal)) {
-	                    validarSeleccion(comboFinal);
-	                }
-	            });
-	        }
-	    };
+		// Validación con ENTER usando KeyListener
+		KeyListener enterKeyListener = new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					SwingUtilities.invokeLater(() -> {
+						if (hayaCambioEnSeleccion(comboFinal)) {
+							validarSeleccion(comboFinal);
+						}
+					});
+				}
+			}
+		};
 
-	    // Agregar nuestros listeners personalizados
-	    editor.addKeyListener(enterKeyListener);
-	    editor.addFocusListener(customFocusListener);
-	    
-	    // Guardar referencias para poder removerlos después si es necesario
-	    editor.putClientProperty("customKeyListener", enterKeyListener);
-	    editor.putClientProperty("customFocusListener", customFocusListener);
+		// Validación con TAB (focusLost)
+		FocusListener customFocusListener = new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				// Solo validar si realmente cambió la selección desde la última vez
+				SwingUtilities.invokeLater(() -> {
+					if (hayaCambioEnSeleccion(comboFinal)) {
+						validarSeleccion(comboFinal);
+					}
+				});
+			}
+		};
+
+		// Agregar nuestros listeners personalizados
+		editor.addKeyListener(enterKeyListener);
+		editor.addFocusListener(customFocusListener);
+
+		// Guardar referencias para poder removerlos después si es necesario
+		editor.putClientProperty("customKeyListener", enterKeyListener);
+		editor.putClientProperty("customFocusListener", customFocusListener);
 	}
 
 	private void validarSeleccion(JComboBox combo) {
-	    String comboName = combo.getName();
-	    
-	    // Limpiar combos dependientes primero
-	    if ("comboCliente".equals(comboName)) {
-	        ventanaAgregarEquipo.getComboSucursal().removeAllItems();
-	        ventanaAgregarEquipo.getComboSucursal().setSelectedIndex(-1);
-	    }
+		String comboName = combo.getName();
 
-	    if (VistaPropias.AutoCompletarComboBox.esItemValido(combo)) {
-	        combo.setPopupVisible(false);
+		// Limpiar combos dependientes primero
+		if ("comboCliente".equals(comboName)) {
+			ventanaAgregarEquipo.getComboSucursal().removeAllItems();
+			ventanaAgregarEquipo.getComboSucursal().setSelectedIndex(-1);
+		}
 
-	        switch (comboName) {
-	            case "comboCliente":
-	                procesarClienteSeleccionado();
-	                break;
-	            case "comboMarca":
-	                procesarMarcaSeleccionada();
-	                break;
-	            case "comboModelo":
-	                procesarModeloSeleccionado();
-	                break;
-	        }
+		if (VistaPropias.AutoCompletarComboBox.esItemValido(combo)) {
+			combo.setPopupVisible(false);
 
-	    } else {
-	        // Limpiar combos dependientes cuando la selección no es válida
-	        switch (comboName) {
-	            case "comboCliente":
-	                ultimaSeleccionCliente = null; // Resetear para que se pueda volver a procesar
-	                ventanaAgregarEquipo.getComboSucursal().removeAllItems();
-	                ventanaAgregarEquipo.getComboSucursal().setSelectedIndex(-1);
-	                break;
-	            case "comboMarca":
-	                ultimaSeleccionMarca = null; // Resetear para que se pueda volver a procesar
-	                ultimaSeleccionModelo = null; // También resetear modelo ya que depende de marca
-	                ventanaAgregarEquipo.getComboModelo().removeAllItems();
-	                ventanaAgregarEquipo.getComboModelo().setSelectedIndex(-1);
-	                ventanaAgregarEquipo.getComboSerie().removeAllItems();
-	                ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
-	                break;
-	            case "comboModelo":
-	                ultimaSeleccionModelo = null; // Resetear para que se pueda volver a procesar
-	                ventanaAgregarEquipo.getComboSerie().removeAllItems();
-	                ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
-	                break;
-	        }
+			switch (comboName) {
+			case "comboCliente":
+				procesarClienteSeleccionado();
+				break;
+			case "comboMarca":
+				procesarMarcaSeleccionada();
+				break;
+			case "comboModelo":
+				procesarModeloSeleccionado();
+				break;
+			}
 
-	        if (!combo.isEditable()) {
-	            JOptionPane.showMessageDialog(null, "Item no encontrado");
-	            combo.setSelectedIndex(0);
-	        }
-	    }
+		} else {
+			// Limpiar combos dependientes cuando la selección no es válida
+			switch (comboName) {
+			case "comboCliente":
+				ultimaSeleccionCliente = null; // Resetear para que se pueda volver a procesar
+				ventanaAgregarEquipo.getComboSucursal().removeAllItems();
+				ventanaAgregarEquipo.getComboSucursal().setSelectedIndex(-1);
+				break;
+			case "comboMarca":
+				ultimaSeleccionMarca = null; // Resetear para que se pueda volver a procesar
+				ultimaSeleccionModelo = null; // También resetear modelo ya que depende de marca
+				ventanaAgregarEquipo.getComboModelo().removeAllItems();
+				ventanaAgregarEquipo.getComboModelo().setSelectedIndex(-1);
+				ventanaAgregarEquipo.getComboSerie().removeAllItems();
+				ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
+				break;
+			case "comboModelo":
+				ultimaSeleccionModelo = null; // Resetear para que se pueda volver a procesar
+				ventanaAgregarEquipo.getComboSerie().removeAllItems();
+				ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
+				break;
+			}
+
+			if (!combo.isEditable()) {
+				JOptionPane.showMessageDialog(null, "Item no encontrado");
+				combo.setSelectedIndex(0);
+			}
+		}
 	}
 
 	private void procesarClienteSeleccionado() {
-	    if (procesandoCliente) return;
-	    
-	    procesandoCliente = true;
-	    
-	    try {
-	        JComboBox comboClientes = ventanaAgregarEquipo.getComboClientes();
-	        ClienteDTO cliente = (ClienteDTO) comboClientes.getSelectedItem();
+		if (procesandoCliente)
+			return;
 
-	        if (cliente != null) {
-	            int id = cliente.getId();
-	            JComboBox comboSucursal = ventanaAgregarEquipo.getComboSucursal();
-	            comboSucursal.removeAllItems();
-	            comboSucursal.setSelectedIndex(-1);
-	            agenda.ListarSucursalesxCliente(comboSucursal, id);
-	            idCli = id;
-	            
-	            // Guardar la selección actual para evitar reprocesamiento
-	            ultimaSeleccionCliente = cliente;
-	        }
-	        
-	    } catch (Exception ex) {
-	        System.err.println("Error al procesar cliente seleccionado: " + ex.getMessage());
-	        JOptionPane.showMessageDialog(null, "Error al cargar sucursales: " + ex.getMessage());
-	        
-	    } finally {
-	        procesandoCliente = false;
-	    }
+		procesandoCliente = true;
+
+		try {
+			JComboBox comboClientes = ventanaAgregarEquipo.getComboClientes();
+			ClienteDTO cliente = (ClienteDTO) comboClientes.getSelectedItem();
+
+			if (cliente != null) {
+				int id = cliente.getId();
+				JComboBox comboSucursal = ventanaAgregarEquipo.getComboSucursal();
+				comboSucursal.removeAllItems();
+				comboSucursal.setSelectedIndex(-1);
+				agenda.ListarSucursalesxCliente(comboSucursal, id);
+				idCli = id;
+
+				// Guardar la selección actual para evitar reprocesamiento
+				ultimaSeleccionCliente = cliente;
+			}
+
+		} catch (Exception ex) {
+			System.err.println("Error al procesar cliente seleccionado: " + ex.getMessage());
+			JOptionPane.showMessageDialog(null, "Error al cargar sucursales: " + ex.getMessage());
+
+		} finally {
+			procesandoCliente = false;
+		}
 	}
 
 	private void procesarMarcaSeleccionada() {
-	    if (procesandoMarca) return;
-	    
-	    procesandoMarca = true;
-	    
-	    try {
-	        JComboBox comboMarca = ventanaAgregarEquipo.getComboMarca();
+		if (procesandoMarca)
+			return;
 
-	        if (comboMarca.getSelectedItem() != null) {
-	            Marca = comboMarca.getSelectedItem().toString();
-	            
-	            JComboBox comboModelo = ventanaAgregarEquipo.getComboModelo();
-	            JComboBox comboSerie = ventanaAgregarEquipo.getComboSerie();
-	            
-	            comboModelo.removeAllItems();
-	            comboModelo.setSelectedIndex(-1);
-	            comboSerie.removeAllItems(); 
-	            comboSerie.setSelectedIndex(-1);
-	            
-	            agenda.ListarModelosxMarca(comboModelo, Marca);
-	            
-	            // Guardar la selección actual para evitar reprocesamiento
-	            ultimaSeleccionMarca = comboMarca.getSelectedItem();
-	            // Resetear la selección de modelo ya que cambió la marca
-	            ultimaSeleccionModelo = null;
-	        }
-	        
-	    } catch (Exception ex) {
-	        System.err.println("Error al procesar marca seleccionada: " + ex.getMessage());
-	        JOptionPane.showMessageDialog(null, "Error al cargar modelos: " + ex.getMessage());
-	        
-	    } finally {
-	        procesandoMarca = false;
-	    }
+		procesandoMarca = true;
+
+		try {
+			JComboBox comboMarca = ventanaAgregarEquipo.getComboMarca();
+
+			if (comboMarca.getSelectedItem() != null) {
+				Marca = comboMarca.getSelectedItem().toString();
+
+				JComboBox comboModelo = ventanaAgregarEquipo.getComboModelo();
+				JComboBox comboSerie = ventanaAgregarEquipo.getComboSerie();
+
+				comboModelo.removeAllItems();
+				comboModelo.setSelectedIndex(-1);
+				comboSerie.removeAllItems();
+				comboSerie.setSelectedIndex(-1);
+
+				agenda.ListarModelosxMarca(comboModelo, Marca);
+
+				// Guardar la selección actual para evitar reprocesamiento
+				ultimaSeleccionMarca = comboMarca.getSelectedItem();
+				// Resetear la selección de modelo ya que cambió la marca
+				ultimaSeleccionModelo = null;
+			}
+
+		} catch (Exception ex) {
+			System.err.println("Error al procesar marca seleccionada: " + ex.getMessage());
+			JOptionPane.showMessageDialog(null, "Error al cargar modelos: " + ex.getMessage());
+
+		} finally {
+			procesandoMarca = false;
+		}
 	}
 
 	private void procesarModeloSeleccionado() {
-	    if (procesandoModelo) return;
-	    
-	    procesandoModelo = true;
-	    
-	    try {
-	        JComboBox comboModelo = ventanaAgregarEquipo.getComboModelo();
+		if (procesandoModelo)
+			return;
 
-	        if (comboModelo.getSelectedItem() != null) {
-	            Modelo = comboModelo.getSelectedItem().toString();
-	            
-	            JComboBox comboSerie = ventanaAgregarEquipo.getComboSerie();
-	            comboSerie.removeAllItems();
-	            comboSerie.setSelectedIndex(-1);
-	            
-	            agenda.ListarSeriexModelo(comboSerie, Modelo);
-	            
-	            // Guardar la selección actual para evitar reprocesamiento
-	            ultimaSeleccionModelo = comboModelo.getSelectedItem();
-	        }
-	        
-	    } catch (Exception ex) {
-	        System.err.println("Error al procesar modelo seleccionado: " + ex.getMessage());
-	        JOptionPane.showMessageDialog(null, "Error al cargar series: " + ex.getMessage());
-	        
-	    } finally {
-	        procesandoModelo = false;
-	    }
+		procesandoModelo = true;
+
+		try {
+			JComboBox comboModelo = ventanaAgregarEquipo.getComboModelo();
+
+			if (comboModelo.getSelectedItem() != null) {
+				Modelo = comboModelo.getSelectedItem().toString();
+
+				JComboBox comboSerie = ventanaAgregarEquipo.getComboSerie();
+				comboSerie.removeAllItems();
+				comboSerie.setSelectedIndex(-1);
+
+				agenda.ListarSeriexModelo(comboSerie, Modelo);
+
+				// Guardar la selección actual para evitar reprocesamiento
+				ultimaSeleccionModelo = comboModelo.getSelectedItem();
+			}
+
+		} catch (Exception ex) {
+			System.err.println("Error al procesar modelo seleccionado: " + ex.getMessage());
+			JOptionPane.showMessageDialog(null, "Error al cargar series: " + ex.getMessage());
+
+		} finally {
+			procesandoModelo = false;
+		}
 	}
 
-	// Método para remover solo nuestros listeners personalizados, no los nativos de Swing
+	// Método para remover solo nuestros listeners personalizados, no los nativos de
+	// Swing
 	private void removeCustomListeners(JTextComponent editor, JComboBox combo) {
-	    // Remover nuestros listeners personalizados si existen
-	    KeyListener customKeyListener = (KeyListener) editor.getClientProperty("customKeyListener");
-	    if (customKeyListener != null) {
-	        editor.removeKeyListener(customKeyListener);
-	        editor.putClientProperty("customKeyListener", null);
-	    }
-	    
-	    FocusListener customFocusListener = (FocusListener) editor.getClientProperty("customFocusListener");
-	    if (customFocusListener != null) {
-	        editor.removeFocusListener(customFocusListener);
-	        editor.putClientProperty("customFocusListener", null);
-	    }
+		// Remover nuestros listeners personalizados si existen
+		KeyListener customKeyListener = (KeyListener) editor.getClientProperty("customKeyListener");
+		if (customKeyListener != null) {
+			editor.removeKeyListener(customKeyListener);
+			editor.putClientProperty("customKeyListener", null);
+		}
+
+		FocusListener customFocusListener = (FocusListener) editor.getClientProperty("customFocusListener");
+		if (customFocusListener != null) {
+			editor.removeFocusListener(customFocusListener);
+			editor.putClientProperty("customFocusListener", null);
+		}
 	}
 
 	private void removeAllListeners(JComboBox combo) {
-	    ItemListener[] itemListeners = combo.getItemListeners();
-	    for (ItemListener listener : itemListeners) {
-	        combo.removeItemListener(listener);
-	    }
+		ItemListener[] itemListeners = combo.getItemListeners();
+		for (ItemListener listener : itemListeners) {
+			combo.removeItemListener(listener);
+		}
 	}
-
-//	private void llenarComboCliente() {
-//
-//		JComboBox combo = ventanaAgregarEquipo.getComboClientes();
-//		agenda.ListarCliente(combo);
-//
-//		// ItemListener para selección por mouse o teclas
-//		combo.addItemListener(new ItemListener() {
-//			public void itemStateChanged(ItemEvent e) {
-//				if (e.getStateChange() == ItemEvent.SELECTED
-//						&& VistaPropias.AutoCompletarComboBox.esItemValido(combo)) {
-//					procesarClienteSeleccionado();
-//				}
-//			}
-//		});
-//
-//		escuchaDeEnterYtab(combo);
-//
-//	}
-//
-//	private void llenarComboNombreEquipo() {
-//
-//		agenda.ListarEquipo(ventanaAgregarEquipo.getComboNombreEquipo());
-//		ventanaAgregarEquipo.getComboNombreEquipo().setSelectedIndex(-1);
-//
-//	}
-//
-//	private void llenarComboMarca() {
-//
-//		agenda.ListarMarca(ventanaAgregarEquipo.getComboMarca());
-//		JComboBox combo = ventanaAgregarEquipo.getComboMarca();
-//
-//		// ItemListener para selección por mouse o teclas
-//		combo.addItemListener(new ItemListener() {
-//			public void itemStateChanged(ItemEvent e) {
-//				if (e.getStateChange() == ItemEvent.SELECTED
-//						&& VistaPropias.AutoCompletarComboBox.esItemValido(combo)) {
-//					procesarMarcaSeleccionada();
-//				}
-//			}
-//		});
-//
-//		escuchaDeEnterYtab(combo);
-//
-//		ventanaAgregarEquipo.getComboMarca().setSelectedIndex(-1);
-//	}
-//
-//	private void llenarComboModelo() {
-//
-//		JComboBox combo = ventanaAgregarEquipo.getComboModelo();
-//
-//		// ItemListener para selección por mouse o teclas
-//		combo.addItemListener(new ItemListener() {
-//			public void itemStateChanged(ItemEvent e) {
-//				if (e.getStateChange() == ItemEvent.SELECTED
-//						&& VistaPropias.AutoCompletarComboBox.esItemValido(combo)) {
-//					procesarModeloSeleccionado();
-//				}
-//			}
-//		});
-//
-//		escuchaDeEnterYtab(combo);
-//
-//		ventanaAgregarEquipo.getComboModelo().setSelectedIndex(-1);
-//		ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
-//
-//	}
-//
-//	private void escuchaDeEnterYtab(JComboBox combo) {
-//
-//		// Editor del combo
-//		JTextComponent editor = (JTextComponent) combo.getEditor().getEditorComponent();
-//
-//		// Validación con ENTER
-//		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
-//			@Override
-//			public boolean dispatchKeyEvent(KeyEvent e) {
-//				if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == KeyEvent.VK_ENTER) {
-//					if (editor.isFocusOwner()) {
-//						SwingUtilities.invokeLater(() -> validarSeleccion(combo));
-//					}
-//				}
-//				return false;
-//			}
-//		});
-//
-//		// Validación con TAB (focusLost)
-//		editor.addFocusListener(new FocusAdapter() {
-//			@Override
-//			public void focusLost(FocusEvent e) {
-//				SwingUtilities.invokeLater(() -> validarSeleccion(combo));
-//			}
-//		});
-//
-//	}
-//
-//	private void validarSeleccion(JComboBox combo) {
-//
-//		if (combo.getName().compareTo("comboCliente") == 0) {
-//
-//			ventanaAgregarEquipo.getComboSucursal().removeAllItems();
-//		}
-//
-//		if (VistaPropias.AutoCompletarComboBox.esItemValido(combo)) {
-//			combo.setPopupVisible(false); // 🔻 Ocultar lista desplegable al confirmar selección
-//
-//			switch (combo.getName()) {
-//
-//			case "comboCliente":
-//				procesarClienteSeleccionado();
-//				break;
-//
-//			case "comboMarca":
-//				procesarMarcaSeleccionada();
-//				break;
-//
-//			case "comboModelo":
-//				procesarModeloSeleccionado();
-//				break;
-//
-//			default:
-//				break;
-//			}
-//
-//		} else {
-//
-//			switch (combo.getName()) {
-//
-//			case "comboCliente":
-//				ventanaAgregarEquipo.getComboSucursal().removeAllItems();
-//				// ventanaAgregarEquipo.getComboSucursal().setSelectedIndex(-1);
-//				break;
-//
-//			case "comboMarca":
-//				ventanaAgregarEquipo.getComboModelo().removeAllItems();
-//				ventanaAgregarEquipo.getComboSerie().removeAllItems();
-//				break;
-//
-//			case "comboModelo":
-//				ventanaAgregarEquipo.getComboSerie().removeAllItems();
-//				break;
-//
-//			default:
-//				break;
-//			}
-//
-//			if (!combo.isEditable()) {
-//				JOptionPane.showMessageDialog(null, "Item no encontrado");
-//				combo.setSelectedIndex(0);
-//			}
-//		}
-//	}
-//
-//	private void procesarClienteSeleccionado() {
-//		JComboBox comboClientes = ventanaAgregarEquipo.getComboClientes();
-//		ClienteDTO Cliente = (ClienteDTO) comboClientes.getSelectedItem();
-//
-//		if (Cliente != null) {
-//			int id = Cliente.getId();
-//			agenda.ListarSucursalesxCliente(ventanaAgregarEquipo.getComboSucursal(), id);
-//			idCli = id;
-//
-//		}
-//
-//	}
-//
-//	protected void procesarMarcaSeleccionada() {
-//
-//		JComboBox comboMarca = ventanaAgregarEquipo.getComboMarca();
-//
-//		if (comboMarca.getSelectedItem() != null) {
-//			Marca = ventanaAgregarEquipo.getComboMarca().getSelectedItem().toString();
-//			agenda.ListarModelosxMarca(ventanaAgregarEquipo.getComboModelo(), Marca);
-//
-//		}
-//
-//		ventanaAgregarEquipo.getComboModelo().setSelectedIndex(-1);
-//		ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
-//	}
-//
-//	protected void procesarModeloSeleccionado() {
-//
-//		JComboBox comboModelo = ventanaAgregarEquipo.getComboModelo();
-//
-//		if (comboModelo.getSelectedItem() != null) {
-//			Modelo = ventanaAgregarEquipo.getComboModelo().getSelectedItem().toString();
-//			agenda.ListarSeriexModelo(ventanaAgregarEquipo.getComboSerie(), Modelo);
-//			ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
-//
-//		}
-//
-//	}
 
 	private void llenarComboTecnico(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 

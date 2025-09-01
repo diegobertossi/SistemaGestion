@@ -1,4 +1,4 @@
-package presentacion.vista;
+ package presentacion.vista;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,7 +36,6 @@ public class VentanaSucursales extends JFrame
 	private JButton btnEditar;
 	private DefaultTableModel modelSucursales;
 	private  String[] nombreColumnas = {"Nombre"};
-	//private  String[] nombreColumnas = {"Nombre","CUIT", "Direcci�n","Contacto", "Tel. Cont�cto", "Correo"};
 	@SuppressWarnings("unused")
 	private JPanel panel;
 	@SuppressWarnings("unused")

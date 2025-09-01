@@ -582,7 +582,13 @@ public class ControladorBackup implements ActionListener, MouseListener {
 					String nombreAguardar = ventanaOpcionesBackup.getTxtNombreArchivo().getText();
 					String rutaAguardar = ventanaOpcionesBackup.getTxtRutaArchivo().getText();
 					File backupFile = new File(rutaAguardar + nombreAguardar);
-					Process child = Runtime.getRuntime().exec("C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysqldump --opt --password=root --user=root --databases ordenesbrc");
+					
+					String nombreBaseLocal = (agenda.getUbicacionBase().equalsIgnoreCase("Bariloche")) ? "ordenesbrc" : "ordenesbsas";
+					
+					Process child = Runtime.getRuntime().exec("C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysqldump --opt --password=root --user=root --databases " + nombreBaseLocal);
+					
+										
+					
 					try (InputStreamReader irs = new InputStreamReader(child.getInputStream());
 						 BufferedReader br = new BufferedReader(irs);
 						 FileWriter fw = new FileWriter(backupFile)) {
