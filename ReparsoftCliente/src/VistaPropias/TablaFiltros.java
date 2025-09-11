@@ -132,6 +132,35 @@ public class TablaFiltros {
 		
 		
 	}
+	
+	
+	
+
+public void deshabilitarAutofiltro(JTable tabla) {
+    if (filterCombos != null) {
+        for (JComboBox<String> combo : filterCombos) {
+            if (combo != null) {
+            	combo.setSelectedItem("Todos");
+                combo.setEnabled(false);
+                combo.setEditable(false);
+            }
+        }
+    }
+}
+
+
+public void habilitarAutofiltro(JTable tabla) {
+    if (filterCombos != null) {
+        for (JComboBox<String> combo : filterCombos) {
+            if (combo != null) {
+                combo.setEnabled(true);
+                combo.setEditable(true);
+            }
+        }
+    }
+}
+
+
 
 	private void manejarFiltro(JTable tabla, JComboBox<String> comboBox, JTextField editor, Color fondoFiltros,
 			Color fondoBusqueda, int columnIndex) {

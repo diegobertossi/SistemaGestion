@@ -339,19 +339,19 @@ public class VentanaRolesUsuarios extends JFrame {
 						panel_1.setLayout(null);
 				
 						btnEliminarUsuario = new JButton("ELIMINAR");
-						btnEliminarUsuario.setBounds(7, 121, 187, 23);
+						btnEliminarUsuario.setBounds(47, 121, 108, 23);
 						panel_1.add(btnEliminarUsuario);
 						btnEliminarUsuario.setBackground(new Color(240, 240, 240));
 						btnEliminarUsuario.setFont(new Font("Cambria", Font.BOLD, 14));
 						
 								btnEditarUsuario = new JButton("EDITAR");
-								btnEditarUsuario.setBounds(7, 73, 187, 23);
+								btnEditarUsuario.setBounds(47, 73, 108, 23);
 								panel_1.add(btnEditarUsuario);
 								btnEditarUsuario.setBackground(new Color(240, 240, 240));
 								btnEditarUsuario.setFont(new Font("Cambria", Font.BOLD, 14));
 								
 										btnAgregarUsuario = new JButton("AGREGAR");
-										btnAgregarUsuario.setBounds(7, 25, 187, 23);
+										btnAgregarUsuario.setBounds(47, 25, 108, 23);
 										panel_1.add(btnAgregarUsuario);
 										btnAgregarUsuario.setBackground(new Color(240, 240, 240));
 										btnAgregarUsuario.setFont(new Font("Cambria", Font.BOLD, 14));

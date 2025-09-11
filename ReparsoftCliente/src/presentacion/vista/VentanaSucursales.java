@@ -52,8 +52,8 @@ public class VentanaSucursales extends JFrame
 	private JTextField txtCorreo;
 	private JLabel lblCorreo;
 	private JPanel panel_1;
-	private JLabel lblDetalle;
 	private JTextField textCliente;
+	private JPanel panel_2;
 	
 
 	@SuppressWarnings({ "serial", "unused" })
@@ -67,7 +67,7 @@ public class VentanaSucursales extends JFrame
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
 		
-		setBounds(100, 100, 517, 493);
+		setBounds(100, 100, 517, 483);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setAutoscrolls(true);
@@ -92,7 +92,7 @@ public class VentanaSucursales extends JFrame
 		
 		JScrollPane spSucursal = new JScrollPane();
 		spSucursal.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		spSucursal.setBounds(51, 74, 242, 184);
+		spSucursal.setBounds(20, 75, 242, 170);
 		panel.add(spSucursal);
 		
 		modelSucursales = new DefaultTableModel(null,nombreColumnas);
@@ -141,30 +141,37 @@ public class VentanaSucursales extends JFrame
 	tablaSucursales.setAutoCreateColumnsFromModel(false);
 		spSucursal.setViewportView(tablaSucursales);
 		
-		btnAgregar = new JButton("<html><center>Agregar Sucursal</html>");
+		panel_2 = new JPanel();
+		panel_2.setBackground(new Color(119, 136, 153));
+		panel_2.setBounds(288, 75, 202, 170);
+		panel.add(panel_2);
+		panel_2.setLayout(null);
+		
+		btnAgregar = new JButton("AGREGAR");
+		btnAgregar.setBounds(52, 24, 108, 23);
+		panel_2.add(btnAgregar);
 		btnAgregar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnAgregar.setBackground(new Color(0, 255, 127));
+		btnAgregar.setBackground(new Color(240, 240, 240));
 		btnAgregar.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnAgregar.setBounds(362, 74, 89, 40);
-		panel.add(btnAgregar);
 		
-		btnEditar = new JButton("<html><center>Editar Sucursal</html>");
+		btnEditar = new JButton("EDITAR");
+		btnEditar.setBounds(52, 71, 108, 23);
+		panel_2.add(btnEditar);
 		btnEditar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnEditar.setBackground(new Color(255, 255, 153));
+		btnEditar.setBackground(new Color(240, 240, 240));
 		btnEditar.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnEditar.setBounds(362, 121, 89, 40);
-		panel.add(btnEditar);
 		
-		btnBorrar = new JButton("<html><center>Eliminar Sucursal</html>");
+		btnBorrar = new JButton("ELIMINAR");
+		btnBorrar.setBounds(52, 117, 108, 23);
+		panel_2.add(btnBorrar);
 		btnBorrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnBorrar.setBackground(new Color(255, 51, 0));
+		btnBorrar.setBackground(new Color(240, 240, 240));
 		btnBorrar.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnBorrar.setBounds(362, 167, 89, 40);
-		panel.add(btnBorrar);
 		
 		panel_1 = new JPanel();
+		panel_1.setBackground(new Color(119, 136, 153));
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_1.setBounds(51, 290, 400, 140);
+		panel_1.setBounds(20, 269, 470, 170);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -175,7 +182,7 @@ public class VentanaSucursales extends JFrame
 				
 		txtNombreSucursal = new JTextField();
 		txtNombreSucursal.setEditable(false);
-		txtNombreSucursal.setBackground(SystemColor.activeCaption);
+		txtNombreSucursal.setBackground(new Color(255, 255, 255));
 		txtNombreSucursal.setFont(new Font("Cambria", Font.BOLD, 12));
 		txtNombreSucursal.setBounds(100, 17, 281, 20);
 		panel_1.add(txtNombreSucursal);
@@ -188,7 +195,7 @@ public class VentanaSucursales extends JFrame
 				
 		txtDireccion = new JTextField();
 		txtDireccion.setEditable(false);
-		txtDireccion.setBackground(SystemColor.activeCaption);
+		txtDireccion.setBackground(new Color(255, 255, 255));
 		txtDireccion.setFont(new Font("Cambria", Font.PLAIN, 12));
 		txtDireccion.setBounds(100, 39, 281, 20);
 		panel_1.add(txtDireccion);
@@ -201,7 +208,7 @@ public class VentanaSucursales extends JFrame
 				
 		txtContacto = new JTextField();
 		txtContacto.setEditable(false);
-		txtContacto.setBackground(SystemColor.activeCaption);
+		txtContacto.setBackground(new Color(255, 255, 255));
 		txtContacto.setFont(new Font("Cambria", Font.PLAIN, 12));
 		txtContacto.setBounds(100, 61, 281, 20);
 		panel_1.add(txtContacto);
@@ -214,7 +221,7 @@ public class VentanaSucursales extends JFrame
 				
 		txtTelContacto = new JTextField();
 		txtTelContacto.setEditable(false);
-		txtTelContacto.setBackground(SystemColor.activeCaption);
+		txtTelContacto.setBackground(new Color(255, 255, 255));
 		txtTelContacto.setFont(new Font("Cambria", Font.PLAIN, 12));
 		txtTelContacto.setBounds(100, 83, 281, 20);
 		panel_1.add(txtTelContacto);
@@ -227,34 +234,23 @@ public class VentanaSucursales extends JFrame
 				
 		txtCorreo = new JTextField();
 		txtCorreo.setEditable(false);
-		txtCorreo.setBackground(SystemColor.activeCaption);
+		txtCorreo.setBackground(new Color(255, 255, 255));
 		txtCorreo.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtCorreo.setBounds(100, 105, 281, 20);
+		txtCorreo.setBounds(100, 105, 281, 50);
 		panel_1.add(txtCorreo);
 		txtCorreo.setColumns(10);
 		
 		JLabel lblSucursales = new JLabel("SUCURSALES DE : ");
 		lblSucursales.setFont(new Font("Cambria", Font.BOLD, 22));
-		lblSucursales.setBounds(10, 8, 187, 31);
+		lblSucursales.setBounds(22, 22, 187, 31);
 		panel.add(lblSucursales);
-		
-		JLabel lblListadoDeSucursales = new JLabel("Listado de Sucursales Ingresadas");
-		lblListadoDeSucursales.setFont(new Font("Cambria", Font.BOLD, 14));
-		lblListadoDeSucursales.setBounds(51, 50, 229, 23);
-		 
-		panel.add(lblListadoDeSucursales);
-		
-		lblDetalle = new JLabel("Detalle");
-		lblDetalle.setFont(new Font("Cambria", Font.BOLD, 14));
-		lblDetalle.setBounds(51, 267, 204, 23);
-		panel.add(lblDetalle);
 		
 		textCliente = new JTextField();
 		textCliente.setEditable(false);
 		textCliente.setBorder(null);
 		textCliente.setBackground(SystemColor.inactiveCaption);
 		textCliente.setFont(new Font("Cambria", Font.BOLD, 22));
-		textCliente.setBounds(197, 8, 254, 29);
+		textCliente.setBounds(209, 23, 254, 29);
 		panel.add(textCliente);
 		textCliente.setColumns(10);
 

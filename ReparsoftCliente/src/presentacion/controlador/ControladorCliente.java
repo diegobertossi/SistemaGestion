@@ -63,6 +63,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	private SucursalDTO SucursalesEncliente;
 	private TablaFiltros tablaFiltros = new TablaFiltros();
 	private boolean llamadoDesdeAgregarEquipo = false;
+	private boolean editando = false;
 
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
@@ -78,13 +79,11 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 		llenarTabla();
 	}
-	
-	
+
 	// Método para setear el flag desde el controlador de reparaciones
 	public void setLlamadoDesdeAgregarEquipo(boolean valor) {
-	    this.llamadoDesdeAgregarEquipo = valor;
+		this.llamadoDesdeAgregarEquipo = valor;
 	}
-	
 
 	public void llenarTabla() {
 		this.ventanaClientes.getModelClientes().setRowCount(0); // Para vaciar
@@ -106,23 +105,20 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 		tablaFiltros.agregarAutofiltros(this.ventanaClientes.getTablaClientes());
 
-
 		if (llamadoDesdeAgregarEquipo) {
-	        ocultarVentanaClientes();
-	        llamadoDesdeAgregarEquipo = false; // Resetea el flag
-	    } else {
-	        this.ventanaClientes.setVisible(true);
-	    }
-		
-	}	
-	
-	
-	private void ocultarVentanaClientes() {
-	    if (ventanaClientes != null) {
-	        ventanaClientes.setVisible(false);
-	    }
+			ocultarVentanaClientes();
+			llamadoDesdeAgregarEquipo = false; // Resetea el flag
+		} else {
+			this.ventanaClientes.setVisible(true);
+		}
+
 	}
-	
+
+	private void ocultarVentanaClientes() {
+		if (ventanaClientes != null) {
+			ventanaClientes.setVisible(false);
+		}
+	}
 
 	private void llenarTablaSucursales(int idCliente) {
 		this.ventanaSucursales.getModelSucursales().setRowCount(0); // Para
@@ -141,37 +137,170 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == this.ventanaClientes.getBtnAgregar()) {
 
-			agregarListenersVentanaAgregarCliente();
+		// =================== BOTÓN EDITAR (CORREGIDO) ===================
+		if (e.getSource() == this.ventanaClientes.getBtnEditar()) {
+			int filaSeleccionada = this.ventanaClientes.getTablaClientes().getSelectedRow();
 
+			if (filaSeleccionada != -1) {
+				// Obtener cliente de la fila seleccionada
+				int modelIndex = this.ventanaClientes.getTablaClientes().convertRowIndexToModel(filaSeleccionada);
+				if (modelIndex < Clientes_en_tabla.size()) {
+					clienteElegido = Clientes_en_tabla.get(modelIndex);
+
+					// Configurar modo edición
+					editando = true;
+
+					// Cargar datos en los campos correctamente
+					this.ventanaClientes.getTxtNombreCliente()
+							.setText(clienteElegido.getRazon_Social() != null ? clienteElegido.getRazon_Social() : "");
+					this.ventanaClientes.getTxtCUIT()
+							.setText(clienteElegido.getCUIT() != null ? clienteElegido.getCUIT() : "");
+					this.ventanaClientes.getTxtDireccion()
+							.setText(clienteElegido.getDomicilio() != null ? clienteElegido.getDomicilio() : "");
+					this.ventanaClientes.getTxtTelEmpresa().setText(
+							clienteElegido.getTelefonoEmpresa() != null ? clienteElegido.getTelefonoEmpresa() : "");
+					this.ventanaClientes.getTxtContacto()
+							.setText(clienteElegido.getContacto() != null ? clienteElegido.getContacto() : "");
+					this.ventanaClientes.getTxtTelContacto().setText(
+							clienteElegido.getTelefonoContacto() != null ? clienteElegido.getTelefonoContacto() : "");
+					// CORREGIDO: usar getCorreoElectronico() en lugar de getTelefonoContacto()
+					this.ventanaClientes.getTxtCorreo().setText(
+							clienteElegido.getCorreoElectronico() != null ? clienteElegido.getCorreoElectronico() : "");
+
+					// Configurar interfaz
+					ventanaClientes.getBtnGuardar().setVisible(true);
+					ventanaClientes.getBtnCancelar().setVisible(true);
+					ventanaClientes.getBtnAgregar().setEnabled(false);
+					ventanaClientes.getBtnBorrar().setEnabled(false);
+					ventanaClientes.getBtnEditar().setEnabled(false);
+					ventanaClientes.getBtnGenerarSucursales().setEnabled(false);
+					ventanaClientes.getTablaClientes().setEnabled(false);
+
+					habilitarCampos(ventanaClientes);
+					tablaFiltros.deshabilitarAutofiltro(this.ventanaClientes.getTablaClientes());
+
+					System.out.println("MODO EDICIÓN ACTIVADO - Cliente: " + clienteElegido.getRazon_Social());
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "Seleccione un cliente para editar", "Advertencia",
+						JOptionPane.WARNING_MESSAGE);
+			}
 		}
 
-		else if (e.getSource() == this.ventanaClientes.getBtnEditar()) {
+		// =================== BOTÓN AGREGAR ===================
+		else if (e.getSource() == this.ventanaClientes.getBtnAgregar()) {
+			// Limpiar campos y preparar para nuevo cliente
+			limpiarCampos();
+			clienteElegido = null;
+			editando = false; // Modo agregar, no editar
 
-			int fila = this.ventanaClientes.getTablaClientes().getSelectedRow();
-			if (fila != -1 && clienteElegido != null) {
+			// Mostrar botones de guardar y cancelar
+			ventanaClientes.getBtnGuardar().setVisible(true);
+			ventanaClientes.getBtnCancelar().setVisible(true);
 
-				this.ventanaEditarCliente = new VentanaAgregarCliente(this);
+			// Deshabilitar otros botones
+			ventanaClientes.getBtnAgregar().setEnabled(false);
+			ventanaClientes.getBtnBorrar().setEnabled(false);
+			ventanaClientes.getBtnEditar().setEnabled(false);
+			ventanaClientes.getBtnGenerarSucursales().setEnabled(false);
+			ventanaClientes.getTablaClientes().setEnabled(false);
 
-				this.ventanaEditarCliente.getTxtNombre().setText(clienteElegido.getRazon_Social());
-				this.ventanaEditarCliente.getTxtCUIT().setText(clienteElegido.getCUIT());
-				this.ventanaEditarCliente.getTxtDireccion().setText(clienteElegido.getDomicilio());
-				this.ventanaEditarCliente.getTxtContacto().setText(clienteElegido.getContacto());
-				this.ventanaEditarCliente.getTxtTelefonoContacto().setText(clienteElegido.getTelefonoContacto());
-				this.ventanaEditarCliente.getTxtTelefonoEmpresa().setText(clienteElegido.getTelefonoEmpresa());
-				this.ventanaEditarCliente.getTxtEmail().setText(clienteElegido.getCorreoElectronico());
+			// Habilitar campos para edición
+			habilitarCampos(ventanaClientes);
+			tablaFiltros.deshabilitarAutofiltro(this.ventanaClientes.getTablaClientes());
 
-				this.ventanaEditarCliente.getBtnAgregarCliente().addActionListener(this);
-				this.ventanaEditarCliente.getBtnCancelar().addActionListener(this);
+			System.out.println("MODO AGREGAR ACTIVADO");
+		}
 
-				performActionOnTextComponents(ventanaEditarCliente);
+		// =================== BOTÓN GUARDAR (CORREGIDO) ===================
+		else if (e.getSource() == this.ventanaClientes.getBtnGuardar()) {
+			String nombreTexto = this.ventanaClientes.getTxtNombreCliente().getText();
 
-			} else {
-				JOptionPane.showMessageDialog(null, "No hay ningun Cliente seleccionado", "Error al modificar Cliente",
-						JOptionPane.ERROR_MESSAGE);
+			if (!editando && clienteElegido == null) {
+				// *** MODO AGREGAR CLIENTE ***
+				// Validación mejorada
+				if (nombreTexto == null || nombreTexto.trim().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "El campo Nombre no puede estar vacío",
+							"Error al guardar Cliente", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				String emailTexto = this.ventanaClientes.getTxtCorreo().getText();
+				ClienteDTO nuevoCliente = null;
+				SucursalDTO sucursalDefault = null;
+
+				// Validar email si no está vacío
+				if (emailTexto != null && !emailTexto.trim().isEmpty()) {
+					if (!validacionMail(emailTexto.trim())) {
+						JOptionPane.showMessageDialog(null, "Escriba un email correcto",
+								"Error al registrar una dirección de email", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+
+				// Crear nuevo cliente
+				nuevoCliente = new ClienteDTO(dameIDcliente(), nombreTexto.trim(),
+						this.ventanaClientes.getTxtCUIT().getText().trim(),
+						this.ventanaClientes.getTxtDireccion().getText().trim(),
+						this.ventanaClientes.getTxtTelEmpresa().getText().trim(),
+						this.ventanaClientes.getTxtContacto().getText().trim(),
+						this.ventanaClientes.getTxtTelContacto().getText().trim(),
+						emailTexto != null ? emailTexto.trim() : "");
+
+				sucursalDefault = SucursalDefault(nuevoCliente.getId());
+
+				this.agenda.agregarClientes(nuevoCliente);
+				this.agenda.agregarSucursal(sucursalDefault);
+
+				// Finalizar operación
+				finalizarOperacion();
+
+			} else if (editando && clienteElegido != null) {
+				// *** MODO EDITAR CLIENTE ***
+				// Validación robusta para edición
+				if (nombreTexto == null || nombreTexto.trim().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "El campo Nombre no puede estar vacío",
+							"Error al guardar Cliente", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				if (clienteElegido == null) {
+					JOptionPane.showMessageDialog(null, "Error: No se ha seleccionado un cliente válido",
+							"Error al editar Cliente", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				String emailTexto = this.ventanaClientes.getTxtCorreo().getText();
+
+				// Validar email si no está vacío
+				if (emailTexto != null && !emailTexto.trim().isEmpty()) {
+					if (!validacionMail(emailTexto.trim())) {
+						JOptionPane.showMessageDialog(null, "Escriba un email correcto",
+								"Error al registrar una dirección de email", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+
+				// Crear cliente editado
+				ClienteDTO clienteEditado = new ClienteDTO(clienteElegido.getId(), nombreTexto.trim(),
+						this.ventanaClientes.getTxtCUIT().getText().trim(),
+						this.ventanaClientes.getTxtDireccion().getText().trim(),
+						this.ventanaClientes.getTxtTelEmpresa().getText().trim(),
+						this.ventanaClientes.getTxtContacto().getText().trim(),
+						this.ventanaClientes.getTxtTelContacto().getText().trim(),
+						emailTexto != null ? emailTexto.trim() : "");
+
+				this.agenda.editarClientes(clienteEditado);
+
+				// Finalizar edición
+				finalizarOperacion();
 			}
+		}
 
+		// =================== BOTÓN CANCELAR ===================
+		else if (e.getSource() == this.ventanaClientes.getBtnCancelar()) {
+			finalizarOperacion();
 		}
 
 		else if (e.getSource() == this.ventanaClientes.getBtnBorrar()) {
@@ -280,115 +409,114 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 			this.llenarTablaSucursales(clienteElegido.getId());
 
-			tablaFiltros.agregarAutofiltros(this.ventanaSucursales.getTablaSucursales());
+			// tablaFiltros.agregarAutofiltros(this.ventanaSucursales.getTablaSucursales());
 
 		}
 
-		if (ventanaAgregarClientes != null) {
-
-			if (e.getSource() == this.ventanaAgregarClientes.getBtnAgregarCliente()) {
-
-				ClienteDTO nuevoCliente = null;
-				SucursalDTO sucursalDefault = null;
-
-				if (!ventanaAgregarClientes.getTxtEmail().getText().isEmpty()) {
-
-					if (!validacionMail(ventanaAgregarClientes.getTxtEmail().getText())) {
-
-						JOptionPane.showMessageDialog(null, "Escriba un email correcto",
-								"Error al registrar una direccion de email", JOptionPane.ERROR_MESSAGE);
-					} else {
-
-						nuevoCliente = TomarDatosCliente();
-						sucursalDefault = SucursalDefault(nuevoCliente.getId());
-
-						this.agenda.agregarClientes(nuevoCliente);
-						this.agenda.agregarSucursal(sucursalDefault);
-
-						this.ventanaAgregarClientes.dispose();
-						ventanaAgregarClientes = null;
-						
-						
-						llenarTabla();
-
-					}
-
-				} else {
-
-					nuevoCliente = TomarDatosCliente();
-					sucursalDefault = SucursalDefault(nuevoCliente.getId());
-
-					this.agenda.agregarClientes(nuevoCliente);
-					this.agenda.agregarSucursal(sucursalDefault);
-
-					this.ventanaAgregarClientes.dispose();
-					ventanaAgregarClientes = null;
-					llenarTabla();
-
-				}
-
-			} else if (e.getSource() == this.ventanaAgregarClientes.getBtnCancelar()) {
-
-				this.ventanaAgregarClientes.dispose();
-				ventanaAgregarClientes = null;
-
-			}
-		}
-
-		if (ventanaEditarCliente != null) {
-			if (e.getSource() == this.ventanaEditarCliente.getBtnAgregarCliente()) {
-
-				if (!ventanaEditarCliente.getTxtEmail().getText().isEmpty()) {
-
-					if (!validacionMail(ventanaEditarCliente.getTxtEmail().getText())) {
-
-						JOptionPane.showMessageDialog(null, "Escriba un email correcto",
-								"Error al registrar una direccion de email", JOptionPane.ERROR_MESSAGE);
-					}
-
-					else {
-
-						ClienteDTO clienteElegidoeditado = new ClienteDTO(clienteElegido.getId(),
-								ventanaEditarCliente.getTxtNombre().getText(),
-								ventanaEditarCliente.getTxtCUIT().getText(),
-								ventanaEditarCliente.getTxtDireccion().getText(),
-								ventanaEditarCliente.getTxtTelefonoEmpresa().getText(),
-								ventanaEditarCliente.getTxtContacto().getText(),
-								ventanaEditarCliente.getTxtTelefonoContacto().getText(),
-								ventanaEditarCliente.getTxtEmail().getText());
-						this.agenda.editarClientes(clienteElegidoeditado);
-
-						this.ventanaEditarCliente.dispose();
-						ventanaEditarCliente = null;
-						llenarTabla();
-					}
-
-				} else {
-
-					ClienteDTO clienteElegidoeditado = new ClienteDTO(clienteElegido.getId(),
-							ventanaEditarCliente.getTxtNombre().getText(), ventanaEditarCliente.getTxtCUIT().getText(),
-							ventanaEditarCliente.getTxtDireccion().getText(),
-							ventanaEditarCliente.getTxtTelefonoEmpresa().getText(),
-							ventanaEditarCliente.getTxtContacto().getText(),
-							ventanaEditarCliente.getTxtTelefonoContacto().getText(),
-							ventanaEditarCliente.getTxtEmail().getText());
-					this.agenda.editarClientes(clienteElegidoeditado);
-
-					this.ventanaEditarCliente.dispose();
-					ventanaEditarCliente = null;
-					llenarTabla();
-
-				}
-			}
-
-			else if (e.getSource() == this.ventanaEditarCliente.getBtnCancelar()) {
-
-				this.ventanaEditarCliente.dispose();
-				ventanaEditarCliente = null;
-
-			}
-
-		}
+//		if (ventanaAgregarClientes != null) {
+//
+//			if (e.getSource() == this.ventanaAgregarClientes.getBtnAgregarCliente()) {
+//
+//				ClienteDTO nuevoCliente = null;
+//				SucursalDTO sucursalDefault = null;
+//
+//				if (!ventanaAgregarClientes.getTxtEmail().getText().isEmpty()) {
+//
+//					if (!validacionMail(ventanaAgregarClientes.getTxtEmail().getText())) {
+//
+//						JOptionPane.showMessageDialog(null, "Escriba un email correcto",
+//								"Error al registrar una direccion de email", JOptionPane.ERROR_MESSAGE);
+//					} else {
+//
+//						nuevoCliente = TomarDatosCliente();
+//						sucursalDefault = SucursalDefault(nuevoCliente.getId());
+//
+//						this.agenda.agregarClientes(nuevoCliente);
+//						this.agenda.agregarSucursal(sucursalDefault);
+//
+//						this.ventanaAgregarClientes.dispose();
+//						ventanaAgregarClientes = null;
+//
+//						llenarTabla();
+//
+//					}
+//
+//				} else {
+//
+//					nuevoCliente = TomarDatosCliente();
+//					sucursalDefault = SucursalDefault(nuevoCliente.getId());
+//
+//					this.agenda.agregarClientes(nuevoCliente);
+//					this.agenda.agregarSucursal(sucursalDefault);
+//
+//					this.ventanaAgregarClientes.dispose();
+//					ventanaAgregarClientes = null;
+//					llenarTabla();
+//
+//				}
+//
+//			} else if (e.getSource() == this.ventanaAgregarClientes.getBtnCancelar()) {
+//
+//				this.ventanaAgregarClientes.dispose();
+//				ventanaAgregarClientes = null;
+//
+//			}
+//		}
+//
+//		if (ventanaEditarCliente != null) {
+//			if (e.getSource() == this.ventanaEditarCliente.getBtnAgregarCliente()) {
+//
+//				if (!ventanaEditarCliente.getTxtEmail().getText().isEmpty()) {
+//
+//					if (!validacionMail(ventanaEditarCliente.getTxtEmail().getText())) {
+//
+//						JOptionPane.showMessageDialog(null, "Escriba un email correcto",
+//								"Error al registrar una direccion de email", JOptionPane.ERROR_MESSAGE);
+//					}
+//
+//					else {
+//
+//						ClienteDTO clienteElegidoeditado = new ClienteDTO(clienteElegido.getId(),
+//								ventanaEditarCliente.getTxtNombre().getText(),
+//								ventanaEditarCliente.getTxtCUIT().getText(),
+//								ventanaEditarCliente.getTxtDireccion().getText(),
+//								ventanaEditarCliente.getTxtTelefonoEmpresa().getText(),
+//								ventanaEditarCliente.getTxtContacto().getText(),
+//								ventanaEditarCliente.getTxtTelefonoContacto().getText(),
+//								ventanaEditarCliente.getTxtEmail().getText());
+//						this.agenda.editarClientes(clienteElegidoeditado);
+//
+//						this.ventanaEditarCliente.dispose();
+//						ventanaEditarCliente = null;
+//						llenarTabla();
+//					}
+//
+//				} else {
+//
+//					ClienteDTO clienteElegidoeditado = new ClienteDTO(clienteElegido.getId(),
+//							ventanaEditarCliente.getTxtNombre().getText(), ventanaEditarCliente.getTxtCUIT().getText(),
+//							ventanaEditarCliente.getTxtDireccion().getText(),
+//							ventanaEditarCliente.getTxtTelefonoEmpresa().getText(),
+//							ventanaEditarCliente.getTxtContacto().getText(),
+//							ventanaEditarCliente.getTxtTelefonoContacto().getText(),
+//							ventanaEditarCliente.getTxtEmail().getText());
+//					this.agenda.editarClientes(clienteElegidoeditado);
+//
+//					this.ventanaEditarCliente.dispose();
+//					ventanaEditarCliente = null;
+//					llenarTabla();
+//
+//				}
+//			}
+//
+//			else if (e.getSource() == this.ventanaEditarCliente.getBtnCancelar()) {
+//
+//				this.ventanaEditarCliente.dispose();
+//				ventanaEditarCliente = null;
+//
+//			}
+//
+//		}
 
 		if (ventanaAgregarSucursales != null) {
 			if (e.getSource() == this.ventanaAgregarSucursales.getBtnAgregarSucursal()) {
@@ -566,6 +694,61 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 	}
 
+	// MÉTODO AUXILIAR PARA EVITAR DUPLICACIÓN DE CÓDIGO
+	private void finalizarOperacion() {
+		limpiarCampos();
+		clienteElegido = null;
+		editando = false;
+
+		ventanaClientes.getBtnGuardar().setVisible(false);
+		ventanaClientes.getBtnCancelar().setVisible(false);
+		ventanaClientes.getBtnAgregar().setEnabled(true);
+		ventanaClientes.getBtnBorrar().setEnabled(true);
+		ventanaClientes.getBtnEditar().setEnabled(true);
+		ventanaClientes.getBtnGenerarSucursales().setEnabled(true);
+		ventanaClientes.getTablaClientes().setEnabled(true);
+
+		tablaFiltros.habilitarAutofiltro(this.ventanaClientes.getTablaClientes());
+		deshabilitarCampos(ventanaClientes);
+		llenarTabla();
+	}
+
+	public void habilitarCampos(VentanaClientes ventanaClientes) {
+
+		ventanaClientes.getTxtNombreCliente().setEditable(true);
+		ventanaClientes.getTxtCUIT().setEditable(true);
+		ventanaClientes.getTxtDireccion().setEditable(true);
+		ventanaClientes.getTxtContacto().setEditable(true);
+		ventanaClientes.getTxtTelContacto().setEditable(true);
+		ventanaClientes.getTxtCorreo().setEditable(true);
+		ventanaClientes.getTxtTelEmpresa().setEditable(true);
+
+	}
+
+	public void deshabilitarCampos(VentanaClientes ventanaClientes) {
+
+		ventanaClientes.getTxtNombreCliente().setEditable(false);
+		ventanaClientes.getTxtCUIT().setEditable(false);
+		ventanaClientes.getTxtDireccion().setEditable(false);
+		ventanaClientes.getTxtContacto().setEditable(false);
+		ventanaClientes.getTxtTelContacto().setEditable(false);
+		ventanaClientes.getTxtCorreo().setEditable(false);
+		ventanaClientes.getTxtTelEmpresa().setEditable(false);
+
+	}
+
+	private void limpiarCampos() {
+
+		this.ventanaClientes.getTxtNombreCliente().setText("");
+		this.ventanaClientes.getTxtCUIT().setText("");
+		this.ventanaClientes.getTxtDireccion().setText("");
+		this.ventanaClientes.getTxtContacto().setText("");
+		this.ventanaClientes.getTxtTelContacto().setText("");
+		this.ventanaClientes.getTxtCorreo().setText("");
+		this.ventanaClientes.getTxtTelEmpresa().setText("");
+
+	}
+
 	boolean validacionMail(String email) {
 
 		Pattern pattern = Pattern.compile(PATTERN_EMAIL);
@@ -672,10 +855,35 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		this.ventanaClientes.getBtnAgregar().addActionListener(this);
 		this.ventanaClientes.getBtnBorrar().addActionListener(this);
 		this.ventanaClientes.getBtnEditar().addActionListener(this);
+		this.ventanaClientes.getBtnGuardar().addActionListener(this);
+		this.ventanaClientes.getBtnCancelar().addActionListener(this);
 		this.ventanaClientes.getTablaClientes().addMouseListener(this);
 		this.ventanaClientes.getBtnGenerarSucursales().addActionListener(this);
 		this.ventanaClientes.getBtnVisualizarSucursales().addActionListener(this);
+		agregarListenerSeleccionTabla();
 
+	}
+
+	// Agrega este método en tu controlador
+	public void agregarListenerSeleccionTabla() {
+		ventanaClientes.getTablaClientes().getSelectionModel().addListSelectionListener(e -> {
+			if (!e.getValueIsAdjusting()) {
+				int i = ventanaClientes.getTablaClientes().getSelectedRow();
+				if (i != -1 && !Clientes_en_tabla.isEmpty()) {
+					int modelIndex = ventanaClientes.getTablaClientes().convertRowIndexToModel(i);
+					if (modelIndex < Clientes_en_tabla.size()) {
+						ClienteDTO cliente = Clientes_en_tabla.get(modelIndex);
+						ventanaClientes.getTxtNombreCliente().setText(cliente.getRazon_Social());
+						ventanaClientes.getTxtCUIT().setText(cliente.getCUIT());
+						ventanaClientes.getTxtDireccion().setText(cliente.getDomicilio());
+						ventanaClientes.getTxtContacto().setText(cliente.getContacto());
+						ventanaClientes.getTxtTelContacto().setText(cliente.getTelefonoContacto());
+						ventanaClientes.getTxtCorreo().setText(cliente.getCorreoElectronico());
+						ventanaClientes.getTxtTelEmpresa().setText(cliente.getTelefonoEmpresa());
+					}
+				}
+			}
+		});
 	}
 
 	@Override
@@ -750,8 +958,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		idcliente = agenda.dameIDcliente() + 1;
 		return idcliente;
 	}
-	
-	
+
 //	private int dameCuitPorID(int id) {
 //		
 //		int cuitCliente = agenda.dameCuitPorIdCliente(id);

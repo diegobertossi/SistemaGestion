@@ -43,10 +43,13 @@ public class VentanaClientes extends JFrame {
 	private JButton btnVisualizarSucursales;
 	private JButton btnGenerarSucursales;
 	private JButton btnEditar;
-	
+
+	private JButton btnCancelar;
+	private JButton btnGuardar;
+
 	private DefaultTableModel modelClientes;
 	private String[] nombreColumnas = { "Nombre", "CUIT" };
-	
+
 	@SuppressWarnings("unused")
 	private JPanel panel;
 	@SuppressWarnings("unused")
@@ -81,7 +84,7 @@ public class VentanaClientes extends JFrame {
 
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
-		
+
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 668, 542);
 		this.setLocationRelativeTo(null);
@@ -97,7 +100,7 @@ public class VentanaClientes extends JFrame {
 		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.setBounds(0, 0, 652, 530);
+		panel.setBounds(0, 0, 652, 503);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -111,7 +114,7 @@ public class VentanaClientes extends JFrame {
 		panel.add(spClientes);
 
 		modelClientes = new DefaultTableModel(null, nombreColumnas);
-		//tablaClientes = new JTable(modelClientes);
+		// tablaClientes = new JTable(modelClientes);
 
 		modelClientes = new DefaultTableModel(new Object[][] {}, new String[] { "NOMBRE", "CUIT"
 
@@ -139,7 +142,7 @@ public class VentanaClientes extends JFrame {
 
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-			//UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+			// UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -179,7 +182,7 @@ public class VentanaClientes extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		panel_2 = new JPanel();
 		panel_2.setBackground(new Color(119, 136, 153));
 		panel_2.setBounds(443, 74, 199, 184);
@@ -206,88 +209,88 @@ public class VentanaClientes extends JFrame {
 		panel_2.add(btnBorrar);
 		btnBorrar.setBackground(new Color(240, 240, 240));
 		btnBorrar.setFont(new Font("Cambria", Font.BOLD, 14));
-		
-				btnGenerarSucursales = new JButton("<html><center>GENERAR SUCURSAL</html>");
-				btnGenerarSucursales.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				btnGenerarSucursales.setBounds(14, 141, 171, 23);
-				panel_2.add(btnGenerarSucursales);
-				btnGenerarSucursales.setBackground(new Color(240, 240, 240));
-				btnGenerarSucursales.setFont(new Font("Cambria", Font.BOLD, 14));
+
+		btnGenerarSucursales = new JButton("<html><center>GENERAR SUCURSAL</html>");
+		btnGenerarSucursales.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnGenerarSucursales.setBounds(14, 141, 171, 23);
+		panel_2.add(btnGenerarSucursales);
+		btnGenerarSucursales.setBackground(new Color(240, 240, 240));
+		btnGenerarSucursales.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		panel_1 = new JPanel();
 		panel_1.setBackground(new Color(119, 136, 153));
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_1.setBounds(20, 286, 622, 216);
+		panel_1.setBounds(20, 276, 622, 216);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 
 		lblNombreCliente = new JLabel("NOMBRE");
 		lblNombreCliente.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(47, 79, 79)));
 		lblNombreCliente.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblNombreCliente.setBounds(6, 5, 84, 20);
+		lblNombreCliente.setBounds(6, 28, 84, 20);
 		panel_1.add(lblNombreCliente);
 
 		txtNombreCliente = new JTextField();
 		txtNombreCliente.setEditable(false);
 		txtNombreCliente.setBackground(new Color(240, 240, 240));
 		txtNombreCliente.setFont(new Font("Cambria", Font.BOLD, 12));
-		txtNombreCliente.setBounds(114, 6, 267, 20);
+		txtNombreCliente.setBounds(114, 28, 267, 20);
 		panel_1.add(txtNombreCliente);
 		txtNombreCliente.setColumns(10);
 
 		lblCUIT = new JLabel("CUIT : ");
 		lblCUIT.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(47, 79, 79)));
 		lblCUIT.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblCUIT.setBounds(6, 30, 84, 20);
+		lblCUIT.setBounds(6, 50, 84, 20);
 		panel_1.add(lblCUIT);
 
 		txtCUIT = new JTextField();
 		txtCUIT.setEditable(false);
 		txtCUIT.setBackground(new Color(240, 240, 240));
 		txtCUIT.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtCUIT.setBounds(114, 30, 267, 20);
+		txtCUIT.setBounds(114, 50, 267, 20);
 		panel_1.add(txtCUIT);
 		txtCUIT.setColumns(10);
 
 		lblDiereccion = new JLabel("DIRECCIÓN");
 		lblDiereccion.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(47, 79, 79)));
 		lblDiereccion.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblDiereccion.setBounds(6, 55, 84, 20);
+		lblDiereccion.setBounds(6, 72, 84, 20);
 		panel_1.add(lblDiereccion);
 
 		txtDireccion = new JTextField();
 		txtDireccion.setEditable(false);
 		txtDireccion.setBackground(new Color(240, 240, 240));
 		txtDireccion.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtDireccion.setBounds(114, 55, 267, 20);
+		txtDireccion.setBounds(114, 72, 267, 20);
 		panel_1.add(txtDireccion);
 		txtDireccion.setColumns(10);
 
 		lblContacto = new JLabel("CONTACTO");
 		lblContacto.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(47, 79, 79)));
 		lblContacto.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblContacto.setBounds(6, 80, 84, 20);
+		lblContacto.setBounds(6, 94, 84, 20);
 		panel_1.add(lblContacto);
 
 		txtContacto = new JTextField();
 		txtContacto.setEditable(false);
 		txtContacto.setBackground(new Color(240, 240, 240));
 		txtContacto.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtContacto.setBounds(114, 80, 267, 20);
+		txtContacto.setBounds(114, 94, 267, 20);
 		panel_1.add(txtContacto);
 		txtContacto.setColumns(10);
 
 		lblTelContacto = new JLabel("TEL. CONTACTO");
 		lblTelContacto.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(47, 79, 79)));
 		lblTelContacto.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblTelContacto.setBounds(6, 105, 98, 20);
+		lblTelContacto.setBounds(6, 116, 98, 20);
 		panel_1.add(lblTelContacto);
 
 		txtTelContacto = new JTextField();
 		txtTelContacto.setEditable(false);
 		txtTelContacto.setBackground(new Color(240, 240, 240));
 		txtTelContacto.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtTelContacto.setBounds(114, 105, 267, 20);
+		txtTelContacto.setBounds(114, 116, 267, 20);
 		panel_1.add(txtTelContacto);
 		txtTelContacto.setColumns(10);
 
@@ -301,7 +304,7 @@ public class VentanaClientes extends JFrame {
 		txtCorreo.setEditable(false);
 		txtCorreo.setBackground(new Color(240, 240, 240));
 		txtCorreo.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtCorreo.setBounds(114, 130, 267, 55);
+		txtCorreo.setBounds(114, 138, 267, 50);
 		panel_1.add(txtCorreo);
 		txtCorreo.setColumns(10);
 
@@ -318,24 +321,38 @@ public class VentanaClientes extends JFrame {
 		lblTelEmpresa.setFont(new Font("Cambria", Font.BOLD, 12));
 		lblTelEmpresa.setBounds(6, 190, 84, 20);
 		panel_1.add(lblTelEmpresa);
-		
-				lblSucursales = new JLabel("<html>ESTE CLIENTE POSEE SUCURSALES<html>");
-				lblSucursales.setBounds(421, 35, 203, 27);
-				panel_1.add(lblSucursales);
-				lblSucursales.setVisible(false);
-				lblSucursales.setFont(new Font("Cambria", Font.BOLD, 12));
-				
-						btnVisualizarSucursales = new JButton("<html><center>Visualizar Sucursales</html>");
-						btnVisualizarSucursales.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-						btnVisualizarSucursales.setBounds(473, 72, 98, 39);
-						panel_1.add(btnVisualizarSucursales);
-						btnVisualizarSucursales.setVisible(false);
-						btnVisualizarSucursales.setBackground(new Color(255, 255, 255));
-						btnVisualizarSucursales.setFont(new Font("Cambria", Font.BOLD, 14));
+
+		lblSucursales = new JLabel("<html>ESTE CLIENTE POSEE SUCURSALES<html>");
+		lblSucursales.setBounds(409, 60, 203, 27);
+		panel_1.add(lblSucursales);
+		lblSucursales.setVisible(false);
+		lblSucursales.setFont(new Font("Cambria", Font.BOLD, 12));
+
+		btnVisualizarSucursales = new JButton("<html><center>VISUALIZAR SUCURSALES</html>");
+		btnVisualizarSucursales.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnVisualizarSucursales.setBounds(450, 97, 108, 43);
+		panel_1.add(btnVisualizarSucursales);
+		btnVisualizarSucursales.setVisible(false);
+		btnVisualizarSucursales.setBackground(new Color(255, 255, 255));
+		btnVisualizarSucursales.setFont(new Font("Cambria", Font.BOLD, 14));
+
+		btnCancelar = new JButton("<html><center>CANCELAR</html>");
+		btnCancelar.setVisible(false);
+		btnCancelar.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnCancelar.setBackground(UIManager.getColor("Button.background"));
+		btnCancelar.setBounds(450, 155, 108, 43);
+		panel_1.add(btnCancelar);
+
+		btnGuardar = new JButton("<html><center>GUARDAR</html>");
+		btnGuardar.setVisible(false);
+		btnGuardar.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnGuardar.setBackground(UIManager.getColor("Button.background"));
+		btnGuardar.setBounds(450, 97, 108, 43);
+		panel_1.add(btnGuardar);
 
 		JLabel lblClientes = new JLabel("CLIENTES ");
 		lblClientes.setFont(new Font("Cambria", Font.BOLD, 22));
-		lblClientes.setBounds(20, 11, 117, 31);
+		lblClientes.setBounds(20, 18, 117, 31);
 		panel.add(lblClientes);
 
 		this.setVisible(true);
@@ -457,4 +474,19 @@ public class VentanaClientes extends JFrame {
 		return nombreColumnas;
 	}
 
+	public JButton getBtnCancelar() {
+		return btnCancelar;
+	}
+
+	public void setBtnCancelar(JButton btnCancelar) {
+		this.btnCancelar = btnCancelar;
+	}
+
+	public JButton getBtnGuardar() {
+		return btnGuardar;
+	}
+
+	public void setBtnGuardar(JButton btnGuardar) {
+		this.btnGuardar = btnGuardar;
+	}
 }
