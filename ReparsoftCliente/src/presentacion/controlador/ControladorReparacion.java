@@ -138,8 +138,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private ControladorPresupuestos controladorpresupuestos;
 	private VentanaGenerarPresupuesto ventanaGenerarPresupuesto;
 	private ControladorSalidas controladorSalidas;
-	private VentanaAgregarCliente ventanaAgregarCliente;
+	//private VentanaAgregarCliente ventanaAgregarCliente;
 
+	private VentanaClientes ventanaCliente;
 	private VentanaRemitos ventanaRemitos;
 
 	private ControladorCliente controladorCliente;
@@ -694,16 +695,30 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			controladorCliente.setLlamadoDesdeAgregarEquipo(true);
 
-			ventanaAgregarCliente = controladorCliente.agregarListenersVentanaAgregarCliente();
+			//ventanaAgregarCliente = controladorCliente.agregarListenersVentanaAgregarCliente();
 
-			ventanaAgregarCliente.addWindowListener(new WindowAdapter() {
+//			ventanaAgregarCliente.addWindowListener(new WindowAdapter() {
+//				@Override
+//				public void windowClosed(WindowEvent e) {
+//
+//					llenarComboCliente();
+//
+//				}
+//			});
+			
+			ventanaCliente = controladorCliente.agregarListenersVentanaCliente();
+
+			ventanaCliente.addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosed(WindowEvent e) {
 
 					llenarComboCliente();
+	
 
 				}
 			});
+			
+			
 
 		}
 

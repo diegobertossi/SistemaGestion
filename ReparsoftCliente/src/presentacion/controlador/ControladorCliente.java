@@ -105,19 +105,11 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 		tablaFiltros.agregarAutofiltros(this.ventanaClientes.getTablaClientes());
 
-		if (llamadoDesdeAgregarEquipo) {
-			ocultarVentanaClientes();
-			llamadoDesdeAgregarEquipo = false; // Resetea el flag
-		} else {
-			this.ventanaClientes.setVisible(true);
-		}
+//		if (llamadoDesdeAgregarEquipo) {
+//			
+//			llamadoDesdeAgregarEquipo = false; // Resetea el flag
+//		}
 
-	}
-
-	private void ocultarVentanaClientes() {
-		if (ventanaClientes != null) {
-			ventanaClientes.setVisible(false);
-		}
 	}
 
 	private void llenarTablaSucursales(int idCliente) {
@@ -307,7 +299,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 			int fila = this.ventanaClientes.getTablaClientes().getSelectedRow();
 
-			if (fila != -1) {
+			if (fila != -1 && clienteElegido != null) {
 
 				if (!ReparacionAsociadaACliente(clienteElegido.getId())) {
 
@@ -699,7 +691,19 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		limpiarCampos();
 		clienteElegido = null;
 		editando = false;
+		
+		if (llamadoDesdeAgregarEquipo) {
 
+			ventanaClientes.dispose();
+			ventanaClientes = null;	
+			
+			llamadoDesdeAgregarEquipo = false; // Resetea el flag
+			return;
+		}
+			
+			
+			
+			
 		ventanaClientes.getBtnGuardar().setVisible(false);
 		ventanaClientes.getBtnCancelar().setVisible(false);
 		ventanaClientes.getBtnAgregar().setEnabled(true);
@@ -850,7 +854,34 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 	}
 
-	public void agregarListenersVentanaCliente() {
+	public VentanaClientes agregarListenersVentanaCliente() {
+		
+		if(llamadoDesdeAgregarEquipo) {
+			
+			this.ventanaClientes = new VentanaClientes(this);
+
+			llenarTabla();
+			limpiarCampos();
+			clienteElegido = null;
+			editando = false; // Modo agregar, no editar
+//
+//			// Mostrar botones de guardar y cancelar
+			ventanaClientes.getBtnGuardar().setVisible(true);
+			ventanaClientes.getBtnCancelar().setVisible(true);
+//
+//			// Deshabilitar otros botones
+			ventanaClientes.getBtnAgregar().setEnabled(false);
+      		ventanaClientes.getBtnBorrar().setEnabled(false);
+			ventanaClientes.getBtnEditar().setEnabled(false);
+			ventanaClientes.getBtnGenerarSucursales().setEnabled(false);
+			ventanaClientes.getTablaClientes().setEnabled(false);
+
+			// Habilitar campos para edición
+			habilitarCampos(ventanaClientes);
+			tablaFiltros.deshabilitarAutofiltro(this.ventanaClientes.getTablaClientes());
+
+			System.out.println("MODO AGREGAR ACTIVADO");	
+		}
 
 		this.ventanaClientes.getBtnAgregar().addActionListener(this);
 		this.ventanaClientes.getBtnBorrar().addActionListener(this);
@@ -861,6 +892,8 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		this.ventanaClientes.getBtnGenerarSucursales().addActionListener(this);
 		this.ventanaClientes.getBtnVisualizarSucursales().addActionListener(this);
 		agregarListenerSeleccionTabla();
+		
+		return ventanaClientes;
 
 	}
 
