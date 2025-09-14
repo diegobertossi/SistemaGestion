@@ -80,8 +80,9 @@ public class VentanaClientes extends JFrame {
 	public VentanaClientes(ControladorCliente controladorCliente) {
 		super();
 		setResizable(false);
+		
 		this.controladorCliente = controladorCliente;
-
+		setTitle("Clientes");
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
 

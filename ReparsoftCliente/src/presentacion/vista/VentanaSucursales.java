@@ -23,6 +23,7 @@ import java.awt.Image;
 
 import javax.swing.border.EtchedBorder;
 import java.awt.Cursor;
+import javax.swing.UIManager;
 
 public class VentanaSucursales extends JFrame
 {
@@ -34,6 +35,10 @@ public class VentanaSucursales extends JFrame
 	private JButton btnAgregar;
 	private JButton btnBorrar;
 	private JButton btnEditar;
+	
+	private JButton btnGuardarSucursal;
+	private JButton btnCancelarSucursal;
+	
 	private DefaultTableModel modelSucursales;
 	private  String[] nombreColumnas = {"Nombre"};
 	@SuppressWarnings("unused")
@@ -61,13 +66,13 @@ public class VentanaSucursales extends JFrame
 	{
 		super();
 		setResizable(false);
-		this.setDefaultCloseOperation(VentanaSucursales.DO_NOTHING_ON_CLOSE);
-		this.controladorSucursal = controladorSucursal;
+        setTitle("Sucursales");
+        this.controladorSucursal = controladorSucursal;
 		
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
 		
-		setBounds(100, 100, 517, 483);
+		setBounds(100, 100, 565, 483);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setAutoscrolls(true);
@@ -81,7 +86,7 @@ public class VentanaSucursales extends JFrame
 		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.setBounds(0, 0, 500, 450);
+		panel.setBounds(0, 0, 549, 450);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -92,7 +97,7 @@ public class VentanaSucursales extends JFrame
 		
 		JScrollPane spSucursal = new JScrollPane();
 		spSucursal.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		spSucursal.setBounds(20, 75, 242, 170);
+		spSucursal.setBounds(20, 75, 307, 170);
 		panel.add(spSucursal);
 		
 		modelSucursales = new DefaultTableModel(null,nombreColumnas);
@@ -143,7 +148,7 @@ public class VentanaSucursales extends JFrame
 		
 		panel_2 = new JPanel();
 		panel_2.setBackground(new Color(119, 136, 153));
-		panel_2.setBounds(288, 75, 202, 170);
+		panel_2.setBounds(337, 75, 202, 170);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 		
@@ -171,7 +176,7 @@ public class VentanaSucursales extends JFrame
 		panel_1 = new JPanel();
 		panel_1.setBackground(new Color(119, 136, 153));
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_1.setBounds(20, 269, 470, 170);
+		panel_1.setBounds(20, 256, 519, 170);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -239,6 +244,20 @@ public class VentanaSucursales extends JFrame
 		txtCorreo.setBounds(100, 105, 281, 50);
 		panel_1.add(txtCorreo);
 		txtCorreo.setColumns(10);
+		
+		btnGuardarSucursal = new JButton("GUARDAR");
+		btnGuardarSucursal.setVisible(false);
+		btnGuardarSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnGuardarSucursal.setBackground(UIManager.getColor("Button.background"));
+		btnGuardarSucursal.setBounds(401, 103, 108, 23);
+		panel_1.add(btnGuardarSucursal);
+		
+		btnCancelarSucursal = new JButton("CANCELAR");
+		btnCancelarSucursal.setVisible(false);
+		btnCancelarSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnCancelarSucursal.setBackground(UIManager.getColor("Button.background"));
+		btnCancelarSucursal.setBounds(401, 132, 108, 23);
+		panel_1.add(btnCancelarSucursal);
 		
 		JLabel lblSucursales = new JLabel("SUCURSALES DE : ");
 		lblSucursales.setFont(new Font("Cambria", Font.BOLD, 22));
@@ -354,5 +373,25 @@ public class VentanaSucursales extends JFrame
 	public String[] getNombreColumnas() 
 	{
 		return nombreColumnas;
+	}
+
+
+	public JButton getBtnGuardarSucursal() {
+		return btnGuardarSucursal;
+	}
+
+
+	public void setBtnGuardarSucursal(JButton btnGuardarSucursal) {
+		this.btnGuardarSucursal = btnGuardarSucursal;
+	}
+
+
+	public JButton getBtnCancelarSucursal() {
+		return btnCancelarSucursal;
+	}
+
+
+	public void setBtnCancelarSucursal(JButton btnCancelarSucursal) {
+		this.btnCancelarSucursal = btnCancelarSucursal;
 	}
 }

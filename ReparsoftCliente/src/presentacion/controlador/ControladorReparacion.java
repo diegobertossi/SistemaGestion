@@ -695,17 +695,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			controladorCliente.setLlamadoDesdeAgregarEquipo(true);
 
-			//ventanaAgregarCliente = controladorCliente.agregarListenersVentanaAgregarCliente();
-
-//			ventanaAgregarCliente.addWindowListener(new WindowAdapter() {
-//				@Override
-//				public void windowClosed(WindowEvent e) {
-//
-//					llenarComboCliente();
-//
-//				}
-//			});
-			
 			ventanaCliente = controladorCliente.agregarListenersVentanaCliente();
 
 			ventanaCliente.addWindowListener(new WindowAdapter() {
