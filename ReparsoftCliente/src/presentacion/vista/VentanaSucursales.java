@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import presentacion.controlador.ControladorCliente;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -24,6 +25,7 @@ import java.awt.Image;
 import javax.swing.border.EtchedBorder;
 import java.awt.Cursor;
 import javax.swing.UIManager;
+import javax.swing.SwingConstants;
 
 public class VentanaSucursales extends JFrame
 {
@@ -59,6 +61,7 @@ public class VentanaSucursales extends JFrame
 	private JPanel panel_1;
 	private JTextField textCliente;
 	private JPanel panel_2;
+	private JButton btnAgregarCorreo;
 	
 
 	@SuppressWarnings({ "serial", "unused" })
@@ -72,7 +75,7 @@ public class VentanaSucursales extends JFrame
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
 		
-		setBounds(100, 100, 565, 483);
+		setBounds(100, 100, 560, 483);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setAutoscrolls(true);
@@ -86,7 +89,7 @@ public class VentanaSucursales extends JFrame
 		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.setBounds(0, 0, 549, 450);
+		panel.setBounds(0, 0, 554, 455);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -148,26 +151,26 @@ public class VentanaSucursales extends JFrame
 		
 		panel_2 = new JPanel();
 		panel_2.setBackground(new Color(119, 136, 153));
-		panel_2.setBounds(337, 75, 202, 170);
+		panel_2.setBounds(386, 75, 153, 170);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 		
 		btnAgregar = new JButton("AGREGAR");
-		btnAgregar.setBounds(52, 24, 108, 23);
+		btnAgregar.setBounds(22, 24, 108, 23);
 		panel_2.add(btnAgregar);
 		btnAgregar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAgregar.setBackground(new Color(240, 240, 240));
 		btnAgregar.setFont(new Font("Cambria", Font.BOLD, 14));
 		
 		btnEditar = new JButton("EDITAR");
-		btnEditar.setBounds(52, 71, 108, 23);
+		btnEditar.setBounds(22, 71, 108, 23);
 		panel_2.add(btnEditar);
 		btnEditar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEditar.setBackground(new Color(240, 240, 240));
 		btnEditar.setFont(new Font("Cambria", Font.BOLD, 14));
 		
 		btnBorrar = new JButton("ELIMINAR");
-		btnBorrar.setBounds(52, 117, 108, 23);
+		btnBorrar.setBounds(22, 117, 108, 23);
 		panel_2.add(btnBorrar);
 		btnBorrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnBorrar.setBackground(new Color(240, 240, 240));
@@ -189,7 +192,7 @@ public class VentanaSucursales extends JFrame
 		txtNombreSucursal.setEditable(false);
 		txtNombreSucursal.setBackground(new Color(255, 255, 255));
 		txtNombreSucursal.setFont(new Font("Cambria", Font.BOLD, 12));
-		txtNombreSucursal.setBounds(100, 17, 281, 20);
+		txtNombreSucursal.setBounds(88, 17, 281, 20);
 		panel_1.add(txtNombreSucursal);
 		txtNombreSucursal.setColumns(10);
 
@@ -202,7 +205,7 @@ public class VentanaSucursales extends JFrame
 		txtDireccion.setEditable(false);
 		txtDireccion.setBackground(new Color(255, 255, 255));
 		txtDireccion.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtDireccion.setBounds(100, 39, 281, 20);
+		txtDireccion.setBounds(88, 39, 281, 20);
 		panel_1.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		
@@ -215,7 +218,7 @@ public class VentanaSucursales extends JFrame
 		txtContacto.setEditable(false);
 		txtContacto.setBackground(new Color(255, 255, 255));
 		txtContacto.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtContacto.setBounds(100, 61, 281, 20);
+		txtContacto.setBounds(88, 61, 281, 20);
 		panel_1.add(txtContacto);
 		txtContacto.setColumns(10);
 		
@@ -228,7 +231,7 @@ public class VentanaSucursales extends JFrame
 		txtTelContacto.setEditable(false);
 		txtTelContacto.setBackground(new Color(255, 255, 255));
 		txtTelContacto.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtTelContacto.setBounds(100, 83, 281, 20);
+		txtTelContacto.setBounds(88, 83, 281, 20);
 		panel_1.add(txtTelContacto);
 		txtTelContacto.setColumns(10);
 		
@@ -241,7 +244,7 @@ public class VentanaSucursales extends JFrame
 		txtCorreo.setEditable(false);
 		txtCorreo.setBackground(new Color(255, 255, 255));
 		txtCorreo.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtCorreo.setBounds(100, 105, 281, 50);
+		txtCorreo.setBounds(88, 105, 281, 50);
 		panel_1.add(txtCorreo);
 		txtCorreo.setColumns(10);
 		
@@ -249,15 +252,24 @@ public class VentanaSucursales extends JFrame
 		btnGuardarSucursal.setVisible(false);
 		btnGuardarSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnGuardarSucursal.setBackground(UIManager.getColor("Button.background"));
-		btnGuardarSucursal.setBounds(401, 103, 108, 23);
+		btnGuardarSucursal.setBounds(388, 40, 108, 23);
 		panel_1.add(btnGuardarSucursal);
 		
 		btnCancelarSucursal = new JButton("CANCELAR");
 		btnCancelarSucursal.setVisible(false);
 		btnCancelarSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnCancelarSucursal.setBackground(UIManager.getColor("Button.background"));
-		btnCancelarSucursal.setBounds(401, 132, 108, 23);
+		btnCancelarSucursal.setBounds(388, 69, 108, 23);
 		panel_1.add(btnCancelarSucursal);
+		
+		btnAgregarCorreo = new JButton(" ");
+		btnAgregarCorreo.setEnabled(false);
+		btnAgregarCorreo.setHorizontalAlignment(SwingConstants.RIGHT);
+		btnAgregarCorreo.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnAgregarCorreo.setIcon(new ImageIcon(this.getClass().getResource("/Agregar.png")));
+		btnAgregarCorreo.setBackground(UIManager.getColor("Button.background"));
+		btnAgregarCorreo.setBounds(369, 112, 62, 36);
+		panel_1.add(btnAgregarCorreo);
 		
 		JLabel lblSucursales = new JLabel("SUCURSALES DE : ");
 		lblSucursales.setFont(new Font("Cambria", Font.BOLD, 22));
@@ -393,5 +405,15 @@ public class VentanaSucursales extends JFrame
 
 	public void setBtnCancelarSucursal(JButton btnCancelarSucursal) {
 		this.btnCancelarSucursal = btnCancelarSucursal;
+	}
+
+
+	public JButton getBtnAgregarCorreo() {
+		return btnAgregarCorreo;
+	}
+
+
+	public void setBtnAgregarCorreo(JButton btnAgregarCorreo) {
+		this.btnAgregarCorreo = btnAgregarCorreo;
 	}
 }

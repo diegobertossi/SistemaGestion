@@ -16,6 +16,7 @@ import presentacion.controlador.ControladorCliente;
 import java.util.Enumeration;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -31,6 +32,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.MatteBorder;
 import java.awt.Cursor;
+import javax.swing.SwingConstants;
 
 public class VentanaClientes extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -46,6 +48,7 @@ public class VentanaClientes extends JFrame {
 
 	private JButton btnCancelar;
 	private JButton btnGuardar;
+	private JButton btnAgregarCorreo;
 
 	private DefaultTableModel modelClientes;
 	private String[] nombreColumnas = { "Nombre", "CUIT" };
@@ -75,6 +78,7 @@ public class VentanaClientes extends JFrame {
 	@SuppressWarnings("unused")
 	private JTextField txtTelEmpr;
 	private JPanel panel_2;
+	private JButton btnAgregar_1;
 
 	@SuppressWarnings("unused")
 	public VentanaClientes(ControladorCliente controladorCliente) {
@@ -324,14 +328,14 @@ public class VentanaClientes extends JFrame {
 		panel_1.add(lblTelEmpresa);
 
 		lblSucursales = new JLabel("<html>ESTE CLIENTE POSEE SUCURSALES<html>");
-		lblSucursales.setBounds(409, 60, 203, 27);
+		lblSucursales.setBounds(409, 25, 203, 27);
 		panel_1.add(lblSucursales);
 		lblSucursales.setVisible(false);
 		lblSucursales.setFont(new Font("Cambria", Font.BOLD, 12));
 
 		btnVisualizarSucursales = new JButton("<html><center>VISUALIZAR SUCURSALES</html>");
 		btnVisualizarSucursales.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnVisualizarSucursales.setBounds(450, 97, 108, 43);
+		btnVisualizarSucursales.setBounds(447, 69, 108, 43);
 		panel_1.add(btnVisualizarSucursales);
 		btnVisualizarSucursales.setVisible(false);
 		btnVisualizarSucursales.setBackground(new Color(255, 255, 255));
@@ -341,15 +345,25 @@ public class VentanaClientes extends JFrame {
 		btnCancelar.setVisible(false);
 		btnCancelar.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnCancelar.setBackground(UIManager.getColor("Button.background"));
-		btnCancelar.setBounds(450, 155, 108, 43);
+		btnCancelar.setBounds(491, 167, 108, 43);
 		panel_1.add(btnCancelar);
 
 		btnGuardar = new JButton("<html><center>GUARDAR</html>");
 		btnGuardar.setVisible(false);
 		btnGuardar.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnGuardar.setBackground(UIManager.getColor("Button.background"));
-		btnGuardar.setBounds(450, 97, 108, 43);
+		btnGuardar.setBounds(491, 109, 108, 43);
 		panel_1.add(btnGuardar);
+		
+
+		btnAgregarCorreo = new JButton(" ");
+		btnAgregarCorreo.setEnabled(false);
+		btnAgregarCorreo.setHorizontalAlignment(SwingConstants.RIGHT);
+		btnAgregarCorreo.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnAgregarCorreo.setBackground(UIManager.getColor("Button.background"));
+		btnAgregarCorreo.setIcon(new ImageIcon(this.getClass().getResource("/Agregar.png")));
+		btnAgregarCorreo.setBounds(381, 145, 62, 36);
+		panel_1.add(btnAgregarCorreo);
 
 		JLabel lblClientes = new JLabel("CLIENTES ");
 		lblClientes.setFont(new Font("Cambria", Font.BOLD, 22));
@@ -489,5 +503,13 @@ public class VentanaClientes extends JFrame {
 
 	public void setBtnGuardar(JButton btnGuardar) {
 		this.btnGuardar = btnGuardar;
+	}
+
+	public JButton getBtnAgregarCorreo() {
+		return btnAgregarCorreo;
+	}
+
+	public void setBtnAgregarCorreo(JButton btnAgregarCorreo) {
+		this.btnAgregarCorreo = btnAgregarCorreo;
 	}
 }

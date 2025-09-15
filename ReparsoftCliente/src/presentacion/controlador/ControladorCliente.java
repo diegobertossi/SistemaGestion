@@ -386,6 +386,8 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		}
 
 		else if (e.getSource() == this.ventanaClientes.getBtnVisualizarSucursales()) {
+			
+			
 
 			this.ventanaSucursales = new VentanaSucursales(this);
 
@@ -398,6 +400,12 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 		}
 
+		else if (e.getSource() == this.ventanaClientes.getBtnAgregarCorreo()) {
+			
+			
+		}
+		
+		
 		if (ventanaAgregarSucursales != null) {
 			if (e.getSource() == this.ventanaAgregarSucursales.getBtnAgregarSucursal()) {
 
@@ -680,6 +688,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaSucursales2.getTxtContacto().setEditable(false);
 		ventanaSucursales2.getTxtCorreo().setEditable(false);
 		ventanaSucursales2.getTxtTelContacto().setEditable(false);
+		ventanaSucursales2.getBtnAgregarCorreo().setEnabled(false);
 	}
 
 	private void limpiarCamposSucursal() {
@@ -697,6 +706,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaSucursales.getTxtContacto().setEditable(true);
 		ventanaSucursales.getTxtCorreo().setEditable(true);
 		ventanaSucursales.getTxtTelContacto().setEditable(true);
+		ventanaSucursales.getBtnAgregarCorreo().setEnabled(true);
 
 	}
 
@@ -740,6 +750,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaClientes.getTxtTelContacto().setEditable(true);
 		ventanaClientes.getTxtCorreo().setEditable(true);
 		ventanaClientes.getTxtTelEmpresa().setEditable(true);
+		ventanaClientes.getBtnAgregarCorreo().setEnabled(true);
 
 	}
 
@@ -752,6 +763,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaClientes.getTxtTelContacto().setEditable(false);
 		ventanaClientes.getTxtCorreo().setEditable(false);
 		ventanaClientes.getTxtTelEmpresa().setEditable(false);
+		ventanaClientes.getBtnAgregarCorreo().setEnabled(false);
 
 	}
 
@@ -855,6 +867,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 //			// Mostrar botones de guardar y cancelar
 			ventanaClientes.getBtnGuardar().setVisible(true);
 			ventanaClientes.getBtnCancelar().setVisible(true);
+		
 //
 //			// Deshabilitar otros botones
 			ventanaClientes.getBtnAgregar().setEnabled(false);
@@ -878,6 +891,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		this.ventanaClientes.getTablaClientes().addMouseListener(this);
 		this.ventanaClientes.getBtnGenerarSucursales().addActionListener(this);
 		this.ventanaClientes.getBtnVisualizarSucursales().addActionListener(this);
+		this.ventanaClientes.getBtnAgregarCorreo().addActionListener(this);
 		agregarListenerSeleccionTabla();
 
 		return ventanaClientes;
@@ -939,6 +953,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		this.ventanaSucursales.getBtnEditar().addActionListener(this);
 		this.ventanaSucursales.getBtnAgregar().addActionListener(this);
 		this.ventanaSucursales.getBtnBorrar().addActionListener(this);
+		this.ventanaSucursales.getBtnAgregarCorreo().addActionListener(this);
 
 		this.ventanaSucursales.getBtnGuardarSucursal().addActionListener(this);
 		this.ventanaSucursales.getBtnCancelarSucursal().addActionListener(this);
