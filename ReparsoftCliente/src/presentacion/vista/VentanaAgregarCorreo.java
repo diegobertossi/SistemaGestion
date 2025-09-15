@@ -27,11 +27,11 @@ public class VentanaAgregarCorreo extends JFrame
 	private JButton btnAgregarCorreo;
 	private JButton btnCancelar;
 	
-	public VentanaAgregarCorreo(ControladorReparacion controlador) 
+	public VentanaAgregarCorreo() 
 	{
 		super();
 		setResizable(false);
-		this.controlador = controlador;
+		setTitle("Agregar Correo");
 		
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
@@ -85,38 +85,28 @@ public class VentanaAgregarCorreo extends JFrame
 		this.setVisible(true);
 	}
 
-
-	public JTextField getTxtReferencia() {
-		return txtCorreo;
-	}
-
-
-	public void setTxtReferencia(JTextField txtReferencia) {
-		this.txtCorreo = txtReferencia;
-	}
-
-
-	
-
-
-	public JButton getBtnAgregarRepuesto() {
+	public JButton getBtnAgregarCorreo() {
 		return btnAgregarCorreo;
 	}
 
-
-	public void setBtnAgregarRepuesto(JButton btnAgregarCliente) {
-		this.btnAgregarCorreo = btnAgregarCliente;
+	public void setBtnAgregarCorreo(JButton btnAgregarCorreo) {
+		this.btnAgregarCorreo = btnAgregarCorreo;
 	}
-
 
 	public JButton getBtnCancelar() {
 		return btnCancelar;
 	}
 
-
 	public void setBtnCancelar(JButton btnCancelar) {
 		this.btnCancelar = btnCancelar;
 	}
 
-	
-}	
+	public JTextField getTxtCorreo() {
+		return txtCorreo;
+	}
+
+	public void setTxtCorreo(JTextField txtCorreo) {
+		this.txtCorreo = txtCorreo;
+	}
+
+}

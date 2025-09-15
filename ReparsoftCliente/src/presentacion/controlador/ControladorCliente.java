@@ -43,6 +43,7 @@ import javax.swing.undo.UndoManager;
 import VistaPropias.TablaFiltros;
 import modelo.Agenda;
 import presentacion.vista.VentanaAgregarCliente;
+import presentacion.vista.VentanaAgregarCorreo;
 import presentacion.vista.VentanaAgregarSucursal;
 import presentacion.vista.VentanaClientes;
 import presentacion.vista.VentanaSucursales;
@@ -52,7 +53,7 @@ import dto.SucursalDTO;
 public class ControladorCliente implements ActionListener, MouseListener {
 	private VentanaClientes ventanaClientes;
 	private VentanaAgregarSucursal ventanaAgregarSucursales;
-	private VentanaAgregarSucursal ventanaEditarSucursales;
+	private VentanaAgregarCorreo ventanaAgregarCorreo;
 	private VentanaSucursales ventanaSucursales;
 	private List<ClienteDTO> Clientes_en_tabla;
 	private List<SucursalDTO> Sucursales_en_tabla;
@@ -402,53 +403,51 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 		else if (e.getSource() == this.ventanaClientes.getBtnAgregarCorreo()) {
 			
+			ventanaAgregarCorreo = new VentanaAgregarCorreo();
+			ventanaAgregarCorreo.getBtnAgregarCorreo().addActionListener(this);
+			ventanaAgregarCorreo.getBtnCancelar().addActionListener(this);
+			
+			
 			
 		}
 		
-		
-		if (ventanaAgregarSucursales != null) {
-			if (e.getSource() == this.ventanaAgregarSucursales.getBtnAgregarSucursal()) {
+		else if (e.getSource() == this.ventanaAgregarCorreo.getBtnAgregarCorreo()) {
 
-				SucursalDTO nuevaSucursal = tomarDatosSucursal(clienteElegido.getId());
+			String emailTexto = this.ventanaAgregarCorreo.getTxtCorreo().getText();
 
-				if (cantidadSucursalesXCliente(clienteElegido.getId()) == 1) {
+			if (emailTexto == null || emailTexto.trim().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "El campo Correo no puede estar vacío", "Error al agregar correo",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 
-					SucursalesEncliente = this.agenda.obtenerSucursalesxCliente(clienteElegido.getId()).get(0);
+			if (!validacionMail(emailTexto.trim())) {
+				JOptionPane.showMessageDialog(null, "Escriba un email correcto",
+						"Error al registrar una dirección de email", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 
-					if (SucursalesEncliente.getNombreSucursal().compareTo("") == 0) {
+			if (editando && clienteElegido != null) {
 
-						this.agenda.editarSucursal(nuevaSucursal);
-					} else {
+				this.ventanaClientes.getTxtCorreo().setText(emailTexto.trim());
 
-						this.agenda.agregarSucursal(nuevaSucursal);
-					}
+			} else {
 
-				} else {
-
-					this.agenda.agregarSucursal(nuevaSucursal);
-				}
-
-				this.ventanaAgregarSucursales.dispose();
-				ventanaAgregarSucursales = null;
-
-				if (ventanaSucursales != null) {
-
-					this.llenarTablaSucursales(clienteElegido.getId());
-
-				} else {
-
-					this.llenarTabla();
-				}
+				this.ventanaClientes.getTxtCorreo().setText(emailTexto.trim());
 
 			}
 
-			else if (e.getSource() == this.ventanaAgregarSucursales.getBtnCancelar()) {
+			ventanaAgregarCorreo.dispose();
+			ventanaAgregarCorreo = null;
 
-				this.ventanaAgregarSucursales.dispose();
-				ventanaAgregarSucursales = null;
-			}
 		}
 
+		else if (e.getSource() == this.ventanaAgregarCorreo.getBtnCancelar()) {
+
+			ventanaAgregarCorreo.dispose();
+			ventanaAgregarCorreo = null;
+
+		}
 		if (ventanaSucursales != null) {
 			if (e.getSource() == this.ventanaSucursales.getBtnEditar()) {
 
