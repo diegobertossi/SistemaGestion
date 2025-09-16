@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -56,7 +57,7 @@ public class VentanaSucursales extends JFrame
 	private JLabel lblContacto;
 	private JTextField txtTelContacto;
 	private JLabel lblTelContacto;
-	private JTextField txtCorreo;
+	private JTextArea txtCorreo;
 	private JLabel lblCorreo;
 	private JPanel panel_1;
 	private JTextField textCliente;
@@ -239,14 +240,27 @@ public class VentanaSucursales extends JFrame
 		lblCorreo.setFont(new Font("Cambria", Font.BOLD, 12));
 		lblCorreo.setBounds(6, 104, 84, 20);
 		panel_1.add(lblCorreo);
-				
-		txtCorreo = new JTextField();
+		
+		
+		txtCorreo = new JTextArea();
 		txtCorreo.setEditable(false);
-		txtCorreo.setBackground(new Color(255, 255, 255));
+		txtCorreo.setBackground(new Color(240, 240, 240));
 		txtCorreo.setFont(new Font("Cambria", Font.PLAIN, 12));
 		txtCorreo.setBounds(88, 105, 281, 50);
 		panel_1.add(txtCorreo);
 		txtCorreo.setColumns(10);
+		
+		JScrollPane scrollCorreo = new JScrollPane(txtCorreo);
+		scrollCorreo.setBounds(88, 105, 281, 50);
+		panel_1.add(scrollCorreo);
+				
+//		txtCorreo = new JTextArea();
+//		txtCorreo.setEditable(false);
+//		txtCorreo.setBackground(new Color(255, 255, 255));
+//		txtCorreo.setFont(new Font("Cambria", Font.PLAIN, 12));
+//		txtCorreo.setBounds(88, 105, 281, 50);
+//		panel_1.add(txtCorreo);
+//		txtCorreo.setColumns(10);
 		
 		btnGuardarSucursal = new JButton("GUARDAR");
 		btnGuardarSucursal.setVisible(false);
@@ -270,6 +284,11 @@ public class VentanaSucursales extends JFrame
 		btnAgregarCorreo.setBackground(UIManager.getColor("Button.background"));
 		btnAgregarCorreo.setBounds(369, 112, 62, 36);
 		panel_1.add(btnAgregarCorreo);
+		
+		
+		
+		
+		
 		
 		JLabel lblSucursales = new JLabel("SUCURSALES DE : ");
 		lblSucursales.setFont(new Font("Cambria", Font.BOLD, 22));
@@ -352,12 +371,12 @@ public class VentanaSucursales extends JFrame
 	}
 
 
-	public JTextField getTxtCorreo() {
+	public JTextArea getTxtCorreo() {
 		return txtCorreo;
 	}
 
 
-	public void setTxtCorreo(JTextField txtCorreo) {
+	public void setTxtCorreo(JTextArea txtCorreo) {
 		this.txtCorreo = txtCorreo;
 	}
 

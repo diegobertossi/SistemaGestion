@@ -155,8 +155,16 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					this.ventanaClientes.getTxtTelContacto().setText(
 							clienteElegido.getTelefonoContacto() != null ? clienteElegido.getTelefonoContacto() : "");
 					// CORREGIDO: usar getCorreoElectronico() en lugar de getTelefonoContacto()
-					this.ventanaClientes.getTxtCorreo().setText(
-							clienteElegido.getCorreoElectronico() != null ? clienteElegido.getCorreoElectronico() : "");
+					
+					String correosActuales = this.ventanaClientes.getTxtCorreo().getText();
+					if (correosActuales == null || correosActuales.trim().isEmpty()) {
+						this.ventanaClientes.getTxtCorreo().setText(clienteElegido.getCorreoElectronico().trim());
+					} else {
+						this.ventanaClientes.getTxtCorreo().setText(correosActuales + "\n" + clienteElegido.getCorreoElectronico().trim());
+					}	
+//					
+//					this.ventanaClientes.getTxtCorreo().setText(
+//							clienteElegido.getCorreoElectronico() != null ? clienteElegido.getCorreoElectronico() : "");
 
 					// Configurar interfaz
 					ventanaClientes.getBtnGuardar().setVisible(true);
@@ -221,7 +229,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					return;
 				}
 
-				//verificar si el cliente ya existe
+				// verificar si el cliente ya existe
 				for (ClienteDTO c : this.Clientes_en_tabla) {
 					if (c.getRazon_Social().equalsIgnoreCase(nombreTexto.trim())) {
 						JOptionPane.showMessageDialog(null, "El cliente ya existe", "Error al guardar Cliente",
@@ -232,8 +240,8 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				String textoCorreos = ventanaClientes.getTxtCorreo().getText();
 				String[] correos = textoCorreos.split("\\n");
 				String emailTexto = String.join(" ;", correos);
-				
-				//String emailTexto = this.ventanaClientes.getTxtCorreo().getText();
+
+				// String emailTexto = this.ventanaClientes.getTxtCorreo().getText();
 				ClienteDTO nuevoCliente = null;
 				SucursalDTO sucursalDefault = null;
 
@@ -281,17 +289,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				String textoCorreos = ventanaClientes.getTxtCorreo().getText();
 				String[] correos = textoCorreos.split("\\n");
 				String emailTexto = String.join(" ;", correos);
-				
-				//String emailTexto = this.ventanaClientes.getTxtCorreo().getText();
-
-				// Validar email si no está vacío
-//				if (emailTexto != null && !emailTexto.trim().isEmpty()) {
-//					if (!validacionMail(emailTexto.trim())) {
-//						JOptionPane.showMessageDialog(null, "Escriba un email correcto",
-//								"Error al registrar una dirección de email", JOptionPane.ERROR_MESSAGE);
-//						return;
-//					}
-//				}
 
 				// Crear cliente editado
 				ClienteDTO clienteEditado = new ClienteDTO(clienteElegido.getId(), nombreTexto.trim(),
@@ -437,15 +434,27 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					return;
 				}
 
-				// Obtener el texto actual y agregar el nuevo correo debajo
-				String correosActuales = this.ventanaClientes.getTxtCorreo().getText();
-				if (correosActuales == null || correosActuales.trim().isEmpty()) {
-					this.ventanaClientes.getTxtCorreo().setText(emailTexto.trim());
-				} else {
-					this.ventanaClientes.getTxtCorreo().setText(correosActuales + "\n" + emailTexto.trim());
+				if (ventanaClientes != null) {
+
+					// Obtener el texto actual y agregar el nuevo correo debajo
+					String correosActuales = this.ventanaClientes.getTxtCorreo().getText();
+					if (correosActuales == null || correosActuales.trim().isEmpty()) {
+						this.ventanaClientes.getTxtCorreo().setText(emailTexto.trim());
+					} else {
+						this.ventanaClientes.getTxtCorreo().setText(correosActuales + "\n" + emailTexto.trim());
+					}
+				} else if (ventanaSucursales != null) {
+
+					// Obtener el texto actual y agregar el nuevo correo debajo
+					String correosActuales = this.ventanaSucursales.getTxtCorreo().getText();
+					if (correosActuales == null || correosActuales.trim().isEmpty()) {
+						this.ventanaSucursales.getTxtCorreo().setText(emailTexto.trim());
+					} else {
+						this.ventanaSucursales.getTxtCorreo().setText(correosActuales + "\n" + emailTexto.trim());
+					}
+
 				}
-				
-				
+
 				ventanaAgregarCorreo.dispose();
 				ventanaAgregarCorreo = null;
 			}
@@ -457,6 +466,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 			}
 		}
+
 		if (ventanaSucursales != null) {
 			if (e.getSource() == this.ventanaSucursales.getBtnEditar()) {
 
@@ -537,6 +547,14 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				// Habilitar campos para edición
 				habilitarCamposSucursales(ventanaSucursales);
 				System.out.println("MODO AGREGAR ACTIVADO");
+
+			}
+
+			else if (e.getSource() == this.ventanaSucursales.getBtnAgregarCorreo()) {
+
+				ventanaAgregarCorreo = new VentanaAgregarCorreo();
+				ventanaAgregarCorreo.getBtnAgregarCorreo().addActionListener(this);
+				ventanaAgregarCorreo.getBtnCancelar().addActionListener(this);
 
 			}
 
@@ -751,7 +769,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaClientes.getTxtDireccion().setEditable(true);
 		ventanaClientes.getTxtContacto().setEditable(true);
 		ventanaClientes.getTxtTelContacto().setEditable(true);
-		//ventanaClientes.getTxtCorreo().setEditable(true);
+		// ventanaClientes.getTxtCorreo().setEditable(true);
 		ventanaClientes.getTxtTelEmpresa().setEditable(true);
 		ventanaClientes.getBtnAgregarCorreo().setEnabled(true);
 
@@ -764,7 +782,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaClientes.getTxtDireccion().setEditable(false);
 		ventanaClientes.getTxtContacto().setEditable(false);
 		ventanaClientes.getTxtTelContacto().setEditable(false);
-		//ventanaClientes.getTxtCorreo().setEditable(false);
+		// ventanaClientes.getTxtCorreo().setEditable(false);
 		ventanaClientes.getTxtTelEmpresa().setEditable(false);
 		ventanaClientes.getBtnAgregarCorreo().setEnabled(false);
 
@@ -978,14 +996,14 @@ public class ControladorCliente implements ActionListener, MouseListener {
 						ventanaClientes.getTxtDireccion().setText(cliente.getDomicilio());
 						ventanaClientes.getTxtContacto().setText(cliente.getContacto());
 						ventanaClientes.getTxtTelContacto().setText(cliente.getTelefonoContacto());
-						
+
 						// Convierte el string separado por " ;" a formato lista
 						String correos = cliente.getCorreoElectronico();
 						if (correos != null && !correos.trim().isEmpty()) {
-						    correos = correos.replaceAll("\\s*;\\s*", "\n");
+							correos = correos.replaceAll("\\s*;\\s*", "\n");
 						}
 						ventanaClientes.getTxtCorreo().setText(correos != null ? correos : "");
-						
+
 						ventanaClientes.getTxtTelEmpresa().setText(cliente.getTelefonoEmpresa());
 					}
 				}
@@ -1005,7 +1023,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 						ventanaSucursales.getTxtDireccion().setText(sucursal.getDomicilioSucursal());
 						ventanaSucursales.getTxtContacto().setText(sucursal.getContactoSucursal());
 						ventanaSucursales.getTxtTelContacto().setText(sucursal.getTelefonoSucursal());
-						
+
 						ventanaSucursales.getTxtCorreo().setText(sucursal.getCorreoElectronico());
 
 					}
@@ -1032,14 +1050,14 @@ public class ControladorCliente implements ActionListener, MouseListener {
 						this.ventanaClientes.getTxtDireccion().moveCaretPosition(0);
 						this.ventanaClientes.getTxtContacto().setText(clienteElegido.getContacto());
 						this.ventanaClientes.getTxtTelContacto().setText(clienteElegido.getTelefonoContacto());
-						
+
 						// Convierte el string separado por " ;" a formato lista
 						String correos = clienteElegido.getCorreoElectronico();
 						if (correos != null && !correos.trim().isEmpty()) {
-						    correos = correos.replaceAll("\\s*;\\s*", "\n");
+							correos = correos.replaceAll("\\s*;\\s*", "\n");
 						}
 						ventanaClientes.getTxtCorreo().setText(correos != null ? correos : "");
-						
+
 						this.ventanaClientes.getTxtTelEmpresa().setText(clienteElegido.getTelefonoEmpresa());
 						this.ventanaClientes.getTxtCorreo().moveCaretPosition(0);
 
