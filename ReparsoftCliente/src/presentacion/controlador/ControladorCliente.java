@@ -169,7 +169,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					ventanaClientes.getBtnVisualizarSucursales().setVisible(false);
 					ventanaClientes.getLblSucursales().setVisible(false);
 
-
 					habilitarCampos(ventanaClientes);
 					tablaFiltros.deshabilitarAutofiltro(this.ventanaClientes.getTablaClientes());
 
@@ -222,18 +221,30 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					return;
 				}
 
-				String emailTexto = this.ventanaClientes.getTxtCorreo().getText();
+				//verificar si el cliente ya existe
+				for (ClienteDTO c : this.Clientes_en_tabla) {
+					if (c.getRazon_Social().equalsIgnoreCase(nombreTexto.trim())) {
+						JOptionPane.showMessageDialog(null, "El cliente ya existe", "Error al guardar Cliente",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+				String textoCorreos = ventanaClientes.getTxtCorreo().getText();
+				String[] correos = textoCorreos.split("\\n");
+				String emailTexto = String.join(" ;", correos);
+				
+				//String emailTexto = this.ventanaClientes.getTxtCorreo().getText();
 				ClienteDTO nuevoCliente = null;
 				SucursalDTO sucursalDefault = null;
 
 				// Validar email si no está vacío
-				if (emailTexto != null && !emailTexto.trim().isEmpty()) {
-					if (!validacionMail(emailTexto.trim())) {
-						JOptionPane.showMessageDialog(null, "Escriba un email correcto",
-								"Error al registrar una dirección de email", JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-				}
+//				if (emailTexto != null && !emailTexto.trim().isEmpty()) {
+//					if (!validacionMail(emailTexto.trim())) {
+//						JOptionPane.showMessageDialog(null, "Escriba un email correcto",
+//								"Error al registrar una dirección de email", JOptionPane.ERROR_MESSAGE);
+//						return;
+//					}
+//				}
 
 				// Crear nuevo cliente
 				nuevoCliente = new ClienteDTO(dameIDcliente(), nombreTexto.trim(),
@@ -267,16 +278,20 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					return;
 				}
 
-				String emailTexto = this.ventanaClientes.getTxtCorreo().getText();
+				String textoCorreos = ventanaClientes.getTxtCorreo().getText();
+				String[] correos = textoCorreos.split("\\n");
+				String emailTexto = String.join(" ;", correos);
+				
+				//String emailTexto = this.ventanaClientes.getTxtCorreo().getText();
 
 				// Validar email si no está vacío
-				if (emailTexto != null && !emailTexto.trim().isEmpty()) {
-					if (!validacionMail(emailTexto.trim())) {
-						JOptionPane.showMessageDialog(null, "Escriba un email correcto",
-								"Error al registrar una dirección de email", JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-				}
+//				if (emailTexto != null && !emailTexto.trim().isEmpty()) {
+//					if (!validacionMail(emailTexto.trim())) {
+//						JOptionPane.showMessageDialog(null, "Escriba un email correcto",
+//								"Error al registrar una dirección de email", JOptionPane.ERROR_MESSAGE);
+//						return;
+//					}
+//				}
 
 				// Crear cliente editado
 				ClienteDTO clienteEditado = new ClienteDTO(clienteElegido.getId(), nombreTexto.trim(),
@@ -371,14 +386,10 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 			int fila = this.ventanaClientes.getTablaClientes().getSelectedRow();
 			if (fila != -1 && clienteElegido != null) {
-				
+
 				llamadoDesdeVentanaCliente = true;
 				ventanaSucursales = agregarListenersVentanaSucursales();
 
-				
-				
-				
-				
 			} else {
 				JOptionPane.showMessageDialog(null, "No hay ningun Cliente seleccionado", "Error al modificar Cliente",
 						JOptionPane.ERROR_MESSAGE);
@@ -387,8 +398,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		}
 
 		else if (e.getSource() == this.ventanaClientes.getBtnVisualizarSucursales()) {
-			
-			
 
 			this.ventanaSucursales = new VentanaSucursales(this);
 
@@ -402,51 +411,51 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		}
 
 		else if (e.getSource() == this.ventanaClientes.getBtnAgregarCorreo()) {
-			
+
 			ventanaAgregarCorreo = new VentanaAgregarCorreo();
 			ventanaAgregarCorreo.getBtnAgregarCorreo().addActionListener(this);
 			ventanaAgregarCorreo.getBtnCancelar().addActionListener(this);
-			
-			
-			
-		}
-		
-		else if (e.getSource() == this.ventanaAgregarCorreo.getBtnAgregarCorreo()) {
-
-			String emailTexto = this.ventanaAgregarCorreo.getTxtCorreo().getText();
-
-			if (emailTexto == null || emailTexto.trim().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "El campo Correo no puede estar vacío", "Error al agregar correo",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-			if (!validacionMail(emailTexto.trim())) {
-				JOptionPane.showMessageDialog(null, "Escriba un email correcto",
-						"Error al registrar una dirección de email", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-			if (editando && clienteElegido != null) {
-
-				this.ventanaClientes.getTxtCorreo().setText(emailTexto.trim());
-
-			} else {
-
-				this.ventanaClientes.getTxtCorreo().setText(emailTexto.trim());
-
-			}
-
-			ventanaAgregarCorreo.dispose();
-			ventanaAgregarCorreo = null;
 
 		}
 
-		else if (e.getSource() == this.ventanaAgregarCorreo.getBtnCancelar()) {
+		if (ventanaAgregarCorreo != null) {
+			// Manejo de eventos para ventanaAgregarCorreo
 
-			ventanaAgregarCorreo.dispose();
-			ventanaAgregarCorreo = null;
+			if (e.getSource() == this.ventanaAgregarCorreo.getBtnAgregarCorreo()) {
 
+				String emailTexto = this.ventanaAgregarCorreo.getTxtCorreo().getText();
+
+				if (emailTexto == null || emailTexto.trim().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "El campo Correo no puede estar vacío",
+							"Error al agregar correo", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				if (!validacionMail(emailTexto.trim())) {
+					JOptionPane.showMessageDialog(null, "Escriba un email correcto",
+							"Error al registrar una dirección de email", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				// Obtener el texto actual y agregar el nuevo correo debajo
+				String correosActuales = this.ventanaClientes.getTxtCorreo().getText();
+				if (correosActuales == null || correosActuales.trim().isEmpty()) {
+					this.ventanaClientes.getTxtCorreo().setText(emailTexto.trim());
+				} else {
+					this.ventanaClientes.getTxtCorreo().setText(correosActuales + "\n" + emailTexto.trim());
+				}
+				
+				
+				ventanaAgregarCorreo.dispose();
+				ventanaAgregarCorreo = null;
+			}
+
+			else if (e.getSource() == this.ventanaAgregarCorreo.getBtnCancelar()) {
+
+				ventanaAgregarCorreo.dispose();
+				ventanaAgregarCorreo = null;
+
+			}
 		}
 		if (ventanaSucursales != null) {
 			if (e.getSource() == this.ventanaSucursales.getBtnEditar()) {
@@ -528,7 +537,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				// Habilitar campos para edición
 				habilitarCamposSucursales(ventanaSucursales);
 				System.out.println("MODO AGREGAR ACTIVADO");
-				
+
 			}
 
 			else if (e.getSource() == this.ventanaSucursales.getBtnBorrar()) {
@@ -603,35 +612,30 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				finalizarOperacionSucursal();
 			}
 
-			
-			
-			
-			
 			else if (e.getSource() == this.ventanaSucursales.getBtnGuardarSucursal()) {
-				
+
 				if (!editandoSucursal && sucursalElegida == null) {
-                    // *** MODO AGREGAR SUCURSAL ***
-                    // Validación mejorada
-                    String nombreTexto = this.ventanaSucursales.getTxtNombreSucursal().getText();
-                    if (nombreTexto == null || nombreTexto.trim().isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "El campo Nombre no puede estar vacío",
-                                "Error al guardar Sucursal", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
+					// *** MODO AGREGAR SUCURSAL ***
+					// Validación mejorada
+					String nombreTexto = this.ventanaSucursales.getTxtNombreSucursal().getText();
+					if (nombreTexto == null || nombreTexto.trim().isEmpty()) {
+						JOptionPane.showMessageDialog(null, "El campo Nombre no puede estar vacío",
+								"Error al guardar Sucursal", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-                    SucursalDTO nuevaSucursal = new SucursalDTO(dameIDsucursal(), nombreTexto.trim(),
-                            clienteElegido.getId(),
-                            this.ventanaSucursales.getTxtDireccion().getText().trim(),
-                            this.ventanaSucursales.getTxtContacto().getText().trim(),
-                            this.ventanaSucursales.getTxtTelContacto().getText().trim(),
-                            this.ventanaSucursales.getTxtCorreo().getText().trim());
+					SucursalDTO nuevaSucursal = new SucursalDTO(dameIDsucursal(), nombreTexto.trim(),
+							clienteElegido.getId(), this.ventanaSucursales.getTxtDireccion().getText().trim(),
+							this.ventanaSucursales.getTxtContacto().getText().trim(),
+							this.ventanaSucursales.getTxtTelContacto().getText().trim(),
+							this.ventanaSucursales.getTxtCorreo().getText().trim());
 
-                    this.agenda.agregarSucursal(nuevaSucursal);
+					this.agenda.agregarSucursal(nuevaSucursal);
 
-                    finalizarOperacionSucursal();
+					finalizarOperacionSucursal();
 
-                } else if (editandoSucursal && sucursalElegida != null) {
-                    
+				} else if (editandoSucursal && sucursalElegida != null) {
+
 					// Validación robusta para edición
 					String nombreTexto = this.ventanaSucursales.getTxtNombreSucursal().getText();
 					if (nombreTexto == null || nombreTexto.trim().isEmpty()) {
@@ -656,7 +660,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					return;
 				}
 			}
-		} 
+		}
 
 	}
 
@@ -728,7 +732,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaClientes.getBtnCancelar().setVisible(false);
 		ventanaClientes.getBtnVisualizarSucursales().setVisible(false);
 		ventanaClientes.getLblSucursales().setVisible(false);
-		
+
 		ventanaClientes.getBtnAgregar().setEnabled(true);
 		ventanaClientes.getBtnBorrar().setEnabled(true);
 		ventanaClientes.getBtnEditar().setEnabled(true);
@@ -747,7 +751,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaClientes.getTxtDireccion().setEditable(true);
 		ventanaClientes.getTxtContacto().setEditable(true);
 		ventanaClientes.getTxtTelContacto().setEditable(true);
-		ventanaClientes.getTxtCorreo().setEditable(true);
+		//ventanaClientes.getTxtCorreo().setEditable(true);
 		ventanaClientes.getTxtTelEmpresa().setEditable(true);
 		ventanaClientes.getBtnAgregarCorreo().setEnabled(true);
 
@@ -760,7 +764,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaClientes.getTxtDireccion().setEditable(false);
 		ventanaClientes.getTxtContacto().setEditable(false);
 		ventanaClientes.getTxtTelContacto().setEditable(false);
-		ventanaClientes.getTxtCorreo().setEditable(false);
+		//ventanaClientes.getTxtCorreo().setEditable(false);
 		ventanaClientes.getTxtTelEmpresa().setEditable(false);
 		ventanaClientes.getBtnAgregarCorreo().setEnabled(false);
 
@@ -866,7 +870,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 //			// Mostrar botones de guardar y cancelar
 			ventanaClientes.getBtnGuardar().setVisible(true);
 			ventanaClientes.getBtnCancelar().setVisible(true);
-		
+
 //
 //			// Deshabilitar otros botones
 			ventanaClientes.getBtnAgregar().setEnabled(false);
@@ -900,15 +904,14 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	public VentanaSucursales agregarListenersVentanaSucursales() {
 
 		if (llamadoDesdeVentanaCliente) {
-		
+
 			this.ventanaSucursales = new VentanaSucursales(this);
 			ventanaSucursales.getTextCliente().setText(clienteElegido.getRazon_Social());
-			
-			llenarTablaSucursales(clienteElegido.getId());			
-	
+
+			llenarTablaSucursales(clienteElegido.getId());
+
 			limpiarCamposSucursal();
-					
-			
+
 			if (cantidadSucursalesXCliente(clienteElegido.getId()) == 1) {
 
 				SucursalesEncliente = this.agenda.obtenerSucursalesxCliente(clienteElegido.getId()).get(0);
@@ -928,27 +931,26 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				editandoSucursal = false; // Modo agregar, no editar
 				sucursalElegida = null;
 			}
-			
-	
+
 //
 //			// Mostrar botones de guardar y cancelar
 			ventanaSucursales.getBtnGuardarSucursal().setVisible(true);
 			ventanaSucursales.getBtnCancelarSucursal().setVisible(true);
-			
+
 //			// Deshabilitar otros botones
-				ventanaSucursales.getBtnAgregar().setEnabled(false);
-				ventanaSucursales.getBtnBorrar().setEnabled(false);
-				ventanaSucursales.getBtnEditar().setEnabled(false);
-				ventanaSucursales.getTablaSucursales().setEnabled(false);
-				
+			ventanaSucursales.getBtnAgregar().setEnabled(false);
+			ventanaSucursales.getBtnBorrar().setEnabled(false);
+			ventanaSucursales.getBtnEditar().setEnabled(false);
+			ventanaSucursales.getTablaSucursales().setEnabled(false);
+
 			// Habilitar campos para edición
-				habilitarCamposSucursales(ventanaSucursales);
-				//tablaFiltros.deshabilitarAutofiltro(this.ventanaSucursales.getTablaSucursales());
-				llamadoDesdeVentanaCliente = false; // Resetea el flag
-				
-		        System.out.println(editandoSucursal);
+			habilitarCamposSucursales(ventanaSucursales);
+			// tablaFiltros.deshabilitarAutofiltro(this.ventanaSucursales.getTablaSucursales());
+			llamadoDesdeVentanaCliente = false; // Resetea el flag
+
+			System.out.println(editandoSucursal);
 		}
-		
+
 		this.ventanaSucursales.getBtnEditar().addActionListener(this);
 		this.ventanaSucursales.getBtnAgregar().addActionListener(this);
 		this.ventanaSucursales.getBtnBorrar().addActionListener(this);
@@ -976,7 +978,14 @@ public class ControladorCliente implements ActionListener, MouseListener {
 						ventanaClientes.getTxtDireccion().setText(cliente.getDomicilio());
 						ventanaClientes.getTxtContacto().setText(cliente.getContacto());
 						ventanaClientes.getTxtTelContacto().setText(cliente.getTelefonoContacto());
-						ventanaClientes.getTxtCorreo().setText(cliente.getCorreoElectronico());
+						
+						// Convierte el string separado por " ;" a formato lista
+						String correos = cliente.getCorreoElectronico();
+						if (correos != null && !correos.trim().isEmpty()) {
+						    correos = correos.replaceAll("\\s*;\\s*", "\n");
+						}
+						ventanaClientes.getTxtCorreo().setText(correos != null ? correos : "");
+						
 						ventanaClientes.getTxtTelEmpresa().setText(cliente.getTelefonoEmpresa());
 					}
 				}
@@ -996,6 +1005,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 						ventanaSucursales.getTxtDireccion().setText(sucursal.getDomicilioSucursal());
 						ventanaSucursales.getTxtContacto().setText(sucursal.getContactoSucursal());
 						ventanaSucursales.getTxtTelContacto().setText(sucursal.getTelefonoSucursal());
+						
 						ventanaSucursales.getTxtCorreo().setText(sucursal.getCorreoElectronico());
 
 					}
@@ -1022,7 +1032,14 @@ public class ControladorCliente implements ActionListener, MouseListener {
 						this.ventanaClientes.getTxtDireccion().moveCaretPosition(0);
 						this.ventanaClientes.getTxtContacto().setText(clienteElegido.getContacto());
 						this.ventanaClientes.getTxtTelContacto().setText(clienteElegido.getTelefonoContacto());
-						this.ventanaClientes.getTxtCorreo().setText(clienteElegido.getCorreoElectronico());
+						
+						// Convierte el string separado por " ;" a formato lista
+						String correos = clienteElegido.getCorreoElectronico();
+						if (correos != null && !correos.trim().isEmpty()) {
+						    correos = correos.replaceAll("\\s*;\\s*", "\n");
+						}
+						ventanaClientes.getTxtCorreo().setText(correos != null ? correos : "");
+						
 						this.ventanaClientes.getTxtTelEmpresa().setText(clienteElegido.getTelefonoEmpresa());
 						this.ventanaClientes.getTxtCorreo().moveCaretPosition(0);
 

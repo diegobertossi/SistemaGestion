@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -71,7 +72,7 @@ public class VentanaClientes extends JFrame {
 	private JLabel lblTelEmpresa;
 	private JTextField txtTelContacto;
 	private JLabel lblTelContacto;
-	private JTextField txtCorreo;
+	private JTextArea txtCorreo;
 	private JLabel lblCorreo;
 	private JPanel panel_1;
 	private JLabel lblSucursales;
@@ -305,13 +306,17 @@ public class VentanaClientes extends JFrame {
 		lblCorreo.setBounds(6, 147, 84, 20);
 		panel_1.add(lblCorreo);
 
-		txtCorreo = new JTextField();
+		txtCorreo = new JTextArea();
 		txtCorreo.setEditable(false);
 		txtCorreo.setBackground(new Color(240, 240, 240));
 		txtCorreo.setFont(new Font("Cambria", Font.PLAIN, 12));
 		txtCorreo.setBounds(114, 138, 267, 50);
 		panel_1.add(txtCorreo);
 		txtCorreo.setColumns(10);
+		
+		JScrollPane scrollCorreo = new JScrollPane(txtCorreo);
+		scrollCorreo.setBounds(114, 138, 267, 50);
+		panel_1.add(scrollCorreo);
 
 		txtTelEmpresa = new JTextField();
 		txtTelEmpresa.setEditable(false);
@@ -461,11 +466,11 @@ public class VentanaClientes extends JFrame {
 		this.txtTelContacto = txtTelContacto;
 	}
 
-	public JTextField getTxtCorreo() {
+	public JTextArea getTxtCorreo() {
 		return txtCorreo;
 	}
 
-	public void setTxtCorreo(JTextField txtCorreo) {
+	public void setTxtCorreo(JTextArea txtCorreo) {
 		this.txtCorreo = txtCorreo;
 	}
 
