@@ -34,6 +34,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.MatteBorder;
 import java.awt.Cursor;
 import javax.swing.SwingConstants;
+import javax.swing.ScrollPaneConstants;
 
 public class VentanaClientes extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -50,6 +51,7 @@ public class VentanaClientes extends JFrame {
 	private JButton btnCancelar;
 	private JButton btnGuardar;
 	private JButton btnAgregarCorreo;
+	private JButton btnQuitarCorreo;
 
 	private DefaultTableModel modelClientes;
 	private String[] nombreColumnas = { "Nombre", "CUIT" };
@@ -92,7 +94,7 @@ public class VentanaClientes extends JFrame {
 		this.setIconImage(icon);
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 668, 542);
+		setBounds(100, 100, 668, 570);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setAutoscrolls(true);
@@ -106,7 +108,7 @@ public class VentanaClientes extends JFrame {
 		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.setBounds(0, 0, 652, 503);
+		panel.setBounds(0, 0, 652, 531);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -226,7 +228,7 @@ public class VentanaClientes extends JFrame {
 		panel_1 = new JPanel();
 		panel_1.setBackground(new Color(119, 136, 153));
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_1.setBounds(20, 276, 622, 216);
+		panel_1.setBounds(20, 276, 622, 244);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 
@@ -315,7 +317,8 @@ public class VentanaClientes extends JFrame {
 		txtCorreo.setColumns(10);
 		
 		JScrollPane scrollCorreo = new JScrollPane(txtCorreo);
-		scrollCorreo.setBounds(114, 138, 267, 50);
+		scrollCorreo.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollCorreo.setBounds(114, 138, 267, 70);
 		panel_1.add(scrollCorreo);
 
 		txtTelEmpresa = new JTextField();
@@ -323,13 +326,13 @@ public class VentanaClientes extends JFrame {
 		txtTelEmpresa.setFont(new Font("Cambria", Font.PLAIN, 12));
 		txtTelEmpresa.setColumns(10);
 		txtTelEmpresa.setBackground(new Color(240, 240, 240));
-		txtTelEmpresa.setBounds(114, 190, 267, 20);
+		txtTelEmpresa.setBounds(114, 210, 267, 20);
 		panel_1.add(txtTelEmpresa);
 
 		JLabel lblTelEmpresa = new JLabel("TEL. EMPRESA");
 		lblTelEmpresa.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(47, 79, 79)));
 		lblTelEmpresa.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblTelEmpresa.setBounds(6, 190, 84, 20);
+		lblTelEmpresa.setBounds(6, 210, 84, 20);
 		panel_1.add(lblTelEmpresa);
 
 		lblSucursales = new JLabel("<html>ESTE CLIENTE POSEE SUCURSALES<html>");
@@ -350,25 +353,34 @@ public class VentanaClientes extends JFrame {
 		btnCancelar.setVisible(false);
 		btnCancelar.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnCancelar.setBackground(UIManager.getColor("Button.background"));
-		btnCancelar.setBounds(491, 167, 108, 43);
+		btnCancelar.setBounds(491, 187, 108, 43);
 		panel_1.add(btnCancelar);
 
 		btnGuardar = new JButton("<html><center>GUARDAR</html>");
 		btnGuardar.setVisible(false);
 		btnGuardar.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnGuardar.setBackground(UIManager.getColor("Button.background"));
-		btnGuardar.setBounds(491, 109, 108, 43);
+		btnGuardar.setBounds(491, 129, 108, 43);
 		panel_1.add(btnGuardar);
 		
 
 		btnAgregarCorreo = new JButton(" ");
+		btnAgregarCorreo.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnAgregarCorreo.setEnabled(false);
-		btnAgregarCorreo.setHorizontalAlignment(SwingConstants.RIGHT);
 		btnAgregarCorreo.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnAgregarCorreo.setBackground(UIManager.getColor("Button.background"));
-		btnAgregarCorreo.setIcon(new ImageIcon(this.getClass().getResource("/Agregar.png")));
-		btnAgregarCorreo.setBounds(381, 145, 62, 36);
+		btnAgregarCorreo.setIcon(new ImageIcon(this.getClass().getResource("/mas.png")));
+		btnAgregarCorreo.setBounds(385, 145, 35, 23);
 		panel_1.add(btnAgregarCorreo);
+		
+		btnQuitarCorreo = new JButton(" ");
+		btnQuitarCorreo.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnQuitarCorreo.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnQuitarCorreo.setEnabled(false);
+		btnQuitarCorreo.setBackground(UIManager.getColor("Button.background"));
+		btnQuitarCorreo.setIcon(new ImageIcon(this.getClass().getResource("/menos.png")));
+		btnQuitarCorreo.setBounds(385, 179, 35, 23);
+		panel_1.add(btnQuitarCorreo);
 
 		JLabel lblClientes = new JLabel("CLIENTES ");
 		lblClientes.setFont(new Font("Cambria", Font.BOLD, 22));
@@ -516,5 +528,13 @@ public class VentanaClientes extends JFrame {
 
 	public void setBtnAgregarCorreo(JButton btnAgregarCorreo) {
 		this.btnAgregarCorreo = btnAgregarCorreo;
+	}
+
+	public JButton getBtnQuitarCorreo() {
+		return btnQuitarCorreo;
+	}
+
+	public void setBtnQuitarCorreo(JButton btnQuitarCorreo) {
+		this.btnQuitarCorreo = btnQuitarCorreo;
 	}
 }
