@@ -437,6 +437,8 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					} else {
 						this.ventanaSucursales.getTxtCorreo().setText(correosActuales + "\n" + emailTexto.trim());
 					}
+					ventanaSucursales.getBtnAgregarCorreo().setEnabled(true);
+					ventanaSucursales.getBtnQuitarCorreo().setEnabled(true);
 
 				} else {
 
@@ -449,6 +451,9 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					} else {
 						this.ventanaClientes.getTxtCorreo().setText(correosActuales + "\n" + emailTexto.trim());
 					}
+					
+					ventanaClientes.getBtnAgregarCorreo().setEnabled(true);
+					ventanaClientes.getBtnQuitarCorreo().setEnabled(true);
 				}
 
 				ventanaAgregarCorreo.dispose();
@@ -459,6 +464,15 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 				ventanaAgregarCorreo.dispose();
 				ventanaAgregarCorreo = null;
+				
+				if (correosdeSucursal) {
+				ventanaSucursales.getBtnAgregarCorreo().setEnabled(true);
+				ventanaSucursales.getBtnQuitarCorreo().setEnabled(true);
+				}
+				else {
+				ventanaClientes.getBtnAgregarCorreo().setEnabled(true);
+				ventanaClientes.getBtnQuitarCorreo().setEnabled(true);
+				}
 
 			}
 		}
@@ -591,8 +605,10 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 									if (cantidadSucursalesXCliente(clienteElegido.getId()) > 1) {
 
-										this.agenda.borrarSucursal(SucursalesEncliente);
-										this.llenarTablaSucursales(clienteElegido.getId());
+										agenda.borrarSucursal(SucursalesEncliente);
+										llenarTablaSucursales(clienteElegido.getId());
+										limpiarCamposSucursal();
+										
 									} else {
 										int idcli = SucursalesEncliente.getIdClientesuc();
 										int IDSucursal = SucursalesEncliente.getIdSucursal();
@@ -611,6 +627,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 												"Cliente Sin sucursales", JOptionPane.INFORMATION_MESSAGE);
 										this.ventanaSucursales.dispose();
 										this.llenarTabla();
+										
 
 									}
 
@@ -813,6 +830,9 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 		if (correosdeSucursal) {
 			// Obtener el texto actual y contar los correos
+			ventanaSucursales.getBtnAgregarCorreo().setEnabled(false);
+			ventanaSucursales.getBtnQuitarCorreo().setEnabled(false);
+			
 			String correosActuales = this.ventanaSucursales.getTxtCorreo().getText();
 			int cantidadCorreos = 0;
 			if (correosActuales != null && !correosActuales.trim().isEmpty()) {
@@ -823,6 +843,9 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				return;
 			}
 		} else {
+			
+			ventanaClientes.getBtnAgregarCorreo().setEnabled(false);
+			ventanaClientes.getBtnQuitarCorreo().setEnabled(false);
 			// Comprobar cantidad de correos antes de abrir la ventana
 			String correosActuales = this.ventanaClientes.getTxtCorreo().getText();
 			int cantidadCorreos = 0;
@@ -854,8 +877,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 			ventanaSucursales.getBtnBorrar().setEnabled(true);
 			ventanaSucursales.getBtnEditar().setEnabled(true);
 			ventanaSucursales.getTablaSucursales().setEnabled(true);
-
-			// tablaFiltros.habilitarAutofiltro(this.ventanaSucursales.getTablaSucursales());
 			deshabilitarCamposSucursales(ventanaSucursales);
 			llenarTablaSucursales(clienteElegido.getId());
 		}
@@ -866,7 +887,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaSucursales2.getTxtNombreSucursal().setEditable(false);
 		ventanaSucursales2.getTxtDireccion().setEditable(false);
 		ventanaSucursales2.getTxtContacto().setEditable(false);
-		// ventanaSucursales2.getTxtCorreo().setEditable(false);
 		ventanaSucursales2.getTxtTelContacto().setEditable(false);
 		ventanaSucursales2.getBtnAgregarCorreo().setEnabled(false);
 		ventanaSucursales2.getBtnQuitarCorreo().setEnabled(false);
@@ -886,7 +906,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaSucursales.getTxtNombreSucursal().setEditable(true);
 		ventanaSucursales.getTxtDireccion().setEditable(true);
 		ventanaSucursales.getTxtContacto().setEditable(true);
-		// ventanaSucursales.getTxtCorreo().setEditable(true);
 		ventanaSucursales.getTxtTelContacto().setEditable(true);
 		ventanaSucursales.getBtnAgregarCorreo().setEnabled(true);
 		ventanaSucursales.getBtnQuitarCorreo().setEnabled(true);

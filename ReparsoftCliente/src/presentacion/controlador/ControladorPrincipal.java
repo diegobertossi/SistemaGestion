@@ -257,9 +257,36 @@ public class ControladorPrincipal implements ActionListener {
 
 		else if (arg0.getSource() == vistaPrincipal.getBotonBusquedas()) {
 
-			ventanaBusqueda = new VentanaBusqueda(controladorBusqueda);
-			controladorBusqueda = new ControladorBusquedas(ventanaBusqueda, new Agenda(ubicacionDeBase));
+			
+			ventanaClientes = new VentanaClientes(controladorCliente);
+			controladorCliente = new ControladorCliente(ventanaClientes, modelo);
 
+			ventanaBusqueda = new VentanaBusqueda(controladorBusqueda);
+						
+			controladorUsuLogin.verificarPermisosVentanaListados(ventanaListadoReparaciones);
+
+			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
+			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);
+
+			ventanaEquipos = new VentanaEquipos();
+
+			ventanaSalidas = new VentanaSalidas(controladorSalidas);
+
+			controladorSalidas = new ControladorSalidas(ventanaSalidas, modelo);
+
+			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, modelo,
+					controladorPresupuestos, controladorSalidas, controladorCliente);
+
+			controladorBusqueda = new ControladorBusquedas(ventanaBusqueda,controladorReparacion, new Agenda(ubicacionDeBase));
+
+			ventanaClientes.setVisible(false);
+			ventanaPresupuestos.setVisible(false);
+			ventanaEquipos.setVisible(false);
+			ventanaSalidas.setVisible(false);
+			
+			
+			
+			
 		}
 
 		else if (arg0.getSource() == vistaPrincipal.getBotonPresupuestos()) {

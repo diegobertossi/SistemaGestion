@@ -37,10 +37,11 @@ public class VentanaTablaBusqueda extends JFrame {
 	private JPanel contentPane;
 	private JTable tblReparaciones;
 	private DefaultTableModel modelReparaciones;
-	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "COMP. ORIGINAL","COMP. REEMPLAZO" };
+	private String[] nombreColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
+			"COMP. ORIGINAL", "COMP. REEMPLAZO" };
 	public static int est;
 	private JPanel panel;
-	private JScrollPane  scrollPane ;
+	private JScrollPane scrollPane;
 //
 	@SuppressWarnings("unused")
 	private ControladorBusquedas controlador;
@@ -70,7 +71,7 @@ public class VentanaTablaBusqueda extends JFrame {
 
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
-		
+
 		this.this_windowOpened(null);
 		setSize(1241, 411);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -103,19 +104,19 @@ public class VentanaTablaBusqueda extends JFrame {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBounds(10, 73, 1221, 314);
 		panel.add(scrollPane);
-		
+
 		DimScrollPane = scrollPane.getSize();
 
 		modelReparaciones = new DefaultTableModel(null, nombreColumnas);
 		tblReparaciones = new JTable(modelReparaciones);
 
-		modelReparaciones = new DefaultTableModel(new Object[][] {},
-				new String[] { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO", "COMP. ORIGINAL","COMP. REEMPLAZO" }) {
+		modelReparaciones = new DefaultTableModel(new Object[][] {}, new String[] { "ELS", "ENTRADA", "CLIENTE",
+				"SUCURSAL", "EQUIPO", "MARCA", "MODELO", "COMP. ORIGINAL", "COMP. REEMPLAZO" }) {
 
 			/**
 					 * 
 					 */
-					private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, String.class,
 					String.class, String.class, String.class, String.class };
@@ -125,7 +126,7 @@ public class VentanaTablaBusqueda extends JFrame {
 				return columnTypes[columnIndex];
 			}
 
-			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false};
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false };
 
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -134,7 +135,7 @@ public class VentanaTablaBusqueda extends JFrame {
 
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-			//UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+			// UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -178,7 +179,7 @@ public class VentanaTablaBusqueda extends JFrame {
 		tblReparaciones.setAutoCreateColumnsFromModel(false);
 
 		DimTblReparaciones = tblReparaciones.getSize();
-		
+
 		txtCategoriaBusqueda = new JTextField();
 		txtCategoriaBusqueda.setForeground(new Color(0, 0, 205));
 		txtCategoriaBusqueda.setBorder(null);
@@ -190,7 +191,7 @@ public class VentanaTablaBusqueda extends JFrame {
 
 		tblReparaciones.getTableHeader().setReorderingAllowed(false);
 
-		int[] anchos = { 60, 80, 150, 100, 200, 100, 200, 150, 150};
+		int[] anchos = { 60, 80, 150, 100, 200, 100, 200, 150, 150 };
 
 		for (int i = 0; i < tblReparaciones.getColumnCount(); i++) {
 
@@ -212,16 +213,14 @@ public class VentanaTablaBusqueda extends JFrame {
 					scrollPane.setSize(ventana.width - 20, (ventana.height) - (ventana.height / 3));
 					panel.setSize(ventana.width - 10, ventana.height);
 					contentPane.setSize(ventana.width - 10, ventana.height);
-					
-					
-					
+
 					// tblReparaciones.setSize(ventana.width-5,DimTblReparaciones.height+50);
 
 				} else {
-					
+
 					scrollPane.setSize(DimScrollPane);
 					panel.setSize(DimPanel);
-					//contentPane.setSize(DimContentPane);
+					// contentPane.setSize(DimContentPane);
 					tblReparaciones.setSize(DimTblReparaciones);
 
 				}
@@ -229,6 +228,8 @@ public class VentanaTablaBusqueda extends JFrame {
 				est++;
 			}
 		});
+
+		
 
 		this.setVisible(true);
 
@@ -265,8 +266,6 @@ public class VentanaTablaBusqueda extends JFrame {
 	public void setNombreColumnas(String[] nombreColumnas) {
 		this.nombreColumnas = nombreColumnas;
 	}
-
-	
 
 	public JPanel getPanel() {
 		return panel;

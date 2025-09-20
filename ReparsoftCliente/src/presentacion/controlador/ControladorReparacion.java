@@ -138,7 +138,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private ControladorPresupuestos controladorpresupuestos;
 	private VentanaGenerarPresupuesto ventanaGenerarPresupuesto;
 	private ControladorSalidas controladorSalidas;
-	//private VentanaAgregarCliente ventanaAgregarCliente;
 
 	private VentanaClientes ventanaCliente;
 	private VentanaRemitos ventanaRemitos;
@@ -280,7 +279,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			this.ventanaEquipos.dispose();
 
 		}
-
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonSiguiente()) {
@@ -702,12 +700,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				public void windowClosed(WindowEvent e) {
 
 					llenarComboCliente();
-	
 
 				}
 			});
-			
-			
 
 		}
 
@@ -1139,6 +1134,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaAgregarEquipo.getComboModelo().setSelectedItem("");
 			ventanaAgregarEquipo.getComboSerie().setSelectedItem("");
 			ventanaAgregarEquipo.setTextFechafabricacion2(null);
+			ventanaAgregarEquipo.getBotonIRaELS().setEnabled(false);
+			ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(false);
 
 			ventanaAgregarEquipo.getRdbtnBRC().setEnabled(true);
 			ventanaAgregarEquipo.getRdbtnCABA().setEnabled(true);
@@ -2491,8 +2488,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboModelo(), true, false);
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboSerie(), true, false);
 
-		ventanaAgregarEquipo.getGrupoEstadoFisico().setSelected(ventanaAgregarEquipo.getRdbtnBRC().getModel(), true);
-
+		
 		performActionOnTextComponents(ventanaAgregarEquipo);
 
 		// Java
@@ -2519,8 +2515,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		// Configuración inicial específica para esta función
 		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
 			ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicial));
+			
+
 		} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
 			ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicialBSAS));
+			
+
 		}
 
 		int NumeroELS = Integer.parseInt(ventanaVisualizarEquipos.getTextELS().toString());
@@ -2564,6 +2564,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		return ventanaVisualizarEquipos;
 	}
+	
+	
+	
+	
 
 	public VentanaVisualizarEquipos ActualizarDatosDeTablasListado(int numeroELSSeleccionado2,
 			VentanaVisualizarEquipos ventanaVisualizarEquipos) throws ParseException {
@@ -3609,10 +3613,20 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		int ELS = 0;
 		String ubicacionDeBase = agenda.getUbicacionBase();
 
-		if (ubicacionDeBase.compareTo("Buenos Aires") == 0)
+		if (ubicacionDeBase.compareTo("Buenos Aires") == 0) {
 			ELS = agenda.dameNumeroELSbsas() + 1;
-		else if (ubicacionDeBase.compareTo("Bariloche") == 0)
+			if (ventanaAgregarEquipo != null) {
+				ventanaAgregarEquipo.getGrupoEstadoFisico().setSelected(ventanaAgregarEquipo.getRdbtnCABA().getModel(),
+						true);
+			}
+
+		} else if (ubicacionDeBase.compareTo("Bariloche") == 0) {
 			ELS = agenda.dameNumeroELS() + 1;
+			if (ventanaAgregarEquipo != null) {
+				ventanaAgregarEquipo.getGrupoEstadoFisico()
+						.setSelected(ventanaAgregarEquipo.getRdbtnBRC().getModel(), true);
+			}
+		}
 		return ELS;
 	}
 

@@ -74,6 +74,10 @@ public class CellRendererTablaBusqueda extends DefaultTableCellRenderer implemen
 			setForeground((isSelected) ? letraSeleccionado : letra);
 		}
 
+		if (column == 0) {
+			
+		}
+		
 		if (column == 0 || column == 7 || column == 8) {
 			
 			setHorizontalAlignment(SwingConstants.CENTER);

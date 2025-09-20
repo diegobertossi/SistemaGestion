@@ -9,6 +9,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -17,15 +19,18 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import dto.ReparacionDTO;
 import modelo.Agenda;
 import presentacion.vista.VentanaBusqueda;
+import presentacion.vista.VentanaListadoReparaciones;
 import presentacion.vista.VentanaTablaBusqueda;
 import presentacion.vista.VentanaVisualizarEquipos;
 
-public class ControladorBusquedas implements ActionListener, MouseListener, KeyListener {
+public class ControladorBusquedas implements ActionListener, MouseListener, KeyListener, MouseMotionListener {
 
 	private Agenda modelo;
 
 	private VentanaBusqueda ventanaBusqueda;
 	private VentanaTablaBusqueda ventanaTablaBusqueda;
+	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
+	private ControladorReparacion controladorReparacion;
 	
 
 	@SuppressWarnings("unused")
@@ -45,10 +50,10 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 	
 	public int NumeroELSSeleccionado;
 
-	public ControladorBusquedas(VentanaBusqueda ventanaBusqueda, Agenda modelo) {
+	public ControladorBusquedas(VentanaBusqueda ventanaBusqueda,ControladorReparacion controladorReparacion, Agenda modelo) {
 
 		this.ventanaBusqueda = ventanaBusqueda;
-
+		this.controladorReparacion = controladorReparacion;
 		this.modelo = modelo;
 
 		this.ventanaBusqueda.getBtnBuscar().addActionListener(this);
@@ -170,7 +175,12 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 		}
 
 		ventanaTablaBusqueda.setCellRender(this.ventanaTablaBusqueda.getTblReparaciones());
-
+	
+		ventanaTablaBusqueda.getTblReparaciones().addMouseMotionListener(this);
+		
+		this.ventanaTablaBusqueda.getTblReparaciones().addMouseListener(this);
+		
+		
 		this.ventanaTablaBusqueda.show();
 
 	}
@@ -196,8 +206,43 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		
-		
+		if (arg0.getSource() == this.ventanaTablaBusqueda.getTblReparaciones()) {
+			handleTableClick(arg0);
+			return;
+		}
 	
+	}
+
+	private void handleTableClick(MouseEvent arg0) {
+		int row = this.ventanaTablaBusqueda.getTblReparaciones().getSelectedRow();
+		int col = this.ventanaTablaBusqueda.getTblReparaciones().getSelectedColumn();
+
+		if (col == 0) {
+			int els = Integer
+					.parseInt(this.ventanaTablaBusqueda.getTblReparaciones().getValueAt(row, col).toString());
+
+			NumeroELSSeleccionado = els;
+
+			try {
+				ventanaVisualizarEquipos = controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado,
+						ventanaVisualizarEquipos);
+				ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
+					@Override
+					public void windowClosed(WindowEvent e) {
+						actualizarTabla();
+					}
+				});
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			controladorReparacion.agregarListenersVentanaVisualizarEquiposListado(ventanaVisualizarEquipos);
+		}
+	}
+
+	protected void actualizarTabla() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -222,6 +267,20 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 
+	}
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		if (ventanaTablaBusqueda != null) {
+			int column = ventanaTablaBusqueda.getTblReparaciones().columnAtPoint(arg0.getPoint());
+			Cursor cursor = column == 0 ? Cursor.getPredefinedCursor(Cursor.HAND_CURSOR) : Cursor.getDefaultCursor();
+			ventanaTablaBusqueda.getTblReparaciones().setCursor(cursor);
+		}
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
