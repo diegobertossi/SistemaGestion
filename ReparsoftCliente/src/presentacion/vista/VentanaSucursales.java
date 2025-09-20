@@ -8,7 +8,9 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
+import VistaPropias.CellRendererTablaClientes;
 import presentacion.controlador.ControladorCliente;
 
 import javax.swing.BorderFactory;
@@ -20,6 +22,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
+import java.util.Enumeration;
 import java.awt.Font;
 import java.awt.Image;
 
@@ -27,6 +30,7 @@ import javax.swing.border.EtchedBorder;
 import java.awt.Cursor;
 import javax.swing.UIManager;
 import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
 
 public class VentanaSucursales extends JFrame
 {
@@ -43,7 +47,7 @@ public class VentanaSucursales extends JFrame
 	private JButton btnCancelarSucursal;
 	
 	private DefaultTableModel modelSucursales;
-	private  String[] nombreColumnas = {"Nombre"};
+	private  String[] nombreColumnas = {"NOMBRE"};
 	@SuppressWarnings("unused")
 	private JPanel panel;
 	@SuppressWarnings("unused")
@@ -63,6 +67,7 @@ public class VentanaSucursales extends JFrame
 	private JTextField textCliente;
 	private JPanel panel_2;
 	private JButton btnAgregarCorreo;
+	private JButton btnQuitarCorreo;
 	
 
 	@SuppressWarnings({ "serial", "unused" })
@@ -76,7 +81,7 @@ public class VentanaSucursales extends JFrame
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
 		
-		setBounds(100, 100, 560, 483);
+		setBounds(100, 100, 560, 507);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setAutoscrolls(true);
@@ -90,7 +95,7 @@ public class VentanaSucursales extends JFrame
 		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.setBounds(0, 0, 554, 455);
+		panel.setBounds(0, 0, 554, 468);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -111,10 +116,8 @@ public class VentanaSucursales extends JFrame
 		modelSucursales = new DefaultTableModel(new Object[][]{
 		},			
 		new String[] {
-				"Nombre"
-				
-				//"Nombre", "CUIT", "Direcci�n","Contacto", "Tel. Cont�cto", "Correo"
-		}
+				"NOMBRE"
+			}
 	) 
 		{
 		@SuppressWarnings("rawtypes")
@@ -180,65 +183,70 @@ public class VentanaSucursales extends JFrame
 		panel_1 = new JPanel();
 		panel_1.setBackground(new Color(119, 136, 153));
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_1.setBounds(20, 256, 519, 170);
+		panel_1.setBounds(20, 256, 519, 201);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		lblNombreSucursal = new JLabel("Nombre : ");
+		lblNombreSucursal = new JLabel("NOMBRE:");
+		lblNombreSucursal.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		lblNombreSucursal.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblNombreSucursal.setBounds(6, 17, 84, 20);
+		lblNombreSucursal.setBounds(6, 17, 97, 20);
 		panel_1.add(lblNombreSucursal);
 				
 		txtNombreSucursal = new JTextField();
 		txtNombreSucursal.setEditable(false);
 		txtNombreSucursal.setBackground(new Color(255, 255, 255));
 		txtNombreSucursal.setFont(new Font("Cambria", Font.BOLD, 12));
-		txtNombreSucursal.setBounds(88, 17, 281, 20);
+		txtNombreSucursal.setBounds(113, 17, 267, 20);
 		panel_1.add(txtNombreSucursal);
 		txtNombreSucursal.setColumns(10);
 
-		lblDiereccion = new JLabel("Dirección : ");
+		lblDiereccion = new JLabel("DIRECCIÓN:");
+		lblDiereccion.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		lblDiereccion.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblDiereccion.setBounds(6, 39, 84, 20);
+		lblDiereccion.setBounds(6, 39, 97, 20);
 		panel_1.add(lblDiereccion);
 				
 		txtDireccion = new JTextField();
 		txtDireccion.setEditable(false);
 		txtDireccion.setBackground(new Color(255, 255, 255));
 		txtDireccion.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtDireccion.setBounds(88, 39, 281, 20);
+		txtDireccion.setBounds(113, 39, 267, 20);
 		panel_1.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		
-		lblContacto = new JLabel("Contacto : ");
+		lblContacto = new JLabel("CONTACTO:");
+		lblContacto.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		lblContacto.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblContacto.setBounds(6, 61, 84, 20);
+		lblContacto.setBounds(6, 61, 97, 20);
 		panel_1.add(lblContacto);
 				
 		txtContacto = new JTextField();
 		txtContacto.setEditable(false);
 		txtContacto.setBackground(new Color(255, 255, 255));
 		txtContacto.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtContacto.setBounds(88, 61, 281, 20);
+		txtContacto.setBounds(113, 61, 267, 20);
 		panel_1.add(txtContacto);
 		txtContacto.setColumns(10);
 		
-		lblTelContacto = new JLabel("Tel. Contacto : ");
+		lblTelContacto = new JLabel("TEL. CONTACTO:");
+		lblTelContacto.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		lblTelContacto.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblTelContacto.setBounds(6, 83, 84, 20);
+		lblTelContacto.setBounds(6, 83, 97, 20);
 		panel_1.add(lblTelContacto);
 				
 		txtTelContacto = new JTextField();
 		txtTelContacto.setEditable(false);
 		txtTelContacto.setBackground(new Color(255, 255, 255));
 		txtTelContacto.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtTelContacto.setBounds(88, 83, 281, 20);
+		txtTelContacto.setBounds(113, 83, 267, 20);
 		panel_1.add(txtTelContacto);
 		txtTelContacto.setColumns(10);
 		
-		lblCorreo = new JLabel("Correo");
+		lblCorreo = new JLabel("CORREO:");
+		lblCorreo.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		lblCorreo.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblCorreo.setBounds(6, 104, 84, 20);
+		lblCorreo.setBounds(6, 130, 97, 20);
 		panel_1.add(lblCorreo);
 		
 		
@@ -246,47 +254,46 @@ public class VentanaSucursales extends JFrame
 		txtCorreo.setEditable(false);
 		txtCorreo.setBackground(new Color(240, 240, 240));
 		txtCorreo.setFont(new Font("Cambria", Font.PLAIN, 12));
-		txtCorreo.setBounds(88, 105, 281, 50);
+		txtCorreo.setBounds(0, 80, 281, 70);
 		panel_1.add(txtCorreo);
 		txtCorreo.setColumns(10);
 		
 		JScrollPane scrollCorreo = new JScrollPane(txtCorreo);
-		scrollCorreo.setBounds(88, 105, 281, 50);
+		scrollCorreo.setBounds(113, 105, 267, 70);
 		panel_1.add(scrollCorreo);
-				
-//		txtCorreo = new JTextArea();
-//		txtCorreo.setEditable(false);
-//		txtCorreo.setBackground(new Color(255, 255, 255));
-//		txtCorreo.setFont(new Font("Cambria", Font.PLAIN, 12));
-//		txtCorreo.setBounds(88, 105, 281, 50);
-//		panel_1.add(txtCorreo);
-//		txtCorreo.setColumns(10);
+
 		
 		btnGuardarSucursal = new JButton("GUARDAR");
 		btnGuardarSucursal.setVisible(false);
 		btnGuardarSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnGuardarSucursal.setBackground(UIManager.getColor("Button.background"));
-		btnGuardarSucursal.setBounds(388, 40, 108, 23);
+		btnGuardarSucursal.setBounds(401, 39, 108, 23);
 		panel_1.add(btnGuardarSucursal);
 		
 		btnCancelarSucursal = new JButton("CANCELAR");
 		btnCancelarSucursal.setVisible(false);
 		btnCancelarSucursal.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnCancelarSucursal.setBackground(UIManager.getColor("Button.background"));
-		btnCancelarSucursal.setBounds(388, 69, 108, 23);
+		btnCancelarSucursal.setBounds(401, 68, 108, 23);
 		panel_1.add(btnCancelarSucursal);
 		
 		btnAgregarCorreo = new JButton(" ");
-		btnAgregarCorreo.setEnabled(false);
-		btnAgregarCorreo.setHorizontalAlignment(SwingConstants.RIGHT);
+		btnAgregarCorreo.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnAgregarCorreo.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnAgregarCorreo.setIcon(new ImageIcon(this.getClass().getResource("/Agregar.png")));
+		btnAgregarCorreo.setIcon(new ImageIcon(this.getClass().getResource("/mas.png")));
+		btnAgregarCorreo.setEnabled(false);
 		btnAgregarCorreo.setBackground(UIManager.getColor("Button.background"));
-		btnAgregarCorreo.setBounds(369, 112, 62, 36);
+		btnAgregarCorreo.setBounds(381, 110, 35, 23);
 		panel_1.add(btnAgregarCorreo);
 		
-		
-		
+		btnQuitarCorreo = new JButton(" ");
+		btnQuitarCorreo.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnQuitarCorreo.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnQuitarCorreo.setIcon(new ImageIcon(this.getClass().getResource("/menos.png")));
+		btnQuitarCorreo.setEnabled(false);
+		btnQuitarCorreo.setBackground(UIManager.getColor("Button.background"));
+		btnQuitarCorreo.setBounds(381, 144, 35, 23);
+		panel_1.add(btnQuitarCorreo);
 		
 		
 		
@@ -313,6 +320,13 @@ public class VentanaSucursales extends JFrame
 		return textCliente;
 	}
 
+	public void setCellRender(JTable table) {
+		Enumeration<TableColumn> en = table.getColumnModel().getColumns();
+		while (en.hasMoreElements()) {
+			TableColumn tc = en.nextElement();
+			tc.setCellRenderer(new CellRendererTablaClientes());
+		}
+	}
 
 
 	public void setTextCliente(JTextField textCliente) {
@@ -434,5 +448,15 @@ public class VentanaSucursales extends JFrame
 
 	public void setBtnAgregarCorreo(JButton btnAgregarCorreo) {
 		this.btnAgregarCorreo = btnAgregarCorreo;
+	}
+
+
+	public JButton getBtnQuitarCorreo() {
+		return btnQuitarCorreo;
+	}
+
+
+	public void setBtnQuitarCorreo(JButton btnQuitarCorreo) {
+		this.btnQuitarCorreo = btnQuitarCorreo;
 	}
 }

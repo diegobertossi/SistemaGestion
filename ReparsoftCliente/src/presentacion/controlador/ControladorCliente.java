@@ -68,6 +68,8 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	private boolean llamadoDesdeVentanaCliente = false;
 	private boolean editando = false;
 	private boolean editandoSucursal = false;
+	private boolean correosdeSucursal = false;
+	private boolean quitarCorreosdeSucursal = false;
 
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
@@ -156,13 +158,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					this.ventanaClientes.getTxtTelContacto().setText(
 							clienteElegido.getTelefonoContacto() != null ? clienteElegido.getTelefonoContacto() : "");
 
-//					String correosActuales = this.ventanaClientes.getTxtCorreo().getText();
-//					if (correosActuales == null || correosActuales.trim().isEmpty()) {
-//						this.ventanaClientes.getTxtCorreo().setText(clienteElegido.getCorreoElectronico().trim());
-//					} else {
-//						this.ventanaClientes.getTxtCorreo().setText(correosActuales + "\n" + clienteElegido.getCorreoElectronico().trim());
-//					}	
-
 					// Al presionar Editar
 					String correos = clienteElegido.getCorreoElectronico();
 					if (correos != null && !correos.trim().isEmpty()) {
@@ -248,8 +243,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 				ClienteDTO nuevoCliente = null;
 				SucursalDTO sucursalDefault = null;
-
-
 
 				// Crear nuevo cliente
 				nuevoCliente = new ClienteDTO(dameIDcliente(), nombreTexto.trim(),
@@ -405,99 +398,16 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		}
 
 		else if (e.getSource() == this.ventanaClientes.getBtnAgregarCorreo()) {
-			
-			
-			// Comprobar cantidad de correos antes de abrir la ventana
-		    String correosActuales = this.ventanaClientes.getTxtCorreo().getText();
-		    int cantidadCorreos = 0;
-		    if (correosActuales != null && !correosActuales.trim().isEmpty()) {
-		        cantidadCorreos = correosActuales.split("\\n").length;
-		    }
-		    if (cantidadCorreos >= 4) {
-		        JOptionPane.showMessageDialog(null, "Cantidad de correos excedida", "Error", JOptionPane.ERROR_MESSAGE);
-		        return;
-		    }
 
-			ventanaAgregarCorreo = new VentanaAgregarCorreo();
-			ventanaAgregarCorreo.getBtnAgregarCorreo().addActionListener(this);
-			ventanaAgregarCorreo.getBtnCancelar().addActionListener(this);
+			correosdeSucursal = false;
+			agregarCorreo();
 
 		}
 
 		else if (e.getSource() == this.ventanaClientes.getBtnQuitarCorreo()) {
 
-			String correoTexto = this.ventanaClientes.getTxtCorreo().getText();
-			if (correoTexto == null || correoTexto.trim().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "El campo Correo está vacío", "Error al quitar correo",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-			String[] correosArray = correoTexto.split("\\n");
-			if (correosArray.length == 0) {
-				JOptionPane.showMessageDialog(null, "No hay correos para quitar", "Error al quitar correo",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-			VentanaQuitarCorreo ventanaQuitarCorreo = new VentanaQuitarCorreo();
-
-			// Obtener los correos del JTextArea de ventanaClientes
-			String[] correos = ventanaClientes.getTxtCorreo().getText().split("\\n");
-
-			// Asignar cada correo a su JTextField correspondiente en ventanaQuitarCorreo
-			ventanaQuitarCorreo.getTxtCorreo1().setText(correos.length > 0 ? correos[0] : "");
-			ventanaQuitarCorreo.getTxtCorreo2().setText(correos.length > 1 ? correos[1] : "");
-			ventanaQuitarCorreo.getTxtCorreo3().setText(correos.length > 2 ? correos[2] : "");
-			ventanaQuitarCorreo.getTxtCorreo4().setText(correos.length > 3 ? correos[3] : "");
-
-			// Dentro del ActionListener del botón "Aceptar" de VentanaQuitarCorreo
-			ventanaQuitarCorreo.getBtnQuitarCorreoSeleccionado().addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// Obtener los correos actuales
-					String[] correosActuales = ventanaClientes.getTxtCorreo().getText().split("\\n");
-					List<String> correosAEliminar = new ArrayList<>();
-
-					// Verificar qué checkboxes están seleccionados y agregar el correo
-					// correspondiente a la lista de eliminación
-									
-					
-					if (ventanaQuitarCorreo.getChkCorreo1().isSelected()) {
-						correosAEliminar.add(ventanaQuitarCorreo.getTxtCorreo1().getText());
-					}
-					if (ventanaQuitarCorreo.getChkCorreo2().isSelected()) {
-						correosAEliminar.add(ventanaQuitarCorreo.getTxtCorreo2().getText());
-					}
-					if (ventanaQuitarCorreo.getChkCorreo3().isSelected()) {
-						correosAEliminar.add(ventanaQuitarCorreo.getTxtCorreo3().getText());
-					}
-					if (ventanaQuitarCorreo.getChkCorreo4().isSelected()) {
-						correosAEliminar.add(ventanaQuitarCorreo.getTxtCorreo4().getText());
-					}
-
-					// Construir la nueva lista de correos, excluyendo los seleccionados
-					StringBuilder nuevoTexto = new StringBuilder();
-					for (String correo : correosActuales) {
-						if (!correosAEliminar.contains(correo)) {
-							if (nuevoTexto.length() > 0) {
-								nuevoTexto.append("\n");
-							}
-							nuevoTexto.append(correo);
-						}
-					}
-
-					ventanaClientes.getTxtCorreo().setText(nuevoTexto.toString());
-					ventanaQuitarCorreo.dispose();
-				}
-			});
-
-			ventanaQuitarCorreo.getBtnCancelar().addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					ventanaQuitarCorreo.dispose();
-				}
-			});
+			correosdeSucursal = false;
+			quitarCorreo();
 		}
 
 		if (ventanaAgregarCorreo != null) {
@@ -519,22 +429,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					return;
 				}
 
-				if (ventanaClientes != null) {
-
-
-					// Obtener el texto actual y contar los correos
-					String correosActuales = this.ventanaClientes.getTxtCorreo().getText();
-					
-
-					// Si no excede, agregar el correo normalmente
-					if (correosActuales == null || correosActuales.trim().isEmpty()) {
-						this.ventanaClientes.getTxtCorreo().setText(emailTexto.trim());
-					} else {
-						this.ventanaClientes.getTxtCorreo().setText(correosActuales + "\n" + emailTexto.trim());
-					}
-
-				} else if (ventanaSucursales != null) {
-
+				if (correosdeSucursal) {
 					// Obtener el texto actual y agregar el nuevo correo debajo
 					String correosActuales = this.ventanaSucursales.getTxtCorreo().getText();
 					if (correosActuales == null || correosActuales.trim().isEmpty()) {
@@ -543,6 +438,17 @@ public class ControladorCliente implements ActionListener, MouseListener {
 						this.ventanaSucursales.getTxtCorreo().setText(correosActuales + "\n" + emailTexto.trim());
 					}
 
+				} else {
+
+					// Obtener el texto actual y contar los correos
+					String correosActuales = this.ventanaClientes.getTxtCorreo().getText();
+
+					// Si no excede, agregar el correo normalmente
+					if (correosActuales == null || correosActuales.trim().isEmpty()) {
+						this.ventanaClientes.getTxtCorreo().setText(emailTexto.trim());
+					} else {
+						this.ventanaClientes.getTxtCorreo().setText(correosActuales + "\n" + emailTexto.trim());
+					}
 				}
 
 				ventanaAgregarCorreo.dispose();
@@ -587,10 +493,19 @@ public class ControladorCliente implements ActionListener, MouseListener {
 									.setText(sucursalElegida.getContactoSucursal() != null
 											? sucursalElegida.getContactoSucursal()
 											: "");
+
 							this.ventanaSucursales.getTxtCorreo()
 									.setText(sucursalElegida.getCorreoElectronico() != null
 											? sucursalElegida.getCorreoElectronico()
 											: "");
+
+							String correos = sucursalElegida.getCorreoElectronico();
+							if (correos != null && !correos.trim().isEmpty()) {
+								// Reemplaza " ;" (con o sin espacios) por salto de línea
+								correos = correos.replaceAll("\\s*;\\s*", "\n");
+							}
+							this.ventanaSucursales.getTxtCorreo().setText(correos != null ? correos : "");
+
 							this.ventanaSucursales.getTxtTelContacto()
 									.setText(sucursalElegida.getTelefonoSucursal() != null
 											? sucursalElegida.getTelefonoSucursal()
@@ -642,9 +557,15 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 			else if (e.getSource() == this.ventanaSucursales.getBtnAgregarCorreo()) {
 
-				ventanaAgregarCorreo = new VentanaAgregarCorreo();
-				ventanaAgregarCorreo.getBtnAgregarCorreo().addActionListener(this);
-				ventanaAgregarCorreo.getBtnCancelar().addActionListener(this);
+				correosdeSucursal = true;
+				agregarCorreo();
+
+			}
+
+			else if (e.getSource() == this.ventanaSucursales.getBtnQuitarCorreo()) {
+
+				quitarCorreosdeSucursal = true;
+				quitarCorreo();
 
 			}
 
@@ -772,6 +693,154 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 	}
 
+	private void quitarCorreo() {
+
+		String correoTexto = "";
+		String[] correosArray;
+		String[] correos;
+		
+
+		if (quitarCorreosdeSucursal) {
+			correoTexto = this.ventanaSucursales.getTxtCorreo().getText();
+			if (correoTexto == null || correoTexto.trim().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "El campo Correo está vacío", "Error al quitar correo",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			correosArray = correoTexto.split("\\n");
+			if (correosArray.length == 0) {
+				JOptionPane.showMessageDialog(null, "No hay correos para quitar", "Error al quitar correo",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			correos = ventanaSucursales.getTxtCorreo().getText().split("\\n");
+
+		}
+
+		else {
+			correoTexto = this.ventanaClientes.getTxtCorreo().getText();
+			if (correoTexto == null || correoTexto.trim().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "El campo Correo está vacío", "Error al quitar correo",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+			correosArray = correoTexto.split("\\n");
+			if (correosArray.length == 0) {
+				JOptionPane.showMessageDialog(null, "No hay correos para quitar", "Error al quitar correo",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			correos = ventanaClientes.getTxtCorreo().getText().split("\\n");
+		}
+
+		VentanaQuitarCorreo ventanaQuitarCorreo = new VentanaQuitarCorreo();
+
+		// Obtener los correos del JTextArea de ventanaClientes
+		
+
+		// Asignar cada correo a su JTextField correspondiente en ventanaQuitarCorreo
+		ventanaQuitarCorreo.getTxtCorreo1().setText(correos.length > 0 ? correos[0] : "");
+		ventanaQuitarCorreo.getTxtCorreo2().setText(correos.length > 1 ? correos[1] : "");
+		ventanaQuitarCorreo.getTxtCorreo3().setText(correos.length > 2 ? correos[2] : "");
+		ventanaQuitarCorreo.getTxtCorreo4().setText(correos.length > 3 ? correos[3] : "");
+
+		// Dentro del ActionListener del botón "Aceptar" de VentanaQuitarCorreo
+		ventanaQuitarCorreo.getBtnQuitarCorreoSeleccionado().addActionListener(new ActionListener() {
+			String[] correosActuales;
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Obtener los correos actuales
+				
+				if(quitarCorreosdeSucursal) {
+                    correosActuales = ventanaSucursales.getTxtCorreo().getText().split("\\n");}
+				else {
+					correosActuales = ventanaClientes.getTxtCorreo().getText().split("\\n");
+				}
+				
+				
+				List<String> correosAEliminar = new ArrayList<>();
+
+				// Verificar qué checkboxes están seleccionados y agregar el correo
+				// correspondiente a la lista de eliminación
+
+				if (ventanaQuitarCorreo.getChkCorreo1().isSelected()) {
+					correosAEliminar.add(ventanaQuitarCorreo.getTxtCorreo1().getText());
+				}
+				if (ventanaQuitarCorreo.getChkCorreo2().isSelected()) {
+					correosAEliminar.add(ventanaQuitarCorreo.getTxtCorreo2().getText());
+				}
+				if (ventanaQuitarCorreo.getChkCorreo3().isSelected()) {
+					correosAEliminar.add(ventanaQuitarCorreo.getTxtCorreo3().getText());
+				}
+				if (ventanaQuitarCorreo.getChkCorreo4().isSelected()) {
+					correosAEliminar.add(ventanaQuitarCorreo.getTxtCorreo4().getText());
+				}
+
+				// Construir la nueva lista de correos, excluyendo los seleccionados
+				StringBuilder nuevoTexto = new StringBuilder();
+				for (String correo : correosActuales) {
+					if (!correosAEliminar.contains(correo)) {
+						if (nuevoTexto.length() > 0) {
+							nuevoTexto.append("\n");
+						}
+						nuevoTexto.append(correo);
+					}
+				}
+
+				// Actualizar el JTextArea en ventanaClientes
+				if (quitarCorreosdeSucursal) {
+					ventanaSucursales.getTxtCorreo().setText(nuevoTexto.toString());
+					
+				} else {
+					ventanaClientes.getTxtCorreo().setText(nuevoTexto.toString());
+				}
+				ventanaQuitarCorreo.dispose();
+			}
+		});
+
+		ventanaQuitarCorreo.getBtnCancelar().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ventanaQuitarCorreo.dispose();
+			}
+		});
+
+	}
+
+	private void agregarCorreo() {
+
+		if (correosdeSucursal) {
+			// Obtener el texto actual y contar los correos
+			String correosActuales = this.ventanaSucursales.getTxtCorreo().getText();
+			int cantidadCorreos = 0;
+			if (correosActuales != null && !correosActuales.trim().isEmpty()) {
+				cantidadCorreos = correosActuales.split("\\n").length;
+			}
+			if (cantidadCorreos >= 4) {
+				JOptionPane.showMessageDialog(null, "Cantidad de correos excedida", "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		} else {
+			// Comprobar cantidad de correos antes de abrir la ventana
+			String correosActuales = this.ventanaClientes.getTxtCorreo().getText();
+			int cantidadCorreos = 0;
+			if (correosActuales != null && !correosActuales.trim().isEmpty()) {
+				cantidadCorreos = correosActuales.split("\\n").length;
+			}
+			if (cantidadCorreos >= 4) {
+				JOptionPane.showMessageDialog(null, "Cantidad de correos excedida", "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		ventanaAgregarCorreo = new VentanaAgregarCorreo();
+		ventanaAgregarCorreo.getBtnAgregarCorreo().addActionListener(this);
+		ventanaAgregarCorreo.getBtnCancelar().addActionListener(this);
+
+	}
+
 	private void finalizarOperacionSucursal() {
 		limpiarCamposSucursal();
 		sucursalElegida = null;
@@ -797,9 +866,10 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaSucursales2.getTxtNombreSucursal().setEditable(false);
 		ventanaSucursales2.getTxtDireccion().setEditable(false);
 		ventanaSucursales2.getTxtContacto().setEditable(false);
-		ventanaSucursales2.getTxtCorreo().setEditable(false);
+		// ventanaSucursales2.getTxtCorreo().setEditable(false);
 		ventanaSucursales2.getTxtTelContacto().setEditable(false);
 		ventanaSucursales2.getBtnAgregarCorreo().setEnabled(false);
+		ventanaSucursales2.getBtnQuitarCorreo().setEnabled(false);
 
 	}
 
@@ -816,9 +886,10 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaSucursales.getTxtNombreSucursal().setEditable(true);
 		ventanaSucursales.getTxtDireccion().setEditable(true);
 		ventanaSucursales.getTxtContacto().setEditable(true);
-		ventanaSucursales.getTxtCorreo().setEditable(true);
+		// ventanaSucursales.getTxtCorreo().setEditable(true);
 		ventanaSucursales.getTxtTelContacto().setEditable(true);
 		ventanaSucursales.getBtnAgregarCorreo().setEnabled(true);
+		ventanaSucursales.getBtnQuitarCorreo().setEnabled(true);
 
 	}
 
@@ -860,7 +931,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaClientes.getTxtDireccion().setEditable(true);
 		ventanaClientes.getTxtContacto().setEditable(true);
 		ventanaClientes.getTxtTelContacto().setEditable(true);
-		// ventanaClientes.getTxtCorreo().setEditable(true);
 		ventanaClientes.getTxtTelEmpresa().setEditable(true);
 		ventanaClientes.getBtnAgregarCorreo().setEnabled(true);
 		ventanaClientes.getBtnQuitarCorreo().setEnabled(true);
@@ -873,7 +943,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		ventanaClientes.getTxtDireccion().setEditable(false);
 		ventanaClientes.getTxtContacto().setEditable(false);
 		ventanaClientes.getTxtTelContacto().setEditable(false);
-		// ventanaClientes.getTxtCorreo().setEditable(false);
 		ventanaClientes.getTxtTelEmpresa().setEditable(false);
 		ventanaClientes.getBtnAgregarCorreo().setEnabled(false);
 		ventanaClientes.getBtnQuitarCorreo().setEnabled(false);
@@ -1066,6 +1135,8 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		this.ventanaSucursales.getBtnAgregar().addActionListener(this);
 		this.ventanaSucursales.getBtnBorrar().addActionListener(this);
 		this.ventanaSucursales.getBtnAgregarCorreo().addActionListener(this);
+		this.ventanaSucursales.getBtnQuitarCorreo().addActionListener(this);
+		
 
 		this.ventanaSucursales.getBtnGuardarSucursal().addActionListener(this);
 		this.ventanaSucursales.getBtnCancelarSucursal().addActionListener(this);
@@ -1204,12 +1275,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		idcliente = agenda.dameIDcliente() + 1;
 		return idcliente;
 	}
-
-//	private int dameCuitPorID(int id) {
-//		
-//		int cuitCliente = agenda.dameCuitPorIdCliente(id);
-//		return cuitCliente;
-//	}
 
 	private int dameIDsucursal() {
 		int idsucursal = 0;

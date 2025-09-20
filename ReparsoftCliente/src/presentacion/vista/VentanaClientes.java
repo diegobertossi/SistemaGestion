@@ -305,7 +305,7 @@ public class VentanaClientes extends JFrame {
 		lblCorreo = new JLabel("CORREO");
 		lblCorreo.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(47, 79, 79)));
 		lblCorreo.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblCorreo.setBounds(6, 147, 84, 20);
+		lblCorreo.setBounds(6, 163, 84, 20);
 		panel_1.add(lblCorreo);
 
 		txtCorreo = new JTextArea();
@@ -370,7 +370,7 @@ public class VentanaClientes extends JFrame {
 		btnAgregarCorreo.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnAgregarCorreo.setBackground(UIManager.getColor("Button.background"));
 		btnAgregarCorreo.setIcon(new ImageIcon(this.getClass().getResource("/mas.png")));
-		btnAgregarCorreo.setBounds(385, 145, 35, 23);
+		btnAgregarCorreo.setBounds(383, 145, 35, 23);
 		panel_1.add(btnAgregarCorreo);
 		
 		btnQuitarCorreo = new JButton(" ");
@@ -379,7 +379,7 @@ public class VentanaClientes extends JFrame {
 		btnQuitarCorreo.setEnabled(false);
 		btnQuitarCorreo.setBackground(UIManager.getColor("Button.background"));
 		btnQuitarCorreo.setIcon(new ImageIcon(this.getClass().getResource("/menos.png")));
-		btnQuitarCorreo.setBounds(385, 179, 35, 23);
+		btnQuitarCorreo.setBounds(383, 179, 35, 23);
 		panel_1.add(btnQuitarCorreo);
 
 		JLabel lblClientes = new JLabel("CLIENTES ");
