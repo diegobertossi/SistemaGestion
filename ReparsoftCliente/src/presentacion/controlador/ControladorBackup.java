@@ -461,7 +461,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 						pstmtLocal.setObject(i, valor);
 					}
 
-					// CORRECCIÃ"N: usar executeUpdate() individual en lugar de addBatch()
+					// CORRECCIÓN: usar executeUpdate() individual en lugar de addBatch()
 					// para preservar fechas correctamente
 					pstmtLocal.executeUpdate();
 					registrosProcesados++;
@@ -618,95 +618,123 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		});
 	}
 
-	public boolean GenerarBackupMySQLRemoto(String ubicacion, String cleverCloudHost, String cleverCloudPort,
-			String cleverCloudUser, String cleverCloudPassword, String cleverCloudDatabase) {
-		boolean exitoso = false;
-		String archivoTemporal = null;
-		try {
-			String nombreBaseLocal = (ubicacion.equalsIgnoreCase("Bariloche")) ? "ordenesbrc" : "ordenesbsas";
-			archivoTemporal = System.getProperty("java.io.tmpdir") + File.separator + "backup_" + nombreBaseLocal + "_" + System.currentTimeMillis() + ".sql";
-			
-			System.out.println("Creando dump de la base de datos local...");
-			// CAMBIO 1: Usar --no-create-db en lugar de --databases
-			List<String> comando = Arrays.asList("C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysqldump",
-					"--host=localhost", "--port=3306", "--user=root", "--password=root",
-					"--single-transaction", "--routines", "--triggers", "--no-create-db", nombreBaseLocal);
-			ProcessBuilder pb = new ProcessBuilder(comando);
-			pb.redirectOutput(new File(archivoTemporal));
-			Process proceso = pb.start();
-			int codigoSalida = proceso.waitFor();
 
-			if (codigoSalida != 0) {
-				JOptionPane.showMessageDialog(null, "Error al crear el archivo de backup local.");
-				return false;
-			}
-			System.out.println("Dump local creado exitosamente.");
+public boolean GenerarBackupMySQLRemoto(String ubicacion, String cleverCloudHost, String cleverCloudPort,
+   String cleverCloudUser, String cleverCloudPassword, String cleverCloudDatabase) {
+    boolean exitoso = false;
+    String archivoTemporal = null;
+    try {
+        String nombreBaseLocal = (ubicacion.equalsIgnoreCase("Bariloche")) ? "ordenesbrc" : "ordenesbsas";
+        archivoTemporal = System.getProperty("java.io.tmpdir") + File.separator + "backup_" + nombreBaseLocal + "_" + System.currentTimeMillis() + ".sql";
 
-			System.out.println("Conectando a Clever Cloud...");
-			String urlCleverCloud = String.format("jdbc:mysql://%s:%s/%s?useSSL=false&allowPublicKeyRetrieval=true", cleverCloudHost, cleverCloudPort, cleverCloudDatabase);
-			try (Connection conexionRemota = DriverManager.getConnection(urlCleverCloud, cleverCloudUser, cleverCloudPassword);
-				 java.sql.Statement stmt = conexionRemota.createStatement()) {
-				System.out.println("Conectado a Clever Cloud.");
+        System.out.println("Creando dump de la base de datos local...");
+        List<String> comando = Arrays.asList(
+            "C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysqldump",
+            "--host=localhost", "--port=3306", "--user=root", "--password=root",
+            "--single-transaction", "--routines", "--triggers", "--no-create-db", nombreBaseLocal
+        );
+        ProcessBuilder pb = new ProcessBuilder(comando);
+        pb.redirectOutput(new File(archivoTemporal));
+        Process proceso = pb.start();
+        int codigoSalida = proceso.waitFor();
 
-				System.out.println("Limpiando base de dato remota...");
-				limpiarBaseDatos(conexionRemota);
+        if (codigoSalida != 0) {
+            JOptionPane.showMessageDialog(null, "Error al crear el archivo de backup local.");
+            return false;
+        }
+        System.out.println("Dump local creado exitosamente.");
 
-				System.out.println("Restaurando backup en Clever Cloud...");
-				StringBuilder sqlContent = new StringBuilder();
-				try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(archivoTemporal), "UTF-8"))) {
-					String linea;
-					while ((linea = reader.readLine()) != null) sqlContent.append(linea).append("\n");
-				}
-				
-				// CAMBIO 2: Mejor filtrado de sentencias SQL
-				String[] sentencias = sqlContent.toString().split(";");
-				int sentenciasEjecutadas = 0;
-				int sentenciasIgnoradas = 0;
-				
-				for (String sentencia : sentencias) {
-					sentencia = sentencia.trim();
-					
-					// Filtrar sentencias problemáticas
-					if (sentencia.isEmpty() || 
-						sentencia.startsWith("/*") || 
-						sentencia.startsWith("--") ||
-						sentencia.toUpperCase().startsWith("CREATE DATABASE") ||
-						sentencia.toUpperCase().startsWith("USE ") ||
-						sentencia.toUpperCase().startsWith("DROP DATABASE")) {
-						sentenciasIgnoradas++;
-						continue;
-					}
-					
-					try {
-						stmt.execute(sentencia);
-						sentenciasEjecutadas++;
-					} catch (SQLException e) {
-						// CAMBIO 3: Filtrar específicamente errores de "Access denied" para que no aparezcan en consola
-						if (!e.getMessage().contains("Access denied")) {
-							System.err.println("Error menor en sentencia (ignorado): " + e.getMessage());
-						}
-						sentenciasIgnoradas++;
-					}
-				}
-				
-				System.out.println("Restauración completada:");
-				System.out.println("- Sentencias ejecutadas exitosamente: " + sentenciasEjecutadas);
-				System.out.println("- Sentencias ignoradas: " + sentenciasIgnoradas);
-				
-				exitoso = true;
-				JOptionPane.showMessageDialog(null, 
-					"Backup remoto completado exitosamente.\n","Backup Exitoso", JOptionPane.INFORMATION_MESSAGE);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error durante el backup remoto: " + e.getMessage(), "Error en Backup", JOptionPane.ERROR_MESSAGE);
-		} finally {
-			if (archivoTemporal != null) {
-				new File(archivoTemporal).delete();
-			}
-		}
-		return exitoso;
+        System.out.println("Conectando a Clever Cloud...");
+        String urlCleverCloud = String.format(
+            "jdbc:mysql://%s:%s/%s?useSSL=false&allowPublicKeyRetrieval=true",
+            cleverCloudHost, cleverCloudPort, cleverCloudDatabase
+        );
+        try (Connection conexionRemota = DriverManager.getConnection(urlCleverCloud, cleverCloudUser, cleverCloudPassword);
+             java.sql.Statement stmt = conexionRemota.createStatement()) {
+            System.out.println("Conectado a Clever Cloud.");
+
+            System.out.println("Limpiando base de dato remota...");
+            limpiarBaseDatos(conexionRemota);
+
+            System.out.println("Restaurando backup en Clever Cloud...");
+            List<String> sentencias = parseSqlStatements(archivoTemporal);
+            int sentenciasEjecutadas = 0;
+            int sentenciasIgnoradas = 0;
+
+            for (String sentencia : sentencias) {
+                String s = sentencia.trim();
+                if (s.isEmpty() ||
+                    s.startsWith("/*") ||
+                    s.startsWith("--") ||
+                    s.toUpperCase().startsWith("CREATE DATABASE") ||
+                    s.toUpperCase().startsWith("USE ") ||
+                    s.toUpperCase().startsWith("DROP DATABASE")) {
+                    sentenciasIgnoradas++;
+                    continue;
+                }
+                try {
+                    stmt.execute(s);
+                    sentenciasEjecutadas++;
+                } catch (SQLException e) {
+                    if (!e.getMessage().contains("Access denied")) {
+                        System.err.println("Error menor en sentencia (ignorado): " + e.getMessage());
+                    }
+                    sentenciasIgnoradas++;
+                }
+            }
+
+            System.out.println("Restauración completada:");
+            System.out.println("- Sentencias ejecutadas exitosamente: " + sentenciasEjecutadas);
+            System.out.println("- Sentencias ignoradas: " + sentenciasIgnoradas);
+
+            exitoso = true;
+            JOptionPane.showMessageDialog(null,
+                "Backup remoto completado exitosamente.\n", "Backup Exitoso", JOptionPane.INFORMATION_MESSAGE);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error durante el backup remoto: " + e.getMessage(), "Error en Backup", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        if (archivoTemporal != null) {
+            new File(archivoTemporal).delete();
+        }
+    }
+    return exitoso;
+}
+
+
+	// Lee el dump y separa sentencias SQL correctamente, ignorando los ; dentro de strings
+	private List<String> parseSqlStatements(String filePath) throws IOException {
+	    List<String> statements = new ArrayList<>();
+	    StringBuilder sb = new StringBuilder();
+	    boolean inSingleQuote = false;
+	    boolean inDoubleQuote = false;
+
+	    try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "UTF-8"))) {
+	        int c;
+	        while ((c = reader.read()) != -1) {
+	            char ch = (char) c;
+	            sb.append(ch);
+
+	            if (ch == '\'' && !inDoubleQuote) {
+	                // Maneja comillas simples escapadas
+	                inSingleQuote = !inSingleQuote;
+	            } else if (ch == '"' && !inSingleQuote) {
+	                inDoubleQuote = !inDoubleQuote;
+	            } else if (ch == ';' && !inSingleQuote && !inDoubleQuote) {
+	                // Fin de sentencia SQL real
+	                statements.add(sb.toString().trim());
+	                sb.setLength(0);
+	            }
+	        }
+	        // Agrega lo que quede (por si el archivo no termina en ;)
+	        if (sb.length() > 0 && sb.toString().trim().length() > 0) {
+	            statements.add(sb.toString().trim());
+	        }
+	    }
+	    return statements;
 	}
+
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {}
