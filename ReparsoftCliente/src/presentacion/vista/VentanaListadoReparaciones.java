@@ -173,6 +173,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelBotonera.setLayout(new BorderLayout(0, 0));
 
 
+		
 
 		// Checkboxes para ocultar columnas
 		chckbxELS = new JCheckBox("ELS");

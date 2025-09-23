@@ -54,6 +54,7 @@ public class ControladorUsuLogin {
 			vistaPrincipal.getBotonSalidas().setEnabled(true);
 			vistaPrincipal.getBotonBackUp().setEnabled(true);
 			vistaPrincipal.getBotonUsuarios().setEnabled(true);
+			vistaPrincipal.getBotonConfiguracion().setEnabled(true);
 			vistaLogin.dispose();
 
 			vistaPrincipal.getTextUsuario().setText("BIENVENIDO/A: " + usu_login.getNombre());			
@@ -115,7 +116,10 @@ public class ControladorUsuLogin {
 				vistaPrincipal.getBotonBackUp().setEnabled(false);
 
 			}
+			if (!permisos_principal.contains(new PermisoDTO(0, 0, 0, "Configuracion"))) {
+				vistaPrincipal.getBotonConfiguracion().setEnabled(false);
 
+			}
 
 		}
 
