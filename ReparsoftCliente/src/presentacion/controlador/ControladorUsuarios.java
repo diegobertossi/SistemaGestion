@@ -50,8 +50,13 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	// private UsuarioDTO user;
 	private RolDTO rolElegido;
 	private UsuarioDTO usuarioElegido;
+    private UsuarioDTO usuariologueado = null;
+    private int idRolActual = -1;
+    
 	private List<ReparacionDTO> Reparaciones;
 	private boolean passwordVisible = false;
+	private ControladorUsuLogin controladorUsuLogin; 
+	private List<RolDTO> rolesMostradosEnCombo;
 
 	private VentanaCodigoSeguridad ventanaCodigoSeguridad;
 
@@ -60,7 +65,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
-	public ControladorUsuarios(VentanaRolesUsuarios ventanaRolesUsuarios, Agenda agenda) {
+	public ControladorUsuarios(VentanaRolesUsuarios ventanaRolesUsuarios,ControladorUsuLogin controladorUsuLogin, Agenda agenda) {
 		this.ventanaRolesUsuarios = ventanaRolesUsuarios;
 
 		this.agenda = agenda;
@@ -68,9 +73,16 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		// this.user = null;
 		this.rolElegido = null;
 		this.usuarioElegido = null;
+		this.controladorUsuLogin = controladorUsuLogin;
 
 		rolElegido = null;
 		usuarioElegido = null;
+		
+		usuariologueado = controladorUsuLogin.getUsu_login();
+
+	    idRolActual = usuariologueado != null ? usuariologueado.getIdRol() : 0;	
+	    
+	    rolesMostradosEnCombo = new ArrayList<>();
 
 		this.ventanaRolesUsuarios.getBtnAgregarUsuario().addActionListener(this);
 		this.ventanaRolesUsuarios.getBtnEditarUsuario().addActionListener(this);
@@ -83,6 +95,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 		this.ventanaRolesUsuarios.getBtnEliminarUsuario().addActionListener(this);
 		this.ventanaRolesUsuarios.getBtnPermisosXrol().addActionListener(this);
 		this.ventanaRolesUsuarios.getBtnMostrarContraseña().addActionListener(this);
+		
+		
 
 		performActionOnTextComponents(ventanaRolesUsuarios);
 
@@ -308,7 +322,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 					this.ventanaRolesUsuarios.getComboRoles().setVisible(true);
 					this.ventanaRolesUsuarios.getComboRoles().setEnabled(true);
 					this.ventanaRolesUsuarios.getComboRoles().setForeground(Color.BLACK);
-					this.ventanaRolesUsuarios.getComboRoles().setSelectedIndex(usuarioElegido.getIdRol() - 2);
+				    
+					this.ventanaRolesUsuarios.getComboRoles().setSelectedIndex(usuarioElegido.getIdRol()-2);
 
 					this.ventanaRolesUsuarios.getBtnGuardarEdicion().setVisible(true);
 					this.ventanaRolesUsuarios.getBtnCancelarEdicion().setVisible(true);
@@ -555,48 +570,82 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	}
 
 	private void cargarTablaPermisos() {
+	    int pos = ventanaPermisos.getCmbRoles().getSelectedIndex();
 
-		// TODO Auto-generated method stub
-		int pos = ventanaPermisos.getCmbRoles().getSelectedIndex();
+	    if (pos >= 0 && pos < rolesMostradosEnCombo.size()) {
+	        while (ventanaPermisos.getModelPermisosTenidos().getRowCount() > 0) {
+	            ventanaPermisos.getModelPermisosTenidos().removeRow(0);
+	        }
+	        while (ventanaPermisos.getModelPermisosFaltantes().getRowCount() > 0) {
+	            ventanaPermisos.getModelPermisosFaltantes().removeRow(0);
+	        }
 
-		if (pos >= 0) {
-			while (ventanaPermisos.getModelPermisosTenidos().getRowCount() > 0) {
-				ventanaPermisos.getModelPermisosTenidos().removeRow(0);
-			}
-			while (ventanaPermisos.getModelPermisosFaltantes().getRowCount() > 0) {
-				ventanaPermisos.getModelPermisosFaltantes().removeRow(0);
-			}
+	        int idRolSeleccionado = rolesMostradosEnCombo.get(pos).getIdRol();
+	        permisos_en_tabla = permisos.damePermisos(idRolSeleccionado);
+	        permisosFaltantes_en_tabla = permisos.damePermisosFaltantes(idRolSeleccionado);
 
-			permisos_en_tabla = permisos.damePermisos(roles_en_tabla.get(pos).getIdRol());
-			permisosFaltantes_en_tabla = permisos.damePermisosFaltantes(roles_en_tabla.get(pos).getIdRol());
+	        for (PermisoDTO per : permisos_en_tabla) {
+	            Object[] fila = { false, per.getNombrePantalla(), per.getNombrePantallaPadre() };
+	            ventanaPermisos.getModelPermisosTenidos().addRow(fila);
+	        }
+	        for (PermisoDTO per : permisosFaltantes_en_tabla) {
+	            Object[] fila = { false, per.getNombrePantalla(), per.getNombrePantallaPadre() };
+	            ventanaPermisos.getModelPermisosFaltantes().addRow(fila);
+	        }
+	    }
 
-			for (PermisoDTO per : permisos_en_tabla) {
-				Object[] fila = { false, per.getNombrePantalla(), per.getNombrePantallaPadre() };
-				ventanaPermisos.getModelPermisosTenidos().addRow(fila);
-			}
-			for (PermisoDTO per : permisosFaltantes_en_tabla) {
-				Object[] fila = { false, per.getNombrePantalla(), per.getNombrePantallaPadre() };
-				ventanaPermisos.getModelPermisosFaltantes().addRow(fila);
-			}
-		}
+	    ventanaPermisos.setCellRender(this.ventanaPermisos.getTblPermisosFaltantes());
+	    ventanaPermisos.setCellRender(this.ventanaPermisos.getTblPermisosTenidos());
+	    }
 
-		ventanaPermisos.setCellRender(this.ventanaPermisos.getTblPermisosFaltantes());
-		ventanaPermisos.setCellRender(this.ventanaPermisos.getTblPermisosTenidos());
-	}
 
+//@SuppressWarnings("unchecked")
+//private void llenarCombosRoles() {
+//    ventanaPermisos.getCmbRoles().removeAllItems();
+//    roles_en_tabla = agenda.obtenerRoles();
+//    
+// // Accedes al usuario logueado
+//   
+//
+//    if (idRolActual == 1) {
+//        // Mostrar todos los roles
+//        for (RolDTO rol : roles_en_tabla) {
+//            ventanaPermisos.getCmbRoles().addItem(rol.getNombre());
+//        }
+//    } else {
+//        // Omitir los dos primeros roles
+//        for (int i = 2; i < roles_en_tabla.size(); i++) {
+//            ventanaPermisos.getCmbRoles().addItem(roles_en_tabla.get(i).getNombre());
+//        }
+//    }
+//    
+//    System.out.println("Usuario logueado: " + usuariologueado.getNombre());
+//
+//}
+
+	
+	
 	@SuppressWarnings("unchecked")
 	private void llenarCombosRoles() {
-		// TODO Auto-generated method stub
+	    ventanaPermisos.getCmbRoles().removeAllItems();
+	    roles_en_tabla = agenda.obtenerRoles();
+	    rolesMostradosEnCombo.clear();
 
-		ventanaPermisos.getCmbRoles().removeAllItems();
-		roles_en_tabla = agenda.obtenerRoles();
-		for (RolDTO rol : roles_en_tabla) {
-
-			ventanaPermisos.getCmbRoles().addItem(rol.getNombre());
-
-		}
-
-	}
+	    if (idRolActual == 1) {
+	        // Mostrar todos los roles
+	        for (RolDTO rol : roles_en_tabla) {
+	            ventanaPermisos.getCmbRoles().addItem(rol.getNombre());
+	            rolesMostradosEnCombo.add(rol);
+	        }
+	    } else {
+	        // Omitir los dos primeros roles
+	        for (int i = 2; i < roles_en_tabla.size(); i++) {
+	            ventanaPermisos.getCmbRoles().addItem(roles_en_tabla.get(i).getNombre());
+	            rolesMostradosEnCombo.add(roles_en_tabla.get(i));
+	        }
+	    }
+	    System.out.println("Usuario logueado: " + usuariologueado.getNombre());
+    }
 
 	@SuppressWarnings("unused")
 	private boolean existeRol(String s) {

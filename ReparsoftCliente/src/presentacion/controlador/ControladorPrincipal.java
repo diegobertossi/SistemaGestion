@@ -170,7 +170,7 @@ public class ControladorPrincipal implements ActionListener {
 		} else if (arg0.getSource() == vistaPrincipal.getBotonUsuarios()) {
 
 			ventanaRolesUsuarios = new VentanaRolesUsuarios(controladoUsuario);
-			controladoUsuario = new ControladorUsuarios(ventanaRolesUsuarios, new Agenda(ubicacionDeBase));
+			controladoUsuario = new ControladorUsuarios(ventanaRolesUsuarios, controladorUsuLogin, new Agenda(ubicacionDeBase));
 
 		}
 

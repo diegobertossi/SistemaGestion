@@ -58,7 +58,7 @@ public class ControladorUsuLogin {
 
 			vistaPrincipal.getTextUsuario().setText("BIENVENIDO/A: " + usu_login.getNombre());			
 					
-			vistaPrincipal.getTextUsuario().setText("BIENVENIDO/A: " + usu_login.getNombre());
+			//vistaPrincipal.getTextUsuario().setText("BIENVENIDO/A: " + usu_login.getNombre());
 			
 			vistaPrincipal.getTextProgramador().setText("Diseñado por Diego H. Bertossi");
 			vistaPrincipal.getTextVersionSoft().setText("Versión Reparsoft 2.0");
@@ -170,7 +170,6 @@ public class ControladorUsuLogin {
 	        }
 	    }
 	}
-
 
 
 	// public void verificarPermisosInternacion(VistaInternaciones vista)
