@@ -206,10 +206,7 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		
-		if (arg0.getSource() == this.ventanaTablaBusqueda.getTblReparaciones()) {
-			handleTableClick(arg0);
-			return;
-		}
+
 	
 	}
 
@@ -259,8 +256,10 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+		if (arg0.getSource() == this.ventanaTablaBusqueda.getTblReparaciones()) {
+			handleTableClick(arg0);
+			return;
+		}
 	}
 
 	@Override

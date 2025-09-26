@@ -2141,11 +2141,11 @@ public class ControladorListados
 			return;
 		}
 
-		// Manejo de clic en la tabla
-		if (arg0.getSource() == this.ventanaListadoReparaciones.getTblReparaciones()) {
-			handleTableClick(arg0);
-			return;
-		}
+//		// Manejo de clic en la tabla
+//		if (arg0.getSource() == this.ventanaListadoReparaciones.getTblReparaciones()) {
+//			handleTableClick(arg0);
+//			return;
+//		}
 		
 		
 		// Mapeo de checkboxes a columnas
@@ -2272,6 +2272,12 @@ public class ControladorListados
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
+		
+		// Manejo de clic en la tabla
+		if (arg0.getSource() == this.ventanaListadoReparaciones.getTblReparaciones()) {
+			handleTableClick(arg0);
+			return;
+		}
 	}
 
 	@Override

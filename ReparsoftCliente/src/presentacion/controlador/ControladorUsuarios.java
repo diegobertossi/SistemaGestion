@@ -598,31 +598,6 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	    ventanaPermisos.setCellRender(this.ventanaPermisos.getTblPermisosTenidos());
 	    }
 
-
-//@SuppressWarnings("unchecked")
-//private void llenarCombosRoles() {
-//    ventanaPermisos.getCmbRoles().removeAllItems();
-//    roles_en_tabla = agenda.obtenerRoles();
-//    
-// // Accedes al usuario logueado
-//   
-//
-//    if (idRolActual == 1) {
-//        // Mostrar todos los roles
-//        for (RolDTO rol : roles_en_tabla) {
-//            ventanaPermisos.getCmbRoles().addItem(rol.getNombre());
-//        }
-//    } else {
-//        // Omitir los dos primeros roles
-//        for (int i = 2; i < roles_en_tabla.size(); i++) {
-//            ventanaPermisos.getCmbRoles().addItem(roles_en_tabla.get(i).getNombre());
-//        }
-//    }
-//    
-//    System.out.println("Usuario logueado: " + usuariologueado.getNombre());
-//
-//}
-
 	
 	
 	@SuppressWarnings("unchecked")
@@ -780,49 +755,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 
-		// Rol y usuarios
-		if (this.ventanaRolesUsuarios != null) {
-			if (arg0.getSource() == this.ventanaRolesUsuarios.getTablaUsuarios()) {
-				int i = this.ventanaRolesUsuarios.getTablaUsuarios().getSelectedRow();
-				if (i != -1) {
-					if (!usuarios_en_tabla.isEmpty()) {
-						usuarioElegido = usuarios_en_tabla.get(i);
-						int indiceRol = usuarioElegido.getIdRol();
 
-						this.ventanaRolesUsuarios.getComboRoles().setVisible(false);
-						this.ventanaRolesUsuarios.getTxtNombreUsuario().setText(usuarioElegido.getNombre());
-						this.ventanaRolesUsuarios.getTxtApellidoUsuario().setText(usuarioElegido.getApellido());
-						this.ventanaRolesUsuarios.getTxtDNI().setText("" + usuarioElegido.getDni());
-						this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setText(usuarioElegido.getTelefono());
-						this.ventanaRolesUsuarios.getTxtEmailUsuario().setText(usuarioElegido.getEmail());
-						this.ventanaRolesUsuarios.getTxtLogin().setText(usuarioElegido.getLogin());
-						this.ventanaRolesUsuarios.getTxtPass().setText(usuarioElegido.getPass());
-						ventanaRolesUsuarios.getTxtPass().setEchoChar('\u2022');
-						passwordVisible = false;
-
-						this.ventanaRolesUsuarios.getTextRol().setText(agenda.obtenerRolXid(indiceRol));
-
-						this.ventanaRolesUsuarios.getBtnGuardarEdicion().setVisible(false);
-						this.ventanaRolesUsuarios.getBtnCancelarEdicion().setVisible(false);
-						this.ventanaRolesUsuarios.getBtnGuardarNuevo().setVisible(false);
-						this.ventanaRolesUsuarios.getBtnCancelarNuevo().setVisible(false);
-
-						this.ventanaRolesUsuarios.getBtnEliminarUsuario().setEnabled(true);
-						this.ventanaRolesUsuarios.getBtnEditarUsuario().setEnabled(true);
-						this.ventanaRolesUsuarios.getBtnAgregarUsuario().setEnabled(true);
-
-						this.ventanaRolesUsuarios.getTxtNombreUsuario().setEditable(false);
-						this.ventanaRolesUsuarios.getTxtApellidoUsuario().setEditable(false);
-						this.ventanaRolesUsuarios.getTxtDNI().setEditable(false);
-						this.ventanaRolesUsuarios.getTxtEmailUsuario().setEditable(false);
-						this.ventanaRolesUsuarios.getTxtLogin().setEditable(false);
-						this.ventanaRolesUsuarios.getTxtPass().setEditable(false);
-						this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setEditable(false);
-
-					}
-				}
-			}
-		}
 	}
 
 	@SuppressWarnings("unused")
@@ -865,8 +798,51 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		// Rol y usuarios
+		if (this.ventanaRolesUsuarios != null) {
+			if (arg0.getSource() == this.ventanaRolesUsuarios.getTablaUsuarios()) {
+				int i = this.ventanaRolesUsuarios.getTablaUsuarios().getSelectedRow();
+				if (i != -1) {
+					int modelIndex = this.ventanaRolesUsuarios.getTablaUsuarios().convertRowIndexToModel(i);
+					if (!usuarios_en_tabla.isEmpty()&& modelIndex < usuarios_en_tabla.size()) {
+						usuarioElegido = usuarios_en_tabla.get(modelIndex);
+						
+						int indiceRol = usuarioElegido.getIdRol();
 
+						this.ventanaRolesUsuarios.getComboRoles().setVisible(false);
+						this.ventanaRolesUsuarios.getTxtNombreUsuario().setText(usuarioElegido.getNombre());
+						this.ventanaRolesUsuarios.getTxtApellidoUsuario().setText(usuarioElegido.getApellido());
+						this.ventanaRolesUsuarios.getTxtDNI().setText("" + usuarioElegido.getDni());
+						this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setText(usuarioElegido.getTelefono());
+						this.ventanaRolesUsuarios.getTxtEmailUsuario().setText(usuarioElegido.getEmail());
+						this.ventanaRolesUsuarios.getTxtLogin().setText(usuarioElegido.getLogin());
+						this.ventanaRolesUsuarios.getTxtPass().setText(usuarioElegido.getPass());
+						ventanaRolesUsuarios.getTxtPass().setEchoChar('\u2022');
+						passwordVisible = false;
+
+						this.ventanaRolesUsuarios.getTextRol().setText(agenda.obtenerRolXid(indiceRol));
+
+						this.ventanaRolesUsuarios.getBtnGuardarEdicion().setVisible(false);
+						this.ventanaRolesUsuarios.getBtnCancelarEdicion().setVisible(false);
+						this.ventanaRolesUsuarios.getBtnGuardarNuevo().setVisible(false);
+						this.ventanaRolesUsuarios.getBtnCancelarNuevo().setVisible(false);
+
+						this.ventanaRolesUsuarios.getBtnEliminarUsuario().setEnabled(true);
+						this.ventanaRolesUsuarios.getBtnEditarUsuario().setEnabled(true);
+						this.ventanaRolesUsuarios.getBtnAgregarUsuario().setEnabled(true);
+
+						this.ventanaRolesUsuarios.getTxtNombreUsuario().setEditable(false);
+						this.ventanaRolesUsuarios.getTxtApellidoUsuario().setEditable(false);
+						this.ventanaRolesUsuarios.getTxtDNI().setEditable(false);
+						this.ventanaRolesUsuarios.getTxtEmailUsuario().setEditable(false);
+						this.ventanaRolesUsuarios.getTxtLogin().setEditable(false);
+						this.ventanaRolesUsuarios.getTxtPass().setEditable(false);
+						this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setEditable(false);
+
+					}
+				}
+			}
+		}
 	}
 
 	@Override

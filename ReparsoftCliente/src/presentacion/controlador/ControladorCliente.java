@@ -451,7 +451,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					} else {
 						this.ventanaClientes.getTxtCorreo().setText(correosActuales + "\n" + emailTexto.trim());
 					}
-					
+
 					ventanaClientes.getBtnAgregarCorreo().setEnabled(true);
 					ventanaClientes.getBtnQuitarCorreo().setEnabled(true);
 				}
@@ -464,14 +464,13 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 				ventanaAgregarCorreo.dispose();
 				ventanaAgregarCorreo = null;
-				
+
 				if (correosdeSucursal) {
-				ventanaSucursales.getBtnAgregarCorreo().setEnabled(true);
-				ventanaSucursales.getBtnQuitarCorreo().setEnabled(true);
-				}
-				else {
-				ventanaClientes.getBtnAgregarCorreo().setEnabled(true);
-				ventanaClientes.getBtnQuitarCorreo().setEnabled(true);
+					ventanaSucursales.getBtnAgregarCorreo().setEnabled(true);
+					ventanaSucursales.getBtnQuitarCorreo().setEnabled(true);
+				} else {
+					ventanaClientes.getBtnAgregarCorreo().setEnabled(true);
+					ventanaClientes.getBtnQuitarCorreo().setEnabled(true);
 				}
 
 			}
@@ -608,7 +607,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 										agenda.borrarSucursal(SucursalesEncliente);
 										llenarTablaSucursales(clienteElegido.getId());
 										limpiarCamposSucursal();
-										
+
 									} else {
 										int idcli = SucursalesEncliente.getIdClientesuc();
 										int IDSucursal = SucursalesEncliente.getIdSucursal();
@@ -627,7 +626,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 												"Cliente Sin sucursales", JOptionPane.INFORMATION_MESSAGE);
 										this.ventanaSucursales.dispose();
 										this.llenarTabla();
-										
 
 									}
 
@@ -715,7 +713,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		String correoTexto = "";
 		String[] correosArray;
 		String[] correos;
-		
 
 		if (quitarCorreosdeSucursal) {
 			correoTexto = this.ventanaSucursales.getTxtCorreo().getText();
@@ -754,7 +751,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		VentanaQuitarCorreo ventanaQuitarCorreo = new VentanaQuitarCorreo();
 
 		// Obtener los correos del JTextArea de ventanaClientes
-		
 
 		// Asignar cada correo a su JTextField correspondiente en ventanaQuitarCorreo
 		ventanaQuitarCorreo.getTxtCorreo1().setText(correos.length > 0 ? correos[0] : "");
@@ -765,18 +761,17 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		// Dentro del ActionListener del botón "Aceptar" de VentanaQuitarCorreo
 		ventanaQuitarCorreo.getBtnQuitarCorreoSeleccionado().addActionListener(new ActionListener() {
 			String[] correosActuales;
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Obtener los correos actuales
-				
-				if(quitarCorreosdeSucursal) {
-                    correosActuales = ventanaSucursales.getTxtCorreo().getText().split("\\n");}
-				else {
+
+				if (quitarCorreosdeSucursal) {
+					correosActuales = ventanaSucursales.getTxtCorreo().getText().split("\\n");
+				} else {
 					correosActuales = ventanaClientes.getTxtCorreo().getText().split("\\n");
 				}
-				
-				
+
 				List<String> correosAEliminar = new ArrayList<>();
 
 				// Verificar qué checkboxes están seleccionados y agregar el correo
@@ -809,7 +804,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				// Actualizar el JTextArea en ventanaClientes
 				if (quitarCorreosdeSucursal) {
 					ventanaSucursales.getTxtCorreo().setText(nuevoTexto.toString());
-					
+
 				} else {
 					ventanaClientes.getTxtCorreo().setText(nuevoTexto.toString());
 				}
@@ -832,7 +827,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 			// Obtener el texto actual y contar los correos
 			ventanaSucursales.getBtnAgregarCorreo().setEnabled(false);
 			ventanaSucursales.getBtnQuitarCorreo().setEnabled(false);
-			
+
 			String correosActuales = this.ventanaSucursales.getTxtCorreo().getText();
 			int cantidadCorreos = 0;
 			if (correosActuales != null && !correosActuales.trim().isEmpty()) {
@@ -843,7 +838,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				return;
 			}
 		} else {
-			
+
 			ventanaClientes.getBtnAgregarCorreo().setEnabled(false);
 			ventanaClientes.getBtnQuitarCorreo().setEnabled(false);
 			// Comprobar cantidad de correos antes de abrir la ventana
@@ -1155,7 +1150,6 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		this.ventanaSucursales.getBtnBorrar().addActionListener(this);
 		this.ventanaSucursales.getBtnAgregarCorreo().addActionListener(this);
 		this.ventanaSucursales.getBtnQuitarCorreo().addActionListener(this);
-		
 
 		this.ventanaSucursales.getBtnGuardarSucursal().addActionListener(this);
 		this.ventanaSucursales.getBtnCancelarSucursal().addActionListener(this);
@@ -1172,26 +1166,48 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				int i = ventanaClientes.getTablaClientes().getSelectedRow();
 				if (i != -1 && !Clientes_en_tabla.isEmpty()) {
 					int modelIndex = ventanaClientes.getTablaClientes().convertRowIndexToModel(i);
-					if (modelIndex < Clientes_en_tabla.size()) {
-						ClienteDTO cliente = Clientes_en_tabla.get(modelIndex);
-						ventanaClientes.getTxtNombreCliente().setText(cliente.getRazon_Social());
-						ventanaClientes.getTxtCUIT().setText(cliente.getCUIT());
-						ventanaClientes.getTxtDireccion().setText(cliente.getDomicilio());
-						ventanaClientes.getTxtContacto().setText(cliente.getContacto());
-						ventanaClientes.getTxtTelContacto().setText(cliente.getTelefonoContacto());
-
-						// Convierte el string separado por " ;" a formato lista
-						String correos = cliente.getCorreoElectronico();
-						if (correos != null && !correos.trim().isEmpty()) {
-							correos = correos.replaceAll("\\s*;\\s*", "\n");
-						}
-						ventanaClientes.getTxtCorreo().setText(correos != null ? correos : "");
-
-						ventanaClientes.getTxtTelEmpresa().setText(cliente.getTelefonoEmpresa());
-					}
+					actualizarSeleccionCliente(modelIndex);
 				}
 			}
 		});
+	}
+
+	private void actualizarSeleccionCliente(int modelIndex) {
+		if (!Clientes_en_tabla.isEmpty() && modelIndex < Clientes_en_tabla.size()) {
+			clienteElegido = Clientes_en_tabla.get(modelIndex);
+
+			ventanaClientes.getTxtNombreCliente().setText(clienteElegido.getRazon_Social());
+			ventanaClientes.getTxtCUIT().setText(clienteElegido.getCUIT());
+			ventanaClientes.getTxtDireccion().setText(clienteElegido.getDomicilio());
+			ventanaClientes.getTxtContacto().setText(clienteElegido.getContacto());
+			ventanaClientes.getTxtTelContacto().setText(clienteElegido.getTelefonoContacto());
+
+			String correos = clienteElegido.getCorreoElectronico();
+			if (correos != null && !correos.trim().isEmpty()) {
+				correos = correos.replaceAll("\\s*;\\s*", "\n");
+			}
+			ventanaClientes.getTxtCorreo().setText(correos != null ? correos : "");
+			ventanaClientes.getTxtTelEmpresa().setText(clienteElegido.getTelefonoEmpresa());
+
+			// Lógica de visibilidad de sucursales
+			int cantSuc = cantidadSucursalesXCliente(clienteElegido.getId());
+			if (cantSuc == 1) {
+				SucursalesEncliente = this.agenda.obtenerSucursalesxCliente(clienteElegido.getId()).get(0);
+				if (!SucursalesEncliente.getNombreSucursal().isEmpty()) {
+					ventanaClientes.getBtnVisualizarSucursales().setVisible(true);
+					ventanaClientes.getLblSucursales().setVisible(true);
+				} else {
+					ventanaClientes.getBtnVisualizarSucursales().setVisible(false);
+					ventanaClientes.getLblSucursales().setVisible(false);
+				}
+			} else if (cantSuc > 1) {
+				ventanaClientes.getBtnVisualizarSucursales().setVisible(true);
+				ventanaClientes.getLblSucursales().setVisible(true);
+			} else {
+				ventanaClientes.getBtnVisualizarSucursales().setVisible(false);
+				ventanaClientes.getLblSucursales().setVisible(false);
+			}
+		}
 	}
 
 	public void agregarListenerSeleccionTablaSucursal() {
@@ -1217,76 +1233,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		if (this.ventanaClientes != null) {
 
-			if (arg0.getSource() == this.ventanaClientes.getTablaClientes()) {
-				int i = this.ventanaClientes.getTablaClientes().getSelectedRow();
-				if (i != -1) {
-					// Convertir índice de vista a índice del modelo
-					int modelIndex = this.ventanaClientes.getTablaClientes().convertRowIndexToModel(i);
-					if (!Clientes_en_tabla.isEmpty() && modelIndex < Clientes_en_tabla.size()) {
-						clienteElegido = Clientes_en_tabla.get(modelIndex);
-
-						this.ventanaClientes.getTxtNombreCliente().setText(clienteElegido.getRazon_Social());
-						this.ventanaClientes.getTxtCUIT().setText(clienteElegido.getCUIT());
-						this.ventanaClientes.getTxtDireccion().setText(clienteElegido.getDomicilio());
-						this.ventanaClientes.getTxtDireccion().moveCaretPosition(0);
-						this.ventanaClientes.getTxtContacto().setText(clienteElegido.getContacto());
-						this.ventanaClientes.getTxtTelContacto().setText(clienteElegido.getTelefonoContacto());
-
-						// Convierte el string separado por " ;" a formato lista
-						String correos = clienteElegido.getCorreoElectronico();
-						if (correos != null && !correos.trim().isEmpty()) {
-							correos = correos.replaceAll("\\s*;\\s*", "\n");
-						}
-						ventanaClientes.getTxtCorreo().setText(correos != null ? correos : "");
-
-						this.ventanaClientes.getTxtTelEmpresa().setText(clienteElegido.getTelefonoEmpresa());
-						this.ventanaClientes.getTxtCorreo().moveCaretPosition(0);
-
-						if (cantidadSucursalesXCliente(clienteElegido.getId()) == 1) {
-							SucursalesEncliente = this.agenda.obtenerSucursalesxCliente(clienteElegido.getId()).get(0);
-
-							if (!SucursalesEncliente.getNombreSucursal().isEmpty()) {
-								this.ventanaClientes.getBtnVisualizarSucursales().setVisible(true);
-								this.ventanaClientes.getLblSucursales().setVisible(true);
-							} else {
-								this.ventanaClientes.getBtnVisualizarSucursales().setVisible(false);
-								this.ventanaClientes.getLblSucursales().setVisible(false);
-							}
-
-						} else if (cantidadSucursalesXCliente(clienteElegido.getId()) > 1) {
-							this.ventanaClientes.getBtnVisualizarSucursales().setVisible(true);
-							this.ventanaClientes.getLblSucursales().setVisible(true);
-						} else {
-							this.ventanaClientes.getBtnVisualizarSucursales().setVisible(false);
-							this.ventanaClientes.getLblSucursales().setVisible(false);
-						}
-					}
-				}
-			}
-		}
-
-		if (this.ventanaSucursales != null) {
-
-			if (arg0.getSource() == this.ventanaSucursales.getTablaSucursales()) {
-				int j = this.ventanaSucursales.getTablaSucursales().getSelectedRow();
-				if (j != -1) {
-					// Convertir índice de vista a índice del modelo
-					int modelIndex = this.ventanaSucursales.getTablaSucursales().convertRowIndexToModel(j);
-					if (!Sucursales_en_tabla.isEmpty() && modelIndex < Sucursales_en_tabla.size()) {
-						SucursalesEncliente = Sucursales_en_tabla.get(modelIndex);
-
-						this.ventanaSucursales.getTxtNombreSucursal().setText(SucursalesEncliente.getNombreSucursal());
-						this.ventanaSucursales.getTxtDireccion().setText(SucursalesEncliente.getDomicilioSucursal());
-						this.ventanaSucursales.getTxtDireccion().moveCaretPosition(0);
-						this.ventanaSucursales.getTxtContacto().setText(SucursalesEncliente.getContactoSucursal());
-						this.ventanaSucursales.getTxtTelContacto().setText(SucursalesEncliente.getTelefonoSucursal());
-						this.ventanaSucursales.getTxtCorreo().setText(SucursalesEncliente.getCorreoElectronico());
-					}
-				}
-			}
-		}
 	}
 
 	private int dameIDcliente() {
@@ -1315,6 +1262,40 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
+		
+		if (this.ventanaClientes != null) {
+
+			if (arg0.getSource() == this.ventanaClientes.getTablaClientes()) {
+				int i = this.ventanaClientes.getTablaClientes().getSelectedRow();
+				if (i != -1) {
+					// Convertir índice de vista a índice del modelo
+					int modelIndex = this.ventanaClientes.getTablaClientes().convertRowIndexToModel(i);
+					actualizarSeleccionCliente(modelIndex);
+
+				}
+			}
+		}
+
+		if (this.ventanaSucursales != null) {
+
+			if (arg0.getSource() == this.ventanaSucursales.getTablaSucursales()) {
+				int j = this.ventanaSucursales.getTablaSucursales().getSelectedRow();
+				if (j != -1) {
+					// Convertir índice de vista a índice del modelo
+					int modelIndex = this.ventanaSucursales.getTablaSucursales().convertRowIndexToModel(j);
+					if (!Sucursales_en_tabla.isEmpty() && modelIndex < Sucursales_en_tabla.size()) {
+						SucursalesEncliente = Sucursales_en_tabla.get(modelIndex);
+
+						this.ventanaSucursales.getTxtNombreSucursal().setText(SucursalesEncliente.getNombreSucursal());
+						this.ventanaSucursales.getTxtDireccion().setText(SucursalesEncliente.getDomicilioSucursal());
+						this.ventanaSucursales.getTxtDireccion().moveCaretPosition(0);
+						this.ventanaSucursales.getTxtContacto().setText(SucursalesEncliente.getContactoSucursal());
+						this.ventanaSucursales.getTxtTelContacto().setText(SucursalesEncliente.getTelefonoSucursal());
+						this.ventanaSucursales.getTxtCorreo().setText(SucursalesEncliente.getCorreoElectronico());
+					}
+				}
+			}
+		}
 
 	}
 
