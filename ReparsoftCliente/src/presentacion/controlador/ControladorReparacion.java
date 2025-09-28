@@ -210,6 +210,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
+
+	// En la clase ControladorReparacion
+	private List<String> caracteresNoValidosEncontrados = new ArrayList<>();
+	
+	
 	public ControladorReparacion(VentanaEquipos ventanaEquipos, ControladorUsuLogin controladorUsuLogin, Agenda agendas,
 			ControladorPresupuestos controladorPresupuestos, ControladorSalidas controladorSalidas,
 			ControladorCliente controladorCliente) {
@@ -721,10 +726,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				RegistroEntradaReporteDTO rep = TomarDatosPantallaIngresoRep();
 
-				if (rep == null) {
-					JOptionPane.showMessageDialog(null, "Hay caracteres invalidos ( ' )", "Información",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else {
+				if (!caracteresNoValidosEncontrados.isEmpty()) {
+				    String mensaje = "Caracteres no válidos encontrados: " + String.join(", ", caracteresNoValidosEncontrados);
+				    JOptionPane.showMessageDialog(null, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
+				}
+				
+				else {
 					lista.add(rep);
 
 					ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista);
@@ -748,11 +755,14 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					if (Integer.parseInt(this.ventanaAgregarEquipo.getTextELS()) != DameNumeroELS() - 1) {
 
 						ReparacionDTO nuevoReparacion = TomarDatosPantallaIngreso();
-						if (nuevoReparacion == null) {
-
-							JOptionPane.showMessageDialog(null, "Hay caracteres invalidos ( ' )", "Información",
-									JOptionPane.INFORMATION_MESSAGE);
-						} else {
+						
+						if (!caracteresNoValidosEncontrados.isEmpty()) {
+						    String mensaje = "Caracteres no válidos encontrados: " + String.join(", ", caracteresNoValidosEncontrados);
+						    JOptionPane.showMessageDialog(null, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
+						}
+						
+						
+						else {
 
 							this.agenda.agregarReparacionR(nuevoReparacion);
 
@@ -1934,9 +1944,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ReparacionDTO reparacionAeditar = TomarDatosVisualizacion(ventanaVisualizarEquipos);
 
-		if (reparacionAeditar == null) {
-			JOptionPane.showMessageDialog(null, "Hay caracteres invalidos ( ' )", "Información",
-					JOptionPane.INFORMATION_MESSAGE);
+		// Para mostrar el mensaje en cualquier parte de la clase:
+		if (!caracteresNoValidosEncontrados.isEmpty()) {
+		    String mensaje = "Caracteres no válidos encontrados: " + String.join(", ", caracteresNoValidosEncontrados);
+		    JOptionPane.showMessageDialog(null, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
 		}
 
 		else {
@@ -3853,6 +3864,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		boolean agregadoAremito = reparacion.getAgregadoaremito();
 		boolean remitoGenerado = reparacion.getRemitoGenerado();
+		
+		// Validar campos para evitar inyección de código
+		// Si algún campo no es válido, setear reparacionAeditar a null
+
 
 		if (verificarCaracteresPermitidos(falla) || verificarCaracteresPermitidos(solucion)
 				|| verificarCaracteresPermitidos(informeCliente) || verificarCaracteresPermitidos(NombreEquipo)
@@ -4087,9 +4102,47 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		return matcher.matches();
 	}
 
+//	public boolean verificarCaracteresPermitidos(String texto) {
+//		
+//		return texto.contains("'");
+//		
+//	}
+	
+	
+
+
+
 	public boolean verificarCaracteresPermitidos(String texto) {
-		return texto.contains("'");
+	    caracteresNoValidosEncontrados.clear();
+
+	    // Comillas simples
+	    if (texto.contains("'")) caracteresNoValidosEncontrados.add("'");
+
+	    // Letras griegas (incluye Omega, mayúscula y minúscula)
+	    Pattern patronGriego = Pattern.compile("[\\u0370-\\u03FF\\u1F00-\\u1FFF]", Pattern.UNICODE_CASE);
+	    Matcher matcher = patronGriego.matcher(texto);
+	    while (matcher.find()) {
+	        String caracter = matcher.group();
+	        if (!caracteresNoValidosEncontrados.contains(caracter)) {
+	            caracteresNoValidosEncontrados.add(caracter);
+	        }
+	    }
+
+	    // Símbolos peligrosos para SQL
+	    String[] simbolosNoPermitidos = {";", "\"", "\\", "%", "_", "#", "--", "/*", "*/"};
+	    for (String simbolo : simbolosNoPermitidos) {
+	        if (texto.contains(simbolo) && !caracteresNoValidosEncontrados.contains(simbolo)) {
+	            caracteresNoValidosEncontrados.add(simbolo);
+	        }
+	    }
+
+	    return !caracteresNoValidosEncontrados.isEmpty();
 	}
+
+
+
+
+
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {

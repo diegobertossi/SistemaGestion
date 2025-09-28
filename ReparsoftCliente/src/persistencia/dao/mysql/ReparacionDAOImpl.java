@@ -2272,38 +2272,6 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 			// Llave primaria
 			statement.setInt(28, reparacion_a_editar.getELS());
 
-//			
-//			System.out.println(
-//				    reparacion_a_editar.getFecha_Entrada() + " - " +
-//				    reparacion_a_editar.getFechadereparacion() + " - " +
-//				    reparacion_a_editar.getFalla() + " - " +
-//				    reparacion_a_editar.getSolucion() + " - " +
-//				    reparacion_a_editar.getInformecliente() + " - " +
-//				    reparacion_a_editar.getidUsuario() + " - " +
-//				    reparacion_a_editar.getNombreUsuario() + " - " +
-//				    reparacion_a_editar.getEstadoFisico() + " - " +
-//				    reparacion_a_editar.getEstadoTecnico() + " - " +
-//				    reparacion_a_editar.getEstadoComercial() + " - " +
-//				    reparacion_a_editar.getRemitoCliente() + " - " +
-//				    reparacion_a_editar.getOrdendeCompra() + " - " +
-//				    reparacion_a_editar.getAgregadoaremito() + " - " +
-//				    reparacion_a_editar.getRemitoGenerado() + " - " +
-//				    reparacion_a_editar.getIDEquipo() + " - " +
-//				    reparacion_a_editar.getidRemito() + " - " +
-//				    reparacion_a_editar.getPrecioPeso() + " - " +
-//				    reparacion_a_editar.getPrecioDolar() + " - " +
-//				    reparacion_a_editar.getInformeEnviado() + " - " +
-//				    reparacion_a_editar.getFechAceptacion() + " - " +
-//				    reparacion_a_editar.getPresupuestoGenerado() + " - " +
-//				    reparacion_a_editar.getPresupuestoEnviado() + " - " +
-//				    reparacion_a_editar.getWORDgenerado() + " - " +
-//				    reparacion_a_editar.getWORDenviado() + " - " +
-//				    reparacion_a_editar.getAvisoEnviado()
-//				    reparacion_a_editar.getPago() + " - " +
-//				    reparacion_a_editar.getFecha_Salida() + " - " +
-//				    reparacion_a_editar.getELS()
-//				);
-
 			// Ejecución de la consulta
 			return statement.executeUpdate() > 0;
 
