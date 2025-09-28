@@ -143,7 +143,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 							"Error al registrar una dirección de email", JOptionPane.ERROR_MESSAGE);
 				} else if (existeUsuario(Integer.parseInt(this.ventanaRolesUsuarios.getTxtDNI().getText()))) {
 					JOptionPane.showMessageDialog(null,
-							"Los campos, DNI, Login no pueden estar repetidos con otro usuario", "El dni ya existe",
+							"Los campos DNI y Login no pueden estar repetidos con otro usuario", "CAMPOS REPETIDOS CON OTRO USUARIO",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 
@@ -158,7 +158,26 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 					agenda.agregarUsuario(nuevoUsuario);
 					llenarTablaUsuarios();
+					
+				
+					this.ventanaRolesUsuarios.getBtnGuardarNuevo().setVisible(false);
 					this.ventanaRolesUsuarios.getBtnPermisosXrol().setVisible(true);
+					this.ventanaRolesUsuarios.getBtnCancelarNuevo().setVisible(false);
+
+					this.ventanaRolesUsuarios.getBtnEliminarUsuario().setEnabled(true);
+					this.ventanaRolesUsuarios.getBtnAgregarUsuario().setEnabled(true);
+					this.ventanaRolesUsuarios.getBtnEditarUsuario().setEnabled(true);
+
+					this.ventanaRolesUsuarios.getTxtNombreUsuario().setEditable(false);
+					this.ventanaRolesUsuarios.getTxtApellidoUsuario().setEditable(false);
+					this.ventanaRolesUsuarios.getTxtDNI().setEditable(false);
+					this.ventanaRolesUsuarios.getTxtEmailUsuario().setEditable(false);
+					this.ventanaRolesUsuarios.getTxtLogin().setEditable(false);
+					this.ventanaRolesUsuarios.getTxtPass().setEditable(false);
+					this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setEditable(false);
+					this.ventanaRolesUsuarios.getComboRoles().setVisible(false);
+					
+					
 					this.ventanaRolesUsuarios.getTxtNombreUsuario().setText("");
 					this.ventanaRolesUsuarios.getTxtApellidoUsuario().setText("");
 					this.ventanaRolesUsuarios.getTxtDNI().setText("");
@@ -167,8 +186,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 					this.ventanaRolesUsuarios.getTxtLogin().setText("");
 					this.ventanaRolesUsuarios.getTxtPass().setText("");
 					this.ventanaRolesUsuarios.getTextRol().setText("");
-					this.ventanaRolesUsuarios.getComboRoles().setVisible(false);
-					this.ventanaRolesUsuarios.getBtnAgregarUsuario().setEnabled(true);
+
 					usuarioElegido = null;
 					rolElegido = null;
 				}
