@@ -387,6 +387,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		try (java.sql.Statement stmtRemoto = conexionRemota.createStatement();
 			 java.sql.Statement stmtLocal = conexionLocal.createStatement()) {
 			stmtLocal.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+			stmtLocal.execute("SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
 			try (ResultSet rsCreate = stmtRemoto.executeQuery("SHOW CREATE TABLE `" + nombreTabla + "`")) {
 				if (rsCreate.next()) {
 					String createStatement = rsCreate.getString(2);
@@ -655,7 +656,11 @@ public boolean GenerarBackupMySQLRemoto(String ubicacion, String cleverCloudHost
 
             System.out.println("Limpiando base de dato remota...");
             limpiarBaseDatos(conexionRemota);
+            
 
+            stmt.execute("SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
+
+            
             System.out.println("Restaurando backup en Clever Cloud...");
             List<String> sentencias = parseSqlStatements(archivoTemporal);
             int sentenciasEjecutadas = 0;

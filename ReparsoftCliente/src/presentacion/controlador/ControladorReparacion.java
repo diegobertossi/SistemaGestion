@@ -60,7 +60,9 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -111,10 +113,14 @@ import dto.RegistroEntradaReporteDTO;
 import dto.ReparacionDTO;
 import dto.RepuestosDTO;
 import dto.SucursalDTO;
+import dto.UsuarioDTO;
 
 import java.security.SecureRandom;
 import java.math.BigInteger;
 import java.net.URI;
+
+import javax.swing.event.PopupMenuListener;
+import javax.swing.event.PopupMenuEvent;
 
 public class ControladorReparacion implements ActionListener, MouseListener, KeyListener, ItemListener {
 
@@ -1947,7 +1953,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		llenarComboClienteV(ventanaVisualizarEquipos);
 		llenarComboTecnico(ventanaVisualizarEquipos);
-//
 		habilitarCampos(ventanaVisualizarEquipos);
 		guardado = false;
 	}
@@ -2488,8 +2493,16 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboModelo(), true, false);
 		VistaPropias.AutoCompletarComboBox.enable(ventanaAgregarEquipo.getComboSerie(), true, false);
 
-		
 		performActionOnTextComponents(ventanaAgregarEquipo);
+
+		habilitarMenuContextual(ventanaAgregarEquipo.getComboNombreEquipo());
+		habilitarMenuContextual(ventanaAgregarEquipo.getComboMarca());
+		habilitarMenuContextual(ventanaAgregarEquipo.getComboModelo());
+		habilitarMenuContextual(ventanaAgregarEquipo.getComboSerie());
+		habilitarMenuContextual(ventanaAgregarEquipo.getTextFalla());
+		habilitarMenuContextual(ventanaAgregarEquipo.getTextRemitoCliente());
+		habilitarMenuContextual(ventanaAgregarEquipo.getTextClienteCliente());
+		habilitarMenuContextual(ventanaAgregarEquipo.getTextAvisoCliente());
 
 		// Java
 
@@ -2515,11 +2528,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		// Configuración inicial específica para esta función
 		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
 			ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicial));
-			
 
 		} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
 			ventanaVisualizarEquipos.setTextELS(Integer.toString(ELSinicialBSAS));
-			
 
 		}
 
@@ -2564,10 +2575,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		return ventanaVisualizarEquipos;
 	}
-	
-	
-	
-	
 
 	public VentanaVisualizarEquipos ActualizarDatosDeTablasListado(int numeroELSSeleccionado2,
 			VentanaVisualizarEquipos ventanaVisualizarEquipos) throws ParseException {
@@ -3047,7 +3054,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		// String nombreCliente = "";
 		// String nombreSucursal = "";
-		String nombreTecnico = "";
+		String nombreTecnico = ventanaVisualizarEquipos.getTextNombreTecnico().getText().trim();
 
 		String nombreCliente = ventanaVisualizarEquipos.getTextCliente().getText(); // Obtener el texto actual del
 																					// JTextField
@@ -3056,6 +3063,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		String nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
 		DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventanaVisualizarEquipos
 				.getComboSucursal().getModel();
+
+		DefaultComboBoxModel<UsuarioDTO> modelTecnico = (DefaultComboBoxModel<UsuarioDTO>) ventanaVisualizarEquipos
+				.getComboTecnico().getModel();
 
 		ventanaVisualizarEquipos.getTextNombreEquipo().setEditable(true);
 		ventanaVisualizarEquipos.getTextModelo().setEditable(true);
@@ -3112,17 +3122,16 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		}
 
-		// nombreCliente = ventanaVisualizarEquipos.getTextCliente().getText();
-		// nombreSucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
-		nombreTecnico = ventanaVisualizarEquipos.getTextNombreTecnico().getText();
-
-		int idcliente = IDClientePorNombre(nombreCliente);
-		int idSucursal = IDSucursalPorNombre(nombreSucursal, idcliente);
-		int idtecnico = IDUsuarioPorNombre(nombreTecnico) - 1;
-
-		// ventanaVisualizarEquipos.getComboClientes().setSelectedIndex(idcliente);
-		// ventanaVisualizarEquipos.getComboSucursal().setSelectedItem(nombreSucursal);
-		ventanaVisualizarEquipos.getComboTecnico().setSelectedIndex(idtecnico);
+		// Selecciona el técnico solo si hay coincidencia real, omitiendo el primer ítem
+		// si es vacío
+		for (int i = 0; i < modelTecnico.getSize(); i++) {
+			UsuarioDTO tecnico = modelTecnico.getElementAt(i);
+			String NombreTecnicoCompleto = tecnico.getNombre() + " " + tecnico.getApellido();
+			if (NombreTecnicoCompleto.equalsIgnoreCase(nombreTecnico)) {
+				ventanaVisualizarEquipos.getComboTecnico().setSelectedIndex(i);
+				break;
+			}
+		}
 
 	}
 
@@ -3600,7 +3609,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private void llenarComboTecnico(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
 		agenda.ListarTecnicosV(ventanaVisualizarEquipos.getComboTecnico());
-
 	}
 
 	private int dameIDequipo() {
@@ -3623,8 +3631,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		} else if (ubicacionDeBase.compareTo("Bariloche") == 0) {
 			ELS = agenda.dameNumeroELS() + 1;
 			if (ventanaAgregarEquipo != null) {
-				ventanaAgregarEquipo.getGrupoEstadoFisico()
-						.setSelected(ventanaAgregarEquipo.getRdbtnBRC().getModel(), true);
+				ventanaAgregarEquipo.getGrupoEstadoFisico().setSelected(ventanaAgregarEquipo.getRdbtnBRC().getModel(),
+						true);
 			}
 		}
 		return ELS;
@@ -3965,47 +3973,102 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	private boolean verificacionDatosIngreso() {
-
 		boolean salida = false;
+
 		if (idCli == 0) {
-
-			Object mje = "Debe asignar un Cliente a la reparación ";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE); // Tipo
-		} else if (ventanaAgregarEquipo.getFechaEntrada().getDate() == null) {
-
-			Object mje = "Fecha de entrada Incorrecta. Colocar una fecha Válida dd/mm/aaaa. Distinta de 00/00/0000";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE); // Tipo
-
-		} else if (ventanaAgregarEquipo.getComboNombreEquipo().getSelectedItem().toString().compareTo("") == 0
-				|| ventanaAgregarEquipo.getComboNombreEquipo().getSelectedItem().toString().compareTo(" ") == 0) {
-
+			Object mje = "'CLIENTE'. Campo obligatorio.";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+		} else if (ventanaAgregarEquipo.getComboNombreEquipo().getSelectedItem() == null
+				|| ventanaAgregarEquipo.getComboNombreEquipo().getSelectedItem().toString().trim().isEmpty()) {
 			Object mje = "'NOMBRE DE EQUIPO'. Campo obligatorio.";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE); // Tipo
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+		} else if (ventanaAgregarEquipo.getComboModelo().getSelectedItem() == null
+				|| ventanaAgregarEquipo.getComboModelo().getSelectedItem().toString().trim().isEmpty()) {
+			Object mje = "'MODELO'. Campo obligatorio.";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+		} else if (ventanaAgregarEquipo.getComboSerie().getSelectedItem() == null
+				|| ventanaAgregarEquipo.getComboSerie().getSelectedItem().toString().trim().isEmpty()) {
+			Object mje = "'SERIE'. Campo obligatorio.";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+		} else if (ventanaAgregarEquipo.getComboMarca().getSelectedItem() == null
+				|| ventanaAgregarEquipo.getComboMarca().getSelectedItem().toString().trim().isEmpty()) {
+			Object mje = "'MARCA'. Campo obligatorio.";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+		} else if (ventanaAgregarEquipo.getComboClientes().getSelectedItem() == null
+				|| ventanaAgregarEquipo.getComboClientes().getSelectedItem().toString().trim().isEmpty()) {
+			Object mje = "'CLIENTE'. Campo obligatorio.";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+		}
 
-		} else if (ventanaAgregarEquipo.getComboSerie().getSelectedItem() == null) {
-
-			Object mje = "'NÚMERO DE SERIE'. Campo obligatorio.";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE); // Tipo
-		} else if (ventanaAgregarEquipo.getComboSerie().getSelectedItem().toString().compareTo("") == 0
-				|| ventanaAgregarEquipo.getComboSerie().getSelectedItem().toString().compareTo(" ") == 0) {
-
-			Object mje = "'NÚMERO DE SERIE'. Campo obligatorio.";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE); // Tipo
-
-		} else if (ventanaAgregarEquipo.getComboClientes().getSelectedItem().toString().compareTo("Siemens SA") == 0
+		else if (ventanaAgregarEquipo.getComboClientes().getSelectedItem().toString().compareTo("Siemens SA") == 0
 				&& ventanaAgregarEquipo.getTextFechafabricacion().getDate() == null) {
-
-			Object mje = "Fecha de fabricación Incorrecta. Colocar una fecha Válida dd/mm/aaaa. Distinta de 00/00/0000";
-			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE); // Tipo
-
+			Object mje = "'FECHA DE FABRICACIÓN'. Campo obligatorio para Siemens SA.";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 		} else {
-
 			salida = true;
-
 		}
 
 		return salida;
+	}
 
+	public static void habilitarMenuContextual(Object componente) {
+		final JTextComponent editor;
+
+		if (componente instanceof JComboBox) {
+			JComboBox<?> comboBox = (JComboBox<?>) componente;
+			if (!comboBox.isEditable())
+				return;
+			editor = (JTextComponent) comboBox.getEditor().getEditorComponent();
+		} else if (componente instanceof JTextField) {
+			editor = (JTextComponent) componente;
+		} else if (componente instanceof javax.swing.JTextArea) {
+			editor = (JTextComponent) componente;
+		} else {
+			return;
+		}
+
+		JPopupMenu menu = new JPopupMenu();
+		JMenuItem copiar = new JMenuItem("Copiar");
+		JMenuItem pegar = new JMenuItem("Pegar");
+
+		copiar.addActionListener(e -> editor.copy());
+		pegar.addActionListener(e -> editor.paste());
+
+		menu.add(copiar);
+		menu.add(pegar);
+
+		menu.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+				menu.setVisible(false);
+			}
+		});
+
+		editor.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger())
+					showMenu(e);
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger())
+					showMenu(e);
+			}
+
+			private void showMenu(MouseEvent e) {
+				menu.show(editor, e.getX(), e.getY());
+			}
+		});
 	}
 
 	private void llenarComboSeries() {
