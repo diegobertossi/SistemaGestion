@@ -14,7 +14,8 @@ public class PopupProgresoBackup {
         popup.setTitle("Procesando");
         popup.setModal(false);
         popup.setSize(350, 120);
-        popup.setResizable(false); 
+        popup.setResizable(false);
+        popup.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // Desactiva la X
         popup.setLocationRelativeTo(parent);
 
         label = new JLabel(mensaje, SwingConstants.CENTER);
