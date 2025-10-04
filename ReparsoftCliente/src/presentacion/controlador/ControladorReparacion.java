@@ -2001,6 +2001,20 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getTextPresupuestoDolar().addKeyListener(this);
 
 		ventanaVisualizarEquipos.getBtnBuscarELS().addActionListener(this);
+		
+
+		
+		ventanaVisualizarEquipos.getComboELS().getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+		    @Override
+		    public void keyPressed(KeyEvent e) {
+		        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+		            // Simula el click del botón BuscarELS
+		            ventanaVisualizarEquipos.getBtnBuscarELS().doClick();
+		        }
+		    }
+		});
+
+		
 
 		if (ventanaBusquedaEquipo == null) {
 			ventanaVisualizarEquipos.getBtnBuscar().addActionListener(this);

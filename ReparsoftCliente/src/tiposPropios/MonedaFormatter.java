@@ -67,21 +67,54 @@ public class MonedaFormatter {
         }
     }
 
-    public double parseAmount(String amount) {
-        // Elimina todos los caracteres no numéricos, excepto comas y puntos
-        String cleanedAmount = amount.replaceAll("[^0-9,.]", "");
+    
+    
+    
 
-        try {
-            // Sustituye comas por puntos para obtener un formato válido para Double
-            cleanedAmount = cleanedAmount.replace(",", ".");
+ // Java
+ public double parseAmount(String amount) {
+     if (amount == null || amount.trim().isEmpty()) {
+         return 0.0;
+     }
+     // Elimina símbolos de moneda y espacios
+     String cleanedAmount = amount.replaceAll("[^0-9.,]", "");
+     // Si hay más de una coma, la última es el decimal, las otras son miles
+     int lastComma = cleanedAmount.lastIndexOf(',');
+     int lastDot = cleanedAmount.lastIndexOf('.');
+     if (lastComma > lastDot) {
+         // Formato argentino: 1.234,56
+         cleanedAmount = cleanedAmount.replace(".", ""); // quita puntos de miles
+         cleanedAmount = cleanedAmount.replace(",", "."); // decimal a punto
+     } else if (lastDot > lastComma) {
+         // Formato inglés: 1,234.56
+         cleanedAmount = cleanedAmount.replace(",", ""); // quita comas de miles
+         // el punto ya es decimal
+     }
+     try {
+         return Double.parseDouble(cleanedAmount);
+     } catch (NumberFormatException e) {
+         System.out.println("error numero " + cleanedAmount);
+         return 0.00;
+     }
+ }
 
-            // Intenta analizar el número
-            return Double.parseDouble(cleanedAmount);
-
-        } catch (NumberFormatException e) {
-            return 0.00; // Valor predeterminado si no se puede analizar el número
-        }
-    }
+//    public double parseAmount(String amount) {
+//        // Elimina todos los caracteres no numéricos, excepto comas y puntos
+//        String cleanedAmount = amount.replaceAll("[^0-9,.]", "");
+//
+//        try {
+//            // Sustituye comas por puntos para obtener un formato válido para Double
+//            cleanedAmount = cleanedAmount.replace(",", ".");
+//
+//            // Intenta analizar el número
+//            return Double.parseDouble(cleanedAmount);
+//
+//        } catch (NumberFormatException e) {
+//            return 0.00; // Valor predeterminado si no se puede analizar el número
+//        }
+//    }
+//    
+    
 
     public double parseAmountGuardar(String amount) {
         // Elimina todos los caracteres no numéricos, excepto comas y puntos

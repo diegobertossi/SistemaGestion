@@ -140,7 +140,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			btnpago = true;
 
 			ventanaSeleccionarELS = new VentanaSeleccionarELS(this);
-			
+
 			ventanaSeleccionarELS.getComboELS().addActionListener(this);
 			ventanaSeleccionarELS.getBtnAceptar().addActionListener(this);
 			ventanaSeleccionarELS.getBtnCancelar().addActionListener(this);
@@ -327,7 +327,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 				this.agenda.editarReparacionPresupuesto(reparacionAeditar);
 
-				
 				ventanaGenerarPresupuesto.getTextInforme().setEditable(false);
 				ventanaGenerarPresupuesto.getTextInforme().setBackground(Color.LIGHT_GRAY);
 
@@ -346,60 +345,112 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			}
 		}
 
+
+
+		// Java
 		else if (this.ventanaGenerarPresupuesto != null
-				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnCotizacionDolar()) {
+		    && e.getSource() == this.ventanaGenerarPresupuesto.getBtnCotizacionDolar()) {
 
-			DecimalFormat df = new DecimalFormat("#.##");
+		    DecimalFormat df = new DecimalFormat("#.##");
+		    double[] cotizaciones = consumoAPI.ConsumoAPI.consultaCotizacionDolar();
 
-			double[] cotizaciones = consumoAPI.ConsumoAPI.consultaCotizacionDolar();
+		    String cotizacionDolarOf = Double.toString(cotizaciones[0]);
+		    String cotizacionDolarBl = Double.toString(cotizaciones[1]);
 
-			String cotizacionDolarOf = Double.toString(cotizaciones[0]);
+		    // Usar MonedaFormatter para parsear correctamente los campos
+		    String textoPeso = ventanaGenerarPresupuesto.getTextPrecioPeso().getText();
+		    String textoDolar = ventanaGenerarPresupuesto.getTextPrecioDolar().getText();
 
-			String cotizacionDolarBl = Double.toString(cotizaciones[1]);
+		    double presupuestoPesos = monedaFormatter.parseAmount(textoPeso);
+		    double presupuestoDolar = monedaFormatter.parseAmount(textoDolar);
 
-			double presupuestoPesos = reparacion.getPrecioPeso();
-			double presupuestoDolar = reparacion.getPrecioDolar();
+		    ventanaGenerarPresupuesto.getTextCotizacionDolarOf().setText(cotizacionDolarOf);
+		    ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
 
-			ventanaGenerarPresupuesto.getTextCotizacionDolarOf().setText(cotizacionDolarOf);
-			ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
+		    // Depuración
+		    System.out.println("textoPeso: " + textoPeso);
+		    System.out.println("textoDolar: " + textoDolar);
+		    System.out.println("presupuestoPesos: " + presupuestoPesos);
+		    System.out.println("presupuestoDolar: " + presupuestoDolar);
 
-			System.out.println(presupuestoPesos + "   " + Double.toString(presupuestoPesos).compareTo("0.0"));
+		    boolean pesosCero = Math.abs(presupuestoPesos) < 0.0001;
+		    boolean dolarCero = Math.abs(presupuestoDolar) < 0.0001;
 
-			if (Double.toString(presupuestoPesos).compareTo("0.0") != 0
-					&& Double.toString(presupuestoDolar).compareTo("0.0") == 0) {
+		    System.out.println("pesosCero: " + pesosCero);
+		    System.out.println("dolarCero: " + dolarCero);
 
-				double sugerenciaDolar = presupuestoPesos / cotizaciones[0];
-				String sugerenciaDolarString = df.format(sugerenciaDolar);
-
-				String sugerenciaPesoString = df.format(presupuestoPesos);
-
-				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(sugerenciaDolarString);
-				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(sugerenciaPesoString);
-
-			}
-
-			if (Double.toString(presupuestoPesos).compareTo("0.0") == 0
-					&& Double.toString(presupuestoDolar).compareTo("0.0") != 0) {
-
-				double sugerenciaPeso = presupuestoDolar * cotizaciones[0];
-				String sugerenciaPesoString = df.format(sugerenciaPeso);
-
-				String sugerenciaDolarString = df.format(presupuestoDolar);
-
-				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(sugerenciaDolarString);
-				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(sugerenciaPesoString);
-
-			}
-
-			if (Double.toString(presupuestoPesos).compareTo("0.0") == 0
-					&& Double.toString(presupuestoDolar).compareTo("0.0") == 0) {
-
-				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText("0.0");
-				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText("0.0");
-
-			}
-
+		    if (!pesosCero && dolarCero) {
+		        double sugerenciaDolar = presupuestoPesos / cotizaciones[0];
+		        ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(df.format(sugerenciaDolar));
+		        ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(df.format(presupuestoPesos));
+		        System.out.println("Sugerencia: solo pesos, calculando dólares");
+		    } else if (pesosCero && !dolarCero) {
+		        double sugerenciaPeso = presupuestoDolar * cotizaciones[0];
+		        ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(df.format(sugerenciaPeso));
+		        ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(df.format(presupuestoDolar));
+		        System.out.println("Sugerencia: solo dólares, calculando pesos");
+		    } else {
+		        ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText("");
+		        ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText("");
+		        System.out.println("No se muestra sugerencia");
+		    }
 		}
+
+
+//		else if (this.ventanaGenerarPresupuesto != null
+//				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnCotizacionDolar()) {
+//
+//			DecimalFormat df = new DecimalFormat("#.##");
+//
+//			double[] cotizaciones = consumoAPI.ConsumoAPI.consultaCotizacionDolar();
+//
+//			String cotizacionDolarOf = Double.toString(cotizaciones[0]);
+//
+//			String cotizacionDolarBl = Double.toString(cotizaciones[1]);
+//
+//			double presupuestoPesos = reparacion.getPrecioPeso();
+//			double presupuestoDolar = reparacion.getPrecioDolar();
+//
+//			ventanaGenerarPresupuesto.getTextCotizacionDolarOf().setText(cotizacionDolarOf);
+//			ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
+//
+//			System.out.println(presupuestoPesos + "   " + Double.toString(presupuestoPesos).compareTo("0.0"));
+//
+//			if (Double.toString(presupuestoPesos).compareTo("0.0") != 0
+//					&& Double.toString(presupuestoDolar).compareTo("0.0") == 0) {
+//
+//				double sugerenciaDolar = presupuestoPesos / cotizaciones[0];
+//				String sugerenciaDolarString = df.format(sugerenciaDolar);
+//
+//				String sugerenciaPesoString = df.format(presupuestoPesos);
+//
+//				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(sugerenciaDolarString);
+//				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(sugerenciaPesoString);
+//
+//			}
+//
+//			if (Double.toString(presupuestoPesos).compareTo("0.0") == 0
+//					&& Double.toString(presupuestoDolar).compareTo("0.0") != 0) {
+//
+//				double sugerenciaPeso = presupuestoDolar * cotizaciones[0];
+//				String sugerenciaPesoString = df.format(sugerenciaPeso);
+//
+//				String sugerenciaDolarString = df.format(presupuestoDolar);
+//
+//				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(sugerenciaDolarString);
+//				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(sugerenciaPesoString);
+//
+//			}
+//
+//			if (Double.toString(presupuestoPesos).compareTo("0.0") == 0
+//					&& Double.toString(presupuestoDolar).compareTo("0.0") == 0) {
+//
+//				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText("0.0");
+//				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText("0.0");
+//
+//			}
+//
+//		}
 
 		else if (this.ventanaGenerarPresupuesto != null
 				&& e.getSource() == this.ventanaGenerarPresupuesto.getGuardarPresupuestoPDF()) {
@@ -893,8 +944,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					agenda.editarReparacionPresupuesto(reparacionAeditar);
 
 				} catch (Exception ex) {
-					
-					popup.dispose();					
+
+					popup.dispose();
 					ex.printStackTrace();
 //					JOptionPane.showMessageDialog(null, "El correo NO ha sido enviado.", "Error de envío", JOptionPane.WARNING_MESSAGE);
 				}
@@ -970,8 +1021,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		});
 
 	}
-	
-	
+
 	public void cerraVentanaAgregarPrecio() {
 
 		this.ventanaIngresoDePago.addWindowListener(new WindowAdapter() {
@@ -1737,7 +1787,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		String estadoComercial;
 		String fechaAceptacion;
 
-		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd");
 
 		fechaAceptacion = dtf.format(LocalDateTime.now());
