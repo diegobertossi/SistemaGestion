@@ -112,6 +112,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 		String NombreBackUpSinExtension = "Backup Reparsoft " + dia.getDate() + "-" + (dia.getMonth() + 1) + "-"
 				+ (dia.getYear() + 1900);
+		
 
 		if (ventanaBackUp != null && e.getSource() == ventanaBackUp.getBtnGenerarB()) {
 			if (seleccion == ventanaBackUp.getRdbtnLocal().getModel()) {

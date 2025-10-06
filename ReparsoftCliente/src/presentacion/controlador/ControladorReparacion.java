@@ -361,6 +361,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonEditarEstados()) {
+			
+			ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(false);
 
 			ventanaEstados = editarEstados(ventanaVisualizarEquipos);
 
@@ -379,6 +381,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaEstados != null && e.getSource() == this.ventanaEstados.getBtnAceptarEdicion()) {
 
+			ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(true);
 			aceptarEdicionEstados(ventanaVisualizarEquipos);
 
 		}
@@ -4143,7 +4146,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	    }
 
 	    // Símbolos peligrosos para SQL
-	    String[] simbolosNoPermitidos = {";", "\"", "\\", "%", "_", "#", "--", "/*", "*/"};
+//	    String[] simbolosNoPermitidos = {";", "\"", "\\", "%", "/*", "*/"};
+	    String[] simbolosNoPermitidos = {";","\\", "/*", "*/"};
 	    for (String simbolo : simbolosNoPermitidos) {
 	        if (texto.contains(simbolo) && !caracteresNoValidosEncontrados.contains(simbolo)) {
 	            caracteresNoValidosEncontrados.add(simbolo);
