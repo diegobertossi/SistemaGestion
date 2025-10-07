@@ -162,6 +162,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private SucursalDTO Sucursal;
 
 	private RepuestosDTO repuestoElegido;
+	private RepuestosDTO nuevoRepuesto;
 	boolean guardado = true;
 
 	private Agenda agenda;
@@ -210,11 +211,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
-
 	// En la clase ControladorReparacion
 	private List<String> caracteresNoValidosEncontrados = new ArrayList<>();
-	
-	
+
 	public ControladorReparacion(VentanaEquipos ventanaEquipos, ControladorUsuLogin controladorUsuLogin, Agenda agendas,
 			ControladorPresupuestos controladorPresupuestos, ControladorSalidas controladorSalidas,
 			ControladorCliente controladorCliente) {
@@ -361,7 +360,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBotonEditarEstados()) {
-			
+
 			ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(false);
 
 			ventanaEstados = editarEstados(ventanaVisualizarEquipos);
@@ -730,10 +729,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				RegistroEntradaReporteDTO rep = TomarDatosPantallaIngresoRep();
 
 				if (!caracteresNoValidosEncontrados.isEmpty()) {
-				    String mensaje = "Caracteres no válidos encontrados: " + String.join(", ", caracteresNoValidosEncontrados);
-				    JOptionPane.showMessageDialog(null, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
+					String mensaje = "Caracteres no válidos encontrados: "
+							+ String.join(", ", caracteresNoValidosEncontrados);
+					JOptionPane.showMessageDialog(null, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
 				}
-				
+
 				else {
 					lista.add(rep);
 
@@ -758,13 +758,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 					if (Integer.parseInt(this.ventanaAgregarEquipo.getTextELS()) != DameNumeroELS() - 1) {
 
 						ReparacionDTO nuevoReparacion = TomarDatosPantallaIngreso();
-						
+
 						if (!caracteresNoValidosEncontrados.isEmpty()) {
-						    String mensaje = "Caracteres no válidos encontrados: " + String.join(", ", caracteresNoValidosEncontrados);
-						    JOptionPane.showMessageDialog(null, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
+							String mensaje = "Caracteres no válidos encontrados: "
+									+ String.join(", ", caracteresNoValidosEncontrados);
+							JOptionPane.showMessageDialog(null, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
 						}
-						
-						
+
 						else {
 
 							this.agenda.agregarReparacionR(nuevoReparacion);
@@ -1634,7 +1634,16 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private void AgregarRepuesto(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
 		RepuestosDTO nuevoRepuesto = TomarDatosRepuesto(ventanaVisualizarEquipos);
-		this.agenda.agregarRepuesto(nuevoRepuesto);
+
+		// Para mostrar el mensaje en cualquier parte de la clase:
+		if (!caracteresNoValidosEncontrados.isEmpty()) {
+			String mensaje = "Caracteres no válidos encontrados: " + String.join(", ", caracteresNoValidosEncontrados);
+			JOptionPane.showMessageDialog(null, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
+		}
+
+		else {
+			this.agenda.agregarRepuesto(nuevoRepuesto);
+		}
 
 		this.ventanaagregarRepuesto.dispose();
 		this.ventanaagregarRepuesto = null;
@@ -1949,8 +1958,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		// Para mostrar el mensaje en cualquier parte de la clase:
 		if (!caracteresNoValidosEncontrados.isEmpty()) {
-		    String mensaje = "Caracteres no válidos encontrados: " + String.join(", ", caracteresNoValidosEncontrados);
-		    JOptionPane.showMessageDialog(null, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
+			String mensaje = "Caracteres no válidos encontrados: " + String.join(", ", caracteresNoValidosEncontrados);
+			JOptionPane.showMessageDialog(null, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
 		}
 
 		else {
@@ -2004,20 +2013,16 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getTextPresupuestoDolar().addKeyListener(this);
 
 		ventanaVisualizarEquipos.getBtnBuscarELS().addActionListener(this);
-		
 
-		
 		ventanaVisualizarEquipos.getComboELS().getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
-		    @Override
-		    public void keyPressed(KeyEvent e) {
-		        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-		            // Simula el click del botón BuscarELS
-		            ventanaVisualizarEquipos.getBtnBuscarELS().doClick();
-		        }
-		    }
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					// Simula el click del botón BuscarELS
+					ventanaVisualizarEquipos.getBtnBuscarELS().doClick();
+				}
+			}
 		});
-
-		
 
 		if (ventanaBusquedaEquipo == null) {
 			ventanaVisualizarEquipos.getBtnBuscar().addActionListener(this);
@@ -2582,7 +2587,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		ventanaVisualizarEquipos.setTextELS(Integer.toString(numeroELSSeleccionado));
 		cargarDatosComunes(ventanaVisualizarEquipos, numeroELSSeleccionado);
-		ELSinicial = numeroELSSeleccionado;
+
+		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0)
+			ELSinicial = numeroELSSeleccionado;
+		else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0)
+			ELSinicialBSAS = numeroELSSeleccionado;
+
 	}
 
 	public VentanaVisualizarEquipos TomarDatosDeTablasListado(int numeroELSSeleccionado2,
@@ -2883,11 +2893,18 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		String Referencia = this.ventanaagregarRepuesto.getTxtReferencia().getText();
 		String Original = this.ventanaagregarRepuesto.getTxtOriginal().getText();
 		String Reemplazo = this.ventanaagregarRepuesto.getTxtReemplazo().getText();
-		;
-		String Nota = this.ventanaagregarRepuesto.getTxtNota().getText();
-		;
 
-		RepuestosDTO nuevoRepuesto = new RepuestosDTO(ELS, Referencia, Original, Reemplazo, Nota);
+		String Nota = this.ventanaagregarRepuesto.getTxtNota().getText();
+
+		if (verificarCaracteresPermitidos(Referencia) || verificarCaracteresPermitidos(Original)
+				|| verificarCaracteresPermitidos(Reemplazo) || verificarCaracteresPermitidos(Nota)) {
+
+			nuevoRepuesto = null;
+
+		} else {
+			nuevoRepuesto = new RepuestosDTO(ELS, Referencia, Original, Reemplazo, Nota);
+
+		}
 
 		return nuevoRepuesto;
 
@@ -3881,10 +3898,9 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		boolean agregadoAremito = reparacion.getAgregadoaremito();
 		boolean remitoGenerado = reparacion.getRemitoGenerado();
-		
+
 		// Validar campos para evitar inyección de código
 		// Si algún campo no es válido, setear reparacionAeditar a null
-
 
 		if (verificarCaracteresPermitidos(falla) || verificarCaracteresPermitidos(solucion)
 				|| verificarCaracteresPermitidos(informeCliente) || verificarCaracteresPermitidos(NombreEquipo)
@@ -4119,48 +4135,34 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		return matcher.matches();
 	}
 
-//	public boolean verificarCaracteresPermitidos(String texto) {
-//		
-//		return texto.contains("'");
-//		
-//	}
-	
-	
-
-
-
 	public boolean verificarCaracteresPermitidos(String texto) {
-	    caracteresNoValidosEncontrados.clear();
+		caracteresNoValidosEncontrados.clear();
 
-	    // Comillas simples
-	    if (texto.contains("'")) caracteresNoValidosEncontrados.add("'");
+		// Comillas simples
+		if (texto.contains("'"))
+			caracteresNoValidosEncontrados.add("'");
 
-	    // Letras griegas (incluye Omega, mayúscula y minúscula)
-	    Pattern patronGriego = Pattern.compile("[\\u0370-\\u03FF\\u1F00-\\u1FFF]", Pattern.UNICODE_CASE);
-	    Matcher matcher = patronGriego.matcher(texto);
-	    while (matcher.find()) {
-	        String caracter = matcher.group();
-	        if (!caracteresNoValidosEncontrados.contains(caracter)) {
-	            caracteresNoValidosEncontrados.add(caracter);
-	        }
-	    }
+		// Letras griegas (incluye Omega, mayúscula y minúscula)
+		Pattern patronGriego = Pattern.compile("[\\u0370-\\u03FF\\u1F00-\\u1FFF]", Pattern.UNICODE_CASE);
+		Matcher matcher = patronGriego.matcher(texto);
+		while (matcher.find()) {
+			String caracter = matcher.group();
+			if (!caracteresNoValidosEncontrados.contains(caracter)) {
+				caracteresNoValidosEncontrados.add(caracter);
+			}
+		}
 
-	    // Símbolos peligrosos para SQL
+		// Símbolos peligrosos para SQL
 //	    String[] simbolosNoPermitidos = {";", "\"", "\\", "%", "/*", "*/"};
-	    String[] simbolosNoPermitidos = {";","\\", "/*", "*/"};
-	    for (String simbolo : simbolosNoPermitidos) {
-	        if (texto.contains(simbolo) && !caracteresNoValidosEncontrados.contains(simbolo)) {
-	            caracteresNoValidosEncontrados.add(simbolo);
-	        }
-	    }
+		String[] simbolosNoPermitidos = { ";", "\\", "/*", "*/" };
+		for (String simbolo : simbolosNoPermitidos) {
+			if (texto.contains(simbolo) && !caracteresNoValidosEncontrados.contains(simbolo)) {
+				caracteresNoValidosEncontrados.add(simbolo);
+			}
+		}
 
-	    return !caracteresNoValidosEncontrados.isEmpty();
+		return !caracteresNoValidosEncontrados.isEmpty();
 	}
-
-
-
-
-
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
