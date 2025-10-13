@@ -347,7 +347,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			lista.add(rep);
 
-			ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista);
+			ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista, agenda);
 			reporte.mostrar();
 
 		}
@@ -737,8 +737,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				else {
 					lista.add(rep);
 
-					ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista);
+					ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista, agenda);
 					reporte.mostrar();
+					reporte.guardar();
+
 				}
 
 			}
@@ -793,6 +795,26 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 							ventanaAgregarEquipo.getBotonIRaELS().setEnabled(true);
 
 						}
+
+						opcion = JOptionPane.showConfirmDialog(null, "¿Generar Registro de Ingreso?", "Aviso",
+								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+						switch (opcion) {
+						case JOptionPane.YES_OPTION:
+							System.out.println("Generar Registro de Ingreso");
+
+							ventanaAgregarEquipo.getBotonGenerarRegistro().doClick();
+
+							break;
+
+						case JOptionPane.NO_OPTION:
+							System.out.println("No generar Registro de Ingreso");
+							break;
+
+						default:
+							break;
+						}
+
 					}
 
 					else {
@@ -1787,14 +1809,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			ventanaVisualizarEquipos.setTextLugarDeIngreso(lugarDeIngreso);
 
 		}
-
-//		if (cambioDeEstadoBoolean) {
-//			Object mje = "Deberá 'GUARDAR CAMBIOS' para mantener las modificaciones.";
-//			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-//		} else {
-//			Object mje = "No se realizó ningún cambio de estado.";
-//			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-//		}
 
 		this.ventanaEstados.dispose();
 		this.ventanaEstados = null;

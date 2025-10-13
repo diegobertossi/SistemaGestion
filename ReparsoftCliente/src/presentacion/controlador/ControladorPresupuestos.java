@@ -397,61 +397,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 
 
-//		else if (this.ventanaGenerarPresupuesto != null
-//				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnCotizacionDolar()) {
-//
-//			DecimalFormat df = new DecimalFormat("#.##");
-//
-//			double[] cotizaciones = consumoAPI.ConsumoAPI.consultaCotizacionDolar();
-//
-//			String cotizacionDolarOf = Double.toString(cotizaciones[0]);
-//
-//			String cotizacionDolarBl = Double.toString(cotizaciones[1]);
-//
-//			double presupuestoPesos = reparacion.getPrecioPeso();
-//			double presupuestoDolar = reparacion.getPrecioDolar();
-//
-//			ventanaGenerarPresupuesto.getTextCotizacionDolarOf().setText(cotizacionDolarOf);
-//			ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
-//
-//			System.out.println(presupuestoPesos + "   " + Double.toString(presupuestoPesos).compareTo("0.0"));
-//
-//			if (Double.toString(presupuestoPesos).compareTo("0.0") != 0
-//					&& Double.toString(presupuestoDolar).compareTo("0.0") == 0) {
-//
-//				double sugerenciaDolar = presupuestoPesos / cotizaciones[0];
-//				String sugerenciaDolarString = df.format(sugerenciaDolar);
-//
-//				String sugerenciaPesoString = df.format(presupuestoPesos);
-//
-//				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(sugerenciaDolarString);
-//				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(sugerenciaPesoString);
-//
-//			}
-//
-//			if (Double.toString(presupuestoPesos).compareTo("0.0") == 0
-//					&& Double.toString(presupuestoDolar).compareTo("0.0") != 0) {
-//
-//				double sugerenciaPeso = presupuestoDolar * cotizaciones[0];
-//				String sugerenciaPesoString = df.format(sugerenciaPeso);
-//
-//				String sugerenciaDolarString = df.format(presupuestoDolar);
-//
-//				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(sugerenciaDolarString);
-//				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(sugerenciaPesoString);
-//
-//			}
-//
-//			if (Double.toString(presupuestoPesos).compareTo("0.0") == 0
-//					&& Double.toString(presupuestoDolar).compareTo("0.0") == 0) {
-//
-//				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText("0.0");
-//				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText("0.0");
-//
-//			}
-//
-//		}
-
 		else if (this.ventanaGenerarPresupuesto != null
 				&& e.getSource() == this.ventanaGenerarPresupuesto.getGuardarPresupuestoPDF()) {
 
