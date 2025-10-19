@@ -171,20 +171,68 @@ public class AutoCompletarComboBox extends PlainDocument {
     }
 
     private Object lookupItem(String pattern) {
+        if (pattern == null || pattern.isEmpty()) {
+            return null;
+        }
+
+        String patternLower = pattern.toLowerCase();
+        Object exactMatch = null;
+        Object prefixMatch = null;
+
+        // Primera pasada: buscar coincidencia exacta
         for (int i = 0; i < model.getSize(); i++) {
             Object item = model.getElementAt(i);
-            if (item != null && item.toString().toLowerCase().startsWith(pattern.toLowerCase())) {
-                return item;
+            if (item != null) {
+                String itemLower = item.toString().toLowerCase();
+                if (itemLower.equals(patternLower)) {
+                    exactMatch = item;
+                    break;
+                }
             }
         }
-        return null;
+
+        // Si encontramos coincidencia exacta, devolverla
+        if (exactMatch != null) {
+            return exactMatch;
+        }
+
+        // Segunda pasada: buscar el prefijo más corto que coincida
+        int minLength = Integer.MAX_VALUE;
+        for (int i = 0; i < model.getSize(); i++) {
+            Object item = model.getElementAt(i);
+            if (item != null) {
+                String itemLower = item.toString().toLowerCase();
+                if (itemLower.startsWith(patternLower)) {
+                    int itemLength = item.toString().length();
+                    if (itemLength < minLength) {
+                        minLength = itemLength;
+                        prefixMatch = item;
+                    }
+                }
+            }
+        }
+
+        return prefixMatch;
     }
 
     private boolean findExactMatch(String text) {
+        if (text == null) {
+            return false;
+        }
+
+        String textLower = text.toLowerCase();
         for (int i = 0; i < model.getSize(); i++) {
             Object item = model.getElementAt(i);
-            if (item != null && item.toString().equalsIgnoreCase(text)) {
-                return true;
+            if (item != null) {
+                String itemLower = item.toString().toLowerCase();
+                // Reconocer items vacíos cuando el texto también está vacío
+                if (text.isEmpty() && itemLower.isEmpty()) {
+                    return true;
+                }
+                // Comparar normalmente para el resto de casos
+                if (itemLower.equals(textLower)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -240,14 +288,22 @@ public class AutoCompletarComboBox extends PlainDocument {
         Object editorObj = comboBox.getEditor().getEditorComponent();
         if (editorObj instanceof JTextComponent) {
             String text = ((JTextComponent) editorObj).getText();
+            String textLower = text.toLowerCase();
             for (int i = 0; i < model.getSize(); i++) {
                 Object item = model.getElementAt(i);
-                if (item != null && item.toString().equalsIgnoreCase(text)) {
-                    return true;
+                if (item != null) {
+                    String itemLower = item.toString().toLowerCase();
+                    // Reconocer items vacíos cuando el texto también está vacío
+                    if (text.isEmpty() && itemLower.isEmpty()) {
+                        return true;
+                    }
+                    // Comparar normalmente para el resto de casos
+                    if (itemLower.equals(textLower)) {
+                        return true;
+                    }
                 }
             }
         }
         return false;
     }
 }
-
