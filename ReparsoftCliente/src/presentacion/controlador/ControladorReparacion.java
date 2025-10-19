@@ -4305,19 +4305,27 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 		this.ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				int opcion = JOptionPane.showConfirmDialog(null, "¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?",
-						"Aviso", JOptionPane.YES_NO_OPTION);
 
-				if (opcion == JOptionPane.YES_OPTION) {
-					ventanaVisualizarEquipos.dispose();
-					ventanaVisualizarEquipos = null;
+				if (guardado == false) {
+					int opcionGuardar = JOptionPane.showConfirmDialog(null,
+							"Hay cambios sin guardar. ¿Desea guardar antes de salir?", "Aviso",
+							JOptionPane.YES_NO_CANCEL_OPTION);
 
-					if (ventanaBusquedaEquipo != null) {
-						ventanaBusquedaEquipo.dispose();
-						ventanaBusquedaEquipo = null;
+					if (opcionGuardar == JOptionPane.YES_OPTION) {
+						ventanaVisualizarEquipos.getBtnGuardarCambios().doClick();
+					} else if (opcionGuardar == JOptionPane.CANCEL_OPTION) {
+						return; // Cancelar el cierre de la ventana
 					}
-
 				}
+
+				ventanaVisualizarEquipos.dispose();
+				ventanaVisualizarEquipos = null;
+
+				if (ventanaBusquedaEquipo != null) {
+					ventanaBusquedaEquipo.dispose();
+					ventanaBusquedaEquipo = null;
+				}
+
 			}
 
 		});
@@ -4329,19 +4337,25 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventana.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 
-				int opcion = JOptionPane.showConfirmDialog(null, "¿Desea salir de la ventana 'VISUALIZAR EQUIPOS'?",
-						"Aviso", JOptionPane.YES_NO_OPTION);
+				if (guardado == false) {
+					int opcionGuardar = JOptionPane.showConfirmDialog(null,
+							"Hay cambios sin guardar. ¿Desea guardar antes de salir?", "Aviso",
+							JOptionPane.YES_NO_CANCEL_OPTION);
 
-				if (opcion == JOptionPane.YES_OPTION) {
-					ventanasAbiertas.remove(ventana);
-
-					ventana.dispose();
-
+					if (opcionGuardar == JOptionPane.YES_OPTION) {
+						ventana.getBtnGuardarCambios().doClick();
+					} else if (opcionGuardar == JOptionPane.CANCEL_OPTION) {
+						return; // Cancelar el cierre de la ventana
+					}
 				}
+
+				ventanasAbiertas.remove(ventana);
+
+				ventana.dispose();
 
 				if (ventanasAbiertas.size() == 0) {
 
-					System.out.println("no hay mas ventanas abietas");
+					// System.out.println("no hay mas ventanas abietas");
 					actualizarEnlistado = false;
 				}
 

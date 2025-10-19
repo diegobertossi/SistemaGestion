@@ -154,16 +154,14 @@ public class ControladorListados
 			0 // Rotación del texto (90 grados para vertical)
 	);
 
-
-
 	private String[] nombresColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
 			"N° SERIE", "AVISO", "REVISIÓN", "SALIDA", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS",
 			"TÉCNICO", "UBIC. REM", "NUM REM", "PRESUP. GEN", "PRESUP. ENV", "PRECIO $", "PRECIO U$$", "PAGO",
 			"INGRESO" };
 
 	private AWTEventListener clickOutsideListener; // Mover a variable de clase
-	
-	 private Map<Integer, Integer> anchosOriginales = new HashMap<>();
+
+	private Map<Integer, Integer> anchosOriginales = new HashMap<>();
 
 	public ControladorListados(VentanaListadoReparaciones ventanaListadoReparaciones, Agenda modelo,
 			ControladorUsuLogin controladorUsuLogin, ControladorReparacion controladorReparacion) {
@@ -175,13 +173,11 @@ public class ControladorListados
 		this.itemFacturacion_en_tabla = null;
 
 		agregarListenerVentanaListados();
-		
-		cargarTablaListadoReparaciones();	
-		
+
+		cargarTablaListadoReparaciones();
+
 		configurarVista();
 		configurarEventos();
-
-		
 
 	}
 
@@ -680,8 +676,6 @@ public class ControladorListados
 		});
 	}
 
-
-
 	public void agregarListenerVentanaListados() {
 
 		this.ventanaListadoReparaciones.getBtnEstadisticas().addActionListener(this);
@@ -689,19 +683,19 @@ public class ControladorListados
 		this.ventanaListadoReparaciones.getTblReparaciones().addMouseListener(this);
 		this.ventanaListadoReparaciones.getTblReparaciones().addMouseMotionListener(this);
 		this.ventanaListadoReparaciones.getTblReparaciones().setTransferHandler(new TableCopyHandler());
-		
+
 		// Configurar atajo de teclado Ctrl+C
-		this.ventanaListadoReparaciones.getTblReparaciones().getInputMap().put(KeyStroke.getKeyStroke("control C"), "copy");
+		this.ventanaListadoReparaciones.getTblReparaciones().getInputMap().put(KeyStroke.getKeyStroke("control C"),
+				"copy");
 		ventanaListadoReparaciones.getTblReparaciones().getActionMap().put("copy", new AbstractAction() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        // Copiar incluyendo cabeceras
-		    	ventanaListadoReparaciones.getTblReparaciones().getTransferHandler().exportToClipboard(
-		    			ventanaListadoReparaciones.getTblReparaciones(), 
-		    			ventanaListadoReparaciones.getTblReparaciones().getToolkit().getSystemClipboard(), 
-		            TransferHandler.COPY
-		        );
-		    }
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Copiar incluyendo cabeceras
+				ventanaListadoReparaciones.getTblReparaciones().getTransferHandler().exportToClipboard(
+						ventanaListadoReparaciones.getTblReparaciones(),
+						ventanaListadoReparaciones.getTblReparaciones().getToolkit().getSystemClipboard(),
+						TransferHandler.COPY);
+			}
 		});
 
 		this.ventanaListadoReparaciones.getChckbxELS().addActionListener(this);
@@ -863,13 +857,8 @@ public class ControladorListados
 			}
 		});
 
-
 	}
 
-
-	
-	
-	
 	private void limpiarRecursos() {
 		if (clickOutsideListener != null) {
 			Toolkit.getDefaultToolkit().removeAWTEventListener(clickOutsideListener);
@@ -887,8 +876,6 @@ public class ControladorListados
 		}
 		return false;
 	}
-
-
 
 	private void cargarTablaFacturacionCliente() {
 		// Limpia la tabla
@@ -964,29 +951,23 @@ public class ControladorListados
 
 		this.ventanaListadoReparaciones.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				int opcion = JOptionPane.showConfirmDialog(ventanaListadoReparaciones,
-						"¿Desea salir de la ventana 'LISTADO'?", "Aviso", JOptionPane.YES_NO_OPTION);
 
-				if (opcion == JOptionPane.YES_OPTION) {
+				ventanaListadoReparaciones.dispose();
+				ventanaListadoReparaciones = null;
 
-					ventanaListadoReparaciones.dispose();
-					ventanaListadoReparaciones = null;
+				if (ventanaEquipos != null) {
 
-					if (ventanaEquipos != null) {
-
-						ventanaEquipos.dispose();
-						ventanaEquipos = null;
-
-					}
-
-					for (VentanaVisualizarEquipos ventana : controladorReparacion.getVentanasAbiertas()) {
-						if (ventana != null) {
-							ventana.dispose(); // Cierra la ventana
-						}
-					}
-					controladorReparacion.getVentanasAbiertas().clear(); // Limpia la lista de ventanas abiertas
+					ventanaEquipos.dispose();
+					ventanaEquipos = null;
 
 				}
+
+				for (VentanaVisualizarEquipos ventana : controladorReparacion.getVentanasAbiertas()) {
+					if (ventana != null) {
+						ventana.dispose(); // Cierra la ventana
+					}
+				}
+				controladorReparacion.getVentanasAbiertas().clear(); // Limpia la lista de ventanas abiertas
 
 			}
 
@@ -2136,7 +2117,7 @@ public class ControladorListados
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		
+
 		if (this.ventanaListadoReparaciones == null) {
 			return;
 		}
@@ -2146,8 +2127,7 @@ public class ControladorListados
 //			handleTableClick(arg0);
 //			return;
 //		}
-		
-		
+
 		// Mapeo de checkboxes a columnas
 		Map<JCheckBox, ColumnConfig> checkboxConfigMap = createCheckboxConfigMap();
 
@@ -2180,10 +2160,9 @@ public class ControladorListados
 		Map<JCheckBox, ColumnConfig> map = new HashMap<>();
 
 		// Configuración de cada checkbox y su columna correspondiente
-		
-		
+
 		map.put(ventanaListadoReparaciones.getCheckBox(), new ColumnConfig(0, 60, 60, 100));
-		
+
 		map.put(ventanaListadoReparaciones.getChckbxELS(), new ColumnConfig(0, 60, 60, 100));
 		map.put(ventanaListadoReparaciones.getChckbxEntrada(), new ColumnConfig(1, 80, 80, 100));
 		map.put(ventanaListadoReparaciones.getChckbxCliente(), new ColumnConfig(2, 150, 150, 200));
@@ -2272,7 +2251,7 @@ public class ControladorListados
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		
+
 		// Manejo de clic en la tabla
 		if (arg0.getSource() == this.ventanaListadoReparaciones.getTblReparaciones()) {
 			handleTableClick(arg0);
@@ -2302,10 +2281,10 @@ public class ControladorListados
 		if (this.ventanaListadoReparaciones != null && e.getSource() instanceof JCheckBox) {
 			Map<JCheckBox, ColumnConfig> checkboxConfigMap = createCheckboxConfigMap();
 			JCheckBox sourceCheckbox = (JCheckBox) e.getSource();
-			
+
 			if (checkboxConfigMap.containsKey(sourceCheckbox)) {
 				configureColumn(sourceCheckbox, checkboxConfigMap.get(sourceCheckbox));
-				
+
 			}
 		}
 	}
