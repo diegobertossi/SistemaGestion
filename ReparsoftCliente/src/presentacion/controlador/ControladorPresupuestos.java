@@ -119,6 +119,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private String rutaImagen_4 = "";
 	private String rutaImagen_5 = "";
 	private String rutaImagen_6 = "";
+	
+	private ArrayList<File> archivosAdjuntos = new ArrayList<>();
+	
+	private ArrayList<File> archivosAdjuntosExtras = new ArrayList<>();
 
 	public ControladorPresupuestos(VentanaPresupuestos ventanaPresupuestos, Agenda agenda) {
 
@@ -710,6 +714,19 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			ventanaEmail.getTextCuerpo().setEditable(true);
 
 		}
+		
+		
+		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnAdjuntarArchivo()) {
+
+			// En tu clase controlador, agregar como atributo
+			 agregarArchivosAdjuntos();
+
+				
+			
+			
+
+		}
+		
 
 		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnAdjunto()) {
 
@@ -854,64 +871,60 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	}
 
 	private void enviarMail() {
-		// Crear un popup para mostrar el mensaje de "Enviando correo, espere..."
-		JDialog popup = new JDialog();
-		popup.setTitle("Procesando");
-		popup.setModal(false);
-		popup.setSize(300, 100);
-		popup.setLocationRelativeTo(ventanaEmail);
-		popup.add(new JLabel("Enviando correo, espere...", SwingConstants.CENTER));
+	    // Crear un popup para mostrar el mensaje de "Enviando correo, espere..."
+	    JDialog popup = new JDialog();
+	    popup.setTitle("Procesando");
+	    popup.setModal(false);
+	    popup.setSize(300, 100);
+	    popup.setLocationRelativeTo(ventanaEmail);
+	    popup.add(new JLabel("Enviando correo, espere...", SwingConstants.CENTER));
 
-		// Ejecutar el envío del correo en un hilo separado para no bloquear el UI
-		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-			@Override
-			protected Void doInBackground() {
-				try {
+	    // Ejecutar el envío del correo en un hilo separado para no bloquear el UI
+	    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+	        @Override
+	        protected Void doInBackground() {
+	            try {
+	                String correo = ventanaEmail.getTextPara().getText();
+	                String asunto = ventanaEmail.getTextAsunto().getText();
+	                String cuerpo = ventanaEmail.getTextCuerpo().getText();
+	                String nombreArchivo = ventanaEmail.getTextAdjunto().getText();
 
-					String correo = ventanaEmail.getTextPara().getText();
-					String asunto = ventanaEmail.getTextAsunto().getText();
-					String cuerpo = ventanaEmail.getTextCuerpo().getText();
-					String nombreArchivo = ventanaEmail.getTextAdjunto().getText();
+	                // Enviar el correo con los archivos adicionales
+	                mails.EnviarMail.enviarInformeAlCliente(correo, asunto, cuerpo, nombreArchivo, archivosAdjuntosExtras);
 
-					mails.EnviarMail.enviarInformeAlCliente(correo, asunto, cuerpo, nombreArchivo);
+	                if (nombreArchivo.endsWith(".pdf")) {
+	                    ventanaGenerarPresupuesto.setChckPDFEnviado(true);
+	                } else if (nombreArchivo.endsWith(".docx")) {
+	                    ventanaGenerarPresupuesto.setChckWORDEnviado(true);
+	                }
 
-					if (nombreArchivo.endsWith(".pdf")) {
+	                ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
+	                agenda.editarReparacionPresupuesto(reparacionAeditar);
+	                
+	                // Limpiar los archivos adicionales después de enviar
+	                archivosAdjuntosExtras.clear();
+	                ventanaEmail.getTextArchivos().setText("");
 
-						ventanaGenerarPresupuesto.setChckPDFEnviado(true);
+	            } catch (Exception ex) {
+	                popup.dispose();
+	                ex.printStackTrace();
+	            }
+	            return null;
+	        }
 
-					} else if (nombreArchivo.endsWith(".docx")) {
+	        @Override
+	        protected void done() {
+	            popup.dispose();
+	        }
+	    };
 
-						ventanaGenerarPresupuesto.setChckWORDEnviado(true);
-
-					}
-
-					ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
-					agenda.editarReparacionPresupuesto(reparacionAeditar);
-
-				} catch (Exception ex) {
-
-					popup.dispose();
-					ex.printStackTrace();
-//					JOptionPane.showMessageDialog(null, "El correo NO ha sido enviado.", "Error de envío", JOptionPane.WARNING_MESSAGE);
-				}
-				return null;
-			}
-
-			@Override
-			protected void done() {
-				// Cerrar el popup después de completar el envío
-				popup.dispose();
-
-			}
-		};
-
-		// Mostrar el popup y ejecutar el SwingWorker
-		SwingUtilities.invokeLater(() -> {
-			popup.setVisible(true);
-			worker.execute();
-		});
-
+	    SwingUtilities.invokeLater(() -> {
+	        popup.setVisible(true);
+	        worker.execute();
+	    });
 	}
+	
+	
 
 	private void agregarImagenesDiagnostico() {
 		JTextField txtRutaImagen_4 = ventanaAgregarImagenes.getTxtRutaImagen_4();
@@ -966,6 +979,56 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		});
 
 	}
+	
+	
+
+	// Modificar el método agregarArchivosAdjuntos
+	private void agregarArchivosAdjuntos() {
+	    JFileChooser fileChooser = new JFileChooser();
+	    fileChooser.setMultiSelectionEnabled(true);
+	    fileChooser.setDialogTitle("Seleccionar archivos adjuntos adicionales");
+	    
+	    int returnValue = fileChooser.showOpenDialog(null);
+	    
+	    if (returnValue == JFileChooser.APPROVE_OPTION) {
+	        File[] selectedFiles = fileChooser.getSelectedFiles();
+	        
+	        if (selectedFiles != null && selectedFiles.length > 0) {
+	            // Agregar archivos al ArrayList (evitando duplicados)
+	            for (File file : selectedFiles) {
+	                if (!archivosAdjuntosExtras.contains(file)) {
+	                    archivosAdjuntosExtras.add(file);
+	                }
+	            }
+	            
+	            // Actualizar el texto con solo los nombres
+	            actualizarTextoArchivos();
+	        }
+	    }
+	}
+
+	// Método auxiliar para actualizar el campo de texto
+	private void actualizarTextoArchivos() {
+	    StringBuilder nombresArchivos = new StringBuilder();
+	    
+	    for (int i = 0; i < archivosAdjuntosExtras.size(); i++) {
+	        nombresArchivos.append(archivosAdjuntosExtras.get(i).getName());
+	        
+	        if (i < archivosAdjuntosExtras.size() - 1) {
+	            nombresArchivos.append(" ; ");
+	        }
+	    }
+	    
+	    ventanaEmail.getTextArchivos().setText(nombresArchivos.toString());
+	}
+	
+	
+	// Método para obtener los archivos cuando vayas a enviar el email
+	public ArrayList<File> getArchivosAdjuntos() {
+	    return archivosAdjuntos;
+	}
+	
+
 
 	public void cerraVentanaAgregarPrecio() {
 
@@ -1746,7 +1809,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	private void agregarListenerAventanaEmail() {
 
-		ventanaEmail.getBtnAdjuntarIMG().addActionListener(this);
+		ventanaEmail.getBtnAdjuntarArchivo().addActionListener(this);
 		ventanaEmail.getBtnAdjunto().addActionListener(this);
 		ventanaEmail.getBtnAgregarContacto().addActionListener(this);
 		ventanaEmail.getBtnEditar().addActionListener(this);

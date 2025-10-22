@@ -1,5 +1,7 @@
 package mails;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -85,18 +87,45 @@ public class EnviarMail {
         enviarCorreo(from, correo, subject, cuerpo);
     }
 
+    // Método original (sobrecarga para compatibilidad)
     public static void enviarInformeAlCliente(String correo, String asunto, String cuerpo, String nombreArchivo) {
+        enviarInformeAlCliente(correo, asunto, cuerpo, nombreArchivo, null);
+    }
+
+    // Método modificado con archivos adicionales
+    public static void enviarInformeAlCliente(String correo, String asunto, String cuerpo, String nombreArchivo, ArrayList<File> archivosAdicionales) {
         try {
-            BodyPart adjunto = new MimeBodyPart();
+            // Lista para almacenar todos los adjuntos
+            ArrayList<BodyPart> adjuntos = new ArrayList<>();
+            
+            // Agregar el archivo principal (informe PDF o DOCX)
+            BodyPart adjuntoPrincipal = new MimeBodyPart();
             if (nombreArchivo.endsWith(".pdf")) {
-                adjunto.setDataHandler(new DataHandler(new FileDataSource("F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/" + nombreArchivo)));
+                adjuntoPrincipal.setDataHandler(new DataHandler(new FileDataSource("F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/" + nombreArchivo)));
             } else if (nombreArchivo.endsWith(".docx")) {
-                adjunto.setDataHandler(new DataHandler(new FileDataSource("F:/ELS/Administracion/Sistema/Informes Siemens/" + nombreArchivo)));
+                adjuntoPrincipal.setDataHandler(new DataHandler(new FileDataSource("F:/ELS/Administracion/Sistema/Informes Siemens/" + nombreArchivo)));
             }
-            adjunto.setFileName(nombreArchivo);
+            adjuntoPrincipal.setFileName(nombreArchivo);
+            adjuntos.add(adjuntoPrincipal);
+            
+            // Agregar archivos adicionales si existen
+            if (archivosAdicionales != null && !archivosAdicionales.isEmpty()) {
+                for (File archivoExtra : archivosAdicionales) {
+                    if (archivoExtra.exists()) {
+                        BodyPart adjuntoExtra = new MimeBodyPart();
+                        adjuntoExtra.setDataHandler(new DataHandler(new FileDataSource(archivoExtra.getAbsolutePath())));
+                        adjuntoExtra.setFileName(archivoExtra.getName());
+                        adjuntos.add(adjuntoExtra);
+                    }
+                }
+            }
+            
+            // Convertir ArrayList a array
+            BodyPart[] arrayAdjuntos = adjuntos.toArray(new BodyPart[0]);
 
             String from = "ELS <diego.bertossi@elsweb.com.ar>";
-            enviarCorreo(from, correo, asunto, cuerpo, adjunto);
+            enviarCorreo(from, correo, asunto, cuerpo, arrayAdjuntos);
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se pudo adjuntar el archivo.", "Error", JOptionPane.WARNING_MESSAGE);
             e.printStackTrace();

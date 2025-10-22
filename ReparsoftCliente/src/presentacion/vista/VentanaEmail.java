@@ -32,12 +32,12 @@ public class VentanaEmail extends JFrame {
 	private JTextField textPara;
 	private JTextField textCC;
 	private JTextField textAsunto;
-	private JTextField textImagenes;
+	private JTextField textArchivos;
 	private JTextArea textCuerpo;
 	private JTextField textAdjunto;
 	
 	private JButton btnAgregarContacto;
-	private JButton btnAdjuntarIMG;
+	private JButton btnAdjuntarArchivo;
 	private JButton btnAdjunto;
 	private JButton btnEditar;
 	private JButton btnEnviar;
@@ -129,60 +129,60 @@ public class VentanaEmail extends JFrame {
 		
 		JLabel labelPara = new JLabel("Para:");
 		labelPara.setFont(new Font("Cambria", Font.BOLD, 14));
-		labelPara.setBounds(37, 140, 35, 18);
+		labelPara.setBounds(37, 140, 133, 18);
 		panel.add(labelPara);
 		
 		JLabel labelCC = new JLabel("CC:");
 		labelCC.setFont(new Font("Cambria", Font.BOLD, 14));
-		labelCC.setBounds(37, 165, 20, 18);
+		labelCC.setBounds(37, 165, 133, 18);
 		panel.add(labelCC);
 		
-		JLabel labelImagenes = new JLabel("Imagenes:");
-		labelImagenes.setFont(new Font("Cambria", Font.BOLD, 14));
-		labelImagenes.setBounds(37, 240, 64, 18);
-		panel.add(labelImagenes);
+		JLabel labelArchivos = new JLabel("Archivos Adjuntos");
+		labelArchivos.setFont(new Font("Cambria", Font.BOLD, 14));
+		labelArchivos.setBounds(37, 240, 133, 18);
+		panel.add(labelArchivos);
 		
 		JLabel labelAsunto = new JLabel("Asunto: ");
 		labelAsunto.setFont(new Font("Cambria", Font.BOLD, 14));
-		labelAsunto.setBounds(37, 190, 51, 18);
+		labelAsunto.setBounds(37, 190, 133, 18);
 		panel.add(labelAsunto);
 		
-		JLabel labelAjunto = new JLabel("Adjunto: ");
+		JLabel labelAjunto = new JLabel("Informe Adjunto: ");
 		labelAjunto.setFont(new Font("Cambria", Font.BOLD, 14));
-		labelAjunto.setBounds(37, 215, 57, 18);
+		labelAjunto.setBounds(37, 215, 133, 18);
 		panel.add(labelAjunto);
 		
 		JLabel labelCuerpo = new JLabel("Cuerpo");
 		labelCuerpo.setFont(new Font("Cambria", Font.BOLD, 14));
-		labelCuerpo.setBounds(37, 311, 45, 18);
+		labelCuerpo.setBounds(37, 269, 133, 18);
 		panel.add(labelCuerpo);
 		
 		textPara = new JTextField();
 		textPara.setFont(new Font("Cambria", Font.PLAIN, 11));
 		textPara.setColumns(10);
-		textPara.setBounds(128, 139, 360, 20);
+		textPara.setBounds(184, 139, 475, 20);
 		panel.add(textPara);
 		
 		textCC = new JTextField();
 		textCC.setFont(new Font("Cambria", Font.PLAIN, 11));
 		textCC.setColumns(10);
-		textCC.setBounds(128, 165, 360, 20);
+		textCC.setBounds(184, 165, 475, 20);
 		panel.add(textCC);
 		
 		textAsunto = new JTextField();
 		textAsunto.setFont(new Font("Cambria", Font.PLAIN, 11));
 		textAsunto.setColumns(10);
-		textAsunto.setBounds(128, 190, 360, 20);
+		textAsunto.setBounds(184, 190, 475, 20);
 		panel.add(textAsunto);
 		
-		textImagenes = new JTextField();
-		textImagenes.setFont(new Font("Cambria", Font.PLAIN, 11));
-		textImagenes.setColumns(10);
-		textImagenes.setBounds(128, 240, 531, 65);
-		panel.add(textImagenes);
+		textArchivos = new JTextField();
+		textArchivos.setFont(new Font("Cambria", Font.PLAIN, 11));
+		textArchivos.setColumns(10);
+		textArchivos.setBounds(184, 239, 475, 20);
+		panel.add(textArchivos);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(128, 311, 531, 94);
+		scrollPane.setBounds(35, 303, 624, 115);
 		panel.add(scrollPane);
 		
 		textCuerpo = new JTextArea();
@@ -194,50 +194,26 @@ public class VentanaEmail extends JFrame {
 		textAdjunto = new JTextField();
 		textAdjunto.setFont(new Font("Cambria", Font.PLAIN, 11));
 		textAdjunto.setColumns(10);
-		textAdjunto.setBounds(128, 215, 531, 20);
+		textAdjunto.setBounds(184, 215, 475, 20);
 		panel.add(textAdjunto);
 		
-		btnAdjuntarIMG = new JButton("ADJUNTAR IMÁGENES");
-		btnAdjuntarIMG.setBounds(27, 429, 185, 23);
-		panel.add(btnAdjuntarIMG);
+		btnAdjuntarArchivo = new JButton("ADJUNTAR ARCHIVO");
+		btnAdjuntarArchivo.setBounds(37, 429, 175, 23);
+		panel.add(btnAdjuntarArchivo);
 		
-		btnAdjunto = new JButton("VER ADJUNTO");
-		btnAdjunto.setBounds(239, 429, 139, 23);
+		btnAdjunto = new JButton("VER INFORME");
+		btnAdjunto.setBounds(222, 429, 101, 23);
 		panel.add(btnAdjunto);
 		
 		btnEditar = new JButton("EDITAR");
-		btnEditar.setBounds(405, 429, 139, 23);
+		btnEditar.setBounds(333, 429, 101, 23);
 		panel.add(btnEditar);
 		
 		btnEnviar = new JButton("ENVIAR");
 		btnEnviar.setForeground(new Color(0, 204, 102));
 		btnEnviar.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnEnviar.setBounds(571, 429, 139, 23);
+		btnEnviar.setBounds(520, 429, 139, 23);
 		panel.add(btnEnviar);
-		
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(38, 156, 80, 2);
-		panel.add(separator_2);
-		
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setBounds(37, 181, 80, 2);
-		panel.add(separator_3);
-		
-		JSeparator separator_4 = new JSeparator();
-		separator_4.setBounds(37, 206, 80, 2);
-		panel.add(separator_4);
-		
-		JSeparator separator_5 = new JSeparator();
-		separator_5.setBounds(37, 231, 80, 2);
-		panel.add(separator_5);
-		
-		JSeparator separator_6 = new JSeparator();
-		separator_6.setBounds(37, 257, 80, 2);
-		panel.add(separator_6);
-		
-		JSeparator separator_7 = new JSeparator();
-		separator_7.setBounds(37, 327, 80, 2);
-		panel.add(separator_7);
 		
 				setLocationCenter();
 		setVisible(true);
@@ -322,13 +298,13 @@ public class VentanaEmail extends JFrame {
 	}
 
 
-	public JTextField getTextImagenes() {
-		return textImagenes;
+	public JTextField getTextArchivos() {
+		return textArchivos;
 	}
 
 
-	public void setTextImagenes(JTextField textImagenes) {
-		this.textImagenes = textImagenes;
+	public void setTextArchivos(JTextField textImagenes) {
+		this.textArchivos = textImagenes;
 	}
 
 
@@ -362,13 +338,13 @@ public class VentanaEmail extends JFrame {
 	}
 
 
-	public JButton getBtnAdjuntarIMG() {
-		return btnAdjuntarIMG;
+	public JButton getBtnAdjuntarArchivo() {
+		return btnAdjuntarArchivo;
 	}
 
 
-	public void setBtnAdjuntarIMG(JButton btnAdjuntarIMG) {
-		this.btnAdjuntarIMG = btnAdjuntarIMG;
+	public void setBtnAdjuntarArchivo(JButton btnAdjuntarIMG) {
+		this.btnAdjuntarArchivo = btnAdjuntarIMG;
 	}
 
 

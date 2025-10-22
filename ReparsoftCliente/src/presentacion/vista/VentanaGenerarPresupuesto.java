@@ -83,7 +83,6 @@ public class VentanaGenerarPresupuesto extends JFrame {
 	private JTextFieldDateEditor textFabr;
 
 	private ButtonGroup GrupoMoneda;
-	private JTextField imagePath;
 	
 	
 
@@ -666,11 +665,6 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				lblWordEnviado.setFont(new Font("Cambria", Font.PLAIN, 11));
 				lblWordEnviado.setBounds(772, 622, 90, 14);
 				contentPane.add(lblWordEnviado);
-				
-				imagePath = new JTextField();
-				imagePath.setBounds(631, 449, 86, 20);
-				contentPane.add(imagePath);
-				imagePath.setColumns(10);
 
 		this.setVisible(true);
 
@@ -991,11 +985,11 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		this.textCotizacionDolarBl.setText(textCotizacionDolarBl);
 	}
 
-	public JTextField getImagePath() {
-		return imagePath;
-	}
-
-	public void setImagePath(JTextField imagePath) {
-		this.imagePath = imagePath;
-	}
+//	public JTextField getImagePath() {
+//		return imagePath;
+//	}
+//
+//	public void setImagePath(JTextField imagePath) {
+//		this.imagePath = imagePath;
+//	}
 }
