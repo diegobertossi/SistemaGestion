@@ -1249,6 +1249,14 @@ public class VentanaVisualizarEquipos extends JFrame {
 		separator_10.setBorder(null);
 		separator_10.setBounds(834, 451, 340, 2);
 		panel.add(separator_10);
+		
+		JButton btnabrirExcel = new JButton("<html><center>ABRIR EXCEL</html>");
+		btnabrirExcel.setForeground(SystemColor.text);
+		btnabrirExcel.setFont(new Font("Cambria", Font.BOLD, 10));
+		btnabrirExcel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnabrirExcel.setBackground(new Color(0, 153, 102));
+		btnabrirExcel.setBounds(1062, 456, 90, 32);
+		panel.add(btnabrirExcel);
 
 		setLocationCenter();
 		this.setVisible(true);
