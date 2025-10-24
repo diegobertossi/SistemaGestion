@@ -96,7 +96,6 @@ import presentacion.vista.VentanaBusquedaEquipo;
 import presentacion.vista.VentanaClientes;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaEstados;
-import presentacion.vista.VentanaExcel;
 import presentacion.vista.VentanaGenerarPresupuesto;
 import presentacion.vista.VentanaRemitos;
 import presentacion.vista.VentanaVerificarIngresoAnterior;
@@ -148,8 +147,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	private VentanaClientes ventanaCliente;
 	private VentanaRemitos ventanaRemitos;
-	
-	private VentanaExcel ventanaExcel;
 
 	private ControladorCliente controladorCliente;
 
@@ -391,12 +388,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		else if (ventanaVisualizarEquipos != null && e.getSource() == ventanaVisualizarEquipos.getBotonPresupuestar()) {
 
 			presupuestar(ventanaVisualizarEquipos);
-
-		}
-
-		else if (ventanaVisualizarEquipos != null && e.getSource() == ventanaVisualizarEquipos.getBtnabrirExcel()) {
-
-			AbrirExcel(ventanaVisualizarEquipos);
 
 		}
 
@@ -1232,18 +1223,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	private void AbrirExcel(VentanaVisualizarEquipos ventanaVisualizarEquipos2) {
-
-				
-		ventanaExcel = new VentanaExcel();
-		
-		ventanaExcel.getBtnCaja().addActionListener(this);
-		ventanaExcel.getBtnRepar().addActionListener(this);
-		
-		
-
-	}
-
 	// Enum para los tipos de navegación
 	private enum TipoNavegacion {
 		SIGUIENTE, ANTERIOR, PRIMERO, ULTIMO
@@ -2034,7 +2013,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getBtnGenerarRemito().addActionListener(this);
 		ventanaVisualizarEquipos.getBotonPresupuestar().addActionListener(this);
 		ventanaVisualizarEquipos.getBtnfacturar().addActionListener(this);
-		ventanaVisualizarEquipos.getBtnabrirExcel().addActionListener(this);
 		ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(this);
 		ventanaVisualizarEquipos.getComboClientes().addActionListener(this);
 		ventanaVisualizarEquipos.getComboSucursal().addActionListener(this);
@@ -2302,14 +2280,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 				presupuestar(ventanaVisualizarEquipos);
 
-			}
-		});
-
-		ventanaVisualizarEquipos.getBtnabrirExcel().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				AbrirExcel(ventanaVisualizarEquipos);
 			}
 		});
 

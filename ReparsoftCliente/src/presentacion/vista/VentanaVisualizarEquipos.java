@@ -69,8 +69,6 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JButton btnBuscarELS;
 
 	private JButton btnBuscar;
-	
-	private JButton btnabrirExcel;
 
 	private JCheckBox chckbxAvisoEnviado;
 	private JCheckBox chckPDFgenerado;
@@ -983,7 +981,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		separator_2.setBorder(null);
 		separator_2.setOpaque(true);
 		separator_2.setForeground(Color.BLACK);
-		separator_2.setBounds(834, 221, 340, 2);
+		separator_2.setBounds(834, 223, 340, 2);
 		panel.add(separator_2);
 
 		JSeparator separator_4 = new JSeparator();
@@ -1020,7 +1018,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		separator_9.setBorder(null);
 		separator_9.setOpaque(true);
 		separator_9.setForeground(Color.BLACK);
-		separator_9.setBounds(834, 225, 340, 2);
+		separator_9.setBounds(834, 227, 340, 2);
 		panel.add(separator_9);
 
 		comboELS = new JComboBox();
@@ -1045,7 +1043,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel.add(btnBuscar);
 
 		panel_presupuesto = new JPanel();
-		panel_presupuesto.setBounds(834, 258, 344, 184);
+		panel_presupuesto.setBounds(834, 264, 344, 172);
 		panel.add(panel_presupuesto);
 		panel_presupuesto.setBackground(SystemColor.activeCaption);
 		panel_presupuesto.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
@@ -1058,7 +1056,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		});
 		BotonPresupuestar.setBackground(SystemColor.textHighlight);
 		BotonPresupuestar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		BotonPresupuestar.setBounds(210, 11, 112, 27);
+		BotonPresupuestar.setBounds(210, 11, 125, 27);
 		panel_presupuesto.add(BotonPresupuestar);
 		BotonPresupuestar.setForeground(SystemColor.text);
 		BotonPresupuestar.setFont(new Font("Cambria", Font.BOLD, 12));
@@ -1066,7 +1064,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 		chckPDFgenerado = new JCheckBox("");
 		chckPDFgenerado.setEnabled(false);
-		chckPDFgenerado.setBounds(1, 103, 21, 23);
+		chckPDFgenerado.setBounds(5, 118, 21, 23);
 		panel_presupuesto.add(chckPDFgenerado);
 		chckPDFgenerado.setBackground(SystemColor.activeCaption);
 		chckPDFgenerado.setFont(new Font("Cambria", Font.PLAIN, 12));
@@ -1074,7 +1072,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 		chckPDFenviado = new JCheckBox("");
 		chckPDFenviado.setEnabled(false);
-		chckPDFenviado.setBounds(1, 123, 21, 23);
+		chckPDFenviado.setBounds(5, 138, 21, 23);
 		panel_presupuesto.add(chckPDFenviado);
 		chckPDFenviado.setBackground(SystemColor.activeCaption);
 		chckPDFenviado.setFont(new Font("Cambria", Font.PLAIN, 12));
@@ -1082,7 +1080,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 		chckWORDgenerado = new JCheckBox("");
 		chckWORDgenerado.setEnabled(false);
-		chckWORDgenerado.setBounds(159, 103, 21, 23);
+		chckWORDgenerado.setBounds(163, 118, 21, 23);
 		panel_presupuesto.add(chckWORDgenerado);
 		chckWORDgenerado.setBackground(SystemColor.activeCaption);
 		chckWORDgenerado.setFont(new Font("Cambria", Font.PLAIN, 12));
@@ -1090,7 +1088,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 		chckWORDenviado = new JCheckBox("");
 		chckWORDenviado.setEnabled(false);
-		chckWORDenviado.setBounds(159, 123, 21, 23);
+		chckWORDenviado.setBounds(163, 138, 21, 23);
 		panel_presupuesto.add(chckWORDenviado);
 		chckWORDenviado.setBackground(SystemColor.activeCaption);
 		chckWORDenviado.setFont(new Font("Cambria", Font.PLAIN, 12));
@@ -1099,7 +1097,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_MontoPresupuesto = new JPanel();
 		panel_MontoPresupuesto.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_MontoPresupuesto.setBackground(SystemColor.inactiveCaption);
-		panel_MontoPresupuesto.setBounds(5, 11, 202, 84);
+		panel_MontoPresupuesto.setBounds(5, 11, 202, 100);
 		panel_presupuesto.add(panel_MontoPresupuesto);
 		panel_MontoPresupuesto.setLayout(null);
 
@@ -1148,7 +1146,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textEquipoPagado.setHorizontalAlignment(SwingConstants.CENTER);
 		textEquipoPagado.setBorder(null);
 		textEquipoPagado.setBackground(SystemColor.inactiveCaption);
-		textEquipoPagado.setBounds(6, 61, 190, 20);
+		textEquipoPagado.setBounds(6, 73, 190, 20);
 		panel_MontoPresupuesto.add(textEquipoPagado);
 		textEquipoPagado.setColumns(10);
 
@@ -1172,17 +1170,17 @@ public class VentanaVisualizarEquipos extends JFrame {
 		JLabel lblPresupuestoGenerado = new JLabel("PRESUPUESTO GENERADO");
 		lblPresupuestoGenerado.setForeground(Color.BLUE);
 		lblPresupuestoGenerado.setFont(new Font("Cambria", Font.BOLD, 10));
-		lblPresupuestoGenerado.setBounds(25, 106, 136, 17);
+		lblPresupuestoGenerado.setBounds(29, 121, 136, 17);
 		panel_presupuesto.add(lblPresupuestoGenerado);
 
 		JLabel lblPresupuestoEnviado = new JLabel("PRESUPUESTO ENVIADO");
 		lblPresupuestoEnviado.setForeground(Color.BLUE);
 		lblPresupuestoEnviado.setFont(new Font("Cambria", Font.BOLD, 10));
-		lblPresupuestoEnviado.setBounds(25, 127, 136, 17);
+		lblPresupuestoEnviado.setBounds(29, 142, 136, 17);
 		panel_presupuesto.add(lblPresupuestoEnviado);
 
 		lblInformeSiemensGenerado = new JLabel("INFORME SIEMENS GENERADO");
-		lblInformeSiemensGenerado.setBounds(182, 106, 156, 17);
+		lblInformeSiemensGenerado.setBounds(186, 121, 156, 17);
 		panel_presupuesto.add(lblInformeSiemensGenerado);
 		lblInformeSiemensGenerado.setForeground(Color.BLUE);
 		lblInformeSiemensGenerado.setFont(new Font("Cambria", Font.BOLD, 10));
@@ -1190,31 +1188,23 @@ public class VentanaVisualizarEquipos extends JFrame {
 		lblInformeSiemensEnviado = new JLabel("INFORME SIEMENS ENVIADO");
 		lblInformeSiemensEnviado.setForeground(Color.BLUE);
 		lblInformeSiemensEnviado.setFont(new Font("Cambria", Font.BOLD, 10));
-		lblInformeSiemensEnviado.setBounds(182, 127, 156, 17);
+		lblInformeSiemensEnviado.setBounds(186, 142, 156, 17);
 		panel_presupuesto.add(lblInformeSiemensEnviado);
 
-		btnenviarCorreoOwsp = new JButton("<html><center>ENVIAR</html>");
+		btnenviarCorreoOwsp = new JButton("<html><center>ENVIAR PRESUPUESTO</html>");
 		btnenviarCorreoOwsp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnenviarCorreoOwsp.setForeground(Color.WHITE);
 		btnenviarCorreoOwsp.setFont(new Font("Cambria", Font.BOLD, 12));
 		btnenviarCorreoOwsp.setBackground(SystemColor.textHighlight);
-		btnenviarCorreoOwsp.setBounds(210, 39, 112, 27);
+		btnenviarCorreoOwsp.setBounds(210, 44, 125, 35);
 		panel_presupuesto.add(btnenviarCorreoOwsp);
 		
 		btnfacturar = new JButton("<html><center>FACTURAR</html>");
 		btnfacturar.setForeground(Color.WHITE);
 		btnfacturar.setFont(new Font("Cambria", Font.BOLD, 12));
 		btnfacturar.setBackground(SystemColor.textHighlight);
-		btnfacturar.setBounds(210, 68, 112, 27);
+		btnfacturar.setBounds(210, 84, 125, 27);
 		panel_presupuesto.add(btnfacturar);
-		
-		btnabrirExcel = new JButton("<html><center>ABRIR EXCEL</html>");
-		btnabrirExcel.setBounds(118, 150, 112, 27);
-		panel_presupuesto.add(btnabrirExcel);
-		btnabrirExcel.setForeground(SystemColor.text);
-		btnabrirExcel.setFont(new Font("Cambria", Font.BOLD, 10));
-		btnabrirExcel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnabrirExcel.setBackground(new Color(0, 153, 102));
 
 		labelPresupuesto = new JLabel("PRESUPUESTO: ");
 		labelPresupuesto.setBounds(834, 236, 150, 17);
@@ -1250,28 +1240,28 @@ public class VentanaVisualizarEquipos extends JFrame {
 		separator_5.setOpaque(true);
 		separator_5.setForeground(Color.BLACK);
 		separator_5.setBorder(null);
-		separator_5.setBounds(834, 455, 340, 2);
+		separator_5.setBounds(834, 447, 340, 2);
 		panel.add(separator_5);
 		
 		separator_10 = new JSeparator();
 		separator_10.setOpaque(true);
 		separator_10.setForeground(Color.BLACK);
 		separator_10.setBorder(null);
-		separator_10.setBounds(834, 459, 340, 2);
+		separator_10.setBounds(834, 451, 340, 2);
 		panel.add(separator_10);
+		
+		JButton btnabrirExcel = new JButton("<html><center>ABRIR EXCEL</html>");
+		btnabrirExcel.setForeground(SystemColor.text);
+		btnabrirExcel.setFont(new Font("Cambria", Font.BOLD, 10));
+		btnabrirExcel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnabrirExcel.setBackground(new Color(0, 153, 102));
+		btnabrirExcel.setBounds(1062, 456, 90, 32);
+		panel.add(btnabrirExcel);
 
 		setLocationCenter();
 		this.setVisible(true);
 
 
-	}
-
-	public JButton getBtnabrirExcel() {
-		return btnabrirExcel;
-	}
-
-	public void setBtnabrirExcel(JButton btnabrirExcel) {
-		this.btnabrirExcel = btnabrirExcel;
 	}
 
 	public void setLocationCenter() {
