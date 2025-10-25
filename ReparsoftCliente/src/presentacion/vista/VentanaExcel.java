@@ -18,6 +18,15 @@ public class VentanaExcel extends JFrame
 	private JPanel contentPane;
 	private JButton btnRepar;
 	private JButton btnCaja;
+	private JButton btnDetalleGastos;
+	public JButton getBtnDetalleGastos() {
+		return btnDetalleGastos;
+	}
+
+	public void setBtnDetalleGastos(JButton btnDetalleGastos) {
+		this.btnDetalleGastos = btnDetalleGastos;
+	}
+
 	@SuppressWarnings("unused")
 	private ControladorReparacion controlador;
 
@@ -28,7 +37,7 @@ public class VentanaExcel extends JFrame
 		//this.controlador = controlador;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 306, 155);
+		setBounds(100, 100, 471, 155);
 
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
@@ -52,6 +61,11 @@ public class VentanaExcel extends JFrame
 			btnCaja.setFont(new Font("Cambria", Font.BOLD, 14));
 			btnCaja.setBounds(160, 33, 100, 50);
 			contentPane.add(btnCaja);
+			
+			btnDetalleGastos = new JButton("<html><center>DETALLE DE GASTOS</html>");
+			btnDetalleGastos.setFont(new Font("Cambria", Font.BOLD, 14));
+			btnDetalleGastos.setBounds(294, 33, 100, 50);
+			contentPane.add(btnDetalleGastos);
 
 		
 		
@@ -73,9 +87,5 @@ public class VentanaExcel extends JFrame
 	public void setBtnCaja(JButton btnCaja) {
 		this.btnCaja = btnCaja;
 	}
-
-	
-	
-	
 }
 

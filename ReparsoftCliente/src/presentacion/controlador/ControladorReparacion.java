@@ -30,6 +30,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -138,7 +140,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private VentanaVerificarIngresoAnterior ventanaVerificarIngresoAnterior;
 	private VentanaWSP ventanaWSP;
 	private VentanaClientesWSP ventanaClientesWSP;
-	
+
 	private VentanaExcel ventanaExcel;
 
 	private VentanaBusquedaEquipo ventanaBusquedaEquipo;
@@ -406,15 +408,13 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			enviarCorreoOwsp(ventanaVisualizarEquipos);
 
 		}
-		
-		
+
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnabrirExcel()) {
 
 			abrirExcel(ventanaVisualizarEquipos);
 
 		}
-
 
 		else if (this.ventanaVisualizarEquipos != null
 				&& e.getSource() == this.ventanaVisualizarEquipos.getBtnBuscarELS()) {
@@ -1236,30 +1236,200 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	}
 
 	private void abrirExcel(VentanaVisualizarEquipos ventanaVisualizarEquipos2) {
-		
+
 		ventanaExcel = new VentanaExcel();
 
 		ventanaExcel.getBtnCaja().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				//abrirExcelCaja(ventanaVisualizarEquipos);
-				System.out.println("Botón Caja presionado");
-
+				abrirExcelCaja(ventanaVisualizarEquipos);
+				ventanaExcel.dispose();
+				ventanaExcel = null;
 			}
+
 		});
-		
+
 		ventanaExcel.getBtnRepar().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				//abrirExcelReparaciones(ventanaVisualizarEquipos);
-				System.out.println("Botón Reparaciones presionado");
+				abrirExcelReparaciones(ventanaVisualizarEquipos);
+				ventanaExcel.dispose();
+				ventanaExcel = null;
+			
 			}
+
 		});
 		
+		ventanaExcel.getBtnDetalleGastos().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				abrirExcelDetalleGastos(ventanaVisualizarEquipos);
+				ventanaExcel.dispose();
+				ventanaExcel = null;
+
+			}
+
+		});
 		
+	
+		
+
+
 	}
+
+	private void abrirExcelReparaciones(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+	    String rutaArchivo = "";
+	    
+	    if (agenda.getUbicacionBase().equals("Bariloche")) {
+	        rutaArchivo = "F:\\els\\Bariloche\\Administracion\\Sistema\\Excels\\ReparBRC_Mysql.xlsx";
+	    } else if (agenda.getUbicacionBase().equals("Buenos Aires")) {
+	        rutaArchivo = "F:\\els\\Administracion\\Sistema\\Excels\\ReparBRC_Mysql.xlsx";
+	    }
+	    
+	    abrirArchivoExcel(rutaArchivo);
+	}
+
+	private void abrirExcelCaja(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+	    String rutaArchivo = "";
+	    
+	    if (agenda.getUbicacionBase().equals("Bariloche")) {
+	        rutaArchivo = "F:\\els\\Bariloche\\Administracion\\Sistema\\Excels\\Caja BRC.xlsx";
+	    } else if (agenda.getUbicacionBase().equals("Buenos Aires")) {
+	        rutaArchivo = "F:\\els\\Administracion\\Sistema\\Excels\\Caja BRC.xlsx";
+	    }
+	    
+	    abrirArchivoExcel(rutaArchivo);
+	}
+	
+	
+	private void abrirExcelDetalleGastos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+	    // Obtener año actual
+	    int anioActual = Calendar.getInstance().get(Calendar.YEAR);
+	    
+	    // Crear lista de años (actual y 3 años anteriores)
+	    Integer[] anios = new Integer[4];
+	    for (int i = 0; i < 4; i++) {
+	        anios[i] = anioActual - i;
+	    }
+	    
+	    // Mostrar diálogo para seleccionar año
+	    Integer anioSeleccionado = (Integer) JOptionPane.showInputDialog(
+	        ventanaVisualizarEquipos,
+	        "Seleccione el año:",
+	        "Detalle de Gastos",
+	        JOptionPane.QUESTION_MESSAGE,
+	        null,
+	        anios,
+	        anioActual  // Valor por defecto: año actual
+	    );
+	    
+	    // Si canceló, salir
+	    if (anioSeleccionado == null) {
+	        return;
+	    }
+	    
+	    // Construir ruta del archivo
+	    String nombreArchivo = "Detalle gastos " + anioSeleccionado;
+	    String rutaArchivo = "";
+	    
+	    if (agenda.getUbicacionBase().equals("Bariloche")) {
+	        rutaArchivo = "F:\\els\\Bariloche\\Administracion\\Sistema\\Excels\\" + nombreArchivo;
+	    } else if (agenda.getUbicacionBase().equals("Buenos Aires")) {
+	        rutaArchivo = "F:\\els\\Administracion\\Sistema\\Excels\\" + nombreArchivo;
+	    }
+	    
+	    abrirArchivoExcel(rutaArchivo);
+	}
+	
+	
+	private void abrirArchivoExcel(String rutaBase) {
+	    try {
+	        File archivo = null;
+	        
+	        // Buscar con diferentes extensiones
+	        String[] extensiones = {".xlsx", ".xls", ".xlsm"};
+	        
+	        for (String ext : extensiones) {
+	            File temp = new File(rutaBase + ext);
+	            if (temp.exists()) {
+	                archivo = temp;
+	                break;
+	            }
+	        }
+	        
+	        // También intentar sin extensión (por si es carpeta o ya tiene extensión)
+	        if (archivo == null) {
+	            File temp = new File(rutaBase);
+	            if (temp.exists()) {
+	                archivo = temp;
+	            }
+	        }
+	        
+	        if (archivo == null || !archivo.exists()) {
+	            JOptionPane.showMessageDialog(null, 
+	                "El archivo no existe en: " + rutaBase + "\n" +
+	                "Verificá la ruta y la extensión (.xlsx, .xls)", 
+	                "Error", 
+	                JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+	        
+	        // Abrir el archivo
+	        if (Desktop.isDesktopSupported()) {
+	            Desktop.getDesktop().open(archivo);
+	        } else {
+	            JOptionPane.showMessageDialog(null, 
+	                "No se puede abrir el archivo en este sistema", 
+	                "Error", 
+	                JOptionPane.ERROR_MESSAGE);
+	        }
+	        
+	    } catch (IOException e) {
+	        JOptionPane.showMessageDialog(null, 
+	            "Error al abrir el archivo: " + e.getMessage(), 
+	            "Error", 
+	            JOptionPane.ERROR_MESSAGE);
+	        e.printStackTrace();
+	    }
+	}
+	
+	
+	
+	
+	
+//	private void abrirArchivoExcel(String rutaArchivo) {
+//	    try {
+//	        File archivo = new File(rutaArchivo);
+//	        
+//	        if (!archivo.exists()) {
+//	            JOptionPane.showMessageDialog(null, 
+//	                "El archivo no existe: " + rutaArchivo, 
+//	                "Error", 
+//	                JOptionPane.ERROR_MESSAGE);
+//	            return;
+//	        }
+//	        
+//	        // Abrir el archivo con la aplicación predeterminada del sistema
+//	        if (Desktop.isDesktopSupported()) {
+//	            Desktop.getDesktop().open(archivo);
+//	        } else {
+//	            JOptionPane.showMessageDialog(null, 
+//	                "No se puede abrir el archivo en este sistema", 
+//	                "Error", 
+//	                JOptionPane.ERROR_MESSAGE);
+//	        }
+//	        
+//	    } catch (IOException e) {
+//	        JOptionPane.showMessageDialog(null, 
+//	            "Error al abrir el archivo: " + e.getMessage(), 
+//	            "Error", 
+//	            JOptionPane.ERROR_MESSAGE);
+//	        e.printStackTrace();
+//	    }
+//	}
 
 	// Enum para los tipos de navegación
 	private enum TipoNavegacion {
@@ -2051,7 +2221,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.getBtnGenerarRemito().addActionListener(this);
 		ventanaVisualizarEquipos.getBotonPresupuestar().addActionListener(this);
 		ventanaVisualizarEquipos.getBtnfacturar().addActionListener(this);
-		ventanaVisualizarEquipos.getBtnabrirExcel().addActionListener(this);		
+		ventanaVisualizarEquipos.getBtnabrirExcel().addActionListener(this);
 		ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(this);
 		ventanaVisualizarEquipos.getComboClientes().addActionListener(this);
 		ventanaVisualizarEquipos.getComboSucursal().addActionListener(this);
