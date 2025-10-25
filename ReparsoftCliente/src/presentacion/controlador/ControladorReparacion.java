@@ -86,6 +86,8 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import com.inet.jortho.SpellChecker;
 
+import VistaPropias.GestorArchivosExcel;
+
 //import com.sun.xml.internal.org.jvnet.fastinfoset.sax.ExtendedContentHandler;
 
 import modelo.Agenda;
@@ -125,10 +127,24 @@ import java.net.URI;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.event.PopupMenuEvent;
 
+import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.Frame;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 public class ControladorReparacion implements ActionListener, MouseListener, KeyListener, ItemListener {
 
 	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
 	private VentanaEquipos ventanaEquipos;
+	private GestorArchivosExcel gestorExcel;
 
 	private VentanaAgregarRepuesto ventanaagregarRepuesto;
 
@@ -233,6 +249,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.controladorpresupuestos = controladorPresupuestos;
 		this.controladorSalidas = controladorSalidas;
 		this.controladorCliente = controladorCliente;
+
+		this.gestorExcel = new GestorArchivosExcel(agenda.getUbicacionBase());
 
 	}
 
@@ -1257,11 +1275,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				abrirExcelReparaciones(ventanaVisualizarEquipos);
 				ventanaExcel.dispose();
 				ventanaExcel = null;
-			
+
 			}
 
 		});
-		
+
 		ventanaExcel.getBtnDetalleGastos().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1273,163 +1291,70 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 
 		});
-		
-	
-		
 
+		ventanaExcel.getBtnAbrirTodos().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
-	}
+				abrirTodosLosExcels(ventanaVisualizarEquipos);
+				ventanaExcel.dispose();
+				ventanaExcel = null;
 
-	private void abrirExcelReparaciones(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-	    String rutaArchivo = "";
-	    
-	    if (agenda.getUbicacionBase().equals("Bariloche")) {
-	        rutaArchivo = "F:\\els\\Bariloche\\Administracion\\Sistema\\Excels\\ReparBRC_Mysql.xlsx";
-	    } else if (agenda.getUbicacionBase().equals("Buenos Aires")) {
-	        rutaArchivo = "F:\\els\\Administracion\\Sistema\\Excels\\ReparBRC_Mysql.xlsx";
-	    }
-	    
-	    abrirArchivoExcel(rutaArchivo);
+			}
+
+		});
+
 	}
 
-	private void abrirExcelCaja(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-	    String rutaArchivo = "";
-	    
-	    if (agenda.getUbicacionBase().equals("Bariloche")) {
-	        rutaArchivo = "F:\\els\\Bariloche\\Administracion\\Sistema\\Excels\\Caja BRC.xlsx";
-	    } else if (agenda.getUbicacionBase().equals("Buenos Aires")) {
-	        rutaArchivo = "F:\\els\\Administracion\\Sistema\\Excels\\Caja BRC.xlsx";
-	    }
-	    
-	    abrirArchivoExcel(rutaArchivo);
+	/**
+	 * Abre el Excel de Reparaciones
+	 */
+	public void abrirExcelReparaciones(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		gestorExcel.setUbicacionBase(agenda.getUbicacionBase());
+		gestorExcel.abrirReparaciones();
 	}
-	
-	
-	private void abrirExcelDetalleGastos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-	    // Obtener año actual
-	    int anioActual = Calendar.getInstance().get(Calendar.YEAR);
-	    
-	    // Crear lista de años (actual y 3 años anteriores)
-	    Integer[] anios = new Integer[4];
-	    for (int i = 0; i < 4; i++) {
-	        anios[i] = anioActual - i;
-	    }
-	    
-	    // Mostrar diálogo para seleccionar año
-	    Integer anioSeleccionado = (Integer) JOptionPane.showInputDialog(
-	        ventanaVisualizarEquipos,
-	        "Seleccione el año:",
-	        "Detalle de Gastos",
-	        JOptionPane.QUESTION_MESSAGE,
-	        null,
-	        anios,
-	        anioActual  // Valor por defecto: año actual
-	    );
-	    
-	    // Si canceló, salir
-	    if (anioSeleccionado == null) {
-	        return;
-	    }
-	    
-	    // Construir ruta del archivo
-	    String nombreArchivo = "Detalle gastos " + anioSeleccionado;
-	    String rutaArchivo = "";
-	    
-	    if (agenda.getUbicacionBase().equals("Bariloche")) {
-	        rutaArchivo = "F:\\els\\Bariloche\\Administracion\\Sistema\\Excels\\" + nombreArchivo;
-	    } else if (agenda.getUbicacionBase().equals("Buenos Aires")) {
-	        rutaArchivo = "F:\\els\\Administracion\\Sistema\\Excels\\" + nombreArchivo;
-	    }
-	    
-	    abrirArchivoExcel(rutaArchivo);
+
+	/**
+	 * Abre el Excel de Caja (con opción de actualizar Reparaciones primero)
+	 */
+	public void abrirExcelCaja(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		gestorExcel.setUbicacionBase(agenda.getUbicacionBase());
+		gestorExcel.abrirCaja();
 	}
-	
-	
-	private void abrirArchivoExcel(String rutaBase) {
-	    try {
-	        File archivo = null;
-	        
-	        // Buscar con diferentes extensiones
-	        String[] extensiones = {".xlsx", ".xls", ".xlsm"};
-	        
-	        for (String ext : extensiones) {
-	            File temp = new File(rutaBase + ext);
-	            if (temp.exists()) {
-	                archivo = temp;
-	                break;
-	            }
-	        }
-	        
-	        // También intentar sin extensión (por si es carpeta o ya tiene extensión)
-	        if (archivo == null) {
-	            File temp = new File(rutaBase);
-	            if (temp.exists()) {
-	                archivo = temp;
-	            }
-	        }
-	        
-	        if (archivo == null || !archivo.exists()) {
-	            JOptionPane.showMessageDialog(null, 
-	                "El archivo no existe en: " + rutaBase + "\n" +
-	                "Verificá la ruta y la extensión (.xlsx, .xls)", 
-	                "Error", 
-	                JOptionPane.ERROR_MESSAGE);
-	            return;
-	        }
-	        
-	        // Abrir el archivo
-	        if (Desktop.isDesktopSupported()) {
-	            Desktop.getDesktop().open(archivo);
-	        } else {
-	            JOptionPane.showMessageDialog(null, 
-	                "No se puede abrir el archivo en este sistema", 
-	                "Error", 
-	                JOptionPane.ERROR_MESSAGE);
-	        }
-	        
-	    } catch (IOException e) {
-	        JOptionPane.showMessageDialog(null, 
-	            "Error al abrir el archivo: " + e.getMessage(), 
-	            "Error", 
-	            JOptionPane.ERROR_MESSAGE);
-	        e.printStackTrace();
-	    }
+
+	/**
+	 * Abre el Excel de Detalle de Gastos con selector de año
+	 */
+	public void abrirExcelDetalleGastos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		gestorExcel.setUbicacionBase(agenda.getUbicacionBase());
+		gestorExcel.abrirDetalleGastos(null);
 	}
-	
-	
-	
-	
-	
-//	private void abrirArchivoExcel(String rutaArchivo) {
-//	    try {
-//	        File archivo = new File(rutaArchivo);
-//	        
-//	        if (!archivo.exists()) {
-//	            JOptionPane.showMessageDialog(null, 
-//	                "El archivo no existe: " + rutaArchivo, 
-//	                "Error", 
-//	                JOptionPane.ERROR_MESSAGE);
-//	            return;
-//	        }
-//	        
-//	        // Abrir el archivo con la aplicación predeterminada del sistema
-//	        if (Desktop.isDesktopSupported()) {
-//	            Desktop.getDesktop().open(archivo);
-//	        } else {
-//	            JOptionPane.showMessageDialog(null, 
-//	                "No se puede abrir el archivo en este sistema", 
-//	                "Error", 
-//	                JOptionPane.ERROR_MESSAGE);
-//	        }
-//	        
-//	    } catch (IOException e) {
-//	        JOptionPane.showMessageDialog(null, 
-//	            "Error al abrir el archivo: " + e.getMessage(), 
-//	            "Error", 
-//	            JOptionPane.ERROR_MESSAGE);
-//	        e.printStackTrace();
-//	    }
-//	}
+
+	/**
+	 * Abre el Excel de Detalle de Gastos del año actual directamente
+	 */
+	public void abrirExcelDetalleGastosAnioActual(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		gestorExcel.setUbicacionBase(agenda.getUbicacionBase());
+		gestorExcel.abrirDetalleGastosAnioActual();
+	}
+
+	/**
+	 * NUEVO: Abre todos los archivos Excel en secuencia (modo manual) El usuario
+	 * controla cuándo pasar al siguiente archivo
+	 */
+	public void abrirTodosLosExcels(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		gestorExcel.setUbicacionBase(agenda.getUbicacionBase());
+		gestorExcel.abrirTodosLosArchivos();
+	}
+
+	/**
+	 * NUEVO: Abre todos los archivos Excel automáticamente con pausas Los archivos
+	 * se abren con delays automáticos
+	 */
+	public void abrirTodosLosExcelsAutomatico(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		gestorExcel.setUbicacionBase(agenda.getUbicacionBase());
+		gestorExcel.abrirTodosLosArchivosAutomatico();
+	}
 
 	// Enum para los tipos de navegación
 	private enum TipoNavegacion {
