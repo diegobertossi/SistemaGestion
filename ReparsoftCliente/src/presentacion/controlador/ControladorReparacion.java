@@ -2417,6 +2417,18 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		});
 
+		
+		ventanaVisualizarEquipos.getBtnabrirExcel().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				abrirExcel(ventanaVisualizarEquipos);
+
+			}
+		});
+		
+		
+		
 		listenerPrecios(ventanaVisualizarEquipos);
 
 		ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(new ActionListener() {
