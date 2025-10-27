@@ -5,8 +5,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Desktop;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.time.LocalDate;
@@ -29,36 +27,23 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
-import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
-import javax.swing.ActionMap;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.InputMap;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -70,9 +55,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import javax.swing.Timer;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
@@ -91,9 +73,7 @@ import VistaPropias.GestorArchivosExcel;
 //import com.sun.xml.internal.org.jvnet.fastinfoset.sax.ExtendedContentHandler;
 
 import modelo.Agenda;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import presentacion.reportes.ReporteRegistroEntrada;
-import presentacion.vista.VentanaAgregarCliente;
 import presentacion.vista.VentanaAgregarEquipo;
 import presentacion.vista.VentanaAgregarRepuesto;
 import presentacion.vista.VentanaBusquedaEquipo;
@@ -126,19 +106,6 @@ import java.net.URI;
 
 import javax.swing.event.PopupMenuListener;
 import javax.swing.event.PopupMenuEvent;
-
-import java.awt.BorderLayout;
-import java.awt.Desktop;
-import java.awt.Frame;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JProgressBar;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 public class ControladorReparacion implements ActionListener, MouseListener, KeyListener, ItemListener {
 
@@ -234,6 +201,16 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	// En la clase ControladorReparacion
 	private List<String> caracteresNoValidosEncontrados = new ArrayList<>();
+	
+	
+	private static final Color PAGADO = new Color(144, 238, 144);           // Verde menta suave
+	private static final Color SIN_PRESUPUESTAR = new Color(211, 211, 211); // Gris claro
+	private static final Color PARCIAL = new Color(255, 239, 153);          // Amarillo pastel
+	private static final Color FALTA_PAGO = new Color(255, 182, 193);       // Rosa suave
+	private static final Color NO_ACEPTADO = new Color(216, 191, 216);      // Lila suave
+	private static final Color ESPERANDO = new Color(173, 216, 230);        // Azul cielo claro
+	private static final Color SIN_REPARACION = new Color(255, 218, 185);   // Melocotón suave
+	
 
 	public ControladorReparacion(VentanaEquipos ventanaEquipos, ControladorUsuLogin controladorUsuLogin, Agenda agendas,
 			ControladorPresupuestos controladorPresupuestos, ControladorSalidas controladorSalidas,
@@ -1309,7 +1286,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	/**
 	 * Abre el Excel de Reparaciones
 	 */
-	public void abrirExcelReparaciones(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+	private void abrirExcelReparaciones(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 		gestorExcel.setUbicacionBase(agenda.getUbicacionBase());
 		gestorExcel.abrirReparaciones();
 	}
@@ -1317,7 +1294,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	/**
 	 * Abre el Excel de Caja (con opción de actualizar Reparaciones primero)
 	 */
-	public void abrirExcelCaja(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+	private void abrirExcelCaja(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 		gestorExcel.setUbicacionBase(agenda.getUbicacionBase());
 		gestorExcel.abrirCaja();
 	}
@@ -1325,7 +1302,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	/**
 	 * Abre el Excel de Detalle de Gastos con selector de año
 	 */
-	public void abrirExcelDetalleGastos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+	private void abrirExcelDetalleGastos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 		gestorExcel.setUbicacionBase(agenda.getUbicacionBase());
 		gestorExcel.abrirDetalleGastos(null);
 	}
@@ -1333,7 +1310,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	/**
 	 * Abre el Excel de Detalle de Gastos del año actual directamente
 	 */
-	public void abrirExcelDetalleGastosAnioActual(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+	private void abrirExcelDetalleGastosAnioActual(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 		gestorExcel.setUbicacionBase(agenda.getUbicacionBase());
 		gestorExcel.abrirDetalleGastosAnioActual();
 	}
@@ -1342,7 +1319,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	 * NUEVO: Abre todos los archivos Excel en secuencia (modo manual) El usuario
 	 * controla cuándo pasar al siguiente archivo
 	 */
-	public void abrirTodosLosExcels(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+	private void abrirTodosLosExcels(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 		gestorExcel.setUbicacionBase(agenda.getUbicacionBase());
 		gestorExcel.abrirTodosLosArchivos();
 	}
@@ -1351,7 +1328,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	 * NUEVO: Abre todos los archivos Excel automáticamente con pausas Los archivos
 	 * se abren con delays automáticos
 	 */
-	public void abrirTodosLosExcelsAutomatico(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+	private void abrirTodosLosExcelsAutomatico(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 		gestorExcel.setUbicacionBase(agenda.getUbicacionBase());
 		gestorExcel.abrirTodosLosArchivosAutomatico();
 	}
@@ -2417,7 +2394,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 			}
 		});
 
-		
 		ventanaVisualizarEquipos.getBtnabrirExcel().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -2426,9 +2402,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 			}
 		});
-		
-		
-		
+
 		listenerPrecios(ventanaVisualizarEquipos);
 
 		ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(new ActionListener() {
@@ -3090,132 +3064,119 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.show();
 
 	}
-
-	private void verificarPresupuesto(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-
-		Color EquipoPagado = new Color(130, 224, 170);
-		Color AzulClaro = new Color(169, 204, 227);
-		Color CyanClaro = new Color(224, 255, 255);
-		Color FaltaPago = new Color(241, 148, 138);
-
-		Double PresupuestoDefault = 0.0;
-		if ((reparacion.getPrecioPeso().compareTo(PresupuestoDefault) != 0)) {
-
-			if (reparacion.getPrecioPeso().compareTo(reparacion.getPago()) == 0) {
-
-				ventanaVisualizarEquipos.getTextEquipoPagado().setText("PAGADO");
-				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
-				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(EquipoPagado);
-				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(EquipoPagado);
-				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(EquipoPagado);
-				ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(EquipoPagado);
-				ventanaVisualizarEquipos.getTextPago().setBackground(EquipoPagado);
-
-			} else if (reparacion.getPrecioPeso().compareTo(reparacion.getPago()) > 0
-					&& reparacion.getPago().compareTo(PresupuestoDefault) != 0) {
-
-				ventanaVisualizarEquipos.getTextEquipoPagado().setText("PAGADO PARCIALMENTE");
-				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
-				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(CyanClaro);
-				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(CyanClaro);
-				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(CyanClaro);
-				ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(CyanClaro);
-				ventanaVisualizarEquipos.getTextPago().setBackground(CyanClaro);
-
-			} else if (reparacion.getPago().compareTo(PresupuestoDefault) == 0) {
-
-				ventanaVisualizarEquipos.getTextEquipoPagado().setText("FALTA PAGO");
-				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
-				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(FaltaPago);
-				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(FaltaPago);
-				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(FaltaPago);
-				ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(FaltaPago);
-				ventanaVisualizarEquipos.getTextPago().setBackground(FaltaPago);
-
-			}
-
-		} else {
-			ventanaVisualizarEquipos.getTextEquipoPagado().setText("SIN PRESUPUESTAR");
-			ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
-			ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(AzulClaro);
-			ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(AzulClaro);
-			ventanaVisualizarEquipos.getTextPresupuesto().setBackground(AzulClaro);
-			ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(AzulClaro);
-			ventanaVisualizarEquipos.getTextPago().setBackground(AzulClaro);
-
-		}
-		// TODO Auto-generated method stub
-
+	
+	
+	
+	
+	private void verificarPresupuesto(VentanaVisualizarEquipos ventana) {
+		
+	    Double presupuesto = reparacion.getPrecioPeso();
+	    Double pago = reparacion.getPago();
+	    String estadoComercial = ventana.getTextEstadoComercial().getText();
+	    
+	    String estadoTecnico = ventana.getTextEstadoTecnico().getText();
+	    
+	    // Caso especial: Sin Reparación
+	    if ("Sin Reparación".equals(estadoTecnico)) {
+	        aplicarEstadoVisual(ventana, "SIN REPARACIÓN", SIN_REPARACION);
+	        return;
+	    }
+	    
+	    // Sin presupuesto
+	    if (presupuesto.compareTo(0.0) == 0) {
+	        aplicarEstadoVisual(ventana, "SIN PRESUPUESTAR", SIN_PRESUPUESTAR);
+	        return;
+	    }
+	    
+	    // Caso especial: Presupuesto no aceptado
+	    if ("NO Aceptado".equals(estadoComercial)) {
+	        aplicarEstadoVisual(ventana, "NO ACEPTADO", NO_ACEPTADO);
+	        return;
+	    }
+	    
+	    // Hay presupuesto
+	    int comparacion = presupuesto.compareTo(pago);
+	    
+	    if (comparacion == 0) {
+	        // Totalmente pagado
+	        aplicarEstadoVisual(ventana, "PAGADO", PAGADO);
+	    } else if (comparacion > 0 && pago.compareTo(0.0) > 0) {
+	        // Pago parcial
+	        aplicarEstadoVisual(ventana, "PAGADO PARCIALMENTE", PARCIAL);
+	    } else if (pago.compareTo(0.0) == 0) {
+	        // Sin pago - verificar estado comercial
+	        String leyenda = determinarLeyendaSinPago(estadoComercial);
+	        Color color = "ESPERANDO ACEPTACIÓN".equals(leyenda) ? ESPERANDO : FALTA_PAGO;
+	        aplicarEstadoVisual(ventana, leyenda, color);
+	    }
 	}
 
-	@SuppressWarnings("unused")
-	public void verificarPresupuestoEditado(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-
-		Color EquipoPagado = new Color(130, 224, 170);
-		Color AzulClaro = new Color(169, 204, 227);
-		Color CyanClaro = new Color(224, 255, 255);
-		Color FaltaPago = new Color(241, 148, 138);
-
-		String PresupuestoDefault = "0.0";
-
-		double presupuesto = monedaFormatter
-				.parseAmountGuardar(ventanaVisualizarEquipos.getTextPresupuesto().getText());
-		double pago = monedaFormatter.parseAmountGuardar(ventanaVisualizarEquipos.getTextPago().getText());
-
-		double diferencia = presupuesto - pago;
-
-		// System.out.println(presupuesto + "-" + pago + "=" + diferencia);
-
-		if ((presupuesto != 0.0)) {
-
-			if (diferencia == 0.0) {
-
-				ventanaVisualizarEquipos.getTextEquipoPagado().setText("PAGADO");
-				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
-				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(EquipoPagado);
-				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(EquipoPagado);
-				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(EquipoPagado);
-				ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(EquipoPagado);
-				ventanaVisualizarEquipos.getTextPago().setBackground(EquipoPagado);
-				ventanaVisualizarEquipos.setChckPDFGenerado(true);
-
-			} else if (diferencia > 0.0 && diferencia < presupuesto) {
-
-				ventanaVisualizarEquipos.getTextEquipoPagado().setText("PAGADO PARCIALMENTE");
-				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
-				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(CyanClaro);
-				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(CyanClaro);
-				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(CyanClaro);
-				ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(CyanClaro);
-				ventanaVisualizarEquipos.getTextPago().setBackground(CyanClaro);
-
-			} else if (diferencia == presupuesto) {
-
-				ventanaVisualizarEquipos.getTextEquipoPagado().setText("FALTA PAGO");
-				ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
-				ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(FaltaPago);
-				ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(FaltaPago);
-				ventanaVisualizarEquipos.getTextPresupuesto().setBackground(FaltaPago);
-				ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(FaltaPago);
-				ventanaVisualizarEquipos.getTextPago().setBackground(FaltaPago);
-				ventanaVisualizarEquipos.setChckPDFGenerado(true);
-
-			}
-
-		} else {
-			ventanaVisualizarEquipos.getTextEquipoPagado().setText("SIN PRESUPUESTAR");
-			ventanaVisualizarEquipos.getTextEquipoPagado().setVisible(true);
-			ventanaVisualizarEquipos.getPanel_MontoPresupuesto().setBackground(AzulClaro);
-			ventanaVisualizarEquipos.getTextEquipoPagado().setBackground(AzulClaro);
-			ventanaVisualizarEquipos.getTextPresupuesto().setBackground(AzulClaro);
-			ventanaVisualizarEquipos.getTextPresupuestoDolar().setBackground(AzulClaro);
-			ventanaVisualizarEquipos.getTextPago().setBackground(AzulClaro);
-			ventanaVisualizarEquipos.setChckPDFGenerado(false);
-
-		}
-		// TODO Auto-generated method stub
-
+	private String determinarLeyendaSinPago(String estadoComercial) {
+	    switch (estadoComercial) {
+	        case "A la Espera de Aceptación":
+	            return "ESPERANDO ACEPTACIÓN";
+	        case "Aceptado":
+	            return "FALTA PAGO";
+	        default:
+	            return "FALTA PAGO";
+	    }
 	}
+
+	public void verificarPresupuestoEditado(VentanaVisualizarEquipos ventana) {
+	    double presupuesto = monedaFormatter.parseAmountGuardar(ventana.getTextPresupuesto().getText());
+	    double pago = monedaFormatter.parseAmountGuardar(ventana.getTextPago().getText());
+	    String estadoComercial = ventana.getTextEstadoComercial().getText();
+	    
+	    // Caso especial: Sin Reparación
+	    if ("Sin Reparación".equals(estadoComercial)) {
+	        aplicarEstadoVisual(ventana, "SIN REPARACIÓN", SIN_REPARACION);
+	        ventana.setChckPDFGenerado(false);
+	        return;
+	    }
+	    
+	    // Sin presupuesto
+	    if (presupuesto == 0.0) {
+	        aplicarEstadoVisual(ventana, "SIN PRESUPUESTAR", SIN_PRESUPUESTAR);
+	        ventana.setChckPDFGenerado(false);
+	        return;
+	    }
+	    
+	    // Caso especial: Presupuesto no aceptado
+	    if ("NO ACEPTADO".equals(estadoComercial)) {
+	        aplicarEstadoVisual(ventana, "NO ACEPTADO", NO_ACEPTADO);
+	        ventana.setChckPDFGenerado(false);
+	        return;
+	    }
+	    
+	    // Hay presupuesto
+	    double diferencia = presupuesto - pago;
+	    
+	    if (diferencia == 0.0) {
+	        // Totalmente pagado
+	        aplicarEstadoVisual(ventana, "PAGADO", PAGADO);
+	        ventana.setChckPDFGenerado(true);
+	    } else if (diferencia > 0.0 && pago > 0.0) {
+	        // Pago parcial
+	        aplicarEstadoVisual(ventana, "PAGADO PARCIALMENTE", PARCIAL);
+	    } else if (pago == 0.0) {
+	        // Sin pago - verificar estado comercial
+	        String leyenda = determinarLeyendaSinPago(estadoComercial);
+	        Color color = "ESPERANDO ACEPTACIÓN".equals(leyenda) ? ESPERANDO : FALTA_PAGO;
+	        aplicarEstadoVisual(ventana, leyenda, color);
+	        ventana.setChckPDFGenerado(true);
+	    }
+	}
+
+	private void aplicarEstadoVisual(VentanaVisualizarEquipos ventana, String leyenda, Color color) {
+	    ventana.getTextEquipoPagado().setText(leyenda);
+	    ventana.getTextEquipoPagado().setVisible(true);
+	    ventana.getTextEquipoPagado().setBackground(color);
+	    ventana.getPanel_MontoPresupuesto().setBackground(color);
+	    ventana.getTextPresupuesto().setBackground(color);
+	    ventana.getTextPresupuestoDolar().setBackground(color);
+	    ventana.getTextPago().setBackground(color);
+	}
+
 
 	private void deshabilitarCampos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
@@ -4219,7 +4180,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		return salida;
 	}
 
-	public static void habilitarMenuContextual(Object componente) {
+	private static void habilitarMenuContextual(Object componente) {
 		final JTextComponent editor;
 
 		if (componente instanceof JComboBox) {
@@ -4287,7 +4248,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	boolean validacionMail(String email) {
+	private boolean validacionMail(String email) {
 
 		Pattern pattern = Pattern.compile(PATTERN_EMAIL);
 
@@ -4295,7 +4256,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		return matcher.matches();
 	}
 
-	public boolean verificarCaracteresPermitidos(String texto) {
+	private boolean verificarCaracteresPermitidos(String texto) {
 		caracteresNoValidosEncontrados.clear();
 
 		// Comillas simples
