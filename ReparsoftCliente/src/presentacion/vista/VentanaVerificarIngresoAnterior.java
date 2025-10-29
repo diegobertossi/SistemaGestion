@@ -66,6 +66,7 @@ public class VentanaVerificarIngresoAnterior extends JFrame
 	private JButton btnSI;
 	private JButton btnNO;
 	private JPanel panel_3;
+	private JTextField textSucursal;
 	
 
 	@SuppressWarnings({ "unused", "rawtypes" })
@@ -147,82 +148,82 @@ public class VentanaVerificarIngresoAnterior extends JFrame
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		panel_1.setBackground(SystemColor.activeCaption);
-		panel_1.setBounds(50, 187, 474, 269);
+		panel_1.setBounds(50, 187, 474, 272);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
 		textELS = new JTextField();
 		textELS.setEditable(false);
 		textELS.setFont(new Font("Cambria", Font.BOLD, 12));
-		textELS.setBounds(124, 11, 86, 20);
+		textELS.setBounds(124, 7, 86, 20);
 		panel_1.add(textELS);
 		textELS.setColumns(10);
 		
 		JLabel lblels = new JLabel("ELS:");
 		lblels.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblels.setBounds(10, 11, 104, 20);
+		lblels.setBounds(10, 7, 104, 20);
 		panel_1.add(lblels);
 		
 		JLabel lblCliente = new JLabel("CLIENTE:\r\n");
 		lblCliente.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblCliente.setBounds(10, 34, 104, 20);
+		lblCliente.setBounds(10, 31, 104, 20);
 		panel_1.add(lblCliente);
 		
 		JLabel lblEquipo = new JLabel("EQUIPO:");
 		lblEquipo.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblEquipo.setBounds(10, 57, 104, 20);
+		lblEquipo.setBounds(10, 77, 104, 20);
 		panel_1.add(lblEquipo);
 		
 		JLabel lblMarca = new JLabel("MARCA:");
 		lblMarca.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblMarca.setBounds(10, 80, 104, 20);
+		lblMarca.setBounds(10, 100, 104, 20);
 		panel_1.add(lblMarca);
 		
 		JLabel lblModelo = new JLabel("MODELO:");
 		lblModelo.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblModelo.setBounds(10, 102, 104, 20);
+		lblModelo.setBounds(10, 122, 104, 20);
 		panel_1.add(lblModelo);
 		
 		textCliente = new JTextField();
 		textCliente.setEditable(false);
 		textCliente.setFont(new Font("Cambria", Font.BOLD, 12));
 		textCliente.setColumns(10);
-		textCliente.setBounds(124, 34, 340, 20);
+		textCliente.setBounds(124, 31, 340, 20);
 		panel_1.add(textCliente);
 		
 		textEquipo = new JTextField();
 		textEquipo.setEditable(false);
 		textEquipo.setFont(new Font("Cambria", Font.BOLD, 12));
 		textEquipo.setColumns(10);
-		textEquipo.setBounds(124, 57, 340, 20);
+		textEquipo.setBounds(124, 77, 340, 20);
 		panel_1.add(textEquipo);
 		
 		textMarca = new JTextField();
 		textMarca.setEditable(false);
 		textMarca.setFont(new Font("Cambria", Font.BOLD, 12));
 		textMarca.setColumns(10);
-		textMarca.setBounds(124, 80, 340, 20);
+		textMarca.setBounds(124, 100, 340, 20);
 		panel_1.add(textMarca);
 		
 		textModelo = new JTextField();
 		textModelo.setEditable(false);
 		textModelo.setFont(new Font("Cambria", Font.BOLD, 12));
 		textModelo.setColumns(10);
-		textModelo.setBounds(124, 102, 340, 20);
+		textModelo.setBounds(124, 123, 340, 20);
 		panel_1.add(textModelo);
 		
 		textSerie = new JTextField();
 		textSerie.setEditable(false);
 		textSerie.setFont(new Font("Cambria", Font.BOLD, 12));
 		textSerie.setColumns(10);
-		textSerie.setBounds(124, 125, 340, 20);
+		textSerie.setBounds(124, 145, 340, 20);
 		panel_1.add(textSerie);
 		
 		textFabricacion = new JTextFieldDateEditor("dd/MM/yyyy", "##-##-####", '-');
 		textFabricacion.setEditable(false);
 		textFabricacion.setHorizontalAlignment(SwingConstants.CENTER);
 		textFabricacion.setColumns(10);
-		textFabricacion.setBounds(124, 148, 86, 20);
+		textFabricacion.setBounds(124, 168, 86, 20);
 		textFabricacion.setFont(new Font("Cambria", Font.BOLD, 12));
 		panel_1.add(textFabricacion);
 		
@@ -233,51 +234,51 @@ public class VentanaVerificarIngresoAnterior extends JFrame
 		textIngresoAnterior.setHorizontalAlignment(SwingConstants.CENTER);
 		textIngresoAnterior.setFont(new Font("Cambria", Font.BOLD, 12));
 		textIngresoAnterior.setColumns(10);
-		textIngresoAnterior.setBounds(195, 197, 86, 20);
+		textIngresoAnterior.setBounds(195, 203, 86, 20);
 		panel_1.add(textIngresoAnterior);
 		
 		lblSerie = new JLabel("N° SERIE:");
 		lblSerie.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblSerie.setBounds(10, 125, 104, 20);
+		lblSerie.setBounds(10, 145, 104, 20);
 		panel_1.add(lblSerie);
 		
 		lblFabricacion = new JLabel("FECHA DE FABR.:");
 		lblFabricacion.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblFabricacion.setBounds(10, 148, 104, 20);
+		lblFabricacion.setBounds(10, 168, 104, 20);
 		panel_1.add(lblFabricacion);
 		
 		lblAviso = new JLabel("AVISO:");
 		lblAviso.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblAviso.setBounds(322, 11, 53, 20);
+		lblAviso.setBounds(322, 7, 53, 20);
 		panel_1.add(lblAviso);
 		
 		textAviso = new JTextField();
 		textAviso.setEditable(false);
 		textAviso.setFont(new Font("Cambria", Font.BOLD, 12));
 		textAviso.setColumns(10);
-		textAviso.setBounds(378, 11, 86, 20);
+		textAviso.setBounds(378, 7, 86, 20);
 		panel_1.add(textAviso);
 		
 		lblFechaAnterior = new JLabel("FECHA DE INGRESO ANTERIOR:");
 		lblFechaAnterior.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblFechaAnterior.setBounds(10, 197, 175, 20);
+		lblFechaAnterior.setBounds(10, 203, 175, 20);
 		panel_1.add(lblFechaAnterior);
 		
 		lblPasarondias = new JLabel("PASARON (DIAS):");
 		lblPasarondias.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblPasarondias.setBounds(299, 197, 104, 20);
+		lblPasarondias.setBounds(299, 203, 104, 20);
 		panel_1.add(lblPasarondias);
 		
 		textPasaron = new JTextField();
 		textPasaron.setEditable(false);
 		textPasaron.setFont(new Font("Cambria", Font.BOLD, 12));
 		textPasaron.setColumns(10);
-		textPasaron.setBounds(411, 197, 53, 20);
+		textPasaron.setBounds(411, 203, 53, 20);
 		panel_1.add(textPasaron);
 		
 		lblNota = new JLabel("NOTA:");
 		lblNota.setFont(new Font("Cambria", Font.BOLD, 12));
-		lblNota.setBounds(10, 224, 40, 20);
+		lblNota.setBounds(10, 230, 40, 20);
 		panel_1.add(lblNota);
 		
 		textNota = new JTextArea();
@@ -289,12 +290,24 @@ public class VentanaVerificarIngresoAnterior extends JFrame
 		textNota.setWrapStyleWord(true);
 		textNota.setFont(new Font("Cambria", Font.BOLD, 10));
 		textNota.setColumns(10);
-		textNota.setBounds(124, 224, 340, 34);
+		textNota.setBounds(124, 230, 340, 34);
 		panel_1.add(textNota);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(30, 184, 413, 2);
+		separator.setBounds(30, 193, 413, 2);
 		panel_1.add(separator);
+		
+		textSucursal = new JTextField();
+		textSucursal.setFont(new Font("Cambria", Font.BOLD, 12));
+		textSucursal.setEditable(false);
+		textSucursal.setColumns(10);
+		textSucursal.setBounds(124, 54, 340, 20);
+		panel_1.add(textSucursal);
+		
+		JLabel lblSucursal = new JLabel("SUCURSAL");
+		lblSucursal.setFont(new Font("Cambria", Font.BOLD, 12));
+		lblSucursal.setBounds(10, 54, 104, 20);
+		panel_1.add(lblSucursal);
 		
 		
 		JLabel lblElEquipoEncontrado = new JLabel("EL EQUIPO ENCONTRADO ES EL SIGUIENTE:");
@@ -517,6 +530,16 @@ public class VentanaVerificarIngresoAnterior extends JFrame
 
 	public JTextFieldDateEditor getTextFechaIngreso() {
 		return textIngresoAnterior;
+	}
+
+
+	public JTextField getTextSucursal() {
+		return textSucursal;
+	}
+
+
+	public void setTextSucursal(JTextField textSucursal) {
+		this.textSucursal = textSucursal;
 	}
 }
 

@@ -448,7 +448,7 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				lista.add(rep);
 				ReporteRemitoSalida reporte = new ReporteRemitoSalida(rep, lista, agenda);
 				reporte.mostrar();
-
+			
 			}
 
 			ventanaRemitos.setCursor(Cursor.getDefaultCursor());
@@ -858,8 +858,8 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		RemitoDTO nuevoRemito = new RemitoDTO(IdUbicacion, codigoUbicacion, IdRemito, numeroRemitoSalida, descripcion,
 				NombreCliente, RemitoConformado, cantBultos, clienteEncontrado.get().getCUIT(),
 				clienteEncontrado.get().getDomicilio());
-
-		return nuevoRemito;
+		
+				return nuevoRemito;
 	}
 
 	@SuppressWarnings("unused")

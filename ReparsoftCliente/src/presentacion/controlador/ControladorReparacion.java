@@ -64,6 +64,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import javax.swing.undo.UndoManager;
 
+import org.apache.tools.ant.taskdefs.Sleep;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import com.inet.jortho.SpellChecker;
@@ -201,16 +202,14 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	// En la clase ControladorReparacion
 	private List<String> caracteresNoValidosEncontrados = new ArrayList<>();
-	
-	
-	private static final Color PAGADO = new Color(144, 238, 144);           // Verde menta suave
+
+	private static final Color PAGADO = new Color(144, 238, 144); // Verde menta suave
 	private static final Color SIN_PRESUPUESTAR = new Color(211, 211, 211); // Gris claro
-	private static final Color PARCIAL = new Color(255, 239, 153);          // Amarillo pastel
-	private static final Color FALTA_PAGO = new Color(255, 182, 193);       // Rosa suave
-	private static final Color NO_ACEPTADO = new Color(216, 191, 216);      // Lila suave
-	private static final Color ESPERANDO = new Color(173, 216, 230);        // Azul cielo claro
-	private static final Color SIN_REPARACION = new Color(255, 218, 185);   // Melocotón suave
-	
+	private static final Color PARCIAL = new Color(255, 239, 153); // Amarillo pastel
+	private static final Color FALTA_PAGO = new Color(255, 182, 193); // Rosa suave
+	private static final Color NO_ACEPTADO = new Color(216, 191, 216); // Lila suave
+	private static final Color ESPERANDO = new Color(173, 216, 230); // Azul cielo claro
+	private static final Color SIN_REPARACION = new Color(255, 218, 185); // Melocotón suave
 
 	public ControladorReparacion(VentanaEquipos ventanaEquipos, ControladorUsuLogin controladorUsuLogin, Agenda agendas,
 			ControladorPresupuestos controladorPresupuestos, ControladorSalidas controladorSalidas,
@@ -948,6 +947,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				ventanaVerificarIngresoAnterior.getTextELS().setText("");
 				ventanaVerificarIngresoAnterior.getTextAviso().setText("");
 				ventanaVerificarIngresoAnterior.getTextCliente().setText("");
+				ventanaVerificarIngresoAnterior.getTextSucursal().setText("");
 				ventanaVerificarIngresoAnterior.getTextEquipo().setText("");
 				ventanaVerificarIngresoAnterior.getTextMarca().setText("");
 				ventanaVerificarIngresoAnterior.getTextModelo().setText("");
@@ -969,8 +969,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 				SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
 				ventanaVerificarIngresoAnterior.getTextELS().setText(String.valueOf(reparacion.getELS()));
 				ventanaVerificarIngresoAnterior.getTextAviso().setText(reparacion.getAviso());
-				ventanaVerificarIngresoAnterior.getTextCliente()
-						.setText(reparacion.getCliente() + " - " + reparacion.getSucursal());
+				ventanaVerificarIngresoAnterior.getTextCliente().setText(reparacion.getCliente());
+				ventanaVerificarIngresoAnterior.getTextSucursal().setText(reparacion.getSucursal());
 				ventanaVerificarIngresoAnterior.getTextEquipo().setText(reparacion.getNombreEquipo());
 				ventanaVerificarIngresoAnterior.getTextMarca().setText(reparacion.getMarca());
 				ventanaVerificarIngresoAnterior.getTextModelo().setText(reparacion.getModelo());
@@ -1038,80 +1038,79 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		}
 
 		else if (this.ventanaVerificarIngresoAnterior != null
-				&& e.getSource() == this.ventanaVerificarIngresoAnterior.getBtnSI()) {
+		        && e.getSource() == this.ventanaVerificarIngresoAnterior.getBtnSI()) {
 
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-			ventanaAgregarEquipo.getComboClientes().setEditable(true);
-			ventanaAgregarEquipo.getComboSucursal().setEditable(true);
-			ventanaAgregarEquipo.getComboNombreEquipo().setEditable(true);
-			ventanaAgregarEquipo.getComboSerie().setEditable(true);
-			ventanaAgregarEquipo.getComboMarca().setEditable(true);
-			ventanaAgregarEquipo.getComboModelo().setEditable(true);
-			ventanaAgregarEquipo.getTextFechafabricacion().setEditable(true);
-			ventanaAgregarEquipo.getTextFechafabricacion().setEnabled(true);
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		    
+		    // Hacer editables los campos
+		    ventanaAgregarEquipo.getComboClientes().setEditable(true);
+		    ventanaAgregarEquipo.getComboSucursal().setEditable(true);
+		    ventanaAgregarEquipo.getComboNombreEquipo().setEditable(true);
+		    ventanaAgregarEquipo.getComboSerie().setEditable(true);
+		    ventanaAgregarEquipo.getComboMarca().setEditable(true);
+		    ventanaAgregarEquipo.getComboModelo().setEditable(true);
+		    ventanaAgregarEquipo.getTextFechafabricacion().setEditable(true);
+		    ventanaAgregarEquipo.getTextFechafabricacion().setEnabled(true);
 
-			ventanaAgregarEquipo.getComboClientes().setSelectedIndex(-1);
-			ventanaAgregarEquipo.getComboSucursal().setSelectedIndex(-1);
-			ventanaAgregarEquipo.getComboNombreEquipo().setSelectedIndex(-1);
-			ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
-			ventanaAgregarEquipo.getComboMarca().setSelectedIndex(-1);
-			ventanaAgregarEquipo.getComboModelo().setSelectedIndex(-1);
+		    // Resetear índices
+		    ventanaAgregarEquipo.getComboClientes().setSelectedIndex(-1);
+		    ventanaAgregarEquipo.getComboSucursal().setSelectedIndex(-1);
+		    ventanaAgregarEquipo.getComboNombreEquipo().setSelectedIndex(-1);
+		    ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
+		    ventanaAgregarEquipo.getComboMarca().setSelectedIndex(-1);
+		    ventanaAgregarEquipo.getComboModelo().setSelectedIndex(-1);
 
-			ventanaAgregarEquipo.getComboNombreEquipo().setSelectedItem(reparacion.getNombreEquipo());
-			ventanaAgregarEquipo.getComboClientes().setSelectedItem(reparacion.getCliente());
+		    // Setear campos que no dependen de otros
+		    ventanaAgregarEquipo.getComboNombreEquipo().setSelectedItem(reparacion.getNombreEquipo());
 
-			if (!reparacion.getMarca().isEmpty()) {
-				ventanaAgregarEquipo.getComboMarca().setSelectedItem(reparacion.getMarca());
-			}
+		    if (!reparacion.getMarca().isEmpty()) {
+		        ventanaAgregarEquipo.getComboMarca().setSelectedItem(reparacion.getMarca());
+		    }
 
-			if (!reparacion.getModelo().isEmpty()) {
-				ventanaAgregarEquipo.getComboModelo().setSelectedItem(reparacion.getModelo());
+		    if (!reparacion.getModelo().isEmpty()) {
+		        ventanaAgregarEquipo.getComboModelo().setSelectedItem(reparacion.getModelo());
+		    }
 
-			}
+		    ventanaAgregarEquipo.getComboSerie().setSelectedItem(reparacion.getNumeroDeSerie());
 
-			ventanaAgregarEquipo.getComboSerie().setSelectedItem(reparacion.getNumeroDeSerie());
+		    if (!reparacion.getAviso().isEmpty()) {
+		        ventanaAgregarEquipo.getTextFalla()
+		                .setText("ELS ANT: " + reparacion.getELS() + " - AVISO ANT: " + reparacion.getAviso());
+		    } else {
+		        ventanaAgregarEquipo.getTextFalla().setText("ELS ANT: " + reparacion.getELS());
+		    }
 
-			if (!reparacion.getAviso().isEmpty()) {
-				ventanaAgregarEquipo.getTextFalla()
-						.setText("ELS ANT: " + reparacion.getELS() + " - AVISO ANT: " + reparacion.getAviso());
-			} else {
-				ventanaAgregarEquipo.getTextFalla().setText("ELS ANT: " + reparacion.getELS());
-			}
+		    if (reparacion.getFechaFabr() == null) {
+		        ventanaAgregarEquipo.setTextFechafabricacion2(null);
+		    } else {
+		        try {
+		            ventanaAgregarEquipo.setTextFechafabricacion2((dateFormat.parse(reparacion.getFechaFabr())));
+		        } catch (ParseException e1) {
+		            e1.printStackTrace();
+		        }
+		    }
 
-			if (!reparacion.getSucursal().isEmpty()) {
+		    // IMPORTANTE: Guardar la sucursal ANTES de setear el cliente
+		    final String sucursalASetear = reparacion.getSucursal();
+		    
+		    // Setear el cliente (esto dispara el llenado del combo sucursales)
+		    ventanaAgregarEquipo.getComboClientes().setSelectedItem(reparacion.getCliente());
 
-				if (reparacion.getSucursal()
-						.compareTo(ventanaAgregarEquipo.getComboSucursal().getItemAt(0).toString()) == 0) {
+		    // Usar invokeLater para setear la sucursal DESPUÉS de que se actualice el combo
+		    if (!sucursalASetear.isEmpty()) {
+		        SwingUtilities.invokeLater(new Runnable() {
+		            @Override
+		            public void run() {
+		                ventanaAgregarEquipo.getComboSucursal().setSelectedItem(sucursalASetear);
+		            }
+		        });
+		    }
 
-					ventanaAgregarEquipo.getComboSucursal().setSelectedIndex(0);
-				} else {
-
-					ventanaAgregarEquipo.getComboSucursal().setSelectedItem(reparacion.getSucursal());
-				}
-			}
-
-			if (reparacion.getFechaFabr() == null) {
-
-				ventanaAgregarEquipo.setTextFechafabricacion2(null);
-
-			} else {
-
-				try {
-					ventanaAgregarEquipo.setTextFechafabricacion2((dateFormat.parse(reparacion.getFechaFabr())));
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-			}
-
-			ventanaVerificarIngresoAnterior.dispose();
-			ventanaVerificarIngresoAnterior = null;
-
-			ventanaAgregarEquipo.getComboClientes().setEditable(false);
-			ventanaAgregarEquipo.getComboSucursal().setEditable(false);
-
+		    ventanaVerificarIngresoAnterior.dispose();
+		    ventanaVerificarIngresoAnterior = null;
 		}
+		
+		
 
 		else if (this.ventanaVerificarIngresoAnterior != null
 				&& e.getSource() == this.ventanaVerificarIngresoAnterior.getBtnNO()) {
@@ -3064,119 +3063,115 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		ventanaVisualizarEquipos.show();
 
 	}
-	
-	
-	
-	
+
 	private void verificarPresupuesto(VentanaVisualizarEquipos ventana) {
-		
-	    Double presupuesto = reparacion.getPrecioPeso();
-	    Double pago = reparacion.getPago();
-	    String estadoComercial = ventana.getTextEstadoComercial().getText();
-	    
-	    String estadoTecnico = ventana.getTextEstadoTecnico().getText();
-	    
-	    // Caso especial: Sin Reparación
-	    if ("Sin Reparación".equals(estadoTecnico)) {
-	        aplicarEstadoVisual(ventana, "SIN REPARACIÓN", SIN_REPARACION);
-	        return;
-	    }
-	    
-	    // Sin presupuesto
-	    if (presupuesto.compareTo(0.0) == 0) {
-	        aplicarEstadoVisual(ventana, "SIN PRESUPUESTAR", SIN_PRESUPUESTAR);
-	        return;
-	    }
-	    
-	    // Caso especial: Presupuesto no aceptado
-	    if ("NO Aceptado".equals(estadoComercial)) {
-	        aplicarEstadoVisual(ventana, "NO ACEPTADO", NO_ACEPTADO);
-	        return;
-	    }
-	    
-	    // Hay presupuesto
-	    int comparacion = presupuesto.compareTo(pago);
-	    
-	    if (comparacion == 0) {
-	        // Totalmente pagado
-	        aplicarEstadoVisual(ventana, "PAGADO", PAGADO);
-	    } else if (comparacion > 0 && pago.compareTo(0.0) > 0) {
-	        // Pago parcial
-	        aplicarEstadoVisual(ventana, "PAGADO PARCIALMENTE", PARCIAL);
-	    } else if (pago.compareTo(0.0) == 0) {
-	        // Sin pago - verificar estado comercial
-	        String leyenda = determinarLeyendaSinPago(estadoComercial);
-	        Color color = "ESPERANDO ACEPTACIÓN".equals(leyenda) ? ESPERANDO : FALTA_PAGO;
-	        aplicarEstadoVisual(ventana, leyenda, color);
-	    }
+
+		Double presupuesto = reparacion.getPrecioPeso();
+		Double pago = reparacion.getPago();
+		String estadoComercial = ventana.getTextEstadoComercial().getText();
+
+		String estadoTecnico = ventana.getTextEstadoTecnico().getText();
+
+		// Caso especial: Sin Reparación
+		if ("Sin Reparación".equals(estadoTecnico)) {
+			aplicarEstadoVisual(ventana, "SIN REPARACIÓN", SIN_REPARACION);
+			return;
+		}
+
+		// Sin presupuesto
+		if (presupuesto.compareTo(0.0) == 0) {
+			aplicarEstadoVisual(ventana, "SIN PRESUPUESTAR", SIN_PRESUPUESTAR);
+			return;
+		}
+
+		// Caso especial: Presupuesto no aceptado
+		if ("NO Aceptado".equals(estadoComercial)) {
+			aplicarEstadoVisual(ventana, "NO ACEPTADO", NO_ACEPTADO);
+			return;
+		}
+
+		// Hay presupuesto
+		int comparacion = presupuesto.compareTo(pago);
+
+		if (comparacion == 0) {
+			// Totalmente pagado
+			aplicarEstadoVisual(ventana, "PAGADO", PAGADO);
+		} else if (comparacion > 0 && pago.compareTo(0.0) > 0) {
+			// Pago parcial
+			aplicarEstadoVisual(ventana, "PAGADO PARCIALMENTE", PARCIAL);
+		} else if (pago.compareTo(0.0) == 0) {
+			// Sin pago - verificar estado comercial
+			String leyenda = determinarLeyendaSinPago(estadoComercial);
+			Color color = "ESPERANDO ACEPTACIÓN".equals(leyenda) ? ESPERANDO : FALTA_PAGO;
+			aplicarEstadoVisual(ventana, leyenda, color);
+		}
 	}
 
 	private String determinarLeyendaSinPago(String estadoComercial) {
-	    switch (estadoComercial) {
-	        case "A la Espera de Aceptación":
-	            return "ESPERANDO ACEPTACIÓN";
-	        case "Aceptado":
-	            return "FALTA PAGO";
-	        default:
-	            return "FALTA PAGO";
-	    }
+		switch (estadoComercial) {
+		case "A la Espera de Aceptación":
+			return "ESPERANDO ACEPTACIÓN";
+		case "Aceptado":
+			return "FALTA PAGO";
+		default:
+			return "FALTA PAGO";
+		}
 	}
 
 	public void verificarPresupuestoEditado(VentanaVisualizarEquipos ventana) {
-	    double presupuesto = monedaFormatter.parseAmountGuardar(ventana.getTextPresupuesto().getText());
-	    double pago = monedaFormatter.parseAmountGuardar(ventana.getTextPago().getText());
-	    String estadoComercial = ventana.getTextEstadoComercial().getText();
-	    
-	    // Caso especial: Sin Reparación
-	    if ("Sin Reparación".equals(estadoComercial)) {
-	        aplicarEstadoVisual(ventana, "SIN REPARACIÓN", SIN_REPARACION);
-	        ventana.setChckPDFGenerado(false);
-	        return;
-	    }
-	    
-	    // Sin presupuesto
-	    if (presupuesto == 0.0) {
-	        aplicarEstadoVisual(ventana, "SIN PRESUPUESTAR", SIN_PRESUPUESTAR);
-	        ventana.setChckPDFGenerado(false);
-	        return;
-	    }
-	    
-	    // Caso especial: Presupuesto no aceptado
-	    if ("NO ACEPTADO".equals(estadoComercial)) {
-	        aplicarEstadoVisual(ventana, "NO ACEPTADO", NO_ACEPTADO);
-	        ventana.setChckPDFGenerado(false);
-	        return;
-	    }
-	    
-	    // Hay presupuesto
-	    double diferencia = presupuesto - pago;
-	    
-	    if (diferencia == 0.0) {
-	        // Totalmente pagado
-	        aplicarEstadoVisual(ventana, "PAGADO", PAGADO);
-	        ventana.setChckPDFGenerado(true);
-	    } else if (diferencia > 0.0 && pago > 0.0) {
-	        // Pago parcial
-	        aplicarEstadoVisual(ventana, "PAGADO PARCIALMENTE", PARCIAL);
-	    } else if (pago == 0.0) {
-	        // Sin pago - verificar estado comercial
-	        String leyenda = determinarLeyendaSinPago(estadoComercial);
-	        Color color = "ESPERANDO ACEPTACIÓN".equals(leyenda) ? ESPERANDO : FALTA_PAGO;
-	        aplicarEstadoVisual(ventana, leyenda, color);
-	        ventana.setChckPDFGenerado(true);
-	    }
+		double presupuesto = monedaFormatter.parseAmountGuardar(ventana.getTextPresupuesto().getText());
+		double pago = monedaFormatter.parseAmountGuardar(ventana.getTextPago().getText());
+		String estadoComercial = ventana.getTextEstadoComercial().getText();
+
+		// Caso especial: Sin Reparación
+		if ("Sin Reparación".equals(estadoComercial)) {
+			aplicarEstadoVisual(ventana, "SIN REPARACIÓN", SIN_REPARACION);
+			ventana.setChckPDFGenerado(false);
+			return;
+		}
+
+		// Sin presupuesto
+		if (presupuesto == 0.0) {
+			aplicarEstadoVisual(ventana, "SIN PRESUPUESTAR", SIN_PRESUPUESTAR);
+			ventana.setChckPDFGenerado(false);
+			return;
+		}
+
+		// Caso especial: Presupuesto no aceptado
+		if ("NO ACEPTADO".equals(estadoComercial)) {
+			aplicarEstadoVisual(ventana, "NO ACEPTADO", NO_ACEPTADO);
+			ventana.setChckPDFGenerado(false);
+			return;
+		}
+
+		// Hay presupuesto
+		double diferencia = presupuesto - pago;
+
+		if (diferencia == 0.0) {
+			// Totalmente pagado
+			aplicarEstadoVisual(ventana, "PAGADO", PAGADO);
+			ventana.setChckPDFGenerado(true);
+		} else if (diferencia > 0.0 && pago > 0.0) {
+			// Pago parcial
+			aplicarEstadoVisual(ventana, "PAGADO PARCIALMENTE", PARCIAL);
+		} else if (pago == 0.0) {
+			// Sin pago - verificar estado comercial
+			String leyenda = determinarLeyendaSinPago(estadoComercial);
+			Color color = "ESPERANDO ACEPTACIÓN".equals(leyenda) ? ESPERANDO : FALTA_PAGO;
+			aplicarEstadoVisual(ventana, leyenda, color);
+			ventana.setChckPDFGenerado(true);
+		}
 	}
 
 	private void aplicarEstadoVisual(VentanaVisualizarEquipos ventana, String leyenda, Color color) {
-	    ventana.getTextEquipoPagado().setText(leyenda);
-	    ventana.getTextEquipoPagado().setVisible(true);
-	    ventana.getTextEquipoPagado().setBackground(color);
-	    ventana.getPanel_MontoPresupuesto().setBackground(color);
-	    ventana.getTextPresupuesto().setBackground(color);
-	    ventana.getTextPresupuestoDolar().setBackground(color);
-	    ventana.getTextPago().setBackground(color);
+		ventana.getTextEquipoPagado().setText(leyenda);
+		ventana.getTextEquipoPagado().setVisible(true);
+		ventana.getTextEquipoPagado().setBackground(color);
+		ventana.getPanel_MontoPresupuesto().setBackground(color);
+		ventana.getTextPresupuesto().setBackground(color);
+		ventana.getTextPresupuestoDolar().setBackground(color);
+		ventana.getTextPago().setBackground(color);
 	}
-
 
 	private void deshabilitarCampos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
