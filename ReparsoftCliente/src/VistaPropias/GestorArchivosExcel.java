@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
  * vínculos y dependencias
  */
 public class GestorArchivosExcel {
+	
+	
 
 	private String ubicacionBase;// "Bariloche" o "Buenos Aires"
 

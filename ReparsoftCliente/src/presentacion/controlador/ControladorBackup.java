@@ -47,7 +47,8 @@ import java.sql.ResultSetMetaData;
 
 public class ControladorBackup implements ActionListener, MouseListener {
 	private VentanaBackUp ventanaBackUp;
-	private VentanaOpcionesBackup ventanaOpcionesBackup;
+	private VentanaOpcionesBackup ventanaOpcionesBackup;//
+	
 	private String rutadefaultBackup = "";
 
 	private String cleverCloudHostBRC = "b1zeyndbfc1bmeiernaw-mysql.services.clever-cloud.com";
