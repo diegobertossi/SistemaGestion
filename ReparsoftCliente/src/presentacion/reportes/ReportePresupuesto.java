@@ -135,7 +135,7 @@ public class ReportePresupuesto {
 //		FontExtensionsRegistry registry = context.getExtensionsRegistry();
 //		registry.addFont(fontname, true, inputStream); // fontname es el nombre de la fuente, inputStream es el stream de la fuente
 
-	
+		
 
 		try {
 

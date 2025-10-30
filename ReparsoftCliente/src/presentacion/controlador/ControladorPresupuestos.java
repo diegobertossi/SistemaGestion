@@ -119,9 +119,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private String rutaImagen_4 = "";
 	private String rutaImagen_5 = "";
 	private String rutaImagen_6 = "";
-	
+
 	private ArrayList<File> archivosAdjuntos = new ArrayList<>();
-	
+
 	private ArrayList<File> archivosAdjuntosExtras = new ArrayList<>();
 
 	public ControladorPresupuestos(VentanaPresupuestos ventanaPresupuestos, Agenda agenda) {
@@ -349,57 +349,54 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			}
 		}
 
-
-
 		// Java
 		else if (this.ventanaGenerarPresupuesto != null
-		    && e.getSource() == this.ventanaGenerarPresupuesto.getBtnCotizacionDolar()) {
+				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnCotizacionDolar()) {
 
-		    DecimalFormat df = new DecimalFormat("#.##");
-		    double[] cotizaciones = consumoAPI.ConsumoAPI.consultaCotizacionDolar();
+			DecimalFormat df = new DecimalFormat("#.##");
+			double[] cotizaciones = consumoAPI.ConsumoAPI.consultaCotizacionDolar();
 
-		    String cotizacionDolarOf = Double.toString(cotizaciones[0]);
-		    String cotizacionDolarBl = Double.toString(cotizaciones[1]);
+			String cotizacionDolarOf = Double.toString(cotizaciones[0]);
+			String cotizacionDolarBl = Double.toString(cotizaciones[1]);
 
-		    // Usar MonedaFormatter para parsear correctamente los campos
-		    String textoPeso = ventanaGenerarPresupuesto.getTextPrecioPeso().getText();
-		    String textoDolar = ventanaGenerarPresupuesto.getTextPrecioDolar().getText();
+			// Usar MonedaFormatter para parsear correctamente los campos
+			String textoPeso = ventanaGenerarPresupuesto.getTextPrecioPeso().getText();
+			String textoDolar = ventanaGenerarPresupuesto.getTextPrecioDolar().getText();
 
-		    double presupuestoPesos = monedaFormatter.parseAmount(textoPeso);
-		    double presupuestoDolar = monedaFormatter.parseAmount(textoDolar);
+			double presupuestoPesos = monedaFormatter.parseAmount(textoPeso);
+			double presupuestoDolar = monedaFormatter.parseAmount(textoDolar);
 
-		    ventanaGenerarPresupuesto.getTextCotizacionDolarOf().setText(cotizacionDolarOf);
-		    ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
+			ventanaGenerarPresupuesto.getTextCotizacionDolarOf().setText(cotizacionDolarOf);
+			ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
 
-		    // Depuración
-		    System.out.println("textoPeso: " + textoPeso);
-		    System.out.println("textoDolar: " + textoDolar);
-		    System.out.println("presupuestoPesos: " + presupuestoPesos);
-		    System.out.println("presupuestoDolar: " + presupuestoDolar);
+			// Depuración
+			System.out.println("textoPeso: " + textoPeso);
+			System.out.println("textoDolar: " + textoDolar);
+			System.out.println("presupuestoPesos: " + presupuestoPesos);
+			System.out.println("presupuestoDolar: " + presupuestoDolar);
 
-		    boolean pesosCero = Math.abs(presupuestoPesos) < 0.0001;
-		    boolean dolarCero = Math.abs(presupuestoDolar) < 0.0001;
+			boolean pesosCero = Math.abs(presupuestoPesos) < 0.0001;
+			boolean dolarCero = Math.abs(presupuestoDolar) < 0.0001;
 
-		    System.out.println("pesosCero: " + pesosCero);
-		    System.out.println("dolarCero: " + dolarCero);
+			System.out.println("pesosCero: " + pesosCero);
+			System.out.println("dolarCero: " + dolarCero);
 
-		    if (!pesosCero && dolarCero) {
-		        double sugerenciaDolar = presupuestoPesos / cotizaciones[0];
-		        ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(df.format(sugerenciaDolar));
-		        ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(df.format(presupuestoPesos));
-		        System.out.println("Sugerencia: solo pesos, calculando dólares");
-		    } else if (pesosCero && !dolarCero) {
-		        double sugerenciaPeso = presupuestoDolar * cotizaciones[0];
-		        ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(df.format(sugerenciaPeso));
-		        ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(df.format(presupuestoDolar));
-		        System.out.println("Sugerencia: solo dólares, calculando pesos");
-		    } else {
-		        ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText("");
-		        ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText("");
-		        System.out.println("No se muestra sugerencia");
-		    }
+			if (!pesosCero && dolarCero) {
+				double sugerenciaDolar = presupuestoPesos / cotizaciones[0];
+				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(df.format(sugerenciaDolar));
+				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(df.format(presupuestoPesos));
+				System.out.println("Sugerencia: solo pesos, calculando dólares");
+			} else if (pesosCero && !dolarCero) {
+				double sugerenciaPeso = presupuestoDolar * cotizaciones[0];
+				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(df.format(sugerenciaPeso));
+				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(df.format(presupuestoDolar));
+				System.out.println("Sugerencia: solo dólares, calculando pesos");
+			} else {
+				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText("");
+				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText("");
+				System.out.println("No se muestra sugerencia");
+			}
 		}
-
 
 		else if (this.ventanaGenerarPresupuesto != null
 				&& e.getSource() == this.ventanaGenerarPresupuesto.getGuardarPresupuestoPDF()) {
@@ -714,19 +711,13 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			ventanaEmail.getTextCuerpo().setEditable(true);
 
 		}
-		
-		
+
 		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnAdjuntarArchivo()) {
 
 			// En tu clase controlador, agregar como atributo
-			 agregarArchivosAdjuntos();
-
-				
-			
-			
+			agregarArchivosAdjuntos();
 
 		}
-		
 
 		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnAdjunto()) {
 
@@ -871,60 +862,59 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	}
 
 	private void enviarMail() {
-	    // Crear un popup para mostrar el mensaje de "Enviando correo, espere..."
-	    JDialog popup = new JDialog();
-	    popup.setTitle("Procesando");
-	    popup.setModal(false);
-	    popup.setSize(300, 100);
-	    popup.setLocationRelativeTo(ventanaEmail);
-	    popup.add(new JLabel("Enviando correo, espere...", SwingConstants.CENTER));
+		// Crear un popup para mostrar el mensaje de "Enviando correo, espere..."
+		JDialog popup = new JDialog();
+		popup.setTitle("Procesando");
+		popup.setModal(false);
+		popup.setSize(300, 100);
+		popup.setLocationRelativeTo(ventanaEmail);
+		popup.add(new JLabel("Enviando correo, espere...", SwingConstants.CENTER));
 
-	    // Ejecutar el envío del correo en un hilo separado para no bloquear el UI
-	    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-	        @Override
-	        protected Void doInBackground() {
-	            try {
-	                String correo = ventanaEmail.getTextPara().getText();
-	                String asunto = ventanaEmail.getTextAsunto().getText();
-	                String cuerpo = ventanaEmail.getTextCuerpo().getText();
-	                String nombreArchivo = ventanaEmail.getTextAdjunto().getText();
+		// Ejecutar el envío del correo en un hilo separado para no bloquear el UI
+		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+			@Override
+			protected Void doInBackground() {
+				try {
+					String correo = ventanaEmail.getTextPara().getText();
+					String asunto = ventanaEmail.getTextAsunto().getText();
+					String cuerpo = ventanaEmail.getTextCuerpo().getText();
+					String nombreArchivo = ventanaEmail.getTextAdjunto().getText();
 
-	                // Enviar el correo con los archivos adicionales
-	                mails.EnviarMail.enviarInformeAlCliente(correo, asunto, cuerpo, nombreArchivo, archivosAdjuntosExtras);
+					// Enviar el correo con los archivos adicionales
+					mails.EnviarMail.enviarInformeAlCliente(correo, asunto, cuerpo, nombreArchivo,
+							archivosAdjuntosExtras);
 
-	                if (nombreArchivo.endsWith(".pdf")) {
-	                    ventanaGenerarPresupuesto.setChckPDFEnviado(true);
-	                } else if (nombreArchivo.endsWith(".docx")) {
-	                    ventanaGenerarPresupuesto.setChckWORDEnviado(true);
-	                }
+					if (nombreArchivo.endsWith(".pdf")) {
+						ventanaGenerarPresupuesto.setChckPDFEnviado(true);
+					} else if (nombreArchivo.endsWith(".docx")) {
+						ventanaGenerarPresupuesto.setChckWORDEnviado(true);
+					}
 
-	                ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
-	                agenda.editarReparacionPresupuesto(reparacionAeditar);
-	                
-	                // Limpiar los archivos adicionales después de enviar
-	                archivosAdjuntosExtras.clear();
-	                ventanaEmail.getTextArchivos().setText("");
+					ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
+					agenda.editarReparacionPresupuesto(reparacionAeditar);
 
-	            } catch (Exception ex) {
-	                popup.dispose();
-	                ex.printStackTrace();
-	            }
-	            return null;
-	        }
+					// Limpiar los archivos adicionales después de enviar
+					archivosAdjuntosExtras.clear();
+					ventanaEmail.getTextArchivos().setText("");
 
-	        @Override
-	        protected void done() {
-	            popup.dispose();
-	        }
-	    };
+				} catch (Exception ex) {
+					popup.dispose();
+					ex.printStackTrace();
+				}
+				return null;
+			}
 
-	    SwingUtilities.invokeLater(() -> {
-	        popup.setVisible(true);
-	        worker.execute();
-	    });
+			@Override
+			protected void done() {
+				popup.dispose();
+			}
+		};
+
+		SwingUtilities.invokeLater(() -> {
+			popup.setVisible(true);
+			worker.execute();
+		});
 	}
-	
-	
 
 	private void agregarImagenesDiagnostico() {
 		JTextField txtRutaImagen_4 = ventanaAgregarImagenes.getTxtRutaImagen_4();
@@ -979,56 +969,51 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		});
 
 	}
-	
-	
 
 	// Modificar el método agregarArchivosAdjuntos
 	private void agregarArchivosAdjuntos() {
-	    JFileChooser fileChooser = new JFileChooser();
-	    fileChooser.setMultiSelectionEnabled(true);
-	    fileChooser.setDialogTitle("Seleccionar archivos adjuntos adicionales");
-	    
-	    int returnValue = fileChooser.showOpenDialog(null);
-	    
-	    if (returnValue == JFileChooser.APPROVE_OPTION) {
-	        File[] selectedFiles = fileChooser.getSelectedFiles();
-	        
-	        if (selectedFiles != null && selectedFiles.length > 0) {
-	            // Agregar archivos al ArrayList (evitando duplicados)
-	            for (File file : selectedFiles) {
-	                if (!archivosAdjuntosExtras.contains(file)) {
-	                    archivosAdjuntosExtras.add(file);
-	                }
-	            }
-	            
-	            // Actualizar el texto con solo los nombres
-	            actualizarTextoArchivos();
-	        }
-	    }
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setMultiSelectionEnabled(true);
+		fileChooser.setDialogTitle("Seleccionar archivos adjuntos adicionales");
+
+		int returnValue = fileChooser.showOpenDialog(null);
+
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			File[] selectedFiles = fileChooser.getSelectedFiles();
+
+			if (selectedFiles != null && selectedFiles.length > 0) {
+				// Agregar archivos al ArrayList (evitando duplicados)
+				for (File file : selectedFiles) {
+					if (!archivosAdjuntosExtras.contains(file)) {
+						archivosAdjuntosExtras.add(file);
+					}
+				}
+
+				// Actualizar el texto con solo los nombres
+				actualizarTextoArchivos();
+			}
+		}
 	}
 
 	// Método auxiliar para actualizar el campo de texto
 	private void actualizarTextoArchivos() {
-	    StringBuilder nombresArchivos = new StringBuilder();
-	    
-	    for (int i = 0; i < archivosAdjuntosExtras.size(); i++) {
-	        nombresArchivos.append(archivosAdjuntosExtras.get(i).getName());
-	        
-	        if (i < archivosAdjuntosExtras.size() - 1) {
-	            nombresArchivos.append(" ; ");
-	        }
-	    }
-	    
-	    ventanaEmail.getTextArchivos().setText(nombresArchivos.toString());
+		StringBuilder nombresArchivos = new StringBuilder();
+
+		for (int i = 0; i < archivosAdjuntosExtras.size(); i++) {
+			nombresArchivos.append(archivosAdjuntosExtras.get(i).getName());
+
+			if (i < archivosAdjuntosExtras.size() - 1) {
+				nombresArchivos.append(" ; ");
+			}
+		}
+
+		ventanaEmail.getTextArchivos().setText(nombresArchivos.toString());
 	}
-	
-	
+
 	// Método para obtener los archivos cuando vayas a enviar el email
 	public ArrayList<File> getArchivosAdjuntos() {
-	    return archivosAdjuntos;
+		return archivosAdjuntos;
 	}
-	
-
 
 	public void cerraVentanaAgregarPrecio() {
 
@@ -1589,23 +1574,55 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		if (this.ventanaGenerarPresupuesto != null) {
 
-			if (this.ventanaGenerarPresupuesto.getGrupoMoneda()
-					.isSelected(this.ventanaGenerarPresupuesto.getChckPesos().getModel())) {
+			switch (agenda.getUbicacionBase()) {
 
-				ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
-						"Los precios están expresados en Pesos. Facturación C (Monotributista) e incluyen el IVA.\r\n"
-						+ "La garantía es de 90 días sobre la reparación realizada.\r\n"
-						+ "La validez del presupuesto es de 7 días.");
+			case "Bariloche":
+				if (this.ventanaGenerarPresupuesto.getGrupoMoneda()
+						.isSelected(this.ventanaGenerarPresupuesto.getChckPesos().getModel())) {
 
+					ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
+							"Los precios están expresados en Pesos. Facturación C (Monotributista)\r\n"
+									+ "La garantía es de 90 días sobre la reparación realizada.\r\n"
+									+ "La validez del presupuesto es de 7 días.");
+
+				}
+
+				else {
+					ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
+							"Los precios están expresados en Dólares estadounidenses. Los USD se convertirán a pesos al tipo de cambio\r\n"
+									+ "vendedor del Banco Nación vigente al día anterior al que se efectúe el pago. Facturación C (Monotributista)\r\n"
+									+ "La garantía es de 90 días sobre la reparación realizada.\r\n"
+									+ "La validez del presupuesto es de 15 días.");
+
+				}
+				break;
+
+			case "Buenos Aires":
+				if (this.ventanaGenerarPresupuesto.getGrupoMoneda()
+						.isSelected(this.ventanaGenerarPresupuesto.getChckPesos().getModel())) {
+
+					ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
+							"Los precios están expresados en Pesos, son Netos y no incluyen el IVA (21%).\r\n"
+									+ "La garantía es de 90 días sobre la reparación realizada.\r\n"
+									+ "La validez del presupuesto es de 15 días.");
+
+				}
+
+				else {
+					ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
+							"Los precios están expresados en Dólares estadounidenses. Los USD se convertirán a pesos al tipo de cambio\r\n"
+							+ "vendedor del Banco Nación vigente al día anterior al que se efectúe el pago. Son Netos y no incluyen el IVA (21%).\r\n"
+							+ "La garantía es de 90 días sobre la reparación realizada.\r\n"
+							+ "La validez del presupuesto es de 15 días.");
+
+
+				}
+				break;
+
+			default:
+				break;
 			}
 
-			else {
-				ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
-						"Los precios están expresados en Dólares estadounidenses, al cierre del día anterior de la fecha de factura (Banco Nación), tipo vendedor y minorista. Facturación C (Monotributista) e incluyen el IVA.\r\n"
-						+ "La garantía es de 90 días sobre la reparación realizada.\r\n"
-					    + "La validez del presupuesto es de 15 días.");
-
-			}
 		}
 
 		if (this.ventanaMarcarAceptaciones != null) {
