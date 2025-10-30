@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -154,12 +154,11 @@
 					<font fontName="MyfuenteCambria" size="8"/>
 				</textElement>
 				<text><![CDATA[De  Sergio M. Fernández  CUIT: 20-21488895-6
-Mar del Plata :  Independencia 2609 1er piso   Te:+54 223 5969934
-Bs As: Arcos 4002 4º A - Buenos Aires(1429) Te: 011 4703-2205
-Bariloche: 9 de Julio 710 Te: +54 011 15 3768-8372
-Web: www.elsweb.com.ar
-E-mail: els@elsweb.com.ar  /  els@fibertel.com.ar   
-]]></text>
+Mar del Plata: Avellaneda 2766 1er piso   Te: +54 9 223 5969934
+Bs As: Arcos 4002 4º A - Buenos Aires(1429) Te: +54 9 11 54037207
+Bariloche: 9 de Julio 710 Te: +54 9 11 37688372
+www.elsweb.com.ar
+els@elsweb.com.ar   ]]></text>
 			</staticText>
 			<line>
 				<reportElement x="37" y="165" width="480" height="1" uuid="9a262e06-7285-4576-a09b-c6a46b97fa30">
@@ -561,35 +560,35 @@ TRANSPORTE & DEPÓSITO: Los equipos viajan por cuenta y riesgo del cliente. Los 
 			<textField>
 				<reportElement x="57" y="27" width="444" height="31" uuid="5ebc37d2-8ee5-4d4f-a3ed-eb1d92e30057"/>
 				<textElement textAlignment="Left">
-					<font fontName="MyfuenteCambria"/>
+					<font fontName="MyfuenteCambria" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{condicionesMoneda}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="161" y="59" width="340" height="13" uuid="627c76fd-01cf-4d58-99bd-7604542a23d3"/>
 				<textElement textAlignment="Left">
-					<font fontName="MyfuenteCambria"/>
+					<font fontName="MyfuenteCambria" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{condicionesPago}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="57" y="59" width="100" height="13" uuid="6fdad223-7bfd-4217-89bc-f897159ea71a"/>
 				<textElement>
-					<font fontName="MyfuenteCambria" size="10"/>
+					<font fontName="MyfuenteCambria" size="8"/>
 				</textElement>
 				<text><![CDATA[Condiciones de pago: ]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="161" y="74" width="340" height="13" uuid="7de1c772-4050-4d97-833a-af4265bfcbad"/>
 				<textElement textAlignment="Left">
-					<font fontName="MyfuenteCambria"/>
+					<font fontName="MyfuenteCambria" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{plazoEntrega}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="57" y="74" width="100" height="13" uuid="d43875ea-a5f9-4efa-9e9d-28269bf0c97e"/>
 				<textElement>
-					<font fontName="MyfuenteCambria" size="10"/>
+					<font fontName="MyfuenteCambria" size="8"/>
 				</textElement>
 				<text><![CDATA[Plazo de entrega: ]]></text>
 			</staticText>

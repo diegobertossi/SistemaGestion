@@ -1593,13 +1593,17 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					.isSelected(this.ventanaGenerarPresupuesto.getChckPesos().getModel())) {
 
 				ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
-						"Los precios están expresados en Pesos, son Netos y no incluyen el IVA (21%). La garantía es de 90 días sobre la reparación realizada");
+						"Los precios están expresados en Pesos. Facturación C (Monotributista) e incluyen el IVA.\r\n"
+						+ "La garantía es de 90 días sobre la reparación realizada.\r\n"
+						+ "La validez del presupuesto es de 7 días.");
 
 			}
 
 			else {
 				ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
-						"Los precios están expresados en Dólares, son Netos y no incluyen el IVA (21%). La garantía es de 90 días sobre la reparación realizada");
+						"Los precios están expresados en Dólares estadounidenses, al cierre del día anterior de la fecha de factura (Banco Nación), tipo vendedor y minorista. Facturación C (Monotributista) e incluyen el IVA.\r\n"
+						+ "La garantía es de 90 días sobre la reparación realizada.\r\n"
+					    + "La validez del presupuesto es de 15 días.");
 
 			}
 		}
