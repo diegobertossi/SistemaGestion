@@ -1,6 +1,9 @@
 package presentacion.reportes;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 
 import java.util.List;
@@ -13,6 +16,7 @@ import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JRRuntimeException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -97,6 +101,26 @@ public class ReportePresupuesto {
 		ReportePresupuesto.reporteViewer.setVisible(true);
 	}
 
+	/**
+	 * Método que verifica si un archivo está en uso/bloqueado
+	 * @param archivo El archivo a verificar
+	 * @return true si el archivo está en uso, false si está disponible
+	 */
+	private boolean archivoEnUso(File archivo) {
+		if (!archivo.exists()) {
+			return false; // Si no existe, no está en uso
+		}
+		
+		// Intentar abrir el archivo en modo escritura
+		try (FileOutputStream fos = new FileOutputStream(archivo, true)) {
+			// Si se puede abrir, el archivo NO está en uso
+			return false;
+		} catch (IOException e) {
+			// Si falla, el archivo ESTÁ en uso
+			return true;
+		}
+	}
+
 	@SuppressWarnings("rawtypes")
 	public void guardar() {
 
@@ -112,6 +136,17 @@ public class ReportePresupuesto {
 
 			outFileName = "F:\\ELS\\Administracion\\Sistema\\Presupuestos PDF\\" + nombreArchivoPDF;
 
+		}
+		
+		// VERIFICAR ANTES si el archivo está en uso
+		File archivoPDF = new File(outFileName);
+		if (archivoEnUso(archivoPDF)) {
+			JOptionPane.showMessageDialog(null, 
+				"El archivo PDF está abierto en otro programa.\n" +
+				"Por favor, cierre el archivo:\n'" + nombreArchivoPDF + "'\ne intente nuevamente.", 
+				"Archivo en Uso", 
+				JOptionPane.WARNING_MESSAGE);
+			return; // Salir del método sin generar el reporte
 		}
 		
 				
@@ -145,9 +180,12 @@ public class ReportePresupuesto {
 			Object mje = "Se ha generado el: "+ nombreArchivoPDF;
 			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 		
-
 		} catch (JRException e) {
-			// TODO Auto-generated catch block
+			// Si aún así ocurre un error
+			JOptionPane.showMessageDialog(null, 
+				"Error al exportar el reporte: " + e.getMessage(), 
+				"Error", 
+				JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 

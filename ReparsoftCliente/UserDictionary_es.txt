@@ -39,3 +39,6 @@ cararaza
 asociados
 curvas
 relé
+fotovoltaicas
+celdas
+chequeos
