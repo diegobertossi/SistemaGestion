@@ -5,16 +5,21 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.sql.Date;
+
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -37,6 +42,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.JCheckBox;
 import java.awt.Cursor;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.ActionEvent;
@@ -206,6 +213,8 @@ public class VentanaVisualizarEquipos extends JFrame {
 
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
+		
+		configurarAtajoGuardar();
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 1195, 701);
@@ -1264,6 +1273,19 @@ public class VentanaVisualizarEquipos extends JFrame {
 		this.setVisible(true);
 
 
+	}
+
+	private void configurarAtajoGuardar() {
+	    JRootPane rootPane = this.getRootPane();
+	    KeyStroke ctrlG = KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.CTRL_DOWN_MASK);
+	    rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlG, "guardar");
+	    rootPane.getActionMap().put("guardar", new AbstractAction() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	controladorReparacion.guardarCambios(VentanaVisualizarEquipos.this);
+	        }
+	    });
+		
 	}
 
 	public void setLocationCenter() {

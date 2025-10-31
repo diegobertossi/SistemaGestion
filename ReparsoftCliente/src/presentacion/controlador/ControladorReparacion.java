@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -44,12 +45,14 @@ import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -188,7 +191,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 	private boolean actualizarEnlistado = false;
 
 	private String fechaentrada;
-	private String fechaFarbricacion;
+	private String fechaFarbricacion; 
 
 	private MonedaFormatter monedaFormatter;
 
@@ -227,6 +230,8 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		this.controladorCliente = controladorCliente;
 
 		this.gestorExcel = new GestorArchivosExcel(agenda.getUbicacionBase());
+		
+		
 
 	}
 
@@ -2075,7 +2080,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 
 	}
 
-	private void guardarCambios(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+	public void guardarCambios(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
 		ReparacionDTO reparacionAeditar = TomarDatosVisualizacion(ventanaVisualizarEquipos);
 
@@ -2102,6 +2107,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
 		habilitarCampos(ventanaVisualizarEquipos);
 		guardado = false;
 	}
+	
+	
+
+	
+	
+	
 
 	public void agregarListenersVentanaVisualizarEquipos(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
