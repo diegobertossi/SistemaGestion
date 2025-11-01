@@ -53,7 +53,7 @@ public class VentanaEmail extends JFrame {
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setUndecorated(true);
-		setBounds(460, 260, 739, 499);
+		setBounds(460, 260, 739, 517);
 		
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
@@ -197,22 +197,25 @@ public class VentanaEmail extends JFrame {
 		textAdjunto.setBounds(184, 215, 475, 20);
 		panel.add(textAdjunto);
 		
-		btnAdjuntarArchivo = new JButton("ADJUNTAR ARCHIVO");
-		btnAdjuntarArchivo.setBounds(37, 429, 175, 23);
+		btnAdjuntarArchivo = new JButton("<html><center>ADJUNTAR ARCHIVO<html>");
+		btnAdjuntarArchivo.setFont(new Font("Cambria", Font.BOLD, 15));
+		btnAdjuntarArchivo.setBounds(37, 429, 139, 38);
 		panel.add(btnAdjuntarArchivo);
 		
 		btnAdjunto = new JButton("VER INFORME");
-		btnAdjunto.setBounds(222, 429, 101, 23);
+		btnAdjunto.setFont(new Font("Cambria", Font.BOLD, 15));
+		btnAdjunto.setBounds(184, 429, 139, 38);
 		panel.add(btnAdjunto);
 		
 		btnEditar = new JButton("EDITAR");
-		btnEditar.setBounds(333, 429, 101, 23);
+		btnEditar.setFont(new Font("Cambria", Font.BOLD, 15));
+		btnEditar.setBounds(333, 429, 139, 38);
 		panel.add(btnEditar);
 		
 		btnEnviar = new JButton("ENVIAR");
 		btnEnviar.setForeground(new Color(0, 204, 102));
-		btnEnviar.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnEnviar.setBounds(520, 429, 139, 23);
+		btnEnviar.setFont(new Font("Cambria", Font.BOLD, 15));
+		btnEnviar.setBounds(520, 429, 139, 38);
 		panel.add(btnEnviar);
 		
 				setLocationCenter();
