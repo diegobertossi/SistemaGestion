@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="ASCII"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_XPVhMLUzEfC8Zq5eqK6IqA" elementId="org.eclipse.e4.legacy.ide.application" contributorURI="platform:/plugin/org.eclipse.ui.workbench" selectedElement="_XPWIQLUzEfC8Zq5eqK6IqA" bindingContexts="_XPX9crUzEfC8Zq5eqK6IqA">
-  <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;workbench>&#xD;&#xA;&lt;mruList>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;Presupuesto.jrxml&quot; tooltip=&quot;F:\Users\Diego\git\SistemaGestion\ReparsoftCliente\reportes\Presupuesto.jrxml&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/F:/Users/Diego/git/SistemaGestion/ReparsoftCliente/reportes/Presupuesto.jrxml&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;RemitoComun.jrxml&quot; tooltip=&quot;F:\Users\Diego\git\SistemaGestion\ReparsoftCliente\reportes\RemitoComun.jrxml&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/F:/Users/Diego/git/SistemaGestion/ReparsoftCliente/reportes/RemitoComun.jrxml&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;RemitoPreImpreso.jrxml&quot; tooltip=&quot;F:\Users\Diego\git\SistemaGestion\ReparsoftCliente\reportes\RemitoPreImpreso.jrxml&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/F:/Users/Diego/git/SistemaGestion/ReparsoftCliente/reportes/RemitoPreImpreso.jrxml&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;ReporteRegistroEntrada2.jrxml&quot; tooltip=&quot;F:\Users\Diego\git\SistemaGestion\ReparsoftCliente\reportes\ReporteRegistroEntrada2.jrxml&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/F:/Users/Diego/git/SistemaGestion/ReparsoftCliente/reportes/ReporteRegistroEntrada2.jrxml&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;ResumenTecnico.jrxml&quot; tooltip=&quot;F:\Users\Diego\git\SistemaGestion\ReparsoftCliente\reportes\ResumenTecnico.jrxml&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/F:/Users/Diego/git/SistemaGestion/ReparsoftCliente/reportes/ResumenTecnico.jrxml&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;/mruList>&#xD;&#xA;&lt;/workbench>"/>
+  <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;workbench>&#xD;&#xA;&lt;mruList>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;Presupuesto.jrxml&quot; tooltip=&quot;MyReports/Presupuesto.jrxml&quot;>&#xD;&#xA;&lt;persistable path=&quot;/MyReports/Presupuesto.jrxml&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;com.jaspersoft.studio.editor.JrxmlEditor.jasper&quot; name=&quot;Presupuesto.jasper&quot; tooltip=&quot;MyReports/Presupuesto.jasper&quot;>&#xD;&#xA;&lt;persistable path=&quot;/MyReports/Presupuesto.jasper&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;Presupuesto_1.jrxml&quot; tooltip=&quot;MyReports/Presupuesto_1.jrxml&quot;>&#xD;&#xA;&lt;persistable path=&quot;/MyReports/Presupuesto_1.jrxml&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;Presupuesto.jrxml&quot; tooltip=&quot;F:\Users\Diego\git\SistemaGestion\ReparsoftCliente\reportes\Presupuesto.jrxml&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/F:/Users/Diego/git/SistemaGestion/ReparsoftCliente/reportes/Presupuesto.jrxml&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;RemitoComun.jrxml&quot; tooltip=&quot;F:\Users\Diego\git\SistemaGestion\ReparsoftCliente\reportes\RemitoComun.jrxml&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/F:/Users/Diego/git/SistemaGestion/ReparsoftCliente/reportes/RemitoComun.jrxml&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;RemitoPreImpreso.jrxml&quot; tooltip=&quot;F:\Users\Diego\git\SistemaGestion\ReparsoftCliente\reportes\RemitoPreImpreso.jrxml&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/F:/Users/Diego/git/SistemaGestion/ReparsoftCliente/reportes/RemitoPreImpreso.jrxml&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;ReporteRegistroEntrada2.jrxml&quot; tooltip=&quot;F:\Users\Diego\git\SistemaGestion\ReparsoftCliente\reportes\ReporteRegistroEntrada2.jrxml&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/F:/Users/Diego/git/SistemaGestion/ReparsoftCliente/reportes/ReporteRegistroEntrada2.jrxml&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;ResumenTecnico.jrxml&quot; tooltip=&quot;F:\Users\Diego\git\SistemaGestion\ReparsoftCliente\reportes\ResumenTecnico.jrxml&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/F:/Users/Diego/git/SistemaGestion/ReparsoftCliente/reportes/ResumenTecnico.jrxml&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;/mruList>&#xD;&#xA;&lt;/workbench>"/>
   <tags>activeSchemeId:org.eclipse.ui.defaultAcceleratorConfiguration</tags>
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_XPWIQLUzEfC8Zq5eqK6IqA" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.ui.workbench" selectedElement="_XPWIQbUzEfC8Zq5eqK6IqA" x="234" y="234" width="1024" height="768">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_XPWIQLUzEfC8Zq5eqK6IqA" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.ui.workbench" selectedElement="_XPWIQbUzEfC8Zq5eqK6IqA" x="0" y="0" width="974" height="1039">
     <persistedState key="coolBarVisible" value="true"/>
     <persistedState key="perspectiveBarVisible" value="true"/>
     <persistedState key="isRestored" value="true"/>
+    <persistedState key="workingSets" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;workingSets/>"/>
+    <persistedState key="aggregateWorkingSetId" value="Aggregate for window 1761955260339"/>
+    <persistedState key="show_in_time" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;show_in_time/>"/>
     <tags>topLevel</tags>
+    <tags>shellMaximized</tags>
     <children xsi:type="basic:PartSashContainer" xmi:id="_XPWIQbUzEfC8Zq5eqK6IqA" selectedElement="_XPWIQrUzEfC8Zq5eqK6IqA" horizontal="true">
       <children xsi:type="advanced:PerspectiveStack" xmi:id="_XPWIQrUzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.ide.perspectivestack" containerData="7500" selectedElement="_XPWIQ7UzEfC8Zq5eqK6IqA">
         <children xsi:type="advanced:Perspective" xmi:id="_XPWIQ7UzEfC8Zq5eqK6IqA" elementId="com.jaspersoft.studio.ReportDesignPerspective" selectedElement="_XPWIRLUzEfC8Zq5eqK6IqA" label="Report Design" iconURI="platform:/plugin/com.jaspersoft.studio/icons/jr_icon.png">
@@ -19,7 +23,7 @@
           <tags>persp.actionSet:org.eclipse.ui.externaltools.ExternalToolsSet</tags>
           <tags>persp.actionSet:org.eclipse.search.searchActionSet</tags>
           <children xsi:type="basic:PartSashContainer" xmi:id="_XPWIRLUzEfC8Zq5eqK6IqA" selectedElement="_XPWIS7UzEfC8Zq5eqK6IqA" horizontal="true">
-            <children xsi:type="basic:PartSashContainer" xmi:id="_XPWIRbUzEfC8Zq5eqK6IqA" containerData="2500" selectedElement="_XPWIRrUzEfC8Zq5eqK6IqA">
+            <children xsi:type="basic:PartSashContainer" xmi:id="_XPWIRbUzEfC8Zq5eqK6IqA" containerData="1712" selectedElement="_XPWIRrUzEfC8Zq5eqK6IqA">
               <children xsi:type="basic:PartStack" xmi:id="_XPWIRrUzEfC8Zq5eqK6IqA" elementId="com.jaspersoft.studio.RepositoryMStack" containerData="5000" selectedElement="_XPWISLUzEfC8Zq5eqK6IqA">
                 <children xsi:type="advanced:Placeholder" xmi:id="_XPWIR7UzEfC8Zq5eqK6IqA" elementId="com.jaspersoft.studio.Repository" ref="_XPWvibUzEfC8Zq5eqK6IqA" closeable="true">
                   <tags>View</tags>
@@ -37,8 +41,8 @@
                 </children>
               </children>
             </children>
-            <children xsi:type="basic:PartSashContainer" xmi:id="_XPWIS7UzEfC8Zq5eqK6IqA" containerData="7500" selectedElement="_XPWITLUzEfC8Zq5eqK6IqA" horizontal="true">
-              <children xsi:type="basic:PartSashContainer" xmi:id="_XPWITLUzEfC8Zq5eqK6IqA" containerData="7000" selectedElement="_XPWITbUzEfC8Zq5eqK6IqA">
+            <children xsi:type="basic:PartSashContainer" xmi:id="_XPWIS7UzEfC8Zq5eqK6IqA" containerData="8288" selectedElement="_XPWITLUzEfC8Zq5eqK6IqA" horizontal="true">
+              <children xsi:type="basic:PartSashContainer" xmi:id="_XPWITLUzEfC8Zq5eqK6IqA" containerData="8268" selectedElement="_XPWITbUzEfC8Zq5eqK6IqA">
                 <children xsi:type="advanced:Placeholder" xmi:id="_XPWITbUzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.editorss" containerData="7500" ref="_XPWvc7UzEfC8Zq5eqK6IqA"/>
                 <children xsi:type="basic:PartStack" xmi:id="_XPWITrUzEfC8Zq5eqK6IqA" elementId="com.jaspersoft.studio.editor.preview.reportstateMStack" containerData="2500" selectedElement="_XPWIT7UzEfC8Zq5eqK6IqA">
                   <children xsi:type="advanced:Placeholder" xmi:id="_XPWIT7UzEfC8Zq5eqK6IqA" elementId="com.jaspersoft.studio.editor.preview.reportstate" ref="_XPWvxbUzEfC8Zq5eqK6IqA" closeable="true">
@@ -47,7 +51,7 @@
                   </children>
                 </children>
               </children>
-              <children xsi:type="basic:PartSashContainer" xmi:id="_XPWIULUzEfC8Zq5eqK6IqA" containerData="3000">
+              <children xsi:type="basic:PartSashContainer" xmi:id="_XPWIULUzEfC8Zq5eqK6IqA" containerData="1732" selectedElement="_XPWIUbUzEfC8Zq5eqK6IqA">
                 <children xsi:type="basic:PartStack" xmi:id="_XPWIUbUzEfC8Zq5eqK6IqA" elementId="org.eclipse.gef.ui.palette_viewMStack" containerData="4000" selectedElement="_XPWIUrUzEfC8Zq5eqK6IqA">
                   <children xsi:type="advanced:Placeholder" xmi:id="_XPWIUrUzEfC8Zq5eqK6IqA" elementId="org.eclipse.gef.ui.palette_view" ref="_XPWvtrUzEfC8Zq5eqK6IqA" closeable="true">
                     <tags>View</tags>
@@ -109,41 +113,17 @@
       <tags>categoryTag:Help</tags>
     </sharedElements>
     <sharedElements xsi:type="advanced:Area" xmi:id="_XPWvc7UzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.editorss" selectedElement="_XPWvdLUzEfC8Zq5eqK6IqA">
-      <children xsi:type="basic:PartStack" xmi:id="_XPWvdLUzEfC8Zq5eqK6IqA" elementId="org.eclipse.e4.primaryDataStack" selectedElement="_XPWvhbUzEfC8Zq5eqK6IqA">
+      <children xsi:type="basic:PartStack" xmi:id="_XPWvdLUzEfC8Zq5eqK6IqA" elementId="org.eclipse.e4.primaryDataStack" selectedElement="_kzOScLfwEfCPeq_OLbq-JQ">
         <tags>org.eclipse.e4.primaryDataStack</tags>
         <tags>EditorStack</tags>
         <tags>active</tags>
-        <tags>noFocus</tags>
-        <children xsi:type="basic:Part" xmi:id="_XPWvdbUzEfC8Zq5eqK6IqA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="ResumenTecnico.jrxml" iconURI="platform:/plugin/com.jaspersoft.studio/icons/jrxml_icon.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;ResumenTecnico.jrxml&quot; partName=&quot;ResumenTecnico.jrxml&quot; title=&quot;ResumenTecnico.jrxml&quot; tooltip=&quot;MyReports/ResumenTecnico.jrxml&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/MyReports/ResumenTecnico.jrxml&quot;/>&#xD;&#xA;&lt;/editor>"/>
-          <tags>Editor</tags>
-          <tags>removeOnHide</tags>
-          <tags>com.jaspersoft.studio.editor.JrxmlEditor</tags>
-        </children>
-        <children xsi:type="basic:Part" xmi:id="_XPWvebUzEfC8Zq5eqK6IqA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="ReporteRegistroEntrada2.jrxml" iconURI="platform:/plugin/com.jaspersoft.studio/icons/jrxml_icon.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;ReporteRegistroEntrada2.jrxml&quot; partName=&quot;ReporteRegistroEntrada2.jrxml&quot; title=&quot;ReporteRegistroEntrada2.jrxml&quot; tooltip=&quot;MyReports/ReporteRegistroEntrada2.jrxml&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/MyReports/ReporteRegistroEntrada2.jrxml&quot;/>&#xD;&#xA;&lt;/editor>"/>
-          <tags>Editor</tags>
-          <tags>removeOnHide</tags>
-          <tags>com.jaspersoft.studio.editor.JrxmlEditor</tags>
-        </children>
-        <children xsi:type="basic:Part" xmi:id="_XPWvfbUzEfC8Zq5eqK6IqA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="RemitoPreImpreso.jrxml" iconURI="platform:/plugin/com.jaspersoft.studio/icons/jrxml_icon.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;RemitoPreImpreso.jrxml&quot; partName=&quot;RemitoPreImpreso.jrxml&quot; title=&quot;RemitoPreImpreso.jrxml&quot; tooltip=&quot;MyReports/RemitoPreImpreso.jrxml&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/MyReports/RemitoPreImpreso.jrxml&quot;/>&#xD;&#xA;&lt;/editor>"/>
-          <tags>Editor</tags>
-          <tags>removeOnHide</tags>
-          <tags>com.jaspersoft.studio.editor.JrxmlEditor</tags>
-        </children>
-        <children xsi:type="basic:Part" xmi:id="_XPWvgbUzEfC8Zq5eqK6IqA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="RemitoComun.jrxml" iconURI="platform:/plugin/com.jaspersoft.studio/icons/jrxml_icon.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;RemitoComun.jrxml&quot; partName=&quot;RemitoComun.jrxml&quot; title=&quot;RemitoComun.jrxml&quot; tooltip=&quot;MyReports/RemitoComun.jrxml&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/MyReports/RemitoComun.jrxml&quot;/>&#xD;&#xA;&lt;/editor>"/>
-          <tags>Editor</tags>
-          <tags>removeOnHide</tags>
-          <tags>com.jaspersoft.studio.editor.JrxmlEditor</tags>
-        </children>
-        <children xsi:type="basic:Part" xmi:id="_XPWvhbUzEfC8Zq5eqK6IqA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="Presupuesto.jrxml" iconURI="platform:/plugin/com.jaspersoft.studio/icons/jrxml_icon.png" closeable="true">
+        <children xsi:type="basic:Part" xmi:id="_kzOScLfwEfCPeq_OLbq-JQ" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="Presupuesto.jrxml" iconURI="platform:/plugin/com.jaspersoft.studio/icons/jrxml_icon.png" closeable="true">
           <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;com.jaspersoft.studio.editor.JrxmlEditor&quot; name=&quot;Presupuesto.jrxml&quot; partName=&quot;Presupuesto.jrxml&quot; title=&quot;Presupuesto.jrxml&quot; tooltip=&quot;MyReports/Presupuesto.jrxml&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/MyReports/Presupuesto.jrxml&quot;/>&#xD;&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>removeOnHide</tags>
           <tags>com.jaspersoft.studio.editor.JrxmlEditor</tags>
           <tags>active</tags>
+          <tags>activeOnClose</tags>
         </children>
       </children>
     </sharedElements>
@@ -169,7 +149,7 @@
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
       </menus>
-      <toolbar xmi:id="_XPWvpLUzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.navigator.ProjectExplorer"/>
+      <toolbar xmi:id="_XPWvpLUzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.navigator.ProjectExplorer" visible="false"/>
     </sharedElements>
     <sharedElements xsi:type="basic:Part" xmi:id="_XPWvqbUzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.views.ContentOutline" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView" label="Outline" iconURI="platform:/plugin/org.eclipse.ui.views/icons/full/eview16/outline_co.png" tooltip="" closeable="true">
       <persistedState key="originalCompatibilityViewClass" value="org.eclipse.ui.views.contentoutline.ContentOutline"/>
@@ -181,7 +161,7 @@
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
       </menus>
-      <toolbar xmi:id="_XPWvq7UzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.views.ContentOutline"/>
+      <toolbar xmi:id="_XPWvq7UzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.views.ContentOutline" visible="false"/>
     </sharedElements>
     <sharedElements xsi:type="basic:Part" xmi:id="_XPWvtrUzEfC8Zq5eqK6IqA" elementId="org.eclipse.gef.ui.palette_view" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView" label="Palette" iconURI="platform:/plugin/org.eclipse.gef/icons/palette_view.gif" tooltip="" closeable="true">
       <persistedState key="originalCompatibilityViewClass" value="org.eclipse.gef.ui.views.palette.PaletteView"/>
@@ -193,7 +173,7 @@
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
       </menus>
-      <toolbar xmi:id="_XPWvuLUzEfC8Zq5eqK6IqA" elementId="org.eclipse.gef.ui.palette_view"/>
+      <toolbar xmi:id="_XPWvuLUzEfC8Zq5eqK6IqA" elementId="org.eclipse.gef.ui.palette_view" visible="false"/>
     </sharedElements>
     <sharedElements xsi:type="basic:Part" xmi:id="_XPWvubUzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.views.PropertySheet" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView" label="Properties" iconURI="platform:/plugin/org.eclipse.ui.views/icons/full/eview16/prop_ps.png" tooltip="" closeable="true">
       <persistedState key="originalCompatibilityViewClass" value="org.eclipse.ui.views.properties.PropertySheet"/>
@@ -205,7 +185,7 @@
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
       </menus>
-      <toolbar xmi:id="_XPWvv7UzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.views.PropertySheet"/>
+      <toolbar xmi:id="_XPWvv7UzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.views.PropertySheet" visible="false"/>
     </sharedElements>
     <sharedElements xsi:type="basic:Part" xmi:id="_XPWvxLUzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.views.ProblemView" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView" label="Problems" iconURI="platform:/plugin/org.eclipse.ui.ide/icons/full/eview16/problems_view.png" tooltip="" closeable="true">
       <persistedState key="originalCompatibilityViewClass" value="org.eclipse.ui.internal.views.markers.ProblemsView"/>
@@ -223,7 +203,7 @@
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
       </menus>
-      <toolbar xmi:id="_XPWvx7UzEfC8Zq5eqK6IqA" elementId="com.jaspersoft.studio.editor.preview.reportstate"/>
+      <toolbar xmi:id="_XPWvx7UzEfC8Zq5eqK6IqA" elementId="com.jaspersoft.studio.editor.preview.reportstate" visible="false"/>
     </sharedElements>
     <trimBars xmi:id="_XPWvyLUzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.main.toolbar" contributorURI="platform:/plugin/org.eclipse.ui.workbench">
       <children xsi:type="menu:ToolBar" xmi:id="_XPWvybUzEfC8Zq5eqK6IqA" elementId="group.file" toBeRendered="false">
@@ -232,7 +212,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_XPWvy7UzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_XPWv07UzEfC8Zq5eqK6IqA" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" enabled="false" command="_XPeFGbUzEfC8Zq5eqK6IqA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_mMXsILfvEfCPeq_OLbq-JQ" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_XPeFGbUzEfC8Zq5eqK6IqA"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_XPWv2bUzEfC8Zq5eqK6IqA" elementId="additions" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -250,9 +230,12 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_XPWv-bUzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_XPWv_7UzEfC8Zq5eqK6IqA" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_XPeEl7UzEfC8Zq5eqK6IqA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_mM4CcLfvEfCPeq_OLbq-JQ" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_XPeEl7UzEfC8Zq5eqK6IqA"/>
       </children>
-      <children xsi:type="menu:ToolBar" xmi:id="_XPWwBLUzEfC8Zq5eqK6IqA" elementId="com.jaspersoft.studio.editor.JrxmlEditor">
+      <children xsi:type="menu:ToolBar" xmi:id="_py1RYLd_EfCI0fzvNdAZww" elementId="com.jaspersoft.studio.graphic.text" visible="false">
+        <tags>Draggable</tags>
+      </children>
+      <children xsi:type="menu:ToolBar" xmi:id="_qBsz0Ld_EfCI0fzvNdAZww" elementId="com.jaspersoft.studio.graphic.size" visible="false">
         <tags>Draggable</tags>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_XPWwC7UzEfC8Zq5eqK6IqA" elementId="group.editor" toBeRendered="false">

@@ -32,6 +32,11 @@
 			<location>F:/Users/Diego/git/SistemaGestion/ReparsoftCliente/reportes/Presupuesto.jrxml</location>
 		</link>
 		<link>
+			<name>Presupuesto_1.jasper</name>
+			<type>1</type>
+			<location>F:/Users/Diego/git/SistemaGestion/ReparsoftCliente/reportes/Presupuesto.jasper</location>
+		</link>
+		<link>
 			<name>RemitoComun.jasper</name>
 			<type>1</type>
 			<location>F:/Users/Diego/git/SistemaGestion/ReparsoftCliente/reportes/RemitoComun.jasper</location>

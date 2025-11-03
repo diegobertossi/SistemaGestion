@@ -105,6 +105,9 @@
 	<field name="chckpesos" class="java.lang.Boolean">
 		<fieldDescription><![CDATA[chckpesos]]></fieldDescription>
 	</field>
+	<field name="chckIVA" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[chckIVA]]></fieldDescription>
+	</field>
 	<field name="condicionesMoneda" class="java.lang.String">
 		<fieldDescription><![CDATA[condicionesMoneda]]></fieldDescription>
 	</field>
@@ -382,15 +385,25 @@ els@elsweb.com.ar   ]]></text>
 				</textElement>
 				<text><![CDATA[Total: ]]></text>
 			</staticText>
-			<textField pattern="U$S #,##0.##;U$S -#,##0.##">
-				<reportElement x="87" y="26" width="92" height="17" uuid="d392b3f9-20f9-4d55-b3f8-b36c4ed16efb">
+			<textField pattern="¤#,##0.##;¤-#,##0.##">
+				<reportElement x="87" y="5" width="92" height="17" uuid="f5980fff-f0ef-4aec-a350-5f8248d72619">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
 					<font fontName="MyfuenteCambria" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{chckdolar}== true? $F{precioDolar}:""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{chckpesos}== true? $F{precioPeso}:""]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="179" y="5" width="40" height="17" uuid="8c3a2f45-b92e-4d1a-9f87-3e2b5f6c8d91">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{chckpesos} && $F{chckIVA}]]></printWhenExpression>
+				</reportElement>
+				<textElement markup="none">
+					<font fontName="MyfuenteCambria" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[+ IVA]]></text>
+			</staticText>
 			<staticText>
 				<reportElement x="39" y="26" width="40" height="17" uuid="79147458-006c-452f-92b8-5fec4f8b4277">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -401,15 +414,25 @@ els@elsweb.com.ar   ]]></text>
 				</textElement>
 				<text><![CDATA[Total: ]]></text>
 			</staticText>
-			<textField pattern="¤#,##0.##;¤-#,##0.##">
-				<reportElement x="87" y="5" width="92" height="17" uuid="f5980fff-f0ef-4aec-a350-5f8248d72619">
+			<textField pattern="U$S #,##0.##;U$S -#,##0.##">
+				<reportElement x="87" y="26" width="92" height="17" uuid="d392b3f9-20f9-4d55-b3f8-b36c4ed16efb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
 					<font fontName="MyfuenteCambria" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{chckpesos}== true? $F{precioPeso}:""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{chckdolar}== true? $F{precioDolar}:""]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="179" y="26" width="40" height="17" uuid="7f2d9e3a-1c8b-4e5f-9a2c-6d4e8f7a9b12">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{chckdolar} && $F{chckIVA}]]></printWhenExpression>
+				</reportElement>
+				<textElement markup="none">
+					<font fontName="MyfuenteCambria" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[+ IVA]]></text>
+			</staticText>
 			<break>
 				<reportElement x="0" y="49" width="132" height="1" uuid="afdeae66-381a-44a2-a73c-9ef9bf8119e9"/>
 			</break>

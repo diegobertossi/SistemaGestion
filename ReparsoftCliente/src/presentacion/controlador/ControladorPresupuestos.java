@@ -569,8 +569,24 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			else {
 
 				String nombreWordBase = "Modelo Generico de informe 2023.docx";
+				String documentoBase="";
+				String  pathBase = "";
 
-				String documentoBase = "F:/els/Administracion/Sistema/Informes Siemens/" + nombreWordBase;
+				switch (agenda.getUbicacionBase()) {
+					case "Bariloche":
+						pathBase = "F:/els/Bariloche/Administracion/Sistema/Informes Siemens/";	
+					break;
+					
+					case "Buenos Aires":
+						pathBase = "F:/els/Administracion/Sistema/Informes Siemens/";
+					break;
+
+				default:
+					break;
+				}
+				
+				documentoBase = pathBase + nombreWordBase;
+				
 
 				LocalDate fechaHoy = LocalDate.now();
 				DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yy");
@@ -593,7 +609,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				String plazoEntrega = ventanaGenerarPresupuesto.getTextPlazoEntrega().getText();
 
 				String nombreWordNuevo = "AV " + aviso + "-" + "ELS " + els + "_" + cliente + ".docx";
-				String nuevoDocumento = "F:/els/Administracion/Sistema/Informes Siemens/" + nombreWordNuevo;
+				String nuevoDocumento = pathBase + nombreWordNuevo;
 
 				try {
 					XWPFDocument doc = new XWPFDocument(new FileInputStream(documentoBase));
@@ -720,28 +736,36 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 
 		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnAdjunto()) {
-
-			if (btnPresupuestoPDF) {
-
-				String NombrePDF = ventanaEmail.getTextAdjunto().getText();
-
-				try {
-					File path = new File("F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/" + NombrePDF);
-					Desktop.getDesktop().open(path);
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
-			} else {
-				String nombreWORD = ventanaEmail.getTextAdjunto().getText();
-
-				try {
-					File path = new File("F:/ELS/Administracion/Sistema/Informes Siemens/" + nombreWORD);
-					Desktop.getDesktop().open(path);
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
-			}
-
+		    
+		    String nombreArchivo = ventanaEmail.getTextAdjunto().getText();
+		    String ubicacion = agenda.getUbicacionBase();
+		    
+		    // Determinar la ruta base según la ubicación
+		    String rutaBase;
+		    switch (ubicacion) {
+		        case "Bariloche":
+		            rutaBase = "F:/ELS/Bariloche/Administracion/Sistema/";
+		            break;
+		        case "Buenos Aires":
+		            rutaBase = "F:/ELS/Administracion/Sistema/";
+		            break;
+		        default:
+		            System.err.println("Ubicación no válida: " + ubicacion);
+		            return;
+		    }
+		    
+		    // Determinar el subdirectorio según el tipo de archivo
+		    String subdirectorio = btnPresupuestoPDF ? "Presupuestos PDF/" : "Informes Siemens/";
+		    
+		    // Construir ruta completa y abrir archivo
+		    File path = new File(rutaBase + subdirectorio + nombreArchivo);
+		    
+		    try {
+		        Desktop.getDesktop().open(path);
+		    } catch (IOException ex) {
+		        System.err.println("Error al abrir el archivo: " + path.getAbsolutePath());
+		        ex.printStackTrace();
+		    }
 		}
 
 		else if (this.ventanaGenerarPresupuesto != null
@@ -1261,6 +1285,19 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaGenerarPresupuesto.getBtnCotizacionDolar().addActionListener(this);
 		ventanaGenerarPresupuesto.getChckDolar().addMouseListener(this);
 		ventanaGenerarPresupuesto.getChckPesos().addMouseListener(this);
+		ventanaGenerarPresupuesto.getChckIVA().addMouseListener(this);
+
+		switch (agenda.getUbicacionBase()) {
+		case "Bariloche":
+			ventanaGenerarPresupuesto.getChckIVA().setSelected(false);
+			break;
+		case "Buenos Aires":
+			ventanaGenerarPresupuesto.getChckIVA().setSelected(true);
+			break;
+
+		default:
+			break;
+		}
 
 		ventanaGenerarPresupuesto.getGuardarPresupuestoPDF().addActionListener(this);
 		ventanaGenerarPresupuesto.getVisualizarPresupuestoPDF().addActionListener(this);
@@ -1580,8 +1617,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				if (this.ventanaGenerarPresupuesto.getGrupoMoneda()
 						.isSelected(this.ventanaGenerarPresupuesto.getChckPesos().getModel())) {
 
-					ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
-							"Los precios están expresados en Pesos. Facturación C (Monotributista)\r\n"
+					ventanaGenerarPresupuesto.getTextcondicionesMoneda()
+							.setText("Los precios están expresados en Pesos. Facturación C (Monotributista)\r\n"
 									+ "La garantía es de 90 días sobre la reparación realizada.\r\n"
 									+ "La validez del presupuesto es de 7 días.");
 
@@ -1601,8 +1638,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				if (this.ventanaGenerarPresupuesto.getGrupoMoneda()
 						.isSelected(this.ventanaGenerarPresupuesto.getChckPesos().getModel())) {
 
-					ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
-							"Los precios están expresados en Pesos, son Netos y no incluyen el IVA (21%).\r\n"
+					ventanaGenerarPresupuesto.getTextcondicionesMoneda()
+							.setText("Los precios están expresados en Pesos, son Netos y no incluyen el IVA (21%).\r\n"
 									+ "La garantía es de 90 días sobre la reparación realizada.\r\n"
 									+ "La validez del presupuesto es de 15 días.");
 
@@ -1611,10 +1648,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				else {
 					ventanaGenerarPresupuesto.getTextcondicionesMoneda().setText(
 							"Los precios están expresados en Dólares estadounidenses. Los USD se convertirán a pesos al tipo de cambio\r\n"
-							+ "vendedor del Banco Nación vigente al día anterior al que se efectúe el pago. Son Netos y no incluyen el IVA (21%).\r\n"
-							+ "La garantía es de 90 días sobre la reparación realizada.\r\n"
-							+ "La validez del presupuesto es de 15 días.");
-
+									+ "vendedor del Banco Nación vigente al día anterior al que se efectúe el pago. Son Netos y no incluyen el IVA (21%).\r\n"
+									+ "La garantía es de 90 días sobre la reparación realizada.\r\n"
+									+ "La validez del presupuesto es de 15 días.");
 
 				}
 				break;
@@ -1772,6 +1808,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		String Sucursal = this.ventanaGenerarPresupuesto.getTextCliente().getText();
 		boolean chckpesos = this.ventanaGenerarPresupuesto.getChckPesos().isSelected();
 		boolean chckdolar = this.ventanaGenerarPresupuesto.getChckDolar().isSelected();
+		boolean chckIVA = this.ventanaGenerarPresupuesto.getChckIVA().isSelected();
+
 		String CondicionesMoneda = this.ventanaGenerarPresupuesto.getTextcondicionesMoneda().getText();
 		String CondicionesPago = this.ventanaGenerarPresupuesto.getTextcondicionesPago().getText();
 		String plazoEntrega = this.ventanaGenerarPresupuesto.getTextPlazoEntrega().getText();
@@ -1803,8 +1841,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		RegistroPresupuestoDTO nuevoPresupuesto = new RegistroPresupuestoDTO(ELS, InformeCliente, RemitoCLiente,
 				PrecioPeso, PrecioDolar, NombreEquipo, Modelo, Marca, Serie, ClienteCliente, aviso, Sucursal, Cliente,
-				chckpesos, chckdolar, CondicionesMoneda, CondicionesPago, plazoEntrega, rutaImagen_1, rutaImagen_2,
-				rutaImagen_3, rutaImagen_4, rutaImagen_5, rutaImagen_6);
+				chckpesos, chckdolar, chckIVA, CondicionesMoneda, CondicionesPago, plazoEntrega, rutaImagen_1,
+				rutaImagen_2, rutaImagen_3, rutaImagen_4, rutaImagen_5, rutaImagen_6);
 
 		return nuevoPresupuesto;
 

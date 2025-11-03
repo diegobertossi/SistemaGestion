@@ -16,6 +16,7 @@ public class RegistroPresupuestoDTO {
 	private String Cliente;
 	private boolean chckpesos;
 	private boolean chckdolar;
+	private boolean chckIVA;
 	private String condicionesMoneda;
 	private String condicionesPago;
 	private String plazoEntrega;
@@ -48,8 +49,9 @@ public class RegistroPresupuestoDTO {
 	public RegistroPresupuestoDTO(int ELS, String InformeCliente, String RemitoCliente, Double PrecioPeso,
 			Double PrecioDolar, String Nombre, String Modelo, String Marca, String NumeroDeSerie, String Aviso,
 			String ClienteCliente, String Cliente, String Sucursal, boolean chckpesos, boolean chckdolar,
-			String condicionesMoneda, String condicionesPago, String plazoEntrega, String imagePath,
+			boolean chckIVA, String condicionesMoneda, String condicionesPago, String plazoEntrega, String imagePath,
 			String imagePath2, String imagePath3,String imagePath4, String imagePath5, String imagePath6) {
+		
 		this.ELS = ELS;
 		this.Informecliente = InformeCliente;
 		this.RemitoCliente = RemitoCliente;
@@ -65,6 +67,8 @@ public class RegistroPresupuestoDTO {
 		this.Sucursal = Sucursal;
 		this.chckpesos = chckpesos;
 		this.chckdolar = chckdolar;
+		this.chckIVA = chckIVA;
+		
 		this.condicionesMoneda = condicionesMoneda;
 		this.condicionesPago = condicionesPago;
 		this.plazoEntrega = plazoEntrega;
@@ -220,6 +224,14 @@ public class RegistroPresupuestoDTO {
 	public void setChckdolar(boolean chckdolar) {
 		this.chckdolar = chckdolar;
 	}
+	
+	public boolean isChckIVA() {
+		return chckIVA;
+	}
+
+	public void setChckIVA(boolean chckIVA) {
+		this.chckIVA = chckIVA;
+	}
 
 	public String getImagePath() {
 		return imagePath;
@@ -268,5 +280,6 @@ public class RegistroPresupuestoDTO {
 	public void setImagePath6(String imagePath6) {
 		this.imagePath6 = imagePath6;
 	}
+	
 
 }

@@ -73,6 +73,8 @@ public class VentanaGenerarPresupuesto extends JFrame {
 
 	private JCheckBox chckPesos;
 	private JCheckBox chckDolar;
+	private JCheckBox chckIVA;
+	
 	
 	private JCheckBox chckPDFgenerado;
 	private JCheckBox chckPDFenviado;
@@ -354,18 +356,18 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		GuardarPresupuestoPDF = new JButton("<html><center>Informe PDF</html>");
 		GuardarPresupuestoPDF.setEnabled(false);
 		GuardarPresupuestoPDF.setFont(new Font("Cambria", Font.BOLD, 12));
-		GuardarPresupuestoPDF.setBounds(647, 541, 92, 38);
+		GuardarPresupuestoPDF.setBounds(649, 545, 92, 38);
 		contentPane.add(GuardarPresupuestoPDF);
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.activeCaption);
 		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
-		panel_3.setBounds(21, 496, 620, 144);
+		panel_3.setBounds(21, 496, 620, 149);
 		contentPane.add(panel_3);
 		panel_3.setLayout(null);
 
 		JScrollPane textCondicionesPesos = new JScrollPane();
-		textCondicionesPesos.setBounds(157, 35, 440, 31);
+		textCondicionesPesos.setBounds(157, 38, 440, 57);
 		panel_3.add(textCondicionesPesos);
 		textCondicionesPesos.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(95, 158, 160), null));
 
@@ -379,7 +381,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		textCondicionesPesos.setViewportView(textcondicionesMoneda);
 
 		JScrollPane condicionesPago = new JScrollPane();
-		condicionesPago.setBounds(157, 68, 440, 31);
+		condicionesPago.setBounds(157, 99, 440, 17);
 		panel_3.add(condicionesPago);
 		condicionesPago.setFont(new Font("Cambria", Font.PLAIN, 10));
 		condicionesPago.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(95, 158, 160), null));
@@ -394,7 +396,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		condicionesPago.setViewportView(textcondicionesPago);
 
 		JScrollPane plazodeEntregaa = new JScrollPane();
-		plazodeEntregaa.setBounds(157, 100, 440, 31);
+		plazodeEntregaa.setBounds(157, 120, 440, 17);
 		panel_3.add(plazodeEntregaa);
 		plazodeEntregaa.setFont(new Font("Cambria", Font.PLAIN, 10));
 		plazodeEntregaa.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(95, 158, 160), null));
@@ -409,25 +411,25 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		plazodeEntregaa.setViewportView(textPlazoEntrega);
 
 		JLabel CondicionesMoneda = new JLabel("CONDICIONES EN MONEDA :");
-		CondicionesMoneda.setBounds(12, 35, 139, 31);
+		CondicionesMoneda.setBounds(12, 51, 139, 31);
 		panel_3.add(CondicionesMoneda);
 		CondicionesMoneda.setForeground(Color.BLACK);
 		CondicionesMoneda.setFont(new Font("Cambria", Font.BOLD, 10));
 
 		JLabel lblCondicionesDePago = new JLabel("CONDICIONES DE PAGO :");
-		lblCondicionesDePago.setBounds(12, 68, 139, 31);
+		lblCondicionesDePago.setBounds(12, 99, 139, 17);
 		panel_3.add(lblCondicionesDePago);
 		lblCondicionesDePago.setForeground(Color.BLACK);
 		lblCondicionesDePago.setFont(new Font("Cambria", Font.BOLD, 10));
 
 		JLabel lblPlazoDeEntrega = new JLabel("PLAZO DE ENTREGA :");
-		lblPlazoDeEntrega.setBounds(12, 100, 139, 31);
+		lblPlazoDeEntrega.setBounds(12, 120, 139, 17);
 		panel_3.add(lblPlazoDeEntrega);
 		lblPlazoDeEntrega.setForeground(Color.BLACK);
 		lblPlazoDeEntrega.setFont(new Font("Cambria", Font.BOLD, 10));
 
 		chckPesos = new JCheckBox("PRESUPUESTO EN PESOS");
-		chckPesos.setBounds(6, 11, 152, 17);
+		chckPesos.setBounds(6, 7, 152, 17);
 		panel_3.add(chckPesos);
 		chckPesos.setFont(new Font("Cambria", Font.BOLD, 10));
 		chckPesos.setHorizontalAlignment(SwingConstants.LEFT);
@@ -435,12 +437,19 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		GrupoMoneda.add(chckPesos);
 
 		chckDolar = new JCheckBox("PRESUPUESTO EN DÓLARES");
-		chckDolar.setBounds(160, 11, 168, 17);
+		chckDolar.setBounds(217, 7, 168, 17);
 		panel_3.add(chckDolar);
 		chckDolar.setHorizontalAlignment(SwingConstants.LEFT);
 		chckDolar.setFont(new Font("Cambria", Font.BOLD, 10));
 		chckDolar.setBackground(SystemColor.activeCaption);
 		GrupoMoneda.add(chckDolar);
+		
+		chckIVA = new JCheckBox("+ IVA");
+		chckIVA.setHorizontalAlignment(SwingConstants.LEFT);
+		chckIVA.setFont(new Font("Cambria", Font.BOLD, 10));
+		chckIVA.setBackground(SystemColor.activeCaption);
+		chckIVA.setBounds(444, 7, 61, 17);
+		panel_3.add(chckIVA);
 
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(SystemColor.inactiveCaptionText);
@@ -499,6 +508,8 @@ public class VentanaGenerarPresupuesto extends JFrame {
 
 		JLabel avisoDelpresupuesto = new JLabel(
 				"Estos datos no se guardarán en la base. Serán utilizados solo una véz al generar el PDF correspondiente. ");
+		avisoDelpresupuesto.setOpaque(true);
+		avisoDelpresupuesto.setBackground(new Color(255, 248, 220));
 		avisoDelpresupuesto.setFont(new Font("Cambria", Font.PLAIN, 11));
 		avisoDelpresupuesto.setForeground(new Color(47, 79, 79));
 		avisoDelpresupuesto.setBounds(21, 469, 487, 14);
@@ -507,7 +518,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		VisualizarPresupuestoPDF = new JButton("Visualizar PDF");
 		VisualizarPresupuestoPDF.setEnabled(false);
 		VisualizarPresupuestoPDF.setFont(new Font("Cambria", Font.BOLD, 12));
-		VisualizarPresupuestoPDF.setBounds(647, 496, 114, 23);
+		VisualizarPresupuestoPDF.setBounds(649, 496, 114, 23);
 		contentPane.add(VisualizarPresupuestoPDF);
 		
 		JPanel panel_4_1 = new JPanel();
@@ -607,7 +618,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				btnGenerarInformeSiemens = new JButton("<html><center>Informe WORD</html>");
 				btnGenerarInformeSiemens.setEnabled(false);
 				btnGenerarInformeSiemens.setFont(new Font("Cambria", Font.BOLD, 12));
-				btnGenerarInformeSiemens.setBounds(647, 602, 92, 38);
+				btnGenerarInformeSiemens.setBounds(649, 607, 92, 38);
 				contentPane.add(btnGenerarInformeSiemens);
 				
 				chckPDFgenerado = new JCheckBox("");
@@ -615,7 +626,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				chckPDFgenerado.setHorizontalAlignment(SwingConstants.LEFT);
 				chckPDFgenerado.setFont(new Font("Cambria", Font.BOLD, 9));
 				chckPDFgenerado.setBackground(UIManager.getColor("inactiveCaption"));
-				chckPDFgenerado.setBounds(745, 541, 21, 17);
+				chckPDFgenerado.setBounds(747, 545, 21, 17);
 				contentPane.add(chckPDFgenerado);
 				
 				chckPDFenviado = new JCheckBox("");
@@ -623,7 +634,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				chckPDFenviado.setHorizontalAlignment(SwingConstants.LEFT);
 				chckPDFenviado.setFont(new Font("Cambria", Font.BOLD, 9));
 				chckPDFenviado.setBackground(UIManager.getColor("inactiveCaption"));
-				chckPDFenviado.setBounds(745, 562, 21, 17);
+				chckPDFenviado.setBounds(747, 566, 21, 17);
 				contentPane.add(chckPDFenviado);
 				
 				chckWORDgenerado = new JCheckBox("");
@@ -631,7 +642,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				chckWORDgenerado.setHorizontalAlignment(SwingConstants.LEFT);
 				chckWORDgenerado.setFont(new Font("Cambria", Font.BOLD, 9));
 				chckWORDgenerado.setBackground(UIManager.getColor("inactiveCaption"));
-				chckWORDgenerado.setBounds(745, 602, 21, 17);
+				chckWORDgenerado.setBounds(747, 607, 21, 17);
 				contentPane.add(chckWORDgenerado);
 				
 				chckWORDenviado = new JCheckBox("");
@@ -639,31 +650,31 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				chckWORDenviado.setHorizontalAlignment(SwingConstants.LEFT);
 				chckWORDenviado.setFont(new Font("Cambria", Font.BOLD, 9));
 				chckWORDenviado.setBackground(UIManager.getColor("inactiveCaption"));
-				chckWORDenviado.setBounds(745, 623, 21, 17);
+				chckWORDenviado.setBounds(747, 628, 21, 17);
 				contentPane.add(chckWORDenviado);
 				
 				JLabel lblNewLabel = new JLabel("PDF GENERADO");
 				lblNewLabel.setForeground(new Color(0, 0, 51));
 				lblNewLabel.setFont(new Font("Cambria", Font.PLAIN, 11));
-				lblNewLabel.setBounds(772, 542, 90, 14);
+				lblNewLabel.setBounds(774, 546, 90, 14);
 				contentPane.add(lblNewLabel);
 				
 				JLabel lblPdfEnviado = new JLabel("PDF ENVIADO");
 				lblPdfEnviado.setForeground(new Color(0, 0, 51));
 				lblPdfEnviado.setFont(new Font("Cambria", Font.PLAIN, 11));
-				lblPdfEnviado.setBounds(772, 562, 90, 14);
+				lblPdfEnviado.setBounds(774, 566, 90, 14);
 				contentPane.add(lblPdfEnviado);
 				
 				JLabel lblWordGenerado = new JLabel("WORD GENERADO");
 				lblWordGenerado.setForeground(new Color(0, 0, 51));
 				lblWordGenerado.setFont(new Font("Cambria", Font.PLAIN, 11));
-				lblWordGenerado.setBounds(772, 602, 90, 14);
+				lblWordGenerado.setBounds(774, 607, 90, 14);
 				contentPane.add(lblWordGenerado);
 				
 				JLabel lblWordEnviado = new JLabel("WORD ENVIADO");
 				lblWordEnviado.setForeground(new Color(0, 0, 51));
 				lblWordEnviado.setFont(new Font("Cambria", Font.PLAIN, 11));
-				lblWordEnviado.setBounds(772, 622, 90, 14);
+				lblWordEnviado.setBounds(774, 627, 90, 14);
 				contentPane.add(lblWordEnviado);
 
 		this.setVisible(true);
@@ -985,11 +996,11 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		this.textCotizacionDolarBl.setText(textCotizacionDolarBl);
 	}
 
-//	public JTextField getImagePath() {
-//		return imagePath;
-//	}
-//
-//	public void setImagePath(JTextField imagePath) {
-//		this.imagePath = imagePath;
-//	}
+	public JCheckBox getChckIVA() {
+		return chckIVA;
+	}
+
+	public void setChckIVA(JCheckBox chckIVA) {
+		this.chckIVA = chckIVA;
+	}
 }
