@@ -1282,7 +1282,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 	    rootPane.getActionMap().put("guardar", new AbstractAction() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-	        	controladorReparacion.guardarCambios(VentanaVisualizarEquipos.this);
+	        	//controladorReparacion.guardarCambios(VentanaVisualizarEquipos.this);
 	        }
 	    });
 		

@@ -2219,7 +2219,7 @@ public class ControladorListados
 			NumeroELSSeleccionado = els;
 
 			try {
-				ventanaVisualizarEquipos = controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado,
+				ventanaVisualizarEquipos = controladorReparacion.tomarDatosDeTablasListado(NumeroELSSeleccionado,
 						this.ventanaVisualizarEquipos);
 				ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
 					@Override

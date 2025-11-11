@@ -19,9 +19,9 @@ public class VentanaEquipos extends JFrame
 	private JButton btnAgregarEquipos;
 	private JButton btnVisualizarEquipos;
 	@SuppressWarnings("unused")
-	private ControladorReparacion controlador;
+	private ControladorReparacion controladorReparacion;
 
-	public VentanaEquipos() 
+	public VentanaEquipos(ControladorReparacion controladorReparacion) 
 	{
 		super();
 		setResizable(false);

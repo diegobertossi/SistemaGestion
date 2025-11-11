@@ -3167,30 +3167,32 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void comboFiltroELS(JComboBox comboFiltroELS) {
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallELS);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			comboFiltroELS.setModel(value);
-
-			while (resultSet.next()) {
-
-				value.addElement(new ReparacionDTO(resultSet.getString(1)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
+	    DefaultComboBoxModel value;
+	    PreparedStatement statement;
+	    ResultSet resultSet;
+	    ArrayList<String> datos = new ArrayList<>();
+	    try {
+	        statement = conexion.getSQLConexion().prepareStatement(readallELS);
+	        resultSet = statement.executeQuery();
+	        
+	        // Leer todos los datos ANTES de cerrar
+	        while (resultSet.next()) {
+	            datos.add(resultSet.getString(1));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        conexion.cerrarConexion();
+	    }
+	    
+	    // Ahora agregar al modelo de forma segura
+	    value = new DefaultComboBoxModel();
+	    for (String dato : datos) {
+	        value.addElement(new ReparacionDTO(dato));
+	    }
+	    comboFiltroELS.setModel(value);
 	}
+
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override

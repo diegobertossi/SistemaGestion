@@ -183,7 +183,7 @@ public class ControladorPrincipal implements ActionListener {
 
 		else if (arg0.getSource() == vistaPrincipal.getBotonEquipos()) {
 
-			ventanaEquipos = new VentanaEquipos();
+			ventanaEquipos = new VentanaEquipos(controladorReparacion);
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
 			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);
 
@@ -228,7 +228,7 @@ public class ControladorPrincipal implements ActionListener {
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
 			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);
 
-			ventanaEquipos = new VentanaEquipos();
+			ventanaEquipos = new VentanaEquipos(controladorReparacion);
 
 			ventanaSalidas = new VentanaSalidas(controladorSalidas);
 
@@ -268,7 +268,7 @@ public class ControladorPrincipal implements ActionListener {
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
 			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);
 
-			ventanaEquipos = new VentanaEquipos();
+			ventanaEquipos = new VentanaEquipos(controladorReparacion);
 
 			ventanaSalidas = new VentanaSalidas(controladorSalidas);
 

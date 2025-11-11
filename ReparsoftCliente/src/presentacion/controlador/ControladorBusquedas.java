@@ -221,7 +221,7 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 			NumeroELSSeleccionado = els;
 
 			try {
-				ventanaVisualizarEquipos = controladorReparacion.TomarDatosDeTablasListado(NumeroELSSeleccionado,
+				ventanaVisualizarEquipos = controladorReparacion.tomarDatosDeTablasListado(NumeroELSSeleccionado,
 						ventanaVisualizarEquipos);
 				ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
 					@Override

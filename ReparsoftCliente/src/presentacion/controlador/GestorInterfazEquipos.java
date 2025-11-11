@@ -1,0 +1,307 @@
+package presentacion.controlador;
+
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingConstants;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.text.JTextComponent;
+import javax.swing.undo.UndoManager;
+import java.awt.Toolkit;
+
+import presentacion.vista.VentanaVisualizarEquipos;
+import presentacion.vista.VentanaAgregarEquipo;
+import tiposPropios.MonedaFormatter;
+
+/**
+ * GestorInterfazEquipos
+ * Responsable de:
+ * - Habilitar/deshabilitar campos
+ * - Gestionar listeners de precios
+ * - Habilitar autocompletado
+ * - Configurar menús contextuales
+ * - Gestionar undo/redo
+ */
+public class GestorInterfazEquipos {
+    
+    private MonedaFormatter monedaFormatter;
+    
+    /**
+     * Constructor
+     */
+    public GestorInterfazEquipos() {
+        this.monedaFormatter = new MonedaFormatter();
+    }
+    
+    /**
+     * Habilita campos para edición
+     */
+    public void habilitarCampos(VentanaVisualizarEquipos ventana) {
+        ventana.getTextNombreEquipo().setEditable(true);
+        ventana.getTextModelo().setEditable(true);
+        ventana.getTextMarca().setEditable(true);
+        ventana.getTextNSerie().setEditable(true);
+        ventana.getTextClienteCliente().setEditable(true);
+        ventana.getTextAvisoCliente().setEditable(true);
+        ventana.getTextRemitoCliente().setEditable(true);
+        ventana.getTextFalla().setEditable(true);
+        ventana.getTextOC().setEditable(true);
+        ventana.getTextPresupuesto().setEditable(true);
+        ventana.getTextPresupuestoDolar().setEditable(true);
+        ventana.getTextPago().setEditable(true);
+        ventana.getTextDiagnostico().setEditable(true);
+        ventana.getTextInformeCliente().setEditable(true);
+        ventana.getTablaRepuestos().setEnabled(true);
+        ventana.getFechaEntrada().setEnabled(true);
+        ventana.getFechaReparacion().setEnabled(true);
+        ventana.getFechaRespuesta().setEnabled(true);
+        ventana.getFechaSalida().setEnabled(true);
+        ventana.getBtnGuardarCambios().setEnabled(true);
+        ventana.getBotonEditarEstados().setEnabled(true);
+        ventana.getBtnRepuestos().setEnabled(true);
+        ventana.getBtnEliminarRepuesto().setEnabled(true);
+        
+        // Mostrar combos, ocultar textos
+        ventana.getTextCliente().setVisible(false);
+        ventana.getTextSucursal().setVisible(false);
+        ventana.getTextNombreTecnico().setVisible(false);
+        ventana.getComboClientes().setVisible(true);
+        ventana.getComboSucursal().setVisible(true);
+        ventana.getComboTecnico().setVisible(true);
+    }
+    
+    /**
+     * Deshabilita campos (modo lectura)
+     */
+    public void deshabilitarCampos(VentanaVisualizarEquipos ventana) {
+        ventana.getTextNombreEquipo().setEditable(false);
+        ventana.getTextModelo().setEditable(false);
+        ventana.getTextMarca().setEditable(false);
+        ventana.getTextNSerie().setEditable(false);
+        ventana.getTextClienteCliente().setEditable(false);
+        ventana.getTextAvisoCliente().setEditable(false);
+        ventana.getTextRemitoCliente().setEditable(false);
+        ventana.getTextFalla().setEditable(false);
+        ventana.getTextOC().setEditable(false);
+        ventana.getTextPresupuesto().setEditable(false);
+        ventana.getTextPresupuestoDolar().setEditable(false);
+        ventana.getTextPago().setEditable(false);
+        ventana.getTextDiagnostico().setEditable(false);
+        ventana.getTextInformeCliente().setEditable(false);
+        ventana.getFechaEntrada().setEnabled(false);
+        ventana.getFechaReparacion().setEnabled(false);
+        ventana.getFechaRespuesta().setEnabled(false);
+        ventana.getFechaSalida().setEnabled(false);
+        ventana.getBtnGuardarCambios().setEnabled(false);
+        ventana.getBotonEditarEstados().setEnabled(false);
+        ventana.getBtnRepuestos().setEnabled(false);
+        ventana.getBtnEliminarRepuesto().setEnabled(false);
+        ventana.getBtnEditarRepuesto().setEnabled(false);
+        
+        // Mostrar textos, ocultar combos
+        ventana.getTextCliente().setVisible(true);
+        ventana.getTextSucursal().setVisible(true);
+        ventana.getTextNombreTecnico().setVisible(true);
+        ventana.getComboClientes().setVisible(false);
+        ventana.getComboSucursal().setVisible(false);
+        ventana.getComboTecnico().setVisible(false);
+    }
+    
+    /**
+     * Agrega listeners de precios
+     */
+    public void agregarListenersPrecios(VentanaVisualizarEquipos ventana) {
+        // Presupuesto
+        ventana.getTextPresupuesto().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                ventana.getTextPresupuesto().selectAll();
+            }
+        });
+        
+        ventana.getTextPresupuesto().addActionListener(e -> {
+            String presupuesto = ventana.getTextPresupuesto().getText();
+            ventana.getTextPresupuesto().setText(monedaFormatter.formatPeso(presupuesto));
+        });
+        
+        // Presupuesto Dólar
+        ventana.getTextPresupuestoDolar().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                ventana.getTextPresupuestoDolar().selectAll();
+            }
+        });
+        
+        ventana.getTextPresupuestoDolar().addActionListener(e -> {
+            String presupuesto = ventana.getTextPresupuestoDolar().getText();
+            ventana.getTextPresupuestoDolar().setText(monedaFormatter.formatDolar(presupuesto));
+        });
+        
+        // Pago
+        ventana.getTextPago().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                ventana.getTextPago().selectAll();
+            }
+        });
+        
+        ventana.getTextPago().addActionListener(e -> {
+            String pago = ventana.getTextPago().getText();
+            ventana.getTextPago().setText(monedaFormatter.formatPeso(pago));
+        });
+    }
+    
+    /**
+     * Agrega focus listeners para posición de cursor
+     */
+    public void agregarFocusListeners(VentanaVisualizarEquipos ventana) {
+        FocusListener cursorAlInicioTF = new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (e.getComponent() instanceof JTextField) {
+                    JTextField tf = (JTextField) e.getComponent();
+                    tf.setCaretPosition(0);
+                }
+            }
+        };
+        
+        ventana.getTextCliente().addFocusListener(cursorAlInicioTF);
+        ventana.getTextSucursal().addFocusListener(cursorAlInicioTF);
+        ventana.getTextNombreEquipo().addFocusListener(cursorAlInicioTF);
+        ventana.getTextMarca().addFocusListener(cursorAlInicioTF);
+        ventana.getTextModelo().addFocusListener(cursorAlInicioTF);
+        ventana.getTextNSerie().addFocusListener(cursorAlInicioTF);
+        ventana.getTextPresupuesto().addFocusListener(cursorAlInicioTF);
+        ventana.getTextPresupuestoDolar().addFocusListener(cursorAlInicioTF);
+        ventana.getTextPago().addFocusListener(cursorAlInicioTF);
+    }
+    
+    /**
+     * Habilita menú contextual para componente
+     */
+    public void habilitarMenuContextual(Object componente) {
+        final JTextComponent editor;
+        
+        if (componente instanceof JComboBox) {
+            JComboBox<?> comboBox = (JComboBox<?>) componente;
+            if (!comboBox.isEditable()) return;
+            editor = (JTextComponent) comboBox.getEditor().getEditorComponent();
+        } else if (componente instanceof JTextField) {
+            editor = (JTextComponent) componente;
+        } else if (componente instanceof javax.swing.JTextArea) {
+            editor = (JTextComponent) componente;
+        } else {
+            return;
+        }
+        
+        JPopupMenu menu = new JPopupMenu();
+        JMenuItem copiar = new JMenuItem("Copiar");
+        JMenuItem pegar = new JMenuItem("Pegar");
+        JMenuItem cortar = new JMenuItem("Cortar");
+        
+        copiar.addActionListener(e -> editor.copy());
+        pegar.addActionListener(e -> editor.paste());
+        cortar.addActionListener(e -> editor.cut());
+        
+        menu.add(cortar);
+        menu.add(copiar);
+        menu.add(pegar);
+        
+        editor.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    menu.show(editor, e.getX(), e.getY());
+                }
+            }
+            
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    menu.show(editor, e.getX(), e.getY());
+                }
+            }
+        });
+    }
+    
+    /**
+     * Configura Undo/Redo para componentes de texto
+     */
+    public void configurarUndoRedo(JFrame frame) {
+        List<JTextComponent> componentes = obtenerComponentesTexto(frame);
+        
+        for (JTextComponent componente : componentes) {
+            UndoManager undoManager = new UndoManager();
+            componente.getDocument().addUndoableEditListener(undoManager);
+            
+            // Undo
+            AbstractAction undoAction = new AbstractAction("Deshacer") {
+                public void actionPerformed(ActionEvent e) {
+                    if (undoManager.canUndo()) {
+                        undoManager.undo();
+                    }
+                }
+            };
+            
+            undoAction.putValue(Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            componente.getActionMap().put("Undo", undoAction);
+            componente.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
+            
+            // Redo
+            AbstractAction redoAction = new AbstractAction("Rehacer") {
+                public void actionPerformed(ActionEvent e) {
+                    if (undoManager.canRedo()) {
+                        undoManager.redo();
+                    }
+                }
+            };
+            
+            redoAction.putValue(Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            componente.getActionMap().put("Redo", redoAction);
+            componente.getInputMap().put((KeyStroke) redoAction.getValue(Action.ACCELERATOR_KEY), "Redo");
+        }
+    }
+    
+    /**
+     * Obtiene todos los componentes de texto de un frame
+     */
+    private List<JTextComponent> obtenerComponentesTexto(Container container) {
+        List<JTextComponent> componentes = new ArrayList<>();
+        Component[] items = container.getComponents();
+        
+        for (Component componente : items) {
+            if (componente instanceof JTextComponent) {
+                componentes.add((JTextComponent) componente);
+            } else if (componente instanceof Container) {
+                componentes.addAll(obtenerComponentesTexto((Container) componente));
+            }
+        }
+        
+        return componentes;
+    }
+}
+
