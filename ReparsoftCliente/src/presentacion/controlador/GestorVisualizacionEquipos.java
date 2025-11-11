@@ -72,6 +72,7 @@ public class GestorVisualizacionEquipos {
     private GestorDatos gestorDatos;
     private GestorInterfazEquipos gestorInterfaz;
     private GestorEstadosPresupuestos gestorEstados;
+    private GestorArchivosExcel gestorExcel;
     
     // ==== DATOS ====
     private ReparacionDTO reparacionActual;
@@ -486,7 +487,8 @@ public class GestorVisualizacionEquipos {
                 ventana.getComboELS().addActionListener(e -> buscarPorELS(ventana));
                 
                 
-              //  ventana.getBtnabrirExcel().addActionListener(e -> GestorArchivosExcel.abrirArchivoExcel(ventanaExcel));
+                // Abrir Excel
+                ventana.getBtnabrirExcel().addActionListener(e -> abrirExcelDeEquipo());
                 
                 // Repuestos
                 ventana.getBtnRepuestos().addActionListener(e -> abrirRepuestos(ventana));
@@ -634,7 +636,27 @@ public class GestorVisualizacionEquipos {
                 gestorInterfaz.deshabilitarCampos(ventana);
             }
             
-            /**
+            
+            // Métodos de acción para botones (implementación modular)
+
+            private void abrirExcelDeEquipo() {
+                // Implementación apertura Excel correspondiente, vía GestorArchivosExcel
+            	gestorExcel = new GestorArchivosExcel(agenda.getUbicacionBase());
+                ventanaExcel = new VentanaExcel(gestorExcel);
+                
+                agregarListenersExcel(ventanaExcel);
+                
+             
+            }
+            
+            private void agregarListenersExcel(VentanaExcel ventanaExcel2) {
+				ventanaExcel2.getBtnRepar().addActionListener(e -> gestorExcel.abrirReparaciones());
+				ventanaExcel2.getBtnCaja().addActionListener(e -> gestorExcel.abrirCaja());
+				ventanaExcel2.getBtnDetalleGastos().addActionListener(e -> gestorExcel.abrirDetalleGastosAnioActual());
+				ventanaExcel2.getBtnAbrirTodos().addActionListener(e -> gestorExcel.abrirTodosLosArchivos());
+			}
+
+			/**
              * Cierra ventana anterior
              */
             private void cerrarVentanaAnterior() {

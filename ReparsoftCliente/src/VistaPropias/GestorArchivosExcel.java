@@ -26,6 +26,7 @@ public class GestorArchivosExcel {
 	 */
 	public GestorArchivosExcel(String ubicacionBase) {
 		this.ubicacionBase = ubicacionBase;
+		
 	}
 
 	

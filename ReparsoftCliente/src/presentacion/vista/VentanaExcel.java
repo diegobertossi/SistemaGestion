@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import VistaPropias.GestorArchivosExcel;
 import presentacion.controlador.ControladorReparacion;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -31,7 +32,7 @@ public class VentanaExcel extends JFrame {
 	@SuppressWarnings("unused")
 	private ControladorReparacion controlador;
 
-	public VentanaExcel() {
+	public VentanaExcel(GestorArchivosExcel gestorExcel) {
 		super();
 		setResizable(false);
 		// this.controlador = controlador;
