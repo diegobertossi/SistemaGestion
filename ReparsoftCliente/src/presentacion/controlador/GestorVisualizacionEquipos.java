@@ -490,6 +490,58 @@ public class GestorVisualizacionEquipos {
                 // Abrir Excel
                 ventana.getBtnabrirExcel().addActionListener(e -> abrirExcelDeEquipo());
                 
+                
+           
+            // Presupuesto
+            ventana.getBotonPresupuestar().addActionListener(e -> 
+                controlador.getGestorPresupuesto().abrirPresupuesto(ventana));
+
+
+            
+            // Facturación
+            ventana.getBtnfacturar().addActionListener(e -> 
+                controlador.getGestorPresupuesto().abrirFacturacion(ventana));
+//            
+//            // Registro de ingreso
+//            ventanaVisualizarEquipos.getBotonRegistroIngreso().addActionListener(e -> 
+//                generarRegistroIngreso(ventanaVisualizarEquipos));
+//            
+//            // Correo WSP
+//            ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(e -> 
+//                abrirEnviarCorreoWSP(ventanaVisualizarEquipos));
+//            
+            // Estados
+            ventana.getBotonEditarEstados().addActionListener(e -> {
+                editar(ventanaVisualizarEquipos);
+            });
+            
+            // Remito
+            ventana.getBtnGenerarRemito().addActionListener(e -> 
+                controlador.getGestorPresupuesto().generarRemito(ventana));
+            
+//            // Repuestos
+//            ventana.getBtnRepuestos().addActionListener(e -> 
+//                controlador.getGestorRepuestos().abrirVentanaRepuestos(ventana));
+//            
+//            ventana.getBtnEditarRepuesto().addActionListener(e -> 
+//                controlador.getGestorRepuestos().editarRepuesto(ventana));
+//            
+//            ventana.getBtnEliminarRepuesto().addActionListener(e -> 
+//                controlador.getGestorRepuestos().eliminarRepuesto(ventana));
+            
+            // Avisos
+            ventana.getBotonAvisoInforme().addActionListener(e -> 
+                controlador.getGestorPresupuesto().enviarAvisoInforme(ventana));
+            
+            ventana.getBotonAvisoEquipoListo().addActionListener(e -> 
+                controlador.getGestorPresupuesto().enviarAvisoEquipoListo(ventana));
+            
+            ventana.getBotonRespuestaAlTecnico().addActionListener(e -> 
+                controlador.getGestorPresupuesto().enviarRespuestaCliente(ventana));
+          
+                
+                
+                
                 // Repuestos
                 ventana.getBtnRepuestos().addActionListener(e -> abrirRepuestos(ventana));
                 ventana.getBtnEditarRepuesto().addActionListener(e -> editarRepuesto(ventana));
