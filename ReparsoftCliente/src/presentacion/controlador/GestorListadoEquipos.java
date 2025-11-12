@@ -12,9 +12,12 @@ import javax.swing.JOptionPane;
 
 import modelo.Agenda;
 import presentacion.controlador.ControladorReparacion;
+import presentacion.vista.VentanaExcel;
 import presentacion.vista.VentanaVisualizarEquipos;
 import tiposPropios.MonedaFormatter;
 import com.inet.jortho.SpellChecker;
+
+import VistaPropias.GestorArchivosExcel;
 
 
 
@@ -36,6 +39,8 @@ public class GestorListadoEquipos {
     private List<VentanaVisualizarEquipos> ventanasAbiertas;
     private boolean actualizarEnListado = false;
     private MonedaFormatter monedaFormatter;
+    private VentanaExcel ventanaExcel;
+    private GestorArchivosExcel gestorExcel;
     
     /**
      * Constructor
@@ -67,7 +72,7 @@ public class GestorListadoEquipos {
         controlador.getGestorVisualizacion().cargarDatosEquipo(ventanaVisualizarEquipos, numeroELS);
         
         // Agregar listeners específicos para listado
-        agregarListenersVentanaVisualizarEquiposListado(ventanaVisualizarEquipos);
+       // agregarListenersVentanaVisualizarEquiposListado(ventanaVisualizarEquipos);
         
         return ventanaVisualizarEquipos;
     }
@@ -228,12 +233,23 @@ public class GestorListadoEquipos {
      * Abre Excel
      */
     private void abrirExcel(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-        // Delegar a controlador de Excel si existe
-        VistaPropias.GestorArchivosExcel gestorExcel = 
-            new VistaPropias.GestorArchivosExcel(agenda.getUbicacionBase());
-        gestorExcel.setUbicacionBase(agenda.getUbicacionBase());
-        gestorExcel.abrirReparaciones();
+    	// Implementación apertura Excel correspondiente, vía GestorArchivosExcel
+    	gestorExcel = new GestorArchivosExcel(agenda.getUbicacionBase());
+        ventanaExcel = new VentanaExcel(gestorExcel);
+        
+        agregarListenersExcel(ventanaExcel);
     }
+    
+    
+        
+    private void agregarListenersExcel(VentanaExcel ventanaExcel2) {
+		ventanaExcel2.getBtnRepar().addActionListener(e -> gestorExcel.abrirReparaciones());
+		ventanaExcel2.getBtnCaja().addActionListener(e -> gestorExcel.abrirCaja());
+		ventanaExcel2.getBtnDetalleGastos().addActionListener(e -> gestorExcel.abrirDetalleGastosAnioActual());
+		ventanaExcel2.getBtnAbrirTodos().addActionListener(e -> gestorExcel.abrirTodosLosArchivos());
+	}
+    
+    
     
     /**
      * Abre ventana de enviar correo por WSP
