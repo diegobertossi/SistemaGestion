@@ -17,17 +17,16 @@ import javax.swing.JOptionPane;
 import modelo.Agenda;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaVisualizarEquipos;
+import presentacion.controlador.gestores.GestorAgregarEquipo;
+import presentacion.controlador.gestores.GestorBusqueda;
+import presentacion.controlador.gestores.GestorClientesWSP;
+import presentacion.controlador.gestores.GestorDatos;
+import presentacion.controlador.gestores.GestorInterfazEquipos;
+import presentacion.controlador.gestores.GestorListadoEquipos;
+import presentacion.controlador.gestores.GestorPresupuestoFactura;
+import presentacion.controlador.gestores.GestorRepuestos;
+import presentacion.controlador.gestores.GestorVisualizacionEquipos;
 import presentacion.vista.VentanaAgregarEquipo;
-
-//import presentacion.controlador.gestores.GestorVisualizacionEquipos;
-//import presentacion.controlador.gestores.GestorAgregarEquipo;
-//import presentacion.controlador.gestores.GestorClientesWSP;
-//import presentacion.controlador.gestores.GestorRepuestos;
-//import presentacion.controlador.gestores.GestorBusqueda;
-//import presentacion.controlador.gestores.GestorPresupuestoFactura;
-//import presentacion.controlador.gestores.GestorListadoEquipos;
-//import presentacion.controlador.gestores.GestorDatos;
-//import presentacion.controlador.gestores.GestorInterfazEquipos;
 
 /**
  * ControladorReparacion - REFACTORIZADO
@@ -116,9 +115,11 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
         // Navegación principal
         if (e.getSource() == ventanaEquipos.getBtnVisualizarEquipos()) {
             gestorVisualizacion.abrirVentanaVisualizarEquipos();
+            ventanaEquipos.dispose();
         } 
         else if (e.getSource() == ventanaEquipos.getBtnAgregarEquipos()) {
             gestorAgregar.abrirVentanaAgregarEquipo();
+            ventanaEquipos.dispose();
         }
         // Delegar a gestores específicos
         else {

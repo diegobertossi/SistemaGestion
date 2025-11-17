@@ -1,4 +1,4 @@
-package presentacion.controlador;
+package presentacion.controlador.gestores;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;

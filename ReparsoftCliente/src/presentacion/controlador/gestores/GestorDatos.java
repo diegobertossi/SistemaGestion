@@ -1,4 +1,4 @@
-package presentacion.controlador;
+package presentacion.controlador.gestores;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +41,9 @@ public class GestorDatos {
      * Extrae datos de visualización en DTO
      */
     public ReparacionDTO extraerDatos(VentanaVisualizarEquipos ventana, ReparacionDTO reparacionActual) {
+    	
         int els = Integer.parseInt(ventana.getTextELS());
+ 
         String falla = ventana.getTextFalla().getText();
         String solucion = ventana.getTextDiagnostico().getText();
         String informe = ventana.getTextInformeCliente().getText();
@@ -94,6 +96,17 @@ public class GestorDatos {
         double presupuestoDolar = parsearMoneda(ventana.getTextPresupuestoDolar().getText());
         double pago = parsearMoneda(ventana.getTextPago().getText());
         
+        
+        
+        
+        ventana.getTextCliente()
+					.setText(ventana.getComboClientes().getSelectedItem().toString());
+        ventana.getTextSucursal()
+					.setText(ventana.getComboSucursal().getSelectedItem().toString());
+        ventana.getTextNombreTecnico()
+					.setText(ventana.getComboTecnico().getSelectedItem().toString());
+	
+        
         // Obtener IDs
         String cliente = ventana.getTextCliente().getText();
         String sucursal = ventana.getTextSucursal().getText();
@@ -101,12 +114,20 @@ public class GestorDatos {
         
         int idCliente = agenda.idClienteporNombre(cliente);
         int idSucursal = agenda.idSucursalporNombre(sucursal, idCliente);
-        int idUsuario = agenda.idUsuarioporNombre(nombreTecnico);
+        //int idUsuario = agenda.idUsuarioporNombre(nombreTecnico);
         
-        if (idUsuario == 0) {
-            idUsuario = 1;
-        }
-        
+        int idUsuario;
+		int idUsuarioAux = IDUsuarioPorNombre(nombreTecnico);
+
+		if (idUsuarioAux == 0) {
+
+			idUsuario = 1;
+		}
+
+		else {
+			idUsuario = idUsuarioAux;
+
+		}
         // Estados
         String estadoFisico = ventana.getTextEstadoFisico().getText();
         String estadoTecnico = ventana.getTextEstadoTecnico().getText();
@@ -136,7 +157,12 @@ public class GestorDatos {
             wordEnviado, ordenCompra, agregadoAremito, remitoGenerado, lugarIngreso, fechaSalida);
     }
     
-    /**
+    private int IDUsuarioPorNombre(String nombreTecnico) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/**
      * Extrae datos de agregar equipo
      */
     public ReparacionDTO extraerDatosAgregar(VentanaAgregarEquipo ventana, int idCliente, int idSucursal) {

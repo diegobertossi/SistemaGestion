@@ -1,5 +1,6 @@
-package presentacion.controlador;
+package presentacion.controlador.gestores;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -47,6 +48,15 @@ import tiposPropios.MonedaFormatter;
 public class GestorInterfazEquipos {
     
     private MonedaFormatter monedaFormatter;
+    // Colores para estados de reparación
+    private static final Color PAGADO = new Color(144, 238, 144);
+    private static final Color SIN_PRESUPUESTAR = new Color(211, 211, 211);
+    private static final Color PARCIAL = new Color(255, 239, 153);
+    private static final Color FALTA_PAGO = new Color(255, 182, 193);
+    private static final Color NO_ACEPTADO = new Color(216, 191, 216);
+    private static final Color ESPERANDO = new Color(173, 216, 230);
+    private static final Color SIN_REPARACION = new Color(255, 218, 185);
+    
     
     /**
      * Constructor
@@ -144,6 +154,7 @@ public class GestorInterfazEquipos {
         ventana.getTextPresupuesto().addActionListener(e -> {
             String presupuesto = ventana.getTextPresupuesto().getText();
             ventana.getTextPresupuesto().setText(monedaFormatter.formatPeso(presupuesto));
+            verificarPresupuestoEditado(ventana);
         });
         
         // Presupuesto Dólar
@@ -157,6 +168,7 @@ public class GestorInterfazEquipos {
         ventana.getTextPresupuestoDolar().addActionListener(e -> {
             String presupuesto = ventana.getTextPresupuestoDolar().getText();
             ventana.getTextPresupuestoDolar().setText(monedaFormatter.formatDolar(presupuesto));
+            verificarPresupuestoEditado(ventana);
         });
         
         // Pago
@@ -170,6 +182,7 @@ public class GestorInterfazEquipos {
         ventana.getTextPago().addActionListener(e -> {
             String pago = ventana.getTextPago().getText();
             ventana.getTextPago().setText(monedaFormatter.formatPeso(pago));
+            verificarPresupuestoEditado(ventana);
         });
     }
     
@@ -197,6 +210,135 @@ public class GestorInterfazEquipos {
         ventana.getTextPresupuestoDolar().addFocusListener(cursorAlInicioTF);
         ventana.getTextPago().addFocusListener(cursorAlInicioTF);
     }
+    
+    
+    
+    
+	
+	 // =============================================
+   // MÉTODOS DE GESTIÓN DE PRESUPUESTOS Y PAGOS
+   // =============================================
+
+   void verificarPresupuesto(VentanaVisualizarEquipos ventana) {
+	   
+	   
+//       Double presupuesto = Double.parseDouble(ventana.getTextPresupuesto().getText());
+//       Double pago = Double.parseDouble(ventana.getTextPago().getText());
+//       
+	   Double presupuesto = monedaFormatter.parseAmountGuardar(ventana.getTextPresupuesto().getText());
+       Double pago = monedaFormatter.parseAmountGuardar(ventana.getTextPago().getText());
+       
+       String estadoComercial = ventana.getTextEstadoComercial().getText();
+       String estadoTecnico = ventana.getTextEstadoTecnico().getText();
+
+       // Caso especial: Sin Reparación
+       if ("Sin Reparación".equals(estadoTecnico)) {
+           aplicarEstadoVisual(ventana, "SIN REPARACIÓN", SIN_REPARACION);
+           return;
+       }
+
+       // Sin presupuesto
+       if (presupuesto.compareTo(0.0) == 0) {
+           aplicarEstadoVisual(ventana, "SIN PRESUPUESTAR", SIN_PRESUPUESTAR);
+           return;
+       }
+
+       // Caso especial: Presupuesto no aceptado
+       if ("NO Aceptado".equals(estadoComercial)) {
+           aplicarEstadoVisual(ventana, "NO ACEPTADO", NO_ACEPTADO);
+           return;
+       }
+
+       // Hay presupuesto
+       int comparacion = presupuesto.compareTo(pago);
+
+       if (comparacion == 0) {
+           // Totalmente pagado
+           aplicarEstadoVisual(ventana, "PAGADO", PAGADO);
+       } else if (comparacion > 0 && pago.compareTo(0.0) > 0) {
+           // Pago parcial
+           aplicarEstadoVisual(ventana, "PAGADO PARCIALMENTE", PARCIAL);
+       } else if (pago.compareTo(0.0) == 0) {
+           // Sin pago - verificar estado comercial
+           String leyenda = determinarLeyendaSinPago(estadoComercial);
+           Color color = "ESPERANDO ACEPTACIÓN".equals(leyenda) ? ESPERANDO : FALTA_PAGO;
+           aplicarEstadoVisual(ventana, leyenda, color);
+       }
+   }
+
+   public void verificarPresupuestoEditado(VentanaVisualizarEquipos ventana) {
+       double presupuesto = monedaFormatter.parseAmountGuardar(ventana.getTextPresupuesto().getText());
+       double pago = monedaFormatter.parseAmountGuardar(ventana.getTextPago().getText());
+       String estadoComercial = ventana.getTextEstadoComercial().getText();
+
+       // Caso especial: Sin Reparación
+       if ("Sin Reparación".equals(estadoComercial)) {
+           aplicarEstadoVisual(ventana, "SIN REPARACIÓN", SIN_REPARACION);
+           ventana.setChckPDFGenerado(false);
+           return;
+       }
+
+       // Sin presupuesto
+       if (presupuesto == 0.0) {
+           aplicarEstadoVisual(ventana, "SIN PRESUPUESTAR", SIN_PRESUPUESTAR);
+           ventana.setChckPDFGenerado(false);
+           return;
+       }
+
+       // Caso especial: Presupuesto no aceptado
+       if ("NO ACEPTADO".equals(estadoComercial)) {
+           aplicarEstadoVisual(ventana, "NO ACEPTADO", NO_ACEPTADO);
+           ventana.setChckPDFGenerado(false);
+           return;
+       }
+
+       // Hay presupuesto
+       double diferencia = presupuesto - pago;
+
+       if (diferencia == 0.0) {
+           // Totalmente pagado
+           aplicarEstadoVisual(ventana, "PAGADO", PAGADO);
+           ventana.setChckPDFGenerado(true);
+       } else if (diferencia > 0.0 && pago > 0.0) {
+           // Pago parcial
+           aplicarEstadoVisual(ventana, "PAGADO PARCIALMENTE", PARCIAL);
+       } else if (pago == 0.0) {
+           // Sin pago - verificar estado comercial
+           String leyenda = determinarLeyendaSinPago(estadoComercial);
+           Color color = "ESPERANDO ACEPTACIÓN".equals(leyenda) ? ESPERANDO : FALTA_PAGO;
+           aplicarEstadoVisual(ventana, leyenda, color);
+           ventana.setChckPDFGenerado(true);
+       }
+   }
+
+   private String determinarLeyendaSinPago(String estadoComercial) {
+       switch (estadoComercial) {
+           case "A la Espera de Aceptación":
+               return "ESPERANDO ACEPTACIÓN";
+           case "Aceptado":
+               return "FALTA PAGO";
+           default:
+               return "FALTA PAGO";
+       }
+   }
+
+   private void aplicarEstadoVisual(VentanaVisualizarEquipos ventana, String leyenda, Color color) {
+       ventana.getTextEquipoPagado().setText(leyenda);
+       ventana.getTextEquipoPagado().setVisible(true);
+       ventana.getTextEquipoPagado().setBackground(color);
+       ventana.getPanel_MontoPresupuesto().setBackground(color);
+       ventana.getTextPresupuesto().setBackground(color);
+       ventana.getTextPresupuestoDolar().setBackground(color);
+       ventana.getTextPago().setBackground(color);
+   }
+
+    
+    
+    
+    
+    
+    
+    
     
     /**
      * Habilita menú contextual para componente

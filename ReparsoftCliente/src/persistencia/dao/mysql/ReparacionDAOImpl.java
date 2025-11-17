@@ -1,3476 +1,491 @@
 package persistencia.dao.mysql;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
+import dto.ReparacionDTO;
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.ReparacionDAO;
-import presentacion.vista.VentanaVisualizarEquipos;
-import dto.ReparacionDTO;
 
 public class ReparacionDAOImpl implements ReparacionDAO {
 
-	private static final String insert = "INSERT INTO reparaciones(ELS,FechaEntrada,Falla, EstadoFisico, EstadoTecnico,EstadoComercial, RemitoCliente, idEquipo, idUsuario, lugar_de_ingreso) VALUES( ? , ? ,? , ? , ?,? , ? , ?,?,?)";
-
-	private static final String insertEquipo = "INSERT INTO Equipos (IdEquipo, Nombre, Modelo, Marca, NumeroDeSerie, FechaFabr,Aviso, ClienteCliente, RemitoCliente, idCliente, idSucursal ) VALUES(? , ? ,? , ? , ? , ? , ? , ? , ?, ?,?)";
-
-	private static final String delete = "DELETE FROM reparaciones WHERE ELS = ?";
-
-	private static final String readallListadoMarcarAceptaciones = "SELECT  reparaciones.ELS, Equipos.Aviso, Cliente.nombre, Sucursal.NombreSucursal, Equipos.Nombre, Equipos.Modelo, Equipos.Marca, Equipos.NumeroDeSerie, reparaciones.EstadoTecnico, reparaciones.EstadoComercial"
-			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
-			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente)) And ((Sucursal.IdSucursal)=Equipos.idSucursal) and reparaciones.EstadoComercial = 'A la Espera de Aceptación' and PresupuestoGenerado = true and ((usuario.IdUsuario)=reparaciones.idUsuario)  ORDER BY reparaciones.ELS ASC";
-
-	private static final String readall = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
-			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente, reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado,reparaciones.WordGenerado,reparaciones.WordEnviado, reparaciones.idUsuario,reparaciones.NombreUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.Pago, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca, DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
-			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
-			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente)) and ((Sucursal.IdSucursal)=Equipos.idSucursal) And ((usuario.IdUsuario)=reparaciones.idUsuario)  ORDER BY reparaciones.ELS ASC";
-
-	private static final String readallNombreEquipo = "SELECT DISTINCT * FROM Equipos group by Equipos.Nombre";
-
-	private static final String readallMarca = "SELECT Equipos.Marca FROM Equipos group by Equipos.Marca";
-
-	private static final String readallModelo = "SELECT Equipos.Modelo FROM Equipos group by Equipos.Modelo";
-
-	private static final String readallELS = "SELECT reparaciones.ELS FROM reparaciones group by reparaciones.ELS ORDER BY reparaciones.ELS ASC";
-
-	private static final String readallSerie = "SELECT DISTINCT Equipos.NumeroDeSerie FROM Equipos ORDER BY Equipos.NumeroDeSerie ASC";
-
-	private static final String readallAviso = "SELECT Equipos.Aviso FROM Equipos group by Equipos.Aviso";
-	private static final String readallEstadoCom = "SELECT reparaciones.EstadoComercial FROM reparaciones group by reparaciones.EstadoComercial";
-	private static final String readallEstadoFis = "SELECT reparaciones.EstadoFisico FROM reparaciones group by reparaciones.EstadoFisico";
-	private static final String readallEstadoTec = "SELECT reparaciones.EstadoTecnico FROM reparaciones group by reparaciones.EstadoTecnico";
-
-	private static final String readallModeloxMarca = "SELECT Equipos.Modelo FROM Equipos where Equipos.Marca = ? group by Equipos.Modelo";
-
-	private static final String readallSeriexModelo = "SELECT Equipos.NumeroDeSerie FROM Equipos where Equipos.Modelo = ? group by Equipos.NumeroDeSerie";
-
-	private static final String readallxELS = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
-			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado,reparaciones.WordGenerado,reparaciones.WordEnviado, reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.NombreUsuario,reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
-			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
-			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente)) and ((Sucursal.IdSucursal)=Equipos.idSucursal) And ((usuario.IdUsuario)=reparaciones.idUsuario)  and ELS = ?";
-
-	private static final String readallxIDClienteIDSucursal = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
-			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente,reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado, reparaciones.WordGenerado,reparaciones.WordEnviado,reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
-			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
-			+ " WHERE (((Cliente.idCliente)=Equipos.idCliente) And (Sucursal.IdSucursal)=Equipos.idSucursal) and ((usuario.IdUsuario)=reparaciones.idUsuario) and (reparaciones.EstadoComercial='Aceptado' || reparaciones.EstadoComercial='NO Aceptado' ) and reparaciones.EstadoFisico != 'Enviado' and reparaciones.Agregadoaremito != 1 and Cliente.idCliente = ? and Sucursal.IdSucursal = ? order by ELS";
-
-	private static final String readallxSerie = "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
-			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion,reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado, reparaciones.WordGenerado,reparaciones.WordEnviado,reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito,  reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
-			+ " FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
-			+ " WHERE ((Cliente.idCliente)=Equipos.idCliente) and ((Sucursal.IdSucursal)=Equipos.idSucursal) and ((usuario.IdUsuario)=reparaciones.idUsuario) and Equipos.NumeroDeSerie = ?";
-
-	private static final String readallxIDremito = "SELECT * FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion  "
-			+ " WHERE ((Cliente.idCliente)=Equipos.idCliente) And ((Sucursal.IdSucursal)=Equipos.idSucursal) and ((usuario.IdUsuario)=reparaciones.idUsuario) and Remitos.idRemito = ?";
-
-	private static final String maximoELS = "Select MAX(ELS) from reparaciones";
-
-	private static final String maximoIDequipo = "Select MAX(IdEquipo) from Equipos";
-
-	private static final String readallxCompOriginal = "SELECT reemplazos.original,reemplazos.reemplazo, Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
-			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
-			+ " FROM (UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion ) INNER JOIN reemplazos ON reparaciones.ELS = reemplazos.ELS"
-			+ " WHERE ((Cliente.idCliente)=Equipos.idCliente) And ((Sucursal.IdSucursal)=Equipos.idSucursal)and ((usuario.IdUsuario)=reparaciones.idUsuario) and reemplazos.original = ?";
-
-	private static final String readallxCompReemplazado = "SELECT reemplazos.original, reemplazos.reemplazo, Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa,"
-			+ " Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente, reparaciones.idUsuario, reparaciones.EstadoFisico, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.idUsuario,  DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca,DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida"
-			+ " FROM (UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion ) INNER JOIN reemplazos ON reparaciones.ELS = reemplazos.ELS"
-			+ " WHERE ((Cliente.idCliente)=Equipos.idCliente) and ((Sucursal.IdSucursal)=Equipos.idSucursal) and ((usuario.IdUsuario)=reparaciones.idUsuario) and reemplazos.reemplazo = ?";
-
-	public static String ubicacion;
-	private Conexion conexion;
-
-	private static final String ingresosPorAnio = "select count(*) from reparaciones where YEAR(FechaEntrada) = ?";
-	private static final String diagnosticosPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico != 'Sin Revisar'";
-
-	private static final String facturacionPesosPorAnio = "select SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.EstadoComercial = 'Aceptado'";
-	private static final String facturacionDolarPorAnio = "select SUM(PrecioDolar) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.EstadoComercial = 'Aceptado'";
-
-	private static final String reparadosPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación')";
-	private static final String sinFallasPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Falla'";
-	private static final String repEnGtiaPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado en Garantía'";
-	private static final String enRepPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'En Reparación'";
-	private static final String ventasPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Vendido'";
-	private static final String sinRepPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Reparación'";
-	private static final String repAcepPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado'";
-	private static final String repNoAcepPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado'";
-	private static final String RepEsperaPorAnio = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación'";
-
-	private static final String ingresosPorAnioxMes = "select MONTH(reparaciones.FechaEntrada), count(*) from reparaciones where YEAR(FechaEntrada) = ? group by MONTH(FechaEntrada)";
-	private static final String diagnosticoPorAnioxMes = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico != 'Sin Revisar' group by MONTH(FechadeDiagnostico)";
-	private static final String facturacionoPorAnioxMes = "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion)";
-
-	private static final String diagnosticoPorAnioxTecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico != 'Sin Revisar' group by MONTH(FechadeDiagnostico)";
-	private static final String facturacionoPorAnioxTecnico = "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion);";
-	private static final String aceptacionesPorAnioxTecnico = "select MONTH(reparaciones.FechAceptacion), count(*) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion)";
-
-	private static final String ingresosXanioXcliente = "select MONTH(reparaciones.FechaEntrada),count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechaEntrada) = ? and Equipos.idCliente = ? group by MONTH(FechaEntrada)";
-	private static final String aceptacionesPorAnioxCliente = "select MONTH(reparaciones.FechAceptacion), count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
-	private static final String facturacionoPorAnioxCliente = "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
-
-	private static final String totalIngresosXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechaEntrada) = ? and Equipos.idCliente = ?";
-	private static final String totalReparadosXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación') and Equipos.idCliente = ?";
-	private static final String totalRepEnGtiaXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado en Garantía' and Equipos.idCliente = ?";
-	private static final String totalSinFallaXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Falla' and Equipos.idCliente = ?";
-	private static final String totalEnRepXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'En Reparación' and Equipos.idCliente = ?";
-	private static final String totalVentasXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Vendido' and Equipos.idCliente = ?";
-	private static final String totalSinRepXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Reparación' and Equipos.idCliente = ?";
-	private static final String totalRepAcepXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado' and Equipos.idCliente = ?";
-	private static final String totalRepNoAcepXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado' and Equipos.idCliente = ?";
-	private static final String totalRepEsperaXanioXcliente = "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación' and Equipos.idCliente = ?";
-
-	private static final String facturacionPesoPorAnioPorCliente = "select SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado'";
-	private static final String facturacionDolarPorAnioPorCliente = "select SUM(PrecioDolar) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ?  and reparaciones.EstadoComercial = 'Aceptado' ";
-
-	private static final String facturacionDolarPorAnioPorTecnico = "select SUM(PrecioDolar) from reparaciones where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.idUsuario =?  and reparaciones.EstadoComercial = 'Aceptado'";
-	private static final String facturacionPesoPorAnioPorTecnico = "select SUM(PrecioPeso) from reparaciones where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.idUsuario =?  and reparaciones.EstadoComercial = 'Aceptado'";
-
-	private static final String totalRepEsperaXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación'";
-	private static final String totalRepNoAcepXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado'";
-	private static final String totalRepAcepXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado'";
-	private static final String totalSinRepXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Reparación'";
-	private static final String totalVentasXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Vendido'";
-	private static final String totalEnRepXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'En Reparación'";
-	private static final String totalRepEnGtiaXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado en Garantía'";
-	private static final String totalSinFallaXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Falla'";
-	private static final String totalReparadosXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación')";
-	private static final String totalDiagnosticosXanioXtecnico = "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico != 'Sin Revisar'";
-
-	private static final String reparadosXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) group by MONTH(FechadeDiagnostico)";
-	private static final String sinRepXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Reparación' group by MONTH(FechadeDiagnostico)";
-	private static final String ventasXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Vendido' group by MONTH(FechadeDiagnostico)";
-	private static final String enRepXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'En Reparación' group by MONTH(FechadeDiagnostico)";
-	private static final String sinFallaXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Falla' group by MONTH(FechadeDiagnostico)";
-	private static final String enGtiaXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado en Garantía' group by MONTH(FechadeDiagnostico)";
-
-	private static final String repEsperaXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico),count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación' group by MONTH(FechadeDiagnostico)";
-	private static final String repNoAcepXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico),count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado' group by MONTH(FechadeDiagnostico)";
-	private static final String repAcepXmesXtecnico = "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(FechadeDiagnostico)";
-
-	private static final String facturacionDolarPorAnioxTecnicoXmes = "select MONTH(reparaciones.FechAceptacion), SUM(PrecioDolar) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and reparaciones.EstadoComercial = 'Aceptado'  group by MONTH(FechAceptacion);";
-
-	private static final String busquePorCampoYtexto = "SELECT reparaciones.ELS FROM reparaciones WHERE %s LIKE ?";
-
-	@SuppressWarnings("unused")
-	public ReparacionDAOImpl(String ubicacionBase) {
-
-		ubicacion = ubicacionBase;
-		conexion = Conexion.getConexion(ubicacion);
-
-	}
-
-	public boolean insert(ReparacionDTO Reparaciones) {
-		PreparedStatement statement;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(insert);
-			statement.setInt(1, Reparaciones.getELS());
-			statement.setString(2, Reparaciones.getFecha_Entrada());
-			statement.setString(3, Reparaciones.getFalla());
-			statement.setString(4, Reparaciones.getEstadoFisico());
-			statement.setString(5, Reparaciones.getEstadoTecnico());
-			statement.setString(6, Reparaciones.getEstadoComercial());
-			statement.setString(7, Reparaciones.getRemitoCliente());
-			statement.setInt(8, Reparaciones.getIDEquipo());
-			statement.setInt(9, Reparaciones.getidUsuario());
-			statement.setString(10, Reparaciones.getLugarDeIngreso());
-
-			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-
-	}
-
-	public boolean insertEquipo(ReparacionDTO Reparaciones) {
-		PreparedStatement statement;
-		try {
-
-			statement = conexion.getSQLConexion().prepareStatement(insertEquipo);
-			statement.setInt(1, Reparaciones.getIDEquipo());
-			statement.setString(2, Reparaciones.getNombreEquipo());
-			statement.setString(3, Reparaciones.getModelo());
-			statement.setString(4, Reparaciones.getMarca());
-			statement.setString(5, Reparaciones.getNumeroDeSerie());
-			statement.setString(6, Reparaciones.getFechaFabr());
-			statement.setString(7, Reparaciones.getAviso());
-			statement.setString(8, Reparaciones.getClienteCliente());
-			statement.setString(9, Reparaciones.getRemitoCliente());
-			statement.setInt(10, Reparaciones.getIDCliente());
-			statement.setInt(11, Reparaciones.getIDSuc());
-
-			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-
-	}
-
-	public boolean delete(ReparacionDTO reparacion_a_eliminar) {
-		PreparedStatement statement;
-		int chequeoUpdate = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(delete);
-			statement.setString(1, Integer.toString(reparacion_a_eliminar.getELS()));
-			chequeoUpdate = statement.executeUpdate();
-			if (chequeoUpdate > 0) // Si se ejecutó devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
-
-	@Override
-	public ReparacionDTO obtenerReparacionXels(Integer i) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ReparacionDTO Reparacion = null;
-
-		// String query = "select * from reparacionesT where ELS = ?";
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallxELS);
-			statement.setInt(1, i);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				Reparacion = new ReparacionDTO(resultSet.getInt("ELS"), resultSet.getString("FechaEntrada"),
-						resultSet.getString("FechadeDiagnostico"), resultSet.getString("Falla"),
-						resultSet.getString("Solucion"), resultSet.getString("Informecliente"),
-						resultSet.getInt("idUsuario"), resultSet.getString("EstadoFisico"),
-						resultSet.getString("EstadoTecnico"), resultSet.getString("EstadoComercial"),
-						resultSet.getString("RemitoCliente"), resultSet.getString("OrdendeCompra"),
-						resultSet.getBoolean("Agregadoaremito"), resultSet.getBoolean("RemitoGenerado"),
-						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
-						resultSet.getDouble("PrecioDolar"), 
-						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getDouble("Pago"), resultSet.getBoolean("PresupuestoEnviado"),
-						resultSet.getString("Equipos.Nombre"), resultSet.getString("email"),
-						resultSet.getString("Modelo"), resultSet.getString("Marca"),
-						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
-						resultSet.getString("ClienteCliente"), resultSet.getInt("idCliente"),
-						resultSet.getInt("idSucursal"), resultSet.getString("nombre"),
-						resultSet.getString("NombreSucursal"), resultSet.getString("NombreUsuario"),
-						resultSet.getInt("Codigo"), resultSet.getInt("NumeroRemitoSalida"),
-						resultSet.getString("FechaFabr"), resultSet.getBoolean("AvisoEnviado"),
-						resultSet.getBoolean("WordGenerado"), resultSet.getBoolean("WordEnviado"),
-						resultSet.getString("lugar_de_ingreso"), resultSet.getString("FechaSalida"));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return Reparacion;
-	}
-
-	@Override
-	public ReparacionDTO obtenerReparacionXserie(String serie) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ReparacionDTO Reparacion = null;
-
-		// String query = "select * from reparacionesT where ELS = ?";
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallxSerie);
-			statement.setString(1, serie);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				Reparacion = new ReparacionDTO(resultSet.getInt("ELS"), resultSet.getString("FechaEntrada"),
-						resultSet.getString("FechadeDiagnostico"), resultSet.getString("Falla"),
-						resultSet.getString("Solucion"), resultSet.getString("Informecliente"),
-						resultSet.getInt("idUsuario"), resultSet.getString("EstadoFisico"),
-						resultSet.getString("EstadoTecnico"), resultSet.getString("EstadoComercial"),
-						resultSet.getString("RemitoCliente"), resultSet.getString("OrdendeCompra"),
-						resultSet.getBoolean("Agregadoaremito"), resultSet.getBoolean("RemitoGenerado"),
-						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
-						resultSet.getDouble("PrecioDolar"), 
-						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getDouble("Pago"), resultSet.getBoolean("PresupuestoEnviado"),
-						resultSet.getString("Equipos.Nombre"), resultSet.getString("email"),
-						resultSet.getString("Modelo"), resultSet.getString("Marca"),
-						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
-						resultSet.getString("ClienteCliente"), resultSet.getInt("idCliente"),
-						resultSet.getInt("idSucursal"), resultSet.getString("nombre"),
-						resultSet.getString("NombreSucursal"), resultSet.getString("usuario.nombre"),
-						resultSet.getInt("Codigo"), resultSet.getInt("NumeroRemitoSalida"),
-						resultSet.getString("FechaFabr"), resultSet.getBoolean("AvisoEnviado"),
-						resultSet.getBoolean("WordGenerado"), resultSet.getBoolean("WordEnviado"),
-						resultSet.getString("lugar_de_ingreso"), resultSet.getString("FechaSalida"));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return Reparacion;
-	}
-
-	public List<ReparacionDTO> readAll() {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<ReparacionDTO> Reparaciones = new ArrayList<ReparacionDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readall);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				Reparaciones.add(new ReparacionDTO(resultSet.getInt("ELS"), resultSet.getString("FechaEntrada"),
-						resultSet.getString("FechadeDiagnostico"), resultSet.getString("Falla"),
-						resultSet.getString("Solucion"), resultSet.getString("Informecliente"),
-						resultSet.getInt("idUsuario"), resultSet.getString("EstadoFisico"),
-						resultSet.getString("EstadoTecnico"), resultSet.getString("EstadoComercial"),
-						resultSet.getString("RemitoCliente"), resultSet.getString("OrdendeCompra"),
-						resultSet.getBoolean("Agregadoaremito"), resultSet.getBoolean("RemitoGenerado"),
-						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
-						resultSet.getDouble("PrecioDolar"),
-						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getDouble("Pago"), resultSet.getBoolean("PresupuestoEnviado"),
-						resultSet.getString("Equipos.Nombre"), resultSet.getString("email"),
-						resultSet.getString("Modelo"), resultSet.getString("Marca"),
-						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
-						resultSet.getString("ClienteCliente"), resultSet.getInt("idCliente"),
-						resultSet.getInt("idSucursal"), resultSet.getString("nombre"),
-						resultSet.getString("NombreSucursal"), resultSet.getString("NombreUsuario"),
-						resultSet.getInt("Codigo"), resultSet.getInt("NumeroRemitoSalida"),
-						resultSet.getString("FechaFabr"), resultSet.getBoolean("AvisoEnviado"),
-						resultSet.getBoolean("WordGenerado"), resultSet.getBoolean("WordEnviado"),
-						resultSet.getString("lugar_de_ingreso"), resultSet.getString("FechaSalida")));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return Reparaciones;
-	}
-
-	@Override
-	public int obtenerNumeroELSels() {
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int ELS = 0;
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(maximoELS);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				ELS = resultSet.getInt("MAX(ELS)");
-
-			}
-			if (ELS == 0) {
-
-				ELS = 987;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return ELS;
-	}
-
-	@Override
-	public int obtenerNumeroELSbsas() {
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int ELS = 0;
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(maximoELS);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				ELS = resultSet.getInt("MAX(ELS)");
-
-			}
-			
-			if (ELS == 0) {
-
-				ELS = 24899;
-			}
-			
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return ELS;
-	}
-
-	@Override
-	public int obtenerIDequipo() {
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int idEquipo = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(maximoIDequipo);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				idEquipo = resultSet.getInt("MAX(IdEquipo)");
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return idEquipo;
-	}
-
-	public int ingresosPorAnio(int anio) {
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantEquiposxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(ingresosPorAnio);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantEquiposxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantEquiposxAnio;
-	}
-
-	@Override
-	public int diagnosticosPorAnio(int anio) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantDiagnosticosxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(diagnosticosPorAnio);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantDiagnosticosxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantDiagnosticosxAnio;
-	}
-
-	@Override
-	public double FacturacionPesoPorAnio(int anio) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		double facturacionPesosxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(facturacionPesosPorAnio);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				facturacionPesosxAnio = resultSet.getInt(1);
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return facturacionPesosxAnio;
-	}
-
-	@Override
-	public double FacturacionDolarPorAnio(int anio) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		double facturacionDolarxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(facturacionDolarPorAnio);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				facturacionDolarxAnio = resultSet.getInt(1);
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return facturacionDolarxAnio;
-	}
-
-	@Override
-	public double FacturacionPesoPorAnioPorCliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		double facturacionDolarxAnioPorCliente = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(facturacionPesoPorAnioPorCliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				facturacionDolarxAnioPorCliente = resultSet.getInt(1);
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return facturacionDolarxAnioPorCliente;
-	}
-
-	@Override
-	public double FacturacionDolarPorAnioPorCliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		double facturacionDolarxAnioPorCliente = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(facturacionDolarPorAnioPorCliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				facturacionDolarxAnioPorCliente = resultSet.getInt(1);
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return facturacionDolarxAnioPorCliente;
-	}
-
-	@Override
-	public int reparadosPorAnio(int anio) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantReparadosxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(reparadosPorAnio);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantReparadosxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantReparadosxAnio;
-	}
-
-	@Override
-	public int sinFallasPorAnio(int anio) {
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantSinFallasxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(sinFallasPorAnio);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantSinFallasxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantSinFallasxAnio;
-
-	}
-
-	@Override
-	public int enGtiaPorAnio(int anio) {
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantEnGtiaxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(repEnGtiaPorAnio);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantEnGtiaxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantEnGtiaxAnio;
-
-	}
-
-	@Override
-	public int EnRepPorAnio(int anio) {
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantEnRepxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(enRepPorAnio);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantEnRepxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantEnRepxAnio;
-	}
-
-	@Override
-	public int ventasPorAnio(int anio) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantVentasxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(ventasPorAnio);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantVentasxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantVentasxAnio;
-	}
-
-	@Override
-	public int SinRepPorAnio(int anio) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantSinRepxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(sinRepPorAnio);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantSinRepxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantSinRepxAnio;
-	}
-
-	@Override
-	public int RepAcepPorAnio(int anio) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantRepAcepxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(repAcepPorAnio);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantRepAcepxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantRepAcepxAnio;
-	}
-
-	@Override
-	public int RepNoAcepPorAnio(int anio) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantRepNoAcepxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(repNoAcepPorAnio);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantRepNoAcepxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantRepNoAcepxAnio;
-	}
-
-	@Override
-	public int RepEsperaPorAnio(int anio) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantRepEsperaxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(RepEsperaPorAnio);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantRepEsperaxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantRepEsperaxAnio;
-	}
-
-	@Override
-	public int IngresosXanioXcliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantIngresosxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalIngresosXanioXcliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantIngresosxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantIngresosxAnio;
-	}
-
-	@Override
-	public int ReparadosXanioXcliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantReparadosxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalReparadosXanioXcliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantReparadosxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantReparadosxAnio;
-	}
-
-	@Override
-	public int SinFallaXanioXcliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantSinFallasxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalSinFallaXanioXcliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantSinFallasxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantSinFallasxAnio;
-	}
-
-	@Override
-	public int GtiaXanioXcliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantGtiaxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalRepEnGtiaXanioXcliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantGtiaxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantGtiaxAnio;
-	}
-
-	@Override
-	public int EnRepXanioXclientecliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantEnRepxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalEnRepXanioXcliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantEnRepxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantEnRepxAnio;
-	}
-
-	@Override
-	public int VentasXanioXcliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantVentasxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalVentasXanioXcliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantVentasxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantVentasxAnio;
-	}
-
-	@Override
-	public int SinRepXanioXcliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantSinRepxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalSinRepXanioXcliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantSinRepxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantSinRepxAnio;
-	}
-
-	@Override
-	public int RepAcepXcliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantAcepxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalRepAcepXanioXcliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantAcepxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantAcepxAnio;
-	}
-
-	@Override
-	public int RepNoAcepXcliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantReoNoAcepxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalRepNoAcepXanioXcliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantReoNoAcepxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantReoNoAcepxAnio;
-	}
-
-	@Override
-	public int RepEsperaXcliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantEsperaxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalRepEsperaXanioXcliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantEsperaxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantEsperaxAnio;
-	}
-
-	@Override
-	public int DiagnosticosXanioXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantDiagnosticosxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalDiagnosticosXanioXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantDiagnosticosxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantDiagnosticosxAnio;
-	}
-
-	@Override
-	public int ReparadosXanioXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantReparadosxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalReparadosXanioXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantReparadosxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantReparadosxAnio;
-	}
-
-	@Override
-	public int SinFallaXanioXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantSinFallasxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalSinFallaXanioXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantSinFallasxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantSinFallasxAnio;
-	}
-
-	@Override
-	public int GtiaXanioXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantGtiaxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalRepEnGtiaXanioXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantGtiaxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantGtiaxAnio;
-	}
-
-	@Override
-	public int EnRepXanioXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantEnRepxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalEnRepXanioXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantEnRepxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantEnRepxAnio;
-	}
-
-	@Override
-	public int VentasXanioXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantVentasxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalVentasXanioXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantVentasxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantVentasxAnio;
-	}
-
-	@Override
-	public int SinRepXanioXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantSinRepxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalSinRepXanioXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantSinRepxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantSinRepxAnio;
-	}
-
-	@Override
-	public int RepAcepXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantAcepxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalRepAcepXanioXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantAcepxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantAcepxAnio;
-	}
-
-	@Override
-	public int RepNoAcepXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantReoNoAcepxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalRepNoAcepXanioXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantReoNoAcepxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantReoNoAcepxAnio;
-	}
-
-	@Override
-	public int RepEsperaXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int cantEsperaxAnio = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(totalRepEsperaXanioXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cantEsperaxAnio = resultSet.getInt("count(*)");
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantEsperaxAnio;
-	}
-
-	@Override
-	public double FacturacionPesoPorAnioPorTecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		double facturacionPesoxAnioPorTecnico = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(facturacionPesoPorAnioPorTecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				facturacionPesoxAnioPorTecnico = resultSet.getInt(1);
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return facturacionPesoxAnioPorTecnico;
-	}
-
-	@Override
-	public double FacturacionDolarPorAnioPorTecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		double facturacionDolarxAnioPorTecnico = 0;
-		try {
-
-			statement = conexion.getSQLConexion().prepareStatement(facturacionDolarPorAnioPorTecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				facturacionDolarxAnioPorTecnico = resultSet.getInt(1);
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return facturacionDolarxAnioPorTecnico;
-	}
-
-	public List<Integer> ingresosPorAnioPorMes(int anio) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(ingresosPorAnioxMes);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	public List<Integer> diagnosticoPorAnioPorMes(int anio) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(diagnosticoPorAnioxMes);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	public List<Double> facturacionPorAnioPorMes(int anio) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Double> sumadPorMes = new ArrayList<Double>();
-
-		for (int i = 0; i < 12; i++) {
-
-			sumadPorMes.add(0.0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(facturacionoPorAnioxMes);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				sumadPorMes.add(resultSet.getInt(1) - 1, resultSet.getDouble(2));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return sumadPorMes;
-	}
-
-	public List<Integer> diagnosticoPorAnioPorTecnico(int anio, int tecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(diagnosticoPorAnioxTecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, tecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	public List<Integer> aceptacionesPorAnioPorTecnico(int anio, int tecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(aceptacionesPorAnioxTecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, tecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	public List<Double> facturacionPorAnioPorTecnico(int anio, int tecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Double> sumadPorMes = new ArrayList<Double>();
-
-		for (int i = 0; i < 12; i++) {
-
-			sumadPorMes.add(0.0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(facturacionoPorAnioxTecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, tecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				sumadPorMes.add(resultSet.getInt(1) - 1, resultSet.getDouble(2));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return sumadPorMes;
-	}
-
-	@Override
-	public List<Double> FacturacionDolaresPorAnioPorTecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Double> sumadPorMes = new ArrayList<Double>();
-
-		for (int i = 0; i < 12; i++) {
-
-			sumadPorMes.add(0.0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(facturacionDolarPorAnioxTecnicoXmes);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				sumadPorMes.add(resultSet.getInt(1) - 1, resultSet.getDouble(2));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return sumadPorMes;
-	}
-
-	@Override
-	public List<Integer> ReparadosXmesXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(reparadosXmesXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	@Override
-	public List<Integer> EnGtiaXmesXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(enGtiaXmesXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	@Override
-	public List<Integer> SinFallaXmesXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(sinFallaXmesXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	@Override
-	public List<Integer> EnRepXmesXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(enRepXmesXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	@Override
-	public List<Integer> VentasXmesXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(ventasXmesXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	@Override
-	public List<Integer> SinRepXmesXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(sinRepXmesXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	@Override
-	public List<Integer> RepAcepXmesXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(repAcepXmesXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	@Override
-	public List<Integer> RepNoAcepXmesXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(repNoAcepXmesXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	@Override
-	public List<Integer> EsperaRepXmesXtecnico(int anio, int idTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(repEsperaXmesXtecnico);
-			statement.setInt(1, anio);
-			statement.setInt(2, idTecnico);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	@Override
-	public List<Integer> ingresosPorAnioPorCliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(ingresosXanioXcliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	@Override
-	public List<Double> facturacionPorAnioPorCliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Double> sumadPorMes = new ArrayList<Double>();
-
-		for (int i = 0; i < 12; i++) {
-
-			sumadPorMes.add(0.0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(facturacionoPorAnioxCliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				sumadPorMes.add(resultSet.getInt(1) - 1, resultSet.getDouble(2));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return sumadPorMes;
-	}
-
-	@Override
-	public List<Integer> aceptacionesPorAnioPorCliente(int anio, int idCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<Integer> cantidadPorMes = new ArrayList<Integer>();
-
-		for (int i = 0; i < 12; i++) {
-
-			cantidadPorMes.add(0);
-
-		}
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(aceptacionesPorAnioxCliente);
-			statement.setInt(1, anio);
-			statement.setInt(2, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidadPorMes.add(resultSet.getInt(1) - 1, resultSet.getInt(2));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return cantidadPorMes;
-	}
-
-	public boolean editEquipo(ReparacionDTO reparacion_a_editar) {
-		PreparedStatement statement;
-		try {
-			if (reparacion_a_editar.getFechaFabr() != null) {
-				statement = conexion.getSQLConexion().prepareStatement("UPDATE Equipos SET Nombre = '"
-						+ reparacion_a_editar.getNombreEquipo() + "' ," + "Modelo = '" + reparacion_a_editar.getModelo()
-						+ "' ," + "Marca = '" + reparacion_a_editar.getMarca() + "' ," + "NumeroDeSerie = '"
-						+ reparacion_a_editar.getNumeroDeSerie() + "' ," + "Aviso = '" + reparacion_a_editar.getAviso()
-						+ "' ," + "ClienteCliente = '" + reparacion_a_editar.getClienteCliente() + "' ,"
-						+ "RemitoCliente = '" + reparacion_a_editar.getRemitoCliente() + "' ," + "idCliente = '"
-						+ reparacion_a_editar.getIDCliente() + "' ," + "IdSucursal = '" + reparacion_a_editar.getIDSuc()
-						+ "' ," + "FechaFabr = '" + reparacion_a_editar.getFechaFabr() + "'" + "WHERE IdEquipo = "
-						+ reparacion_a_editar.getIDEquipo() + "");
-			}
-
-			else {
-				statement = conexion.getSQLConexion().prepareStatement("UPDATE Equipos SET Nombre = '"
-						+ reparacion_a_editar.getNombreEquipo() + "' ," + "Modelo = '" + reparacion_a_editar.getModelo()
-						+ "' ," + "Marca = '" + reparacion_a_editar.getMarca() + "' ," + "NumeroDeSerie = '"
-						+ reparacion_a_editar.getNumeroDeSerie() + "' ," + "Aviso = '" + reparacion_a_editar.getAviso()
-						+ "' ," + "ClienteCliente = '" + reparacion_a_editar.getClienteCliente() + "' ,"
-						+ "RemitoCliente = '" + reparacion_a_editar.getRemitoCliente() + "' ," + "idCliente = '"
-						+ reparacion_a_editar.getIDCliente() + "' ," + "IdSucursal = '" + reparacion_a_editar.getIDSuc()
-						+ "'" + "WHERE IdEquipo = " + reparacion_a_editar.getIDEquipo() + "");
-
-			}
-
-			if (statement.executeUpdate() > 0) // Si se ejecut� devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
-
-	public boolean edit(ReparacionDTO reparacion_a_editar) {
-
-		PreparedStatement statement = null;
-
-		String query = "UPDATE reparaciones SET " + "FechaEntrada = ?, " + "FechadeDiagnostico = ?, " + "Falla = ?, "
-				+ "Solucion = ?, " + "Informecliente = ?, " + "idUsuario = ?, " + "NombreUsuario = ?, "
-				+ "EstadoFisico = ?, " + "EstadoTecnico = ?, " + "EstadoComercial = ?, " + "RemitoCliente = ?, "
-				+ "OrdendeCompra = ?, " + "Agregadoaremito = ?, " + "RemitoGenerado = ?, " + "idEquipo = ?, "
-				+ "idRemito = ?, " + "PrecioPeso = ?, " + "PrecioDolar = ?, " 
-				+ "FechAceptacion = ?, " + "PresupuestoGenerado = ?, " + "PresupuestoEnviado = ?, "
-				+ "WordGenerado = ?, " + "WordEnviado = ?, " + "AvisoEnviado = ?, " + "Pago = ?, " + "FechaSalida = ?, "
-				+ "lugar_de_ingreso = ? "
-				+ "WHERE ELS = ?";
-
-		// Define el formato en el que llega la fecha
-		SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
-		SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-		try {
-
-			statement = conexion.getSQLConexion().prepareStatement(query);
-
-			if (reparacion_a_editar.getFecha_Entrada() != null) {
-				try {
-
-					// Convierte la fecha de entrada al formato requerido
-					Date parsedDate = inputFormat.parse(reparacion_a_editar.getFecha_Entrada());
-					String formattedDate = outputFormat.format(parsedDate) + " 00:00:00"; // Agrega la hora
-																							// predeterminada
-
-					// Usa el formato correcto para crear el Timestamp
-					statement.setTimestamp(1, Timestamp.valueOf(formattedDate));
-				} catch (Exception e) {
-					throw new RuntimeException(
-							"El formato de la fecha de entrada no es válido o no se pudo convertir. Verifica los datos.",
-							e);
-				}
-			} else {
-				// Si la fecha es nula o vacía, establece el valor como NULL
-				statement.setNull(1, java.sql.Types.TIMESTAMP);
-			}
-
-			if (reparacion_a_editar.getFechadereparacion() != null) {
-				try {
-
-					// Convierte la fecha de entrada al formato requerido
-					Date parsedDate = inputFormat.parse(reparacion_a_editar.getFechadereparacion());
-					String formattedDate = outputFormat.format(parsedDate) + " 00:00:00"; // Agrega la hora
-																							// predeterminada
-
-					// Usa el formato correcto para crear el Timestamp
-					statement.setTimestamp(2, Timestamp.valueOf(formattedDate));
-				} catch (Exception e) {
-					throw new RuntimeException(
-							"El formato de la fecha de entrada no es válido o no se pudo convertir. Verifica los datos.",
-							e);
-				}
-			} else {
-				// Si la fecha es nula o vacía, establece el valor como NULL
-				statement.setNull(2, java.sql.Types.TIMESTAMP);
-			}
-
-			if (reparacion_a_editar.getFechAceptacion() != null) {
-				try {
-
-					// Convierte la fecha de entrada al formato requerido
-					Date parsedDate = inputFormat.parse(reparacion_a_editar.getFechAceptacion());
-					String formattedDate = outputFormat.format(parsedDate) + " 00:00:00"; // Agrega la hora
-																							// predeterminada
-
-					// Usa el formato correcto para crear el Timestamp
-					statement.setTimestamp(19, Timestamp.valueOf(formattedDate));
-				} catch (Exception e) {
-					throw new RuntimeException(
-							"El formato de la fecha de entrada no es válido o no se pudo convertir. Verifica los datos.",
-							e);
-				}
-			} else {
-				// Si la fecha es nula o vacía, establece el valor como NULL
-				statement.setNull(19, java.sql.Types.TIMESTAMP);
-			}
-
-			if (reparacion_a_editar.getFecha_Salida() != null) {
-				try {
-
-					// Convierte la fecha de entrada al formato requerido
-					Date parsedDate = inputFormat.parse(reparacion_a_editar.getFecha_Salida());
-					String formattedDate = outputFormat.format(parsedDate) + " 00:00:00"; // Agrega la hora
-																							// predeterminada
-
-					// Usa el formato correcto para crear el Timestamp
-					statement.setTimestamp(26, Timestamp.valueOf(formattedDate));
-				} catch (Exception e) {
-					throw new RuntimeException(
-							"El formato de la fecha de entrada no es válido o no se pudo convertir. Verifica los datos.",
-							e);
-				}
-			} else {
-				// Si la fecha es nula o vacía, establece el valor como NULL
-				statement.setNull(26, java.sql.Types.TIMESTAMP);
-			}
-
-			statement.setString(3, reparacion_a_editar.getFalla());
-			statement.setString(4, reparacion_a_editar.getSolucion());
-			statement.setString(5, reparacion_a_editar.getInformecliente());
-			statement.setInt(6, reparacion_a_editar.getidUsuario());
-			statement.setString(7, reparacion_a_editar.getNombreUsuario());
-			statement.setString(8, reparacion_a_editar.getEstadoFisico());
-
-			statement.setString(9, reparacion_a_editar.getEstadoTecnico());
-			statement.setString(10, reparacion_a_editar.getEstadoComercial());
-			statement.setString(11, reparacion_a_editar.getRemitoCliente());
-			statement.setString(12, reparacion_a_editar.getOrdendeCompra());
-
-			if (reparacion_a_editar.getAgregadoaremito() != null) {
-				statement.setBoolean(13, reparacion_a_editar.getAgregadoaremito());
-			} else {
-				statement.setNull(13, java.sql.Types.BOOLEAN);
-			}
-
-			if (reparacion_a_editar.getRemitoGenerado() != null) {
-				statement.setBoolean(14, reparacion_a_editar.getRemitoGenerado());
-			} else {
-				statement.setNull(14, java.sql.Types.BOOLEAN);
-			}
-
-			statement.setInt(15, reparacion_a_editar.getIDEquipo());
-			statement.setInt(16, reparacion_a_editar.getidRemito());
-			try {
-				if (reparacion_a_editar.getPago() != null) {
-					statement.setBigDecimal(25, new BigDecimal(reparacion_a_editar.getPago()));
-				} else {
-					statement.setNull(25, java.sql.Types.DECIMAL);
-				}
-				if (reparacion_a_editar.getPrecioDolar() != null) {
-					statement.setBigDecimal(18, new BigDecimal(reparacion_a_editar.getPrecioDolar()));
-				} else {
-					statement.setNull(18, java.sql.Types.DECIMAL);
-				}
-
-				if (reparacion_a_editar.getPrecioPeso() != null) {
-					statement.setBigDecimal(17, new BigDecimal(reparacion_a_editar.getPrecioPeso()));
-				} else {
-					statement.setNull(17, java.sql.Types.DECIMAL);
-				}
-
-			} catch (NumberFormatException e) {
-				throw new SQLException("Error al convertir los valores a DECIMAL", e);
-			}
-
-			
-			if (reparacion_a_editar.getPresupuestoGenerado() != null) {
-				statement.setBoolean(20, reparacion_a_editar.getPresupuestoGenerado());
-			} else {
-				statement.setNull(20, java.sql.Types.BOOLEAN);
-			}
-
-			if (reparacion_a_editar.getPresupuestoEnviado() != null) {
-				statement.setBoolean(21, reparacion_a_editar.getPresupuestoEnviado());
-			} else {
-				statement.setNull(21, java.sql.Types.BOOLEAN);
-			}
-
-			if (reparacion_a_editar.getWORDgenerado() != null) {
-				statement.setBoolean(22, reparacion_a_editar.getWORDgenerado());
-			} else {
-				statement.setNull(22, java.sql.Types.BOOLEAN);
-			}
-
-			if (reparacion_a_editar.getWORDenviado() != null) {
-				statement.setBoolean(23, reparacion_a_editar.getWORDenviado());
-			} else {
-				statement.setNull(23, java.sql.Types.BOOLEAN);
-			}
-
-			if (reparacion_a_editar.getAvisoEnviado() != null) {
-				statement.setBoolean(24, reparacion_a_editar.getAvisoEnviado());
-			} else {
-				statement.setNull(24, java.sql.Types.BOOLEAN);
-			}
-			
-			statement.setString(27, reparacion_a_editar.getLugarDeIngreso());
-			
-			
-
-			// Llave primaria
-			statement.setInt(28, reparacion_a_editar.getELS());
-
-			// Ejecución de la consulta
-			return statement.executeUpdate() > 0;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
-
-	@Override
-	public void editarReparacionAgregarRemito(ReparacionDTO reparacionAeditar) {
-
-		PreparedStatement statement = null;
-
-		String query = "UPDATE reparaciones SET "
-
-				+ "Agregadoaremito = ?," + "RemitoGenerado = ?," + "idRemito = ? " + "WHERE ELS = ?";
-
-		try {
-
-			statement = conexion.getSQLConexion().prepareStatement(query);
-
-			statement.setBoolean(1, reparacionAeditar.getAgregadoaremito());
-			statement.setBoolean(2, reparacionAeditar.getRemitoGenerado());
-			statement.setInt(3, reparacionAeditar.getidRemito());
-
-			// Llave primaria
-			statement.setInt(4, reparacionAeditar.getELS());
-
-			// System.out.println( reparacionAeditar.getEstadoFisico() + " - " +
-			// reparacionAeditar.getAgregadoaremito() + " - " +
-			// reparacionAeditar.getRemitoGenerado() + " - " +
-			// reparacionAeditar.getidRemito()+ " - " + reparacionAeditar.getELS() );
-
-			statement.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@Override
-	public void editMarcarEnviados(ReparacionDTO reparacionAeditar) {
-
-		PreparedStatement statement = null;
-		
-		SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
-		SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-		String query = "UPDATE reparaciones SET EstadoFisico = ?, FechaSalida = ? WHERE ELS = ?";
-
-		try {
-
-			statement = conexion.getSQLConexion().prepareStatement(query);
-
-			statement.setString(1, reparacionAeditar.getEstadoFisico());
-
-			if (reparacionAeditar.getFecha_Salida() != null) {
-				try {
-
-					// Convierte la fecha de entrada al formato requerido
-					Date parsedDate = inputFormat.parse(reparacionAeditar.getFecha_Salida());
-					String formattedDate = outputFormat.format(parsedDate) + " 00:00:00"; // Agrega la hora
-																							// predeterminada
-
-					// Usa el formato correcto para crear el Timestamp
-					statement.setTimestamp(2, Timestamp.valueOf(formattedDate));
-				} catch (Exception e) {
-					throw new RuntimeException(
-							"El formato de la fecha de entrada no es válido o no se pudo convertir. Verifica los datos.",
-							e);
-				}
-			} else {
-				// Si la fecha es nula o vacía, establece el valor como NULL
-				statement.setNull(2, java.sql.Types.TIMESTAMP);
-			}
-
-			
-
-			// Llave primaria
-			statement.setInt(3, reparacionAeditar.getELS());
-
-			statement.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@Override
-	public void editarReparacionAnularRemito(ReparacionDTO reparacionAeditar) {
-
-		PreparedStatement statement = null;
-
-		String query = "UPDATE reparaciones SET " + "EstadoFisico = ?," + "Agregadoaremito = ?," + "RemitoGenerado = ?,"
-				+ "idRemito = ? " + "WHERE ELS = ?";
-
-		try {
-
-			statement = conexion.getSQLConexion().prepareStatement(query);
-
-			statement.setString(1, reparacionAeditar.getEstadoFisico());
-			statement.setBoolean(2, reparacionAeditar.getAgregadoaremito());
-			statement.setBoolean(3, reparacionAeditar.getRemitoGenerado());
-			statement.setInt(4, reparacionAeditar.getidRemito());
-
-			// Llave primaria
-			statement.setInt(5, reparacionAeditar.getELS());
-
-			System.out.println(reparacionAeditar.getEstadoFisico() + " - " + reparacionAeditar.getAgregadoaremito()
-					+ " - " + reparacionAeditar.getRemitoGenerado() + " - " + reparacionAeditar.getidRemito() + " - "
-					+ reparacionAeditar.getELS());
-
-			statement.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@Override
-	public void editPresupuesto(ReparacionDTO reparacionAeditar) {
-
-		PreparedStatement statement = null;
-
-		String query = "UPDATE reparaciones SET " + "Informecliente = ?, " + "PrecioPeso = ?, " + "PrecioDolar = ?,"
-				+ "PresupuestoGenerado = ?, " + "PresupuestoEnviado = ?, " + "WordGenerado = ?, " + "WordEnviado = ? "
-				+ "WHERE ELS = ?";
-
-		try {
-
-			statement = conexion.getSQLConexion().prepareStatement(query);
-
-			statement.setString(1, reparacionAeditar.getInformecliente());
-
-			try {
-
-				if (reparacionAeditar.getPrecioPeso() != null) {
-					statement.setBigDecimal(2, new BigDecimal(reparacionAeditar.getPrecioPeso()));
-				} else {
-					statement.setNull(2, java.sql.Types.DECIMAL);
-				}
-
-				if (reparacionAeditar.getPrecioDolar() != null) {
-					statement.setBigDecimal(3, new BigDecimal(reparacionAeditar.getPrecioDolar()));
-				} else {
-					statement.setNull(3, java.sql.Types.DECIMAL);
-				}
-
-			} catch (NumberFormatException e) {
-				throw new SQLException("Error al convertir los valores a DECIMAL", e);
-			}
-
-			if (reparacionAeditar.getPresupuestoGenerado() != null) {
-				statement.setBoolean(4, reparacionAeditar.getPresupuestoGenerado());
-			} else {
-				statement.setNull(4, java.sql.Types.BOOLEAN);
-			}
-
-			if (reparacionAeditar.getPresupuestoEnviado() != null) {
-				statement.setBoolean(5, reparacionAeditar.getPresupuestoEnviado());
-			} else {
-				statement.setNull(5, java.sql.Types.BOOLEAN);
-			}
-
-			if (reparacionAeditar.getWORDgenerado() != null) {
-				statement.setBoolean(6, reparacionAeditar.getWORDgenerado());
-			} else {
-				statement.setNull(6, java.sql.Types.BOOLEAN);
-			}
-
-			if (reparacionAeditar.getWORDenviado() != null) {
-				statement.setBoolean(7, reparacionAeditar.getWORDenviado());
-			} else {
-				statement.setNull(7, java.sql.Types.BOOLEAN);
-			}
-
-			// Llave primaria
-			statement.setInt(8, reparacionAeditar.getELS());
-
-			statement.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@Override
-	public void editarReparacionAceptacion(ReparacionDTO reparacionAeditar) {
-
-		PreparedStatement statement = null;
-
-		String query = "UPDATE reparaciones SET " + "FechAceptacion = ?, " + "EstadoComercial = ? " + "WHERE ELS = ?";
-
-		// Define el formato en el que llega la fecha
-		SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
-		SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-		try {
-
-			statement = conexion.getSQLConexion().prepareStatement(query);
-
-			if (reparacionAeditar.getFechAceptacion() != null) {
-
-				try {
-
-					// Convierte la fecha de entrada al formato requerido
-					Date parsedDate = inputFormat.parse(reparacionAeditar.getFechAceptacion());
-					String formattedDate = outputFormat.format(parsedDate) + " 00:00:00"; // Agrega la hora
-																							// predeterminada
-
-					// Usa el formato correcto para crear el Timestamp
-					statement.setTimestamp(1, Timestamp.valueOf(formattedDate));
-				} catch (Exception e) {
-					throw new RuntimeException(
-							"El formato de la fecha de entrada no es válido o no se pudo convertir. Verifica los datos.",
-							e);
-				}
-			} else {
-				// Si la fecha es nula o vacía, establece el valor como NULL
-				statement.setNull(1, java.sql.Types.TIMESTAMP);
-			}
-
-			statement.setString(2, reparacionAeditar.getEstadoComercial());
-
-			// Llave primaria
-			statement.setInt(3, reparacionAeditar.getELS());
-
-			// Ejecución de la consulta
-			statement.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@Override
-	public void editarReparacionPago(ReparacionDTO reparacionAeditar) {
-
-		PreparedStatement statement = null;
-
-		String query = "UPDATE reparaciones SET " + "PrecioPeso = ?, " + "PrecioDolar = ?," + "Pago = ?, "
-				+ "EstadoComercial = ?" + " WHERE ELS = ?";
-
-		try {
-
-			statement = conexion.getSQLConexion().prepareStatement(query);
-
-			try {
-
-				if (reparacionAeditar.getPrecioPeso() != null) {
-					statement.setBigDecimal(1, new BigDecimal(reparacionAeditar.getPrecioPeso()));
-				} else {
-					statement.setNull(1, java.sql.Types.DECIMAL);
-				}
-
-				if (reparacionAeditar.getPrecioDolar() != null) {
-					statement.setBigDecimal(2, new BigDecimal(reparacionAeditar.getPrecioDolar()));
-				} else {
-					statement.setNull(2, java.sql.Types.DECIMAL);
-				}
-
-				if (reparacionAeditar.getPago() != null) {
-					statement.setBigDecimal(3, new BigDecimal(reparacionAeditar.getPago()));
-				} else {
-					statement.setNull(3, java.sql.Types.DECIMAL);
-				}
-
-			} catch (NumberFormatException e) {
-				throw new SQLException("Error al convertir los valores a DECIMAL", e);
-			}
-
-			statement.setString(4, reparacionAeditar.getEstadoComercial());
-			
-			// Llave primaria
-			statement.setInt(5, reparacionAeditar.getELS());
-
-			statement.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-//	public boolean edit(ReparacionDTO reparacion_a_editar) {
-//		PreparedStatement statement = null;
-//		int enviado = 0;
-//		int PresupGenerado = 0;
-//		int PresupEnviado = 0;
-//		int informeWordGenerado = 0;
-//		int informeWordEnviado = 0;
-//		int AvisoEnviado = 0;
-//		String fechaReparacion="";
-//		String fechaEntrada="";
-//		String fechaRespuesta="";
-//		String fechaSalida="";
-//
-//		try {
-//
-//			if (reparacion_a_editar.getEnviado() == null) {
-//				enviado = 0;
-//			} else if (reparacion_a_editar.getEnviado() == true) {
-//				enviado = 1;
-//			} else if (reparacion_a_editar.getEnviado() == false) {
-//				enviado = 0;
-//			}
-//
-//			if (reparacion_a_editar.getPresupuestoGenerado() == null) {
-//				PresupGenerado = 0;
-//			} else if (reparacion_a_editar.getPresupuestoGenerado() == true) {
-//				PresupGenerado = 1;
-//			} else if (reparacion_a_editar.getPresupuestoGenerado() == false) {
-//				PresupGenerado = 0;
-//			}
-//
-//			if (reparacion_a_editar.getPresupuestoEnviado() == null) {
-//				PresupEnviado = 0;
-//			} else if (reparacion_a_editar.getPresupuestoEnviado() == true) {
-//				PresupEnviado = 1;
-//			} else if (reparacion_a_editar.getPresupuestoEnviado() == false) {
-//				PresupEnviado = 0;
-//			}
-//
-//			if (reparacion_a_editar.getWORDgenerado() == null) {
-//				informeWordGenerado = 0;
-//			} else if (reparacion_a_editar.getWORDgenerado() == true) {
-//				informeWordGenerado = 1;
-//			} else if (reparacion_a_editar.getWORDgenerado() == false) {
-//				informeWordGenerado = 0;
-//			}
-//
-//			if (reparacion_a_editar.getWORDenviado() == null) {
-//				informeWordEnviado = 0;
-//			} else if (reparacion_a_editar.getWORDenviado() == true) {
-//				informeWordEnviado = 1;
-//			} else if (reparacion_a_editar.getWORDenviado() == false) {
-//				informeWordEnviado = 0;
-//			}
-//
-//			if (reparacion_a_editar.getAvisoEnviado() == null) {
-//				AvisoEnviado = 0;
-//			} else if (reparacion_a_editar.getAvisoEnviado() == true) {
-//				AvisoEnviado = 1;
-//			} else if (reparacion_a_editar.getAvisoEnviado() == false) {
-//				AvisoEnviado = 0;
-//			}
-//			
-//			
-//			if (reparacion_a_editar.getFechadereparacion() != null) {
-//				fechaReparacion = reparacion_a_editar.getFechadereparacion();
-//			} 
-//			
-//			if (reparacion_a_editar.getFechAceptacion() != null) {
-//				fechaRespuesta = reparacion_a_editar.getFechAceptacion();
-//			} 
-//			
-//			if (reparacion_a_editar.getFecha_Entrada() != null) {
-//				fechaEntrada = reparacion_a_editar.getFecha_Entrada();
-//			} 
-//			
-//			if (reparacion_a_editar.getFecha_Salida() != null) {
-//				fechaSalida = reparacion_a_editar.getFecha_Salida();
-//			} 
-//			
-//
-//			
-//
-//			if (reparacion_a_editar.getFechAceptacion() != null
-//					&& reparacion_a_editar.getFecha_Entrada() != null && reparacion_a_editar.getFecha_Salida() == null ) {
-//				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET "+ 
-//					
-//						"FechaEntrada = '"+ reparacion_a_editar.getFecha_Entrada() + "' , " + 
-//						"FechadeDiagnostico = '"+ fechaReparacion + "' ," +
-//						"Falla = '"+ reparacion_a_editar.getFalla() + "' ," + 
-//						"Solucion = '" + reparacion_a_editar.getSolucion()+ "' ," + 
-//						"idUsuario = '" + reparacion_a_editar.getidUsuario() + "' ," + 
-//						"NombreUsuario = '"+ reparacion_a_editar.getNombreUsuario() + "' ," + 
-//						"Enviado = '" + enviado + "' ,"+
-//						"Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + 
-//						"EstadoFisico = '" + reparacion_a_editar.getEstadoFisico() + "' ," + 
-//						"EstadoTecnico = '" + reparacion_a_editar.getEstadoTecnico() + "' ," + 
-//						"Pago = '" + reparacion_a_editar.getPago() + "' ," + 
-//						"PrecioDolar = '" + reparacion_a_editar.getPrecioDolar() + "' ," + 
-//						"PrecioPeso = '" + reparacion_a_editar.getPrecioPeso() + "' ," + 
-//						"EstadoComercial = '" + reparacion_a_editar.getEstadoComercial() + "' ," + 
-//						"lugar_de_ingreso = '" + reparacion_a_editar.getLugarDeIngreso() + "' ," + 
-//						"RemitoCliente = '" + reparacion_a_editar.getRemitoCliente() +"' ," + 
-//						"PresupuestoGenerado = '" + PresupGenerado + "' ," + 
-//						"OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ," +
-//						"AvisoEnviado = '" + AvisoEnviado + "' ," + 
-//						"PresupuestoEnviado = '" + PresupEnviado + "' ,"+
-//						"FechaSalida = '" + reparacion_a_editar.getFecha_Salida() + "' ,"+
-//						"FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + 				
-//						"WHERE ELS = "+ reparacion_a_editar.getELS() + "");
-//
-//				System.out.println("0");
-//
-//			} else if (reparacion_a_editar.getFechadereparacion() != null
-//					&& reparacion_a_editar.getFechAceptacion() == null
-//					&& reparacion_a_editar.getFecha_Entrada() != null) {
-//				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
-//						+ reparacion_a_editar.getFecha_Entrada() + "' , " + "FechadeDiagnostico = '"
-//						+ reparacion_a_editar.getFechadereparacion() + "' ," + "Falla = '"
-//						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
-//						+ "' ," + "OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ," + "idUsuario = '"
-//						+ reparacion_a_editar.getidUsuario() + "' ," + "NombreUsuario = '"
-//						+ reparacion_a_editar.getNombreUsuario() + "' ," + "Enviado = '" + enviado + "' ,"
-//						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "PrecioDolar = '"
-//						+ reparacion_a_editar.getPrecioDolar() + "' ," + "PrecioPeso = '"
-//						+ reparacion_a_editar.getPrecioPeso() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
-//						+ "' ," + "PresupuestoGenerado = '" + PresupGenerado + "' ," + "EstadoFisico = '"
-//						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
-//						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
-//						+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
-//						+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "RemitoCliente = '"
-//						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = null " + "WHERE ELS = "
-//						+ reparacion_a_editar.getELS() + "");
-//
-//				System.out.println("1");
-//
-//			}
-//
-//			else if (reparacion_a_editar.getFechadereparacion() == null
-//					&& reparacion_a_editar.getFechAceptacion() != null
-//					&& reparacion_a_editar.getFecha_Entrada() != null
-//					) {
-//
-//				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
-//						+ reparacion_a_editar.getFecha_Entrada() + "' ," + "FechadeDiagnostico = null ," + "Falla = '"
-//						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
-//						+ "' ," + "Enviado = '" + enviado + "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario()
-//						+ "' ," + "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ,"
-//						+ "EstadoFisico = '" + reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
-//						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
-//						+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
-//						+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "' ," + "RemitoCliente = '"
-//						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = '"
-//						+ reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = " + reparacion_a_editar.getELS()
-//						+ "");
-//
-//				System.out.println("2");
-//
-//			}
-//
-//			else if (reparacion_a_editar.getFechAceptacion() == null
-//					&& reparacion_a_editar.getFecha_Entrada() != null) {
-//				statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
-//						+ reparacion_a_editar.getFecha_Entrada() + "' ," + "FechadeDiagnostico = null ," + "Falla = '"
-//						+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
-//						+ "' ," + "Enviado = '" + enviado + "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario()
-//						+ "' ," + "NombreUsuario = '" + reparacion_a_editar.getNombreUsuario() + "' ,"
-//						+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "EstadoFisico = '"
-//						+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
-//						+ reparacion_a_editar.getEstadoTecnico() + "' ," + "EstadoComercial = '"
-//						+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
-//						+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "RemitoCliente = '"
-//						+ reparacion_a_editar.getRemitoCliente() + "' ," + "FechAceptacion = null " + "WHERE ELS = "
-//						+ reparacion_a_editar.getELS() + "");
-//
-//				System.out.println("3");
-//			}
-//
-//			else if (reparacion_a_editar.getFechadereparacion() == null
-//					&& reparacion_a_editar.getFechAceptacion() == null && reparacion_a_editar.getFecha_Entrada() == null
-//					&& reparacion_a_editar.getNombreEquipo() == null
-//					&& reparacion_a_editar.getAgregadoaremito() == null) {
-//
-//				if (reparacion_a_editar.getPrecioPeso() != null && reparacion_a_editar.getInformecliente() != null) {
-//
-//					statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET Informecliente = '"
-//							+ reparacion_a_editar.getInformecliente() + "' ," + "PrecioPeso = '"
-//							+ reparacion_a_editar.getPrecioPeso() + "' ," + "PresupuestoEnviado = '" + PresupEnviado
-////								+ "' ," + "Pago = '"
-////								+ reparacion_a_editar.getPago()
-//							+ "' ," + "PresupuestoGenerado = '" + PresupGenerado + "' ," + "PrecioDolar = '"
-//							+ reparacion_a_editar.getPrecioDolar() + "' ," + "WordGenerado = '" + informeWordGenerado
-//							+ "' ," + "WordEnviado = '" + informeWordEnviado + "'" + "WHERE ELS = "
-//							+ reparacion_a_editar.getELS() + "");
-//
-//					System.out.println("4");
-//				}
-//
-//				else if (reparacion_a_editar.getidUsuario() == 1) {
-//
-//					statement = conexion.getSQLConexion().prepareStatement(
-//							"UPDATE reparaciones SET idUsuario = '" + reparacion_a_editar.getidUsuario() + "'"
-//									+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
-//
-//					System.out.println("4.1.1");
-//
-//				}
-//				
-//				else if (reparacion_a_editar.getFechadereparacion() != null && reparacion_a_editar.getFechAceptacion() != null
-//						&& reparacion_a_editar.getFecha_Entrada() != null && reparacion_a_editar.getFecha_Salida() != null) {
-//					statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET FechaEntrada = '"
-//							+ reparacion_a_editar.getFecha_Entrada() + "' , " + "FechadeDiagnostico = '"
-//							+ reparacion_a_editar.getFechadereparacion() + "' ," + "Falla = '"
-//							+ reparacion_a_editar.getFalla() + "' ," + "Solucion = '" + reparacion_a_editar.getSolucion()
-//							+ "' ," + "idUsuario = '" + reparacion_a_editar.getidUsuario() + "' ," + "NombreUsuario = '"
-//							+ reparacion_a_editar.getNombreUsuario() + "' ," + "Enviado = '" + enviado + "' ,"
-//							+ "Informecliente = '" + reparacion_a_editar.getInformecliente() + "' ," + "EstadoFisico = '"
-//							+ reparacion_a_editar.getEstadoFisico() + "' ," + "EstadoTecnico = '"
-//							+ reparacion_a_editar.getEstadoTecnico() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
-//							+ "' ," + "PrecioDolar = '" + reparacion_a_editar.getPrecioDolar() + "' ," + "PrecioPeso = '"
-//							+ reparacion_a_editar.getPrecioPeso() + "' ," + "EstadoComercial = '"
-//							+ reparacion_a_editar.getEstadoComercial() + "' ," + "lugar_de_ingreso = '"
-//							+ reparacion_a_editar.getLugarDeIngreso() + "' ," + "RemitoCliente = '"
-//							+ reparacion_a_editar.getRemitoCliente() + "' ," + "PresupuestoGenerado = '" + PresupGenerado
-//							+ "' ," + "OrdendeCompra = '" + reparacion_a_editar.getOrdendeCompra() + "' ,"
-//
-//							+ "FechaSalida = '" + reparacion_a_editar.getFecha_Salida() + "' ,"
-//
-//							+ "AvisoEnviado = '" + AvisoEnviado + "' ," + "PresupuestoEnviado = '" + PresupEnviado + "' ,"
-//							+ "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
-//							+ reparacion_a_editar.getELS() + "");
-//
-//					System.out.println("4.1.1.2");
-//					}
-//
-//				else {
-//
-//					statement = conexion.getSQLConexion().prepareStatement("UPDATE reparaciones SET EstadoComercial = '"
-//							+ reparacion_a_editar.getEstadoComercial() + "' ," + "PrecioDolar = '"
-//							+ reparacion_a_editar.getPrecioDolar() + "' ," + "PrecioPeso = '"
-//							+ reparacion_a_editar.getPrecioPeso() + "' ," + "Pago = '" + reparacion_a_editar.getPago()
-//							+ "'" + "WHERE ELS = " + reparacion_a_editar.getELS() + "");
-//
-//					System.out.println("4.2");
-//
-//				}
-//			}
-//
-//			else if (reparacion_a_editar.getFechAceptacion() != null
-//					&& reparacion_a_editar.getEstadoComercial() != null) {
-//
-//				statement = conexion.getSQLConexion().prepareStatement(
-//
-//						"UPDATE reparaciones SET EstadoComercial = '" + reparacion_a_editar.getEstadoComercial() + "' ,"
-//								+ "FechaSalida = '" + reparacion_a_editar.getFecha_Salida() + "' ,"
-//								+ "FechAceptacion = '" + reparacion_a_editar.getFechAceptacion() + "'" + "WHERE ELS = "
-//								+ reparacion_a_editar.getELS() + "");
-//
-//				System.out.println("4.9");
-//
-//			}
-//
-//			else if (reparacion_a_editar.getAgregadoaremito() == true && reparacion_a_editar.getEnviado() == null
-//					&& reparacion_a_editar.getidRemito() != 0) {
-//
-//				statement = conexion.getSQLConexion()
-//						.prepareStatement("UPDATE reparaciones SET Agregadoaremito = '" + 1 + "' ," + "idRemito = '"
-//								+ reparacion_a_editar.getidRemito() + "'" + "WHERE ELS = "
-//								+ reparacion_a_editar.getELS() + "");
-//
-//				System.out.println("5");
-//
-//			}
-//
-//			else if (reparacion_a_editar.getEnviado() != null && reparacion_a_editar.getEstadoFisico() == "Enviado") {
-//				statement = conexion.getSQLConexion()
-//						.prepareStatement("UPDATE reparaciones SET EstadoFisico = '"
-//								+ reparacion_a_editar.getEstadoFisico() + "'," + "Enviado = '" + enviado + "'"
-//								+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
-//
-//				System.out.println("6");
-//
-//			}
-//
-//			else if (reparacion_a_editar.getAgregadoaremito() == true && reparacion_a_editar.getRemitoGenerado() == true
-//					&& reparacion_a_editar.getidRemito() == 0) {
-//
-//				statement = conexion.getSQLConexion()
-//						.prepareStatement("UPDATE reparaciones SET Agregadoaremito = '" + 0 + "' ," + "idRemito = '"
-//								+ reparacion_a_editar.getidRemito() + "' ," + "EstadoFisico = '"
-//								+ reparacion_a_editar.getEstadoFisico() + "'," + "Enviado = '" + enviado + "'"
-//								+ "WHERE ELS = " + reparacion_a_editar.getELS() + "");
-//
-//				System.out.println("7");
-//
-//			}
-//
-//			if (statement.executeUpdate() > 0) // Si se ejecut� devuelvo true
-//
-//				return true;
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally // Se ejecuta siempre
-//		{
-//			conexion.cerrarConexion();
-//		}
-//		return false;
-//	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void ListarEquipo(JComboBox box) {
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallNombreEquipo);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			box.setModel(value);
-
-			while (resultSet.next()) {
-
-				value.addElement(new ReparacionDTO(resultSet.getString(2)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void ListarMarca(JComboBox comboMarca) {
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallMarca);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			comboMarca.setModel(value);
-
-			while (resultSet.next()) {
-
-				value.addElement(new ReparacionDTO(resultSet.getString(1)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void ListarModelosxMarca(JComboBox comboModelos, String marca) {
-
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<SucursalDTO> Sucursal = new ArrayList<SucursalDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallModeloxMarca);
-			statement.setString(1, marca);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			comboModelos.setModel(value);
-
-			while (resultSet.next()) {
-
-				value.addElement(new ReparacionDTO(resultSet.getString(1)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void ListarSeriexModelo(JComboBox comboSerie, String modelo) {
-
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<SucursalDTO> Sucursal = new ArrayList<SucursalDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallSeriexModelo);
-			statement.setString(1, modelo);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			comboSerie.setModel(value);
-
-			// value.addElement(new ReparacionDTO("-- Seleccionar N� de Serie
-			// --"));
-
-			while (resultSet.next()) {
-				// value.addElement(new SucursalDTO(resultSet.getInt(1),
-				// resultSet.getString(2), resultSet.getString(3),
-				// resultSet.getString(3), resultSet.getInt(4),
-				// resultSet.getString(5)));
-
-				value.addElement(new ReparacionDTO(resultSet.getString(1)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void ListarModelos(JComboBox comboModelos) {
-
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallModelo);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			comboModelos.setModel(value);
-
-			while (resultSet.next()) {
-
-				value.addElement(new ReparacionDTO(resultSet.getString(1)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void ListarEstadoCom(JComboBox comboFiltroEstadoCom) {
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallEstadoCom);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			comboFiltroEstadoCom.setModel(value);
-
-			while (resultSet.next()) {
-
-				value.addElement(new ReparacionDTO(resultSet.getString(1)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void ListarEstadoFis(JComboBox comboFiltroEstadoFis) {
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallEstadoFis);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			comboFiltroEstadoFis.setModel(value);
-
-			while (resultSet.next()) {
-
-				value.addElement(new ReparacionDTO(resultSet.getString(1)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void comboFiltroEstadoTec(JComboBox comboFiltroEstadoTec) {
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallEstadoTec);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			comboFiltroEstadoTec.setModel(value);
-
-			while (resultSet.next()) {
-
-				value.addElement(new ReparacionDTO(resultSet.getString(1)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void comboFiltroAviso(JComboBox comboFiltroAviso) {
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallAviso);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			comboFiltroAviso.setModel(value);
-
-			while (resultSet.next()) {
-
-				value.addElement(new ReparacionDTO(resultSet.getString(1)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void comboFiltroELS(JComboBox comboFiltroELS) {
-	    DefaultComboBoxModel value;
-	    PreparedStatement statement;
-	    ResultSet resultSet;
-	    ArrayList<String> datos = new ArrayList<>();
-	    try {
-	        statement = conexion.getSQLConexion().prepareStatement(readallELS);
-	        resultSet = statement.executeQuery();
-	        
-	        // Leer todos los datos ANTES de cerrar
-	        while (resultSet.next()) {
-	            datos.add(resultSet.getString(1));
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        conexion.cerrarConexion();
-	    }
-	    
-	    // Ahora agregar al modelo de forma segura
-	    value = new DefaultComboBoxModel();
-	    for (String dato : datos) {
-	        value.addElement(new ReparacionDTO(dato));
-	    }
-	    comboFiltroELS.setModel(value);
-	}
-
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void comboSerie(JComboBox comboSerie) {
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallSerie);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			comboSerie.setModel(value);
-
-			while (resultSet.next()) {
-
-				value.addElement(new ReparacionDTO(resultSet.getString(1)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@Override
-	public List<ReparacionDTO> readAllXIDclienteIDSucursal(Integer IDCliente, Integer IDSucursal) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<ReparacionDTO> Reparaciones = new ArrayList<ReparacionDTO>();
-
-		// String query = "select * from reparacionesT where ELS = ?";
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallxIDClienteIDSucursal);
-			statement.setInt(1, IDCliente);
-			statement.setInt(2, IDSucursal);
-
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				Reparaciones.add(new ReparacionDTO(resultSet.getInt("ELS"), resultSet.getString("FechaEntrada"),
-						resultSet.getString("FechadeDiagnostico"), resultSet.getString("Falla"),
-						resultSet.getString("Solucion"), resultSet.getString("Informecliente"),
-						resultSet.getInt("idUsuario"), resultSet.getString("EstadoFisico"),
-						resultSet.getString("EstadoTecnico"), resultSet.getString("EstadoComercial"),
-						resultSet.getString("RemitoCliente"), resultSet.getString("OrdendeCompra"),
-						resultSet.getBoolean("Agregadoaremito"), resultSet.getBoolean("RemitoGenerado"),
-						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
-						resultSet.getDouble("PrecioDolar"),
-						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getDouble("Pago"), resultSet.getBoolean("PresupuestoEnviado"),
-						resultSet.getString("Equipos.Nombre"), resultSet.getString("email"),
-						resultSet.getString("Modelo"), resultSet.getString("Marca"),
-						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
-						resultSet.getString("ClienteCliente"), resultSet.getInt("idCliente"),
-						resultSet.getInt("idSucursal"), resultSet.getString("nombre"),
-						resultSet.getString("NombreSucursal"), resultSet.getString("usuario.nombre"),
-						resultSet.getInt("Codigo"), resultSet.getInt("NumeroRemitoSalida"),
-						resultSet.getString("FechaFabr"), resultSet.getBoolean("AvisoEnviado"),
-						resultSet.getBoolean("WordGenerado"), resultSet.getBoolean("WordEnviado"),
-						resultSet.getString("lugar_de_ingreso"), resultSet.getString("FechaSalida")));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return Reparaciones;
-	}
-
-	@Override
-	public List<ReparacionDTO> readAllXIDremito(int iDremito) {
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<ReparacionDTO> Reparaciones = new ArrayList<ReparacionDTO>();
-
-		// String query = "select * from reparacionesT where ELS = ?";
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallxIDremito);
-			statement.setInt(1, iDremito);
-
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				Reparaciones.add(new ReparacionDTO(resultSet.getInt("ELS"), resultSet.getString("FechaEntrada"),
-						resultSet.getString("FechadeDiagnostico"), resultSet.getString("Falla"),
-						resultSet.getString("Solucion"), resultSet.getString("Informecliente"),
-						resultSet.getInt("idUsuario"), resultSet.getString("EstadoFisico"),
-						resultSet.getString("EstadoTecnico"), resultSet.getString("EstadoComercial"),
-						resultSet.getString("RemitoCliente"), resultSet.getString("OrdendeCompra"),
-						resultSet.getBoolean("Agregadoaremito"), resultSet.getBoolean("RemitoGenerado"),
-						resultSet.getInt("idEquipo"), resultSet.getInt("idRemito"), resultSet.getDouble("PrecioPeso"),
-						resultSet.getDouble("PrecioDolar"),
-						resultSet.getString("FechAceptacion"), resultSet.getBoolean("PresupuestoGenerado"),
-						resultSet.getDouble("Pago"), resultSet.getBoolean("PresupuestoEnviado"),
-						resultSet.getString("Equipos.Nombre"), resultSet.getString("email"),
-						resultSet.getString("Modelo"), resultSet.getString("Marca"),
-						resultSet.getString("NumeroDeSerie"), resultSet.getString("Aviso"),
-						resultSet.getString("ClienteCliente"), resultSet.getInt("idCliente"),
-						resultSet.getInt("idSucursal"), resultSet.getString("nombre"),
-						resultSet.getString("NombreSucursal"), resultSet.getString("usuario.nombre"),
-						resultSet.getInt("Codigo"), resultSet.getInt("NumeroRemitoSalida"),
-						resultSet.getString("FechaFabr"), resultSet.getBoolean("AvisoEnviado"),
-						resultSet.getBoolean("WordGenerado"), resultSet.getBoolean("WordEnviado"),
-						resultSet.getString("lugar_de_ingreso"), resultSet.getString("FechaSalida")));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return Reparaciones;
-
-	}
-
-	@Override
-	public List<ReparacionDTO> readAllxComponenteOriginal(String componente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<ReparacionDTO> Reparaciones = new ArrayList<ReparacionDTO>();
-
-		// String query = "select * from reparacionesT where ELS = ?";
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallxCompOriginal);
-			statement.setString(1, componente);
-
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				Reparaciones.add(new ReparacionDTO(resultSet.getInt("ELS"), resultSet.getString("FechaEntrada"),
-						resultSet.getString("Cliente.nombre"), resultSet.getString("NombreSucursal"),
-						resultSet.getString("Equipos.Nombre"), resultSet.getString("Marca"),
-						resultSet.getString("Modelo"), resultSet.getString("original"),
-						resultSet.getString("reemplazo")));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return Reparaciones;
-	}
-
-	@Override
-	public List<ReparacionDTO> readAllxComponenteReemplazo(String componente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<ReparacionDTO> Reparaciones = new ArrayList<ReparacionDTO>();
-
-		// String query = "select * from reparacionesT where ELS = ?";
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallxCompReemplazado);
-			statement.setString(1, componente);
-
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				Reparaciones.add(new ReparacionDTO(resultSet.getInt("ELS"), resultSet.getString("FechaEntrada"),
-						resultSet.getString("Cliente.nombre"), resultSet.getString("NombreSucursal"),
-						resultSet.getString("Equipos.Nombre"), resultSet.getString("Marca"),
-						resultSet.getString("Modelo"), resultSet.getString("original"),
-						resultSet.getString("reemplazo")));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return Reparaciones;
-	}
-
-	@Override
-	public List<ReparacionDTO> readAllListadoMarcarAceptaciones() {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<ReparacionDTO> Reparaciones = new ArrayList<ReparacionDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallListadoMarcarAceptaciones);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				Reparaciones.add(new ReparacionDTO(resultSet.getInt("ELS"), resultSet.getString("Aviso"),
-						resultSet.getString("nombre"), resultSet.getString("NombreSucursal"),
-						resultSet.getString("Equipos.Nombre"), resultSet.getString("Marca"),
-						resultSet.getString("Modelo"), resultSet.getString("NumeroDeSerie"),
-						resultSet.getString("EstadoTecnico"), resultSet.getString("EstadoComercial")
-
-				));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return Reparaciones;
-	}
-
-	@Override
-
-	public List<Integer> buscarEnCampos(String campo, String texto) {
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
-		List<Integer> numeroELS = new ArrayList<>();
-
-		try {
-			// Validar que el nombre del campo sea seguro
-			if (!esCampoValido(campo)) {
-				throw new IllegalArgumentException("Campo no válido: " + campo);
-			}
-
-			// Crear la consulta dinámica con el campo
-			String query = String.format(busquePorCampoYtexto, campo);
-
-			statement = conexion.getSQLConexion().prepareStatement(query);
-
-			// Agregar los comodines para la búsqueda con LIKE
-			statement.setString(1, "%" + texto + "%");
-
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				numeroELS.add(resultSet.getInt("ELS"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (resultSet != null) {
-				try {
-					resultSet.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			conexion.cerrarConexion();
-		}
-
-		return numeroELS;
-	}
-
-	/**
-	 * Verifica que el nombre del campo sea válido y seguro. Evita inyección SQL.
-	 */
-	private boolean esCampoValido(String campo) {
-		// Lista de campos permitidos en la consulta
-		List<String> camposPermitidos = Arrays.asList("Falla", "Solucion", "Informecliente" // Agrega aquí los campos
-																							// válidos
-		);
-		return camposPermitidos.contains(campo);
-	}
-
+    public static String ubicacion;
+    private Conexion conexion;
+    private ReparacionQueryManager queryManager;
+    private ReparacionEstadisticasManager estadisticasManager;
+    private ReparacionComboManager comboManager;
+
+    @SuppressWarnings("unused")
+    public ReparacionDAOImpl(String ubicacionBase) {
+        ubicacion = ubicacionBase;
+        conexion = Conexion.getConexion(ubicacion);
+        
+        // Inicializar los gestores especializados
+        this.queryManager = new ReparacionQueryManager(conexion);
+        this.estadisticasManager = new ReparacionEstadisticasManager(conexion);
+        this.comboManager = new ReparacionComboManager(conexion);
+    }
+
+    // ========== OPERACIONES CRUD BÁSICAS ==========
+
+    @Override
+    public boolean insert(ReparacionDTO reparacion) {
+        return queryManager.insert(reparacion);
+    }
+
+    @Override
+    public boolean insertEquipo(ReparacionDTO reparacion) {
+        return queryManager.insertEquipo(reparacion);
+    }
+
+    @Override
+    public boolean delete(ReparacionDTO reparacion) {
+        return queryManager.delete(reparacion);
+    }
+
+    @Override
+    public List<ReparacionDTO> readAll() {
+        return queryManager.readAll();
+    }
+
+    @Override
+    public ReparacionDTO obtenerReparacionXels(Integer els) {
+        return queryManager.obtenerReparacionXELS(els);
+    }
+
+    @Override
+    public ReparacionDTO obtenerReparacionXserie(String serie) {
+        return queryManager.obtenerReparacionXSerie(serie);
+    }
+
+    @Override
+    public int obtenerNumeroELSels() {
+        return queryManager.obtenerMaximoELS();
+    }
+
+    @Override
+    public int obtenerNumeroELSbsas() {
+        return queryManager.obtenerMaximoELSBSAS();
+    }
+
+    @Override
+    public int obtenerIDequipo() {
+        return queryManager.obtenerMaximoIDEquipo();
+    }
+
+    @Override
+    public boolean edit(ReparacionDTO reparacion) {
+        return queryManager.update(reparacion);
+    }
+
+    @Override
+    public boolean editEquipo(ReparacionDTO reparacion) {
+        return queryManager.updateEquipo(reparacion);
+    }
+
+    @Override
+    public void editarReparacionAgregarRemito(ReparacionDTO reparacion) {
+        queryManager.updateAgregarRemito(reparacion);
+    }
+
+    @Override
+    public void editMarcarEnviados(ReparacionDTO reparacion) {
+        queryManager.updateMarcarEnviados(reparacion);
+    }
+
+    @Override
+    public void editarReparacionAnularRemito(ReparacionDTO reparacion) {
+        queryManager.updateAnularRemito(reparacion);
+    }
+
+    @Override
+    public void editPresupuesto(ReparacionDTO reparacion) {
+        queryManager.updatePresupuesto(reparacion);
+    }
+
+    @Override
+    public void editarReparacionAceptacion(ReparacionDTO reparacion) {
+        queryManager.updateAceptacion(reparacion);
+    }
+
+    @Override
+    public void editarReparacionPago(ReparacionDTO reparacion) {
+        queryManager.updatePago(reparacion);
+    }
+
+    @Override
+    public List<ReparacionDTO> readAllXIDclienteIDSucursal(Integer idCliente, Integer idSucursal) {
+        return queryManager.readAllXIDClienteIDSucursal(idCliente, idSucursal);
+    }
+
+    @Override
+    public List<ReparacionDTO> readAllXIDremito(int idRemito) {
+        return queryManager.readAllXIDRemito(idRemito);
+    }
+
+    @Override
+    public List<ReparacionDTO> readAllxComponenteOriginal(String componente) {
+        return queryManager.readAllXComponenteOriginal(componente);
+    }
+
+    @Override
+    public List<ReparacionDTO> readAllxComponenteReemplazo(String componente) {
+        return queryManager.readAllXComponenteReemplazo(componente);
+    }
+
+    @Override
+    public List<ReparacionDTO> readAllListadoMarcarAceptaciones() {
+        return queryManager.readAllListadoMarcarAceptaciones();
+    }
+
+    @Override
+    public List<Integer> buscarEnCampos(String campo, String texto) {
+        return queryManager.buscarEnCampos(campo, texto);
+    }
+
+    // ========== ESTADÍSTICAS GENERALES ==========
+
+    @Override
+    public int ingresosPorAnio(int anio) {
+        return estadisticasManager.ingresosPorAnio(anio);
+    }
+
+    @Override
+    public int diagnosticosPorAnio(int anio) {
+        return estadisticasManager.diagnosticosPorAnio(anio);
+    }
+
+    @Override
+    public double FacturacionPesoPorAnio(int anio) {
+        return estadisticasManager.facturacionPesoPorAnio(anio);
+    }
+
+    @Override
+    public double FacturacionDolarPorAnio(int anio) {
+        return estadisticasManager.facturacionDolarPorAnio(anio);
+    }
+
+    @Override
+    public int reparadosPorAnio(int anio) {
+        return estadisticasManager.reparadosPorAnio(anio);
+    }
+
+    @Override
+    public int sinFallasPorAnio(int anio) {
+        return estadisticasManager.sinFallasPorAnio(anio);
+    }
+
+    @Override
+    public int enGtiaPorAnio(int anio) {
+        return estadisticasManager.enGtiaPorAnio(anio);
+    }
+
+    @Override
+    public int EnRepPorAnio(int anio) {
+        return estadisticasManager.enRepPorAnio(anio);
+    }
+
+    @Override
+    public int ventasPorAnio(int anio) {
+        return estadisticasManager.ventasPorAnio(anio);
+    }
+
+    @Override
+    public int SinRepPorAnio(int anio) {
+        return estadisticasManager.sinRepPorAnio(anio);
+    }
+
+    @Override
+    public int RepAcepPorAnio(int anio) {
+        return estadisticasManager.repAcepPorAnio(anio);
+    }
+
+    @Override
+    public int RepNoAcepPorAnio(int anio) {
+        return estadisticasManager.repNoAcepPorAnio(anio);
+    }
+
+    @Override
+    public int RepEsperaPorAnio(int anio) {
+        return estadisticasManager.repEsperaPorAnio(anio);
+    }
+
+    // ========== ESTADÍSTICAS POR CLIENTE ==========
+
+    @Override
+    public int IngresosXanioXcliente(int anio, int idCliente) {
+        return estadisticasManager.ingresosXanioXcliente(anio, idCliente);
+    }
+
+    @Override
+    public int ReparadosXanioXcliente(int anio, int idCliente) {
+        return estadisticasManager.reparadosXanioXcliente(anio, idCliente);
+    }
+
+    @Override
+    public int SinFallaXanioXcliente(int anio, int idCliente) {
+        return estadisticasManager.sinFallaXanioXcliente(anio, idCliente);
+    }
+
+    @Override
+    public int GtiaXanioXcliente(int anio, int idCliente) {
+        return estadisticasManager.gtiaXanioXcliente(anio, idCliente);
+    }
+
+    @Override
+    public int EnRepXanioXclientecliente(int anio, int idCliente) {
+        return estadisticasManager.enRepXanioXcliente(anio, idCliente);
+    }
+
+    @Override
+    public int VentasXanioXcliente(int anio, int idCliente) {
+        return estadisticasManager.ventasXanioXcliente(anio, idCliente);
+    }
+
+    @Override
+    public int SinRepXanioXcliente(int anio, int idCliente) {
+        return estadisticasManager.sinRepXanioXcliente(anio, idCliente);
+    }
+
+    @Override
+    public int RepAcepXcliente(int anio, int idCliente) {
+        return estadisticasManager.repAcepXcliente(anio, idCliente);
+    }
+
+    @Override
+    public int RepNoAcepXcliente(int anio, int idCliente) {
+        return estadisticasManager.repNoAcepXcliente(anio, idCliente);
+    }
+
+    @Override
+    public int RepEsperaXcliente(int anio, int idCliente) {
+        return estadisticasManager.repEsperaXcliente(anio, idCliente);
+    }
+
+    @Override
+    public double FacturacionPesoPorAnioPorCliente(int anio, int idCliente) {
+        return estadisticasManager.facturacionPesoPorAnioPorCliente(anio, idCliente);
+    }
+
+    @Override
+    public double FacturacionDolarPorAnioPorCliente(int anio, int idCliente) {
+        return estadisticasManager.facturacionDolarPorAnioPorCliente(anio, idCliente);
+    }
+
+    // ========== ESTADÍSTICAS POR TÉCNICO ==========
+
+    @Override
+    public int DiagnosticosXanioXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.diagnosticosXanioXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public int ReparadosXanioXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.reparadosXanioXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public int SinFallaXanioXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.sinFallaXanioXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public int GtiaXanioXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.gtiaXanioXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public int EnRepXanioXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.enRepXanioXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public int VentasXanioXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.ventasXanioXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public int SinRepXanioXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.sinRepXanioXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public int RepAcepXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.repAcepXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public int RepNoAcepXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.repNoAcepXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public int RepEsperaXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.repEsperaXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public double FacturacionPesoPorAnioPorTecnico(int anio, int idTecnico) {
+        return estadisticasManager.facturacionPesoPorAnioPorTecnico(anio, idTecnico);
+    }
+
+    @Override
+    public double FacturacionDolarPorAnioPorTecnico(int anio, int idTecnico) {
+        return estadisticasManager.facturacionDolarPorAnioPorTecnico(anio, idTecnico);
+    }
+
+    // ========== ESTADÍSTICAS POR MES ==========
+
+    @Override
+    public List<Integer> ingresosPorAnioPorMes(int anio) {
+        return estadisticasManager.ingresosPorAnioPorMes(anio);
+    }
+
+    @Override
+    public List<Integer> diagnosticoPorAnioPorMes(int anio) {
+        return estadisticasManager.diagnosticoPorAnioPorMes(anio);
+    }
+
+    @Override
+    public List<Double> facturacionPorAnioPorMes(int anio) {
+        return estadisticasManager.facturacionPorAnioPorMes(anio);
+    }
+
+    @Override
+    public List<Integer> diagnosticoPorAnioPorTecnico(int anio, int tecnico) {
+        return estadisticasManager.diagnosticoPorAnioPorTecnico(anio, tecnico);
+    }
+
+    @Override
+    public List<Integer> aceptacionesPorAnioPorTecnico(int anio, int tecnico) {
+        return estadisticasManager.aceptacionesPorAnioPorTecnico(anio, tecnico);
+    }
+
+    @Override
+    public List<Double> facturacionPorAnioPorTecnico(int anio, int tecnico) {
+        return estadisticasManager.facturacionPorAnioPorTecnico(anio, tecnico);
+    }
+
+    @Override
+    public List<Double> FacturacionDolaresPorAnioPorTecnico(int anio, int idTecnico) {
+        return estadisticasManager.facturacionDolaresPorAnioPorTecnico(anio, idTecnico);
+    }
+
+    @Override
+    public List<Integer> ReparadosXmesXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.reparadosXmesXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public List<Integer> EnGtiaXmesXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.enGtiaXmesXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public List<Integer> SinFallaXmesXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.sinFallaXmesXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public List<Integer> EnRepXmesXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.enRepXmesXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public List<Integer> VentasXmesXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.ventasXmesXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public List<Integer> SinRepXmesXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.sinRepXmesXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public List<Integer> RepAcepXmesXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.repAcepXmesXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public List<Integer> RepNoAcepXmesXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.repNoAcepXmesXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public List<Integer> EsperaRepXmesXtecnico(int anio, int idTecnico) {
+        return estadisticasManager.esperaRepXmesXtecnico(anio, idTecnico);
+    }
+
+    @Override
+    public List<Integer> ingresosPorAnioPorCliente(int anio, int idCliente) {
+        return estadisticasManager.ingresosPorAnioPorCliente(anio, idCliente);
+    }
+
+    @Override
+    public List<Double> facturacionPorAnioPorCliente(int anio, int idCliente) {
+        return estadisticasManager.facturacionPorAnioPorCliente(anio, idCliente);
+    }
+
+    @Override
+    public List<Integer> aceptacionesPorAnioPorCliente(int anio, int idCliente) {
+        return estadisticasManager.aceptacionesPorAnioPorCliente(anio, idCliente);
+    }
+
+    // ========== MÉTODOS PARA COMBOBOX ==========
+
+    @Override
+    public void ListarEquipo(JComboBox<?> comboBox) {
+        comboManager.listarEquipo(comboBox);
+    }
+
+    @Override
+    public void ListarMarca(JComboBox<?> comboBox) {
+        comboManager.listarMarca(comboBox);
+    }
+
+    @Override
+    public void ListarModelos(JComboBox<?> comboBox) {
+        comboManager.listarModelos(comboBox);
+    }
+
+    @Override
+    public void ListarModelosxMarca(JComboBox<?> comboBox, String marca) {
+        comboManager.listarModelosXMarca(comboBox, marca);
+    }
+
+    @Override
+    public void ListarSeriexModelo(JComboBox<?> comboBox, String modelo) {
+        comboManager.listarSerieXModelo(comboBox, modelo);
+    }
+
+    @Override
+    public void ListarEstadoCom(JComboBox<?> comboBox) {
+        comboManager.listarEstadoCom(comboBox);
+    }
+
+    @Override
+    public void ListarEstadoFis(JComboBox<?> comboBox) {
+        comboManager.listarEstadoFis(comboBox);
+    }
+
+    @Override
+    public void comboFiltroEstadoTec(JComboBox<?> comboBox) {
+        comboManager.listarEstadoTec(comboBox);
+    }
+
+    @Override
+    public void comboFiltroAviso(JComboBox<?> comboBox) {
+        comboManager.listarAviso(comboBox);
+    }
+
+    @Override
+    public void comboFiltroELS(JComboBox<?> comboBox) {
+        comboManager.listarELS(comboBox);
+    }
+
+    @Override
+    public void comboSerie(JComboBox<?> comboBox) {
+        comboManager.listarSerie(comboBox);
+    }
 }
