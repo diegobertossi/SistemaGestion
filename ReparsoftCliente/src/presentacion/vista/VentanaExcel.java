@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import VistaPropias.GestorArchivosExcel;
+import presentacion.controlador.gestores.GestorArchivosExcel;
 import presentacion.controlador.ControladorReparacion;
 import java.awt.SystemColor;
 import java.awt.Toolkit;

@@ -37,7 +37,7 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import com.inet.jortho.SpellChecker;
 
-import VistaPropias.GestorArchivosExcel;
+//import presentacion.controlador.gestores.GestorArchivosExcel;
 import dto.ClienteDTO;
 import dto.SucursalDTO;
 import dto.UsuarioDTO;
@@ -361,173 +361,6 @@ public class GestorVisualizacionEquipos {
 	}
 	
 	
-	
-//	
-//	 // =============================================
-//    // MÉTODOS DE GESTIÓN DE PRESUPUESTOS Y PAGOS
-//    // =============================================
-//
-//    private void verificarPresupuesto(VentanaVisualizarEquipos ventana) {
-//        Double presupuesto = reparacionActual.getPrecioPeso();
-//        Double pago = reparacionActual.getPago();
-//        String estadoComercial = ventana.getTextEstadoComercial().getText();
-//        String estadoTecnico = ventana.getTextEstadoTecnico().getText();
-//
-//        // Caso especial: Sin Reparación
-//        if ("Sin Reparación".equals(estadoTecnico)) {
-//            aplicarEstadoVisual(ventana, "SIN REPARACIÓN", SIN_REPARACION);
-//            return;
-//        }
-//
-//        // Sin presupuesto
-//        if (presupuesto.compareTo(0.0) == 0) {
-//            aplicarEstadoVisual(ventana, "SIN PRESUPUESTAR", SIN_PRESUPUESTAR);
-//            return;
-//        }
-//
-//        // Caso especial: Presupuesto no aceptado
-//        if ("NO Aceptado".equals(estadoComercial)) {
-//            aplicarEstadoVisual(ventana, "NO ACEPTADO", NO_ACEPTADO);
-//            return;
-//        }
-//
-//        // Hay presupuesto
-//        int comparacion = presupuesto.compareTo(pago);
-//
-//        if (comparacion == 0) {
-//            // Totalmente pagado
-//            aplicarEstadoVisual(ventana, "PAGADO", PAGADO);
-//        } else if (comparacion > 0 && pago.compareTo(0.0) > 0) {
-//            // Pago parcial
-//            aplicarEstadoVisual(ventana, "PAGADO PARCIALMENTE", PARCIAL);
-//        } else if (pago.compareTo(0.0) == 0) {
-//            // Sin pago - verificar estado comercial
-//            String leyenda = determinarLeyendaSinPago(estadoComercial);
-//            Color color = "ESPERANDO ACEPTACIÓN".equals(leyenda) ? ESPERANDO : FALTA_PAGO;
-//            aplicarEstadoVisual(ventana, leyenda, color);
-//        }
-//    }
-//
-//    public void verificarPresupuestoEditado(VentanaVisualizarEquipos ventana) {
-//        double presupuesto = monedaFormatter.parseAmountGuardar(ventana.getTextPresupuesto().getText());
-//        double pago = monedaFormatter.parseAmountGuardar(ventana.getTextPago().getText());
-//        String estadoComercial = ventana.getTextEstadoComercial().getText();
-//
-//        // Caso especial: Sin Reparación
-//        if ("Sin Reparación".equals(estadoComercial)) {
-//            aplicarEstadoVisual(ventana, "SIN REPARACIÓN", SIN_REPARACION);
-//            ventana.setChckPDFGenerado(false);
-//            return;
-//        }
-//
-//        // Sin presupuesto
-//        if (presupuesto == 0.0) {
-//            aplicarEstadoVisual(ventana, "SIN PRESUPUESTAR", SIN_PRESUPUESTAR);
-//            ventana.setChckPDFGenerado(false);
-//            return;
-//        }
-//
-//        // Caso especial: Presupuesto no aceptado
-//        if ("NO ACEPTADO".equals(estadoComercial)) {
-//            aplicarEstadoVisual(ventana, "NO ACEPTADO", NO_ACEPTADO);
-//            ventana.setChckPDFGenerado(false);
-//            return;
-//        }
-//
-//        // Hay presupuesto
-//        double diferencia = presupuesto - pago;
-//
-//        if (diferencia == 0.0) {
-//            // Totalmente pagado
-//            aplicarEstadoVisual(ventana, "PAGADO", PAGADO);
-//            ventana.setChckPDFGenerado(true);
-//        } else if (diferencia > 0.0 && pago > 0.0) {
-//            // Pago parcial
-//            aplicarEstadoVisual(ventana, "PAGADO PARCIALMENTE", PARCIAL);
-//        } else if (pago == 0.0) {
-//            // Sin pago - verificar estado comercial
-//            String leyenda = determinarLeyendaSinPago(estadoComercial);
-//            Color color = "ESPERANDO ACEPTACIÓN".equals(leyenda) ? ESPERANDO : FALTA_PAGO;
-//            aplicarEstadoVisual(ventana, leyenda, color);
-//            ventana.setChckPDFGenerado(true);
-//        }
-//    }
-//
-//    private String determinarLeyendaSinPago(String estadoComercial) {
-//        switch (estadoComercial) {
-//            case "A la Espera de Aceptación":
-//                return "ESPERANDO ACEPTACIÓN";
-//            case "Aceptado":
-//                return "FALTA PAGO";
-//            default:
-//                return "FALTA PAGO";
-//        }
-//    }
-//
-//    private void aplicarEstadoVisual(VentanaVisualizarEquipos ventana, String leyenda, Color color) {
-//        ventana.getTextEquipoPagado().setText(leyenda);
-//        ventana.getTextEquipoPagado().setVisible(true);
-//        ventana.getTextEquipoPagado().setBackground(color);
-//        ventana.getPanel_MontoPresupuesto().setBackground(color);
-//        ventana.getTextPresupuesto().setBackground(color);
-//        ventana.getTextPresupuestoDolar().setBackground(color);
-//        ventana.getTextPago().setBackground(color);
-//    }
-
-	
-	
-	
-	
-
-//	/**
-//	 * Verifica presupuesto y aplica estilos visuales
-//	 */
-//	private void verificarPresupuesto(VentanaVisualizarEquipos ventana) {
-//		Double presupuesto = reparacionActual.getPrecioPeso();
-//		Double pago = reparacionActual.getPago();
-//		String estadoComercial = ventana.getTextEstadoComercial().getText();
-//		String estadoTecnico = ventana.getTextEstadoTecnico().getText();
-//
-//		if ("Sin Reparación".equals(estadoTecnico)) {
-//			aplicarEstadoVisual(ventana, "SIN REPARACIÓN", SIN_REPARACION);
-//			return;
-//		}
-//
-//		if (presupuesto.compareTo(0.0) == 0) {
-//			aplicarEstadoVisual(ventana, "SIN PRESUPUESTAR", SIN_PRESUPUESTAR);
-//			return;
-//		}
-//
-//		if ("NO Aceptado".equals(estadoComercial)) {
-//			aplicarEstadoVisual(ventana, "NO ACEPTADO", NO_ACEPTADO);
-//			return;
-//		}
-//
-//		int comparacion = presupuesto.compareTo(pago);
-//		if (comparacion == 0) {
-//			aplicarEstadoVisual(ventana, "PAGADO", PAGADO);
-//		} else if (comparacion > 0 && pago.compareTo(0.0) > 0) {
-//			aplicarEstadoVisual(ventana, "PAGADO PARCIALMENTE", PARCIAL);
-//		} else if (pago.compareTo(0.0) == 0) {
-//			String leyenda = "A la Espera de Aceptación".equals(estadoComercial) ? "ESPERANDO ACEPTACIÓN"
-//					: "FALTA PAGO";
-//			java.awt.Color color = "ESPERANDO ACEPTACIÓN".equals(leyenda) ? ESPERANDO : FALTA_PAGO;
-//			aplicarEstadoVisual(ventana, leyenda, color);
-//		}
-//	}
-//
-//	/**
-//	 * Aplica estilo visual al panel de presupuesto
-//	 */
-//	private void aplicarEstadoVisual(VentanaVisualizarEquipos ventana, String leyenda, java.awt.Color color) {
-//		ventana.getTextEquipoPagado().setText(leyenda);
-//		ventana.getTextEquipoPagado().setVisible(true);
-//		ventana.getTextEquipoPagado().setBackground(color);
-//		ventana.getPanel_MontoPresupuesto().setBackground(color);
-//		ventana.getTextPresupuesto().setBackground(color);
-//		ventana.getTextPresupuestoDolar().setBackground(color);
-//		ventana.getTextPago().setBackground(color);
-//	}
 
 	/**
 	 * Habilita campos para edición
@@ -588,7 +421,7 @@ public class GestorVisualizacionEquipos {
 		ventana.getBtnGuardarCambios().addActionListener(e -> guardarCambios(ventana));
 
 		// Presupuesto
-		ventana.getBotonPresupuestar().addActionListener(e -> abrirPresupuesto(ventana));
+//		ventana.getBotonPresupuestar().addActionListener(e -> abrirPresupuesto(ventana));
 
 		// Búsqueda
 		ventana.getBtnBuscarELS().addActionListener(e -> buscarPorELS(ventana));
@@ -941,13 +774,36 @@ public class GestorVisualizacionEquipos {
 		agregarListenersExcel(ventanaExcel);
 
 	}
-
+	
+	
 	private void agregarListenersExcel(VentanaExcel ventanaExcel2) {
-		ventanaExcel2.getBtnRepar().addActionListener(e -> gestorExcel.abrirReparaciones());
-		ventanaExcel2.getBtnCaja().addActionListener(e -> gestorExcel.abrirCaja());
-		ventanaExcel2.getBtnDetalleGastos().addActionListener(e -> gestorExcel.abrirDetalleGastosAnioActual());
-		ventanaExcel2.getBtnAbrirTodos().addActionListener(e -> gestorExcel.abrirTodosLosArchivos());
+	    ventanaExcel2.getBtnRepar().addActionListener(e -> {
+	        gestorExcel.abrirReparaciones();
+	        ventanaExcel2.dispose(); // Cerrar aquí
+	    });
+	    
+	    ventanaExcel2.getBtnCaja().addActionListener(e -> {
+	        gestorExcel.abrirCaja();
+	        ventanaExcel2.dispose(); // Cerrar aquí
+	    });
+	    
+	    ventanaExcel2.getBtnDetalleGastos().addActionListener(e -> {
+	        gestorExcel.abrirDetalleGastosAnioActual();
+	        ventanaExcel2.dispose(); // Cerrar aquí
+	    });
+	    
+	    ventanaExcel2.getBtnAbrirTodos().addActionListener(e -> {
+	        gestorExcel.abrirTodosLosArchivos();
+	        ventanaExcel2.dispose(); // Cerrar aquí
+	    });
 	}
+
+//	private void agregarListenersExcel(VentanaExcel ventanaExcel2) {
+//		ventanaExcel2.getBtnRepar().addActionListener(e -> gestorExcel.abrirReparaciones());
+//		ventanaExcel2.getBtnCaja().addActionListener(e -> gestorExcel.abrirCaja());
+//		ventanaExcel2.getBtnDetalleGastos().addActionListener(e -> gestorExcel.abrirDetalleGastosAnioActual());
+//		ventanaExcel2.getBtnAbrirTodos().addActionListener(e -> gestorExcel.abrirTodosLosArchivos());
+//	}
 
 	/**
 	 * Cierra ventana anterior

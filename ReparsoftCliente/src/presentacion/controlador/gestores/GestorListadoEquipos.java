@@ -17,7 +17,7 @@ import presentacion.vista.VentanaVisualizarEquipos;
 import tiposPropios.MonedaFormatter;
 import com.inet.jortho.SpellChecker;
 
-import VistaPropias.GestorArchivosExcel;
+//import presentacion.controlador.gestores.GestorArchivosExcel;
 
 
 
