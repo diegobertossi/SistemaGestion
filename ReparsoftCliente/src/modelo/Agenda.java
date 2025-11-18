@@ -96,6 +96,15 @@ public class Agenda {
 		
 	}
 	
+	/**
+	 * Obtiene el correo electrónico de un técnico por su nombre completo
+	 * @param nombreCompleto Nombre completo en formato "Nombre Apellido"
+	 * @return String con el correo del técnico, o null si no se encuentra
+	 */
+	public String obtenerCorreoPorNombre(String nombreCompleto) {
+	    return usuario.correoPorNombre(nombreCompleto);
+	}
+	
 	
 
 	

@@ -200,15 +200,120 @@ public class GestorPresupuestoFactura {
         enviarAviso(ventana, correo, "¿Desea enviar el aviso de 'Equipo Terminado'?", "EQUIPO_LISTO");
     }
     
+
     /**
      * Envía aviso de respuesta del cliente
      */
     public void enviarRespuestaCliente(VentanaVisualizarEquipos ventana) {
         ReparacionDTO reparacion = controlador.getGestorVisualizacion().getReparacionActual();
-        String correo = reparacion.getCorreo();
-        enviarAviso(ventana, correo, "¿Desea enviar el aviso de 'Respuesta del Cliente'?", 
-                   "RESPUESTA_CLIENTE");
+        
+        // Obtener el nombre completo del técnico
+        String nombreCompletoTecnico = reparacion.getNombreUsuario();
+        
+        // Validar que exista un técnico asignado
+        if (nombreCompletoTecnico == null || nombreCompletoTecnico.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(ventana, 
+                "No hay un técnico asignado a este equipo.", 
+                "Advertencia", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Obtener el correo del técnico usando el método correoPorNombre
+        String correoTecnico = agenda.obtenerCorreoPorNombre(nombreCompletoTecnico);
+        
+        // Validar que se haya encontrado el correo
+        if (correoTecnico == null || correoTecnico.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(ventana, 
+                "No se encontró correo electrónico para el técnico: " + nombreCompletoTecnico, 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            
+            // Debug: mostrar información
+            System.out.println("Técnico sin correo: " + nombreCompletoTecnico);
+            System.out.println("ELS: " + reparacion.getELS());
+            System.out.println("Cliente: " + reparacion.getCliente());
+            return;
+        }
+        
+        // Debug: confirmar que se obtuvo el correo
+        System.out.println("Enviando aviso de respuesta del cliente");
+        System.out.println("Técnico: " + nombreCompletoTecnico);
+        System.out.println("Correo técnico: " + correoTecnico);
+        System.out.println("ELS: " + reparacion.getELS());
+        System.out.println("Cliente: " + reparacion.getCliente());
+        
+        // Enviar aviso con el correo del técnico
+        enviarAviso(ventana, correoTecnico, 
+            "¿Desea enviar el aviso de 'Respuesta del Cliente'?", 
+            "RESPUESTA_CLIENTE");
     }
+    
+//    /**
+//     * Envía aviso por correo
+//     */
+//    private void enviarAviso(VentanaVisualizarEquipos ventana, String correo, 
+//                            String mensaje, String tipoAviso) {
+//        int seleccion = JOptionPane.showConfirmDialog(ventana, 
+//            mensaje + " a " + correo + "?", "Confirmación", 
+//            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+//        
+//        if (seleccion != JOptionPane.YES_OPTION) return;
+//        
+//        // Dialog de procesamiento
+//        JDialog popup = new JDialog();
+//        popup.setTitle("Procesando");
+//        popup.setModal(false);
+//        popup.setSize(300, 100);
+//        popup.setLocationRelativeTo(ventana);
+//        popup.add(new JLabel("Enviando correo, espere...", SwingConstants.CENTER));
+//        
+//        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+//            @Override
+//            protected Void doInBackground() {
+//                try {
+//                    String els = ventana.getTextELS().toString();
+//                    String cliente = ventana.getTextCliente().getText();
+//                    String sucursal = ventana.getTextSucursal().getText();
+//                    ReparacionDTO reparacion = controlador.getGestorVisualizacion().getReparacionActual();
+//                    
+//                    switch (tipoAviso) {
+//                        case "RESPUESTA_CLIENTE":
+//                            mails.EnviarMail.enviarAvisoRespuestaCliente(correo, els, 
+//                                cliente, sucursal, reparacion.getEstadoComercial());
+//                            break;
+//                        case "EQUIPO_LISTO":
+//                            mails.EnviarMail.enviarAvisoEquipoTerminado(correo, els, 
+//                                cliente, sucursal);
+//                            break;
+//                        case "INFORME":
+//                            mails.EnviarMail.enviarAvisoInforme(correo, els, 
+//                                cliente, sucursal);
+//                            ventana.setChckbxAvisoEnviado(true);
+//                            break;
+//                    }
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
+//                return null;
+//            }
+//            
+//            @Override
+//            protected void done() {
+//                popup.dispose();
+////                JOptionPane.showMessageDialog(ventana, "Correo enviado correctamente.", 
+////                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+//            }
+//        };
+//        
+//        SwingUtilities.invokeLater(() -> {
+//            popup.setVisible(true);
+//            worker.execute();
+//        });
+//    }
+//    
+    
+    
     
     /**
      * Envía aviso por correo
@@ -250,7 +355,19 @@ public class GestorPresupuestoFactura {
                         case "INFORME":
                             mails.EnviarMail.enviarAvisoInforme(correo, els, 
                                 cliente, sucursal);
-                            ventana.setChckbxAvisoEnviado(true);
+                            
+                            // Marcar checkbox como enviado
+                            SwingUtilities.invokeLater(() -> {
+                                ventana.setChckbxAvisoEnviado(true);
+                            });
+                            
+                            // Actualizar el DTO con el nuevo estado
+                            reparacion.setAvisoEnviado(true);
+                            
+                            // Guardar inmediatamente en la base de datos
+                            agenda.editarReparacionR(reparacion);
+                            
+                            System.out.println("Aviso de informe marcado y guardado para ELS: " + els);
                             break;
                     }
                 } catch (Exception ex) {
@@ -262,8 +379,14 @@ public class GestorPresupuestoFactura {
             @Override
             protected void done() {
                 popup.dispose();
-                JOptionPane.showMessageDialog(ventana, "Correo enviado correctamente.", 
-                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                
+                // Refrescar la pantalla para mostrar los cambios guardados
+                if (tipoAviso.equals("INFORME")) {
+                    refrescarPantalla(ventana);
+                }
+                
+//                JOptionPane.showMessageDialog(ventana, "Correo enviado correctamente.", 
+//                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
             }
         };
         
@@ -272,6 +395,8 @@ public class GestorPresupuestoFactura {
             worker.execute();
         });
     }
+    
+    
     
     /**
      * Refresca pantalla después de operación

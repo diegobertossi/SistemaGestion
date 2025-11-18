@@ -21,6 +21,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	private static final String readallTecnico = "SELECT usuario.nombre, usuario.apellido FROM usuario where usuario.idUsuario != '1' group by usuario.apellido";
 	private static final String readallTecnicoVisualizacion = "SELECT usuario.nombre, usuario.apellido FROM usuario group by usuario.apellido";
 	private static final String IDporNombre = "Select idUsuario from usuario where nombre =? and apellido =?";
+	private static final String correoPorNombre = "SELECT email FROM usuario WHERE nombre = ? AND apellido = ?";
+
 	public static String ubicacion;
 	private Conexion conexion;;
 
@@ -291,4 +293,53 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 	}
 
+	/**
+	* Obtiene el correo electrónico de un usuario por su nombre y apellido
+	 * @param nombreCompleto Nombre completo del usuario en formato "Nombre Apellido"
+	 * @return String con el email del usuario, o null si no se encuentra
+	 */
+	@Override
+	public String correoPorNombre(String nombreCompleto) {
+	    PreparedStatement statement;
+	    ResultSet resultSet;
+	    String email = null;
+	    
+	    // Validar que el parámetro no esté vacío
+	    if (nombreCompleto == null || nombreCompleto.trim().isEmpty()) {
+	        return null;
+	    }
+	    
+	    try {
+	        // Dividir el nombre completo en nombre y apellido
+	        String[] partes = nombreCompleto.trim().split(" ", 2); // Limitar a 2 partes
+	        
+	        if (partes.length < 2) {
+	            System.out.println("Formato incorrecto. Se esperaba 'Nombre Apellido'");
+	            return null;
+	        }
+	        
+	        String nombre = partes[0];
+	        String apellido = partes[1];
+	        
+	        // Preparar y ejecutar la consulta
+	        statement = conexion.getSQLConexion().prepareStatement(correoPorNombre);
+	        statement.setString(1, nombre);
+	        statement.setString(2, apellido);
+	        resultSet = statement.executeQuery();
+	        
+	        // Obtener el resultado
+	        if (resultSet.next()) {
+	            email = resultSet.getString("email");
+	        }
+	        
+	    } catch (SQLException e) {
+	        System.err.println("Error al obtener correo del usuario: " + nombreCompleto);
+	        e.printStackTrace();
+	    } finally {
+	        conexion.cerrarConexion();
+	    }
+	    
+	    return email;
+	}
+	
 }

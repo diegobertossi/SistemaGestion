@@ -28,4 +28,7 @@ public interface UsuarioDAO
 	
 	@SuppressWarnings("rawtypes")
 	public void comboFiltroTecnicosV(JComboBox comboTecnico);
+
+
+	public String correoPorNombre(String nombreCompleto);
 }
