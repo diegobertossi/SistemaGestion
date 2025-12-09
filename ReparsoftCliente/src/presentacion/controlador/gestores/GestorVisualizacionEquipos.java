@@ -39,6 +39,7 @@ import com.inet.jortho.SpellChecker;
 
 //import presentacion.controlador.gestores.GestorArchivosExcel;
 import dto.ClienteDTO;
+import dto.RegistroEntradaReporteDTO;
 import dto.SucursalDTO;
 import dto.UsuarioDTO;
 import dto.ReparacionDTO;
@@ -46,6 +47,7 @@ import dto.RepuestosDTO;
 import modelo.Agenda;
 import presentacion.controlador.ControladorReparacion;
 import presentacion.controlador.ControladorUsuLogin;
+import presentacion.reportes.ReporteRegistroEntrada;
 import presentacion.vista.VentanaBusquedaEquipo;
 import presentacion.vista.VentanaExcel;
 import presentacion.vista.VentanaVisualizarEquipos;
@@ -88,8 +90,6 @@ public class GestorVisualizacionEquipos {
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 	private DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-
-    
 	/**
 	 * Constructor
 	 */
@@ -121,7 +121,7 @@ public class GestorVisualizacionEquipos {
 			SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
 
 			try {
-				cargarDatosEquipo(ventanaVisualizarEquipos, els);
+				cargarDatosEquipo(ventanaVisualizarEquipos, elsActual);
 				agregarListeners(ventanaVisualizarEquipos);
 				llenarComboELS(ventanaVisualizarEquipos);
 				controlador.setVentanaVisualizarEquipos(ventanaVisualizarEquipos);
@@ -168,10 +168,9 @@ public class GestorVisualizacionEquipos {
 		llenarTablaRepuestos(ventana);
 
 		// Verificar presupuesto y aplicar estilos
-		 //verificarPresupuesto(ventana);
+		// verificarPresupuesto(ventana);
 		gestorInterfaz.verificarPresupuesto(ventana);
-		 
-		 
+
 		// Deshabilitar campos (modo lectura)
 		deshabilitarCampos(ventana);
 	}
@@ -359,8 +358,6 @@ public class GestorVisualizacionEquipos {
 			return false;
 		}
 	}
-	
-	
 
 	/**
 	 * Habilita campos para edición
@@ -377,15 +374,14 @@ public class GestorVisualizacionEquipos {
 	 */
 	public void guardarCambios(VentanaVisualizarEquipos ventana) {
 		ReparacionDTO reparacionAeditar = gestorDatos.extraerDatos(ventana, reparacionActual);
-		
-		//mostrar en consola los datos extraidos
-		
+
+		// mostrar en consola los datos extraidos
+
 		System.out.println("Datos extraidos para guardar:");
 		System.out.println(reparacionAeditar.getCliente());
 		System.out.println(reparacionAeditar.getNombreUsuario());
 		System.out.println(reparacionAeditar.getELS());
-		
-		
+
 		if (reparacionAeditar != null) {
 			agenda.editarReparacionR(reparacionAeditar);
 			guardado = true;
@@ -437,11 +433,11 @@ public class GestorVisualizacionEquipos {
 
 		// Facturación
 		ventana.getBtnfacturar().addActionListener(e -> controlador.getGestorPresupuesto().abrirFacturacion(ventana));
-//            
-//            // Registro de ingreso
-//            ventanaVisualizarEquipos.getBotonRegistroIngreso().addActionListener(e -> 
-//                generarRegistroIngreso(ventanaVisualizarEquipos));
-//            
+
+		// Registro de ingreso
+		ventanaVisualizarEquipos.getBotonRegistroIngreso()
+				.addActionListener(e -> generarRegistroIngreso(ventanaVisualizarEquipos));
+
 //            // Correo WSP
 //            ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(e -> 
 //                abrirEnviarCorreoWSP(ventanaVisualizarEquipos));
@@ -504,6 +500,25 @@ public class GestorVisualizacionEquipos {
 		AutoCompleteDecorator.decorate(ventana.getComboELS());
 		gestorInterfaz.agregarListenersPrecios(ventana);
 		gestorInterfaz.agregarFocusListeners(ventana);
+	}
+
+	private void generarRegistroIngreso(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+
+		try {
+			List<RegistroEntradaReporteDTO> lista = new ArrayList<>();
+			RegistroEntradaReporteDTO rep = gestorDatos.extraerRegistroIngreso(ventanaVisualizarEquipos, 1, 1);
+
+			if (rep != null) {
+				lista.add(rep);
+				ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista, agenda);
+				reporte.mostrar();
+				reporte.guardar();
+			}
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "Error al generar registro: " + ex.getMessage(), "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
 	}
 
 	/**
@@ -603,112 +618,106 @@ public class GestorVisualizacionEquipos {
 		}
 	}
 
-	
-	
-	
-	
 	/**
-	 * Llena combo de clientes manteniendo la selección actual basada en el texto del campo
-	 * y configura el listener para llenar automáticamente las sucursales
+	 * Llena combo de clientes manteniendo la selección actual basada en el texto
+	 * del campo y configura el listener para llenar automáticamente las sucursales
 	 */
 	private void llenarComboClientes(VentanaVisualizarEquipos ventana) {
-	    JComboBox<ClienteDTO> comboClientes = ventana.getComboClientes();
-	    
-	    // Remover listeners existentes temporalmente para evitar conflictos
-	    ItemListener[] listeners = comboClientes.getItemListeners();
-	    for (ItemListener listener : listeners) {
-	        comboClientes.removeItemListener(listener);
-	    }
-	    
-	    // 1. Obtener el texto actual del campo de cliente (modo visualización)
-	    String textoClienteActual = ventana.getTextCliente().getText().trim();
-	    
-	    // 2. Actualizar la lista de clientes en el combo
-	    agenda.ListarCliente(comboClientes);
-	    
-	    // 3. Buscar y seleccionar el cliente que coincide con el texto actual
-	    boolean seleccionEncontrada = false;
-	    ClienteDTO clienteSeleccionado = null;
-	    
-	    if (!textoClienteActual.isEmpty()) {
-	        DefaultComboBoxModel<ClienteDTO> model = (DefaultComboBoxModel<ClienteDTO>) comboClientes.getModel();
-	        
-	        for (int i = 0; i < model.getSize(); i++) {
-	            ClienteDTO cliente = model.getElementAt(i);
-	            if (cliente != null && cliente.getRazon_Social() != null) {
-	                // Comparar el nombre del cliente con el texto del campo
-	                if (cliente.getRazon_Social().equalsIgnoreCase(textoClienteActual)) {
-	                    comboClientes.setSelectedIndex(i);
-	                    clienteSeleccionado = cliente;
-	                    seleccionEncontrada = true;
-	                    break;
-	                }
-	            }
-	        }
-	    }
-	    
-	    // 4. Si no se encontró coincidencia, dejar el combo sin selección
-	    if (!seleccionEncontrada) {
-	        comboClientes.setSelectedIndex(-1);
-	    }
-	    
-	    // 5. Agregar el listener para el cambio de cliente (llenado de sucursales)
-	    comboClientes.addItemListener(new ItemListener() {
-	        @SuppressWarnings("unchecked")
-	        @Override
-	        public void itemStateChanged(ItemEvent e) {
-	            if (e.getStateChange() == ItemEvent.SELECTED && 
-	                ventana.getComboClientes().getSelectedItem() != null) {
-	                
-	                ClienteDTO cliente = (ClienteDTO) ventana.getComboClientes().getSelectedItem();
-	                int id = cliente.getId();
-	                
-	                // Llenar combo de sucursales para el cliente seleccionado
-	                agenda.ListarSucursalesxCliente(ventana.getComboSucursal(), id);
-	                
-	                // Seleccionar automáticamente la sucursal basada en el texto del JTextField
-	                String nombreSucursal = ventana.getTextSucursal().getText();
-	                if (nombreSucursal != null && !nombreSucursal.trim().isEmpty()) {
-	                    DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) 
-	                        ventana.getComboSucursal().getModel();
-	                    
-	                    for (int i = 0; i < modelSucursal.getSize(); i++) {
-	                        SucursalDTO sucursal = modelSucursal.getElementAt(i);
-	                        if (sucursal != null && sucursal.getNombreSucursal() != null &&
-	                            sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal.trim())) {
-	                            ventana.getComboSucursal().setSelectedItem(sucursal);
-	                            break;
-	                        }
-	                    }
-	                }
-	            }
-	        }
-	    });
-	    
-	    // 6. Si se encontró un cliente, disparar el evento para llenar las sucursales
-	    if (clienteSeleccionado != null) {
-	        // Disparar el evento manualmente para llenar las sucursales
-	        agenda.ListarSucursalesxCliente(ventana.getComboSucursal(), clienteSeleccionado.getId());
-	        
-	        // Seleccionar la sucursal correspondiente
-	        String nombreSucursal = ventana.getTextSucursal().getText();
-	        if (nombreSucursal != null && !nombreSucursal.trim().isEmpty()) {
-	            DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) 
-	                ventana.getComboSucursal().getModel();
-	            
-	            for (int i = 0; i < modelSucursal.getSize(); i++) {
-	                SucursalDTO sucursal = modelSucursal.getElementAt(i);
-	                if (sucursal != null && sucursal.getNombreSucursal() != null &&
-	                    sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal.trim())) {
-	                    ventana.getComboSucursal().setSelectedItem(sucursal);
-	                    break;
-	                }
-	            }
-	        }
-	    }
+		JComboBox<ClienteDTO> comboClientes = ventana.getComboClientes();
+
+		// Remover listeners existentes temporalmente para evitar conflictos
+		ItemListener[] listeners = comboClientes.getItemListeners();
+		for (ItemListener listener : listeners) {
+			comboClientes.removeItemListener(listener);
+		}
+
+		// 1. Obtener el texto actual del campo de cliente (modo visualización)
+		String textoClienteActual = ventana.getTextCliente().getText().trim();
+
+		// 2. Actualizar la lista de clientes en el combo
+		agenda.ListarCliente(comboClientes);
+
+		// 3. Buscar y seleccionar el cliente que coincide con el texto actual
+		boolean seleccionEncontrada = false;
+		ClienteDTO clienteSeleccionado = null;
+
+		if (!textoClienteActual.isEmpty()) {
+			DefaultComboBoxModel<ClienteDTO> model = (DefaultComboBoxModel<ClienteDTO>) comboClientes.getModel();
+
+			for (int i = 0; i < model.getSize(); i++) {
+				ClienteDTO cliente = model.getElementAt(i);
+				if (cliente != null && cliente.getRazon_Social() != null) {
+					// Comparar el nombre del cliente con el texto del campo
+					if (cliente.getRazon_Social().equalsIgnoreCase(textoClienteActual)) {
+						comboClientes.setSelectedIndex(i);
+						clienteSeleccionado = cliente;
+						seleccionEncontrada = true;
+						break;
+					}
+				}
+			}
+		}
+
+		// 4. Si no se encontró coincidencia, dejar el combo sin selección
+		if (!seleccionEncontrada) {
+			comboClientes.setSelectedIndex(-1);
+		}
+
+		// 5. Agregar el listener para el cambio de cliente (llenado de sucursales)
+		comboClientes.addItemListener(new ItemListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED && ventana.getComboClientes().getSelectedItem() != null) {
+
+					ClienteDTO cliente = (ClienteDTO) ventana.getComboClientes().getSelectedItem();
+					int id = cliente.getId();
+
+					// Llenar combo de sucursales para el cliente seleccionado
+					agenda.ListarSucursalesxCliente(ventana.getComboSucursal(), id);
+
+					// Seleccionar automáticamente la sucursal basada en el texto del JTextField
+					String nombreSucursal = ventana.getTextSucursal().getText();
+					if (nombreSucursal != null && !nombreSucursal.trim().isEmpty()) {
+						DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventana
+								.getComboSucursal().getModel();
+
+						for (int i = 0; i < modelSucursal.getSize(); i++) {
+							SucursalDTO sucursal = modelSucursal.getElementAt(i);
+							if (sucursal != null && sucursal.getNombreSucursal() != null
+									&& sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal.trim())) {
+								ventana.getComboSucursal().setSelectedItem(sucursal);
+								break;
+							}
+						}
+					}
+				}
+			}
+		});
+
+		// 6. Si se encontró un cliente, disparar el evento para llenar las sucursales
+		if (clienteSeleccionado != null) {
+			// Disparar el evento manualmente para llenar las sucursales
+			agenda.ListarSucursalesxCliente(ventana.getComboSucursal(), clienteSeleccionado.getId());
+
+			// Seleccionar la sucursal correspondiente
+			String nombreSucursal = ventana.getTextSucursal().getText();
+			if (nombreSucursal != null && !nombreSucursal.trim().isEmpty()) {
+				DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventana
+						.getComboSucursal().getModel();
+
+				for (int i = 0; i < modelSucursal.getSize(); i++) {
+					SucursalDTO sucursal = modelSucursal.getElementAt(i);
+					if (sucursal != null && sucursal.getNombreSucursal() != null
+							&& sucursal.getNombreSucursal().equalsIgnoreCase(nombreSucursal.trim())) {
+						ventana.getComboSucursal().setSelectedItem(sucursal);
+						break;
+					}
+				}
+			}
+		}
 	}
-	
-	
+
 	/**
 	 * Llena combo de técnicos manteniendo la selección actual basada en el texto
 	 * del campo
@@ -774,28 +783,27 @@ public class GestorVisualizacionEquipos {
 		agregarListenersExcel(ventanaExcel);
 
 	}
-	
-	
+
 	private void agregarListenersExcel(VentanaExcel ventanaExcel2) {
-	    ventanaExcel2.getBtnRepar().addActionListener(e -> {
-	        gestorExcel.abrirReparaciones();
-	        ventanaExcel2.dispose(); // Cerrar aquí
-	    });
-	    
-	    ventanaExcel2.getBtnCaja().addActionListener(e -> {
-	        gestorExcel.abrirCaja();
-	        ventanaExcel2.dispose(); // Cerrar aquí
-	    });
-	    
-	    ventanaExcel2.getBtnDetalleGastos().addActionListener(e -> {
-	        gestorExcel.abrirDetalleGastosAnioActual();
-	        ventanaExcel2.dispose(); // Cerrar aquí
-	    });
-	    
-	    ventanaExcel2.getBtnAbrirTodos().addActionListener(e -> {
-	        gestorExcel.abrirTodosLosArchivos();
-	        ventanaExcel2.dispose(); // Cerrar aquí
-	    });
+		ventanaExcel2.getBtnRepar().addActionListener(e -> {
+			gestorExcel.abrirReparaciones();
+			ventanaExcel2.dispose(); // Cerrar aquí
+		});
+
+		ventanaExcel2.getBtnCaja().addActionListener(e -> {
+			gestorExcel.abrirCaja();
+			ventanaExcel2.dispose(); // Cerrar aquí
+		});
+
+		ventanaExcel2.getBtnDetalleGastos().addActionListener(e -> {
+			gestorExcel.abrirDetalleGastosAnioActual();
+			ventanaExcel2.dispose(); // Cerrar aquí
+		});
+
+		ventanaExcel2.getBtnAbrirTodos().addActionListener(e -> {
+			gestorExcel.abrirTodosLosArchivos();
+			ventanaExcel2.dispose(); // Cerrar aquí
+		});
 	}
 
 //	private void agregarListenersExcel(VentanaExcel ventanaExcel2) {
