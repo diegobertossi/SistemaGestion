@@ -277,119 +277,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
 	}
 
 	
-
-//	private boolean GenerarBackupMySQLRemoto(String ubicacion, String cleverCloudHost, String cleverCloudPort,
-//			String cleverCloudUser, String cleverCloudPassword, String cleverCloudDatabase) {
-//
-//		ventanaBackUp.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-//		ventanaBackUp.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-//		ventanaBackUp.getBtnGenerarB().setEnabled(false);
-//		ventanaBackUp.getBtnImportarB().setEnabled(false);
-//
-//		PopupProgresoBackup popup = new PopupProgresoBackup(ventanaBackUp, "Generando backup remoto, espere...");
-//		popup.mostrar();
-//
-//		SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
-//			@Override
-//			protected Void doInBackground() {
-//				String archivoTemporal = null;
-//				try {
-//					String nombreBaseLocal = (ubicacion.equalsIgnoreCase("Bariloche")) ? "ordenesbrc" : "ordenesbsas";
-//					archivoTemporal = System.getProperty("java.io.tmpdir") + File.separator + "backup_"
-//							+ nombreBaseLocal + "_" + System.currentTimeMillis() + ".sql";
-//
-//					// 1. Crear dump local
-//					List<String> comando = Arrays.asList("C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysqldump",
-//							"--host=localhost", "--port=3306", "--user=root", "--password=root", "--single-transaction",
-//							"--routines", "--triggers", "--no-create-db", nombreBaseLocal);
-//					ProcessBuilder pb = new ProcessBuilder(comando);
-//					pb.redirectOutput(new File(archivoTemporal));
-//					Process proceso = pb.start();
-//					int codigoSalida = proceso.waitFor();
-//					if (codigoSalida != 0) {
-//						JOptionPane.showMessageDialog(null, "Error al crear el archivo de backup local.");
-//						return null;
-//					}
-//
-//					// 2. Leer sentencias SQL del dump
-//					List<String> sentencias = parseSqlStatements(archivoTemporal);
-//					int totalSentencias = sentencias.size();
-//					int sentenciasEjecutadas = 0;
-//					int sentenciasIgnoradas = 0;
-//
-//					// 3. Conectar a Clever Cloud y limpiar base remota
-//					String urlCleverCloud = String.format(
-//							"jdbc:mysql://%s:%s/%s?useSSL=false&allowPublicKeyRetrieval=true", cleverCloudHost,
-//							cleverCloudPort, cleverCloudDatabase);
-//					try (Connection conexionRemota = DriverManager.getConnection(urlCleverCloud, cleverCloudUser,
-//							cleverCloudPassword); java.sql.Statement stmt = conexionRemota.createStatement()) {
-//
-//						limpiarBaseDatos(conexionRemota);
-//						stmt.execute("SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
-//
-//						// 4. Ejecutar sentencias y actualizar progreso
-//						for (int i = 0; i < totalSentencias; i++) {
-//							String s = sentencias.get(i).trim();
-//							if (s.isEmpty() || s.startsWith("/*") || s.startsWith("--")
-//									|| s.toUpperCase().startsWith("CREATE DATABASE")
-//									|| s.toUpperCase().startsWith("USE ")
-//									|| s.toUpperCase().startsWith("DROP DATABASE")) {
-//								sentenciasIgnoradas++;
-//								continue;
-//							}
-//							try {
-//								stmt.execute(s);
-//								sentenciasEjecutadas++;
-//							} catch (SQLException e) {
-//								if (!e.getMessage().contains("Access denied")) {
-//									System.err.println("Error menor en sentencia (ignorado): " + e.getMessage());
-//								}
-//								sentenciasIgnoradas++;
-//							}
-//							int progreso = (int) (((i + 1) * 100.0) / totalSentencias);
-//							publish(progreso);
-//						}
-//					}
-//
-//					JOptionPane.showMessageDialog(null, "Backup remoto completado exitosamente", "Backup Exitoso",
-//							JOptionPane.INFORMATION_MESSAGE);
-//
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//					JOptionPane.showMessageDialog(null, "Error durante el backup remoto: " + e.getMessage(),
-//							"Error en Backup", JOptionPane.ERROR_MESSAGE);
-//				} finally {
-//					// Borra el archivo temporal
-//					if (archivoTemporal != null) {
-//						new File(archivoTemporal).delete();
-//					}
-//				}
-//				return null;
-//			}
-//
-//			@Override
-//			protected void process(java.util.List<Integer> chunks) {
-//				int ultimo = chunks.get(chunks.size() - 1);
-//				popup.actualizarProgreso(ultimo);
-//			}
-//
-//			@Override
-//			protected void done() {
-//				popup.cerrar();
-//				ventanaBackUp.getGlassPane().setVisible(false);
-//				ventanaBackUp.getBtnGenerarB().setEnabled(true);
-//				ventanaBackUp.getBtnImportarB().setEnabled(true);
-//			}
-//		};
-//
-//		SwingUtilities.invokeLater(() -> {
-//
-//			worker.execute();
-//		});
-//
-//		return true;
-//	}
-	
 	
 	private boolean GenerarBackupMySQLRemoto(String ubicacion, String cleverCloudHost, String cleverCloudPort,
 	        String cleverCloudUser, String cleverCloudPassword, String cleverCloudDatabase) {
@@ -415,7 +302,13 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 	                // 1. Crear dump local
 	                System.out.println("Creando dump de la base de datos local...");
-	                List<String> comando = Arrays.asList("C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysqldump",
+	                String mysqlPath = obtenerRutaMySQL();
+	                if (mysqlPath == null) {
+	                    JOptionPane.showMessageDialog(null, "No se pudo encontrar la ruta de MySQL. Verifique la instalación.");
+	                    return null;
+	                }
+	                
+	                List<String> comando = Arrays.asList(mysqlPath + "mysqldump",
 	                        "--host=localhost", "--port=3306", "--user=root", "--password=root", "--single-transaction",
 	                        "--routines", "--triggers", "--no-create-db", nombreBaseLocal);
 	                ProcessBuilder pb = new ProcessBuilder(comando);
@@ -869,8 +762,14 @@ public class ControladorBackup implements ActionListener, MouseListener {
 						File nombrebackup = archivoBackup.getSelectedFile();
 						long tamañoArchivo = nombrebackup.length();
 
-						Process p = Runtime.getRuntime().exec(
-								"C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysql -uroot -proot ordenesbrc");
+						String mysqlPath = obtenerRutaMySQL();
+						if (mysqlPath == null) {
+							JOptionPane.showMessageDialog(null, "No se pudo encontrar la ruta de MySQL. Verifique la instalación.");
+							return null;
+						}
+
+						String nombreBaseLocal = (agenda.getUbicacionBase().equalsIgnoreCase("Bariloche")) ? "ordenesbrc" : "ordenesbsas";
+						Process p = Runtime.getRuntime().exec(mysqlPath + "mysql -uroot -proot " + nombreBaseLocal);
 
 						try (OutputStream os = p.getOutputStream();
 								FileInputStream fis = new FileInputStream(nombrebackup)) {
@@ -941,8 +840,15 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 					String nombreBaseLocal = (agenda.getUbicacionBase().equalsIgnoreCase("Bariloche")) ? "ordenesbrc"
 							: "ordenesbsas";
+					
+					String mysqlPath = obtenerRutaMySQL();
+					if (mysqlPath == null) {
+						JOptionPane.showMessageDialog(null, "No se pudo encontrar la ruta de MySQL. Verifique la instalación.");
+						return null;
+					}
+
 					Process child = Runtime.getRuntime().exec(
-							"C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysqldump --opt --password=root --user=root --databases "
+							mysqlPath + "mysqldump --opt --password=root --user=root --databases "
 									+ nombreBaseLocal);
 
 					// Contar líneas totales para el progreso
@@ -954,7 +860,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 					// Volver a ejecutar el proceso para escribir el archivo y mostrar progreso
 					child = Runtime.getRuntime().exec(
-							"C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\mysqldump --opt --password=root --user=root --databases "
+							mysqlPath + "mysqldump --opt --password=root --user=root --databases "
 									+ nombreBaseLocal);
 					try (BufferedReader br = new BufferedReader(new InputStreamReader(child.getInputStream()));
 							FileWriter fw = new FileWriter(backupFile)) {
@@ -1002,6 +908,60 @@ public class ControladorBackup implements ActionListener, MouseListener {
 			worker.execute();
 		});
 
+	}
+
+	/**
+	 * Método para obtener dinámicamente la ruta de instalación de MySQL
+	 * Busca en los archivos ejecutorMysql_32 y ejecutorMysql_64 en las rutas comunes
+	 * @return La ruta de MySQL con la unidad correcta, o null si no se encuentra
+	 */
+	/**
+	 * Método para obtener dinámicamente la ruta de instalación de MySQL
+	 * Verifica la existencia de las rutas comunes de MySQL Server 5.5
+	 * @return La ruta de MySQL con la unidad correcta, o null si no se encuentra
+	 */
+	private String obtenerRutaMySQL() {
+	    // Rutas posibles de MySQL Server 5.5
+	    String[] rutasMySQL = {
+	        "C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\",
+	        "C:\\Program Files (x86)\\MySQL\\MySQL Server 5.5\\bin\\", 
+	        "F:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\",
+	        "F:\\Program Files (x86)\\MySQL\\MySQL Server 5.5\\bin\\",
+	        "D:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\",
+	        "D:\\Program Files (x86)\\MySQL\\MySQL Server 5.5\\bin\\",
+	        "E:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\",
+	        "E:\\Program Files (x86)\\MySQL\\MySQL Server 5.5\\bin\\"
+	    };
+	    
+	    // Archivos ejecutables que deben existir en la ruta de MySQL
+	    String[] archivosMySQL = {"mysql.exe", "mysqldump.exe"};
+	    
+	    for (String rutaMySQL : rutasMySQL) {
+	        boolean rutaValida = true;
+	        
+	        // Verificar que todos los archivos necesarios existan
+	        for (String archivo : archivosMySQL) {
+	            File archivoCompleto = new File(rutaMySQL + archivo);
+	            if (!archivoCompleto.exists()) {
+	                rutaValida = false;
+	                break;
+	            }
+	        }
+	        
+	        if (rutaValida) {
+	            System.out.println("Ruta de MySQL encontrada: " + rutaMySQL);
+	            return rutaMySQL;
+	        }
+	    }
+	    
+	    // Si no se encuentra ninguna ruta válida
+	    System.err.println("No se encontró una instalación válida de MySQL Server 5.5.");
+	    JOptionPane.showMessageDialog(null, 
+	        "No se pudo encontrar la instalación de MySQL Server 5.5.\n" +
+	        "Verifique que MySQL esté instalado correctamente.", 
+	        "Error - MySQL no encontrado", 
+	        JOptionPane.ERROR_MESSAGE);
+	    return null;
 	}
 
 
