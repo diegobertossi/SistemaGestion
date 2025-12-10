@@ -464,7 +464,6 @@ public class GestorVisualizacionEquipos {
 				.addActionListener(e -> controlador.getGestorPresupuesto().enviarRespuestaCliente(ventana));
 
 		// Repuestos
-	//ventana.getBtnRepuestos().addActionListener(e -> gestorRepuestos.abrirVentanaRepuestos(ventana));
 		
 		ventana.getBtnRepuestos().addActionListener(e -> controlador.getGestorRepuestos().abrirVentanaRepuestos(ventana));
 		ventana.getBtnEditarRepuesto().addActionListener(e -> controlador.getGestorRepuestos().editarRepuesto(ventana));
@@ -514,6 +513,10 @@ public class GestorVisualizacionEquipos {
 			}
 
 		});
+		
+		
+		
+		
 		
 
 		AutoCompleteDecorator.decorate(ventana.getComboELS());
