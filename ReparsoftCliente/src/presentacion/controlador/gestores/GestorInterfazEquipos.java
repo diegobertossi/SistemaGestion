@@ -92,6 +92,7 @@ public class GestorInterfazEquipos {
         ventana.getBotonEditarEstados().setEnabled(true);
         ventana.getBtnRepuestos().setEnabled(true);
         ventana.getBtnEliminarRepuesto().setEnabled(true);
+        ventana.getTablaRepuestos().setEnabled(true);
         
         // Mostrar combos, ocultar textos
         ventana.getTextCliente().setVisible(false);
@@ -129,7 +130,7 @@ public class GestorInterfazEquipos {
         ventana.getBtnRepuestos().setEnabled(false);
         ventana.getBtnEliminarRepuesto().setEnabled(false);
         ventana.getBtnEditarRepuesto().setEnabled(false);
-        
+        ventana.getTablaRepuestos().setEnabled(false);
         // Mostrar textos, ocultar combos
         ventana.getTextCliente().setVisible(true);
         ventana.getTextSucursal().setVisible(true);

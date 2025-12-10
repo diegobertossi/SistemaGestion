@@ -75,6 +75,7 @@ public class GestorVisualizacionEquipos {
 	private GestorInterfazEquipos gestorInterfaz;
 	private GestorEstadosPresupuestos gestorEstados;
 	private GestorArchivosExcel gestorExcel;
+	
 
 	// ==== DATOS ====
 	private ReparacionDTO reparacionActual;
@@ -105,6 +106,7 @@ public class GestorVisualizacionEquipos {
 		this.gestorDatos = new GestorDatos(agenda);
 		this.gestorInterfaz = new GestorInterfazEquipos();
 		this.gestorEstados = new GestorEstadosPresupuestos();
+		
 	}
 
 	/**
@@ -257,7 +259,7 @@ public class GestorVisualizacionEquipos {
 	/**
 	 * Llena la tabla de repuestos del equipo
 	 */
-	void llenarTablaRepuestos(VentanaVisualizarEquipos ventana) {
+	public void llenarTablaRepuestos(VentanaVisualizarEquipos ventana) {
 		DefaultTableModel modelo = ventana.getModelRepuestos();
 		modelo.setRowCount(0);
 
@@ -450,15 +452,6 @@ public class GestorVisualizacionEquipos {
 		// Remito
 		ventana.getBtnGenerarRemito().addActionListener(e -> controlador.getGestorPresupuesto().generarRemito(ventana));
 
-//            // Repuestos
-//            ventana.getBtnRepuestos().addActionListener(e -> 
-//                controlador.getGestorRepuestos().abrirVentanaRepuestos(ventana));
-//            
-//            ventana.getBtnEditarRepuesto().addActionListener(e -> 
-//                controlador.getGestorRepuestos().editarRepuesto(ventana));
-//            
-//            ventana.getBtnEliminarRepuesto().addActionListener(e -> 
-//                controlador.getGestorRepuestos().eliminarRepuesto(ventana));
 
 		// Avisos
 		ventana.getBotonAvisoInforme()
@@ -471,13 +464,15 @@ public class GestorVisualizacionEquipos {
 				.addActionListener(e -> controlador.getGestorPresupuesto().enviarRespuestaCliente(ventana));
 
 		// Repuestos
-		ventana.getBtnRepuestos().addActionListener(e -> abrirRepuestos(ventana));
-		ventana.getBtnEditarRepuesto().addActionListener(e -> editarRepuesto(ventana));
-		ventana.getBtnEliminarRepuesto().addActionListener(e -> eliminarRepuesto(ventana));
+	//ventana.getBtnRepuestos().addActionListener(e -> gestorRepuestos.abrirVentanaRepuestos(ventana));
+		
+		ventana.getBtnRepuestos().addActionListener(e -> controlador.getGestorRepuestos().abrirVentanaRepuestos(ventana));
+		ventana.getBtnEditarRepuesto().addActionListener(e -> controlador.getGestorRepuestos().editarRepuesto(ventana));
+		ventana.getBtnEliminarRepuesto().addActionListener(e -> controlador.getGestorRepuestos().eliminarRepuesto(ventana));
 		ventana.getTablaRepuestos().addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				seleccionarRepuesto(ventana, e);
+				//seleccionarRepuesto(ventana, e);
 			}
 
 			@Override
@@ -496,6 +491,30 @@ public class GestorVisualizacionEquipos {
 			public void mouseExited(MouseEvent e) {
 			}
 		});
+		
+		ventanaVisualizarEquipos.getTablaRepuestos().addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				controlador.getGestorRepuestos().habilitarEdicionRepuestos(ventanaVisualizarEquipos, e);
+
+			}
+
+		});
+		
 
 		AutoCompleteDecorator.decorate(ventana.getComboELS());
 		gestorInterfaz.agregarListenersPrecios(ventana);
@@ -563,60 +582,7 @@ public class GestorVisualizacionEquipos {
 		}
 	}
 
-	/**
-	 * Abre gestor de repuestos
-	 */
-	private void abrirRepuestos(VentanaVisualizarEquipos ventana) {
-		// Delegar a GestorRepuestos
-		controlador.getGestorRepuestos().abrirVentanaRepuestos(ventana);
-	}
 
-	/**
-	 * Selecciona repuesto de la tabla
-	 */
-	private void seleccionarRepuesto(VentanaVisualizarEquipos ventana, MouseEvent e) {
-		int fila = ventana.getTablaRepuestos().getSelectedRow();
-		if (fila >= 0 && fila < repuestosEnTabla.size()) {
-			// Repuesto seleccionado
-		}
-	}
-
-	/**
-	 * Edita repuesto seleccionado
-	 */
-	private void editarRepuesto(VentanaVisualizarEquipos ventana) {
-		int fila = ventana.getTablaRepuestos().getSelectedRow();
-		if (fila < 0) {
-			JOptionPane.showMessageDialog(null, "Seleccione un repuesto", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-
-		// Obtener datos de la tabla
-		RepuestosDTO repuesto = repuestosEnTabla.get(fila);
-		// Actualizar repuesto en BD
-		agenda.editarRepuesto(repuesto);
-		llenarTablaRepuestos(ventana);
-	}
-
-	/**
-	 * Elimina repuesto seleccionado
-	 */
-	private void eliminarRepuesto(VentanaVisualizarEquipos ventana) {
-		int fila = ventana.getTablaRepuestos().getSelectedRow();
-		if (fila < 0) {
-			JOptionPane.showMessageDialog(null, "Seleccione un repuesto", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-
-		int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar este repuesto?",
-				"Confirmación", JOptionPane.YES_NO_OPTION);
-
-		if (confirmacion == JOptionPane.YES_OPTION) {
-			RepuestosDTO repuesto = repuestosEnTabla.get(fila);
-			agenda.borraRepuesto(repuesto);
-			llenarTablaRepuestos(ventana);
-		}
-	}
 
 	/**
 	 * Llena combo de clientes manteniendo la selección actual basada en el texto
@@ -839,6 +805,9 @@ public class GestorVisualizacionEquipos {
 			});
 		}
 	}
+	
+	
+	
 
 	/**
 	 * Procesa eventos delegados de ActionListener

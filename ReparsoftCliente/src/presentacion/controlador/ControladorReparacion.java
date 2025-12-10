@@ -292,7 +292,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
     
     @Override
     public void keyReleased(KeyEvent e) {
-        gestorRepuestos.keyReleased(e);
+       // gestorRepuestos.keyReleased(e);
     }
     
     @Override

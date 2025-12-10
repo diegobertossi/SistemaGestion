@@ -32,6 +32,7 @@ public class GestorRepuestos {
     private VentanaAgregarRepuesto ventanaAgregarRepuesto;
     
     private RepuestosDTO repuestoSeleccionado;
+    private List<RepuestosDTO> repuestosEnTabla;
     private List<String> caracteresNoValidos = new ArrayList<>();
     
     /**
@@ -40,6 +41,7 @@ public class GestorRepuestos {
     public GestorRepuestos(ControladorReparacion controlador, Agenda agenda) {
         this.controlador = controlador;
         this.agenda = agenda;
+        this.repuestosEnTabla = new ArrayList<>();
     }
     
     /**
@@ -97,8 +99,14 @@ public class GestorRepuestos {
      * Edita repuesto seleccionado
      */
     public void editarRepuesto(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+    	System.out.println("Editar repuesto llamado");
+    	
+    	int i = ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow();
+    	repuestosEnTabla = controlador.getGestorVisualizacion().getRepuestosEnTabla();
+    	repuestoSeleccionado = repuestosEnTabla.get(i);
+    	
         int fila = ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow();
-        
+        System.out.println(fila);
         if (fila < 0) {
             JOptionPane.showMessageDialog(null, "Seleccione un repuesto para editar.", 
                 "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -117,6 +125,8 @@ public class GestorRepuestos {
                 repuestoSeleccionado.setOriginal(original);
                 repuestoSeleccionado.setReemplazo(reemplazo);
                 repuestoSeleccionado.setNotas(notas);
+                
+                System.out.println("Repuesto a editar: " + repuestoSeleccionado.getNotas() + " " + repuestoSeleccionado.getRef() + " " + repuestoSeleccionado.getOriginal() + " " + repuestoSeleccionado.getReemplazo());
                 
                 agenda.editarRepuesto(repuestoSeleccionado);
                 ventanaVisualizarEquipos.getBtnEditarRepuesto().setEnabled(false);
@@ -206,20 +216,23 @@ public class GestorRepuestos {
         }
     }
     
-    /**
-     * Maneja liberación de tecla en tabla
-     */
-    public void keyReleased(KeyEvent e) {
-        VentanaVisualizarEquipos ventana = controlador.getVentanaVisualizarEquipos();
-        if (ventana == null) return;
-        
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            JOptionPane.showMessageDialog(null, 
-                "Deberá 'GUARDAR EDICIÓN' para mantener las modificaciones.", 
-                "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-            ventana.getBtnEditarRepuesto().setEnabled(true);
+
+    
+    
+    public void habilitarEdicionRepuestos(VentanaVisualizarEquipos ventanaVisualizarEquipos, KeyEvent e) {
+        if (ventanaVisualizarEquipos != null) {
+            if (e.getSource() == ventanaVisualizarEquipos.getTablaRepuestos()) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    Object mje = "Deberá 'GUARDAR EDICIÓN' para mantener las modificaciones.";
+                    JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+                    ventanaVisualizarEquipos.getBtnEditarRepuesto().setEnabled(true);
+                }
+            }
         }
     }
+    
+    
+    
     
     /**
      * Procesa eventos delegados

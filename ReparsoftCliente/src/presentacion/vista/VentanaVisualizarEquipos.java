@@ -843,6 +843,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		};
 
 		tablaRepuestos_1 = new JTable(modelRepuestos);
+		tablaRepuestos_1.setEnabled(false);
 		tablaRepuestos_1.setFont(new Font("Cambria", Font.PLAIN, 12));
 		tablaRepuestos_1.getTableHeader().setReorderingAllowed(false);
 
@@ -862,8 +863,8 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnRepuestos.setFont(new Font("Cambria", Font.BOLD, 14));
 
 		btnEditarRepuesto = new JButton("GUARDAR EDICIÓN");
-		btnEditarRepuesto.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEditarRepuesto.setEnabled(false);
+		btnEditarRepuesto.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEditarRepuesto.setBounds(123, 298, 163, 23);
 		panel_3.add(btnEditarRepuesto);
 		btnEditarRepuesto.setForeground(new Color(255, 140, 0));
