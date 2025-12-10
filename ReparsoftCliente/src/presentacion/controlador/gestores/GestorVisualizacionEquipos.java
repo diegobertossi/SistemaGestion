@@ -466,54 +466,11 @@ public class GestorVisualizacionEquipos {
 		// Repuestos
 		
 		ventana.getBtnRepuestos().addActionListener(e -> controlador.getGestorRepuestos().abrirVentanaRepuestos(ventana));
-		ventana.getBtnEditarRepuesto().addActionListener(e -> controlador.getGestorRepuestos().editarRepuesto(ventana));
+		//ventana.getBtnEditarRepuesto().addActionListener(e -> controlador.getGestorRepuestos().editarRepuesto(ventana));
 		ventana.getBtnEliminarRepuesto().addActionListener(e -> controlador.getGestorRepuestos().eliminarRepuesto(ventana));
-		ventana.getTablaRepuestos().addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//seleccionarRepuesto(ventana, e);
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}
-		});
 		
-		ventanaVisualizarEquipos.getTablaRepuestos().addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-
-				controlador.getGestorRepuestos().habilitarEdicionRepuestos(ventanaVisualizarEquipos, e);
-
-			}
-
-		});
-		
+		// Listener para edición automática de tabla de repuestos
+		controlador.getGestorRepuestos().agregarListenerEdicionTabla(ventanaVisualizarEquipos);
 		
 		
 		

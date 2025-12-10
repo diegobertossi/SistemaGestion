@@ -58,7 +58,6 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JButton BotonUltimo;
 	private JButton btnEditar;
 	private JButton btnRepuestos;
-	private JButton btnEditarRepuesto;
 	private JButton btnEliminarRepuesto;
 
 	private JButton btnGuardarCambios;
@@ -857,23 +856,15 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnRepuestos = new JButton("AGREGAR");
 		btnRepuestos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRepuestos.setEnabled(false);
-		btnRepuestos.setBounds(10, 298, 103, 23);
+		btnRepuestos.setBounds(69, 298, 103, 23);
 		panel_3.add(btnRepuestos);
 		btnRepuestos.setForeground(new Color(0, 128, 0));
 		btnRepuestos.setFont(new Font("Cambria", Font.BOLD, 14));
 
-		btnEditarRepuesto = new JButton("GUARDAR EDICIÓN");
-		btnEditarRepuesto.setEnabled(false);
-		btnEditarRepuesto.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnEditarRepuesto.setBounds(123, 298, 163, 23);
-		panel_3.add(btnEditarRepuesto);
-		btnEditarRepuesto.setForeground(new Color(255, 140, 0));
-		btnEditarRepuesto.setFont(new Font("Cambria", Font.BOLD, 14));
-
 		btnEliminarRepuesto = new JButton("ELIMINAR");
 		btnEliminarRepuesto.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEliminarRepuesto.setEnabled(false);
-		btnEliminarRepuesto.setBounds(296, 298, 99, 23);
+		btnEliminarRepuesto.setBounds(241, 298, 99, 23);
 		panel_3.add(btnEliminarRepuesto);
 		btnEliminarRepuesto.setForeground(new Color(255, 0, 0));
 		btnEliminarRepuesto.setFont(new Font("Cambria", Font.BOLD, 14));
@@ -1743,13 +1734,6 @@ public class VentanaVisualizarEquipos extends JFrame {
 		this.btnRepuestos = btnRepuestos;
 	}
 
-	public JButton getBtnEditarRepuesto() {
-		return btnEditarRepuesto;
-	}
-
-	public void setBtnEditarRepuesto(JButton btnEditarRepuesto) {
-		this.btnEditarRepuesto = btnEditarRepuesto;
-	}
 
 	public JButton getBtnEliminarRepuesto() {
 		return btnEliminarRepuesto;

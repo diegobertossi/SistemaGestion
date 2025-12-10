@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import dto.RepuestosDTO;
@@ -99,14 +100,13 @@ public class GestorRepuestos {
      * Edita repuesto seleccionado
      */
     public void editarRepuesto(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-    	System.out.println("Editar repuesto llamado");
     	
     	int i = ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow();
     	repuestosEnTabla = controlador.getGestorVisualizacion().getRepuestosEnTabla();
     	repuestoSeleccionado = repuestosEnTabla.get(i);
     	
         int fila = ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow();
-        System.out.println(fila);
+       
         if (fila < 0) {
             JOptionPane.showMessageDialog(null, "Seleccione un repuesto para editar.", 
                 "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -125,11 +125,9 @@ public class GestorRepuestos {
                 repuestoSeleccionado.setOriginal(original);
                 repuestoSeleccionado.setReemplazo(reemplazo);
                 repuestoSeleccionado.setNotas(notas);
-                
-                System.out.println("Repuesto a editar: " + repuestoSeleccionado.getNotas() + " " + repuestoSeleccionado.getRef() + " " + repuestoSeleccionado.getOriginal() + " " + repuestoSeleccionado.getReemplazo());
-                
+              
                 agenda.editarRepuesto(repuestoSeleccionado);
-                ventanaVisualizarEquipos.getBtnEditarRepuesto().setEnabled(false);
+  
                 
                 JOptionPane.showMessageDialog(null, "Repuesto editado correctamente.", 
                     "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -225,13 +223,100 @@ public class GestorRepuestos {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     Object mje = "Deberá 'GUARDAR EDICIÓN' para mantener las modificaciones.";
                     JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-                    ventanaVisualizarEquipos.getBtnEditarRepuesto().setEnabled(true);
+                   
                 }
             }
         }
     }
     
     
+    
+    /**
+     * Agrega listener para edición automática de celdas en la tabla
+     */
+    public void agregarListenerEdicionTabla(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+        DefaultTableModel modelo = ventanaVisualizarEquipos.getModelRepuestos();
+        
+        // Listener para detectar cambios en las celdas
+        modelo.addTableModelListener(e -> {
+            if (e.getType() == javax.swing.event.TableModelEvent.UPDATE) {
+                int fila = e.getFirstRow();
+                if (fila >= 0) {
+                    
+                }
+            }
+        });
+        
+        // Listener para guardar al presionar Enter o Tab, o perder foco
+        ventanaVisualizarEquipos.getTablaRepuestos().addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_TAB) {
+                    // Esperar a que se complete la edición de la celda
+                    SwingUtilities.invokeLater(() -> {
+                     
+                            guardarEdicionAutomatica(ventanaVisualizarEquipos);
+                        
+                    });
+                }
+            }
+        });
+        
+        // Listener para guardar al perder el foco de la tabla
+        ventanaVisualizarEquipos.getTablaRepuestos().addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+              
+                    guardarEdicionAutomatica(ventanaVisualizarEquipos);
+                
+            }
+        });
+    }
+
+    /**
+     * Guarda la edición automáticamente sin mostrar mensaje de confirmación
+     */
+    private void guardarEdicionAutomatica(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+        try {
+            int fila = ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow();
+            
+            if (fila < 0) {
+                return; // No hay fila seleccionada
+            }
+            
+            repuestosEnTabla = controlador.getGestorVisualizacion().getRepuestosEnTabla();
+            
+            if (repuestosEnTabla.isEmpty() || fila >= repuestosEnTabla.size()) {
+                return;
+            }
+            
+            repuestoSeleccionado = repuestosEnTabla.get(fila);
+            
+            DefaultTableModel modelo = ventanaVisualizarEquipos.getModelRepuestos();
+            String referencia = modelo.getValueAt(fila, 0).toString();
+            String original = modelo.getValueAt(fila, 1).toString();
+            String reemplazo = modelo.getValueAt(fila, 2).toString();
+            String notas = modelo.getValueAt(fila, 3).toString();
+            
+            if (repuestoSeleccionado != null) {
+                repuestoSeleccionado.setRef(referencia);
+                repuestoSeleccionado.setOriginal(original);
+                repuestoSeleccionado.setReemplazo(reemplazo);
+                repuestoSeleccionado.setNotas(notas);
+              
+                agenda.editarRepuesto(repuestoSeleccionado);
+               
+                
+                // Guardado silencioso (sin mensaje emergente)
+                // Si quieres mostrar confirmación, descomenta la siguiente línea:
+                // JOptionPane.showMessageDialog(null, "Repuesto guardado automáticamente.", 
+                //     "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al guardar repuesto: " + ex.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     
     
     /**
@@ -243,8 +328,6 @@ public class GestorRepuestos {
         
         if (e.getSource() == ventana.getBtnRepuestos()) {
             abrirVentanaRepuestos(ventana);
-        } else if (e.getSource() == ventana.getBtnEditarRepuesto()) {
-            editarRepuesto(ventana);
         } else if (e.getSource() == ventana.getBtnEliminarRepuesto()) {
             eliminarRepuesto(ventana);
         }
@@ -270,5 +353,7 @@ public class GestorRepuestos {
     public RepuestosDTO getRepuestoSeleccionado() {
         return repuestoSeleccionado;
     }
+
+	
 }
 

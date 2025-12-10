@@ -149,9 +149,7 @@ public class GestorListadoEquipos {
         ventanaVisualizarEquipos.getBtnRepuestos().addActionListener(e -> 
             controlador.getGestorRepuestos().abrirVentanaRepuestos(ventanaVisualizarEquipos));
         
-        ventanaVisualizarEquipos.getBtnEditarRepuesto().addActionListener(e -> 
-            controlador.getGestorRepuestos().editarRepuesto(ventanaVisualizarEquipos));
-        
+               
         ventanaVisualizarEquipos.getBtnEliminarRepuesto().addActionListener(e -> 
             controlador.getGestorRepuestos().eliminarRepuesto(ventanaVisualizarEquipos));
         
