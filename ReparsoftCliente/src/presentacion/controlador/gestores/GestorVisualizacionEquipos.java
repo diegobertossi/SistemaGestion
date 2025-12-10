@@ -772,12 +772,6 @@ public class GestorVisualizacionEquipos {
 		});
 	}
 
-//	private void agregarListenersExcel(VentanaExcel ventanaExcel2) {
-//		ventanaExcel2.getBtnRepar().addActionListener(e -> gestorExcel.abrirReparaciones());
-//		ventanaExcel2.getBtnCaja().addActionListener(e -> gestorExcel.abrirCaja());
-//		ventanaExcel2.getBtnDetalleGastos().addActionListener(e -> gestorExcel.abrirDetalleGastosAnioActual());
-//		ventanaExcel2.getBtnAbrirTodos().addActionListener(e -> gestorExcel.abrirTodosLosArchivos());
-//	}
 
 	/**
 	 * Cierra ventana anterior
