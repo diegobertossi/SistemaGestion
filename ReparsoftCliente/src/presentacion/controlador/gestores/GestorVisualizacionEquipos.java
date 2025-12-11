@@ -210,6 +210,8 @@ public class GestorVisualizacionEquipos {
 		ventana.setTextOC(reparacionActual.getOrdendeCompra());
 		ventana.setTextDiagnostico(reparacionActual.getSolucion());
 		ventana.setTextInformeCliente(reparacionActual.getInformecliente());
+		//ventana.setTextUbicacionRemito(reparacionActual.getCodigo());
+		
 	}
 
 	/**
@@ -424,7 +426,17 @@ public class GestorVisualizacionEquipos {
 		// Búsqueda
 		ventana.getBtnBuscarELS().addActionListener(e -> buscarPorELS(ventana));
 		ventana.getBtnBuscar().addActionListener(e -> abrirBusqueda(ventana));
-		ventana.getComboELS().addActionListener(e -> buscarPorELS(ventana));
+
+		
+		ventana.getComboELS().getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					buscarPorELS(ventana);
+				}
+			}
+		});
+		
 
 		// Abrir Excel
 		ventana.getBtnabrirExcel().addActionListener(e -> abrirExcelDeEquipo());
@@ -466,16 +478,12 @@ public class GestorVisualizacionEquipos {
 		// Repuestos
 		
 		ventana.getBtnRepuestos().addActionListener(e -> controlador.getGestorRepuestos().abrirVentanaRepuestos(ventana));
-		//ventana.getBtnEditarRepuesto().addActionListener(e -> controlador.getGestorRepuestos().editarRepuesto(ventana));
 		ventana.getBtnEliminarRepuesto().addActionListener(e -> controlador.getGestorRepuestos().eliminarRepuesto(ventana));
 		
 		// Listener para edición automática de tabla de repuestos
 		controlador.getGestorRepuestos().agregarListenerEdicionTabla(ventanaVisualizarEquipos);
 		
 		
-		
-		
-
 		AutoCompleteDecorator.decorate(ventana.getComboELS());
 		gestorInterfaz.agregarListenersPrecios(ventana);
 		gestorInterfaz.agregarFocusListeners(ventana);
@@ -509,7 +517,7 @@ public class GestorVisualizacionEquipos {
 			try {
 				int els = Integer.parseInt(selectedItem.toString());
 				cargarDatosEquipo(ventana, els);
-				agregarListeners(ventana);
+				//agregarListeners(ventana);
 				if (agenda.getUbicacionBase().equals("Bariloche")) {
 					elsActual = els;
 				} else {
