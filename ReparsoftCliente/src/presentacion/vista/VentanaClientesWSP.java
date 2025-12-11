@@ -28,6 +28,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import VistaPropias.CellRendererTablaClientes;
 import VistaPropias.JTextNum;
 import presentacion.controlador.ControladorReparacion;
+import presentacion.controlador.gestores.GestorVisualizacionEquipos;
+
 import javax.swing.border.MatteBorder;
 
 public class VentanaClientesWSP extends JFrame {
@@ -49,14 +51,14 @@ public class VentanaClientesWSP extends JFrame {
 	private JTextField txtOrganizacion;
 
 	@SuppressWarnings("unused")
-	private ControladorReparacion controlador;
+	private GestorVisualizacionEquipos controlador;
 
 	@SuppressWarnings("unused")
-	public VentanaClientesWSP(ControladorReparacion controlador) {
+	public VentanaClientesWSP(GestorVisualizacionEquipos controlador2) {
 
 		super();
 		setResizable(false);
-		this.controlador = controlador;
+		this.controlador = controlador2;
 
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);

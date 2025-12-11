@@ -118,7 +118,7 @@ public class SucursalDAOImpl implements SucursalDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 		return Sucursal;
 	}
@@ -145,7 +145,7 @@ public class SucursalDAOImpl implements SucursalDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 		return Sucursal;
 	}
@@ -168,7 +168,7 @@ public class SucursalDAOImpl implements SucursalDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 
 		return idsucursal;
@@ -202,7 +202,7 @@ public class SucursalDAOImpl implements SucursalDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 
 	}
@@ -229,7 +229,7 @@ public class SucursalDAOImpl implements SucursalDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 		return cantidad;
 	}
@@ -281,7 +281,7 @@ public class SucursalDAOImpl implements SucursalDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 
 		if (cantidad == 0)
@@ -310,7 +310,7 @@ public class SucursalDAOImpl implements SucursalDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 
 		return idsucursal;

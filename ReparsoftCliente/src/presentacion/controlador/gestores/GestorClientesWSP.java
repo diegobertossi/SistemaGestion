@@ -24,7 +24,7 @@ import presentacion.vista.VentanaWSP;
  */
 public class GestorClientesWSP implements MouseListener {
     
-    private ControladorReparacion controlador;
+    private GestorVisualizacionEquipos controlador;
     private Agenda agenda;
     private VentanaWSP ventanaWSP;
     private VentanaClientesWSP ventanaClientesWSP;
@@ -35,7 +35,7 @@ public class GestorClientesWSP implements MouseListener {
     /**
      * Constructor
      */
-    public GestorClientesWSP(ControladorReparacion controlador, Agenda agenda) {
+    public GestorClientesWSP(GestorVisualizacionEquipos controlador, Agenda agenda) {
         this.controlador = controlador;
         this.agenda = agenda;
     }

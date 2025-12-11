@@ -13,6 +13,7 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 
 import presentacion.controlador.ControladorReparacion;
+import presentacion.controlador.gestores.GestorVisualizacionEquipos;
 
 import java.awt.Dimension;
 import javax.swing.JSeparator;
@@ -23,7 +24,7 @@ import javax.swing.JComboBox;
 public class VentanaWSP extends JFrame {
 	
 	@SuppressWarnings("unused")
-	private ControladorReparacion controlador;
+	private GestorVisualizacionEquipos controlador;
 	private static final long serialVersionUID = 1L;
 	private JTextField textCliente;
 	private JTextField textNombreContacto;
@@ -47,11 +48,11 @@ public class VentanaWSP extends JFrame {
 	
 	
 	@SuppressWarnings("rawtypes")
-	public VentanaWSP(ControladorReparacion controlador){
+	public VentanaWSP(GestorVisualizacionEquipos gestorVisualizacionEquipos){
 		
 		super();
 		setResizable(false);
-		this.controlador = controlador;
+		this.controlador = gestorVisualizacionEquipos;
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setUndecorated(true);

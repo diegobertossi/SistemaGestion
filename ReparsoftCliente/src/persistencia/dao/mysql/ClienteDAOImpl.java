@@ -123,7 +123,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 		return Clientes;
 	}
@@ -146,7 +146,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 
 		return idcliente;
@@ -205,7 +205,8 @@ public class ClienteDAOImpl implements ClienteDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
+			// conexion.cerrarConexion();
 		}
 
 	}
@@ -228,7 +229,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 
 		return idcliente;
@@ -252,7 +253,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 
 		return Contacto;
@@ -276,7 +277,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 
 		return email;
@@ -303,7 +304,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 
 		if (cantidad == 0)
@@ -331,7 +332,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 
 		return telefono;
@@ -346,9 +347,6 @@ public class ClienteDAOImpl implements ClienteDAO {
 
 	@Override
 	public String dameCuitPorIdCliente(int idCliente) {
-		
-		
-		
 		
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
@@ -366,12 +364,9 @@ public class ClienteDAOImpl implements ClienteDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 
-		
-
-		
 		return cuit;
 	}
 

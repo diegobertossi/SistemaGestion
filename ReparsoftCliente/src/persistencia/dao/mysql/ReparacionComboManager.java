@@ -185,9 +185,9 @@ public class ReparacionComboManager {
     private void populateComboBox(JComboBox comboBox, List<String> datos) {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         
-        // Agregar todos los datos al modelo
+        // Agregar todos los datos al modelo (directamente como strings)
         for (String dato : datos) {
-            model.addElement(new ReparacionDTO(dato));
+            model.addElement(dato);
         }
         
         // Establecer el modelo en el comboBox

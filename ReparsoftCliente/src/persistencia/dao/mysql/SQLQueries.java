@@ -224,7 +224,7 @@ public class SQLQueries {
 
     // Consultas para combos
     public static final String READ_ALL_NOMBRE_EQUIPO = 
-        "SELECT DISTINCT * FROM Equipos group by Equipos.Nombre";
+        "SELECT DISTINCT Equipos.Nombre FROM Equipos group by Equipos.Nombre";
     
     public static final String READ_ALL_MARCA = 
         "SELECT Equipos.Marca FROM Equipos group by Equipos.Marca";

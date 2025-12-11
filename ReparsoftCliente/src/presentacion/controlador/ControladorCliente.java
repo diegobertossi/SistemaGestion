@@ -70,6 +70,9 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	private boolean editandoSucursal = false;
 	private boolean correosdeSucursal = false;
 	private boolean quitarCorreosdeSucursal = false;
+	
+	// Referencia al GestorAgregarEquipo para actualizar combos después de guardar
+	private Object gestorAgregarEquipo = null;
 
 	private final String PATTERN_EMAIL = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
@@ -89,6 +92,11 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	// Método para setear el flag desde el controlador de reparaciones
 	public void setLlamadoDesdeAgregarEquipo(boolean valor) {
 		this.llamadoDesdeAgregarEquipo = valor;
+	}
+	
+	// Método para recibir referencia del GestorAgregarEquipo
+	public void setGestorAgregarEquipo(Object gestor) {
+		this.gestorAgregarEquipo = gestor;
 	}
 
 	public void llenarTabla() {
@@ -919,6 +927,17 @@ public class ControladorCliente implements ActionListener, MouseListener {
 			ventanaClientes = null;
 
 			llamadoDesdeAgregarEquipo = false; // Resetea el flag
+			
+			// Actualizar el combo de clientes en la ventana de agregar equipo
+			if (gestorAgregarEquipo != null) {
+				try {
+					java.lang.reflect.Method method = gestorAgregarEquipo.getClass().getMethod("actualizarComboClientes");
+					method.invoke(gestorAgregarEquipo);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
 			return;
 		}
 

@@ -123,7 +123,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 		return usuarios;
 	}
@@ -145,7 +145,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 		return usuarios.get(0);
 	}
@@ -171,7 +171,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 		return usuarios;
 	}
@@ -197,7 +197,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 		return usuarios;
 	}
@@ -225,7 +225,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 
 	}
@@ -254,7 +254,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			// No cerrar la conexión aquí - se maneja en el singleton
 		}
 
 	}
@@ -284,7 +284,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				e.printStackTrace();
 			} finally // Se ejecuta siempre
 			{
-				conexion.cerrarConexion();
+				// No cerrar la conexión aquí - se maneja en el singleton
 			}
 		} else
 			idUsuario = 1;
@@ -336,7 +336,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	        System.err.println("Error al obtener correo del usuario: " + nombreCompleto);
 	        e.printStackTrace();
 	    } finally {
-	        conexion.cerrarConexion();
+	        // No cerrar la conexión aquí - se maneja en el singleton
 	    }
 	    
 	    return email;

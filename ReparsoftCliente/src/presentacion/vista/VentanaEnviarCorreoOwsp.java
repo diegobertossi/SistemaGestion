@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import presentacion.controlador.ControladorReparacion;
+import presentacion.controlador.gestores.GestorVisualizacionEquipos;
+
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.Font;
@@ -19,10 +21,10 @@ public class VentanaEnviarCorreoOwsp extends JFrame {
 	@SuppressWarnings("unused")
 	private ControladorReparacion controlador;
 
-	public VentanaEnviarCorreoOwsp(ControladorReparacion controlador) {
+	public VentanaEnviarCorreoOwsp(ControladorReparacion controlador2) {
 		super();
 		setResizable(false);
-		this.controlador = controlador;
+		this.controlador = controlador2;
 
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);

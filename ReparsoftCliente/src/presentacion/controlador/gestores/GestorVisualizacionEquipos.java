@@ -49,8 +49,10 @@ import presentacion.controlador.ControladorReparacion;
 import presentacion.controlador.ControladorUsuLogin;
 import presentacion.reportes.ReporteRegistroEntrada;
 import presentacion.vista.VentanaBusquedaEquipo;
+import presentacion.vista.VentanaEnviarCorreoOwsp;
 import presentacion.vista.VentanaExcel;
 import presentacion.vista.VentanaVisualizarEquipos;
+import presentacion.vista.VentanaWSP;
 import tiposPropios.MonedaFormatter;
 
 /**
@@ -69,6 +71,8 @@ public class GestorVisualizacionEquipos {
 	private VentanaVisualizarEquipos ventanaVisualizarEquipos;
 	private VentanaBusquedaEquipo ventanaBusquedaEquipo;
 	private VentanaExcel ventanaExcel;
+	private VentanaEnviarCorreoOwsp ventanaEnviarCorreoOwsp;
+	private VentanaWSP ventanaWSP;
 
 	// ==== GESTORES AUXILIARES ====
 	private GestorDatos gestorDatos;
@@ -114,16 +118,24 @@ public class GestorVisualizacionEquipos {
 	 */
 	public void abrirVentanaVisualizarEquipos() {
 		int els = obtenerNumeroELS() - 1;
+		String ubicacion = agenda.getUbicacionBase();
 
-		if ((agenda.getUbicacionBase().compareTo("Bariloche") == 0 && els >= 988)
-				|| (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0 && els >= 24900)) {
+		if ((ubicacion.compareTo("Bariloche") == 0 && els >= 988)
+				|| (ubicacion.compareTo("Buenos Aires") == 0 && els >= 24900)) {
 
 			ventanaVisualizarEquipos = new VentanaVisualizarEquipos(controlador);
 			controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
 			SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
 
 			try {
-				cargarDatosEquipo(ventanaVisualizarEquipos, elsActual);
+				// Inicializar las variables de navegación con el ÚLTIMO ELS
+				if (ubicacion.equals("Bariloche")) {
+					elsActual = els;
+				} else if (ubicacion.equals("Buenos Aires")) {
+					elsActualBSAS = els;
+				}
+				
+				cargarDatosEquipo(ventanaVisualizarEquipos, ubicacion.equals("Bariloche") ? elsActual : elsActualBSAS);
 				agregarListeners(ventanaVisualizarEquipos);
 				llenarComboELS(ventanaVisualizarEquipos);
 				controlador.setVentanaVisualizarEquipos(ventanaVisualizarEquipos);
@@ -134,6 +146,33 @@ public class GestorVisualizacionEquipos {
 		} else {
 			JOptionPane.showMessageDialog(null, "No se ha ingresado ningún equipo.", "Mensaje Informativo",
 					JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	/**
+	 * Abre la ventana de visualización de equipos con un ELS específico
+	 */
+	public void abrirVentanaVisualizarEquipos(int elsEspecifico) {
+		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(controlador);
+		controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
+		SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
+
+		try {
+			// Inicializar las variables de navegación con el ELS específico
+			String ubicacion = agenda.getUbicacionBase();
+			if (ubicacion.equals("Bariloche")) {
+				elsActual = elsEspecifico;
+			} else if (ubicacion.equals("Buenos Aires")) {
+				elsActualBSAS = elsEspecifico;
+			}
+			
+			cargarDatosEquipo(ventanaVisualizarEquipos, elsEspecifico);
+			agregarListeners(ventanaVisualizarEquipos);
+			llenarComboELS(ventanaVisualizarEquipos);
+			controlador.setVentanaVisualizarEquipos(ventanaVisualizarEquipos);
+			cerrarVentanaAnterior();
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -210,7 +249,19 @@ public class GestorVisualizacionEquipos {
 		ventana.setTextOC(reparacionActual.getOrdendeCompra());
 		ventana.setTextDiagnostico(reparacionActual.getSolucion());
 		ventana.setTextInformeCliente(reparacionActual.getInformecliente());
-		//ventana.setTextUbicacionRemito(reparacionActual.getCodigo());
+		
+
+		
+		int codigoRemitoBase = reparacionActual.getCodigo();
+		String codigoRemitoVisual = obtenerCodigoRemitoVisual(codigoRemitoBase);
+		ventana.setTextUbicacionRemito(codigoRemitoVisual);
+
+		int numeroRemitoBase = reparacionActual.getNumeroRemitoSalida();
+		String numeroRemitoVisual = numeroRemitoBase > 0 ? String.format("%08d", numeroRemitoBase) : "";
+		ventana.setTextNumeroRemito(numeroRemitoVisual);
+
+		
+		
 		
 	}
 
@@ -274,6 +325,17 @@ public class GestorVisualizacionEquipos {
 		}
 	}
 
+	
+	private String obtenerCodigoRemitoVisual(int codigoRemitoBase) {
+		if (codigoRemitoBase == 2 || codigoRemitoBase == 5 || codigoRemitoBase == 6 || codigoRemitoBase == 7) {
+			return String.format("%04d", codigoRemitoBase);
+		} else if (codigoRemitoBase == 1000 || codigoRemitoBase == 2000 || codigoRemitoBase == 3000) {
+			return String.valueOf(codigoRemitoBase);
+		} else {
+			return "";
+		}
+	}
+	
 	/**
 	 * Procesa navegación entre equipos
 	 */
@@ -319,8 +381,11 @@ public class GestorVisualizacionEquipos {
 			if (elsActual > 988) {
 				elsActual--;
 				return true;
+			} else {
+				JOptionPane.showMessageDialog(null, "Esta es la primera reparación", "Mensaje Informativo",
+						JOptionPane.INFORMATION_MESSAGE);
+				return false;
 			}
-			return false;
 		case "PRIMERO":
 			elsActual = 988;
 			return true;
@@ -350,8 +415,11 @@ public class GestorVisualizacionEquipos {
 			if (elsActualBSAS > 24900) {
 				elsActualBSAS--;
 				return true;
+			} else {
+				JOptionPane.showMessageDialog(null, "Esta es la primera reparación", "Mensaje Informativo",
+						JOptionPane.INFORMATION_MESSAGE);
+				return false;
 			}
-			return false;
 		case "PRIMERO":
 			elsActualBSAS = 24900;
 			return true;
@@ -448,14 +516,15 @@ public class GestorVisualizacionEquipos {
 		// Facturación
 		ventana.getBtnfacturar().addActionListener(e -> controlador.getGestorPresupuesto().abrirFacturacion(ventana));
 
+
 		// Registro de ingreso
 		ventanaVisualizarEquipos.getBotonRegistroIngreso()
 				.addActionListener(e -> generarRegistroIngreso(ventanaVisualizarEquipos));
 
-//            // Correo WSP
-//            ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(e -> 
-//                abrirEnviarCorreoWSP(ventanaVisualizarEquipos));
-//            
+            // Correo WSP
+            ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(e -> 
+                abrirEnviarCorreoWSP(ventanaVisualizarEquipos));
+            
 		// Estados
 		ventana.getBotonEditarEstados().addActionListener(e -> {
 			editar(ventanaVisualizarEquipos);
@@ -489,6 +558,43 @@ public class GestorVisualizacionEquipos {
 		gestorInterfaz.agregarFocusListeners(ventana);
 	}
 
+	private void abrirEnviarCorreoWSP(VentanaVisualizarEquipos ventanaVisualizarEquipos2) {
+		
+        ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(controlador);
+
+        ventanaEnviarCorreoOwsp.getBtnEnviarWST().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirVentanaWsp(ventanaVisualizarEquipos);
+            }
+        });
+	}
+
+    private void abrirVentanaWsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+        ventanaWSP = new VentanaWSP(this);
+
+        String cliente = ventanaVisualizarEquipos.getTextCliente().getText();
+
+        String NombreContacto = this.agenda.ContactoPorCliente(cliente);
+        String TelefonoContacto = this.agenda.obtenerTelefonoPorCliente(cliente);
+
+        ventanaWSP.getTextNombreContacto().setText(NombreContacto);
+        ventanaWSP.getTextNumeroContacto().setText(TelefonoContacto);
+
+        ventanaWSP.getTextCliente().setText(cliente);
+        ventanaWSP.getBtnEnviar().addActionListener(controlador);
+        ventanaWSP.getBtnEditarNmero().addActionListener(controlador);
+        ventanaWSP.getBtnClientes().addActionListener(controlador);
+        ventanaWSP.getBtnUtilizarContactoBuscado().addActionListener(controlador);
+        ventanaWSP.getBtnUtilizarContacto().addActionListener(controlador);
+        ventanaWSP.getComboOrganizacion().addActionListener(controlador);
+        ventanaWSP.getComboNombreBuscado().addActionListener(controlador);
+
+//        llenarComboOrganizacion();
+//        llenarComboNombreWSP();
+//
+//        performActionOnTextComponents(ventanaWSP);
+    }
 	private void generarRegistroIngreso(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
 		try {
@@ -573,7 +679,7 @@ public class GestorVisualizacionEquipos {
 
 		// 3. Buscar y seleccionar el cliente que coincide con el texto actual
 		boolean seleccionEncontrada = false;
-		ClienteDTO clienteSeleccionado = null;
+		ClienteDTO clienteSeleccionado = null; 
 
 		if (!textoClienteActual.isEmpty()) {
 			DefaultComboBoxModel<ClienteDTO> model = (DefaultComboBoxModel<ClienteDTO>) comboClientes.getModel();

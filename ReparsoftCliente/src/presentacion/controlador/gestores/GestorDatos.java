@@ -92,9 +92,17 @@ public class GestorDatos {
 		double presupuestoDolar = parsearMoneda(ventana.getTextPresupuestoDolar().getText());
 		double pago = parsearMoneda(ventana.getTextPago().getText());
 
-		ventana.getTextCliente().setText(ventana.getComboClientes().getSelectedItem().toString());
-		ventana.getTextSucursal().setText(ventana.getComboSucursal().getSelectedItem().toString());
-		ventana.getTextNombreTecnico().setText(ventana.getComboTecnico().getSelectedItem().toString());
+		// Obtener valores de combos con validación null
+		String clienteCombo = ventana.getComboClientes().getSelectedItem() != null ? 
+			ventana.getComboClientes().getSelectedItem().toString() : "";
+		String sucursalCombo = ventana.getComboSucursal().getSelectedItem() != null ? 
+			ventana.getComboSucursal().getSelectedItem().toString() : "";
+		String tecnicoCombo = ventana.getComboTecnico().getSelectedItem() != null ? 
+			ventana.getComboTecnico().getSelectedItem().toString() : "";
+		
+		ventana.getTextCliente().setText(clienteCombo);
+		ventana.getTextSucursal().setText(sucursalCombo);
+		ventana.getTextNombreTecnico().setText(tecnicoCombo);
 
 		// Obtener IDs
 		String cliente = ventana.getTextCliente().getText();
@@ -138,6 +146,7 @@ public class GestorDatos {
 		boolean agregadoAremito = reparacionActual.getAgregadoaremito();
 		boolean remitoGenerado = reparacionActual.getRemitoGenerado();
 
+		
 		return new ReparacionDTO(els, fechaEntrada, fechaReparacion, falla, solucion, informe, estadoFisico,
 				estadoTecnico, estadoComercial, remito, reparacionActual.getIDEquipo(), idRemito, cliente, sucursal,
 				fechaAceptacion, nombreEquipo, modelo, marca, serie, aviso, clienteCliente, idCliente, idSucursal,
@@ -145,6 +154,8 @@ public class GestorDatos {
 				avisoEnviado, presupuestoEnviado, wordGenerado, wordEnviado, ordenCompra, agregadoAremito,
 				remitoGenerado, lugarIngreso, fechaSalida);
 	}
+
+
 
 	private int IDUsuarioPorNombre(String nombreTecnico) {
 		// TODO Auto-generated method stub
@@ -327,6 +338,7 @@ public class GestorDatos {
 
 		List<Integer> resultados = agenda.buscarEnCampos(campo, texto);
 		// Procesar resultados en gestor de búsqueda
+
 	}
 
 	/**

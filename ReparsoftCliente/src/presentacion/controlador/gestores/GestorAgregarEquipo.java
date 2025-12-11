@@ -3,6 +3,8 @@ package presentacion.controlador.gestores;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,7 +74,7 @@ public class GestorAgregarEquipo {
     public void abrirVentanaAgregarEquipo() {
         ventanaAgregarEquipo = new VentanaAgregarEquipo(controlador);
         controlador.setVentanaAgregarEquipo(ventanaAgregarEquipo);
-        
+        cerraVentanaAgregarEquipo();
         // Configurar fecha por defecto
         Calendar c2 = new GregorianCalendar();
         ventanaAgregarEquipo.getFechaEntrada().setCalendar(c2);
@@ -94,11 +96,30 @@ public class GestorAgregarEquipo {
         gestorInterfaz.habilitarMenuContextual(ventanaAgregarEquipo);
     }
     
+
+        public void cerraVentanaAgregarEquipo() {
+            this.ventanaAgregarEquipo.addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent evt) {
+                    int opcion = JOptionPane.showConfirmDialog(ventanaAgregarEquipo,
+                            "¿Desea salir de la ventana 'AGREGAR EQUIPO'?", "Aviso", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE);
+
+                    if (opcion == JOptionPane.YES_OPTION) {
+                        ventanaAgregarEquipo.dispose();
+                        ventanaAgregarEquipo = null;
+                    }
+                }
+            });
+        }
+		
+	
+
     /**
      * Agrega listeners a la ventana
      */
     private void agregarListeners() {
         ventanaAgregarEquipo.getComboClientes().addActionListener(e -> procesarClienteSeleccionado());
+        ventanaAgregarEquipo.getComboSucursal().addActionListener(e -> procesarSucursalSeleccionada());
         ventanaAgregarEquipo.getComboMarca().addActionListener(e -> procesarMarcaSeleccionada());
         ventanaAgregarEquipo.getComboModelo().addActionListener(e -> procesarModeloSeleccionado());
         
@@ -109,6 +130,7 @@ public class GestorAgregarEquipo {
         ventanaAgregarEquipo.getBtnFechaDefault().addActionListener(e -> fechaDefault());
         ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().addActionListener(e -> verificarIngresoAnterior());
         ventanaAgregarEquipo.getBtnaltaCliente().addActionListener(e -> abrirVentanaCliente());
+        ventanaAgregarEquipo.getBotonIRaELS().addActionListener(e -> abrirVentanaELS());
     }
     
     /**
@@ -122,6 +144,7 @@ public class GestorAgregarEquipo {
             agenda.ListarMarca(ventanaAgregarEquipo.getComboMarca());
             
             ventanaAgregarEquipo.getComboClientes().setSelectedIndex(0);
+            ventanaAgregarEquipo.getComboNombreEquipo().setSelectedIndex(-1);
             ventanaAgregarEquipo.getComboMarca().setSelectedIndex(-1);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar datos: " + ex.getMessage(), 
@@ -150,7 +173,7 @@ public class GestorAgregarEquipo {
         
         try {
             Object selectedItem = ventanaAgregarEquipo.getComboClientes().getSelectedItem();
-            if (selectedItem instanceof ClienteDTO) {
+            if (selectedItem != null && selectedItem instanceof ClienteDTO) {
                 ClienteDTO cliente = (ClienteDTO) selectedItem;
                 idClienteSeleccionado = cliente.getId();
                 
@@ -158,11 +181,36 @@ public class GestorAgregarEquipo {
                 ventanaAgregarEquipo.getComboSucursal().removeAllItems();
                 agenda.ListarSucursalesxCliente(ventanaAgregarEquipo.getComboSucursal(), 
                     idClienteSeleccionado);
+                
+                // Seleccionar la primera sucursal (por defecto) y capturar su ID
+                if (ventanaAgregarEquipo.getComboSucursal().getItemCount() > 0) {
+                    ventanaAgregarEquipo.getComboSucursal().setSelectedIndex(0);
+                    Object firstSucursal = ventanaAgregarEquipo.getComboSucursal().getSelectedItem();
+                    if (firstSucursal != null && firstSucursal instanceof SucursalDTO) {
+                        SucursalDTO sucursal = (SucursalDTO) firstSucursal;
+                        idSucursalSeleccionada = sucursal.getIdSucursal();
+                    }
+                }
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar sucursales: " + ex.getMessage());
         } finally {
             procesandoCliente = false;
+        }
+    }
+    
+    /**
+     * Procesa selección de sucursal
+     */
+    private void procesarSucursalSeleccionada() {
+        try {
+            Object selectedItem = ventanaAgregarEquipo.getComboSucursal().getSelectedItem();
+            if (selectedItem != null && selectedItem instanceof SucursalDTO) {
+                SucursalDTO sucursal = (SucursalDTO) selectedItem;
+                idSucursalSeleccionada = sucursal.getIdSucursal();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al procesar sucursal: " + ex.getMessage());
         }
     }
     
@@ -213,30 +261,49 @@ public class GestorAgregarEquipo {
      * Valida datos ingresados
      */
     private boolean validarDatos() {
+        // Validar Cliente
         if (idClienteSeleccionado == 0) {
-            JOptionPane.showMessageDialog(null, "'CLIENTE' es obligatorio.", 
-                "Validación", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "⚠️ Campo obligatorio faltante:\n\n'CLIENTE'", 
+                "Validación", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         
+        // Validar Equipo
         if (ventanaAgregarEquipo.getComboNombreEquipo().getSelectedItem() == null ||
             ventanaAgregarEquipo.getComboNombreEquipo().getSelectedItem().toString().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "'NOMBRE DE EQUIPO' es obligatorio.", 
-                "Validación", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "⚠️ Campo obligatorio faltante:\n\n'NOMBRE DE EQUIPO'", 
+                "Validación", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         
-        if (ventanaAgregarEquipo.getComboModelo().getSelectedItem() == null ||
-            ventanaAgregarEquipo.getComboModelo().getSelectedItem().toString().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "'MODELO' es obligatorio.", 
-                "Validación", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        
+        // Validar Marca
         if (ventanaAgregarEquipo.getComboMarca().getSelectedItem() == null ||
             ventanaAgregarEquipo.getComboMarca().getSelectedItem().toString().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "'MARCA' es obligatorio.", 
-                "Validación", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "⚠️ Campo obligatorio faltante:\n\n'MARCA'", 
+                "Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        
+        // Validar Modelo
+        if (ventanaAgregarEquipo.getComboModelo().getSelectedItem() == null ||
+            ventanaAgregarEquipo.getComboModelo().getSelectedItem().toString().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "⚠️ Campo obligatorio faltante:\n\n'MODELO'", 
+                "Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        
+        // Validar Serie
+        if (ventanaAgregarEquipo.getComboSerie().getSelectedItem() == null ||
+            ventanaAgregarEquipo.getComboSerie().getSelectedItem().toString().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "⚠️ Campo obligatorio faltante:\n\n'SERIE'", 
+                "Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        
+        // Validar Estado Físico
+        if (ventanaAgregarEquipo.getGrupoEstadoFisico().getSelection() == null) {
+            JOptionPane.showMessageDialog(null, "⚠️ Campo obligatorio faltante:\n\n'ESTADO FÍSICO'", 
+                "Validación", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         
@@ -284,10 +351,32 @@ public class GestorAgregarEquipo {
      */
     private void deshabilitarCamposPostGuardado() {
         ventanaAgregarEquipo.getComboClientes().setEnabled(false);
+        ventanaAgregarEquipo.getComboSucursal().setEnabled(false);
+        ventanaAgregarEquipo.getComboNombreEquipo().setEnabled(false);
         ventanaAgregarEquipo.getComboMarca().setEnabled(false);
         ventanaAgregarEquipo.getComboModelo().setEnabled(false);
         ventanaAgregarEquipo.getComboSerie().setEnabled(false);
+        ventanaAgregarEquipo.getTextFalla().setEnabled(false);
+        ventanaAgregarEquipo.getTextRemitoCliente().setEnabled(false);
+        ventanaAgregarEquipo.getTextAvisoCliente().setEnabled(false);
+        ventanaAgregarEquipo.getFechaEntrada().setEnabled(false);
+        ventanaAgregarEquipo.getTextFechafabricacion().setEnabled(false);
+        ventanaAgregarEquipo.getTextClienteCliente().setEnabled(false);
+        
+        Enumeration<AbstractButton> botones = ventanaAgregarEquipo.getGrupoEstadoFisico().getElements();
+        while (botones.hasMoreElements()) {	
+			botones.nextElement().setEnabled(false);
+		}
+        
+        
         ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(true);
+        ventanaAgregarEquipo.getBotonGuardar().setEnabled(false);
+        ventanaAgregarEquipo.getBotonGenerarRegistro().setEnabled(true);
+        ventanaAgregarEquipo.getBtnGenerarSerie().setEnabled(false);
+        ventanaAgregarEquipo.getBtnFechaDefault().setEnabled(false);
+        ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().setEnabled(false);
+        ventanaAgregarEquipo.getBtnaltaCliente().setEnabled(false);
+        ventanaAgregarEquipo.getBotonIRaELS().setEnabled(true);
     }
     
     /**
@@ -326,19 +415,76 @@ public class GestorAgregarEquipo {
         ventanaAgregarEquipo.getTextFalla().setText("");
         ventanaAgregarEquipo.getTextRemitoCliente().setText("");
         
-        // Resetear combos
-        ventanaAgregarEquipo.getComboClientes().setSelectedIndex(0);
-        ventanaAgregarEquipo.getComboMarca().setSelectedItem("");
-        ventanaAgregarEquipo.getComboModelo().setSelectedItem("");
-        ventanaAgregarEquipo.getComboSerie().setSelectedItem("");
-        ventanaAgregarEquipo.setTextFechafabricacion2(null);
-        
-        // Habilitar campos
+        // HABILITAR COMBOS ANTES DE LLENARLOS
         ventanaAgregarEquipo.getComboClientes().setEnabled(true);
+        ventanaAgregarEquipo.getComboSucursal().setEnabled(true);
+        ventanaAgregarEquipo.getComboNombreEquipo().setEnabled(true);
         ventanaAgregarEquipo.getComboMarca().setEnabled(true);
         ventanaAgregarEquipo.getComboModelo().setEnabled(true);
         ventanaAgregarEquipo.getComboSerie().setEnabled(true);
+        
+        // LLENAR COMBOS CON DATOS
+        ventanaAgregarEquipo.getComboClientes().removeAllItems();
+        ventanaAgregarEquipo.getComboSucursal().removeAllItems();
+        ventanaAgregarEquipo.getComboNombreEquipo().removeAllItems();
+        ventanaAgregarEquipo.getComboMarca().removeAllItems();
+        ventanaAgregarEquipo.getComboModelo().removeAllItems();
+        ventanaAgregarEquipo.getComboSerie().removeAllItems();
+        
+        // Llenar los combos con datos
+        agenda.ListarCliente(ventanaAgregarEquipo.getComboClientes());
+        agenda.ListarSucursales(ventanaAgregarEquipo.getComboSucursal());
+        agenda.ListarEquipo(ventanaAgregarEquipo.getComboNombreEquipo());
+        agenda.ListarMarca(ventanaAgregarEquipo.getComboMarca());
+        
+        // SELECCIONAR ÍNDICES (después de llenar)
+        if (ventanaAgregarEquipo.getComboClientes().getItemCount() > 0) {
+            ventanaAgregarEquipo.getComboClientes().setSelectedIndex(0);
+        }
+        if (ventanaAgregarEquipo.getComboSucursal().getItemCount() > 0) {
+            ventanaAgregarEquipo.getComboSucursal().setSelectedIndex(0);
+        }
+        
+        ventanaAgregarEquipo.getComboNombreEquipo().setSelectedIndex(-1);
+        ventanaAgregarEquipo.getComboMarca().setSelectedIndex(-1);
+        ventanaAgregarEquipo.getComboModelo().setSelectedIndex(-1);
+        ventanaAgregarEquipo.getComboSerie().setSelectedIndex(-1);
+        
+        // Limpiar fechas
+        ventanaAgregarEquipo.setTextFechafabricacion2(null);
+        
+        // HABILITAR CAMPOS DE TEXTO
+        ventanaAgregarEquipo.getTextFalla().setEnabled(true);
+        ventanaAgregarEquipo.getTextRemitoCliente().setEnabled(true);
+        ventanaAgregarEquipo.getTextAvisoCliente().setEnabled(true);
+        ventanaAgregarEquipo.getTextClienteCliente().setEnabled(true);
+        ventanaAgregarEquipo.getFechaEntrada().setEnabled(true);
+        ventanaAgregarEquipo.getTextFechafabricacion().setEnabled(true);
+        
+        // HABILITAR BOTONES
+        ventanaAgregarEquipo.getBotonGuardar().setEnabled(true);
+        ventanaAgregarEquipo.getBotonGenerarRegistro().setEnabled(true);
+        ventanaAgregarEquipo.getBotonVerificarIngresoAnterior().setEnabled(true);
+        ventanaAgregarEquipo.getBtnaltaCliente().setEnabled(true);
+        ventanaAgregarEquipo.getBtnGenerarSerie().setEnabled(true);
+        ventanaAgregarEquipo.getBtnFechaDefault().setEnabled(true);
+        
+        // DESHABILITAR BOTONES
         ventanaAgregarEquipo.getBotonNuevaReparacion().setEnabled(false);
+        ventanaAgregarEquipo.getBotonIRaELS().setEnabled(false);
+        
+        // HABILITAR RADIO BUTTONS DE ESTADO FÍSICO
+        Enumeration<AbstractButton> botones = ventanaAgregarEquipo.getGrupoEstadoFisico().getElements();
+        while (botones.hasMoreElements()) {	
+            botones.nextElement().setEnabled(true);
+        }
+        
+        // Resetear selección de estado físico
+        ventanaAgregarEquipo.getGrupoEstadoFisico().clearSelection();
+        
+        // Resetear variables internas
+        idClienteSeleccionado = 0;
+        idSucursalSeleccionada = 0;
     }
     
     /**
@@ -395,24 +541,46 @@ public class GestorAgregarEquipo {
      */
     private void abrirVentanaCliente() {
         controlador.getControladorCliente().setLlamadoDesdeAgregarEquipo(true);
+        controlador.getControladorCliente().setGestorAgregarEquipo(this);
         controlador.getControladorCliente().agregarListenersVentanaCliente();
         llenarCombos(); // Actualizar combos después de agregar cliente
     }
     
+    
     /**
-     * Procesa eventos delegados
-     */
-    public void procesarEventos(ActionEvent e) {
-        if (ventanaAgregarEquipo == null) return;
-        
-        if (e.getSource() == ventanaAgregarEquipo.getBotonGuardar()) {
-            guardarEquipo();
-        } else if (e.getSource() == ventanaAgregarEquipo.getBotonGenerarRegistro()) {
-            generarRegistroIngreso();
-        } else if (e.getSource() == ventanaAgregarEquipo.getBotonNuevaReparacion()) {
-            nuevaReparacion();
-        }
-    }
+	 * Abre ventana ELS
+	 */
+	private void abrirVentanaELS() {
+		// Obtener el número de ELS actual
+		int elsActual = Integer.parseInt(ventanaAgregarEquipo.getTextELS());
+		
+		// Preguntar si desea ir al ELS generado
+		int opcion = JOptionPane.showConfirmDialog(null, 
+			"¿Desea ir al ELS generado?", 
+			"Confirmar", 
+			JOptionPane.YES_NO_OPTION, 
+			JOptionPane.QUESTION_MESSAGE);
+		
+		// Si selecciona "No", no hacer nada
+		if (opcion != JOptionPane.YES_OPTION) {
+			return;
+		}
+		
+		// Si selecciona "Sí":
+		// 1. Cerrar la ventana de agregar equipo
+		ventanaAgregarEquipo.dispose();
+		ventanaAgregarEquipo = null;
+		
+		// 2. Abrir la ventana de visualizar equipo con el ELS correspondiente
+		try {
+			controlador.getGestorVisualizacion().abrirVentanaVisualizarEquipos(elsActual);
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, 
+				"Error al abrir la ventana de visualización: " + ex.getMessage(), 
+				"Error", 
+				JOptionPane.ERROR_MESSAGE);
+		}
+	}
     
     /**
      * Obtiene número de ELS siguiente
@@ -423,6 +591,55 @@ public class GestorAgregarEquipo {
             return agenda.dameNumeroELSbsas() + 1;
         } else {
             return agenda.dameNumeroELS() + 1;
+        }
+    }
+    
+    /**
+     * Actualiza el combo de clientes después de agregar uno nuevo
+     */
+    public void actualizarComboClientes() {
+        if (ventanaAgregarEquipo != null) {
+            try {
+                // Obtener el índice seleccionado antes de actualizar
+                int indexAnterior = ventanaAgregarEquipo.getComboClientes().getSelectedIndex();
+                
+                // Limpiar y rellenar el combo de clientes
+                ventanaAgregarEquipo.getComboClientes().removeAllItems();
+                agenda.ListarCliente(ventanaAgregarEquipo.getComboClientes());
+                
+                // Seleccionar el último cliente agregado (que estará al final)
+                int itemCount = ventanaAgregarEquipo.getComboClientes().getItemCount();
+                if (itemCount > 0) {
+                    ventanaAgregarEquipo.getComboClientes().setSelectedIndex(itemCount - 1);
+                    
+                    // Capturar el ID del cliente recién agregado
+                    Object selectedItem = ventanaAgregarEquipo.getComboClientes().getSelectedItem();
+                    if (selectedItem instanceof ClienteDTO) {
+                        ClienteDTO cliente = (ClienteDTO) selectedItem;
+                        idClienteSeleccionado = cliente.getId();
+                        
+                        // Llenar sucursales para el nuevo cliente
+                        ventanaAgregarEquipo.getComboSucursal().removeAllItems();
+                        agenda.ListarSucursalesxCliente(ventanaAgregarEquipo.getComboSucursal(), 
+                            idClienteSeleccionado);
+                        
+                        // Seleccionar la primera sucursal (por defecto)
+                        if (ventanaAgregarEquipo.getComboSucursal().getItemCount() > 0) {
+                            ventanaAgregarEquipo.getComboSucursal().setSelectedIndex(0);
+                            Object firstSucursal = ventanaAgregarEquipo.getComboSucursal().getSelectedItem();
+                            if (firstSucursal != null && firstSucursal instanceof SucursalDTO) {
+                                SucursalDTO sucursal = (SucursalDTO) firstSucursal;
+                                idSucursalSeleccionada = sucursal.getIdSucursal();
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, 
+                    "Error al actualizar clientes: " + ex.getMessage(), 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
     

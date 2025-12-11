@@ -241,7 +241,7 @@ public class AutoCompletarComboBox extends PlainDocument {
     
     
     
-    private void verificarItemNoEncontrado(String mensaje) {
+    private void verificarItemNoEncontrado(String comboName) {
         String text = editor.getText();
        
         boolean exacto = findExactMatch(text);
@@ -253,19 +253,25 @@ public class AutoCompletarComboBox extends PlainDocument {
 
             if (mostrarMensaje) {
             	
-            	 switch (mensaje) {
-         		
-                 case "comboCliente":
-                 mensaje = "Cliente no encontrado. Deberá darlo de alta";
-         		break;
-         		
-                 case "comboSucursal":
-                 mensaje = "Sucursal no encontrada. Deberá darla de alta";
-             	break;
+            	String mensaje = "Item no encontrado";
+            	
+            	// Validar que comboName no sea null antes de usar en switch
+            	if (comboName != null) {
+            		 switch (comboName) {
+             		
+                     case "comboCliente":
+                     mensaje = "Cliente no encontrado. Deberá darlo de alta";
+             		break;
+             		
+                     case "comboSucursal":
+                     mensaje = "Sucursal no encontrada. Deberá darla de alta";
+                 	break;
 
-         		default:
-         			break;
-         		}
+             		default:
+             			mensaje = "Item no encontrado";
+             		break;
+             		}
+            	}
             	
                 JOptionPane.showMessageDialog(null, mensaje);
             }
