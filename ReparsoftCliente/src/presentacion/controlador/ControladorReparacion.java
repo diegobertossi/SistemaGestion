@@ -100,7 +100,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
         this.gestorInterfaz = new GestorInterfazEquipos();
         this.gestorVisualizacion = new GestorVisualizacionEquipos(this, agenda, controladorUsuLogin);
         this.gestorAgregar = new GestorAgregarEquipo(this, agenda);
-        //this.gestorClientesWSP = new GestorClientesWSP(this, agenda);
+        this.gestorClientesWSP = new GestorClientesWSP(gestorVisualizacion, agenda);
         this.gestorRepuestos = new GestorRepuestos(this, agenda);
         this.gestorBusqueda = new GestorBusqueda(this, agenda);
         this.gestorPresupuesto = new GestorPresupuestoFactura(this, agenda, controladorPresupuestos, controladorSalidas);

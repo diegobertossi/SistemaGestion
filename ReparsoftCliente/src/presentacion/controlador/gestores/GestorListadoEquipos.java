@@ -256,10 +256,10 @@ public class GestorListadoEquipos {
         presentacion.vista.VentanaEnviarCorreoOwsp ventanaEnviarCorreoOwsp = 
             new presentacion.vista.VentanaEnviarCorreoOwsp(controlador);
         
-        ventanaEnviarCorreoOwsp.getBtnEnviarWST().addActionListener(e -> 
-            controlador.getGestorClientesWSP().abrirVentanaWSP());
-        
-        ventanaEnviarCorreoOwsp.setVisible(true);
+//        ventanaEnviarCorreoOwsp.getBtnEnviarWST().addActionListener(e -> 
+//            controlador.getGestorClientesWSP().abrirVentanaWSP());
+//        
+//        ventanaEnviarCorreoOwsp.setVisible(true);
     }
     
     /**

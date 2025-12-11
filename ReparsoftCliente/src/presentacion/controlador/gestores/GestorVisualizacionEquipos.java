@@ -562,12 +562,12 @@ public class GestorVisualizacionEquipos {
 		
         ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(controlador);
 
-        ventanaEnviarCorreoOwsp.getBtnEnviarWST().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                abrirVentanaWsp(ventanaVisualizarEquipos);
-            }
-        });
+//        ventanaEnviarCorreoOwsp.getBtnEnviarWST().addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                abrirVentanaWsp(ventanaVisualizarEquipos);
+//            }
+//        });
 	}
 
     private void abrirVentanaWsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
