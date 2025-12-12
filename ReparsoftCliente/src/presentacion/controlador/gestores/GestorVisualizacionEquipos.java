@@ -24,8 +24,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
+import javax.swing.AbstractButton;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -50,6 +52,7 @@ import presentacion.controlador.ControladorUsuLogin;
 import presentacion.reportes.ReporteRegistroEntrada;
 import presentacion.vista.VentanaBusquedaEquipo;
 import presentacion.vista.VentanaEnviarCorreoOwsp;
+import presentacion.vista.VentanaEstados;
 import presentacion.vista.VentanaExcel;
 import presentacion.vista.VentanaVisualizarEquipos;
 import presentacion.vista.VentanaWSP;
@@ -73,6 +76,7 @@ public class GestorVisualizacionEquipos {
 	private VentanaExcel ventanaExcel;
 	private VentanaEnviarCorreoOwsp ventanaEnviarCorreoOwsp;
 	private VentanaWSP ventanaWSP;
+	private VentanaEstados ventanaEstados;
 
 	// ==== GESTORES AUXILIARES ====
 	private GestorDatos gestorDatos;
@@ -527,7 +531,7 @@ public class GestorVisualizacionEquipos {
             
 		// Estados
 		ventana.getBotonEditarEstados().addActionListener(e -> {
-			editar(ventanaVisualizarEquipos);
+			abrirVentanaEstados();
 		});
 
 		// Remito
@@ -557,6 +561,165 @@ public class GestorVisualizacionEquipos {
 		gestorInterfaz.agregarListenersPrecios(ventana);
 		gestorInterfaz.agregarFocusListeners(ventana);
 	}
+
+	private void abrirVentanaEstados() {
+        ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(false);
+        ventanaEstados = editarEstados(ventanaVisualizarEquipos);
+        
+        // Listener para botón ACEPTAR EDICIÓN
+        ventanaEstados.getBtnAceptarEdicion().addActionListener(e -> {
+            aceptarEdicionEstados(ventanaVisualizarEquipos);
+        });
+        
+        // Listener para botón EDITAR LUGAR DE INGRESO
+        ventanaEstados.getBtnHabilitarLugarIngreso().addActionListener(e -> {
+            habilitarLugarIngreso();
+        });
+    }
+		
+	
+	
+	
+	
+    // =============================================
+    // MÉTODOS DE GESTIÓN DE ESTADOS
+    // =============================================
+
+    private VentanaEstados editarEstados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+        ventanaEstados = new VentanaEstados(controlador);
+
+        Enumeration<?> elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
+        while (elementsF.hasMoreElements()) {
+            AbstractButton button = (AbstractButton) elementsF.nextElement();
+            if (button.getText().compareToIgnoreCase(ventanaVisualizarEquipos.getTextEstadoFisico().getText()) == 0) {
+                button.setSelected(true);
+            }
+        }
+
+        Enumeration<?> elementsT = ventanaEstados.getGrupoEstadoTecnico().getElements();
+        while (elementsT.hasMoreElements()) {
+            AbstractButton button = (AbstractButton) elementsT.nextElement();
+            if (button.getText().compareToIgnoreCase(ventanaVisualizarEquipos.getTextEstadoTecnico().getText()) == 0) {
+                button.setSelected(true);
+            }
+        }
+
+        Enumeration<?> elementsC = ventanaEstados.getGrupoEstadoComercial().getElements();
+        while (elementsC.hasMoreElements()) {
+            AbstractButton button = (AbstractButton) elementsC.nextElement();
+            if (button.getText().compareToIgnoreCase(ventanaVisualizarEquipos.getTextEstadoComercial().getText()) == 0) {
+                button.setSelected(true);
+            }
+        }
+
+        Enumeration<?> elementsIngreso = ventanaEstados.getGrupoLugarDeIngreso().getElements();
+        while (elementsIngreso.hasMoreElements()) {
+            AbstractButton button = (AbstractButton) elementsIngreso.nextElement();
+            if (button.getText().compareToIgnoreCase(ventanaVisualizarEquipos.getTextLugarDeIngreso().getText()) == 0) {
+                button.setSelected(true);
+            }
+        }
+
+        return ventanaEstados;
+    }
+
+    private void aceptarEdicionEstados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+        String estadoFisico = "";
+        String estadoTecnico = "";
+        String estadoComercial = "";
+        String lugarDeIngreso = "";
+
+        Enumeration<?> elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
+        while (elementsF.hasMoreElements()) {
+            AbstractButton button = (AbstractButton) elementsF.nextElement();
+            if (button.isSelected()) {
+                estadoFisico = button.getText();
+            }
+        }
+
+        Enumeration<?> elementsT = ventanaEstados.getGrupoEstadoTecnico().getElements();
+        while (elementsT.hasMoreElements()) {
+            AbstractButton button = (AbstractButton) elementsT.nextElement();
+            if (button.isSelected()) {
+                estadoTecnico = button.getText();
+            }
+        }
+
+        Enumeration<?> elementsC = ventanaEstados.getGrupoEstadoComercial().getElements();
+        while (elementsC.hasMoreElements()) {
+            AbstractButton button = (AbstractButton) elementsC.nextElement();
+            if (button.isSelected()) {
+                estadoComercial = button.getText();
+            }
+        }
+
+        Enumeration<?> elementsIngreso = ventanaEstados.getGrupoLugarDeIngreso().getElements();
+        while (elementsIngreso.hasMoreElements()) {
+            AbstractButton button = (AbstractButton) elementsIngreso.nextElement();
+            if (button.isSelected()) {
+                lugarDeIngreso = button.getText();
+            }
+        }
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        java.util.Date fechaParseadaHOY = null;
+
+        try {
+            fechaParseadaHOY = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(LocalDateTime.now()));
+        } catch (ParseException e1) {
+            e1.printStackTrace();
+        }
+
+        if (ventanaVisualizarEquipos.getTextEstadoFisico().getText().compareTo(estadoFisico) != 0) {
+            ventanaVisualizarEquipos.setTextEstadoFisico(estadoFisico);
+
+            if (estadoFisico == "Enviado") {
+                ventanaVisualizarEquipos.getFechaSalida().setDate(fechaParseadaHOY);
+            }
+        }
+
+        if (ventanaVisualizarEquipos.getTextEstadoTecnico().getText().compareTo(estadoTecnico) != 0) {
+            ventanaVisualizarEquipos.setTextEstadoTecnico(estadoTecnico);
+
+            if (estadoTecnico == "Sin Revisar") {
+                ventanaVisualizarEquipos.getFechaReparacion().setDate(null);
+            } else {
+                ventanaVisualizarEquipos.getFechaReparacion().setDate(fechaParseadaHOY);
+            }
+        }
+
+        if (ventanaVisualizarEquipos.getTextEstadoComercial().getText().compareTo(estadoComercial) != 0) {
+            ventanaVisualizarEquipos.setTextEstadoComercial(estadoComercial);
+
+            if (estadoComercial == "A la Espera de Aceptación") {
+                ventanaVisualizarEquipos.getFechaRespuesta().setDate(null);
+            } else {
+                ventanaVisualizarEquipos.getFechaRespuesta().setDate(fechaParseadaHOY);
+            }
+        }
+
+        if (ventanaVisualizarEquipos.getTextLugarDeIngreso().getText().compareTo(lugarDeIngreso) != 0) {
+            ventanaVisualizarEquipos.setTextLugarDeIngreso(lugarDeIngreso);
+        }
+
+        this.ventanaEstados.dispose();
+        this.ventanaEstados = null;
+        ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(true);
+    }
+    
+    /**
+     * Habilita la edición del lugar de ingreso en la ventana de estados
+     */
+    private void habilitarLugarIngreso() {
+        ventanaEstados.getRdbtnIngresoMDP().setEnabled(true);
+        ventanaEstados.getRdbtnIngresoBRC().setEnabled(true);
+        ventanaEstados.getRdbtnIngresoCABA().setEnabled(true);
+    }
+	
+	
+	
+	
+	
 
 	private void abrirEnviarCorreoWSP(VentanaVisualizarEquipos ventanaVisualizarEquipos2) {
 		
