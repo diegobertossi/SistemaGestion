@@ -239,7 +239,7 @@ els@elsweb.com.ar   ]]></text>
 					<rightPen lineWidth="3.0" lineStyle="Double" lineColor="rgba(0, 0, 0, 0.39215687)"/>
 				</box>
 				<textField>
-					<reportElement x="92" y="40" width="207" height="17" uuid="81aef732-d368-4f16-8c82-c8abbbe9b00e"/>
+					<reportElement x="92" y="58" width="207" height="17" uuid="81aef732-d368-4f16-8c82-c8abbbe9b00e"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="MyfuenteCambria" size="12" isBold="false"/>
 					</textElement>
@@ -253,7 +253,7 @@ els@elsweb.com.ar   ]]></text>
 					<textFieldExpression><![CDATA[$F{nombreEquipo}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="92" y="58" width="207" height="17" uuid="6c78e574-2a71-489b-a700-d8ad4d051d45"/>
+					<reportElement x="92" y="40" width="207" height="17" uuid="6c78e574-2a71-489b-a700-d8ad4d051d45"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="MyfuenteCambria" size="12" isBold="false"/>
 					</textElement>
