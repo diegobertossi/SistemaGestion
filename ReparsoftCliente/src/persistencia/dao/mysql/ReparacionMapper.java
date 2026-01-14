@@ -47,7 +47,7 @@ public class ReparacionMapper {
             resultSet.getInt("idSucursal"),
             resultSet.getString("nombre"),
             resultSet.getString("NombreSucursal"),
-            resultSet.getString("nombre"),
+            resultSet.getString("NombreUsuario"),
             resultSet.getInt("Codigo"),
             resultSet.getInt("NumeroRemitoSalida"),
             resultSet.getString("FechaFabr"),
