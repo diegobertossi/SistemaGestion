@@ -42,3 +42,4 @@ relé
 fotovoltaicas
 celdas
 chequeos
+quiebre

@@ -27,7 +27,6 @@
 /arrow_up.png
 /consumoAPI/
 /data-backup.png
-/dictionaries.cnf
 /dictionary_en.ortho
 /dictionary_es.ortho
 /dto/
@@ -51,13 +50,13 @@
 /motherboard_46935.png
 /multimetro.png
 /org/
-/persistencia/
 /plantilla-logotipo-laptop-degradado.png
-/presentacion/
 /presupuestar.png
 /primero.png
 /refresh.png
 /siguiente.png
-/tiposPropios/
 /transformacion-digital.png
 /ultimo.png
+/persistencia/
+/presentacion/
+/tiposPropios/
