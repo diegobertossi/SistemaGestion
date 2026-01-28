@@ -1,26 +1,3 @@
-<<<<<<< HEAD
-/persistencia/
-=======
-/Agregar.png
-/Backup.png
-/Buscar.png
-/Clientes.png
-/Icono cerrar sesion.png
-/Icono salir.png
-/Listado.png
-/Login.png
-/LogoCircuitos.png
-/LogoELSpresupuesto.png
-/LogoFacebook.jpg
-/LogoFacebook.png
-/LogoIng.png
-/LogoLinkedin.png
-/LogoplacasComponentes.png
-/Presupuestos.png
-/REPARSOFT logo Inicio.png
-/REPARSOFT logo pequeño.png
-/REPARSOFT logo principal.png
-/Salida.png
 /Settings.png
 /Usuarios.png
 /VistaPropias/
@@ -53,14 +30,13 @@
 /motherboard_46935.png
 /multimetro.png
 /org/
+/persistencia/
 /plantilla-logotipo-laptop-degradado.png
+/presentacion/
 /presupuestar.png
 /primero.png
 /refresh.png
 /siguiente.png
+/tiposPropios/
 /transformacion-digital.png
 /ultimo.png
-/persistencia/
-/presentacion/
-/tiposPropios/
->>>>>>> branch 'Refactorizada' of https://github.com/diegobertossi/SistemaGestion.git

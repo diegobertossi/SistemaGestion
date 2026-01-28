@@ -83,7 +83,6 @@ public class GestorVisualizacionEquipos {
 	private GestorInterfazEquipos gestorInterfaz;
 	private GestorEstadosPresupuestos gestorEstados;
 	private GestorArchivosExcel gestorExcel;
-	
 
 	// ==== DATOS ====
 	private ReparacionDTO reparacionActual;
@@ -114,7 +113,7 @@ public class GestorVisualizacionEquipos {
 		this.gestorDatos = new GestorDatos(agenda);
 		this.gestorInterfaz = new GestorInterfazEquipos();
 		this.gestorEstados = new GestorEstadosPresupuestos();
-		
+
 	}
 
 	/**
@@ -138,7 +137,7 @@ public class GestorVisualizacionEquipos {
 				} else if (ubicacion.equals("Buenos Aires")) {
 					elsActualBSAS = els;
 				}
-				
+
 				cargarDatosEquipo(ventanaVisualizarEquipos, ubicacion.equals("Bariloche") ? elsActual : elsActualBSAS);
 				agregarListeners(ventanaVisualizarEquipos);
 				llenarComboELS(ventanaVisualizarEquipos);
@@ -169,7 +168,7 @@ public class GestorVisualizacionEquipos {
 			} else if (ubicacion.equals("Buenos Aires")) {
 				elsActualBSAS = elsEspecifico;
 			}
-			
+
 			cargarDatosEquipo(ventanaVisualizarEquipos, elsEspecifico);
 			agregarListeners(ventanaVisualizarEquipos);
 			llenarComboELS(ventanaVisualizarEquipos);
@@ -253,9 +252,7 @@ public class GestorVisualizacionEquipos {
 		ventana.setTextOC(reparacionActual.getOrdendeCompra());
 		ventana.setTextDiagnostico(reparacionActual.getSolucion());
 		ventana.setTextInformeCliente(reparacionActual.getInformecliente());
-		
 
-		
 		int codigoRemitoBase = reparacionActual.getCodigo();
 		String codigoRemitoVisual = obtenerCodigoRemitoVisual(codigoRemitoBase);
 		ventana.setTextUbicacionRemito(codigoRemitoVisual);
@@ -264,9 +261,6 @@ public class GestorVisualizacionEquipos {
 		String numeroRemitoVisual = numeroRemitoBase > 0 ? String.format("%08d", numeroRemitoBase) : "";
 		ventana.setTextNumeroRemito(numeroRemitoVisual);
 
-		
-		
-		
 	}
 
 	/**
@@ -329,7 +323,6 @@ public class GestorVisualizacionEquipos {
 		}
 	}
 
-	
 	private String obtenerCodigoRemitoVisual(int codigoRemitoBase) {
 		if (codigoRemitoBase == 2 || codigoRemitoBase == 5 || codigoRemitoBase == 6 || codigoRemitoBase == 7) {
 			return String.format("%04d", codigoRemitoBase);
@@ -339,7 +332,7 @@ public class GestorVisualizacionEquipos {
 			return "";
 		}
 	}
-	
+
 	/**
 	 * Procesa navegación entre equipos
 	 */
@@ -451,14 +444,15 @@ public class GestorVisualizacionEquipos {
 	public void guardarCambios(VentanaVisualizarEquipos ventana) {
 		ReparacionDTO reparacionAeditar = gestorDatos.extraerDatos(ventana, reparacionActual);
 
-		// mostrar en consola los datos extraidos
+		// Verificar si es null antes de usar
+		if (reparacionAeditar == null) {
+			// El gestor ya mostró el popup con los caracteres inválidos
+			// No continuar con el proceso de guardado
+			return;
+		}
 
-		System.out.println("Datos extraidos para guardar:");
-		System.out.println(reparacionAeditar.getCliente());
-		System.out.println(reparacionAeditar.getNombreUsuario());
-		System.out.println(reparacionAeditar.getELS());
+		else {
 
-		if (reparacionAeditar != null) {
 			agenda.editarReparacionR(reparacionAeditar);
 			guardado = true;
 			gestorInterfaz.deshabilitarCampos(ventana);
@@ -471,7 +465,9 @@ public class GestorVisualizacionEquipos {
 	private void guardarCambiosSiNecesario() {
 		if (!guardado) {
 			ReparacionDTO reparacionAeditar = gestorDatos.extraerDatos(ventanaVisualizarEquipos, reparacionActual);
-			if (reparacionAeditar != null) {
+			if (reparacionAeditar == null) {
+				return;
+			} else {
 				agenda.editarReparacionR(reparacionAeditar);
 				guardado = true;
 			}
@@ -499,7 +495,6 @@ public class GestorVisualizacionEquipos {
 		ventana.getBtnBuscarELS().addActionListener(e -> buscarPorELS(ventana));
 		ventana.getBtnBuscar().addActionListener(e -> abrirBusqueda(ventana));
 
-		
 		ventana.getComboELS().getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -508,7 +503,6 @@ public class GestorVisualizacionEquipos {
 				}
 			}
 		});
-		
 
 		// Abrir Excel
 		ventana.getBtnabrirExcel().addActionListener(e -> abrirExcelDeEquipo());
@@ -520,15 +514,14 @@ public class GestorVisualizacionEquipos {
 		// Facturación
 		ventana.getBtnfacturar().addActionListener(e -> controlador.getGestorPresupuesto().abrirFacturacion(ventana));
 
-
 		// Registro de ingreso
 		ventanaVisualizarEquipos.getBotonRegistroIngreso()
 				.addActionListener(e -> generarRegistroIngreso(ventanaVisualizarEquipos));
 
-            // Correo WSP
-            ventanaVisualizarEquipos.getBtnenviarCorreoOwsp().addActionListener(e -> 
-                abrirEnviarCorreoWSP(ventanaVisualizarEquipos));
-            
+		// Correo WSP
+		ventanaVisualizarEquipos.getBtnenviarCorreoOwsp()
+				.addActionListener(e -> abrirEnviarCorreoWSP(ventanaVisualizarEquipos));
+
 		// Estados
 		ventana.getBotonEditarEstados().addActionListener(e -> {
 			abrirVentanaEstados();
@@ -536,7 +529,6 @@ public class GestorVisualizacionEquipos {
 
 		// Remito
 		ventana.getBtnGenerarRemito().addActionListener(e -> controlador.getGestorPresupuesto().generarRemito(ventana));
-
 
 		// Avisos
 		ventana.getBotonAvisoInforme()
@@ -549,181 +541,174 @@ public class GestorVisualizacionEquipos {
 				.addActionListener(e -> controlador.getGestorPresupuesto().enviarRespuestaCliente(ventana));
 
 		// Repuestos
-		
-		ventana.getBtnRepuestos().addActionListener(e -> controlador.getGestorRepuestos().abrirVentanaRepuestos(ventana));
-		ventana.getBtnEliminarRepuesto().addActionListener(e -> controlador.getGestorRepuestos().eliminarRepuesto(ventana));
-		
+
+		ventana.getBtnRepuestos()
+				.addActionListener(e -> controlador.getGestorRepuestos().abrirVentanaRepuestos(ventana));
+		ventana.getBtnEliminarRepuesto()
+				.addActionListener(e -> controlador.getGestorRepuestos().eliminarRepuesto(ventana));
+
 		// Listener para edición automática de tabla de repuestos
 		controlador.getGestorRepuestos().agregarListenerEdicionTabla(ventanaVisualizarEquipos);
-		
-		
+
 		AutoCompleteDecorator.decorate(ventana.getComboELS());
 		gestorInterfaz.agregarListenersPrecios(ventana);
 		gestorInterfaz.agregarFocusListeners(ventana);
 	}
 
 	private void abrirVentanaEstados() {
-        ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(false);
-        ventanaEstados = editarEstados(ventanaVisualizarEquipos);
-        
-        // Listener para botón ACEPTAR EDICIÓN
-        ventanaEstados.getBtnAceptarEdicion().addActionListener(e -> {
-            aceptarEdicionEstados(ventanaVisualizarEquipos);
-        });
-        
-        // Listener para botón EDITAR LUGAR DE INGRESO
-        ventanaEstados.getBtnHabilitarLugarIngreso().addActionListener(e -> {
-            habilitarLugarIngreso();
-        });
-    }
-		
-	
-	
-	
-	
-    // =============================================
-    // MÉTODOS DE GESTIÓN DE ESTADOS
-    // =============================================
+		ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(false);
+		ventanaEstados = editarEstados(ventanaVisualizarEquipos);
 
-    private VentanaEstados editarEstados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-        ventanaEstados = new VentanaEstados(controlador);
+		// Listener para botón ACEPTAR EDICIÓN
+		ventanaEstados.getBtnAceptarEdicion().addActionListener(e -> {
+			aceptarEdicionEstados(ventanaVisualizarEquipos);
+		});
 
-        Enumeration<?> elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
-        while (elementsF.hasMoreElements()) {
-            AbstractButton button = (AbstractButton) elementsF.nextElement();
-            if (button.getText().compareToIgnoreCase(ventanaVisualizarEquipos.getTextEstadoFisico().getText()) == 0) {
-                button.setSelected(true);
-            }
-        }
+		// Listener para botón EDITAR LUGAR DE INGRESO
+		ventanaEstados.getBtnHabilitarLugarIngreso().addActionListener(e -> {
+			habilitarLugarIngreso();
+		});
+	}
 
-        Enumeration<?> elementsT = ventanaEstados.getGrupoEstadoTecnico().getElements();
-        while (elementsT.hasMoreElements()) {
-            AbstractButton button = (AbstractButton) elementsT.nextElement();
-            if (button.getText().compareToIgnoreCase(ventanaVisualizarEquipos.getTextEstadoTecnico().getText()) == 0) {
-                button.setSelected(true);
-            }
-        }
+	// =============================================
+	// MÉTODOS DE GESTIÓN DE ESTADOS
+	// =============================================
 
-        Enumeration<?> elementsC = ventanaEstados.getGrupoEstadoComercial().getElements();
-        while (elementsC.hasMoreElements()) {
-            AbstractButton button = (AbstractButton) elementsC.nextElement();
-            if (button.getText().compareToIgnoreCase(ventanaVisualizarEquipos.getTextEstadoComercial().getText()) == 0) {
-                button.setSelected(true);
-            }
-        }
+	private VentanaEstados editarEstados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		ventanaEstados = new VentanaEstados(controlador);
 
-        Enumeration<?> elementsIngreso = ventanaEstados.getGrupoLugarDeIngreso().getElements();
-        while (elementsIngreso.hasMoreElements()) {
-            AbstractButton button = (AbstractButton) elementsIngreso.nextElement();
-            if (button.getText().compareToIgnoreCase(ventanaVisualizarEquipos.getTextLugarDeIngreso().getText()) == 0) {
-                button.setSelected(true);
-            }
-        }
+		Enumeration<?> elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
+		while (elementsF.hasMoreElements()) {
+			AbstractButton button = (AbstractButton) elementsF.nextElement();
+			if (button.getText().compareToIgnoreCase(ventanaVisualizarEquipos.getTextEstadoFisico().getText()) == 0) {
+				button.setSelected(true);
+			}
+		}
 
-        return ventanaEstados;
-    }
+		Enumeration<?> elementsT = ventanaEstados.getGrupoEstadoTecnico().getElements();
+		while (elementsT.hasMoreElements()) {
+			AbstractButton button = (AbstractButton) elementsT.nextElement();
+			if (button.getText().compareToIgnoreCase(ventanaVisualizarEquipos.getTextEstadoTecnico().getText()) == 0) {
+				button.setSelected(true);
+			}
+		}
 
-    private void aceptarEdicionEstados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-        String estadoFisico = "";
-        String estadoTecnico = "";
-        String estadoComercial = "";
-        String lugarDeIngreso = "";
+		Enumeration<?> elementsC = ventanaEstados.getGrupoEstadoComercial().getElements();
+		while (elementsC.hasMoreElements()) {
+			AbstractButton button = (AbstractButton) elementsC.nextElement();
+			if (button.getText()
+					.compareToIgnoreCase(ventanaVisualizarEquipos.getTextEstadoComercial().getText()) == 0) {
+				button.setSelected(true);
+			}
+		}
 
-        Enumeration<?> elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
-        while (elementsF.hasMoreElements()) {
-            AbstractButton button = (AbstractButton) elementsF.nextElement();
-            if (button.isSelected()) {
-                estadoFisico = button.getText();
-            }
-        }
+		Enumeration<?> elementsIngreso = ventanaEstados.getGrupoLugarDeIngreso().getElements();
+		while (elementsIngreso.hasMoreElements()) {
+			AbstractButton button = (AbstractButton) elementsIngreso.nextElement();
+			if (button.getText().compareToIgnoreCase(ventanaVisualizarEquipos.getTextLugarDeIngreso().getText()) == 0) {
+				button.setSelected(true);
+			}
+		}
 
-        Enumeration<?> elementsT = ventanaEstados.getGrupoEstadoTecnico().getElements();
-        while (elementsT.hasMoreElements()) {
-            AbstractButton button = (AbstractButton) elementsT.nextElement();
-            if (button.isSelected()) {
-                estadoTecnico = button.getText();
-            }
-        }
+		return ventanaEstados;
+	}
 
-        Enumeration<?> elementsC = ventanaEstados.getGrupoEstadoComercial().getElements();
-        while (elementsC.hasMoreElements()) {
-            AbstractButton button = (AbstractButton) elementsC.nextElement();
-            if (button.isSelected()) {
-                estadoComercial = button.getText();
-            }
-        }
+	private void aceptarEdicionEstados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		String estadoFisico = "";
+		String estadoTecnico = "";
+		String estadoComercial = "";
+		String lugarDeIngreso = "";
 
-        Enumeration<?> elementsIngreso = ventanaEstados.getGrupoLugarDeIngreso().getElements();
-        while (elementsIngreso.hasMoreElements()) {
-            AbstractButton button = (AbstractButton) elementsIngreso.nextElement();
-            if (button.isSelected()) {
-                lugarDeIngreso = button.getText();
-            }
-        }
+		Enumeration<?> elementsF = ventanaEstados.getGrupoEstadoFisico().getElements();
+		while (elementsF.hasMoreElements()) {
+			AbstractButton button = (AbstractButton) elementsF.nextElement();
+			if (button.isSelected()) {
+				estadoFisico = button.getText();
+			}
+		}
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        java.util.Date fechaParseadaHOY = null;
+		Enumeration<?> elementsT = ventanaEstados.getGrupoEstadoTecnico().getElements();
+		while (elementsT.hasMoreElements()) {
+			AbstractButton button = (AbstractButton) elementsT.nextElement();
+			if (button.isSelected()) {
+				estadoTecnico = button.getText();
+			}
+		}
 
-        try {
-            fechaParseadaHOY = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(LocalDateTime.now()));
-        } catch (ParseException e1) {
-            e1.printStackTrace();
-        }
+		Enumeration<?> elementsC = ventanaEstados.getGrupoEstadoComercial().getElements();
+		while (elementsC.hasMoreElements()) {
+			AbstractButton button = (AbstractButton) elementsC.nextElement();
+			if (button.isSelected()) {
+				estadoComercial = button.getText();
+			}
+		}
 
-        if (ventanaVisualizarEquipos.getTextEstadoFisico().getText().compareTo(estadoFisico) != 0) {
-            ventanaVisualizarEquipos.setTextEstadoFisico(estadoFisico);
+		Enumeration<?> elementsIngreso = ventanaEstados.getGrupoLugarDeIngreso().getElements();
+		while (elementsIngreso.hasMoreElements()) {
+			AbstractButton button = (AbstractButton) elementsIngreso.nextElement();
+			if (button.isSelected()) {
+				lugarDeIngreso = button.getText();
+			}
+		}
 
-            if (estadoFisico == "Enviado") {
-                ventanaVisualizarEquipos.getFechaSalida().setDate(fechaParseadaHOY);
-            }
-        }
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		java.util.Date fechaParseadaHOY = null;
 
-        if (ventanaVisualizarEquipos.getTextEstadoTecnico().getText().compareTo(estadoTecnico) != 0) {
-            ventanaVisualizarEquipos.setTextEstadoTecnico(estadoTecnico);
+		try {
+			fechaParseadaHOY = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(LocalDateTime.now()));
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
 
-            if (estadoTecnico == "Sin Revisar") {
-                ventanaVisualizarEquipos.getFechaReparacion().setDate(null);
-            } else {
-                ventanaVisualizarEquipos.getFechaReparacion().setDate(fechaParseadaHOY);
-            }
-        }
+		if (ventanaVisualizarEquipos.getTextEstadoFisico().getText().compareTo(estadoFisico) != 0) {
+			ventanaVisualizarEquipos.setTextEstadoFisico(estadoFisico);
 
-        if (ventanaVisualizarEquipos.getTextEstadoComercial().getText().compareTo(estadoComercial) != 0) {
-            ventanaVisualizarEquipos.setTextEstadoComercial(estadoComercial);
+			if (estadoFisico == "Enviado") {
+				ventanaVisualizarEquipos.getFechaSalida().setDate(fechaParseadaHOY);
+			}
+		}
 
-            if (estadoComercial == "A la Espera de Aceptación") {
-                ventanaVisualizarEquipos.getFechaRespuesta().setDate(null);
-            } else {
-                ventanaVisualizarEquipos.getFechaRespuesta().setDate(fechaParseadaHOY);
-            }
-        }
+		if (ventanaVisualizarEquipos.getTextEstadoTecnico().getText().compareTo(estadoTecnico) != 0) {
+			ventanaVisualizarEquipos.setTextEstadoTecnico(estadoTecnico);
 
-        if (ventanaVisualizarEquipos.getTextLugarDeIngreso().getText().compareTo(lugarDeIngreso) != 0) {
-            ventanaVisualizarEquipos.setTextLugarDeIngreso(lugarDeIngreso);
-        }
+			if (estadoTecnico == "Sin Revisar") {
+				ventanaVisualizarEquipos.getFechaReparacion().setDate(null);
+			} else {
+				ventanaVisualizarEquipos.getFechaReparacion().setDate(fechaParseadaHOY);
+			}
+		}
 
-        this.ventanaEstados.dispose();
-        this.ventanaEstados = null;
-        ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(true);
-    }
-    
-    /**
-     * Habilita la edición del lugar de ingreso en la ventana de estados
-     */
-    private void habilitarLugarIngreso() {
-        ventanaEstados.getRdbtnIngresoMDP().setEnabled(true);
-        ventanaEstados.getRdbtnIngresoBRC().setEnabled(true);
-        ventanaEstados.getRdbtnIngresoCABA().setEnabled(true);
-    }
-	
-	
-	
-	
-	
+		if (ventanaVisualizarEquipos.getTextEstadoComercial().getText().compareTo(estadoComercial) != 0) {
+			ventanaVisualizarEquipos.setTextEstadoComercial(estadoComercial);
+
+			if (estadoComercial == "A la Espera de Aceptación") {
+				ventanaVisualizarEquipos.getFechaRespuesta().setDate(null);
+			} else {
+				ventanaVisualizarEquipos.getFechaRespuesta().setDate(fechaParseadaHOY);
+			}
+		}
+
+		if (ventanaVisualizarEquipos.getTextLugarDeIngreso().getText().compareTo(lugarDeIngreso) != 0) {
+			ventanaVisualizarEquipos.setTextLugarDeIngreso(lugarDeIngreso);
+		}
+
+		this.ventanaEstados.dispose();
+		this.ventanaEstados = null;
+		ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(true);
+	}
+
+	/**
+	 * Habilita la edición del lugar de ingreso en la ventana de estados
+	 */
+	private void habilitarLugarIngreso() {
+		ventanaEstados.getRdbtnIngresoMDP().setEnabled(true);
+		ventanaEstados.getRdbtnIngresoBRC().setEnabled(true);
+		ventanaEstados.getRdbtnIngresoCABA().setEnabled(true);
+	}
 
 	private void abrirEnviarCorreoWSP(VentanaVisualizarEquipos ventanaVisualizarEquipos2) {
-		
-        ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(controlador);
+
+		ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(controlador);
 
 //        ventanaEnviarCorreoOwsp.getBtnEnviarWST().addActionListener(new ActionListener() {
 //            @Override
@@ -733,31 +718,32 @@ public class GestorVisualizacionEquipos {
 //        });
 	}
 
-    private void abrirVentanaWsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-        ventanaWSP = new VentanaWSP(this);
+	private void abrirVentanaWsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
+		ventanaWSP = new VentanaWSP(this);
 
-        String cliente = ventanaVisualizarEquipos.getTextCliente().getText();
+		String cliente = ventanaVisualizarEquipos.getTextCliente().getText();
 
-        String NombreContacto = this.agenda.ContactoPorCliente(cliente);
-        String TelefonoContacto = this.agenda.obtenerTelefonoPorCliente(cliente);
+		String NombreContacto = this.agenda.ContactoPorCliente(cliente);
+		String TelefonoContacto = this.agenda.obtenerTelefonoPorCliente(cliente);
 
-        ventanaWSP.getTextNombreContacto().setText(NombreContacto);
-        ventanaWSP.getTextNumeroContacto().setText(TelefonoContacto);
+		ventanaWSP.getTextNombreContacto().setText(NombreContacto);
+		ventanaWSP.getTextNumeroContacto().setText(TelefonoContacto);
 
-        ventanaWSP.getTextCliente().setText(cliente);
-        ventanaWSP.getBtnEnviar().addActionListener(controlador);
-        ventanaWSP.getBtnEditarNmero().addActionListener(controlador);
-        ventanaWSP.getBtnClientes().addActionListener(controlador);
-        ventanaWSP.getBtnUtilizarContactoBuscado().addActionListener(controlador);
-        ventanaWSP.getBtnUtilizarContacto().addActionListener(controlador);
-        ventanaWSP.getComboOrganizacion().addActionListener(controlador);
-        ventanaWSP.getComboNombreBuscado().addActionListener(controlador);
+		ventanaWSP.getTextCliente().setText(cliente);
+		ventanaWSP.getBtnEnviar().addActionListener(controlador);
+		ventanaWSP.getBtnEditarNmero().addActionListener(controlador);
+		ventanaWSP.getBtnClientes().addActionListener(controlador);
+		ventanaWSP.getBtnUtilizarContactoBuscado().addActionListener(controlador);
+		ventanaWSP.getBtnUtilizarContacto().addActionListener(controlador);
+		ventanaWSP.getComboOrganizacion().addActionListener(controlador);
+		ventanaWSP.getComboNombreBuscado().addActionListener(controlador);
 
 //        llenarComboOrganizacion();
 //        llenarComboNombreWSP();
 //
 //        performActionOnTextComponents(ventanaWSP);
-    }
+	}
+
 	private void generarRegistroIngreso(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 
 		try {
@@ -786,7 +772,7 @@ public class GestorVisualizacionEquipos {
 			try {
 				int els = Integer.parseInt(selectedItem.toString());
 				cargarDatosEquipo(ventana, els);
-				//agregarListeners(ventana);
+				// agregarListeners(ventana);
 				if (agenda.getUbicacionBase().equals("Bariloche")) {
 					elsActual = els;
 				} else {
@@ -819,8 +805,6 @@ public class GestorVisualizacionEquipos {
 		}
 	}
 
-
-
 	/**
 	 * Llena combo de clientes manteniendo la selección actual basada en el texto
 	 * del campo y configura el listener para llenar automáticamente las sucursales
@@ -842,7 +826,7 @@ public class GestorVisualizacionEquipos {
 
 		// 3. Buscar y seleccionar el cliente que coincide con el texto actual
 		boolean seleccionEncontrada = false;
-		ClienteDTO clienteSeleccionado = null; 
+		ClienteDTO clienteSeleccionado = null;
 
 		if (!textoClienteActual.isEmpty()) {
 			DefaultComboBoxModel<ClienteDTO> model = (DefaultComboBoxModel<ClienteDTO>) comboClientes.getModel();
@@ -1009,36 +993,59 @@ public class GestorVisualizacionEquipos {
 		});
 	}
 
-
 	/**
 	 * Cierra ventana anterior
 	 */
 	private void cerrarVentanaAnterior() {
-		if (ventanaVisualizarEquipos != null) {
-			ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowClosing(WindowEvent e) {
-					if (!guardado) {
-						int opcion = JOptionPane.showConfirmDialog(null,
-								"Hay cambios sin guardar. ¿Desea guardar antes de salir?", "Aviso",
-								JOptionPane.YES_NO_CANCEL_OPTION);
+	    if (ventanaVisualizarEquipos != null) {
+	        ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
+	            @Override
+	            public void windowClosing(WindowEvent e) {
+	                if (!guardado) {
+	                    int opcion = JOptionPane.showConfirmDialog(
+	                        ventanaVisualizarEquipos,
+	                        "Hay cambios sin guardar. ¿Desea guardar antes de salir?", 
+	                        "Aviso",
+	                        JOptionPane.YES_NO_CANCEL_OPTION,
+	                        JOptionPane.QUESTION_MESSAGE
+	                    );
 
-						if (opcion == JOptionPane.YES_OPTION) {
-							guardarCambios(ventanaVisualizarEquipos);
-						} else if (opcion == JOptionPane.CANCEL_OPTION) {
-							return;
-						}
-
-					}
-					ventanaVisualizarEquipos.dispose();
-					ventanaVisualizarEquipos = null;
-				}
-			});
-		}
+	                    if (opcion == JOptionPane.YES_OPTION) {
+	                        // Extraer datos y verificar caracteres inválidos
+	                        ReparacionDTO reparacionAeditar = gestorDatos.extraerDatos(ventanaVisualizarEquipos, reparacionActual);
+	                        
+	                        if (reparacionAeditar != null) {
+	                            // No hay caracteres inválidos, proceder a guardar
+	                            guardarCambios(ventanaVisualizarEquipos);
+	                            ventanaVisualizarEquipos.dispose();
+	                            ventanaVisualizarEquipos = null;
+	                        } else {
+	                            // Hay caracteres inválidos
+	                            // El gestorDatos ya mostró el popup con los caracteres inválidos
+	                            // No cerrar la ventana, permitir al usuario corregir
+	                            // Prevenir el cierre de la ventana
+	                            ventanaVisualizarEquipos.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+	                        }
+	                    } 
+	                    else if (opcion == JOptionPane.NO_OPTION) {
+	                        // Usuario no quiere guardar, cerrar directamente
+	                        ventanaVisualizarEquipos.dispose();
+	                        ventanaVisualizarEquipos = null;
+	                    } 
+	                    else if (opcion == JOptionPane.CANCEL_OPTION) {
+	                        // Usuario canceló, no hacer nada
+	                        // La ventana permanece abierta
+	                        return;
+	                    }
+	                } else {
+	                    // Ya está guardado, cerrar directamente
+	                    ventanaVisualizarEquipos.dispose();
+	                    ventanaVisualizarEquipos = null;
+	                }
+	            }
+	        });
+	    }
 	}
-	
-	
-	
 
 	/**
 	 * Procesa eventos delegados de ActionListener

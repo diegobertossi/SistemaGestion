@@ -270,22 +270,45 @@ public class GestorListadoEquipos {
             @Override
             public void windowClosing(WindowEvent evt) {
                 boolean guardado = controlador.getGestorVisualizacion().isGuardado();
-                
+
                 if (!guardado) {
-                    int opcion = JOptionPane.showConfirmDialog(null,
+                    int opcion = JOptionPane.showConfirmDialog(
+                        ventana,
                         "Hay cambios sin guardar. ¿Desea guardar antes de salir?",
-                        "Aviso", JOptionPane.YES_NO_CANCEL_OPTION);
-                    
+                        "Aviso", 
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
+                    );
+
                     if (opcion == JOptionPane.YES_OPTION) {
+                        // Intentar guardar cambios
                         controlador.getGestorVisualizacion().guardarCambios(ventana);
+                        
+                        // Verificar si realmente se guardó (si no hay caracteres inválidos)
+                        boolean guardadoDespuesDeIntentar = controlador.getGestorVisualizacion().isGuardado();
+                        
+                        if (!guardadoDespuesDeIntentar) {
+                            // No se pudo guardar (hay caracteres inválidos)
+                            // El gestorDatos ya mostró el popup con los caracteres inválidos
+                            // No cerrar la ventana, permitir al usuario corregir
+                            return;
+                        }
+                        // Si llegamos aquí, se guardó correctamente, continuar con el cierre
+                        
+                    } else if (opcion == JOptionPane.NO_OPTION) {
+                        // Usuario no quiere guardar, continuar con el cierre
+                        // (no hacer nada aquí, el código continúa abajo)
+                        
                     } else if (opcion == JOptionPane.CANCEL_OPTION) {
+                        // Usuario canceló, no cerrar la ventana
                         return;
                     }
                 }
-                
+
+                // Si llegamos aquí, proceder con el cierre de la ventana
                 ventanasAbiertas.remove(ventana);
                 ventana.dispose();
-                
+
                 if (ventanasAbiertas.isEmpty()) {
                     actualizarEnListado = false;
                 }
