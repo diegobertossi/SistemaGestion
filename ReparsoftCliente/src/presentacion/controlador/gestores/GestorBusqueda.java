@@ -181,10 +181,7 @@ public class GestorBusqueda {
             ventana.setTextELS(Integer.toString(els));
             controlador.getGestorVisualizacion().cargarDatosEquipo(ventana, els);
             
-            if (ventanaBusqueda != null) {
-                ventanaBusqueda.dispose();
-                ventanaBusqueda = null;
-            }
+
         } catch (ParseException ex) {
             ex.printStackTrace();
         }

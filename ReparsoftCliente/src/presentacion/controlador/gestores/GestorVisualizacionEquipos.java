@@ -80,6 +80,7 @@ public class GestorVisualizacionEquipos {
 
 	// ==== GESTORES AUXILIARES ====
 	private GestorDatos gestorDatos;
+	private GestorBusqueda gestorBusqueda;
 	private GestorInterfazEquipos gestorInterfaz;
 	private GestorEstadosPresupuestos gestorEstados;
 	private GestorArchivosExcel gestorExcel;
@@ -113,6 +114,7 @@ public class GestorVisualizacionEquipos {
 		this.gestorDatos = new GestorDatos(agenda);
 		this.gestorInterfaz = new GestorInterfazEquipos();
 		this.gestorEstados = new GestorEstadosPresupuestos();
+		this.gestorBusqueda = new GestorBusqueda(controlador, agenda);
 
 	}
 
@@ -507,6 +509,14 @@ public class GestorVisualizacionEquipos {
 		// Abrir Excel
 		ventana.getBtnabrirExcel().addActionListener(e -> abrirExcelDeEquipo());
 
+		
+		// Copiar el monto del presupuesto al pago
+		ventana.getBtnPagado().addActionListener(e -> {
+			String presupuesto = ventana.getTextPresupuesto().getText();
+			ventana.setTextPago(presupuesto);
+		});
+
+		
 		// Presupuesto
 		ventana.getBotonPresupuestar()
 				.addActionListener(e -> controlador.getGestorPresupuesto().abrirPresupuesto(ventana));
@@ -788,9 +798,12 @@ public class GestorVisualizacionEquipos {
 	 * Abre ventana de búsqueda
 	 */
 	private void abrirBusqueda(VentanaVisualizarEquipos ventana) {
-		ventanaBusquedaEquipo = new VentanaBusquedaEquipo(controlador);
-		ventanaBusquedaEquipo.btnBuscar.addActionListener(f -> gestorDatos.realizarBusqueda(ventanaBusquedaEquipo));
+		
+		gestorBusqueda.abrirVentanaBusqueda();
+		
 	}
+	
+	
 
 	/**
 	 * Abre gestor de presupuestos

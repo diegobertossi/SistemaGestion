@@ -413,18 +413,7 @@ public class GestorDatos {
 	}
 
 	/**
-	 * Realiza búsqueda
-	 */
-	public void realizarBusqueda(VentanaBusquedaEquipo ventanaBusqueda) {
-		String campo = ventanaBusqueda.getComboBuscador().getSelectedItem().toString();
-		String texto = ventanaBusqueda.getTextField().getText();
 
-		List<Integer> resultados = agenda.buscarEnCampos(campo, texto);
-		// Procesar resultados en gestor de búsqueda
-
-	}
-
-	/**
 	 * Getters
 	 */
 	public List<String> getCaracteresNoValidos() {
