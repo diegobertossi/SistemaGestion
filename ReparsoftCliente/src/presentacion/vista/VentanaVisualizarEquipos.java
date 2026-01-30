@@ -202,7 +202,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 	private JPanel PanelDatosEquipo;
 	private JPanel panelDatosCliente;
 	private JPanel panelDatosExtrasCliente;
-	private JButton btnPagado;
+	private JButton btnCopiarPresupuesto;
 
 	@SuppressWarnings({ "rawtypes", "serial" })
 	public VentanaVisualizarEquipos(ControladorReparacion controladorReparacion) {
@@ -1218,13 +1218,14 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnabrirExcel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnabrirExcel.setBackground(new Color(0, 153, 102));
 		
-		btnPagado = new JButton("<html><center>PAGADO</html>");
-		btnPagado.setForeground(new Color(0, 0, 0));
-		btnPagado.setFont(new Font("Cambria", Font.BOLD, 10));
-		btnPagado.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnPagado.setBackground(new Color(192, 192, 192));
-		btnPagado.setBounds(12, 134, 202, 18);
-		panel_presupuesto.add(btnPagado);
+		btnCopiarPresupuesto = new JButton("<html><center>COPIAR PRESUPUESTO</html>");
+		btnCopiarPresupuesto.setEnabled(false);
+		btnCopiarPresupuesto.setForeground(new Color(0, 0, 0));
+		btnCopiarPresupuesto.setFont(new Font("Cambria", Font.BOLD, 10));
+		btnCopiarPresupuesto.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnCopiarPresupuesto.setBackground(new Color(143, 188, 143));
+		btnCopiarPresupuesto.setBounds(12, 134, 202, 18);
+		panel_presupuesto.add(btnCopiarPresupuesto);
 
 		labelPresupuesto = new JLabel("PRESUPUESTO: ");
 		labelPresupuesto.setBounds(834, 232, 150, 17);
@@ -1970,12 +1971,13 @@ public class VentanaVisualizarEquipos extends JFrame {
 		this.btnabrirExcel = btnabrirExcel;
 	}
 
-	public JButton getBtnPagado() {
-		return btnPagado;
+
+	public JButton getBtnCopiarPresupuesto() {
+		return btnCopiarPresupuesto;
 	}
 
-	public void setBtnPagado(JButton btnPagado) {
-		this.btnPagado = btnPagado;
+	public void setBtnCopiarPresupuesto(JButton btnCopiarPresupuesto) {
+		this.btnCopiarPresupuesto = btnCopiarPresupuesto;
 	}
 
 	

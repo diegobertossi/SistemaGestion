@@ -511,9 +511,8 @@ public class GestorVisualizacionEquipos {
 
 		
 		// Copiar el monto del presupuesto al pago
-		ventana.getBtnPagado().addActionListener(e -> {
-			String presupuesto = ventana.getTextPresupuesto().getText();
-			ventana.setTextPago(presupuesto);
+		ventana.getBtnCopiarPresupuesto().addActionListener(e -> {
+			copiarPago(ventana);
 		});
 
 		
@@ -563,6 +562,31 @@ public class GestorVisualizacionEquipos {
 		AutoCompleteDecorator.decorate(ventana.getComboELS());
 		gestorInterfaz.agregarListenersPrecios(ventana);
 		gestorInterfaz.agregarFocusListeners(ventana);
+	}
+
+	private void copiarPago(VentanaVisualizarEquipos ventana) {
+		
+		// Obtener el valor del presupuesto, luego copiarlo a pago, luego cambiar el texto del botón a "LIMPIAR PRESUPUESTO". Si se presiona de nuevo el botón, limpiar el campo de pago y cambiar el texto a "COPIAR PRESUPUESTO". HACER ESTE INDEFINIDAMENTE
+		String presupuesto = ventana.getTextPresupuesto().getText();
+		
+	
+		if (ventana.getBtnCopiarPresupuesto().getText().equals("COPIAR PRESUPUESTO")) {
+			ventana.setTextPago(presupuesto);
+			//fuente del texto del boton a negrita
+			ventana.getBtnCopiarPresupuesto().setText("LIMPIAR PAGO");
+			ventana.getBtnCopiarPresupuesto().setFont(ventana.getBtnCopiarPresupuesto().getFont().deriveFont(java.awt.Font.BOLD));
+				
+		} else {
+			//colocar 0 pero en el mismo formato monetario
+			
+			ventana.setTextPago(monedaFormatter.formatPeso("0"));
+			ventana.getBtnCopiarPresupuesto().setText("COPIAR PRESUPUESTO");
+			ventana.getBtnCopiarPresupuesto().setFont(ventana.getBtnCopiarPresupuesto().getFont().deriveFont(java.awt.Font.PLAIN));
+		}
+		
+		gestorInterfaz.verificarPresupuesto(ventana);	
+		
+		
 	}
 
 	private void abrirVentanaEstados() {
