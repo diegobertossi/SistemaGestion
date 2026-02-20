@@ -16,6 +16,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 
 import javax.swing.ButtonModel;
@@ -30,7 +31,7 @@ import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.mysql.cj.conf.ConnectionUrl;
-import com.mysql.cj.xdevapi.Statement;
+
 
 import modelo.Agenda;
 import persistencia.conexion.Conexion;
@@ -48,7 +49,7 @@ import java.sql.ResultSetMetaData;
 public class ControladorBackup implements ActionListener, MouseListener {
 	private VentanaBackUp ventanaBackUp;
 	private VentanaOpcionesBackup ventanaOpcionesBackup;//
-	
+
 	private String rutadefaultBackup = "";
 
 	private String cleverCloudHostBRC = "b1zeyndbfc1bmeiernaw-mysql.services.clever-cloud.com";
@@ -113,7 +114,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 		String NombreBackUpSinExtension = "Backup Reparsoft " + dia.getDate() + "-" + (dia.getMonth() + 1) + "-"
 				+ (dia.getYear() + 1900);
-		
 
 		if (ventanaBackUp != null && e.getSource() == ventanaBackUp.getBtnGenerarB()) {
 			if (seleccion == ventanaBackUp.getRdbtnLocal().getModel()) {
@@ -147,7 +147,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 				ActualizarBackupMySQLlocal();
 			} else if (seleccion == ventanaBackUp.getRdbtnRemoto().getModel()) {
 				int opcion = JOptionPane.showConfirmDialog(null,
-						"Se sobreescribirá la base de datos local. ¿Desea continuar?", "Confirmar ImportaciÃ³n Remota",
+						"Se sobreescribirá la base de datos local. ¿Desea continuar?", "Confirmar Importación Remota",
 						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (opcion == JOptionPane.YES_OPTION) {
 					ActualizarBackupMySQLremotoConSwingWorker(agenda.getUbicacionBase(), cleverCloudHost,
@@ -276,157 +276,163 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		});
 	}
 
-	
-	
 	private boolean GenerarBackupMySQLRemoto(String ubicacion, String cleverCloudHost, String cleverCloudPort,
-	        String cleverCloudUser, String cleverCloudPassword, String cleverCloudDatabase) {
+			String cleverCloudUser, String cleverCloudPassword, String cleverCloudDatabase) {
 
-	    ventanaBackUp.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-	    ventanaBackUp.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-	    ventanaBackUp.getBtnGenerarB().setEnabled(false);
-	    ventanaBackUp.getBtnImportarB().setEnabled(false);
+		ventanaBackUp.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		ventanaBackUp.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		ventanaBackUp.getBtnGenerarB().setEnabled(false);
+		ventanaBackUp.getBtnImportarB().setEnabled(false);
 
-	    PopupProgresoBackup popup = new PopupProgresoBackup(ventanaBackUp, "Generando backup remoto, espere...");
-	    popup.mostrar();
+		PopupProgresoBackup popup = new PopupProgresoBackup(ventanaBackUp, "Generando backup remoto, espere...");
+		popup.mostrar();
 
-	    SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
-	        @Override
-	        protected Void doInBackground() {
-	            String archivoTemporal = null;
-	            try {
-	                String nombreBaseLocal = (ubicacion.equalsIgnoreCase("Bariloche")) ? "ordenesbrc" : "ordenesbsas";
-	                archivoTemporal = System.getProperty("java.io.tmpdir") + File.separator + "backup_"
-	                        + nombreBaseLocal + "_" + System.currentTimeMillis() + ".sql";
+		SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
+			@Override
+			protected Void doInBackground() {
+				String archivoTemporal = null;
+				try {
+					String nombreBaseLocal = (ubicacion.equalsIgnoreCase("Bariloche")) ? "ordenesbrc" : "ordenesbsas";
+					archivoTemporal = System.getProperty("java.io.tmpdir") + File.separator + "backup_"
+							+ nombreBaseLocal + "_" + System.currentTimeMillis() + ".sql";
 
-	                publish(5); // Iniciando proceso
+					publish(5); // Iniciando proceso
 
-	                // 1. Crear dump local
-	                System.out.println("Creando dump de la base de datos local...");
-	                String mysqlPath = obtenerRutaMySQL();
-	                if (mysqlPath == null) {
-	                    JOptionPane.showMessageDialog(null, "No se pudo encontrar la ruta de MySQL. Verifique la instalación.");
-	                    return null;
-	                }
-	                
-	                List<String> comando = Arrays.asList(mysqlPath + "mysqldump",
-	                        "--host=localhost", "--port=3306", "--user=root", "--password=root", "--single-transaction",
-	                        "--routines", "--triggers", "--no-create-db", nombreBaseLocal);
-	                ProcessBuilder pb = new ProcessBuilder(comando);
-	                pb.redirectOutput(new File(archivoTemporal));
-	                Process proceso = pb.start();
-	                int codigoSalida = proceso.waitFor();
-	                if (codigoSalida != 0) {
-	                    JOptionPane.showMessageDialog(null, "Error al crear el archivo de backup local.");
-	                    return null;
-	                }
-	                System.out.println("Dump local creado exitosamente.");
+					// 1. Crear dump local con configuración para MySQL 8.4.8 y utf8mb4
+					System.out.println("Creando dump de la base de datos local...");
+					String mysqlPath = obtenerRutaMySQL();
+					if (mysqlPath == null) {
+						JOptionPane.showMessageDialog(null,
+								"No se pudo encontrar la ruta de MySQL. Verifique la instalación.");
+						return null;
+					}
 
-	                publish(15); // Dump creado
+					// Parámetros actualizados para MySQL 8.4.8 con soporte utf8mb4
+					List<String> comando = Arrays.asList(mysqlPath + "mysqldump", "--host=localhost", "--port=3306",
+							"--user=root", "--password=root", "--default-character-set=utf8mb4", // <-- CORREGIDO
+							"--single-transaction", "--routines", "--triggers", "--no-create-db",
+							"--column-statistics=0", // Deshabilitar para compatibilidad con MySQL 8
+							nombreBaseLocal);
+					ProcessBuilder pb = new ProcessBuilder(comando);
+					pb.redirectOutput(new File(archivoTemporal));
+					Process proceso = pb.start();
+					int codigoSalida = proceso.waitFor();
+					if (codigoSalida != 0) {
+						JOptionPane.showMessageDialog(null, "Error al crear el archivo de backup local.");
+						return null;
+					}
+					System.out.println("Dump local creado exitosamente.");
 
-	                // 2. Leer sentencias SQL del dump
-	                System.out.println("Leyendo sentencias SQL del dump...");
-	                List<String> sentencias = parseSqlStatements(archivoTemporal);
-	                int totalSentencias = sentencias.size();
-	                System.out.println("Total de sentencias SQL: " + totalSentencias);
+					publish(15); // Dump creado
 
-	                publish(20); // Sentencias leídas
+					// 2. Leer sentencias SQL del dump
+					System.out.println("Leyendo sentencias SQL del dump...");
+					List<String> sentencias = parseSqlStatements(archivoTemporal);
+					int totalSentencias = sentencias.size();
+					System.out.println("Total de sentencias SQL: " + totalSentencias);
 
-	                // 3. Conectar a Clever Cloud y limpiar base remota
-	                System.out.println("Conectando a Clever Cloud...");
-	                String urlCleverCloud = String.format(
-	                        "jdbc:mysql://%s:%s/%s?useSSL=false&allowPublicKeyRetrieval=true", cleverCloudHost,
-	                        cleverCloudPort, cleverCloudDatabase);
-	                
-	                try (Connection conexionRemota = DriverManager.getConnection(urlCleverCloud, cleverCloudUser,
-	                        cleverCloudPassword); java.sql.Statement stmt = conexionRemota.createStatement()) {
+					publish(20); // Sentencias leídas
 
-	                    System.out.println("Conectado a Clever Cloud.");
-	                    publish(25); // Conectado
+					// 3. Conectar a Clever Cloud y limpiar base remota
+					System.out.println("Conectando a Clever Cloud...");
+					// La URL JDBC usa characterEncoding=UTF-8 para enviar los datos que contienen utf8mb4
+					String urlCleverCloud = String.format(
+							"jdbc:mysql://%s:%s/%s?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowMultiQueries=true",
+							cleverCloudHost, cleverCloudPort, cleverCloudDatabase);
 
-	                    System.out.println("Limpiando base de datos remota...");
-	                    limpiarBaseDatos(conexionRemota);
-	                    stmt.execute("SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
-	                    
-	                    publish(30); // Base limpiada
+					try (Connection conexionRemota = DriverManager.getConnection(urlCleverCloud, cleverCloudUser,
+							cleverCloudPassword); java.sql.Statement stmt = conexionRemota.createStatement()) {
 
-	                    // 4. Ejecutar sentencias y actualizar progreso
-	                    // Progreso: 30% inicial, 65% para ejecución de sentencias, 5% final
-	                    System.out.println("Restaurando backup en Clever Cloud...");
-	                    int sentenciasEjecutadas = 0;
-	                    int sentenciasIgnoradas = 0;
+						System.out.println("Conectado a Clever Cloud.");
+						publish(25); // Conectado
 
-	                    for (int i = 0; i < totalSentencias; i++) {
-	                        String s = sentencias.get(i).trim();
-	                        if (s.isEmpty() || s.startsWith("/*") || s.startsWith("--")
-	                                || s.toUpperCase().startsWith("CREATE DATABASE")
-	                                || s.toUpperCase().startsWith("USE ")
-	                                || s.toUpperCase().startsWith("DROP DATABASE")) {
-	                            sentenciasIgnoradas++;
-	                            continue;
-	                        }
-	                        try {
-	                            stmt.execute(s);
-	                            sentenciasEjecutadas++;
-	                        } catch (SQLException e) {
-	                            if (!e.getMessage().contains("Access denied")) {
-	                                System.err.println("Error menor en sentencia (ignorado): " + e.getMessage());
-	                            }
-	                            sentenciasIgnoradas++;
-	                        }
-	                        
-	                        // Calcular progreso: 30% inicial + 65% proporcional a sentencias ejecutadas
-	                        int progreso = 30 + (int) ((i + 1) * 65.0 / totalSentencias);
-	                        publish(progreso);
-	                    }
+						// --- CONFIGURAR LA CONEXIÓN PARA utf8mb4 ---
+						System.out.println("Configurando charset de la conexión remota a utf8mb4...");
+						stmt.execute("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
+						stmt.execute("SET CHARACTER SET utf8mb4");
+						// --- FIN CONFIGURACIÓN ---
 
-	                    System.out.println("Restauración completada:");
-	                    System.out.println("- Sentencias ejecutadas exitosamente: " + sentenciasEjecutadas);
-	                    System.out.println("- Sentencias ignoradas: " + sentenciasIgnoradas);
-	                }
+						System.out.println("Limpiando base de datos remota...");
+						limpiarBaseDatos(conexionRemota);
+						stmt.execute("SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
 
-	                publish(100); // Completado
+						publish(30); // Base limpiada
 
-	                JOptionPane.showMessageDialog(null, "Backup remoto completado exitosamente", "Backup Exitoso",
-	                        JOptionPane.INFORMATION_MESSAGE);
+						// 4. Ejecutar sentencias y actualizar progreso
+						// Progreso: 30% inicial, 65% para ejecución de sentencias, 5% final
+						System.out.println("Restaurando backup en Clever Cloud...");
+						int sentenciasEjecutadas = 0;
+						int sentenciasIgnoradas = 0;
 
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	                JOptionPane.showMessageDialog(null, "Error durante el backup remoto: " + e.getMessage(),
-	                        "Error en Backup", JOptionPane.ERROR_MESSAGE);
-	            } finally {
-	                // Borra el archivo temporal
-	                if (archivoTemporal != null) {
-	                    new File(archivoTemporal).delete();
-	                }
-	            }
-	            return null;
-	        }
+						for (int i = 0; i < totalSentencias; i++) {
+							String s = sentencias.get(i).trim();
+							if (s.isEmpty() || s.startsWith("/*") || s.startsWith("--")
+									|| s.toUpperCase().startsWith("CREATE DATABASE")
+									|| s.toUpperCase().startsWith("USE ")
+									|| s.toUpperCase().startsWith("DROP DATABASE")) {
+								sentenciasIgnoradas++;
+								continue;
+							}
+							try {
+								stmt.execute(s);
+								sentenciasEjecutadas++;
+							} catch (SQLException e) {
+								if (!e.getMessage().contains("Access denied")) {
+									System.err.println("Error menor en sentencia (ignorado): " + e.getMessage());
+								}
+								sentenciasIgnoradas++;
+							}
 
-	        @Override
-	        protected void process(java.util.List<Integer> chunks) {
-	            int ultimo = chunks.get(chunks.size() - 1);
-	            popup.actualizarProgreso(ultimo);
-	        }
+							// Calcular progreso: 30% inicial + 65% proporcional a sentencias ejecutadas
+							int progreso = 30 + (int) ((i + 1) * 65.0 / totalSentencias);
+							publish(progreso);
+						}
 
-	        @Override
-	        protected void done() {
-	            popup.cerrar();
-	            ventanaBackUp.getGlassPane().setVisible(false);
-	            ventanaBackUp.getBtnGenerarB().setEnabled(true);
-	            ventanaBackUp.getBtnImportarB().setEnabled(true);
-	        }
-	    };
+						System.out.println("Restauración completada:");
+						System.out.println("- Sentencias ejecutadas exitosamente: " + sentenciasEjecutadas);
+						System.out.println("- Sentencias ignoradas: " + sentenciasIgnoradas);
+					}
 
-	    SwingUtilities.invokeLater(() -> {
-	        worker.execute();
-	    });
+					publish(100); // Completado
 
-	    return true;
+					JOptionPane.showMessageDialog(null, "Backup remoto completado exitosamente", "Backup Exitoso",
+							JOptionPane.INFORMATION_MESSAGE);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error durante el backup remoto: " + e.getMessage(),
+							"Error en Backup", JOptionPane.ERROR_MESSAGE);
+				} finally {
+					// Borra el archivo temporal
+					if (archivoTemporal != null) {
+						new File(archivoTemporal).delete();
+					}
+				}
+				return null;
+			}
+
+			@Override
+			protected void process(java.util.List<Integer> chunks) {
+				int ultimo = chunks.get(chunks.size() - 1);
+				popup.actualizarProgreso(ultimo);
+			}
+
+			@Override
+			protected void done() {
+				popup.cerrar();
+				ventanaBackUp.getGlassPane().setVisible(false);
+				ventanaBackUp.getBtnGenerarB().setEnabled(true);
+				ventanaBackUp.getBtnImportarB().setEnabled(true);
+			}
+		};
+
+		SwingUtilities.invokeLater(() -> {
+			worker.execute();
+		});
+
+		return true;
 	}
-	
-	
-	
-	
+
 	public boolean ActualizarBackupMySQLremoto(String ubicacion, String cleverCloudHost, String cleverCloudPort,
 			String cleverCloudUser, String cleverCloudPassword, String cleverCloudDatabase) {
 
@@ -456,10 +462,18 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 					System.out.println("Conectando a Clever Cloud para extraer datos...");
 					String urlCleverCloud = String.format(
-							"jdbc:mysql://%s:%s/%s?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true",
+							"jdbc:mysql://%s:%s/%s?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true&allowMultiQueries=true",
 							cleverCloudHost, cleverCloudPort, cleverCloudDatabase);
 					conexionRemota = DriverManager.getConnection(urlCleverCloud, cleverCloudUser, cleverCloudPassword);
 					conexionRemota.setAutoCommit(false);
+
+					// --- CONFIGURAR LA CONEXIÓN REMOTA PARA utf8mb4 ---
+					try (java.sql.Statement stmtCharsetRemoto = conexionRemota.createStatement()) {
+						stmtCharsetRemoto.execute("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
+						stmtCharsetRemoto.execute("SET CHARACTER SET utf8mb4");
+					}
+					// --- FIN CONFIGURACIÓN ---
+
 					System.out.println("Conectado a Clever Cloud exitosamente");
 
 					publish(10);
@@ -472,6 +486,14 @@ public class ControladorBackup implements ActionListener, MouseListener {
 						return false;
 					}
 					conexionLocal.setAutoCommit(false);
+
+					// --- CONFIGURAR LA CONEXIÓN LOCAL PARA utf8mb4 ---
+					try (java.sql.Statement stmtCharset = conexionLocal.createStatement()) {
+						stmtCharset.execute("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
+						stmtCharset.execute("SET CHARACTER SET utf8mb4");
+					}
+					// --- FIN CONFIGURACIÓN ---
+
 					System.out.println("Conectado a la base de datos local exitosamente");
 
 					publish(15);
@@ -615,37 +637,71 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 	private void migrarTabla(String nombreTabla, Connection conexionRemota, Connection conexionLocal)
 			throws SQLException {
+
 		System.out.println("Migrando tabla: " + nombreTabla);
-		try (java.sql.Statement stmtRemoto = conexionRemota.createStatement();
-				java.sql.Statement stmtLocal = conexionLocal.createStatement()) {
+
+		try (Statement stmtRemoto = conexionRemota.createStatement();
+				Statement stmtLocal = conexionLocal.createStatement()) {
+
 			stmtLocal.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
 			stmtLocal.execute("SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
+			stmtLocal.execute("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
+
 			try (ResultSet rsCreate = stmtRemoto.executeQuery("SHOW CREATE TABLE `" + nombreTabla + "`")) {
+
 				if (rsCreate.next()) {
-					String createStatement = rsCreate.getString(2);
+
+					String createSQL = rsCreate.getString(2);
+
+					/*
+					 * NORMALIZACIÓN SEGURA DE CHARSET.
+					 * - Reemplazar utf8mb3 por utf8mb4.
+					 * - Reemplazar 'CHARSET=utf8' por 'CHARSET=utf8mb4' SOLO si 'utf8' NO va seguido de 'mb4'.
+					 * - Reemplazar 'CHARACTER SET utf8' por 'CHARACTER SET utf8mb4' SOLO si 'utf8' NO va seguido de 'mb4'.
+					 * - Reemplazar 'COLLATE utf8_' por 'COLLATE utf8mb4_'.
+					 */
+					createSQL = createSQL.replace("utf8mb3", "utf8mb4");
+					createSQL = createSQL.replaceAll("CHARSET=utf8(?!mb4)", "CHARSET=utf8mb4");
+					createSQL = createSQL.replaceAll("CHARACTER SET utf8(?!mb4)", "CHARACTER SET utf8mb4");
+					createSQL = createSQL.replaceAll("COLLATE utf8_(?!mb4)", "COLLATE utf8mb4_");
+
+					System.out.println("CREATE TABLE procesado para tabla " + nombreTabla);
+
 					stmtLocal.executeUpdate("DROP TABLE IF EXISTS `" + nombreTabla + "`");
-					stmtLocal.executeUpdate(createStatement);
+
+					try {
+						stmtLocal.executeUpdate(createSQL);
+					} catch (SQLException e) {
+						// Fallback defensivo: usar el SQL original si el modificado falla
+						System.err.println("Error al crear tabla con charset modificado, usando SQL original");
+						System.err.println("Detalle: " + e.getMessage());
+						stmtLocal.executeUpdate(rsCreate.getString(2));
+					}
 				}
 			}
+
 			int totalRegistros = 0;
 			try (ResultSet rsCount = stmtRemoto.executeQuery("SELECT COUNT(*) FROM `" + nombreTabla + "`")) {
-				if (rsCount.next())
+				if (rsCount.next()) {
 					totalRegistros = rsCount.getInt(1);
+				}
 			}
+
 			if (totalRegistros > 0) {
 				System.out.println("Tabla `" + nombreTabla + "` tiene " + totalRegistros + " registros.");
 				migrarDatosEnLotes(nombreTabla, conexionRemota, conexionLocal, totalRegistros);
 			} else {
-				System.out.println("Tabla `" + nombreTabla + "` está¡ vacía.");
+				System.out.println("Tabla `" + nombreTabla + "` está vacía.");
 			}
+
 			stmtLocal.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
 		}
 	}
 
 	/**
-	 * CORRECCIÃ"N: Migra los datos usando executeUpdate individual para cada
+	 * Migra los datos usando executeUpdate individual para cada
 	 * registro para preservar las fechas correctamente, evitando conversiones
-	 * automÃ¡ticas del batch processing
+	 * automáticas del batch processing
 	 */
 	private void migrarDatosEnLotes(String nombreTabla, Connection conexionRemota, Connection conexionLocal,
 			int totalRegistros) throws SQLException {
@@ -691,13 +747,13 @@ public class ControladorBackup implements ActionListener, MouseListener {
 						.executeQuery("SELECT * FROM `" + nombreTabla + "` LIMIT " + TAMANO_LOTE + " OFFSET " + offset);
 
 				while (rsData.next()) {
-					// Establecer parÃ¡metros para el INSERT
+					// Establecer parámetros para el INSERT
 					for (int i = 1; i <= columnCount; i++) {
 						Object valor = rsData.getObject(i);
 						pstmtLocal.setObject(i, valor);
 					}
 
-					// CORRECCIÓN: usar executeUpdate() individual en lugar de addBatch()
+					// usar executeUpdate() individual en lugar de addBatch()
 					// para preservar fechas correctamente
 					pstmtLocal.executeUpdate();
 					registrosProcesados++;
@@ -740,12 +796,15 @@ public class ControladorBackup implements ActionListener, MouseListener {
 	}
 
 	private void ActualizarBackupMySQLlocal() {
+
 		JFileChooser archivoBackup = new JFileChooser(rutadefaultBackup);
 		FileNameExtensionFilter sqlFilter = new FileNameExtensionFilter("Bases de datos SQL", "sql");
 		archivoBackup.setFileFilter(sqlFilter);
+
 		int resp = archivoBackup.showOpenDialog(ventanaBackUp);
 
 		if (resp == JFileChooser.APPROVE_OPTION) {
+
 			ventanaBackUp.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			ventanaBackUp.getGlassPane().setVisible(true);
 			ventanaBackUp.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -756,52 +815,102 @@ public class ControladorBackup implements ActionListener, MouseListener {
 			popup.mostrar();
 
 			SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
+
 				@Override
 				protected Void doInBackground() {
-					try {
-						File nombrebackup = archivoBackup.getSelectedFile();
-						long tamañoArchivo = nombrebackup.length();
 
-						String mysqlPath = obtenerRutaMySQL();
-						if (mysqlPath == null) {
-							JOptionPane.showMessageDialog(null, "No se pudo encontrar la ruta de MySQL. Verifique la instalación.");
+					Process process = null;
+
+					try {
+						File archivoSQL = archivoBackup.getSelectedFile();
+						long tamaño = archivoSQL.length();
+
+						if (!archivoSQL.exists() || tamaño == 0) {
+							JOptionPane.showMessageDialog(null, "El archivo de backup no existe o está vacío.", "Error",
+									JOptionPane.ERROR_MESSAGE);
 							return null;
 						}
 
-						String nombreBaseLocal = (agenda.getUbicacionBase().equalsIgnoreCase("Bariloche")) ? "ordenesbrc" : "ordenesbsas";
-						Process p = Runtime.getRuntime().exec(mysqlPath + "mysql -uroot -proot " + nombreBaseLocal);
+						String mysqlPath = obtenerRutaMySQL();
+						if (mysqlPath == null) {
+							return null;
+						}
 
-						try (OutputStream os = p.getOutputStream();
-								FileInputStream fis = new FileInputStream(nombrebackup)) {
+						String nombreBaseLocal = agenda.getUbicacionBase().equalsIgnoreCase("Bariloche") ? "ordenesbrc"
+								: "ordenesbsas";
+
+						System.out.println("Importando backup:");
+						System.out.println("Base: " + nombreBaseLocal);
+						System.out.println("Archivo: " + archivoSQL.getAbsolutePath());
+
+						List<String> command = new ArrayList<>();
+						command.add(mysqlPath + "mysql.exe");
+						command.add("--host=localhost");
+						command.add("--port=3306");
+						command.add("--user=root");
+						command.add("--password=root");
+						command.add("--default-character-set=utf8mb4"); // <-- CORREGIDO
+						command.add(nombreBaseLocal);
+
+						ProcessBuilder pb = new ProcessBuilder(command);
+						// pb.redirectErrorStream(true);
+
+						process = pb.start();
+
+						try (OutputStream os = process.getOutputStream();
+								FileInputStream fis = new FileInputStream(archivoSQL)) {
 							byte[] buffer = new byte[8192];
 							int leido;
-							long totalLeido = 0;
+							long total = 0;
 
-							while ((leido = fis.read(buffer)) > 0) {
+							while ((leido = fis.read(buffer)) != -1) {
 								os.write(buffer, 0, leido);
-								totalLeido += leido;
+								total += leido;
 
-								if (tamañoArchivo > 0) {
-									int progreso = (int) ((totalLeido * 100.0) / tamañoArchivo);
-									publish(progreso);
-								}
+								int progreso = (int) ((total * 100) / tamaño);
+								publish(progreso);
+							}
+							os.flush();
+						}
+
+						StringBuilder salida = new StringBuilder();
+						try (BufferedReader br = new BufferedReader(
+								new InputStreamReader(process.getInputStream(), "UTF-8"))) {
+
+							String linea;
+							while ((linea = br.readLine()) != null) {
+								salida.append(linea).append("\n");
+								System.out.println("MySQL: " + linea);
 							}
 						}
 
-						p.waitFor();
-						JOptionPane.showMessageDialog(null, "Base de datos actualizada correctamente.",
-								"Actualización Exitosa", JOptionPane.INFORMATION_MESSAGE);
+						int exitCode = process.waitFor();
+
+						if (exitCode == 0) {
+							JOptionPane.showMessageDialog(null,
+									"Base de datos actualizada correctamente.\n\n" + "Base: " + nombreBaseLocal + "\n"
+											+ "Archivo: " + archivoSQL.getName(),
+									"Importación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(null, "Error al importar el backup.\n\n" + salida.toString(),
+									"Error MySQL", JOptionPane.ERROR_MESSAGE);
+						}
+
 					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, "Error al actualizar la base de datos: " + e.getMessage(),
+						e.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Error al actualizar la base de datos.\n\n" + e.toString(),
 								"Error", JOptionPane.ERROR_MESSAGE);
+					} finally {
+						if (process != null) {
+							process.destroy();
+						}
 					}
 					return null;
 				}
 
 				@Override
 				protected void process(java.util.List<Integer> chunks) {
-					int ultimo = chunks.get(chunks.size() - 1);
-					popup.actualizarProgreso(ultimo);
+					popup.actualizarProgreso(chunks.get(chunks.size() - 1));
 				}
 
 				@Override
@@ -814,9 +923,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 				}
 			};
 
-			SwingUtilities.invokeLater(() -> {
-				worker.execute();
-			});
+			worker.execute();
 		}
 	}
 
@@ -833,54 +940,123 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
 			@Override
 			protected Void doInBackground() {
+				File backupFile = null;
+				Process child = null;
+
 				try {
 					String nombreAguardar = ventanaOpcionesBackup.getTxtNombreArchivo().getText();
 					String rutaAguardar = ventanaOpcionesBackup.getTxtRutaArchivo().getText();
-					File backupFile = new File(rutaAguardar + nombreAguardar);
+					backupFile = new File(rutaAguardar + nombreAguardar);
 
 					String nombreBaseLocal = (agenda.getUbicacionBase().equalsIgnoreCase("Bariloche")) ? "ordenesbrc"
 							: "ordenesbsas";
-					
+
 					String mysqlPath = obtenerRutaMySQL();
 					if (mysqlPath == null) {
-						JOptionPane.showMessageDialog(null, "No se pudo encontrar la ruta de MySQL. Verifique la instalación.");
+						JOptionPane.showMessageDialog(null,
+								"No se pudo encontrar la ruta de MySQL. Verifique la instalación.");
 						return null;
 					}
 
-					Process child = Runtime.getRuntime().exec(
-							mysqlPath + "mysqldump --opt --password=root --user=root --databases "
-									+ nombreBaseLocal);
+					// Depuración: mostrar el comando que se va a ejecutar
+					System.out.println("Generando backup de: " + nombreBaseLocal);
+					System.out.println("Ruta MySQL: " + mysqlPath);
+					System.out.println("Archivo destino: " + backupFile.getAbsolutePath());
 
-					// Contar líneas totales para el progreso
-					int totalLineas = 0;
-					try (BufferedReader br = new BufferedReader(new InputStreamReader(child.getInputStream()))) {
-						while (br.readLine() != null)
-							totalLineas++;
-					}
+					// Preparar el comando de mysqldump
+					List<String> command = new ArrayList<>();
+					command.add(mysqlPath + "mysqldump.exe");
+					command.add("--host=localhost");
+					command.add("--port=3306");
+					command.add("--user=root");
+					command.add("--password=root");
+					command.add("--default-character-set=utf8mb4"); // <-- CORREGIDO
+					command.add("--column-statistics=0");
+					command.add("--routines");
+					command.add("--triggers");
+					command.add("--events");
+					command.add("--add-drop-database");
+					command.add("--add-drop-table");
+					command.add("--complete-insert");
+					command.add("--extended-insert");
+					command.add("--single-transaction");
+					command.add(nombreBaseLocal);
 
-					// Volver a ejecutar el proceso para escribir el archivo y mostrar progreso
-					child = Runtime.getRuntime().exec(
-							mysqlPath + "mysqldump --opt --password=root --user=root --databases "
-									+ nombreBaseLocal);
-					try (BufferedReader br = new BufferedReader(new InputStreamReader(child.getInputStream()));
+					ProcessBuilder pb = new ProcessBuilder(command);
+					// pb.redirectErrorStream(true);
+
+					// Ejecutar mysqldump y escribir directamente al archivo
+					child = pb.start();
+
+					// Leer la salida y escribir al archivo con seguimiento de progreso
+					try (BufferedReader br = new BufferedReader(new InputStreamReader(child.getInputStream(), "UTF-8"));
 							FileWriter fw = new FileWriter(backupFile)) {
+
 						String line;
-						int lineasLeidas = 0;
+						int lineCount = 0;
+						int totalLinesWritten = 0;
+
+						// Primera pasada: contar líneas aproximadas leyendo un buffer
+						// Para esto, podemos usar un método alternativo
+						// Usaremos el tamaño del archivo como indicador de progreso
+
+						// Leer y escribir línea por línea
 						while ((line = br.readLine()) != null) {
-							fw.write(line + "\n");
-							lineasLeidas++;
-							if (totalLineas > 0) {
-								int progreso = (int) ((lineasLeidas * 100.0) / totalLineas);
-								publish(progreso);
+							fw.write(line + System.lineSeparator());
+							totalLinesWritten++;
+							lineCount++;
+
+							// Actualizar progreso cada 100 líneas para no saturar
+							if (lineCount % 100 == 0) {
+								publish(Math.min(90, (lineCount / 100) % 100)); // Progreso aproximado
 							}
 						}
+
+						System.out.println("Backup completado. Total líneas escritas: " + totalLinesWritten);
 					}
-					child.waitFor();
-					JOptionPane.showMessageDialog(null, "Archivo de backup generado exitosamente.", "Backup Exitoso",
-							JOptionPane.INFORMATION_MESSAGE);
+
+					// Esperar a que termine el proceso
+					int exitCode = child.waitFor();
+
+					if (exitCode == 0) {
+						// Verificar que el archivo no esté vacío
+						if (backupFile.exists() && backupFile.length() > 0) {
+							long fileSizeKB = backupFile.length() / 1024;
+							JOptionPane.showMessageDialog(null,
+									"Archivo de backup generado exitosamente.\n" + "Tamaño: " + fileSizeKB + " KB\n"
+											+ "Ubicación: " + backupFile.getAbsolutePath(),
+									"Backup Exitoso", JOptionPane.INFORMATION_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(null,
+									"El archivo de backup se generó pero está vacío o no existe.\n"
+											+ "Verifique los permisos y que la base de datos tenga datos.",
+									"Advertencia", JOptionPane.WARNING_MESSAGE);
+						}
+					} else {
+						// Leer mensajes de error del proceso
+						StringBuilder errorMsg = new StringBuilder();
+						try (BufferedReader errorReader = new BufferedReader(
+								new InputStreamReader(child.getErrorStream()))) {
+							String errorLine;
+							while ((errorLine = errorReader.readLine()) != null) {
+								errorMsg.append(errorLine).append("\n");
+							}
+						}
+
+						JOptionPane.showMessageDialog(null, "Error al generar el backup. Código de salida: " + exitCode
+								+ "\n" + "Error: " + errorMsg.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+					}
+
+					publish(100); // Completado
+
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Error al generar el backup: " + e.getMessage(), "Error",
-							JOptionPane.ERROR_MESSAGE);
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error al generar el backup: " + e.getMessage() + "\n"
+							+ "Detalle: " + e.getClass().getName(), "Error", JOptionPane.ERROR_MESSAGE);
+				} finally {
+					if (child != null) {
+						child.destroy();
+					}
 				}
 				return null;
 			}
@@ -893,9 +1069,8 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 			@Override
 			protected void done() {
-
 				ventanaBackUp.getGlassPane().setVisible(false);
-				// ventanaBackUp.setCursor(Cursor.getDefaultCursor());
+				ventanaOpcionesBackup.getGlassPane().setVisible(false);
 				ventanaOpcionesBackup.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				ventanaBackUp.getBtnGenerarB().setEnabled(true);
 				ventanaBackUp.getBtnImportarB().setEnabled(true);
@@ -904,66 +1079,68 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		};
 
 		SwingUtilities.invokeLater(() -> {
-
 			worker.execute();
 		});
-
 	}
 
 	/**
-	 * Método para obtener dinámicamente la ruta de instalación de MySQL
-	 * Busca en los archivos ejecutorMysql_32 y ejecutorMysql_64 en las rutas comunes
-	 * @return La ruta de MySQL con la unidad correcta, o null si no se encuentra
-	 */
-	/**
-	 * Método para obtener dinámicamente la ruta de instalación de MySQL
-	 * Verifica la existencia de las rutas comunes de MySQL Server 5.5
+	 * Método para obtener dinámicamente la ruta de instalación de MySQL 8.4.8
+	 * Verifica la existencia de las rutas comunes de MySQL Server 8.4
+	 * 
 	 * @return La ruta de MySQL con la unidad correcta, o null si no se encuentra
 	 */
 	private String obtenerRutaMySQL() {
-	    // Rutas posibles de MySQL Server 5.5
-	    String[] rutasMySQL = {
-	        "C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\",
-	        "C:\\Program Files (x86)\\MySQL\\MySQL Server 5.5\\bin\\", 
-	        "F:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\",
-	        "F:\\Program Files (x86)\\MySQL\\MySQL Server 5.5\\bin\\",
-	        "D:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\",
-	        "D:\\Program Files (x86)\\MySQL\\MySQL Server 5.5\\bin\\",
-	        "E:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\",
-	        "E:\\Program Files (x86)\\MySQL\\MySQL Server 5.5\\bin\\"
-	    };
-	    
-	    // Archivos ejecutables que deben existir en la ruta de MySQL
-	    String[] archivosMySQL = {"mysql.exe", "mysqldump.exe"};
-	    
-	    for (String rutaMySQL : rutasMySQL) {
-	        boolean rutaValida = true;
-	        
-	        // Verificar que todos los archivos necesarios existan
-	        for (String archivo : archivosMySQL) {
-	            File archivoCompleto = new File(rutaMySQL + archivo);
-	            if (!archivoCompleto.exists()) {
-	                rutaValida = false;
-	                break;
-	            }
-	        }
-	        
-	        if (rutaValida) {
-	            System.out.println("Ruta de MySQL encontrada: " + rutaMySQL);
-	            return rutaMySQL;
-	        }
-	    }
-	    
-	    // Si no se encuentra ninguna ruta válida
-	    System.err.println("No se encontró una instalación válida de MySQL Server 5.5.");
-	    JOptionPane.showMessageDialog(null, 
-	        "No se pudo encontrar la instalación de MySQL Server 5.5.\n" +
-	        "Verifique que MySQL esté instalado correctamente.", 
-	        "Error - MySQL no encontrado", 
-	        JOptionPane.ERROR_MESSAGE);
-	    return null;
-	}
+		// Rutas posibles de MySQL Server 8.4 (versión actualizada)
+		String[] rutasMySQL = { "C:\\Program Files\\MySQL\\MySQL Server 8.4\\bin\\",
+				"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\",
+				"C:\\Program Files (x86)\\MySQL\\MySQL Server 8.4\\bin\\",
+				"C:\\Program Files (x86)\\MySQL\\MySQL Server 8.0\\bin\\",
+				"F:\\Program Files\\MySQL\\MySQL Server 8.4\\bin\\",
+				"F:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\",
+				"F:\\Program Files (x86)\\MySQL\\MySQL Server 8.4\\bin\\",
+				"F:\\Program Files (x86)\\MySQL\\MySQL Server 8.0\\bin\\",
+				"D:\\Program Files\\MySQL\\MySQL Server 8.4\\bin\\",
+				"D:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\",
+				"D:\\Program Files (x86)\\MySQL\\MySQL Server 8.4\\bin\\",
+				"D:\\Program Files (x86)\\MySQL\\MySQL Server 8.0\\bin\\",
+				"E:\\Program Files\\MySQL\\MySQL Server 8.4\\bin\\",
+				"E:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\",
+				"E:\\Program Files (x86)\\MySQL\\MySQL Server 8.4\\bin\\",
+				"E:\\Program Files (x86)\\MySQL\\MySQL Server 8.0\\bin\\",
+				// También verificar rutas de versiones anteriores para compatibilidad
+				"C:\\Program Files\\MySQL\\MySQL Server 5.5\\bin\\",
+				"C:\\Program Files (x86)\\MySQL\\MySQL Server 5.5\\bin\\" };
 
+		// Archivos ejecutables que deben existir en la ruta de MySQL
+		String[] archivosMySQL = { "mysql.exe", "mysqldump.exe" };
+
+		for (String rutaMySQL : rutasMySQL) {
+			boolean rutaValida = true;
+
+			// Verificar que todos los archivos necesarios existan
+			for (String archivo : archivosMySQL) {
+				File archivoCompleto = new File(rutaMySQL + archivo);
+				if (!archivoCompleto.exists()) {
+					rutaValida = false;
+					break;
+				}
+			}
+
+			if (rutaValida) {
+				System.out.println("Ruta de MySQL encontrada: " + rutaMySQL);
+				return rutaMySQL;
+			}
+		}
+
+		// Si no se encuentra ninguna ruta válida
+		System.err.println("No se encontró una instalación válida de MySQL Server.");
+		JOptionPane.showMessageDialog(null,
+				"No se pudo encontrar la instalación de MySQL Server.\n"
+						+ "Verifique que MySQL esté instalado correctamente.\n"
+						+ "Rutas verificadas: MySQL Server 8.4, 8.0 y 5.5",
+				"Error - MySQL no encontrado", JOptionPane.ERROR_MESSAGE);
+		return null;
+	}
 
 	// Lee el dump y separa sentencias SQL correctamente, ignorando los ; dentro de
 	// strings

@@ -138,7 +138,7 @@ public class GestorListadoEquipos {
         
         // Estados
         ventanaVisualizarEquipos.getBotonEditarEstados().addActionListener(e -> {
-            controlador.getGestorVisualizacion().editar(ventanaVisualizarEquipos);
+            controlador.getGestorVisualizacion().abrirVentanaEstados(ventanaVisualizarEquipos);
         });
         
         // Remito

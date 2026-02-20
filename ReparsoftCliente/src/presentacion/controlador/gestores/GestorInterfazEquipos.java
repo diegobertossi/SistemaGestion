@@ -3,6 +3,7 @@ package presentacion.controlador.gestores;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -242,6 +243,9 @@ public class GestorInterfazEquipos {
        // Sin presupuesto
        if (presupuesto.compareTo(0.0) == 0) {
            aplicarEstadoVisual(ventana, "SIN PRESUPUESTAR", SIN_PRESUPUESTAR);
+           ventana.getBtnCopiarPresupuesto().setText("COPIAR PAGO");
+           ventana.getBtnCopiarPresupuesto().setToolTipText("Copiar monto de pago al presupuesto");
+           ventana.getBtnCopiarPresupuesto().setFont(new Font("Cambria", Font.BOLD, 10));
            return;
        }
 
@@ -257,6 +261,9 @@ public class GestorInterfazEquipos {
        if (comparacion == 0) {
            // Totalmente pagado
            aplicarEstadoVisual(ventana, "PAGADO", PAGADO);
+           ventana.getBtnCopiarPresupuesto().setText("LIMPIAR PAGO");
+           ventana.getBtnCopiarPresupuesto().setToolTipText("Borra monto de pago");
+           ventana.getBtnCopiarPresupuesto().setFont(new Font("Cambria", Font.BOLD, 10));
        } else if (comparacion > 0 && pago.compareTo(0.0) > 0) {
            // Pago parcial
            aplicarEstadoVisual(ventana, "PAGADO PARCIALMENTE", PARCIAL);
@@ -265,6 +272,9 @@ public class GestorInterfazEquipos {
            String leyenda = determinarLeyendaSinPago(estadoComercial);
            Color color = "ESPERANDO ACEPTACIÓN".equals(leyenda) ? ESPERANDO : FALTA_PAGO;
            aplicarEstadoVisual(ventana, leyenda, color);
+           ventana.getBtnCopiarPresupuesto().setText("COPIAR PAGO");
+           ventana.getBtnCopiarPresupuesto().setToolTipText("Copiar monto de pago al presupuesto");
+           ventana.getBtnCopiarPresupuesto().setFont(new Font("Cambria", Font.BOLD, 10));
        }
    }
 
@@ -301,6 +311,9 @@ public class GestorInterfazEquipos {
            // Totalmente pagado
            aplicarEstadoVisual(ventana, "PAGADO", PAGADO);
            ventana.setChckPDFGenerado(true);
+           ventana.getBtnCopiarPresupuesto().setText("LIMPIAR PAGO");
+           ventana.getBtnCopiarPresupuesto().setToolTipText("Borra monto de pago");
+           ventana.getBtnCopiarPresupuesto().setFont(new Font("Cambria", Font.BOLD, 10));
        } else if (diferencia > 0.0 && pago > 0.0) {
            // Pago parcial
            aplicarEstadoVisual(ventana, "PAGADO PARCIALMENTE", PARCIAL);

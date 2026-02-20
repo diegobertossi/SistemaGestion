@@ -52,11 +52,6 @@ public class GestorDatos {
 		String aviso = ventana.getTextAvisoCliente().getText();
 		String clienteCliente = ventana.getTextClienteCliente().getText();
 
-		// Validar caracteres
-		if (verificarCaracteresPermitidos(falla, solucion, informe, nombreEquipo, modelo, marca, serie, remito, aviso, clienteCliente)) {
-			mostrarErrorCaracteresInvalidos(ventana);
-			return null;
-		}
 
 		// Parsear fechas
 		String fechaEntrada = null;
@@ -179,11 +174,7 @@ public class GestorDatos {
 		String aviso = ventana.getTextAvisoCliente().getText();
 		String clienteCliente = ventana.getTextClienteCliente().getText();
 
-		// Validar caracteres
-		if (verificarCaracteresPermitidos(nombreEquipo, falla, modelo, marca, serie, remito, aviso, clienteCliente)) {
-			mostrarErrorCaracteresInvalidos(ventana);
-			return null;
-		}
+
 
 		// Parsear fecha
 		String fechaEntrada = null;
@@ -286,113 +277,9 @@ public class GestorDatos {
 				nombreEquipo, modelo, marca, serie, aviso, clienteCliente, idCliente, idSucursal, cliente, sucursal);
 	}
 
-	/**
-	 * Verifica caracteres no permitidos
-	 * @return true si encuentra caracteres no válidos, false si todos son válidos
-	 */
-	private boolean verificarCaracteresPermitidos(String... textos) {
-		caracteresNoValidos.clear();
-		
-		System.out.println("=== INICIANDO VERIFICACIÓN DE CARACTERES ===");
 
-		for (int i = 0; i < textos.length; i++) {
-			String texto = textos[i];
-			
-			// Saltar textos nulos o vacíos
-			if (texto == null || texto.trim().isEmpty()) {
-				System.out.println("Texto " + i + ": null o vacío - saltando");
-				continue;
-			}
-			
-			System.out.println("Verificando texto " + i + ": [" + texto + "]");
-
-			// Verificar comilla simple
-			if (texto.contains("'")) {
-				System.out.println("  -> Encontrado: comilla simple (')");
-				if (!caracteresNoValidos.contains("'")) {
-					caracteresNoValidos.add("'");
-				}
-			}
-
-			// Verificar punto y coma
-			if (texto.contains(";")) {
-				System.out.println("  -> Encontrado: punto y coma (;)");
-				if (!caracteresNoValidos.contains(";")) {
-					caracteresNoValidos.add(";");
-				}
-			}
-
-			// Verificar barra invertida
-			if (texto.contains("\\")) {
-				System.out.println("  -> Encontrado: barra invertida (\\)");
-				if (!caracteresNoValidos.contains("\\")) {
-					caracteresNoValidos.add("\\");
-				}
-			}
-
-			// Verificar comentario de bloque inicio
-			if (texto.contains("/*")) {
-				System.out.println("  -> Encontrado: comentario de bloque (/* )");
-				if (!caracteresNoValidos.contains("/*")) {
-					caracteresNoValidos.add("/*");
-				}
-			}
-
-			// Verificar comentario de bloque fin
-			if (texto.contains("*/")) {
-				System.out.println("  -> Encontrado: comentario de bloque (*/)");
-				if (!caracteresNoValidos.contains("*/")) {
-					caracteresNoValidos.add("*/");
-				}
-			}
-		}
-
-		boolean hayCaracteresInvalidos = !caracteresNoValidos.isEmpty();
-		
-		if (hayCaracteresInvalidos) {
-			System.out.println("=== CARACTERES NO VÁLIDOS ENCONTRADOS: " + caracteresNoValidos + " ===");
-		} else {
-			System.out.println("=== TODOS LOS CARACTERES SON VÁLIDOS ===");
-		}
-		
-		return hayCaracteresInvalidos;
-	}
-
-	/**
-	 * Muestra un popup con los caracteres inválidos detectados
-	 */
-	private void mostrarErrorCaracteresInvalidos(Object ventana) {
-		StringBuilder mensaje = new StringBuilder();
-		mensaje.append("Se detectaron caracteres no válidos en los campos:\n\n");
-		
-		for (String caracter : caracteresNoValidos) {
-			// Mostrar el caracter de forma visible
-			String caracterMostrar = caracter;
-			if (caracter.equals("\\")) {
-				caracterMostrar = "\\ (barra invertida)";
-			} else if (caracter.equals("'")) {
-				caracterMostrar = "' (comilla simple)";
-			} else if (caracter.equals(";")) {
-				caracterMostrar = "; (punto y coma)";
-			} else if (caracter.equals("/*")) {
-				caracterMostrar = "/* (inicio de comentario)";
-			} else if (caracter.equals("*/")) {
-				caracterMostrar = "*/ (fin de comentario)";
-			}
-			
-			mensaje.append("  • ").append(caracterMostrar).append("\n");
-		}
-		
-		mensaje.append("\nPor favor, elimine estos caracteres antes de guardar.");
-		
-		JOptionPane.showMessageDialog(
-			null,
-			mensaje.toString(),
-			"Error: Caracteres no válidos",
-			JOptionPane.ERROR_MESSAGE
-		);
-	}
-
+	
+	
 	/**
 	 * Parsea valor monetario
 	 */

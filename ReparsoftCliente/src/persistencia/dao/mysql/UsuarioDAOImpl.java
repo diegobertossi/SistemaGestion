@@ -14,13 +14,23 @@ import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.UsuarioDAO;
 
 public class UsuarioDAOImpl implements UsuarioDAO {
-	private static final String insert = "INSERT INTO usuario(idUsuario, idRol, dni, nombre, apellido, telefono, email,login,pass) VALUES(?, ?, ?, ?, ?, ?, ?,?,?)";
+	private static final String insert = "INSERT INTO usuario(idUsuario, idRol, dni, nombre, apellido, telefono, email, login, pass) "
+			+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 	private static final String delete = "DELETE FROM usuario WHERE idUsuario = ?";
-	private static final String readall = "SELECT * FROM usuario WHERE dni <> 0 ";
-	private static final String readLogin = "SELECT * FROM usuario where login = ? AND pass = ? ";
-	private static final String readallTecnico = "SELECT usuario.nombre, usuario.apellido FROM usuario where usuario.idUsuario != '1' group by usuario.apellido";
-	private static final String readallTecnicoVisualizacion = "SELECT usuario.nombre, usuario.apellido FROM usuario group by usuario.apellido";
-	private static final String IDporNombre = "Select idUsuario from usuario where nombre =? and apellido =?";
+
+	private static final String readall = "SELECT * FROM usuario WHERE dni <> 0";
+
+	private static final String readLogin = "SELECT * FROM usuario WHERE login = ? AND pass = ?";
+
+	private static final String readallTecnico = "SELECT DISTINCT usuario.nombre, usuario.apellido "
+			+ "FROM usuario WHERE usuario.idUsuario <> 1";
+
+	private static final String readallTecnicoVisualizacion = "SELECT DISTINCT usuario.nombre, usuario.apellido "
+			+ "FROM usuario";
+
+	private static final String IDporNombre = "SELECT idUsuario FROM usuario WHERE nombre = ? AND apellido = ?";
+
 	private static final String correoPorNombre = "SELECT email FROM usuario WHERE nombre = ? AND apellido = ?";
 
 	public static String ubicacion;
@@ -29,12 +39,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	@SuppressWarnings("unused")
 	public UsuarioDAOImpl(String ubicacionBase) {
 
-		final String insert = "INSERT INTO usuario(idUsuario, idRol, dni, nombre, apellido, telefono, email,login,pass) VALUES(?, ?, ?, ?, ?, ?, ?,?,?)";
-		final String delete = "DELETE FROM usuario WHERE idUsuario = ?";
-		final String readall = "SELECT * FROM usuario WHERE dni <> 0 ";
-		final String readLogin = "SELECT * FROM usuario where login = ? AND pass = ? ";
-		final String readallTecnico = "SELECT usuario.nombre FROM usuario group by usuario.nombre";
-		final String IDporNombre = "Select idUsuario from usuario where nombre =?";
 		ubicacion = ubicacionBase;
 		conexion = Conexion.getConexion(ubicacion);
 	}
@@ -150,9 +154,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		return usuarios.get(0);
 	}
 
-	
-
-
 	public List<UsuarioDTO> readAllXRol(int idRol) {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
@@ -264,8 +265,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		PreparedStatement statement;
 		ResultSet resultSet; // Guarda el resultado de la query
 		int idUsuario = 0;
-				
-		if (nombreTecnico.compareTo("") > 0 &&  nombreTecnico.compareTo(" ") > 0 ) {
+
+		if (nombreTecnico.compareTo("") > 0 && nombreTecnico.compareTo(" ") > 0) {
 			String[] partes = nombreTecnico.split(" ");
 			String nombre = partes[0];
 			String apellido = partes[1];
@@ -294,52 +295,54 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 
 	/**
-	* Obtiene el correo electrónico de un usuario por su nombre y apellido
-	 * @param nombreCompleto Nombre completo del usuario en formato "Nombre Apellido"
+	 * Obtiene el correo electrónico de un usuario por su nombre y apellido
+	 * 
+	 * @param nombreCompleto Nombre completo del usuario en formato "Nombre
+	 *                       Apellido"
 	 * @return String con el email del usuario, o null si no se encuentra
 	 */
 	@Override
 	public String correoPorNombre(String nombreCompleto) {
-	    PreparedStatement statement;
-	    ResultSet resultSet;
-	    String email = null;
-	    
-	    // Validar que el parámetro no esté vacío
-	    if (nombreCompleto == null || nombreCompleto.trim().isEmpty()) {
-	        return null;
-	    }
-	    
-	    try {
-	        // Dividir el nombre completo en nombre y apellido
-	        String[] partes = nombreCompleto.trim().split(" ", 2); // Limitar a 2 partes
-	        
-	        if (partes.length < 2) {
-	            System.out.println("Formato incorrecto. Se esperaba 'Nombre Apellido'");
-	            return null;
-	        }
-	        
-	        String nombre = partes[0];
-	        String apellido = partes[1];
-	        
-	        // Preparar y ejecutar la consulta
-	        statement = conexion.getSQLConexion().prepareStatement(correoPorNombre);
-	        statement.setString(1, nombre);
-	        statement.setString(2, apellido);
-	        resultSet = statement.executeQuery();
-	        
-	        // Obtener el resultado
-	        if (resultSet.next()) {
-	            email = resultSet.getString("email");
-	        }
-	        
-	    } catch (SQLException e) {
-	        System.err.println("Error al obtener correo del usuario: " + nombreCompleto);
-	        e.printStackTrace();
-	    } finally {
-	        // No cerrar la conexión aquí - se maneja en el singleton
-	    }
-	    
-	    return email;
+		PreparedStatement statement;
+		ResultSet resultSet;
+		String email = null;
+
+		// Validar que el parámetro no esté vacío
+		if (nombreCompleto == null || nombreCompleto.trim().isEmpty()) {
+			return null;
+		}
+
+		try {
+			// Dividir el nombre completo en nombre y apellido
+			String[] partes = nombreCompleto.trim().split(" ", 2); // Limitar a 2 partes
+
+			if (partes.length < 2) {
+				System.out.println("Formato incorrecto. Se esperaba 'Nombre Apellido'");
+				return null;
+			}
+
+			String nombre = partes[0];
+			String apellido = partes[1];
+
+			// Preparar y ejecutar la consulta
+			statement = conexion.getSQLConexion().prepareStatement(correoPorNombre);
+			statement.setString(1, nombre);
+			statement.setString(2, apellido);
+			resultSet = statement.executeQuery();
+
+			// Obtener el resultado
+			if (resultSet.next()) {
+				email = resultSet.getString("email");
+			}
+
+		} catch (SQLException e) {
+			System.err.println("Error al obtener correo del usuario: " + nombreCompleto);
+			e.printStackTrace();
+		} finally {
+			// No cerrar la conexión aquí - se maneja en el singleton
+		}
+
+		return email;
 	}
-	
+
 }

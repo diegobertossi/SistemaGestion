@@ -1218,7 +1218,7 @@ public class VentanaVisualizarEquipos extends JFrame {
 		btnabrirExcel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnabrirExcel.setBackground(new Color(0, 153, 102));
 		
-		btnCopiarPresupuesto = new JButton("<html><center>COPIAR PRESUPUESTO</html>");
+		btnCopiarPresupuesto = new JButton();
 		btnCopiarPresupuesto.setEnabled(false);
 		btnCopiarPresupuesto.setForeground(new Color(0, 0, 0));
 		btnCopiarPresupuesto.setFont(new Font("Cambria", Font.BOLD, 10));
