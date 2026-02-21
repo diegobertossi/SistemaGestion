@@ -2,6 +2,7 @@ package mails;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -23,6 +24,7 @@ public class EnviarMail {
     }
 
     // Método común para enviar correos
+   
     private static boolean enviarCorreo(String from, String correo, String subject, String cuerpo, BodyPart... adjuntos) {
         try {
             // Crear sesión
@@ -33,7 +35,9 @@ public class EnviarMail {
             message.setFrom(new InternetAddress(from));
             message.addRecipients(Message.RecipientType.BCC, correo);
             message.setSubject(subject);
-
+            // Establecer la fecha de envío actual
+            message.setSentDate(new Date());
+            
             if (adjuntos != null && adjuntos.length > 0) {
                 Multipart multipart = new MimeMultipart();
 
