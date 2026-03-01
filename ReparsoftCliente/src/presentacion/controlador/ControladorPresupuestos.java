@@ -33,6 +33,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+
+import javax.swing.*;
+import java.awt.*;
+
+
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -43,8 +49,14 @@ import org.apache.poi.util.Units;
 
 import java.io.FileInputStream;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
+import com.google.gson.JsonSyntaxException;
 import com.inet.jortho.SpellChecker;
 
+import VistaPropias.CorrectorGramaticalAPI;
+import VistaPropias.CorrectorGramaticalAPI.ErrorGramatical;
+import VistaPropias.CorrectorGramaticalAPI.ResultadoRevision;
+import VistaPropias.DialogoRevisionGramatical;
 import modelo.Agenda;
 import presentacion.reportes.ReportePresupuesto;
 import presentacion.vista.VentanaAgregarImagenes;
@@ -303,19 +315,27 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		else if (this.ventanaGenerarPresupuesto != null
 				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnEditarInforme()) {
 
-			Color colorActiveCaption = new Color(153, 180, 209);
+			Color amarilloClaro = new Color(237,232,208);
 
 			ventanaGenerarPresupuesto.getTextInforme().setEditable(true);
-			ventanaGenerarPresupuesto.getTextInforme().setBackground(colorActiveCaption);
+			ventanaGenerarPresupuesto.getTextInforme().setBackground(amarilloClaro);
 
 			ventanaGenerarPresupuesto.getTextPrecioPeso().setEditable(true);
-			ventanaGenerarPresupuesto.getTextPrecioPeso().setBackground(colorActiveCaption);
-			ventanaGenerarPresupuesto.getPanel_4().setBackground(colorActiveCaption);
+			ventanaGenerarPresupuesto.getTextPrecioPeso().setBackground(amarilloClaro);
+			ventanaGenerarPresupuesto.getPanel_4().setBackground(amarilloClaro);
 
 			ventanaGenerarPresupuesto.getTextPrecioDolar().setEditable(true);
-			ventanaGenerarPresupuesto.getTextPrecioDolar().setBackground(colorActiveCaption);
-			ventanaGenerarPresupuesto.getPanel_5().setBackground(colorActiveCaption);
+			ventanaGenerarPresupuesto.getTextPrecioDolar().setBackground(amarilloClaro);
+			ventanaGenerarPresupuesto.getPanel_5().setBackground(amarilloClaro);
 
+			//habilitar boton de gramatica y gurdar cambios, y deshabilitar los botones de generar PDF y WORD mientras se editan los campos
+			ventanaGenerarPresupuesto.getBtnGramatica().setEnabled(true);
+			ventanaGenerarPresupuesto.getBtnGuardarCambios().setEnabled(true);
+			ventanaGenerarPresupuesto.getVisualizarPresupuestoPDF().setEnabled(false);
+			ventanaGenerarPresupuesto.getGuardarPresupuestoPDF().setEnabled(false);
+			ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens().setEnabled(false);
+						
+			
 		}
 
 		else if (this.ventanaGenerarPresupuesto != null
@@ -345,209 +365,337 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				ventanaGenerarPresupuesto.getVisualizarPresupuestoPDF().setEnabled(true);
 				ventanaGenerarPresupuesto.getGuardarPresupuestoPDF().setEnabled(true);
 				ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens().setEnabled(true);
+				
+				ventanaGenerarPresupuesto.getBtnGramatica().setEnabled(false);
+				ventanaGenerarPresupuesto.getBtnGuardarCambios().setEnabled(false);
+				
 
-			}
-		}
-
-		// Java
-		else if (this.ventanaGenerarPresupuesto != null
-				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnCotizacionDolar()) {
-
-			DecimalFormat df = new DecimalFormat("#.##");
-			double[] cotizaciones = consumoAPI.ConsumoAPI.consultaCotizacionDolar();
-
-			String cotizacionDolarOf = Double.toString(cotizaciones[0]);
-			String cotizacionDolarBl = Double.toString(cotizaciones[1]);
-
-			// Usar MonedaFormatter para parsear correctamente los campos
-			String textoPeso = ventanaGenerarPresupuesto.getTextPrecioPeso().getText();
-			String textoDolar = ventanaGenerarPresupuesto.getTextPrecioDolar().getText();
-
-			double presupuestoPesos = monedaFormatter.parseAmount(textoPeso);
-			double presupuestoDolar = monedaFormatter.parseAmount(textoDolar);
-
-			ventanaGenerarPresupuesto.getTextCotizacionDolarOf().setText(cotizacionDolarOf);
-			ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
-
-			// Depuración
-			System.out.println("textoPeso: " + textoPeso);
-			System.out.println("textoDolar: " + textoDolar);
-			System.out.println("presupuestoPesos: " + presupuestoPesos);
-			System.out.println("presupuestoDolar: " + presupuestoDolar);
-
-			boolean pesosCero = Math.abs(presupuestoPesos) < 0.0001;
-			boolean dolarCero = Math.abs(presupuestoDolar) < 0.0001;
-
-			System.out.println("pesosCero: " + pesosCero);
-			System.out.println("dolarCero: " + dolarCero);
-
-			if (!pesosCero && dolarCero) {
-				double sugerenciaDolar = presupuestoPesos / cotizaciones[0];
-				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(df.format(sugerenciaDolar));
-				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(df.format(presupuestoPesos));
-				System.out.println("Sugerencia: solo pesos, calculando dólares");
-			} else if (pesosCero && !dolarCero) {
-				double sugerenciaPeso = presupuestoDolar * cotizaciones[0];
-				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(df.format(sugerenciaPeso));
-				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(df.format(presupuestoDolar));
-				System.out.println("Sugerencia: solo dólares, calculando pesos");
-			} else {
-				ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText("");
-				ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText("");
-				System.out.println("No se muestra sugerencia");
 			}
 		}
 
 		else if (this.ventanaGenerarPresupuesto != null
-				&& e.getSource() == this.ventanaGenerarPresupuesto.getGuardarPresupuestoPDF()) {
+				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnGramatica()) {
 
-			btnPresupuestoPDF = true;
+						
+			revisarGramaticaActionPerformed(ventanaGenerarPresupuesto.getTextInforme(), ventanaGenerarPresupuesto);
+			
+		
+		}
+		
 
-			if (ventanaGenerarPresupuesto.getGrupoMoneda().getSelection() == null) {
+	
 
-				Object mje = "Debe seleccionar un moneda para agregar al presupuesto.";
-				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+	// Java
+	else if(this.ventanaGenerarPresupuesto!=null&&e.getSource()==this.ventanaGenerarPresupuesto.getBtnCotizacionDolar())
 
-			} else {
+	{
 
-				int seleccion2 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
-						"Desea generar el archivo PDF?", "Confirmación", JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
+		DecimalFormat df = new DecimalFormat("#.##");
+		double[] cotizaciones = consumoAPI.ConsumoAPI.consultaCotizacionDolar();
 
-				if (seleccion2 == JOptionPane.YES_OPTION) {
+		String cotizacionDolarOf = Double.toString(cotizaciones[0]);
+		String cotizacionDolarBl = Double.toString(cotizaciones[1]);
 
-					ventanaAgregarImagenes = new VentanaAgregarImagenes(this);
+		// Usar MonedaFormatter para parsear correctamente los campos
+		String textoPeso = ventanaGenerarPresupuesto.getTextPrecioPeso().getText();
+		String textoDolar = ventanaGenerarPresupuesto.getTextPrecioDolar().getText();
 
-					agregarListenersVentanaImagenes();
+		double presupuestoPesos = monedaFormatter.parseAmount(textoPeso);
+		double presupuestoDolar = monedaFormatter.parseAmount(textoDolar);
 
-				}
+		ventanaGenerarPresupuesto.getTextCotizacionDolarOf().setText(cotizacionDolarOf);
+		ventanaGenerarPresupuesto.getTextCotizacionDolarBl().setText(cotizacionDolarBl);
+
+		// Depuración
+		System.out.println("textoPeso: " + textoPeso);
+		System.out.println("textoDolar: " + textoDolar);
+		System.out.println("presupuestoPesos: " + presupuestoPesos);
+		System.out.println("presupuestoDolar: " + presupuestoDolar);
+
+		boolean pesosCero = Math.abs(presupuestoPesos) < 0.0001;
+		boolean dolarCero = Math.abs(presupuestoDolar) < 0.0001;
+
+		System.out.println("pesosCero: " + pesosCero);
+		System.out.println("dolarCero: " + dolarCero);
+
+		if (!pesosCero && dolarCero) {
+			double sugerenciaDolar = presupuestoPesos / cotizaciones[0];
+			ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(df.format(sugerenciaDolar));
+			ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(df.format(presupuestoPesos));
+			System.out.println("Sugerencia: solo pesos, calculando dólares");
+		} else if (pesosCero && !dolarCero) {
+			double sugerenciaPeso = presupuestoDolar * cotizaciones[0];
+			ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText(df.format(sugerenciaPeso));
+			ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText(df.format(presupuestoDolar));
+			System.out.println("Sugerencia: solo dólares, calculando pesos");
+		} else {
+			ventanaGenerarPresupuesto.getTextSugerenciaDolar().setText("");
+			ventanaGenerarPresupuesto.getTextSugerenciaPeso().setText("");
+			System.out.println("No se muestra sugerencia");
+		}
+	}
+
+	else if(this.ventanaGenerarPresupuesto!=null&&e.getSource()==this.ventanaGenerarPresupuesto.getGuardarPresupuestoPDF())
+	{
+
+		btnPresupuestoPDF = true;
+
+		if (ventanaGenerarPresupuesto.getGrupoMoneda().getSelection() == null) {
+
+			Object mje = "Debe seleccionar un moneda para agregar al presupuesto.";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+
+		} else {
+
+			int seleccion2 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto, "Desea generar el archivo PDF?",
+					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+			if (seleccion2 == JOptionPane.YES_OPTION) {
+
+				ventanaAgregarImagenes = new VentanaAgregarImagenes(this);
+
+				agregarListenersVentanaImagenes();
+
 			}
 		}
+	}
 
-		else if (this.ventanaGenerarPresupuesto != null
-				&& e.getSource() == this.ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens()) {
+	else if(this.ventanaGenerarPresupuesto!=null&&e.getSource()==this.ventanaGenerarPresupuesto.getBtnGenerarInformeSiemens())
+	{
 
-			btnPresupuestoPDF = false;
+		btnPresupuestoPDF = false;
 
-			if (ventanaGenerarPresupuesto.getGrupoMoneda().getSelection() == null) {
+		if (ventanaGenerarPresupuesto.getGrupoMoneda().getSelection() == null) {
 
-				Object mje = "Debe seleccionar un moneda para agregar al informe.";
-				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+			Object mje = "Debe seleccionar un moneda para agregar al informe.";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
 
-			} else {
+		} else {
 
-				int seleccion2 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
-						"Desea generar el archivo WORD?", "Confirmación", JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
+			int seleccion2 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto, "Desea generar el archivo WORD?",
+					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-				if (seleccion2 == JOptionPane.YES_OPTION) {
+			if (seleccion2 == JOptionPane.YES_OPTION) {
 
-					ventanaAgregarImagenes = new VentanaAgregarImagenes(this);
+				ventanaAgregarImagenes = new VentanaAgregarImagenes(this);
 
-					agregarListenersVentanaImagenes();
+				agregarListenersVentanaImagenes();
 
-				}
 			}
-		} else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnAgregarImagen()) {
+		}
+	}else if(this.ventanaAgregarImagenes!=null&&e.getSource()==this.ventanaAgregarImagenes.getBtnAgregarImagen())
+	{
 
-			agregarImagenesIngreso();
+		agregarImagenesIngreso();
+
+	}
+
+	else if(this.ventanaAgregarImagenes!=null&&e.getSource()==this.ventanaAgregarImagenes.getBtnAgregarImagenDiagnostico())
+	{
+
+		agregarImagenesDiagnostico();
+	}
+
+	else if(this.ventanaAgregarImagenes!=null&&e.getSource()==this.ventanaAgregarImagenes.getBtnBorrarImagen_1())
+	{
+
+		ventanaAgregarImagenes.getTxtRutaImagen_1().setText("");
+
+	}else if(this.ventanaAgregarImagenes!=null&&e.getSource()==this.ventanaAgregarImagenes.getBtnBorrarImagen_2())
+	{
+
+		ventanaAgregarImagenes.getTxtRutaImagen_2().setText("");
+
+	}else if(this.ventanaAgregarImagenes!=null&&e.getSource()==this.ventanaAgregarImagenes.getBtnBorrarImagen_3())
+	{
+
+		ventanaAgregarImagenes.getTxtRutaImagen_3().setText("");
+
+	}else if(this.ventanaAgregarImagenes!=null&&e.getSource()==this.ventanaAgregarImagenes.getBtnBorrarImagen_4())
+	{
+
+		ventanaAgregarImagenes.getTxtRutaImagen_4().setText("");
+
+	}else if(this.ventanaAgregarImagenes!=null&&e.getSource()==this.ventanaAgregarImagenes.getBtnBorrarImagen_5())
+	{
+
+		ventanaAgregarImagenes.getTxtRutaImagen_5().setText("");
+
+	}else if(this.ventanaAgregarImagenes!=null&&e.getSource()==this.ventanaAgregarImagenes.getBtnBorrarImagen_6())
+	{
+
+		ventanaAgregarImagenes.getTxtRutaImagen_6().setText("");
+
+	}
+
+	else if(this.ventanaAgregarImagenes!=null&&e.getSource()==this.ventanaAgregarImagenes.getBtngenerarInforme())
+	{
+
+		rutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1().getText();
+		rutaImagen_2 = ventanaAgregarImagenes.getTxtRutaImagen_2().getText();
+		rutaImagen_3 = ventanaAgregarImagenes.getTxtRutaImagen_3().getText();
+		rutaImagen_4 = ventanaAgregarImagenes.getTxtRutaImagen_4().getText();
+		rutaImagen_5 = ventanaAgregarImagenes.getTxtRutaImagen_5().getText();
+		rutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6().getText();
+
+		String emailPrueba = "diego.bertossi@gmail.com";
+
+		ventanaAgregarImagenes.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+		if (btnPresupuestoPDF) {
+
+			// rutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1().getText();
+
+			List<RegistroPresupuestoDTO> lista = new ArrayList<RegistroPresupuestoDTO>();
+			RegistroPresupuestoDTO rep = TomarDatosPantallaPresupuesto();
+
+			lista.add(rep);
+
+			ReportePresupuesto reporte = new ReportePresupuesto(rep, lista, agenda);
+			reporte.guardar();
+
+			ventanaGenerarPresupuesto.setChckPDFGenerado(true);
+
+			ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
+			this.agenda.editarReparacionPresupuesto(reparacionAeditar);
+
+			int seleccion3 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
+					"Desea enviar el Presupuesto por correo?", "Confirmación", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+
+			if (seleccion3 == JOptionPane.YES_OPTION) {
+
+				ventanaEmail = new VentanaEmail();
+
+				String NombreCliente = ventanaGenerarPresupuesto.getTextCliente().getText();
+				String Sucursal = ventanaGenerarPresupuesto.getTextSucursal().getText();
+				String ELS = ventanaGenerarPresupuesto.getTextELS().getText();
+				String NombreContacto = this.agenda.ContactoPorCliente(NombreCliente);
+				String emailContacto = this.agenda.EmailPorCliente(NombreCliente);
+				String NombrePDF = "Presupuesto ELS_" + ELS + "_" + NombreCliente + ".pdf";
+
+				agregarListenerAventanaEmail();
+
+				ventanaEmail.getTextCliente().setText(NombreCliente + " ( " + Sucursal + " ) ");
+				ventanaEmail.getTextNombreContacto().setText(NombreContacto);
+
+				// ventanaEmail.getTextEmailContacto().setText(emailContacto);
+				ventanaEmail.getTextEmailContacto().setText(emailPrueba);
+
+				ventanaEmail.getTextAdjunto().setText(NombrePDF);
+
+				String empresa = "ELS - Electronic Laboratory & Services.";
+				String mdp = "Mar del Plata: Avellaneda 2766 1 piso MDP -(7600) - Te: +54 9 223 5969934. NUEVA DIRECCION.";
+				String caba = "Bs As: Arcos 4002 4 A - Buenos Aires(1429) - Te: +54 9 11 4703-2205.";
+				String brc = "Bariloche: 9 de julio 710 - Bariloche (8400) - Te: +54 9 11 3768-8372..";
+				String web = "www.elsweb.com.ar";
+				String email = "E-mail: els@elsweb.com.ar";
+				String Asunto = "Presupuesto ELS: " + ELS;
+				String cuerpoEnvioPresupuesto = "Buenos días!\n\nAdjunto presupuesto.\nEn caso de aceptar el mismo,favor de responder este correo para poder proceder con la reparación.\nAtte.";
+
+				ventanaEmail.getTextCuerpo().setText(cuerpoEnvioPresupuesto + "\n\n" + empresa + "\n" + mdp + "\n"
+						+ caba + "\n" + brc + "\n" + web + "\n" + email);
+				ventanaEmail.getTextAsunto().setText(Asunto);
+				ventanaEmail.getTextCuerpo().moveCaretPosition(0);
+			}
 
 		}
 
-		else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnAgregarImagenDiagnostico()) {
+		else {
 
-			agregarImagenesDiagnostico();
-		}
+			String nombreWordBase = "Modelo Generico de informe 2023.docx";
+			String documentoBase = "";
+			String pathBase = "";
 
-		else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_1()) {
+			switch (agenda.getUbicacionBase()) {
+			case "Bariloche":
+				pathBase = "F:/els/Bariloche/Administracion/Sistema/Informes Siemens/";
+				break;
 
-			ventanaAgregarImagenes.getTxtRutaImagen_1().setText("");
+			case "Buenos Aires":
+				pathBase = "F:/els/Administracion/Sistema/Informes Siemens/";
+				break;
 
-		} else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_2()) {
+			default:
+				break;
+			}
 
-			ventanaAgregarImagenes.getTxtRutaImagen_2().setText("");
+			documentoBase = pathBase + nombreWordBase;
 
-		} else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_3()) {
+			LocalDate fechaHoy = LocalDate.now();
+			DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yy");
+			String fechaHoyString = fechaHoy.format(formato);
 
-			ventanaAgregarImagenes.getTxtRutaImagen_3().setText("");
+			// SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
 
-		} else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_4()) {
+			String els = ventanaGenerarPresupuesto.getTextELS().getText();
+			String aviso = ventanaGenerarPresupuesto.getTextAviso().getText();
+			String cliente = ventanaGenerarPresupuesto.getTextCliente().getText();
+			String sucursal = ventanaGenerarPresupuesto.getTextSucursal().getText();
+			String equipo = ventanaGenerarPresupuesto.getTextEquipo().getText();
+			String modelo = ventanaGenerarPresupuesto.getTextModelo().getText();
+			String serie = ventanaGenerarPresupuesto.getTextSerie().getText();
 
-			ventanaAgregarImagenes.getTxtRutaImagen_4().setText("");
+			String fechaFabricacion = ventanaGenerarPresupuesto.getTextFabrString();
 
-		} else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_5()) {
+			String diagnostico = ventanaGenerarPresupuesto.getTextInforme().getText();
+			String precioDolar = ventanaGenerarPresupuesto.getTextPrecioDolar().getText();
+			String plazoEntrega = ventanaGenerarPresupuesto.getTextPlazoEntrega().getText();
 
-			ventanaAgregarImagenes.getTxtRutaImagen_5().setText("");
+			String nombreWordNuevo = "AV " + aviso + "-" + "ELS " + els + "_" + cliente + ".docx";
+			String nuevoDocumento = pathBase + nombreWordNuevo;
 
-		} else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnBorrarImagen_6()) {
+			try {
+				XWPFDocument doc = new XWPFDocument(new FileInputStream(documentoBase));
 
-			ventanaAgregarImagenes.getTxtRutaImagen_6().setText("");
+				buscarYReemplazar(doc, "#fecha#", fechaHoyString, "");
+				buscarYReemplazar(doc, "#aviso#", aviso, "");
+				buscarYReemplazar(doc, "#cliente#", cliente, "");
+				buscarYReemplazar(doc, "#equipo#", equipo, "");
+				buscarYReemplazar(doc, "#modelo#", modelo, "");
+				buscarYReemplazar(doc, "#serie#", serie, "");
+				buscarYReemplazar(doc, "#fechafabr#", fechaFabricacion, "");
+				buscarYReemplazar(doc, "#diagnostico#", diagnostico, "");
+				buscarYReemplazar(doc, "#PrecioD#", precioDolar, "");
+				buscarYReemplazar(doc, "#Plazo#", plazoEntrega, "");
+				buscarYReemplazar(doc, "#Imagen1#", "", rutaImagen_1);
+				buscarYReemplazar(doc, "#Imagen2#", "", rutaImagen_2);
+				buscarYReemplazar(doc, "#Imagen3#", "", rutaImagen_3);
+				buscarYReemplazar(doc, "#Imagen4#", "", rutaImagen_4);
+				buscarYReemplazar(doc, "#Imagen5#", "", rutaImagen_5);
+				buscarYReemplazar(doc, "#Imagen6#", "", rutaImagen_6);
 
-		}
+				FileOutputStream out = new FileOutputStream(nuevoDocumento);
+				doc.write(out);
+				out.close();
+				doc.close();
 
-		else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtngenerarInforme()) {
+				JOptionPane.showMessageDialog(null, "Documento generado exitosamente.");
 
-			rutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1().getText();
-			rutaImagen_2 = ventanaAgregarImagenes.getTxtRutaImagen_2().getText();
-			rutaImagen_3 = ventanaAgregarImagenes.getTxtRutaImagen_3().getText();
-			rutaImagen_4 = ventanaAgregarImagenes.getTxtRutaImagen_4().getText();
-			rutaImagen_5 = ventanaAgregarImagenes.getTxtRutaImagen_5().getText();
-			rutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6().getText();
-
-			String emailPrueba = "diego.bertossi@gmail.com";
-
-			ventanaAgregarImagenes.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-			if (btnPresupuestoPDF) {
-
-				// rutaImagen_1 = ventanaAgregarImagenes.getTxtRutaImagen_1().getText();
-
-				List<RegistroPresupuestoDTO> lista = new ArrayList<RegistroPresupuestoDTO>();
-				RegistroPresupuestoDTO rep = TomarDatosPantallaPresupuesto();
-
-				lista.add(rep);
-
-				ReportePresupuesto reporte = new ReportePresupuesto(rep, lista, agenda);
-				reporte.guardar();
-
-				ventanaGenerarPresupuesto.setChckPDFGenerado(true);
+				ventanaGenerarPresupuesto.setChckWORDGenerado(true);
 
 				ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
 				this.agenda.editarReparacionPresupuesto(reparacionAeditar);
 
-				int seleccion3 = JOptionPane.showConfirmDialog(ventanaGenerarPresupuesto,
-						"Desea enviar el Presupuesto por correo?", "Confirmación", JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
+				int seleccion3 = JOptionPane.showConfirmDialog(null, "Desea enviar el informe WORD por correo?",
+						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (seleccion3 == JOptionPane.YES_OPTION) {
 
 					ventanaEmail = new VentanaEmail();
 
-					String NombreCliente = ventanaGenerarPresupuesto.getTextCliente().getText();
-					String Sucursal = ventanaGenerarPresupuesto.getTextSucursal().getText();
-					String ELS = ventanaGenerarPresupuesto.getTextELS().getText();
-					String NombreContacto = this.agenda.ContactoPorCliente(NombreCliente);
-					String emailContacto = this.agenda.EmailPorCliente(NombreCliente);
-					String NombrePDF = "Presupuesto ELS_" + ELS + "_" + NombreCliente + ".pdf";
+					String NombreContacto = this.agenda.ContactoPorCliente(cliente);
+					String emailContacto = this.agenda.EmailPorCliente(cliente);
+					// String NombreWORD = "AV " + aviso + "_" + cliente + ".pdf";
 
 					agregarListenerAventanaEmail();
 
-					ventanaEmail.getTextCliente().setText(NombreCliente + " ( " + Sucursal + " ) ");
+					ventanaEmail.getTextCliente().setText(cliente + " ( " + sucursal + " ) ");
 					ventanaEmail.getTextNombreContacto().setText(NombreContacto);
 
-					// ventanaEmail.getTextEmailContacto().setText(emailContacto);
 					ventanaEmail.getTextEmailContacto().setText(emailPrueba);
-
-					ventanaEmail.getTextAdjunto().setText(NombrePDF);
+					// ventanaEmail.getTextEmailContacto().setText(emailContacto);
+					ventanaEmail.getTextAdjunto().setText(nombreWordNuevo);
 
 					String empresa = "ELS - Electronic Laboratory & Services.";
 					String mdp = "Mar del Plata: Avellaneda 2766 1 piso MDP -(7600) - Te: +54 9 223 5969934. NUEVA DIRECCION.";
@@ -555,8 +703,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					String brc = "Bariloche: 9 de julio 710 - Bariloche (8400) - Te: +54 9 11 3768-8372..";
 					String web = "www.elsweb.com.ar";
 					String email = "E-mail: els@elsweb.com.ar";
-					String Asunto = "Presupuesto ELS: " + ELS;
-					String cuerpoEnvioPresupuesto = "Buenos días!\n\nAdjunto presupuesto.\nEn caso de aceptar el mismo,favor de responder este correo para poder proceder con la reparación.\nAtte.";
+					String Asunto = "Informe " + nombreWordNuevo;
+					String cuerpoEnvioPresupuesto = "Buenos días!\n\nAdjunto el informe correspondiente.\n";
 
 					ventanaEmail.getTextCuerpo().setText(cuerpoEnvioPresupuesto + "\n\n" + empresa + "\n" + mdp + "\n"
 							+ caba + "\n" + brc + "\n" + web + "\n" + email);
@@ -564,325 +712,217 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaEmail.getTextCuerpo().moveCaretPosition(0);
 				}
 
-			}
-
-			else {
-
-				String nombreWordBase = "Modelo Generico de informe 2023.docx";
-				String documentoBase="";
-				String  pathBase = "";
-
-				switch (agenda.getUbicacionBase()) {
-					case "Bariloche":
-						pathBase = "F:/els/Bariloche/Administracion/Sistema/Informes Siemens/";	
-					break;
-					
-					case "Buenos Aires":
-						pathBase = "F:/els/Administracion/Sistema/Informes Siemens/";
-					break;
-
-				default:
-					break;
-				}
-				
-				documentoBase = pathBase + nombreWordBase;
-				
-
-				LocalDate fechaHoy = LocalDate.now();
-				DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yy");
-				String fechaHoyString = fechaHoy.format(formato);
-
-				// SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-
-				String els = ventanaGenerarPresupuesto.getTextELS().getText();
-				String aviso = ventanaGenerarPresupuesto.getTextAviso().getText();
-				String cliente = ventanaGenerarPresupuesto.getTextCliente().getText();
-				String sucursal = ventanaGenerarPresupuesto.getTextSucursal().getText();
-				String equipo = ventanaGenerarPresupuesto.getTextEquipo().getText();
-				String modelo = ventanaGenerarPresupuesto.getTextModelo().getText();
-				String serie = ventanaGenerarPresupuesto.getTextSerie().getText();
-
-				String fechaFabricacion = ventanaGenerarPresupuesto.getTextFabrString();
-
-				String diagnostico = ventanaGenerarPresupuesto.getTextInforme().getText();
-				String precioDolar = ventanaGenerarPresupuesto.getTextPrecioDolar().getText();
-				String plazoEntrega = ventanaGenerarPresupuesto.getTextPlazoEntrega().getText();
-
-				String nombreWordNuevo = "AV " + aviso + "-" + "ELS " + els + "_" + cliente + ".docx";
-				String nuevoDocumento = pathBase + nombreWordNuevo;
-
-				try {
-					XWPFDocument doc = new XWPFDocument(new FileInputStream(documentoBase));
-
-					buscarYReemplazar(doc, "#fecha#", fechaHoyString, "");
-					buscarYReemplazar(doc, "#aviso#", aviso, "");
-					buscarYReemplazar(doc, "#cliente#", cliente, "");
-					buscarYReemplazar(doc, "#equipo#", equipo, "");
-					buscarYReemplazar(doc, "#modelo#", modelo, "");
-					buscarYReemplazar(doc, "#serie#", serie, "");
-					buscarYReemplazar(doc, "#fechafabr#", fechaFabricacion, "");
-					buscarYReemplazar(doc, "#diagnostico#", diagnostico, "");
-					buscarYReemplazar(doc, "#PrecioD#", precioDolar, "");
-					buscarYReemplazar(doc, "#Plazo#", plazoEntrega, "");
-					buscarYReemplazar(doc, "#Imagen1#", "", rutaImagen_1);
-					buscarYReemplazar(doc, "#Imagen2#", "", rutaImagen_2);
-					buscarYReemplazar(doc, "#Imagen3#", "", rutaImagen_3);
-					buscarYReemplazar(doc, "#Imagen4#", "", rutaImagen_4);
-					buscarYReemplazar(doc, "#Imagen5#", "", rutaImagen_5);
-					buscarYReemplazar(doc, "#Imagen6#", "", rutaImagen_6);
-
-					FileOutputStream out = new FileOutputStream(nuevoDocumento);
-					doc.write(out);
-					out.close();
-					doc.close();
-
-					JOptionPane.showMessageDialog(null, "Documento generado exitosamente.");
-
-					ventanaGenerarPresupuesto.setChckWORDGenerado(true);
-
-					ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
-					this.agenda.editarReparacionPresupuesto(reparacionAeditar);
-
-					int seleccion3 = JOptionPane.showConfirmDialog(null, "Desea enviar el informe WORD por correo?",
-							"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-					if (seleccion3 == JOptionPane.YES_OPTION) {
-
-						ventanaEmail = new VentanaEmail();
-
-						String NombreContacto = this.agenda.ContactoPorCliente(cliente);
-						String emailContacto = this.agenda.EmailPorCliente(cliente);
-						// String NombreWORD = "AV " + aviso + "_" + cliente + ".pdf";
-
-						agregarListenerAventanaEmail();
-
-						ventanaEmail.getTextCliente().setText(cliente + " ( " + sucursal + " ) ");
-						ventanaEmail.getTextNombreContacto().setText(NombreContacto);
-
-						ventanaEmail.getTextEmailContacto().setText(emailPrueba);
-						// ventanaEmail.getTextEmailContacto().setText(emailContacto);
-						ventanaEmail.getTextAdjunto().setText(nombreWordNuevo);
-
-						String empresa = "ELS - Electronic Laboratory & Services.";
-						String mdp = "Mar del Plata: Avellaneda 2766 1 piso MDP -(7600) - Te: +54 9 223 5969934. NUEVA DIRECCION.";
-						String caba = "Bs As: Arcos 4002 4 A - Buenos Aires(1429) - Te: +54 9 11 4703-2205.";
-						String brc = "Bariloche: 9 de julio 710 - Bariloche (8400) - Te: +54 9 11 3768-8372..";
-						String web = "www.elsweb.com.ar";
-						String email = "E-mail: els@elsweb.com.ar";
-						String Asunto = "Informe " + nombreWordNuevo;
-						String cuerpoEnvioPresupuesto = "Buenos días!\n\nAdjunto el informe correspondiente.\n";
-
-						ventanaEmail.getTextCuerpo().setText(cuerpoEnvioPresupuesto + "\n\n" + empresa + "\n" + mdp
-								+ "\n" + caba + "\n" + brc + "\n" + web + "\n" + email);
-						ventanaEmail.getTextAsunto().setText(Asunto);
-						ventanaEmail.getTextCuerpo().moveCaretPosition(0);
-					}
-
-				} catch (IOException f) {
-					f.printStackTrace();
-				}
-			}
-
-			ventanaAgregarImagenes.setCursor(Cursor.getDefaultCursor());
-
-			ventanaAgregarImagenes.dispose();
-			ventanaAgregarImagenes = null;
-
-		} else if (this.ventanaAgregarImagenes != null
-				&& e.getSource() == this.ventanaAgregarImagenes.getBtnCancelar()) {
-
-			this.ventanaAgregarImagenes.dispose();
-			this.ventanaAgregarImagenes = null;
-		}
-
-		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnAgregarContacto()) {
-
-			ventanaEmail.getTextPara().setText(ventanaEmail.getTextEmailContacto().getText());
-
-		}
-
-		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnEnviar()) {
-
-			if (ventanaEmail.getTextPara().getText().isEmpty()) {
-				Object mje = "Debe agregar al menos un destinatario al correo.";
-				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-
-			} else if (!validacionMail(ventanaEmail.getTextPara().getText())) {
-				JOptionPane.showMessageDialog(null, "Escriba un email correcto",
-						"Error al registrar una direccion de email", JOptionPane.ERROR_MESSAGE);
-			} else {
-				int seleccion = JOptionPane.showConfirmDialog(ventanaEmail, "Desea enviar el Informe al cliente",
-						"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-				if (seleccion == JOptionPane.YES_OPTION) {
-
-					enviarMail();
-
-				}
+			} catch (IOException f) {
+				f.printStackTrace();
 			}
 		}
 
-		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnEditar()) {
+		ventanaAgregarImagenes.setCursor(Cursor.getDefaultCursor());
 
-			ventanaEmail.getTextCuerpo().setEditable(true);
+		ventanaAgregarImagenes.dispose();
+		ventanaAgregarImagenes = null;
 
+	}else if(this.ventanaAgregarImagenes!=null&&e.getSource()==this.ventanaAgregarImagenes.getBtnCancelar())
+	{
+
+		this.ventanaAgregarImagenes.dispose();
+		this.ventanaAgregarImagenes = null;
+	}
+
+	else if(this.ventanaEmail!=null&&e.getSource()==this.ventanaEmail.getBtnAgregarContacto())
+	{
+
+		ventanaEmail.getTextPara().setText(ventanaEmail.getTextEmailContacto().getText());
+
+	}
+
+	else if(this.ventanaEmail!=null&&e.getSource()==this.ventanaEmail.getBtnEnviar())
+	{
+
+		if (ventanaEmail.getTextPara().getText().isEmpty()) {
+			Object mje = "Debe agregar al menos un destinatario al correo.";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+
+		} else if (!validacionMail(ventanaEmail.getTextPara().getText())) {
+			JOptionPane.showMessageDialog(null, "Escriba un email correcto",
+					"Error al registrar una direccion de email", JOptionPane.ERROR_MESSAGE);
+		} else {
+			int seleccion = JOptionPane.showConfirmDialog(ventanaEmail, "Desea enviar el Informe al cliente",
+					"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+			if (seleccion == JOptionPane.YES_OPTION) {
+
+				enviarMail();
+
+			}
+		}
+	}
+
+	else if(this.ventanaEmail!=null&&e.getSource()==this.ventanaEmail.getBtnEditar())
+	{
+
+		ventanaEmail.getTextCuerpo().setEditable(true);
+
+	}
+
+	else if(this.ventanaEmail!=null&&e.getSource()==this.ventanaEmail.getBtnAdjuntarArchivo())
+	{
+
+		// En tu clase controlador, agregar como atributo
+		agregarArchivosAdjuntos();
+
+	}
+
+	else if(this.ventanaEmail!=null&&e.getSource()==this.ventanaEmail.getBtnAdjunto())
+	{
+
+		String nombreArchivo = ventanaEmail.getTextAdjunto().getText();
+		String ubicacion = agenda.getUbicacionBase();
+
+		// Determinar la ruta base según la ubicación
+		String rutaBase;
+		switch (ubicacion) {
+		case "Bariloche":
+			rutaBase = "F:/ELS/Bariloche/Administracion/Sistema/";
+			break;
+		case "Buenos Aires":
+			rutaBase = "F:/ELS/Administracion/Sistema/";
+			break;
+		default:
+			System.err.println("Ubicación no válida: " + ubicacion);
+			return;
 		}
 
-		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnAdjuntarArchivo()) {
+		// Determinar el subdirectorio según el tipo de archivo
+		String subdirectorio = btnPresupuestoPDF ? "Presupuestos PDF/" : "Informes Siemens/";
 
-			// En tu clase controlador, agregar como atributo
-			agregarArchivosAdjuntos();
+		// Construir ruta completa y abrir archivo
+		File path = new File(rutaBase + subdirectorio + nombreArchivo);
 
+		try {
+			Desktop.getDesktop().open(path);
+		} catch (IOException ex) {
+			System.err.println("Error al abrir el archivo: " + path.getAbsolutePath());
+			ex.printStackTrace();
+		}
+	}
+
+	else if(this.ventanaGenerarPresupuesto!=null&&e.getSource()==this.ventanaGenerarPresupuesto.getVisualizarPresupuestoPDF())
+	{
+
+		if (ventanaGenerarPresupuesto.getGrupoMoneda().getSelection() == null) {
+
+			Object mje = "Debe seleccionar un moneda para agregar al presupuesto.";
+			JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+
+		} else {
+			List<RegistroPresupuestoDTO> lista = new ArrayList<RegistroPresupuestoDTO>();
+
+			RegistroPresupuestoDTO rep = TomarDatosPantallaPresupuesto();
+
+			lista.add(rep);
+
+			ReportePresupuesto reporte = new ReportePresupuesto(rep, lista, agenda);
+			reporte.mostrar();
 		}
 
-		else if (this.ventanaEmail != null && e.getSource() == this.ventanaEmail.getBtnAdjunto()) {
-		    
-		    String nombreArchivo = ventanaEmail.getTextAdjunto().getText();
-		    String ubicacion = agenda.getUbicacionBase();
-		    
-		    // Determinar la ruta base según la ubicación
-		    String rutaBase;
-		    switch (ubicacion) {
-		        case "Bariloche":
-		            rutaBase = "F:/ELS/Bariloche/Administracion/Sistema/";
-		            break;
-		        case "Buenos Aires":
-		            rutaBase = "F:/ELS/Administracion/Sistema/";
-		            break;
-		        default:
-		            System.err.println("Ubicación no válida: " + ubicacion);
-		            return;
-		    }
-		    
-		    // Determinar el subdirectorio según el tipo de archivo
-		    String subdirectorio = btnPresupuestoPDF ? "Presupuestos PDF/" : "Informes Siemens/";
-		    
-		    // Construir ruta completa y abrir archivo
-		    File path = new File(rutaBase + subdirectorio + nombreArchivo);
-		    
-		    try {
-		        Desktop.getDesktop().open(path);
-		    } catch (IOException ex) {
-		        System.err.println("Error al abrir el archivo: " + path.getAbsolutePath());
-		        ex.printStackTrace();
-		    }
+	}
+
+	else if(ventanaMarcarAceptaciones!=null&&e.getSource()==this.ventanaMarcarAceptaciones.getBtnFiltrar())
+	{
+
+		DefaultTableModel dm;
+		dm = (DefaultTableModel) this.ventanaMarcarAceptaciones.getTblReparaciones().getModel();
+
+		TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(dm);
+
+		this.ventanaMarcarAceptaciones.getTblReparaciones().setRowSorter(tr);
+
+		RowFilter<DefaultTableModel, Object> rf = null;
+		List<RowFilter<Object, Object>> rfs = new ArrayList<RowFilter<Object, Object>>();
+
+		if (!ventanaMarcarAceptaciones.getRadioButtonCliente().isSelected()
+				&& !ventanaMarcarAceptaciones.getRadioButtonSucursal().isSelected()
+				&& !ventanaMarcarAceptaciones.getRadioButtonAviso().isSelected()
+				&& !ventanaMarcarAceptaciones.getRadioButtonELS().isSelected()) {
+			this.ventanaMarcarAceptaciones.getTblReparaciones().setRowSorter(null);
 		}
 
-		else if (this.ventanaGenerarPresupuesto != null
-				&& e.getSource() == this.ventanaGenerarPresupuesto.getVisualizarPresupuestoPDF()) {
-
-			if (ventanaGenerarPresupuesto.getGrupoMoneda().getSelection() == null) {
-
-				Object mje = "Debe seleccionar un moneda para agregar al presupuesto.";
-				JOptionPane.showMessageDialog(null, mje, "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-
-			} else {
-				List<RegistroPresupuestoDTO> lista = new ArrayList<RegistroPresupuestoDTO>();
-
-				RegistroPresupuestoDTO rep = TomarDatosPantallaPresupuesto();
-
-				lista.add(rep);
-
-				ReportePresupuesto reporte = new ReportePresupuesto(rep, lista, agenda);
-				reporte.mostrar();
-			}
-
+		if (ventanaMarcarAceptaciones.getRadioButtonCliente().isSelected()
+				&& ventanaMarcarAceptaciones.getComboFiltroCliente().getSelectedItem() != null
+				&& ventanaMarcarAceptaciones.getComboFiltroCliente().getSelectedItem().toString() != null) {
+			String searchText = ventanaMarcarAceptaciones.getComboFiltroCliente().getSelectedItem().toString();
+			rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 2)); // (?i) para ignorar
+																							// mayúsculas/minúsculas
 		}
 
-		else if (ventanaMarcarAceptaciones != null && e.getSource() == this.ventanaMarcarAceptaciones.getBtnFiltrar()) {
-
-			DefaultTableModel dm;
-			dm = (DefaultTableModel) this.ventanaMarcarAceptaciones.getTblReparaciones().getModel();
-
-			TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(dm);
-
-			this.ventanaMarcarAceptaciones.getTblReparaciones().setRowSorter(tr);
-
-			RowFilter<DefaultTableModel, Object> rf = null;
-			List<RowFilter<Object, Object>> rfs = new ArrayList<RowFilter<Object, Object>>();
-
-			if (!ventanaMarcarAceptaciones.getRadioButtonCliente().isSelected()
-					&& !ventanaMarcarAceptaciones.getRadioButtonSucursal().isSelected()
-					&& !ventanaMarcarAceptaciones.getRadioButtonAviso().isSelected()
-					&& !ventanaMarcarAceptaciones.getRadioButtonELS().isSelected()) {
-				this.ventanaMarcarAceptaciones.getTblReparaciones().setRowSorter(null);
-			}
-
-			if (ventanaMarcarAceptaciones.getRadioButtonCliente().isSelected()
-					&& ventanaMarcarAceptaciones.getComboFiltroCliente().getSelectedItem() != null
-					&& ventanaMarcarAceptaciones.getComboFiltroCliente().getSelectedItem().toString() != null) {
-				String searchText = ventanaMarcarAceptaciones.getComboFiltroCliente().getSelectedItem().toString();
-				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 2)); // (?i) para ignorar
-																								// mayúsculas/minúsculas
-			}
-
-			if (ventanaMarcarAceptaciones.getRadioButtonSucursal().isSelected()
-					&& ventanaMarcarAceptaciones.getComboFiltroSucursal().getSelectedItem() != null
-					&& ventanaMarcarAceptaciones.getComboFiltroSucursal().getSelectedItem().toString() != null) {
-				String searchText = ventanaMarcarAceptaciones.getComboFiltroSucursal().getSelectedItem().toString();
-				rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 3)); // (?i) para ignorar
-																								// mayúsculas/minúsculas
-			}
-
-			if (ventanaMarcarAceptaciones.getRadioButtonAviso().isSelected()
-					&& ventanaMarcarAceptaciones.getComboFiltroAviso().getSelectedItem() != null
-					&& ventanaMarcarAceptaciones.getComboFiltroAviso().getSelectedItem().toString() != null) {
-				rfs.add(RowFilter.regexFilter(
-						"^" + ventanaMarcarAceptaciones.getComboFiltroAviso().getSelectedItem().toString() + "$", 1));
-			}
-
-			if (ventanaMarcarAceptaciones.getRadioButtonELS().isSelected()
-					&& ventanaMarcarAceptaciones.getComboFiltroELS().getSelectedItem() != null
-					&& ventanaMarcarAceptaciones.getComboFiltroELS().getSelectedItem().toString() != null) {
-				rfs.add(RowFilter.regexFilter(
-						"^" + ventanaMarcarAceptaciones.getComboFiltroELS().getSelectedItem().toString() + "$", 0));
-			}
-
-			rf = RowFilter.andFilter(rfs);
-
-			tr.setRowFilter(rf);
-
-			if (this.ventanaMarcarAceptaciones.getTblReparaciones().getRowSorter() != null) {
-				int rowCount = this.ventanaMarcarAceptaciones.getTblReparaciones().getRowSorter().getViewRowCount();
-
-				if (rowCount != 0) {
-
-					initCheckboxListeners();
-				}
-			}
-
+		if (ventanaMarcarAceptaciones.getRadioButtonSucursal().isSelected()
+				&& ventanaMarcarAceptaciones.getComboFiltroSucursal().getSelectedItem() != null
+				&& ventanaMarcarAceptaciones.getComboFiltroSucursal().getSelectedItem().toString() != null) {
+			String searchText = ventanaMarcarAceptaciones.getComboFiltroSucursal().getSelectedItem().toString();
+			rfs.add(RowFilter.regexFilter("(?i)^" + Pattern.quote(searchText) + "$", 3)); // (?i) para ignorar
+																							// mayúsculas/minúsculas
 		}
 
-		else if (ventanaMarcarAceptaciones != null
-				&& e.getSource() == this.ventanaMarcarAceptaciones.getBtnMostrarTodo()) {
-
-			mostrarTodo();
-
+		if (ventanaMarcarAceptaciones.getRadioButtonAviso().isSelected()
+				&& ventanaMarcarAceptaciones.getComboFiltroAviso().getSelectedItem() != null
+				&& ventanaMarcarAceptaciones.getComboFiltroAviso().getSelectedItem().toString() != null) {
+			rfs.add(RowFilter.regexFilter(
+					"^" + ventanaMarcarAceptaciones.getComboFiltroAviso().getSelectedItem().toString() + "$", 1));
 		}
 
-		else if (ventanaMarcarAceptaciones != null
-				&& e.getSource() == this.ventanaMarcarAceptaciones.getBtnGrardarCambios()) {
+		if (ventanaMarcarAceptaciones.getRadioButtonELS().isSelected()
+				&& ventanaMarcarAceptaciones.getComboFiltroELS().getSelectedItem() != null
+				&& ventanaMarcarAceptaciones.getComboFiltroELS().getSelectedItem().toString() != null) {
+			rfs.add(RowFilter.regexFilter(
+					"^" + ventanaMarcarAceptaciones.getComboFiltroELS().getSelectedItem().toString() + "$", 0));
+		}
 
-			String estadoComercial;
-			int filas = this.ventanaMarcarAceptaciones.getModelReparaciones().getRowCount();
+		rf = RowFilter.andFilter(rfs);
 
-			for (int i = 0; i < filas; i++) {
+		tr.setRowFilter(rf);
 
-				estadoComercial = this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 7).toString();
-				if (estadoComercial.compareTo("A la Espera de Aceptación") > 0) {
+		if (this.ventanaMarcarAceptaciones.getTblReparaciones().getRowSorter() != null) {
+			int rowCount = this.ventanaMarcarAceptaciones.getTblReparaciones().getRowSorter().getViewRowCount();
 
-					ReparacionDTO reparacionAeditar = TomarDatosVentanaMarcarAceptaciones(i);
-					this.agenda.editarReparacionAceptacion(reparacionAeditar);
+			if (rowCount != 0) {
 
-				}
+				initCheckboxListeners();
 			}
-
-			JOptionPane.showMessageDialog(null, "Se guardaron los cambios");
-
-			cargarTablaMarcarAceptaciones();
-			mostrarTodo();
-
 		}
+
+	}
+
+	else if(ventanaMarcarAceptaciones!=null&&e.getSource()==this.ventanaMarcarAceptaciones.getBtnMostrarTodo())
+	{
+
+		mostrarTodo();
+
+	}
+
+	else if(ventanaMarcarAceptaciones!=null&&e.getSource()==this.ventanaMarcarAceptaciones.getBtnGrardarCambios())
+	{
+
+		String estadoComercial;
+		int filas = this.ventanaMarcarAceptaciones.getModelReparaciones().getRowCount();
+
+		for (int i = 0; i < filas; i++) {
+
+			estadoComercial = this.ventanaMarcarAceptaciones.getModelReparaciones().getValueAt(i, 7).toString();
+			if (estadoComercial.compareTo("A la Espera de Aceptación") > 0) {
+
+				ReparacionDTO reparacionAeditar = TomarDatosVentanaMarcarAceptaciones(i);
+				this.agenda.editarReparacionAceptacion(reparacionAeditar);
+
+			}
+		}
+
+		JOptionPane.showMessageDialog(null, "Se guardaron los cambios");
+
+		cargarTablaMarcarAceptaciones();
+		mostrarTodo();
+
+	}
 	}
 
 	private void enviarMail() {
@@ -1282,6 +1322,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		ventanaGenerarPresupuesto.getBtnEditarInforme().addActionListener(this);
 		ventanaGenerarPresupuesto.getBtnGuardarCambios().addActionListener(this);
+		ventanaGenerarPresupuesto.getBtnGramatica().addActionListener(this);
 		ventanaGenerarPresupuesto.getBtnCotizacionDolar().addActionListener(this);
 		ventanaGenerarPresupuesto.getChckDolar().addMouseListener(this);
 		ventanaGenerarPresupuesto.getChckPesos().addMouseListener(this);
@@ -1592,6 +1633,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaGenerarPresupuesto.getTextRemCliente().setText(RemitoCliente);
 
 		ventanaGenerarPresupuesto.getTextInforme().setText(Informe);
+		ventanaGenerarPresupuesto.getTextInforme().setCaretPosition(0);
+		ventanaGenerarPresupuesto.getScrollPane().getVerticalScrollBar().setValue(0);
 		ventanaGenerarPresupuesto.getTextPrecioPeso().setText(monedaFormatter.formatPeso(PrecioPeso.toString()));
 		ventanaGenerarPresupuesto.getTextPrecioDolar().setText(monedaFormatter.formatDolar(PrecioDolar.toString()));
 
@@ -1602,6 +1645,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaGenerarPresupuesto.setChckPDFEnviado(reparacion.getPresupuestoEnviado());
 		ventanaGenerarPresupuesto.setChckWORDGenerado(reparacion.getWORDgenerado());
 		ventanaGenerarPresupuesto.setChckWORDEnviado(reparacion.getWORDenviado());
+		
+		
 		return ventanaGenerarPresupuesto;
 
 	}
@@ -1686,6 +1731,122 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
+	
+	/**
+	 * Función para revisar gramática - AHORA RECIBE EL COMPONENTE DE TEXTO
+	 * @param textoComponente El componente JTextComponent que contiene el texto a revisar
+	 * @param parent El componente padre para los diálogos
+	 */
+	private void revisarGramaticaActionPerformed(JTextComponent textoComponente, Frame parent) {
+	    String textoARevisar = textoComponente.getText();
+	    
+	    // Validar texto vacío
+	    if (textoARevisar == null || textoARevisar.trim().isEmpty()) {
+	        JOptionPane.showMessageDialog(parent,
+	            "No hay texto para revisar.",
+	            "Aviso",
+	            JOptionPane.WARNING_MESSAGE);
+	        return;
+	    }
+	    
+	    // Crear diálogo de carga no modal
+	    JDialog dialogoCarga = new JDialog(parent, "Revisando...", false);
+	    configurarDialogoCarga(dialogoCarga);
+	    final JDialog dialogoCargaRef = dialogoCarga;
+	    
+	    // SwingWorker para la revisión
+	    SwingWorker<CorrectorGramaticalAPI.ResultadoRevision, Void> worker = 
+	        new SwingWorker<CorrectorGramaticalAPI.ResultadoRevision, Void>() {
+	        
+	        @Override
+	        protected CorrectorGramaticalAPI.ResultadoRevision doInBackground() throws Exception {
+	            return CorrectorGramaticalAPI.revisarTexto(textoARevisar);
+	        }
+	        
+	        @Override
+	        protected void done() {
+	            // Cerrar diálogo de carga
+	            if (dialogoCargaRef != null && dialogoCargaRef.isVisible()) {
+	                dialogoCargaRef.dispose();
+	            }
+	            
+	            try {
+	                CorrectorGramaticalAPI.ResultadoRevision resultado = get();
+	                
+	                SwingUtilities.invokeLater(() -> {
+	                    // Pasar el COMPONENTE DE TEXTO, no solo el string
+	                    DialogoRevisionGramatical.mostrarRevisor(parent, textoComponente, resultado);
+	                });
+	                
+	            } catch (Exception e) {
+	                SwingUtilities.invokeLater(() -> {
+	                    JOptionPane.showMessageDialog(parent,
+	                        "Error al revisar el texto: " + e.getMessage(),
+	                        "Error",
+	                        JOptionPane.ERROR_MESSAGE);
+	                });
+	                e.printStackTrace();
+	            }
+	        }
+	    };
+	    
+	    // Respaldo para cerrar diálogo de carga
+	    worker.addPropertyChangeListener(evt -> {
+	        if (evt.getPropertyName().equals("state") && 
+	            evt.getNewValue() == SwingWorker.StateValue.DONE) {
+	            if (dialogoCargaRef.isVisible()) {
+	                dialogoCargaRef.dispose();
+	            }
+	        }
+	    });
+	    
+	    worker.execute();
+	    dialogoCarga.setVisible(true);
+	}
+
+	/**
+	 * Versión simplificada si no tienes referencia al Frame padre
+	 */
+	private void revisarGramaticaActionPerformed(JTextComponent textoComponente) {
+	    revisarGramaticaActionPerformed(textoComponente, null);
+	}
+
+	/**
+	 * Configura el diálogo de carga
+	 */
+	private void configurarDialogoCarga(JDialog dialogo) {
+	    JPanel panelCarga = new JPanel(new BorderLayout(5, 5));
+	    panelCarga.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+	    
+	    JLabel lblMensaje = new JLabel("Revisando gramática y ortografía... espere");
+	    lblMensaje.setHorizontalAlignment(SwingConstants.CENTER);
+	    
+	    JProgressBar progressBar = new JProgressBar();
+	    progressBar.setIndeterminate(true);
+	    
+	    panelCarga.add(lblMensaje, BorderLayout.NORTH);
+	    panelCarga.add(progressBar, BorderLayout.CENTER);
+	    
+	    dialogo.add(panelCarga);
+	    dialogo.setSize(300, 100);
+	    dialogo.setLocationRelativeTo(dialogo.getParent());
+	    dialogo.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+	    dialogo.setModalityType(Dialog.ModalityType.MODELESS);
+	}
+
+
+	/**
+	 * Método auxiliar para mostrar errores de forma consistente
+	 */
+	private void mostrarError(Component parent, String mensaje, Exception e) {
+	    e.printStackTrace();
+	    JOptionPane.showMessageDialog(parent,
+	        mensaje + ": " + e.getMessage(),
+	        "Error",
+	        JOptionPane.ERROR_MESSAGE);
+	}
+	
+	
 	private void llenarComboELS() {
 
 		if (ventanaSeleccionarELS != null) {

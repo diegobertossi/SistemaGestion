@@ -495,9 +495,7 @@ public class GestorVisualizacionEquipos {
 		ventana.getBtnEditar().addActionListener(e -> editar(ventana));
 		ventana.getBtnGuardarCambios().addActionListener(e -> guardarCambios(ventana));
 
-		// Presupuesto
-//		ventana.getBotonPresupuestar().addActionListener(e -> abrirPresupuesto(ventana));
-
+		
 		// Búsqueda
 		ventana.getBtnBuscarELS().addActionListener(e -> buscarPorELS(ventana));
 		ventana.getBtnBuscar().addActionListener(e -> abrirBusqueda(ventana));
@@ -856,20 +854,6 @@ public class GestorVisualizacionEquipos {
 		
 	}
 	
-	
-
-	/**
-	 * Abre gestor de presupuestos
-	 */
-	private void abrirPresupuesto(VentanaVisualizarEquipos ventana) {
-		if (ventana.getBtnGuardarCambios().isEnabled()) {
-			JOptionPane.showMessageDialog(null, "Debe guardar los cambios realizados para poder presupuestar.",
-					"Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
-		} else {
-			int els = Integer.parseInt(ventana.getTextELS());
-			controlador.getControladorPresupuestos().TomarDatosDeTablasParaVisualizacion(els);
-		}
-	}
 
 	/**
 	 * Llena combo de clientes manteniendo la selección actual basada en el texto

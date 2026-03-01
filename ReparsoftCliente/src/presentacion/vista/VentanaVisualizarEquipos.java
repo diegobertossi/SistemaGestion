@@ -640,29 +640,29 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_2.setLayout(null);
 
 		textEstadoFisico = new JTextField();
-		textEstadoFisico.setBackground(new Color(255, 255, 224));
+		textEstadoFisico.setBackground(new Color(245, 222, 179));
 		textEstadoFisico.setBounds(128, 11, 217, 20);
 		panel_2.add(textEstadoFisico);
 		textEstadoFisico.setHorizontalAlignment(SwingConstants.LEFT);
-		textEstadoFisico.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textEstadoFisico.setFont(new Font("Cambria", Font.BOLD, 14));
 		textEstadoFisico.setEditable(false);
 		textEstadoFisico.setColumns(10);
 
 		textEstadoTecnico = new JTextField();
-		textEstadoTecnico.setBackground(new Color(255, 255, 224));
+		textEstadoTecnico.setBackground(new Color(245, 222, 179));
 		textEstadoTecnico.setBounds(128, 32, 217, 20);
 		panel_2.add(textEstadoTecnico);
 		textEstadoTecnico.setHorizontalAlignment(SwingConstants.LEFT);
-		textEstadoTecnico.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textEstadoTecnico.setFont(new Font("Cambria", Font.BOLD, 14));
 		textEstadoTecnico.setEditable(false);
 		textEstadoTecnico.setColumns(10);
 
 		textEstadoComercial = new JTextField();
-		textEstadoComercial.setBackground(new Color(255, 255, 224));
+		textEstadoComercial.setBackground(new Color(245, 222, 179));
 		textEstadoComercial.setBounds(128, 53, 217, 20);
 		panel_2.add(textEstadoComercial);
 		textEstadoComercial.setHorizontalAlignment(SwingConstants.LEFT);
-		textEstadoComercial.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textEstadoComercial.setFont(new Font("Cambria", Font.BOLD, 14));
 		textEstadoComercial.setEditable(false);
 		textEstadoComercial.setColumns(10);
 
@@ -733,8 +733,8 @@ public class VentanaVisualizarEquipos extends JFrame {
 		panel_2.add(separator_3);
 
 		textLugarDeIngreso = new JTextField();
-		textLugarDeIngreso.setBackground(new Color(255, 255, 224));
-		textLugarDeIngreso.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textLugarDeIngreso.setBackground(new Color(245, 222, 179));
+		textLugarDeIngreso.setFont(new Font("Cambria", Font.BOLD, 14));
 		textLugarDeIngreso.setEditable(false);
 		textLugarDeIngreso.setBounds(128, 87, 62, 20);
 		panel_2.add(textLugarDeIngreso);
@@ -799,9 +799,6 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textDiagnostico.setEditable(false);
 		textDiagnostico.setLineWrap(true);
 		textDiagnostico.setWrapStyleWord(true);
-		textDiagnostico
-				.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(2, 2, 2, 2)));
-
 		scrollPane_2 = new JScrollPane();
 		scrollPane_2.setBounds(10, 353, 385, 146);
 		panel_3.add(scrollPane_2);
@@ -815,9 +812,6 @@ public class VentanaVisualizarEquipos extends JFrame {
 		textInformeCliente.setEditable(false);
 		textInformeCliente.setLineWrap(true);
 		textInformeCliente.setWrapStyleWord(true);
-		textInformeCliente
-				.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(2, 2, 2, 2)));
-
 		JScrollPane spRepuestos = new JScrollPane();
 		spRepuestos.setBounds(10, 197, 385, 99);
 		this.panel_3.add(spRepuestos);

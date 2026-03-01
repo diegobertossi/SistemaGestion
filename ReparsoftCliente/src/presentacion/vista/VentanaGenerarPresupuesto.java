@@ -1,5 +1,6 @@
 package presentacion.vista;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,12 +14,15 @@ import java.awt.Toolkit;
 import java.sql.Date;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Insets;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+
 import java.awt.Component;
 import javax.swing.SwingConstants;
 import VistaPropias.JTextDouble;
@@ -70,6 +74,8 @@ public class VentanaGenerarPresupuesto extends JFrame {
 	private JTextField textSucursal;
 	private JButton btnCotizacionDolar;
 	private JButton btnGenerarInformeSiemens;
+	
+	private JButton btnGramatica;
 
 	private JCheckBox chckPesos;
 	private JCheckBox chckDolar;
@@ -82,6 +88,8 @@ public class VentanaGenerarPresupuesto extends JFrame {
 	private JCheckBox chckWORDenviado;
 	
 	
+	private JScrollPane scrollPane;
+	
 	private JTextFieldDateEditor textFabr;
 
 	private ButtonGroup GrupoMoneda;
@@ -92,12 +100,17 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		super();
 		setResizable(false);
 		this.controlador = controlador;
+		Border border = BorderFactory.createLineBorder(Color.BLACK);
+		
+		Color verdeDolar = new Color(183, 228, 199);
+		
+
 		
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 888, 706);
+		setBounds(100, 100, 950, 750);
 
 		this.setLocationRelativeTo(null);
 
@@ -110,7 +123,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.activeCaption);
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(95, 158, 160), null));
-		panel.setBounds(216, 11, 648, 73);
+		panel.setBounds(216, 11, 708, 73);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -167,7 +180,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(SystemColor.inactiveCaption);
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(95, 158, 160), null));
-		panel_1.setBounds(21, 95, 843, 109);
+		panel_1.setBounds(21, 95, 903, 109);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 
@@ -316,19 +329,23 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		lblInforme.setBounds(20, 214, 115, 31);
 		contentPane.add(lblInforme);
 
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(95, 158, 160), null));
-		scrollPane.setBounds(21, 243, 591, 132);
+		scrollPane.setBounds(21, 243, 689, 198);
 		contentPane.add(scrollPane);
-
+		
+		
 		textInforme = new JTextArea();
-		textInforme.setFont(new Font("Cambria", Font.PLAIN, 12));
+		textInforme.setFont(new Font("Cambria", Font.PLAIN, 14));
+		textInforme.setMargin(new Insets(5, 5, 5, 5));
 		textInforme.setEditable(false);
 		textInforme.setLocation(0, 241);
 		textInforme.setBackground(Color.LIGHT_GRAY);
 		textInforme.setLineWrap(true);
 		textInforme.setWrapStyleWord(true);
+		textInforme.setSelectionColor(Color.LIGHT_GRAY);
 		scrollPane.setViewportView(textInforme);
+		
 
 		JLabel lblPresupuesto = new JLabel("PRESUPUESTO");
 		lblPresupuesto.setBounds(20, 11, 177, 73);
@@ -343,26 +360,27 @@ public class VentanaGenerarPresupuesto extends JFrame {
 
 		GrupoMoneda = new ButtonGroup();
 
-		btnEditarInforme = new JButton("Editar Informe y Precio");
+		btnEditarInforme = new JButton("EDITAR INFORME Y PRECIOS");
 		btnEditarInforme.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnEditarInforme.setBounds(21, 386, 185, 23);
+		btnEditarInforme.setBounds(51, 452, 204, 38);
 		contentPane.add(btnEditarInforme);
 
-		btnGuardarCambios = new JButton("Guardar Cambios");
+		btnGuardarCambios = new JButton("GUARDAR CAMBIOS");
+		btnGuardarCambios.setEnabled(false);
 		btnGuardarCambios.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnGuardarCambios.setBounds(221, 386, 185, 23);
+		btnGuardarCambios.setBounds(265, 452, 204, 38);
 		contentPane.add(btnGuardarCambios);
 		
 		GuardarPresupuestoPDF = new JButton("<html><center>Informe PDF</html>");
 		GuardarPresupuestoPDF.setEnabled(false);
 		GuardarPresupuestoPDF.setFont(new Font("Cambria", Font.BOLD, 12));
-		GuardarPresupuestoPDF.setBounds(649, 545, 92, 38);
+		GuardarPresupuestoPDF.setBounds(650, 609, 92, 38);
 		contentPane.add(GuardarPresupuestoPDF);
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.activeCaption);
 		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
-		panel_3.setBounds(21, 496, 620, 149);
+		panel_3.setBounds(22, 560, 620, 149);
 		contentPane.add(panel_3);
 		panel_3.setLayout(null);
 
@@ -453,55 +471,57 @@ public class VentanaGenerarPresupuesto extends JFrame {
 
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(SystemColor.inactiveCaptionText);
-		separator_1.setBounds(79, 436, 726, 2);
+		separator_1.setBounds(102, 503, 726, 2);
 		contentPane.add(separator_1);
 
 		JLabel lblCondicionesDelPresupuesto = new JLabel("CONDICIONES DEL PRESUPUESTO");
-		lblCondicionesDelPresupuesto.setBounds(21, 442, 282, 23);
+		lblCondicionesDelPresupuesto.setBounds(22, 516, 282, 23);
 		contentPane.add(lblCondicionesDelPresupuesto);
 		lblCondicionesDelPresupuesto.setForeground(Color.BLACK);
 		lblCondicionesDelPresupuesto.setFont(new Font("Cambria", Font.BOLD, 18));
 
 		panel_4 = new JPanel();
-		panel_4.setBounds(616, 380, 248, 24);
+		panel_4.setBounds(720, 446, 204, 24);
 		contentPane.add(panel_4);
 		panel_4.setBackground(Color.LIGHT_GRAY);
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
 		panel_4.setLayout(null);
 
 		textPrecioPeso = new JTextField(10);
+		textPrecioPeso.setSelectionColor(Color.LIGHT_GRAY);
 		textPrecioPeso.setEditable(false);
-		textPrecioPeso.setBounds(108, 4, 125, 15);
+		textPrecioPeso.setBounds(86, 2, 115, 20);
 		panel_4.add(textPrecioPeso);
 		textPrecioPeso.setBorder(null);
 		textPrecioPeso.setBackground(Color.LIGHT_GRAY);
-		textPrecioPeso.setFont(new Font("Cambria", Font.BOLD, 12));
+		textPrecioPeso.setFont(new Font("Cambria", Font.BOLD, 14));
 		textPrecioPeso.setColumns(10);
 
 		JLabel lblTotalPesos = new JLabel("Total en Pesos:");
-		lblTotalPesos.setBounds(10, 4, 104, 15);
+		lblTotalPesos.setBounds(4, 4, 86, 15);
 		panel_4.add(lblTotalPesos);
 		lblTotalPesos.setBorder(null);
 		lblTotalPesos.setFont(new Font("Cambria", Font.PLAIN, 12));
 
 		panel_5 = new JPanel();
-		panel_5.setBounds(616, 407, 248, 24);
+		panel_5.setBounds(720, 472, 204, 24);
 		contentPane.add(panel_5);
 		panel_5.setBackground(Color.LIGHT_GRAY);
 		panel_5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
 		panel_5.setLayout(null);
 
 		textPrecioDolar = new JTextField(10);
+		textPrecioDolar.setSelectionColor(Color.LIGHT_GRAY);
 		textPrecioDolar.setEditable(false);
-		textPrecioDolar.setBounds(108, 5, 125, 15);
+		textPrecioDolar.setBounds(101, 2, 100, 20);
 		panel_5.add(textPrecioDolar);
 		textPrecioDolar.setBorder(null);
 		textPrecioDolar.setBackground(Color.LIGHT_GRAY);
-		textPrecioDolar.setFont(new Font("Cambria", Font.BOLD, 12));
+		textPrecioDolar.setFont(new Font("Cambria", Font.BOLD, 14));
 		textPrecioDolar.setColumns(10);
 
 		JLabel lbltotaldolares = new JLabel("Total en Dolares:");
-		lbltotaldolares.setBounds(10, 5, 115, 15);
+		lbltotaldolares.setBounds(3, 5, 92, 15);
 		panel_5.add(lbltotaldolares);
 		lbltotaldolares.setBorder(null);
 		lbltotaldolares.setFont(new Font("Cambria", Font.PLAIN, 12));
@@ -512,113 +532,118 @@ public class VentanaGenerarPresupuesto extends JFrame {
 		avisoDelpresupuesto.setBackground(new Color(255, 248, 220));
 		avisoDelpresupuesto.setFont(new Font("Cambria", Font.PLAIN, 11));
 		avisoDelpresupuesto.setForeground(new Color(47, 79, 79));
-		avisoDelpresupuesto.setBounds(21, 469, 487, 14);
+		avisoDelpresupuesto.setBounds(22, 542, 487, 14);
 		contentPane.add(avisoDelpresupuesto);
 
 		VisualizarPresupuestoPDF = new JButton("Visualizar PDF");
 		VisualizarPresupuestoPDF.setEnabled(false);
 		VisualizarPresupuestoPDF.setFont(new Font("Cambria", Font.BOLD, 12));
-		VisualizarPresupuestoPDF.setBounds(649, 496, 114, 23);
+		VisualizarPresupuestoPDF.setBounds(650, 560, 114, 23);
 		contentPane.add(VisualizarPresupuestoPDF);
 		
 		JPanel panel_4_1 = new JPanel();
 		panel_4_1.setLayout(null);
 		panel_4_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(102, 205, 170), null));
-		panel_4_1.setBackground(Color.LIGHT_GRAY);
-		panel_4_1.setBounds(616, 243, 248, 132);
+		// color de fondo del panel de cotizacion del dolar cerde dolar
+		
+		panel_4_1.setBackground(verdeDolar);
+		panel_4_1.setBounds(720, 243, 204, 198);
 		contentPane.add(panel_4_1);
 		
 				btnCotizacionDolar = new JButton("<html><center>COTIZACIÓN DEL DOLAR</html>");
-				btnCotizacionDolar.setBounds(5, 5, 97, 54);
+				btnCotizacionDolar.setBounds(17, 16, 170, 25);
 				panel_4_1.add(btnCotizacionDolar);
 				btnCotizacionDolar.setFont(new Font("Cambria", Font.BOLD, 12));
+				//color de fondo del boton cotizacion del dolar verde dolar oscuro
+				btnCotizacionDolar.setBackground(new Color(0, 128, 128));
+				btnCotizacionDolar.setForeground(Color.WHITE);
 				
 				textCotizacionDolarOf = new JTextDouble(10);
-				textCotizacionDolarOf.setBounds(163, 5, 69, 20);
+				textCotizacionDolarOf.setBounds(97, 54, 69, 20);
 				panel_4_1.add(textCotizacionDolarOf);
-				textCotizacionDolarOf.setFont(new Font("Cambria", Font.BOLD, 14));
+				textCotizacionDolarOf.setFont(new Font("Cambria", Font.BOLD, 12));
 				textCotizacionDolarOf.setEditable(false);
 				textCotizacionDolarOf.setColumns(10);
 				textCotizacionDolarOf.setBorder(null);
-				textCotizacionDolarOf.setBackground(Color.LIGHT_GRAY);
+				textCotizacionDolarOf.setBackground(verdeDolar);
 				
 				JLabel lblsugerenciaEnPesos = new JLabel("<html>SUGERENCIA EN PESOS</html>");
-				lblsugerenciaEnPesos.setBounds(28, 73, 69, 31);
+				lblsugerenciaEnPesos.setBounds(21, 128, 69, 31);
 				panel_4_1.add(lblsugerenciaEnPesos);
 				lblsugerenciaEnPesos.setHorizontalAlignment(SwingConstants.CENTER);
 				lblsugerenciaEnPesos.setForeground(new Color(47, 79, 79));
 				lblsugerenciaEnPesos.setFont(new Font("Cambria", Font.PLAIN, 11));
 				
 				textSugerenciaPeso = new JTextDouble(10);
-				textSugerenciaPeso.setBounds(39, 106, 69, 20);
+				textSugerenciaPeso.setBounds(22, 165, 69, 20);
 				panel_4_1.add(textSugerenciaPeso);
-				textSugerenciaPeso.setFont(new Font("Cambria", Font.BOLD, 14));
+				textSugerenciaPeso.setFont(new Font("Cambria", Font.BOLD, 12));
 				textSugerenciaPeso.setEditable(false);
 				textSugerenciaPeso.setColumns(10);
 				textSugerenciaPeso.setBorder(null);
-				textSugerenciaPeso.setBackground(Color.LIGHT_GRAY);
+				textSugerenciaPeso.setBackground(verdeDolar);
 				
 				JLabel label_2_1 = new JLabel("$");
-				label_2_1.setBounds(28, 106, 20, 20);
+				label_2_1.setBounds(11, 165, 20, 20);
 				panel_4_1.add(label_2_1);
 				label_2_1.setFont(new Font("Cambria", Font.BOLD, 14));
 				
 				JLabel lblsugerenciaEnDolares = new JLabel("<html>SUGERENCIA EN DÓLARES</html>");
-				lblsugerenciaEnDolares.setBounds(127, 73, 69, 31);
+				lblsugerenciaEnDolares.setBounds(114, 128, 69, 31);
 				panel_4_1.add(lblsugerenciaEnDolares);
 				lblsugerenciaEnDolares.setHorizontalAlignment(SwingConstants.CENTER);
 				lblsugerenciaEnDolares.setForeground(new Color(47, 79, 79));
 				lblsugerenciaEnDolares.setFont(new Font("Cambria", Font.PLAIN, 11));
 				
 				JLabel lblUs_2 = new JLabel("US$");
-				lblUs_2.setBounds(127, 106, 30, 20);
+				lblUs_2.setBounds(104, 165, 30, 20);
 				panel_4_1.add(lblUs_2);
 				lblUs_2.setFont(new Font("Cambria", Font.BOLD, 14));
 				
 				textSugerenciaDolar = new JTextDouble(10);
-				textSugerenciaDolar.setBounds(155, 106, 69, 20);
+				textSugerenciaDolar.setBounds(132, 165, 69, 20);
 				panel_4_1.add(textSugerenciaDolar);
-				textSugerenciaDolar.setFont(new Font("Cambria", Font.BOLD, 14));
+				textSugerenciaDolar.setFont(new Font("Cambria", Font.BOLD, 12));
 				textSugerenciaDolar.setEditable(false);
 				textSugerenciaDolar.setColumns(10);
 				textSugerenciaDolar.setBorder(null);
-				textSugerenciaDolar.setBackground(Color.LIGHT_GRAY);
+				textSugerenciaDolar.setBackground(verdeDolar);
 				
 				JLabel lblOficial = new JLabel("<html>OFICIAL</html>");
-				lblOficial.setBounds(107, 11, 45, 14);
+				lblOficial.setBounds(41, 57, 45, 14);
 				panel_4_1.add(lblOficial);
 				lblOficial.setHorizontalAlignment(SwingConstants.LEFT);
 				lblOficial.setForeground(new Color(47, 79, 79));
 				lblOficial.setFont(new Font("Cambria", Font.PLAIN, 11));
 				
 				JLabel lblblue = new JLabel("BLUE");
-				lblblue.setBounds(107, 42, 45, 14);
+				lblblue.setBounds(41, 88, 45, 14);
 				panel_4_1.add(lblblue);
 				lblblue.setHorizontalAlignment(SwingConstants.LEFT);
 				lblblue.setForeground(new Color(47, 79, 79));
 				lblblue.setFont(new Font("Cambria", Font.PLAIN, 11));
 				
 				textCotizacionDolarBl = new JTextDouble(10);
-				textCotizacionDolarBl.setFont(new Font("Cambria", Font.BOLD, 14));
+				textCotizacionDolarBl.setFont(new Font("Cambria", Font.BOLD, 12));
 				textCotizacionDolarBl.setEditable(false);
 				textCotizacionDolarBl.setColumns(10);
 				textCotizacionDolarBl.setBorder(null);
-				textCotizacionDolarBl.setBackground(Color.LIGHT_GRAY);
-				textCotizacionDolarBl.setBounds(163, 36, 69, 20);
+				textCotizacionDolarBl.setBackground(verdeDolar);
+				textCotizacionDolarBl.setBounds(97, 85, 69, 20);
 				panel_4_1.add(textCotizacionDolarBl);
 				
 				JSeparator separator = new JSeparator();
-				separator.setBounds(107, 26, 125, 2);
+				separator.setBounds(41, 75, 125, 2);
 				panel_4_1.add(separator);
 				
 				JSeparator separator_2 = new JSeparator();
-				separator_2.setBounds(107, 56, 125, 2);
+				separator_2.setBounds(41, 105, 125, 2);
 				panel_4_1.add(separator_2);
 				
 				btnGenerarInformeSiemens = new JButton("<html><center>Informe WORD</html>");
 				btnGenerarInformeSiemens.setEnabled(false);
 				btnGenerarInformeSiemens.setFont(new Font("Cambria", Font.BOLD, 12));
-				btnGenerarInformeSiemens.setBounds(649, 607, 92, 38);
+				btnGenerarInformeSiemens.setBounds(650, 671, 92, 38);
 				contentPane.add(btnGenerarInformeSiemens);
 				
 				chckPDFgenerado = new JCheckBox("");
@@ -626,7 +651,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				chckPDFgenerado.setHorizontalAlignment(SwingConstants.LEFT);
 				chckPDFgenerado.setFont(new Font("Cambria", Font.BOLD, 9));
 				chckPDFgenerado.setBackground(UIManager.getColor("inactiveCaption"));
-				chckPDFgenerado.setBounds(747, 545, 21, 17);
+				chckPDFgenerado.setBounds(748, 609, 21, 17);
 				contentPane.add(chckPDFgenerado);
 				
 				chckPDFenviado = new JCheckBox("");
@@ -634,7 +659,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				chckPDFenviado.setHorizontalAlignment(SwingConstants.LEFT);
 				chckPDFenviado.setFont(new Font("Cambria", Font.BOLD, 9));
 				chckPDFenviado.setBackground(UIManager.getColor("inactiveCaption"));
-				chckPDFenviado.setBounds(747, 566, 21, 17);
+				chckPDFenviado.setBounds(748, 630, 21, 17);
 				contentPane.add(chckPDFenviado);
 				
 				chckWORDgenerado = new JCheckBox("");
@@ -642,7 +667,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				chckWORDgenerado.setHorizontalAlignment(SwingConstants.LEFT);
 				chckWORDgenerado.setFont(new Font("Cambria", Font.BOLD, 9));
 				chckWORDgenerado.setBackground(UIManager.getColor("inactiveCaption"));
-				chckWORDgenerado.setBounds(747, 607, 21, 17);
+				chckWORDgenerado.setBounds(748, 671, 21, 17);
 				contentPane.add(chckWORDgenerado);
 				
 				chckWORDenviado = new JCheckBox("");
@@ -650,34 +675,49 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				chckWORDenviado.setHorizontalAlignment(SwingConstants.LEFT);
 				chckWORDenviado.setFont(new Font("Cambria", Font.BOLD, 9));
 				chckWORDenviado.setBackground(UIManager.getColor("inactiveCaption"));
-				chckWORDenviado.setBounds(747, 628, 21, 17);
+				chckWORDenviado.setBounds(748, 692, 21, 17);
 				contentPane.add(chckWORDenviado);
 				
 				JLabel lblNewLabel = new JLabel("PDF GENERADO");
 				lblNewLabel.setForeground(new Color(0, 0, 51));
 				lblNewLabel.setFont(new Font("Cambria", Font.PLAIN, 11));
-				lblNewLabel.setBounds(774, 546, 90, 14);
+				lblNewLabel.setBounds(775, 610, 90, 14);
 				contentPane.add(lblNewLabel);
 				
 				JLabel lblPdfEnviado = new JLabel("PDF ENVIADO");
 				lblPdfEnviado.setForeground(new Color(0, 0, 51));
 				lblPdfEnviado.setFont(new Font("Cambria", Font.PLAIN, 11));
-				lblPdfEnviado.setBounds(774, 566, 90, 14);
+				lblPdfEnviado.setBounds(775, 630, 90, 14);
 				contentPane.add(lblPdfEnviado);
 				
 				JLabel lblWordGenerado = new JLabel("WORD GENERADO");
 				lblWordGenerado.setForeground(new Color(0, 0, 51));
 				lblWordGenerado.setFont(new Font("Cambria", Font.PLAIN, 11));
-				lblWordGenerado.setBounds(774, 607, 90, 14);
+				lblWordGenerado.setBounds(775, 671, 90, 14);
 				contentPane.add(lblWordGenerado);
 				
 				JLabel lblWordEnviado = new JLabel("WORD ENVIADO");
 				lblWordEnviado.setForeground(new Color(0, 0, 51));
 				lblWordEnviado.setFont(new Font("Cambria", Font.PLAIN, 11));
-				lblWordEnviado.setBounds(774, 627, 90, 14);
+				lblWordEnviado.setBounds(775, 691, 90, 14);
 				contentPane.add(lblWordEnviado);
+				
+				btnGramatica = new JButton("CORRECTOR");
+				btnGramatica.setEnabled(false);
+				btnGramatica.setFont(new Font("Cambria", Font.BOLD, 12));
+				btnGramatica.setBounds(479, 452, 204, 38);
+				contentPane.add(btnGramatica);
+				
+				JSeparator separator_1_1 = new JSeparator();
+				separator_1_1.setForeground(SystemColor.inactiveCaptionText);
+				separator_1_1.setBounds(102, 506, 726, 2);
+				contentPane.add(separator_1_1);
 
 		this.setVisible(true);
+		
+		
+		
+		
 
 	}
 
@@ -711,6 +751,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 
 	public void setTextInforme(JTextArea textInforme) {
 		this.textInforme = textInforme;
+		textInforme.setCaretPosition(0);
 	}
 
 	public JTextField getTextEquipo() {
@@ -1002,5 +1043,21 @@ public class VentanaGenerarPresupuesto extends JFrame {
 
 	public void setChckIVA(JCheckBox chckIVA) {
 		this.chckIVA = chckIVA;
+	}
+
+	public JButton getBtnGramatica() {
+		return btnGramatica;
+	}
+
+	public void setBtnGramatica(JButton btnGramatica) {
+		this.btnGramatica = btnGramatica;
+	}
+
+	public JScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+	public void setScrollPane(JScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
 	}
 }

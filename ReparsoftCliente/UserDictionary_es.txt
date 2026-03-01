@@ -43,3 +43,4 @@ fotovoltaicas
 celdas
 chequeos
 quiebre
+visualización
