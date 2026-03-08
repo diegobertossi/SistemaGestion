@@ -72,7 +72,7 @@ public class GestorListadoEquipos {
         controlador.getGestorVisualizacion().cargarDatosEquipo(ventanaVisualizarEquipos, numeroELS);
         
         // Agregar listeners específicos para listado
-       // agregarListenersVentanaVisualizarEquiposListado(ventanaVisualizarEquipos);
+      // agregarListenersVentanaVisualizarEquiposListado(ventanaVisualizarEquipos);
         
         return ventanaVisualizarEquipos;
     }
@@ -162,6 +162,10 @@ public class GestorListadoEquipos {
         
         ventanaVisualizarEquipos.getBotonRespuestaAlTecnico().addActionListener(e -> 
             controlador.getGestorPresupuesto().enviarRespuestaCliente(ventanaVisualizarEquipos));
+        
+        //boton "copiar presupuesto"
+		ventanaVisualizarEquipos.getBtnCopiarPresupuesto()
+				.addActionListener(e -> controlador.getGestorVisualizacion().copiarPago(ventanaVisualizarEquipos));
         
         // Precios
         controlador.getGestorInterfaz().agregarListenersPrecios(ventanaVisualizarEquipos);

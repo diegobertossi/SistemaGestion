@@ -195,10 +195,7 @@ public class GestorVisualizacionEquipos {
 
 		// Establecer ELS
 		ventana.setTextELS(Integer.toString(numeroELS));
-		
 
-		
-		
 		
 		// Cargar datos técnicos
 		cargarDatosTecnicos(ventana);
@@ -241,6 +238,8 @@ public class GestorVisualizacionEquipos {
 		ventana.setTextLugarDeIngreso(reparacionActual.getLugarDeIngreso());
 		ventana.setTextFalla(reparacionActual.getFalla() == null ? "" : reparacionActual.getFalla());
 		ventana.getTextFalla().setCaretPosition(0);
+		
+
 	}
 
 	/**
@@ -567,7 +566,7 @@ public class GestorVisualizacionEquipos {
 		gestorInterfaz.agregarFocusListeners(ventana);
 	}
 
-	private void copiarPago(VentanaVisualizarEquipos ventana) {
+	public void copiarPago(VentanaVisualizarEquipos ventana) {
 
 	    // Obtener el valor del presupuesto, luego copiarlo a pago,
 	    // luego cambiar el texto del botón a "LIMPIAR PAGO".
@@ -753,6 +752,11 @@ public class GestorVisualizacionEquipos {
 			ventanaVisualizarEquipos.setTextLugarDeIngreso(lugarDeIngreso);
 		}
 
+		//actualizar estados presupuestos
+		gestorInterfaz.verificarPresupuesto(ventanaVisualizarEquipos);
+		
+		
+		
 		this.ventanaEstados.dispose();
 		this.ventanaEstados = null;
 		ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(true);
