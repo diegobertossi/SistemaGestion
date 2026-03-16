@@ -100,6 +100,9 @@ public class GestorVisualizacionEquipos {
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 	private DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
+	private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+	private java.util.Date fechaParseadaHOY = null;
+
 	/**
 	 * Constructor
 	 */
@@ -116,6 +119,12 @@ public class GestorVisualizacionEquipos {
 		this.gestorInterfaz = new GestorInterfazEquipos();
 		this.gestorEstados = new GestorEstadosPresupuestos();
 		this.gestorBusqueda = new GestorBusqueda(controlador, agenda);
+
+		try {
+			fechaParseadaHOY = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(LocalDateTime.now()));
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
 
 	}
 
@@ -196,7 +205,6 @@ public class GestorVisualizacionEquipos {
 		// Establecer ELS
 		ventana.setTextELS(Integer.toString(numeroELS));
 
-		
 		// Cargar datos técnicos
 		cargarDatosTecnicos(ventana);
 
@@ -238,7 +246,6 @@ public class GestorVisualizacionEquipos {
 		ventana.setTextLugarDeIngreso(reparacionActual.getLugarDeIngreso());
 		ventana.setTextFalla(reparacionActual.getFalla() == null ? "" : reparacionActual.getFalla());
 		ventana.getTextFalla().setCaretPosition(0);
-		
 
 	}
 
@@ -440,6 +447,11 @@ public class GestorVisualizacionEquipos {
 	public void editar(VentanaVisualizarEquipos ventana) {
 		llenarComboClientes(ventana);
 		llenarComboTecnicos(ventana);
+		llenarComboEstadoFisico(ventana);
+		llenarComboEstadoTecnico(ventana);
+		llenarComboEstadoComercial(ventana);
+		llenarComboIngreso(ventana);
+
 		gestorInterfaz.habilitarCampos(ventana);
 		guardado = false;
 	}
@@ -494,7 +506,6 @@ public class GestorVisualizacionEquipos {
 		ventana.getBtnEditar().addActionListener(e -> editar(ventana));
 		ventana.getBtnGuardarCambios().addActionListener(e -> guardarCambios(ventana));
 
-		
 		// Búsqueda
 		ventana.getBtnBuscarELS().addActionListener(e -> buscarPorELS(ventana));
 		ventana.getBtnBuscar().addActionListener(e -> abrirBusqueda(ventana));
@@ -511,13 +522,11 @@ public class GestorVisualizacionEquipos {
 		// Abrir Excel
 		ventana.getBtnabrirExcel().addActionListener(e -> abrirExcelDeEquipo());
 
-		
 		// Copiar el monto del presupuesto al pago
 		ventana.getBtnCopiarPresupuesto().addActionListener(e -> {
 			copiarPago(ventana);
 		});
 
-		
 		// Presupuesto
 		ventana.getBotonPresupuestar()
 				.addActionListener(e -> controlador.getGestorPresupuesto().abrirPresupuesto(ventana));
@@ -568,52 +577,46 @@ public class GestorVisualizacionEquipos {
 
 	public void copiarPago(VentanaVisualizarEquipos ventana) {
 
-	    // Obtener el valor del presupuesto, luego copiarlo a pago,
-	    // luego cambiar el texto del botón a "LIMPIAR PAGO".
-	    // Si se presiona de nuevo el botón, limpiar el campo de pago
-	    // y cambiar el texto a "COPIAR PAGO". HACER ESTE INDEFINIDAMENTE
+		// Obtener el valor del presupuesto, luego copiarlo a pago,
+		// luego cambiar el texto del botón a "LIMPIAR PAGO".
+		// Si se presiona de nuevo el botón, limpiar el campo de pago
+		// y cambiar el texto a "COPIAR PAGO". HACER ESTE INDEFINIDAMENTE
 
-	    String presupuesto = ventana.getTextPresupuesto().getText();
+		String presupuesto = ventana.getTextPresupuesto().getText();
 
-	    if (ventana.getBtnCopiarPresupuesto().getText().equals("COPIAR PAGO")) {
+		if (ventana.getBtnCopiarPresupuesto().getText().equals("COPIAR PAGO")) {
 
-	        ventana.setTextPago(presupuesto);
+			ventana.setTextPago(presupuesto);
 
-	        // Forzar fuente Cambria, tamaño 10, negrita
-	        ventana.getBtnCopiarPresupuesto()
-	                .setFont(new java.awt.Font("Cambria", java.awt.Font.BOLD, 10));
+			// Forzar fuente Cambria, tamaño 10, negrita
+			ventana.getBtnCopiarPresupuesto().setFont(new java.awt.Font("Cambria", java.awt.Font.BOLD, 10));
 
-	        ventana.getBtnCopiarPresupuesto().setText("LIMPIAR PAGO");
+			ventana.getBtnCopiarPresupuesto().setText("LIMPIAR PAGO");
 
-	    } else {
+		} else {
 
-	        // colocar 0 pero en el mismo formato monetario
-	        // abrir un popup que diga "Se va a eliminar el monto del pago. Desea continuar?"
-	        // con opciones SI y NO
-	        int respuesta = JOptionPane.showConfirmDialog(
-	                null,
-	                "Se va a eliminar el monto del pago. ¿Desea continuar?",
-	                "Confirmar",
-	                JOptionPane.YES_NO_OPTION
-	        );
+			// colocar 0 pero en el mismo formato monetario
+			// abrir un popup que diga "Se va a eliminar el monto del pago. Desea
+			// continuar?"
+			// con opciones SI y NO
+			int respuesta = JOptionPane.showConfirmDialog(null, "Se va a eliminar el monto del pago. ¿Desea continuar?",
+					"Confirmar", JOptionPane.YES_NO_OPTION);
 
-	        if (respuesta == JOptionPane.NO_OPTION) {
-	            return;
-	        } else {
+			if (respuesta == JOptionPane.NO_OPTION) {
+				return;
+			} else {
 
-	            ventana.setTextPago(monedaFormatter.formatPeso("0"));
+				ventana.setTextPago(monedaFormatter.formatPeso("0"));
 
-	            // Forzar fuente Cambria, tamaño 10, negrita
-	            ventana.getBtnCopiarPresupuesto()
-	                    .setFont(new java.awt.Font("Cambria", java.awt.Font.BOLD, 10));
+				// Forzar fuente Cambria, tamaño 10, negrita
+				ventana.getBtnCopiarPresupuesto().setFont(new java.awt.Font("Cambria", java.awt.Font.BOLD, 10));
 
-	            ventana.getBtnCopiarPresupuesto().setText("COPIAR PAGO");
-	        }
-	    }
+				ventana.getBtnCopiarPresupuesto().setText("COPIAR PAGO");
+			}
+		}
 
-	    gestorInterfaz.verificarPresupuesto(ventana);
+		gestorInterfaz.verificarPresupuesto(ventana);
 	}
-
 
 	void abrirVentanaEstados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 		ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(false);
@@ -711,15 +714,6 @@ public class GestorVisualizacionEquipos {
 			}
 		}
 
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-		java.util.Date fechaParseadaHOY = null;
-
-		try {
-			fechaParseadaHOY = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(LocalDateTime.now()));
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		}
-
 		if (ventanaVisualizarEquipos.getTextEstadoFisico().getText().compareTo(estadoFisico) != 0) {
 			ventanaVisualizarEquipos.setTextEstadoFisico(estadoFisico);
 
@@ -752,11 +746,9 @@ public class GestorVisualizacionEquipos {
 			ventanaVisualizarEquipos.setTextLugarDeIngreso(lugarDeIngreso);
 		}
 
-		//actualizar estados presupuestos
+		// actualizar estados presupuestos
 		gestorInterfaz.verificarPresupuesto(ventanaVisualizarEquipos);
-		
-		
-		
+
 		this.ventanaEstados.dispose();
 		this.ventanaEstados = null;
 		ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(true);
@@ -853,11 +845,10 @@ public class GestorVisualizacionEquipos {
 	 * Abre ventana de búsqueda
 	 */
 	private void abrirBusqueda(VentanaVisualizarEquipos ventana) {
-		
+
 		gestorBusqueda.abrirVentanaBusqueda();
-		
+
 	}
-	
 
 	/**
 	 * Llena combo de clientes manteniendo la selección actual basada en el texto
@@ -999,6 +990,133 @@ public class GestorVisualizacionEquipos {
 		}
 	}
 
+	// Mantiene la selección actual basada en el texto del campo
+	// y agrega listener para actualizar fecha de salida si estado es "Enviado"
+	private void llenarComboEstadoFisico(VentanaVisualizarEquipos ventana) {
+
+		JComboBox<String> comboEstadoFisico = ventana.getComboEstadoFisico();
+		String estadoFisicoActual = ventana.getTextEstadoFisico().getText().trim();
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboEstadoFisico.getModel();
+
+		// Buscar y seleccionar el estado físico que coincide con el texto actual
+		for (int i = 0; i < model.getSize(); i++) {
+			if (estadoFisicoActual.equalsIgnoreCase(model.getElementAt(i))) {
+				comboEstadoFisico.setSelectedIndex(i);
+				break;
+			}
+		}
+
+		comboEstadoFisico.addItemListener(e -> {
+			if (e.getStateChange() != ItemEvent.SELECTED)
+				return;
+
+			String nuevoEstado = (String) comboEstadoFisico.getSelectedItem();
+			if (nuevoEstado == null)
+				return;
+
+			String estadoAnterior = ventana.getTextEstadoFisico().getText();
+			if (nuevoEstado.equals(estadoAnterior))
+				return;
+
+			ventana.setTextEstadoFisico(nuevoEstado);
+			ventana.getFechaSalida().setDate("Enviado".equals(nuevoEstado) ? fechaParseadaHOY : null);
+			
+			gestorInterfaz.verificarPresupuesto(ventana);
+			
+		});
+	}
+
+	// Mantiene la selección actual basada en el texto del campo
+	// y agrega listener para actualizar fecha de reparación según estado técnico
+	private void llenarComboEstadoTecnico(VentanaVisualizarEquipos ventana) {
+
+		JComboBox<String> comboEstadoTecnico = ventana.getComboEstadoTecnico();
+		String estadoTecnicoActual = ventana.getTextEstadoTecnico().getText().trim();
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboEstadoTecnico.getModel();
+
+		// Buscar y seleccionar el estado técnico que coincide con el texto actual
+		for (int i = 0; i < model.getSize(); i++) {
+			if (estadoTecnicoActual.equalsIgnoreCase(model.getElementAt(i))) {
+				comboEstadoTecnico.setSelectedIndex(i);
+				break;
+			}
+		}
+
+		comboEstadoTecnico.addItemListener(e -> {
+			if (e.getStateChange() != ItemEvent.SELECTED)
+				return;
+
+			String nuevoEstado = (String) comboEstadoTecnico.getSelectedItem();
+			if (nuevoEstado == null)
+				return;
+
+			String estadoAnterior = ventana.getTextEstadoTecnico().getText();
+			if (nuevoEstado.equals(estadoAnterior))
+				return;
+
+			ventana.setTextEstadoTecnico(nuevoEstado);
+			ventana.getFechaReparacion()
+					.setDate("Sin Revisar".equals(nuevoEstado) ? null : fechaParseadaHOY);
+			
+			gestorInterfaz.verificarPresupuesto(ventana);
+		});
+	}
+
+	// Mantiene la selección actual basada en el texto del campo
+	// y agrega listener para actualizar fecha de respuesta según estado comercial
+	private void llenarComboEstadoComercial(VentanaVisualizarEquipos ventana) {
+
+		JComboBox<String> comboEstadoComercial = ventana.getComboEstadoComercial();
+		String estadoComercialActual = ventana.getTextEstadoComercial().getText().trim();
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboEstadoComercial.getModel();
+
+		// Buscar y seleccionar el estado comercial que coincide con el texto actual
+		for (int i = 0; i < model.getSize(); i++) {
+			if (estadoComercialActual.equalsIgnoreCase(model.getElementAt(i))) {
+				comboEstadoComercial.setSelectedIndex(i);
+				break;
+			}
+		}
+
+		comboEstadoComercial.addItemListener(e -> {
+			if (e.getStateChange() != ItemEvent.SELECTED)
+				return;
+
+			String nuevoEstado = (String) comboEstadoComercial.getSelectedItem();
+			if (nuevoEstado == null)
+				return;
+
+			String estadoAnterior = ventana.getTextEstadoComercial().getText();
+			if (nuevoEstado.equals(estadoAnterior))
+				return;
+
+			ventana.setTextEstadoComercial(nuevoEstado);
+			ventana.getFechaRespuesta()
+					.setDate("A la Espera de Aceptación".equals(nuevoEstado) ? null : fechaParseadaHOY);
+			
+			gestorInterfaz.verificarPresupuesto(ventana);
+		});
+	}
+
+	// llenar comboIngreso con la misma lógica que comboEstadoFisico
+	private void llenarComboIngreso(VentanaVisualizarEquipos ventana) {
+
+		JComboBox<String> comboIngreso = ventana.getComboIngreso();
+
+		String ingresoActual = ventana.getTextLugarDeIngreso().getText().trim();
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboIngreso.getModel();
+		boolean seleccionEncontrada = false;
+		for (int i = 0; i < model.getSize(); i++) {
+			String ingreso = model.getElementAt(i);
+			if (ingreso != null && ingreso.equalsIgnoreCase(ingresoActual)) {
+				comboIngreso.setSelectedIndex(i);
+				seleccionEncontrada = true;
+				break;
+			}
+		}
+
+	}
+
 	/**
 	 * Llena combo de ELS
 	 */
@@ -1051,54 +1169,50 @@ public class GestorVisualizacionEquipos {
 	 * Cierra ventana anterior
 	 */
 	private void cerrarVentanaAnterior() {
-	    if (ventanaVisualizarEquipos != null) {
-	        ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
-	            @Override
-	            public void windowClosing(WindowEvent e) {
-	                if (!guardado) {
-	                    int opcion = JOptionPane.showConfirmDialog(
-	                        ventanaVisualizarEquipos,
-	                        "Hay cambios sin guardar. ¿Desea guardar antes de salir?", 
-	                        "Aviso",
-	                        JOptionPane.YES_NO_CANCEL_OPTION,
-	                        JOptionPane.QUESTION_MESSAGE
-	                    );
+		if (ventanaVisualizarEquipos != null) {
+			ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					if (!guardado) {
+						int opcion = JOptionPane.showConfirmDialog(ventanaVisualizarEquipos,
+								"Hay cambios sin guardar. ¿Desea guardar antes de salir?", "Aviso",
+								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-	                    if (opcion == JOptionPane.YES_OPTION) {
-	                        // Extraer datos y verificar caracteres inválidos
-	                        ReparacionDTO reparacionAeditar = gestorDatos.extraerDatos(ventanaVisualizarEquipos, reparacionActual);
-	                        
-	                        if (reparacionAeditar != null) {
-	                            // No hay caracteres inválidos, proceder a guardar
-	                            guardarCambios(ventanaVisualizarEquipos);
-	                            ventanaVisualizarEquipos.dispose();
-	                            ventanaVisualizarEquipos = null;
-	                        } else {
-	                            // Hay caracteres inválidos
-	                            // El gestorDatos ya mostró el popup con los caracteres inválidos
-	                            // No cerrar la ventana, permitir al usuario corregir
-	                            // Prevenir el cierre de la ventana
-	                            ventanaVisualizarEquipos.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-	                        }
-	                    } 
-	                    else if (opcion == JOptionPane.NO_OPTION) {
-	                        // Usuario no quiere guardar, cerrar directamente
-	                        ventanaVisualizarEquipos.dispose();
-	                        ventanaVisualizarEquipos = null;
-	                    } 
-	                    else if (opcion == JOptionPane.CANCEL_OPTION) {
-	                        // Usuario canceló, no hacer nada
-	                        // La ventana permanece abierta
-	                        return;
-	                    }
-	                } else {
-	                    // Ya está guardado, cerrar directamente
-	                    ventanaVisualizarEquipos.dispose();
-	                    ventanaVisualizarEquipos = null;
-	                }
-	            }
-	        });
-	    }
+						if (opcion == JOptionPane.YES_OPTION) {
+							// Extraer datos y verificar caracteres inválidos
+							ReparacionDTO reparacionAeditar = gestorDatos.extraerDatos(ventanaVisualizarEquipos,
+									reparacionActual);
+
+							if (reparacionAeditar != null) {
+								// No hay caracteres inválidos, proceder a guardar
+								guardarCambios(ventanaVisualizarEquipos);
+								ventanaVisualizarEquipos.dispose();
+								ventanaVisualizarEquipos = null;
+							} else {
+								// Hay caracteres inválidos
+								// El gestorDatos ya mostró el popup con los caracteres inválidos
+								// No cerrar la ventana, permitir al usuario corregir
+								// Prevenir el cierre de la ventana
+								ventanaVisualizarEquipos
+										.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+							}
+						} else if (opcion == JOptionPane.NO_OPTION) {
+							// Usuario no quiere guardar, cerrar directamente
+							ventanaVisualizarEquipos.dispose();
+							ventanaVisualizarEquipos = null;
+						} else if (opcion == JOptionPane.CANCEL_OPTION) {
+							// Usuario canceló, no hacer nada
+							// La ventana permanece abierta
+							return;
+						}
+					} else {
+						// Ya está guardado, cerrar directamente
+						ventanaVisualizarEquipos.dispose();
+						ventanaVisualizarEquipos = null;
+					}
+				}
+			});
+		}
 	}
 
 	/**

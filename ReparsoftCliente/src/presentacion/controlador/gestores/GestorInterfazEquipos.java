@@ -100,9 +100,18 @@ public class GestorInterfazEquipos {
         ventana.getTextCliente().setVisible(false);
         ventana.getTextSucursal().setVisible(false);
         ventana.getTextNombreTecnico().setVisible(false);
+        ventana.getTextEstadoComercial().setVisible(false);
+        ventana.getTextEstadoTecnico().setVisible(false);
+        ventana.getTextEstadoFisico().setVisible(false);
+        ventana.getTextLugarDeIngreso().setVisible(false);
+        
         ventana.getComboClientes().setVisible(true);
         ventana.getComboSucursal().setVisible(true);
         ventana.getComboTecnico().setVisible(true);
+        ventana.getComboEstadoComercial().setVisible(true);
+        ventana.getComboEstadoTecnico().setVisible(true);
+        ventana.getComboEstadoFisico().setVisible(true);
+        ventana.getComboIngreso().setVisible(true);
     }
     
     /**
@@ -137,9 +146,19 @@ public class GestorInterfazEquipos {
         ventana.getTextCliente().setVisible(true);
         ventana.getTextSucursal().setVisible(true);
         ventana.getTextNombreTecnico().setVisible(true);
+        ventana.getTextEstadoComercial().setVisible(true);
+        ventana.getTextEstadoTecnico().setVisible(true);
+        ventana.getTextEstadoFisico().setVisible(true);
+        ventana.getTextLugarDeIngreso().setVisible(true);
+        
         ventana.getComboClientes().setVisible(false);
         ventana.getComboSucursal().setVisible(false);
         ventana.getComboTecnico().setVisible(false);
+        ventana.getComboEstadoComercial().setVisible(false);
+        ventana.getComboEstadoTecnico().setVisible(false);
+        ventana.getComboEstadoFisico().setVisible(false);
+        ventana.getComboIngreso().setVisible(false);
+        
     }
     
     /**
@@ -460,5 +479,7 @@ public class GestorInterfazEquipos {
         
         return componentes;
     }
+
+
 }
 

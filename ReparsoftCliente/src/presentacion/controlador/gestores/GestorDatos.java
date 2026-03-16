@@ -96,10 +96,27 @@ public class GestorDatos {
 			ventana.getComboSucursal().getSelectedItem().toString() : "";
 		String tecnicoCombo = ventana.getComboTecnico().getSelectedItem() != null ? 
 			ventana.getComboTecnico().getSelectedItem().toString() : "";
+		String EstadoFisicoCombo = ventana.getComboEstadoFisico().getSelectedItem() != null
+				? ventana.getComboEstadoFisico().getSelectedItem().toString()
+				: "";
+		String EstadoTecnicoCombo = ventana.getComboEstadoTecnico().getSelectedItem() != null
+				? ventana.getComboEstadoTecnico().getSelectedItem().toString()
+				: "";
+		String EstadoComercialCombo = ventana.getComboEstadoComercial().getSelectedItem() != null
+				? ventana.getComboEstadoComercial().getSelectedItem().toString()
+				: "";
+		String IngresoCombo = ventana.getComboIngreso().getSelectedItem() != null
+				? ventana.getComboIngreso().getSelectedItem().toString()
+				: "";
+		
 		
 		ventana.getTextCliente().setText(clienteCombo);
 		ventana.getTextSucursal().setText(sucursalCombo);
 		ventana.getTextNombreTecnico().setText(tecnicoCombo);
+		ventana.getTextEstadoFisico().setText(EstadoFisicoCombo);
+		ventana.getTextEstadoTecnico().setText(EstadoTecnicoCombo);
+		ventana.getTextEstadoComercial().setText(EstadoComercialCombo);
+		ventana.getTextLugarDeIngreso().setText(IngresoCombo);
 
 		// Obtener IDs
 		String cliente = ventana.getTextCliente().getText();
