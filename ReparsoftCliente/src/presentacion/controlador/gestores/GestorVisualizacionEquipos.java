@@ -154,6 +154,7 @@ public class GestorVisualizacionEquipos {
 				agregarListeners(ventanaVisualizarEquipos);
 				llenarComboELS(ventanaVisualizarEquipos);
 				controlador.setVentanaVisualizarEquipos(ventanaVisualizarEquipos);
+
 				cerrarVentanaAnterior();
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -229,6 +230,8 @@ public class GestorVisualizacionEquipos {
 
 		// Deshabilitar campos (modo lectura)
 		deshabilitarCampos(ventana);
+		
+		gestorInterfaz.resetearUndoRedo(ventana);
 	}
 
 	/**
@@ -573,6 +576,16 @@ public class GestorVisualizacionEquipos {
 		AutoCompleteDecorator.decorate(ventana.getComboELS());
 		gestorInterfaz.agregarListenersPrecios(ventana);
 		gestorInterfaz.agregarFocusListeners(ventana);
+		gestorInterfaz.configurarUndoRedo(ventanaVisualizarEquipos);
+		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextInformeCliente());
+		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextDiagnostico());
+		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextFalla());
+		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextMarca());
+		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextModelo());
+		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextNSerie());
+		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextNombreEquipo());
+		
+		
 	}
 
 	public void copiarPago(VentanaVisualizarEquipos ventana) {

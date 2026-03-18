@@ -13,7 +13,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -366,13 +368,7 @@ public class GestorInterfazEquipos {
        ventana.getTextPago().setBackground(color);
    }
 
-    
-    
-    
-    
-    
-    
-    
+       
     
     /**
      * Habilita menú contextual para componente
@@ -422,30 +418,45 @@ public class GestorInterfazEquipos {
         });
     }
     
+ // Mapa para guardar los UndoManagers por componente
+    private Map<JTextComponent, UndoManager> undoManagers = new HashMap<>();
+
     /**
-     * Configura Undo/Redo para componentes de texto
+     * Configura Undo/Redo para componentes de texto.
+     * Solo registra los listeners UNA VEZ por componente.
      */
+    @SuppressWarnings({ "serial", "deprecation" })
     public void configurarUndoRedo(JFrame frame) {
         List<JTextComponent> componentes = obtenerComponentesTexto(frame);
-        
+
         for (JTextComponent componente : componentes) {
+            // Evitar registrar el listener más de una vez
+            if (undoManagers.containsKey(componente)) continue;
+
             UndoManager undoManager = new UndoManager();
+            undoManagers.put(componente, undoManager);
             componente.getDocument().addUndoableEditListener(undoManager);
-            
+
             // Undo
             AbstractAction undoAction = new AbstractAction("Deshacer") {
                 public void actionPerformed(ActionEvent e) {
                     if (undoManager.canUndo()) {
                         undoManager.undo();
+                    } else {
+                        // Restaurar texto original del registro actual
+                        String original = (String) componente.getClientProperty("textoOriginal");
+                        if (original != null && !componente.getText().equals(original)) {
+                            componente.setText(original);
+                            undoManager.discardAllEdits();
+                        }
                     }
                 }
             };
-            
             undoAction.putValue(Action.ACCELERATOR_KEY,
                 KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             componente.getActionMap().put("Undo", undoAction);
             componente.getInputMap().put((KeyStroke) undoAction.getValue(Action.ACCELERATOR_KEY), "Undo");
-            
+
             // Redo
             AbstractAction redoAction = new AbstractAction("Rehacer") {
                 public void actionPerformed(ActionEvent e) {
@@ -454,11 +465,28 @@ public class GestorInterfazEquipos {
                     }
                 }
             };
-            
             redoAction.putValue(Action.ACCELERATOR_KEY,
                 KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             componente.getActionMap().put("Redo", redoAction);
             componente.getInputMap().put((KeyStroke) redoAction.getValue(Action.ACCELERATOR_KEY), "Redo");
+        }
+    }
+
+    /**
+     * Resetea el historial de undo y guarda el texto actual como original.
+     * Llamar cada vez que se carga un nuevo registro.
+     */
+    public void resetearUndoRedo(JFrame frame) {
+        List<JTextComponent> componentes = obtenerComponentesTexto(frame);
+        for (JTextComponent componente : componentes) {
+            // Guardar el texto actual como el "original" de este registro
+            componente.putClientProperty("textoOriginal", componente.getText());
+
+            // Limpiar historial del registro anterior
+            UndoManager undoManager = undoManagers.get(componente);
+            if (undoManager != null) {
+                undoManager.discardAllEdits();
+            }
         }
     }
     
