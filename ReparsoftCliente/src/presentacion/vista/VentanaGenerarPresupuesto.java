@@ -74,7 +74,7 @@ public class VentanaGenerarPresupuesto extends JFrame {
 	private JTextField textSucursal;
 	private JButton btnCotizacionDolar;
 	private JButton btnGenerarInformeSiemens;
-	
+	private JButton btnHistorialDePrecios;
 	private JButton btnGramatica;
 
 	private JCheckBox chckPesos;
@@ -360,15 +360,15 @@ public class VentanaGenerarPresupuesto extends JFrame {
 
 		GrupoMoneda = new ButtonGroup();
 
-		btnEditarInforme = new JButton("EDITAR INFORME Y PRECIOS");
+		btnEditarInforme = new JButton("<html><center>EDITAR INFORME Y PRECIOS</html>");
 		btnEditarInforme.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnEditarInforme.setBounds(51, 452, 204, 38);
+		btnEditarInforme.setBounds(21, 452, 146, 38);
 		contentPane.add(btnEditarInforme);
 
 		btnGuardarCambios = new JButton("GUARDAR CAMBIOS");
 		btnGuardarCambios.setEnabled(false);
 		btnGuardarCambios.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnGuardarCambios.setBounds(265, 452, 204, 38);
+		btnGuardarCambios.setBounds(333, 452, 146, 38);
 		contentPane.add(btnGuardarCambios);
 		
 		GuardarPresupuestoPDF = new JButton("<html><center>Informe PDF</html>");
@@ -705,13 +705,18 @@ public class VentanaGenerarPresupuesto extends JFrame {
 				btnGramatica = new JButton("CORRECTOR");
 				btnGramatica.setEnabled(false);
 				btnGramatica.setFont(new Font("Cambria", Font.BOLD, 12));
-				btnGramatica.setBounds(479, 452, 204, 38);
+				btnGramatica.setBounds(177, 452, 146, 38);
 				contentPane.add(btnGramatica);
 				
 				JSeparator separator_1_1 = new JSeparator();
 				separator_1_1.setForeground(SystemColor.inactiveCaptionText);
 				separator_1_1.setBounds(102, 506, 726, 2);
 				contentPane.add(separator_1_1);
+				
+				btnHistorialDePrecios = new JButton("<html><center>HISTORIAL DE PRECIOS</html>");
+				btnHistorialDePrecios.setFont(new Font("Cambria", Font.BOLD, 12));
+				btnHistorialDePrecios.setBounds(564, 452, 146, 38);
+				contentPane.add(btnHistorialDePrecios);
 
 		this.setVisible(true);
 		
@@ -1059,5 +1064,13 @@ public class VentanaGenerarPresupuesto extends JFrame {
 
 	public void setScrollPane(JScrollPane scrollPane) {
 		this.scrollPane = scrollPane;
+	}
+
+	public JButton getBtnHistorialDePrecios() {
+		return btnHistorialDePrecios;
+	}
+
+	public void setBtnHistorialDePrecios(JButton btnHistorialDePrecios) {
+		this.btnHistorialDePrecios = btnHistorialDePrecios;
 	}
 }

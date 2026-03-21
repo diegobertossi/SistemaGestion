@@ -62,6 +62,7 @@ import presentacion.reportes.ReportePresupuesto;
 import presentacion.vista.VentanaAgregarImagenes;
 import presentacion.vista.VentanaEmail;
 import presentacion.vista.VentanaGenerarPresupuesto;
+import presentacion.vista.VentanaHistorialPrecios;
 import presentacion.vista.VentanaIngresoDePago;
 import presentacion.vista.VentanaMarcarAceptaciones;
 import presentacion.vista.VentanaPresupuestos;
@@ -90,6 +91,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	private VentanaEmail ventanaEmail;
 	private VentanaAgregarImagenes ventanaAgregarImagenes;
 	private VentanaMarcarAceptaciones ventanaMarcarAceptaciones;
+	private VentanaHistorialPrecios ventanaHistorialPrecios;
 
 	// private ControladorReparacion controladorReparacion;
 
@@ -435,6 +437,13 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 	}
 
+	else if (this.ventanaGenerarPresupuesto != null 
+		      && e.getSource() == this.ventanaGenerarPresupuesto.getBtnHistorialDePrecios()) {
+
+		    ventanaHistorialPrecios = new VentanaHistorialPrecios();
+		    new ControladorHistorialPrecios(ventanaHistorialPrecios, ventanaGenerarPresupuesto, agenda);
+		}
+	
 	else if(this.ventanaGenerarPresupuesto!=null&&e.getSource()==this.ventanaGenerarPresupuesto.getGuardarPresupuestoPDF())
 	{
 
@@ -1324,6 +1333,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		ventanaGenerarPresupuesto.getBtnGuardarCambios().addActionListener(this);
 		ventanaGenerarPresupuesto.getBtnGramatica().addActionListener(this);
 		ventanaGenerarPresupuesto.getBtnCotizacionDolar().addActionListener(this);
+		ventanaGenerarPresupuesto.getBtnHistorialDePrecios().addActionListener(this);
 		ventanaGenerarPresupuesto.getChckDolar().addMouseListener(this);
 		ventanaGenerarPresupuesto.getChckPesos().addMouseListener(this);
 		ventanaGenerarPresupuesto.getChckIVA().addMouseListener(this);
