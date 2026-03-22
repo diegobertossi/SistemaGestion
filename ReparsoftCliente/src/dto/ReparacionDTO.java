@@ -121,6 +121,18 @@ public class ReparacionDTO {
 		this.componenteReemplazo = reemplazo;
 
 	}
+	
+	public ReparacionDTO(int ELS, String NombreEquipo, String Marca, String Modelo,
+	        String FechaDiag, double PrecioPeso, double PrecioDolar) {
+
+	    this.ELS         = ELS;
+	    this.NombreEquipo = NombreEquipo;
+	    this.Marca       = Marca;
+	    this.Modelo      = Modelo;
+	    this.FechadeDiagnostico = FechaDiag;  // reutiliza el campo existente
+	    this.PrecioPeso  = PrecioPeso;
+	    this.PrecioDolar = PrecioDolar;
+	}
 
 	public ReparacionDTO(int ELS, String Informecliente, Double preciopeso, Double preciodolar,
 			boolean PresupuestoGenerado, boolean PresupuestoEnviado, boolean informeWordGenerado,

@@ -57,6 +57,7 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JPanel panelInferior;
 	private JPanel panelCentral;
 	private JScrollPane scrollPane;
+	
 
 	@SuppressWarnings("unused")
 	private ControladorListados controlador;

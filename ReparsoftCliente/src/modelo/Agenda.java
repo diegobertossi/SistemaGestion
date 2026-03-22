@@ -805,6 +805,20 @@ public class Agenda {
 		return facturacionXcliente.readAll(anio);
 	}
 
-		
+	
+	/**
+	 * Busca el historial de precios de reparaciones presupuestadas,
+	 * filtrando por nombre de equipo, marca o modelo (búsqueda parcial).
+	 * Solo retorna registros con precio cargado (PrecioPeso > 0 o PrecioDolar > 0).
+	 *
+	 * @param criterio  Campo por el que filtrar: "NOMBRE_EQUIPO", "MARCA" o "MODELO"
+	 * @param texto     Texto de búsqueda (se aplica con LIKE %texto%)
+	 * @return          Lista de ReparacionDTO con los datos del historial
+	 */
+	public List<ReparacionDTO> buscarHistorialPrecios(String criterio, String texto) {
+	    return ReparacionR.buscarHistorialPrecios(criterio, texto);
+	}
+	
+	
 	
 }

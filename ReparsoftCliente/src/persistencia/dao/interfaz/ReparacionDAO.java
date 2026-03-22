@@ -194,6 +194,8 @@ public interface ReparacionDAO
 
 	public List<Integer> buscarEnCampos(String campo, String texto);
 
+	public List<ReparacionDTO> buscarHistorialPrecios(String criterio, String texto);
+
 
 
 

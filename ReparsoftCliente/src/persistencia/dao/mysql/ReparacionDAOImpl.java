@@ -488,4 +488,9 @@ public class ReparacionDAOImpl implements ReparacionDAO {
     public void comboSerie(JComboBox<?> comboBox) {
         comboManager.listarSerie(comboBox);
     }
+
+	@Override
+	public List<ReparacionDTO> buscarHistorialPrecios(String criterio, String texto) {
+		return queryManager.buscarHistorialPrecios(criterio, texto);
+	}
 }

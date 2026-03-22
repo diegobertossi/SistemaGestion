@@ -21,6 +21,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.SwingConstants;
 
 import VistaPropias.CellRendererTablaListado;
+import VistaPropias.CellRendererVentanaHistorialPrecios;
+import tiposPropios.MonedaFormatter;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -56,6 +58,7 @@ public class VentanaHistorialPrecios extends JFrame {
     private JTable tablaHistorial;
     private DefaultTableModel modelHistorial;
     private JScrollPane spHistorial;
+    private MonedaFormatter monedaFormatter;
 
     private String[] nombreColumnas = {
         "ELS", "EQUIPO", "MARCA", "MODELO", "FECHA DIAGNÓSTICO", "PRECIO $", "PRECIO U$S"
@@ -260,6 +263,8 @@ public class VentanaHistorialPrecios extends JFrame {
         tablaHistorial.getColumnModel().getColumn(4).setPreferredWidth(110);  // FECHA
         tablaHistorial.getColumnModel().getColumn(5).setPreferredWidth(100);  // PRECIO $
         tablaHistorial.getColumnModel().getColumn(6).setPreferredWidth(100);  // PRECIO U$S
+        
+       
 
         tablaHistorial.setAutoCreateColumnsFromModel(false);
 
@@ -282,7 +287,7 @@ public class VentanaHistorialPrecios extends JFrame {
         panelDetalle = new JPanel();
         panelDetalle.setBackground(new Color(119, 136, 153));
         panelDetalle.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        panelDetalle.setBounds(20, 415, 764, 150);
+        panelDetalle.setBounds(20, 415, 764, 155);
         panelPrincipal.add(panelDetalle);
         panelDetalle.setLayout(null);
 
@@ -304,7 +309,7 @@ public class VentanaHistorialPrecios extends JFrame {
         txtELS.setEditable(false);
         txtELS.setBackground(new Color(240, 240, 240));
         txtELS.setFont(new Font("Cambria", Font.BOLD, 12));
-        txtELS.setBounds(95, 32, 60, 20);
+        txtELS.setBounds(95, 32, 180, 20);
         panelDetalle.add(txtELS);
 
         // --- EQUIPO ---
@@ -312,14 +317,14 @@ public class VentanaHistorialPrecios extends JFrame {
         lblEquipo.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(47, 79, 79)));
         lblEquipo.setFont(new Font("Cambria", Font.BOLD, 12));
         lblEquipo.setForeground(new Color(240, 240, 240));
-        lblEquipo.setBounds(170, 32, 80, 20);
+        lblEquipo.setBounds(8, 104, 80, 20);
         panelDetalle.add(lblEquipo);
 
         txtEquipo = new JTextField();
         txtEquipo.setEditable(false);
         txtEquipo.setBackground(new Color(240, 240, 240));
         txtEquipo.setFont(new Font("Cambria", Font.PLAIN, 12));
-        txtEquipo.setBounds(258, 32, 180, 20);
+        txtEquipo.setBounds(95, 104, 180, 20);
         panelDetalle.add(txtEquipo);
 
         // --- MARCA ---
@@ -327,14 +332,14 @@ public class VentanaHistorialPrecios extends JFrame {
         lblMarca.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(47, 79, 79)));
         lblMarca.setFont(new Font("Cambria", Font.BOLD, 12));
         lblMarca.setForeground(new Color(240, 240, 240));
-        lblMarca.setBounds(8, 60, 80, 20);
+        lblMarca.setBounds(8, 56, 80, 20);
         panelDetalle.add(lblMarca);
 
         txtMarca = new JTextField();
         txtMarca.setEditable(false);
         txtMarca.setBackground(new Color(240, 240, 240));
         txtMarca.setFont(new Font("Cambria", Font.PLAIN, 12));
-        txtMarca.setBounds(95, 60, 150, 20);
+        txtMarca.setBounds(95, 56, 180, 20);
         panelDetalle.add(txtMarca);
 
         // --- MODELO ---
@@ -342,14 +347,14 @@ public class VentanaHistorialPrecios extends JFrame {
         lblModelo.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(47, 79, 79)));
         lblModelo.setFont(new Font("Cambria", Font.BOLD, 12));
         lblModelo.setForeground(new Color(240, 240, 240));
-        lblModelo.setBounds(260, 60, 80, 20);
+        lblModelo.setBounds(8, 128, 80, 20);
         panelDetalle.add(lblModelo);
 
         txtModelo = new JTextField();
         txtModelo.setEditable(false);
         txtModelo.setBackground(new Color(240, 240, 240));
         txtModelo.setFont(new Font("Cambria", Font.PLAIN, 12));
-        txtModelo.setBounds(348, 60, 150, 20);
+        txtModelo.setBounds(95, 128, 180, 20);
         panelDetalle.add(txtModelo);
 
         // --- FECHA DIAGNÓSTICO ---
@@ -357,46 +362,48 @@ public class VentanaHistorialPrecios extends JFrame {
         lblFecha.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(47, 79, 79)));
         lblFecha.setFont(new Font("Cambria", Font.BOLD, 12));
         lblFecha.setForeground(new Color(240, 240, 240));
-        lblFecha.setBounds(8, 88, 85, 20);
+        lblFecha.setBounds(8, 80, 85, 20);
         panelDetalle.add(lblFecha);
 
         txtFecha = new JTextField();
         txtFecha.setEditable(false);
         txtFecha.setBackground(new Color(240, 240, 240));
         txtFecha.setFont(new Font("Cambria", Font.PLAIN, 12));
-        txtFecha.setBounds(95, 88, 100, 20);
+        txtFecha.setBounds(95, 80, 180, 20);
         panelDetalle.add(txtFecha);
 
         // --- PRECIO $ ---
-        JLabel lblPrecioPeso = new JLabel("PRECIO $");
+        JLabel lblPrecioPeso = new JLabel("PRECIO PESO");
         lblPrecioPeso.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(47, 79, 79)));
         lblPrecioPeso.setFont(new Font("Cambria", Font.BOLD, 12));
         lblPrecioPeso.setForeground(new Color(240, 240, 240));
-        lblPrecioPeso.setBounds(8, 116, 80, 20);
+        lblPrecioPeso.setBounds(301, 32, 95, 20);
         panelDetalle.add(lblPrecioPeso);
 
         txtPrecioPeso = new JTextField();
+        txtPrecioPeso.setHorizontalAlignment(SwingConstants.CENTER);
         txtPrecioPeso.setEditable(false);
         txtPrecioPeso.setBackground(new Color(240, 240, 240));
-        txtPrecioPeso.setFont(new Font("Cambria", Font.BOLD, 12));
-        txtPrecioPeso.setForeground(new Color(0, 100, 0));
-        txtPrecioPeso.setBounds(95, 116, 130, 20);
+        txtPrecioPeso.setFont(new Font("Cambria", Font.BOLD, 14));
+        txtPrecioPeso.setForeground(new Color(49, 69, 95));
+        txtPrecioPeso.setBounds(403, 32, 141, 20);
         panelDetalle.add(txtPrecioPeso);
 
         // --- PRECIO U$S ---
-        JLabel lblPrecioDolar = new JLabel("PRECIO U$S");
+        JLabel lblPrecioDolar = new JLabel("PRECIO DOLAR");
         lblPrecioDolar.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(47, 79, 79)));
         lblPrecioDolar.setFont(new Font("Cambria", Font.BOLD, 12));
         lblPrecioDolar.setForeground(new Color(240, 240, 240));
-        lblPrecioDolar.setBounds(240, 116, 100, 20);
+        lblPrecioDolar.setBounds(301, 56, 95, 20);
         panelDetalle.add(lblPrecioDolar);
 
         txtPrecioDolar = new JTextField();
+        txtPrecioDolar.setHorizontalAlignment(SwingConstants.CENTER);
         txtPrecioDolar.setEditable(false);
         txtPrecioDolar.setBackground(new Color(240, 240, 240));
-        txtPrecioDolar.setFont(new Font("Cambria", Font.BOLD, 12));
-        txtPrecioDolar.setForeground(new Color(0, 0, 160));
-        txtPrecioDolar.setBounds(348, 116, 130, 20);
+        txtPrecioDolar.setFont(new Font("Cambria", Font.BOLD, 14));
+        txtPrecioDolar.setForeground(new Color(0, 100, 0));
+        txtPrecioDolar.setBounds(403, 56, 141, 20);
         panelDetalle.add(txtPrecioDolar);
 
         // --- BOTÓN USAR PRECIOS ---
@@ -404,7 +411,7 @@ public class VentanaHistorialPrecios extends JFrame {
         btnUsarPrecios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnUsarPrecios.setFont(new Font("Cambria", Font.BOLD, 13));
         btnUsarPrecios.setBackground(new Color(240, 240, 240));
-        btnUsarPrecios.setBounds(530, 88, 210, 50);
+        btnUsarPrecios.setBounds(591, 32, 163, 44);
         panelDetalle.add(btnUsarPrecios);
 
         // --- BOTÓN CERRAR ---
@@ -412,7 +419,7 @@ public class VentanaHistorialPrecios extends JFrame {
         btnCerrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnCerrar.setFont(new Font("Cambria", Font.BOLD, 13));
         btnCerrar.setBackground(new Color(240, 240, 240));
-        btnCerrar.setBounds(530, 32, 210, 40);
+        btnCerrar.setBounds(591, 104, 163, 44);
         panelDetalle.add(btnCerrar);
 
         this.setVisible(true);
@@ -470,13 +477,9 @@ public class VentanaHistorialPrecios extends JFrame {
      * Se llamará desde el controlador al cargar datos.
      */
     public void setCellRender(JTable table) {
-        Enumeration<TableColumn> en = table.getColumnModel().getColumns();
-        while (en.hasMoreElements()) {
-            TableColumn tc = en.nextElement();
-            DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-            renderer.setHorizontalAlignment(SwingConstants.CENTER);
-            renderer.setFont(new Font("Cambria", Font.PLAIN, 12));
-            tc.setCellRenderer(renderer);
+        CellRendererVentanaHistorialPrecios renderer = new CellRendererVentanaHistorialPrecios();
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
     }
 

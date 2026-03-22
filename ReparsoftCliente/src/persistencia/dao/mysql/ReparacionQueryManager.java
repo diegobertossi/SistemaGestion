@@ -677,4 +677,38 @@ public class ReparacionQueryManager {
             }
         }
     }
+
+    public List<ReparacionDTO> buscarHistorialPrecios(String criterio, String texto) {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Connection conn = null;
+        try {
+            // Mapear código interno → columna SQL válida
+            String columna;
+            switch (criterio) {
+                case "MARCA":         columna = "Equipos.Marca";   break;
+                case "MODELO":        columna = "Equipos.Modelo";  break;
+                case "NOMBRE_EQUIPO":
+                default:              columna = "Equipos.Nombre";  break;
+            }
+
+            if (!ReparacionMapper.CAMPOS_PERMITIDOS_HISTORIAL.contains(columna)) {
+                throw new IllegalArgumentException("Columna no válida: " + columna);
+            }
+
+            String query = String.format(SQLQueries.BUSQUEDA_HISTORIAL_PRECIOS, columna);
+            conn = conexion.getSQLConexion();
+            statement = conn.prepareStatement(query);
+            statement.setString(1, "%" + texto + "%");
+            resultSet = statement.executeQuery();
+
+            return ReparacionMapper.mapToHistorialPreciosList(resultSet);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        } finally {
+            closeResources(statement, resultSet, conn);
+        }
+    }
 }

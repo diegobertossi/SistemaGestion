@@ -10,9 +10,11 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import dto.ReparacionDTO;
 import modelo.Agenda;
 import presentacion.vista.VentanaGenerarPresupuesto;
 import presentacion.vista.VentanaHistorialPrecios;
+import tiposPropios.MonedaFormatter;
 
 /**
  * ControladorHistorialPrecios
@@ -30,7 +32,7 @@ import presentacion.vista.VentanaHistorialPrecios;
  *  - Copiar precios a VentanaGenerarPresupuesto al pulsar "USAR ESTOS PRECIOS"
  *  - Cerrar la ventana al pulsar CERRAR
  */
-public class ControladorHistorialPrecios implements ActionListener, ItemListener, MouseListener {
+public class ControladorHistorialPrecios implements ActionListener, ItemListener{
 
     // ===== REFERENCIAS =====
     private VentanaHistorialPrecios ventanaHistorialPrecios;
@@ -96,7 +98,15 @@ public class ControladorHistorialPrecios implements ActionListener, ItemListener
         ventanaHistorialPrecios.getRdbModelo()      .addItemListener(this);
 
         // Tabla — clic en fila para cargar detalle
-        ventanaHistorialPrecios.getTablaHistorial().addMouseListener(this);
+        //ventanaHistorialPrecios.getTablaHistorial().addMouseListener(this);
+        
+        ventanaHistorialPrecios.getTablaHistorial().getSelectionModel()
+        .addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                cargarDetalleFilaSeleccionada();
+            }
+        });
+        
     }
 
     // ═══════════════════════════════════════════════════════
@@ -136,19 +146,6 @@ public class ControladorHistorialPrecios implements ActionListener, ItemListener
         }
     }
 
-    // ═══════════════════════════════════════════════════════
-    //  MOUSE LISTENER  (tabla)
-    // ═══════════════════════════════════════════════════════
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        cargarDetalleFilaSeleccionada();
-    }
-
-    @Override public void mousePressed(MouseEvent e)  { }
-    @Override public void mouseReleased(MouseEvent e) { }
-    @Override public void mouseEntered(MouseEvent e)  { }
-    @Override public void mouseExited(MouseEvent e)   { }
 
     // ═══════════════════════════════════════════════════════
     //  LÓGICA PRINCIPAL
@@ -208,23 +205,25 @@ public class ControladorHistorialPrecios implements ActionListener, ItemListener
         limpiarTabla();
         ventanaHistorialPrecios.limpiarDetalle();
 
-        // ────────────────────────────────────────────────────
-        // TODO: llamar al método de Agenda cuando esté disponible
-        //
-        // Ejemplo futuro:
-        //   List<HistorialPrecioDTO> resultados =
-        //       agenda.buscarHistorialPrecios(criterio, textoBusqueda);
-        //   cargarResultadosEnTabla(resultados);
-        //
-        // Por ahora se muestra un aviso informativo.
-        // ────────────────────────────────────────────────────
-        JOptionPane.showMessageDialog(
-            ventanaHistorialPrecios,
-            "Búsqueda pendiente de implementación.\n"
-                + "Criterio: " + criterio + "\n"
-                + "Texto: "    + textoBusqueda,
-            "En desarrollo",
-            JOptionPane.INFORMATION_MESSAGE);
+        List<ReparacionDTO> resultados = agenda.buscarHistorialPrecios(criterio, textoBusqueda);
+
+        if (resultados.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                ventanaHistorialPrecios,
+                "No se encontraron registros para la búsqueda realizada.",
+                "Sin resultados",
+                JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        cargarResultadosEnTabla(resultados);
+//        JOptionPane.showMessageDialog(
+//            ventanaHistorialPrecios,
+//            "Búsqueda pendiente de implementación.\n"
+//                + "Criterio: " + criterio + "\n"
+//                + "Texto: "    + textoBusqueda,
+//            "En desarrollo",
+//            JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -242,30 +241,20 @@ public class ControladorHistorialPrecios implements ActionListener, ItemListener
         return "NOMBRE_EQUIPO"; // valor por defecto defensivo
     }
 
-    /**
-     * Carga una lista de resultados en la tabla.
-     * Preparado para ser llamado cuando el DAO esté disponible.
-     *
-     * @param resultados Lista de DTOs con los datos del historial.
-     *
-     * PENDIENTE: descomentar y adaptar cuando exista HistorialPrecioDTO.
-     */
-    /*
-    private void cargarResultadosEnTabla(List<HistorialPrecioDTO> resultados) {
-        for (HistorialPrecioDTO item : resultados) {
+    private void cargarResultadosEnTabla(List<ReparacionDTO> resultados) {
+        for (ReparacionDTO item : resultados) {
             ventanaHistorialPrecios.getModelHistorial().addRow(new Object[] {
-                item.getEls(),
+                item.getELS(),
                 item.getNombreEquipo(),
                 item.getMarca(),
                 item.getModelo(),
-                item.getFechaDiagnostico(),   // ya formateada como dd/MM/yyyy
+                item.getFechadereparacion(),   // contiene la fecha ya formateada dd/MM/yyyy
                 item.getPrecioPeso(),
                 item.getPrecioDolar()
             });
         }
         ventanaHistorialPrecios.setCellRender(ventanaHistorialPrecios.getTablaHistorial());
     }
-    */
 
     /**
      * Lee la fila seleccionada en la tabla y carga sus valores
@@ -273,6 +262,7 @@ public class ControladorHistorialPrecios implements ActionListener, ItemListener
      */
     private void cargarDetalleFilaSeleccionada() {
         int fila = ventanaHistorialPrecios.getTablaHistorial().getSelectedRow();
+        MonedaFormatter monedaFormatter = new MonedaFormatter();
 
         if (fila < 0) {
             return; // clic fuera de una fila válida
@@ -294,8 +284,8 @@ public class ControladorHistorialPrecios implements ActionListener, ItemListener
         ventanaHistorialPrecios.setTxtMarca      (marca      != null ? marca.toString()      : "");
         ventanaHistorialPrecios.setTxtModelo     (modelo     != null ? modelo.toString()     : "");
         ventanaHistorialPrecios.setTxtFecha      (fecha      != null ? fecha.toString()      : "");
-        ventanaHistorialPrecios.setTxtPrecioPeso (precioPeso != null ? precioPeso.toString() : "");
-        ventanaHistorialPrecios.setTxtPrecioDolar(precioDol  != null ? precioDol.toString()  : "");
+        ventanaHistorialPrecios.setTxtPrecioPeso (precioPeso != null ? monedaFormatter.formatPeso(precioPeso.toString()) : "");
+        ventanaHistorialPrecios.setTxtPrecioDolar(precioDol  != null ? monedaFormatter.formatDolar(precioDol.toString()) : "");
     }
 
     /**
@@ -319,8 +309,8 @@ public class ControladorHistorialPrecios implements ActionListener, ItemListener
         int confirmacion = JOptionPane.showConfirmDialog(
             ventanaHistorialPrecios,
             "¿Deseás usar estos precios en el presupuesto actual?\n\n"
-                + "Precio $:    " + precioPeso  + "\n"
-                + "Precio U$S: " + precioDolar,
+                + "Precio en PESOS:    " + precioPeso  + "\n"
+                + "Precio en DÓLARES: " + precioDolar,
             "Confirmar",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE);

@@ -442,4 +442,18 @@ public class SQLQueries {
     // Campos permitidos para búsqueda
     public static final List<String> CAMPOS_PERMITIDOS_BUSQUEDA = 
         Arrays.asList("Falla", "Solucion", "Informecliente");
+    
+    public static final String BUSQUEDA_HISTORIAL_PRECIOS =
+    	    "SELECT reparaciones.ELS, Equipos.Nombre, Equipos.Marca, Equipos.Modelo, "
+    	    + "DATE_FORMAT(reparaciones.FechadeDiagnostico, '%%d/%%m/%%Y') AS FechaDiag, "
+    	    + "reparaciones.PrecioPeso, reparaciones.PrecioDolar "
+    	    + "FROM reparaciones "
+    	    + "INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.IdEquipo "
+    	    + "WHERE %s LIKE ? "
+    	    + "AND (reparaciones.PrecioPeso > 0 OR reparaciones.PrecioDolar > 0) "
+    	    + "AND reparaciones.EstadoComercial = 'Aceptado' "
+    	    + "ORDER BY reparaciones.FechadeDiagnostico DESC";
+
+
+
 }

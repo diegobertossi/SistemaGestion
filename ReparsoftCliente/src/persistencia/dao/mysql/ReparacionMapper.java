@@ -3,6 +3,7 @@ package persistencia.dao.mysql;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import dto.ReparacionDTO;
@@ -236,4 +237,27 @@ public class ReparacionMapper {
     public static boolean esCampoValido(String campo) {
         return SQLQueries.CAMPOS_PERMITIDOS_BUSQUEDA.contains(campo);
     }
+    
+    
+    public static final List<String> CAMPOS_PERMITIDOS_HISTORIAL =
+    	    Arrays.asList("Equipos.Nombre", "Equipos.Marca", "Equipos.Modelo");
+
+    	public static List<ReparacionDTO> mapToHistorialPreciosList(ResultSet rs) throws SQLException {
+    	    List<ReparacionDTO> lista = new ArrayList<>();
+    	    while (rs.next()) {
+    	        lista.add(new ReparacionDTO(
+    	            rs.getInt("ELS"),
+    	            rs.getString("Nombre"),
+    	            rs.getString("Marca"),
+    	            rs.getString("Modelo"),
+    	            rs.getString("FechaDiag"),
+    	            rs.getDouble("PrecioPeso"),
+    	            rs.getDouble("PrecioDolar")
+    	        ));
+    	    }
+    	    return lista;
+    	}
+    
+    
+    
 }
