@@ -19,6 +19,7 @@ public class ReparacionDTO {
 	private String OrdendeCompra;
 	private Boolean Agregadoaremito;
 	private Boolean RemitoGenerado;
+	private String NroFactura;
 	private int idEquipo;
 	private int idRemito;
 	private Double PrecioPeso;
@@ -56,7 +57,7 @@ public class ReparacionDTO {
 			Boolean PresupuestoGenerado, Double Pago, Boolean PresupuestoEnviado, String Nombre, String Correo,
 			String Modelo, String Marca, String NumeroDeSerie, String Aviso, String ClienteCliente, int IDCliente,
 			int IDSuc, String Cliente, String Sucursal, String NombreUsuario, int Codigo, int NumeroRemitoSalida,
-			String FechaFabr, Boolean AvisoEnviado, Boolean WordGenerado, Boolean WordEnviado, String LugarDeIngreso,
+			String FechaFabr, Boolean AvisoEnviado, Boolean WordGenerado, Boolean WordEnviado, String LugarDeIngreso,String NroFactura,
 			String fecha_Salida) {
 
 		this.ELS = ELS;
@@ -85,6 +86,7 @@ public class ReparacionDTO {
 		this.wordGenerado = WordGenerado;
 		this.wordEnviado = WordEnviado;
 		this.LugarDeIngreso = LugarDeIngreso;
+		this.NroFactura = NroFactura;
 		this.FechaSalida = fecha_Salida;
 
 		this.Pago = Pago;
@@ -156,7 +158,7 @@ public class ReparacionDTO {
 			int IDCliente, int IDSuc, String FechaFabr, int idUsuario, String nombreUsuario, double presupuesto,
 			double presupuestoDolar, double pago, boolean PresupuestoGenerado, boolean avisoEnviado,
 			boolean PresupuestoEnviado, Boolean WordGenerado, Boolean WordEnviado, String ordenDeCompra,
-			Boolean Agregadoaremito, Boolean RemitoGenerado, String LugarDeIngreso, String fecha_Salida) {
+			Boolean Agregadoaremito, Boolean RemitoGenerado, String LugarDeIngreso,String NroFactura, String fecha_Salida) {
 
 		this.ELS = ELS;
 		this.FechaEntrada = Fecha_Entrada;
@@ -194,6 +196,7 @@ public class ReparacionDTO {
 		this.idRemito = IDremito;
 		this.NombreUsuario = nombreUsuario;
 		this.LugarDeIngreso = LugarDeIngreso;
+		this.NroFactura = NroFactura;
 		this.Agregadoaremito = Agregadoaremito;
 		this.RemitoGenerado = RemitoGenerado;
 		this.idEquipo = IDEquipo;
@@ -283,6 +286,7 @@ public class ReparacionDTO {
 		this.idSucursal = IDSuc;
 		this.FechaFabr = FechaFabr;
 		this.LugarDeIngreso = lugarDeIngreso;
+		
 
 	}
 
@@ -732,6 +736,10 @@ public class ReparacionDTO {
 
 	public void setWordGenerado(Boolean WordGenerado) {
 		wordGenerado = WordGenerado;
+	}
+
+	public String getNrofactura() {
+		return NroFactura;
 	}
 
 }

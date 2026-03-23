@@ -268,6 +268,7 @@ public class GestorVisualizacionEquipos {
 		ventana.setTextOC(reparacionActual.getOrdendeCompra());
 		ventana.setTextDiagnostico(reparacionActual.getSolucion());
 		ventana.setTextInformeCliente(reparacionActual.getInformecliente());
+		ventana.setTextNumeroFactura(reparacionActual.getNrofactura());
 
 		int codigoRemitoBase = reparacionActual.getCodigo();
 		String codigoRemitoVisual = obtenerCodigoRemitoVisual(codigoRemitoBase);
@@ -528,6 +529,11 @@ public class GestorVisualizacionEquipos {
 		// Copiar el monto del presupuesto al pago
 		ventana.getBtnCopiarPresupuesto().addActionListener(e -> {
 			copiarPago(ventana);
+		});
+		
+		// abrir ventana copiar factura
+		ventana.getBtnCopiarFactura().addActionListener(e -> {
+			controlador.getGestorPresupuesto().abrirVentanaCopiarFactura(ventana);
 		});
 
 		// Presupuesto

@@ -26,6 +26,7 @@ public class SQLQueries {
         "FechAceptacion = ?, PresupuestoGenerado = ?, " +
         "PresupuestoEnviado = ?, WordGenerado = ?, WordEnviado = ?, " +
         "AvisoEnviado = ?, Pago = ?, FechaSalida = ?, " +
+        "NroFactura = ?, " +
         "lugar_de_ingreso = ? " +
         "WHERE ELS = ?";
     
@@ -78,7 +79,7 @@ public class SQLQueries {
         "DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, " +
         "Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, " +
         "Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, " +
-        "UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida " +
+        "UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso,reparaciones.NroFactura, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida " +
         "FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) " +
         "INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON " +
         "Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON " +
@@ -99,7 +100,7 @@ public class SQLQueries {
         "DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, " +
         "Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, " +
         "Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, " +
-        "UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida " +
+        "UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso,reparaciones.NroFactura, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida " +
         "FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) " +
         "INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON " +
         "Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON " +
@@ -120,7 +121,7 @@ public class SQLQueries {
         "DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, " +
         "Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, " +
         "Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, " +
-        "UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida " +
+        "UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso,reparaciones.NroFactura, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida " +
         "FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) " +
         "INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON " +
         "Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON " +
@@ -141,7 +142,7 @@ public class SQLQueries {
         "DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, " +
         "Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, " +
         "Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, " +
-        "UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida " +
+        "UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso,reparaciones.NroFactura, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida " +
         "FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) " +
         "INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON " +
         "Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON " +
@@ -185,7 +186,7 @@ public class SQLQueries {
         "Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, " +
         "reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, " +
         "UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, " +
-        "reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida " +
+        "reparaciones.lugar_de_ingreso,reparaciones.NroFactura, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida " +
         "FROM (UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) " +
         "INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON " +
         "Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON " +
@@ -207,7 +208,7 @@ public class SQLQueries {
         "Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, " +
         "reparaciones.PresupuestoGenerado, Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, " +
         "UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, UbicacionRemitos.IdUbicacion, reparaciones.Pago, " +
-        "reparaciones.lugar_de_ingreso, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida " +
+        "reparaciones.lugar_de_ingreso,reparaciones.NroFactura, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida " +
         "FROM (UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) " +
         "INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON " +
         "Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON " +

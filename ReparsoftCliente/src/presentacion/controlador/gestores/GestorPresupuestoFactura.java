@@ -12,6 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
+
+import VistaPropias.ExtractorFacturaPDF;
+import VistaPropias.ExtractorFacturaPDF.DatosFactura;
+
 import javax.swing.SwingUtilities;
 
 import dto.ReparacionDTO;
@@ -376,5 +380,27 @@ public class GestorPresupuestoFactura {
     
     public VentanaRemitos getVentanaRemitos() {
         return ventanaRemitos;
+    }
+
+    public void abrirVentanaCopiarFactura(VentanaVisualizarEquipos ventana) {
+        DatosFactura datos = ExtractorFacturaPDF.extraerDesdeSelector(ventana);
+        if (datos != null) {
+            datos.imprimirEnConsola();
+            
+            // Preguntar si desea copiar el número de factura
+            int respuesta = JOptionPane.showConfirmDialog(
+                ventana,
+                "¿Desea copiar el número de factura?\n\n" + 
+                "Número: " + datos.getNumeroComprobante(),
+                "Confirmar copia",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+            );
+            
+            if (respuesta == JOptionPane.YES_OPTION) {
+                ventana.getTextNumeroFactura().setText(datos.getNumeroComprobante());
+
+            }
+        }
     }
 }

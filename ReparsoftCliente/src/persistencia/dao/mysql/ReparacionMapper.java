@@ -56,6 +56,7 @@ public class ReparacionMapper {
             resultSet.getBoolean("WordGenerado"),
             resultSet.getBoolean("WordEnviado"),
             resultSet.getString("lugar_de_ingreso"),
+            resultSet.getString("NroFactura"),
             resultSet.getString("FechaSalida")
         );
     }

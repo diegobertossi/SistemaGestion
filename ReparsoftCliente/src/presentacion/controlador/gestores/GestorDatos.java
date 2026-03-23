@@ -51,6 +51,7 @@ public class GestorDatos {
 		String serie = ventana.getTextNSerie().getText();
 		String aviso = ventana.getTextAvisoCliente().getText();
 		String clienteCliente = ventana.getTextClienteCliente().getText();
+		String numeroFactura = ventana.getTextNumeroFactura().getText();
 
 
 		// Parsear fechas
@@ -117,7 +118,8 @@ public class GestorDatos {
 		ventana.getTextEstadoTecnico().setText(EstadoTecnicoCombo);
 		ventana.getTextEstadoComercial().setText(EstadoComercialCombo);
 		ventana.getTextLugarDeIngreso().setText(IngresoCombo);
-
+		ventana.getTextNumeroFactura().setText(numeroFactura);
+		
 		// Obtener IDs
 		String cliente = ventana.getTextCliente().getText();
 		String sucursal = ventana.getTextSucursal().getText();
@@ -166,7 +168,7 @@ public class GestorDatos {
 				fechaAceptacion, nombreEquipo, modelo, marca, serie, aviso, clienteCliente, idCliente, idSucursal,
 				fechaFabr, idUsuario, nombreTecnico, presupuesto, presupuestoDolar, pago, presupuestoGenerado,
 				avisoEnviado, presupuestoEnviado, wordGenerado, wordEnviado, ordenCompra, agregadoAremito,
-				remitoGenerado, lugarIngreso, fechaSalida);
+				remitoGenerado, lugarIngreso,numeroFactura, fechaSalida);
 	}
 
 

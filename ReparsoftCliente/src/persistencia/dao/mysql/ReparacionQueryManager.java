@@ -609,7 +609,9 @@ public class ReparacionQueryManager {
         setBooleanParameter(statement, paramIndex++, reparacion.getAvisoEnviado());
         setBigDecimalParameter(statement, paramIndex++, reparacion.getPago());
         setTimestampParameter(statement, paramIndex++, reparacion.getFecha_Salida());
+        statement.setString(paramIndex++, reparacion.getNrofactura());
         statement.setString(paramIndex++, reparacion.getLugarDeIngreso());
+        
         
         // Llave primaria
         statement.setInt(paramIndex, reparacion.getELS());

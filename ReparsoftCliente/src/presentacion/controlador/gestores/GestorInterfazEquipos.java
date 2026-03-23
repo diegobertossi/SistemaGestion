@@ -97,6 +97,8 @@ public class GestorInterfazEquipos {
         ventana.getBtnEliminarRepuesto().setEnabled(true);
         ventana.getBtnCopiarPresupuesto().setEnabled(true);
         ventana.getTablaRepuestos().setEnabled(true);
+        ventana.getTextNumeroFactura().setEditable(true);
+        ventana.getBtnCopiarFactura().setEnabled(true);
         
         // Mostrar combos, ocultar textos
         ventana.getTextCliente().setVisible(false);
@@ -144,6 +146,10 @@ public class GestorInterfazEquipos {
         ventana.getBtnEliminarRepuesto().setEnabled(false);
         ventana.getBtnCopiarPresupuesto().setEnabled(false);
         ventana.getTablaRepuestos().setEnabled(false);
+        ventana.getTextNumeroFactura().setEditable(false);
+        ventana.getBtnCopiarFactura().setEnabled(false);
+        
+        
         // Mostrar textos, ocultar combos
         ventana.getTextCliente().setVisible(true);
         ventana.getTextSucursal().setVisible(true);
