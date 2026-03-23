@@ -171,6 +171,8 @@ public class ExtractorFacturaPDF {
                 System.out.println("[ExtractorFacturaPDF] Número comprobante: " + numeroComprobante);
             }
             
+            
+            
             return datos;
 
         } catch (Exception e) {
