@@ -127,14 +127,15 @@ public class GestorDatos {
 
 		int idCliente = agenda.idClienteporNombre(cliente);
 		int idSucursal = agenda.idSucursalporNombre(sucursal, idCliente);
-		// int idUsuario = agenda.idUsuarioporNombre(nombreTecnico);
-
+		
 		int idUsuario;
-		int idUsuarioAux = IDUsuarioPorNombre(nombreTecnico);
 
+		int idUsuarioAux = agenda.idUsuarioporNombre(nombreTecnico);
+		
 		if (idUsuarioAux == 0) {
 
 			idUsuario = 1;
+			
 		}
 
 		else {
