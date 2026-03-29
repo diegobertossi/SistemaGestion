@@ -6,7 +6,6 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,9 +27,11 @@ public class EscanerFacturasPDF {
         private String numeroComprobante;
         private String numeroFacturaCompleto;
         private String cuitEmisor;
+        private String razonSocialEmisor;
         private String cuitDestinatario;
+        private String razonSocialDestinatario;
         private String fechaEmision;
-        private String els;
+        private String els; // Múltiples ELS separados por coma
         private String montoTotal;
         private String nombreArchivo;
         
@@ -47,8 +48,14 @@ public class EscanerFacturasPDF {
         public String getCuitEmisor() { return cuitEmisor; }
         public void setCuitEmisor(String cuitEmisor) { this.cuitEmisor = cuitEmisor; }
         
+        public String getRazonSocialEmisor() { return razonSocialEmisor; }
+        public void setRazonSocialEmisor(String razonSocialEmisor) { this.razonSocialEmisor = razonSocialEmisor; }
+        
         public String getCuitDestinatario() { return cuitDestinatario; }
         public void setCuitDestinatario(String cuitDestinatario) { this.cuitDestinatario = cuitDestinatario; }
+        
+        public String getRazonSocialDestinatario() { return razonSocialDestinatario; }
+        public void setRazonSocialDestinatario(String razonSocialDestinatario) { this.razonSocialDestinatario = razonSocialDestinatario; }
         
         public String getFechaEmision() { return fechaEmision; }
         public void setFechaEmision(String fechaEmision) { this.fechaEmision = fechaEmision; }
@@ -166,69 +173,229 @@ public class EscanerFacturasPDF {
             PDFTextStripper stripper = new PDFTextStripper();
             String texto = stripper.getText(documento);
             
-            // Extraer Punto de Venta y Número de Comprobante
-            // Formato: "Punto de Venta: Comp. Nro:00001 00000214"
-            Pattern patronNumero = Pattern.compile("Punto de Venta:\\s*Comp\\.\\s*Nro:(\\d{5})\\s+(\\d{8})", Pattern.CASE_INSENSITIVE);
-            Matcher matcherNumero = patronNumero.matcher(texto);
-            if (matcherNumero.find()) {
-                String puntoVenta = matcherNumero.group(1);
-                String numeroComprobante = matcherNumero.group(2);
-                datos.setPuntoVenta(puntoVenta);
-                datos.setNumeroComprobante(numeroComprobante);
-                datos.setNumeroFacturaCompleto(puntoVenta + "-" + numeroComprobante);
+            System.out.println("\n[EscanerFacturasPDF] Procesando: " + archivoPDF.getName());
+            
+            // =====================================================
+            // 1. CUIT EMISOR (Algoritmo mejorado - busca el primer CUIT suelto)
+            // =====================================================
+            Pattern cuitLibre = Pattern.compile("\\b\\d{11}\\b");
+            Matcher mCuitLibre = cuitLibre.matcher(texto);
+            
+            List<String> todosCuits = new ArrayList<>();
+            while (mCuitLibre.find()) {
+                todosCuits.add(mCuitLibre.group());
             }
             
-            // Extraer CUIT Emisor (primer CUIT que aparece)
-            Pattern patronCuit = Pattern.compile("CUIT[:\\s]+(\\d{11})", Pattern.CASE_INSENSITIVE);
-            Matcher matcherCuit = patronCuit.matcher(texto);
-            List<String> cuits = new ArrayList<>();
-            while (matcherCuit.find()) {
-                cuits.add(matcherCuit.group(1));
+            if (!todosCuits.isEmpty()) {
+                datos.setCuitEmisor(todosCuits.get(0));
             }
-            if (cuits.size() >= 1) {
-                datos.setCuitEmisor(cuits.get(0));
-            }
-            if (cuits.size() >= 2) {
-                datos.setCuitDestinatario(cuits.get(1));
-            }
+            System.out.println("  CUIT Emisor: " + datos.getCuitEmisor());
             
-            // Extraer Fecha de Emisión
-            Pattern patronFecha = Pattern.compile("Fecha de Emisi[oó]n[:\\s]+([\\d]{2}/[\\d]{2}/[\\d]{4})", Pattern.CASE_INSENSITIVE);
-            Matcher matcherFecha = patronFecha.matcher(texto);
-            if (matcherFecha.find()) {
-                datos.setFechaEmision(matcherFecha.group(1));
-            }
+         // =====================================================
+         // 2. DOCUMENTO DESTINATARIO (CUIT / CUIL / DNI)
+         // =====================================================
+         Pattern cuitDest = Pattern.compile(
+                 "(?i)(CUIT|CUIL|DNI)[:\\s]+([0-9\\.]{7,11})"
+         );
+
+         Matcher mCuitDest = cuitDest.matcher(texto);
+
+         if (mCuitDest.find()) {
+             String tipoDoc = mCuitDest.group(1).toUpperCase();
+             String numero = mCuitDest.group(2).replaceAll("\\.", ""); // limpia puntos en DNI
+
+             datos.setCuitDestinatario(numero);
+
+             System.out.println("  " + tipoDoc + " Destinatario: " + numero);
+         } else {
+             System.out.println("  Documento Destinatario: no encontrado");
+         }
             
-            // Extraer ELS (formato: ELS XXXX o ELS: XXXX)
-            Pattern patronELS = Pattern.compile("\\bELS[:\\s]+(\\d+)\\b", Pattern.CASE_INSENSITIVE);
-            Matcher matcherELS = patronELS.matcher(texto);
-            if (matcherELS.find()) {
-                datos.setEls(matcherELS.group(1));
-            }
+            // =====================================================
+            // 3. RAZON SOCIAL EMISOR (Algoritmo mejorado - funciona con ambos formatos)
+            // =====================================================
+            String razonEmisor = null;
             
-            // Extraer Monto Total
-            // Patrones comunes para el total en facturas AFIP
-            Pattern patronTotal = Pattern.compile(
-                "(?:Total|TOTAL)\\s*[:\\s]*[$]?\\s*([\\d.,]+)",
-                Pattern.CASE_INSENSITIVE);
-            Matcher matcherTotal = patronTotal.matcher(texto);
-            if (matcherTotal.find()) {
-                String total = matcherTotal.group(1);
-                // Limpiar formato
-                total = total.replace(".", "").replace(",", ".");
-                datos.setMontoTotal(total);
-            } else {
-                // Buscar otro formato: "Importe Total: $ 1.234,56"
-                Pattern patronTotal2 = Pattern.compile(
-                    "Importe\\s+Total[:\\s]+[$]?\\s*([\\d.,]+)",
-                    Pattern.CASE_INSENSITIVE);
-                Matcher matcherTotal2 = patronTotal2.matcher(texto);
-                if (matcherTotal2.find()) {
-                    String total = matcherTotal2.group(1);
-                    total = total.replace(".", "").replace(",", ".");
-                    datos.setMontoTotal(total);
+            // Intentar patrón 1: "Razón Social: NOMBRE" (formato estándar) - hasta que encuentre Domicilio o salto de línea
+            Pattern razonSocial = Pattern.compile("Raz[oó]n Social:\\s*([^\\n\\r]+?)(?:\\s+Domicilio|\\n|$)", Pattern.CASE_INSENSITIVE);
+            Matcher mRazonSocial = razonSocial.matcher(texto);
+            if (mRazonSocial.find()) {
+                razonEmisor = mRazonSocial.group(1).trim();
+                // Limpiar si contiene "Domicilio:" residual
+                if (razonEmisor.contains("Domicilio:")) {
+                    razonEmisor = razonEmisor.substring(0, razonEmisor.indexOf("Domicilio:")).trim();
                 }
             }
+            
+            // Si no se encontró con el patrón estándar, intentar patrón 2: "ORIGINAL NOMBRE" seguido de dirección
+            if (razonEmisor == null || razonEmisor.isEmpty()) {
+                // Buscar después de "ORIGINAL" hasta encontrar una dirección (Cedro, 9 De Julio, Domicilio, etc.)
+                Pattern razonOriginal = Pattern.compile("ORIGINAL\\s+([A-ZÁÉÍÓÚÑ\\s]+?)(?=\\s+(?:Cedro|9\\s+De\\s+Julio|Domicilio|CUIT|\\n|COD))", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+                Matcher mRazonOriginal = razonOriginal.matcher(texto);
+                if (mRazonOriginal.find()) {
+                    razonEmisor = mRazonOriginal.group(1).trim();
+                }
+            }
+            
+            // Si aún no se encontró, buscar después de "ORIGINAL" hasta el primer salto de línea
+            if (razonEmisor == null || razonEmisor.isEmpty()) {
+                Pattern razonFallback = Pattern.compile("ORIGINAL\\s+([A-ZÁÉÍÓÚÑ\\s]+?)(?:\\n|COD)", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+                Matcher mRazonFallback = razonFallback.matcher(texto);
+                if (mRazonFallback.find()) {
+                    razonEmisor = mRazonFallback.group(1).trim();
+                }
+            }
+            
+            if (razonEmisor != null && !razonEmisor.isEmpty()) {
+                // Limpiar espacios extras y eliminar cualquier palabra residual
+                razonEmisor = razonEmisor.replaceAll("\\s+", " ").trim();
+                // Eliminar "Domicilio:" si quedó
+                razonEmisor = razonEmisor.replaceAll("Domicilio:.*$", "").trim();
+                datos.setRazonSocialEmisor(razonEmisor);
+                System.out.println("  Razón Social Emisor: " + razonEmisor);
+            } else {
+                System.out.println("  Razón Social Emisor: no encontrado");
+            }
+            
+         // =====================================================
+            // 4. RAZON SOCIAL DESTINATARIO (Fuerza Bruta de Palabras Clave)
+            // =====================================================
+            String razonSocialEncontrada = "";
+            String[] lineas = texto.split("\\r?\\n");
+
+            for (int i = 0; i < lineas.length; i++) {
+
+                String linea = lineas[i].toUpperCase();
+
+                // Detecta la etiqueta de forma robusta (con o sin acentos)
+                if (linea.matches(".*APELLIDO.*(RAZON|RAZÓN).*SOCIAL.*")) {
+
+                    // Buscamos hacia abajo el primer valor válido
+                    for (int j = i + 1; j < lineas.length && j < i + 10; j++) {
+
+                        String candidata = lineas[j].trim();
+                        String upper = candidata.toUpperCase();
+
+                        if (candidata.isEmpty()) continue;
+
+                        // ❌ Filtramos basura típica
+                        if (
+                            upper.matches("\\d{2}/\\d{2}/\\d{4}.*") || // fechas
+                            upper.matches("\\d{11}") ||               // CUIT
+                            upper.contains("DOMICILIO") ||
+                            upper.contains("CONDICION") ||
+                            upper.contains("IVA") ||
+                            upper.contains("CUIT") ||
+                            upper.contains("INGRESOS") ||
+                            upper.contains("FECHA")
+                        ) {
+                            continue;
+                        }
+
+                        // ✅ Primera línea válida = razón social
+                        razonSocialEncontrada = candidata;
+                        break;
+                    }
+
+                    if (!razonSocialEncontrada.isEmpty()) break;
+                }
+            }
+
+            // Limpieza final
+            razonSocialEncontrada = razonSocialEncontrada
+                    .replaceAll("\\s{2,}", " ")
+                    .trim();
+
+            if (razonSocialEncontrada.length() > 2) {
+                datos.setRazonSocialDestinatario(razonSocialEncontrada);
+                System.out.println("  Razón Social Destinatario: " + razonSocialEncontrada);
+            } else {
+                System.out.println("  Razón Social Destinatario: no encontrado");
+            }
+            // =====================================================
+            // 5. FECHA DE EMISIÓN (Algoritmo mejorado)
+            // =====================================================
+            Pattern fecha = Pattern.compile("(\\d{2}/\\d{2}/\\d{4})");
+            Matcher mFecha = fecha.matcher(texto);
+            if (mFecha.find()) {
+                datos.setFechaEmision(mFecha.group(1));
+                System.out.println("  Fecha Emisión: " + datos.getFechaEmision());
+            } else {
+                System.out.println("  Fecha Emisión: no encontrado");
+            }
+            
+            // =====================================================
+            // 6. NUMERO FACTURA (Mantengo el método original)
+            // =====================================================
+            Pattern num = Pattern.compile("Comp\\.\\s*Nro:(\\d{5})\\s+(\\d{8})");
+            Matcher mNum = num.matcher(texto);
+            if (mNum.find()) {
+                datos.setPuntoVenta(mNum.group(1));
+                datos.setNumeroComprobante(mNum.group(2));
+                datos.setNumeroFacturaCompleto(mNum.group(1) + "-" + mNum.group(2));
+                System.out.println("  N° Factura: " + datos.getNumeroFacturaCompleto());
+            }
+            
+            // =====================================================
+            // 7. ELS MULTIPLES (Extrae TODOS los ELS en formatos "ELS XXXX" o "ELS: XXXX")
+            // =====================================================
+            Pattern els = Pattern.compile("ELS[:\\s]+(\\d+)", Pattern.CASE_INSENSITIVE);
+            Matcher mEls = els.matcher(texto);
+            
+            List<String> listaEls = new ArrayList<>();
+            while (mEls.find()) {
+                String elsValue = mEls.group(1);
+                if (!listaEls.contains(elsValue)) {
+                    listaEls.add(elsValue);
+                }
+            }
+            
+            if (!listaEls.isEmpty()) {
+                String elsConcatenados = String.join(",", listaEls);
+                datos.setEls(elsConcatenados);
+                System.out.println("  ELS encontrados: " + elsConcatenados);
+            } else {
+                System.out.println("  ELS encontrados: no encontrado");
+            }
+            
+            // =====================================================
+            // 8. MONTO TOTAL (Mantengo el método original)
+            // =====================================================
+         // Buscar específicamente el monto en la línea de "Importe Total"
+            Pattern totalPattern = Pattern.compile(
+                "Importe\\s+Total[^\\d]*([\\d]{1,3}(?:[\\d]{3})*[,\\.][\\d]{2})",
+                Pattern.CASE_INSENSITIVE
+            );
+            Matcher mTotal = totalPattern.matcher(texto);
+
+            if (mTotal.find()) {
+                String montoTotal = mTotal.group(1)
+                    .replace(".", "")
+                    .replace(",", ".");
+                datos.setMontoTotal(montoTotal);
+                System.out.println("  Monto Total: " + montoTotal);
+            } else {
+                // Fallback: buscar patrón de monto argentino (con o sin separador de miles)
+                Pattern montos = Pattern.compile(
+                    "\\b\\d{1,3}(?:\\.\\d{3})*,\\d{2}\\b|\\b\\d+,\\d{2}\\b"
+                );
+                Matcher mMontos = montos.matcher(texto);
+
+                String ultimo = null;
+                while (mMontos.find()) {
+                    ultimo = mMontos.group();
+                }
+
+                if (ultimo != null) {
+                    String montoTotal = ultimo.replace(".", "").replace(",", ".");
+                    datos.setMontoTotal(montoTotal);
+                    System.out.println("  Monto Total (fallback): " + montoTotal);
+                } else {
+                    System.out.println("  Monto Total: no encontrado");
+                }
+            }
+
+            System.out.println("  ----------------------------------------");
             
             // Validar que al menos tengamos datos mínimos
             if (datos.getNumeroFacturaCompleto() == null && datos.getEls() == null) {
@@ -240,6 +407,7 @@ public class EscanerFacturasPDF {
             
         } catch (Exception e) {
             System.err.println("[EscanerFacturasPDF] Error al leer PDF: " + archivoPDF.getName() + " - " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
@@ -277,8 +445,10 @@ public class EscanerFacturasPDF {
             "Punto de Venta", 
             "Número Comprobante", 
             "N° Factura Completo",
-            "CUIT Emisor", 
-            "CUIT Destinatario", 
+            "CUIT Emisor",
+            "Razón Social Emisor",
+            "CUIT Destinatario",
+            "Razón Social Destinatario",
             "Fecha Emisión", 
             "ELS", 
             "Monto Total"
@@ -292,6 +462,13 @@ public class EscanerFacturasPDF {
             sheet.setColumnWidth(i, 5000);
         }
         
+        // Ajustar anchos específicos
+        sheet.setColumnWidth(1, 6000);  // Nombre Archivo
+        sheet.setColumnWidth(6, 8000);  // Razón Social Emisor
+        sheet.setColumnWidth(8, 8000);  // Razón Social Destinatario
+        sheet.setColumnWidth(10, 4000); // ELS
+        sheet.setColumnWidth(11, 4000); // Monto Total
+        
         // Llenar datos
         int rowNum = 1;
         for (DatosFacturaExtraidos d : datos) {
@@ -303,13 +480,15 @@ public class EscanerFacturasPDF {
             row.createCell(3).setCellValue(d.getNumeroComprobante() != null ? d.getNumeroComprobante() : "");
             row.createCell(4).setCellValue(d.getNumeroFacturaCompleto() != null ? d.getNumeroFacturaCompleto() : "");
             row.createCell(5).setCellValue(d.getCuitEmisor() != null ? d.getCuitEmisor() : "");
-            row.createCell(6).setCellValue(d.getCuitDestinatario() != null ? d.getCuitDestinatario() : "");
-            row.createCell(7).setCellValue(d.getFechaEmision() != null ? d.getFechaEmision() : "");
-            row.createCell(8).setCellValue(d.getEls() != null ? d.getEls() : "");
+            row.createCell(6).setCellValue(d.getRazonSocialEmisor() != null ? d.getRazonSocialEmisor() : "");
+            row.createCell(7).setCellValue(d.getCuitDestinatario() != null ? d.getCuitDestinatario() : "");
+            row.createCell(8).setCellValue(d.getRazonSocialDestinatario() != null ? d.getRazonSocialDestinatario() : "");
+            row.createCell(9).setCellValue(d.getFechaEmision() != null ? d.getFechaEmision() : "");
+            row.createCell(10).setCellValue(d.getEls() != null ? d.getEls() : "");
             
             // Monto Total como número si es posible
             String montoStr = d.getMontoTotal() != null ? d.getMontoTotal() : "";
-            Cell cellMonto = row.createCell(9);
+            Cell cellMonto = row.createCell(11);
             try {
                 if (!montoStr.isEmpty()) {
                     double monto = Double.parseDouble(montoStr);
