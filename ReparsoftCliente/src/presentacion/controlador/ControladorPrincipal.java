@@ -6,16 +6,21 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.SpellChecker;
 
 import modelo.Agenda;
+import modelo.ELSAnterior;
 import modelo.Permisos;
+import persistencia.conexion.ConectorAccess;
 import presentacion.vista.VistaPrincipal;
 import presentacion.vista.VentanaBackUp;
 import presentacion.vista.VentanaClientes;
 import presentacion.vista.VentanaConfiguracion;
+import presentacion.vista.VentanaELSAnteriores;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaListadoReparaciones;
 
@@ -77,6 +82,7 @@ public class ControladorPrincipal implements ActionListener {
 		this.vistaPrincipal.getBotonBackUp().addActionListener(this);
 		this.vistaPrincipal.getBotonPresupuestos().addActionListener(this);
 		this.vistaPrincipal.getBotonConfiguracion().addActionListener(this);
+		this.vistaPrincipal.getBtnELSant().addActionListener(this);
 
 		controladorUsuLogin = new ControladorUsuLogin(new Permisos(ubicacionBase));
 
@@ -306,6 +312,17 @@ public class ControladorPrincipal implements ActionListener {
 
 			}
 
+		}
+		
+		else if (arg0.getSource() == vistaPrincipal.getBtnELSant()) {
+			
+			
+			    ConectorAccess con = new ConectorAccess("F:/Ordenes de trabajo_BRC_be.accdb");
+			    List<ELSAnterior> datos = con.obtenerRegistrosELS();
+			    VentanaELSAnteriores v = new VentanaELSAnteriores(datos);
+			    v.setVisible(true);
+			
+			
 		}
 
 		else if (arg0.getSource() == vistaPrincipal.getBotonConfiguracion()) {

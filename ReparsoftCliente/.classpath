@@ -64,6 +64,11 @@
 	<classpathentry kind="lib" path="lib/gson-2.10.1.jar"/>
 	<classpathentry kind="lib" path="lib/pdfbox-2.0.36.jar"/>
 	<classpathentry kind="lib" path="lib/fontbox-2.0.36.jar"/>
+	<classpathentry kind="lib" path="lib/ucanaccess-5.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/hsqldb-2.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/jackcess-3.0.1.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>

@@ -1,13 +1,3 @@
-/VistaPropias/
-/consumoAPI/
-/dictionaries.cnf
-/dictionary_en.ortho
-/dictionary_es.ortho
-/dto/
-/mails/
-/main/
-/modelo/
-/org/
-/persistencia/
 /presentacion/
 /tiposPropios/
+/persistencia/

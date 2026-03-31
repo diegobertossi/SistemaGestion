@@ -53,7 +53,6 @@ public class GestorDatos {
 		String clienteCliente = ventana.getTextClienteCliente().getText();
 		String numeroFactura = ventana.getTextNumeroFactura().getText();
 
-
 		// Parsear fechas
 		String fechaEntrada = null;
 		java.util.Date fechaEntradaVisual = ventana.getFechaEntrada().getDate();
@@ -91,12 +90,15 @@ public class GestorDatos {
 		double pago = parsearMoneda(ventana.getTextPago().getText());
 
 		// Obtener valores de combos con validación null
-		String clienteCombo = ventana.getComboClientes().getSelectedItem() != null ? 
-			ventana.getComboClientes().getSelectedItem().toString() : "";
-		String sucursalCombo = ventana.getComboSucursal().getSelectedItem() != null ? 
-			ventana.getComboSucursal().getSelectedItem().toString() : "";
-		String tecnicoCombo = ventana.getComboTecnico().getSelectedItem() != null ? 
-			ventana.getComboTecnico().getSelectedItem().toString() : "";
+		String clienteCombo = ventana.getComboClientes().getSelectedItem() != null
+				? ventana.getComboClientes().getSelectedItem().toString()
+				: "";
+		String sucursalCombo = ventana.getComboSucursal().getSelectedItem() != null
+				? ventana.getComboSucursal().getSelectedItem().toString()
+				: "";
+		String tecnicoCombo = ventana.getComboTecnico().getSelectedItem() != null
+				? ventana.getComboTecnico().getSelectedItem().toString()
+				: "";
 		String EstadoFisicoCombo = ventana.getComboEstadoFisico().getSelectedItem() != null
 				? ventana.getComboEstadoFisico().getSelectedItem().toString()
 				: "";
@@ -109,8 +111,7 @@ public class GestorDatos {
 		String IngresoCombo = ventana.getComboIngreso().getSelectedItem() != null
 				? ventana.getComboIngreso().getSelectedItem().toString()
 				: "";
-		
-		
+
 		ventana.getTextCliente().setText(clienteCombo);
 		ventana.getTextSucursal().setText(sucursalCombo);
 		ventana.getTextNombreTecnico().setText(tecnicoCombo);
@@ -119,7 +120,7 @@ public class GestorDatos {
 		ventana.getTextEstadoComercial().setText(EstadoComercialCombo);
 		ventana.getTextLugarDeIngreso().setText(IngresoCombo);
 		ventana.getTextNumeroFactura().setText(numeroFactura);
-		
+
 		// Obtener IDs
 		String cliente = ventana.getTextCliente().getText();
 		String sucursal = ventana.getTextSucursal().getText();
@@ -127,15 +128,15 @@ public class GestorDatos {
 
 		int idCliente = agenda.idClienteporNombre(cliente);
 		int idSucursal = agenda.idSucursalporNombre(sucursal, idCliente);
-		
+
 		int idUsuario;
 
 		int idUsuarioAux = agenda.idUsuarioporNombre(nombreTecnico);
-		
+
 		if (idUsuarioAux == 0) {
 
 			idUsuario = 1;
-			
+
 		}
 
 		else {
@@ -163,16 +164,13 @@ public class GestorDatos {
 		boolean agregadoAremito = reparacionActual.getAgregadoaremito();
 		boolean remitoGenerado = reparacionActual.getRemitoGenerado();
 
-		
 		return new ReparacionDTO(els, fechaEntrada, fechaReparacion, falla, solucion, informe, estadoFisico,
 				estadoTecnico, estadoComercial, remito, reparacionActual.getIDEquipo(), idRemito, cliente, sucursal,
 				fechaAceptacion, nombreEquipo, modelo, marca, serie, aviso, clienteCliente, idCliente, idSucursal,
 				fechaFabr, idUsuario, nombreTecnico, presupuesto, presupuestoDolar, pago, presupuestoGenerado,
 				avisoEnviado, presupuestoEnviado, wordGenerado, wordEnviado, ordenCompra, agregadoAremito,
-				remitoGenerado, lugarIngreso,numeroFactura, fechaSalida);
+				remitoGenerado, lugarIngreso, numeroFactura, fechaSalida);
 	}
-
-
 
 	private int IDUsuarioPorNombre(String nombreTecnico) {
 		// TODO Auto-generated method stub
@@ -193,8 +191,6 @@ public class GestorDatos {
 		String serie = ventana.getComboSerie().getSelectedItem().toString();
 		String aviso = ventana.getTextAvisoCliente().getText();
 		String clienteCliente = ventana.getTextClienteCliente().getText();
-
-
 
 		// Parsear fecha
 		String fechaEntrada = null;
@@ -297,9 +293,6 @@ public class GestorDatos {
 				nombreEquipo, modelo, marca, serie, aviso, clienteCliente, idCliente, idSucursal, cliente, sucursal);
 	}
 
-
-	
-	
 	/**
 	 * Parsea valor monetario
 	 */
@@ -320,7 +313,7 @@ public class GestorDatos {
 	}
 
 	/**
-
+	 * 
 	 * Getters
 	 */
 	public List<String> getCaracteresNoValidos() {
