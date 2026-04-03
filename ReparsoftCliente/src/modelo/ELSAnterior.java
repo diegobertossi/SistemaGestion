@@ -10,6 +10,9 @@ public class ELSAnterior {
     private String modelo;
     private String nroSerie;
     private String avisoCliente;
+    private String clienteCliente;
+    private String remitoCliente;
+    private String falla;
     private String estadoFisico;
     private String estadoTecnico;
     private String estadoComercial;
@@ -19,10 +22,12 @@ public class ELSAnterior {
     private String repuestos; // Agrupados: ref, original, reemplazo, nota
     private String informeCliente;
     private String fechaRespuesta;
+    private String ordenCompra;
     private String remitoSalida;
     private double precioPesos;
     private double precioDolar;
     private String pago;
+    
 
     // Getters y Setters
     public String getEls() { return els; }
@@ -69,4 +74,15 @@ public class ELSAnterior {
     public void setPrecioDolar(double precioDolar) { this.precioDolar = precioDolar; }
     public String getPago() { return pago; }
     public void setPago(String pago) { this.pago = pago; }
+    
+    
+    public String getOrdenCompra() { return ordenCompra; }
+    public void setOrdenCompra(String ordenCompra) { this.ordenCompra = ordenCompra; }
+    public String getClienteCliente() { return clienteCliente; }
+    public void setClienteCliente(String clienteCliente) { this.clienteCliente = clienteCliente; }
+    public String getRemitoCliente() { return remitoCliente; }
+    public void setRemitoCliente(String remitoCliente) { this.remitoCliente = remitoCliente; }
+    public String getFalla() { return falla; }
+    public void setFalla(String falla) { this.falla = falla; }
+ 
 }
