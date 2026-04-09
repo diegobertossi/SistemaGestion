@@ -1212,7 +1212,8 @@ public class ControladorCliente implements ActionListener, MouseListener {
 			int cantSuc = cantidadSucursalesXCliente(clienteElegido.getId());
 			if (cantSuc == 1) {
 				SucursalesEncliente = this.agenda.obtenerSucursalesxCliente(clienteElegido.getId()).get(0);
-				if (!SucursalesEncliente.getNombreSucursal().isEmpty()) {
+				// Si el cliente tiene una sucursal pero no tiene nombre o nombre == NULL, se asume que es una sucursal "default" y se ocultan los botones de sucursales
+				if (SucursalesEncliente.getNombreSucursal() != null && !SucursalesEncliente.getNombreSucursal().trim().isEmpty()) {
 					ventanaClientes.getBtnVisualizarSucursales().setVisible(true);
 					ventanaClientes.getLblSucursales().setVisible(true);
 				} else {

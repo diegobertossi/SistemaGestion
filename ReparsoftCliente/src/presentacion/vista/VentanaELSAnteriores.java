@@ -245,23 +245,6 @@ public class VentanaELSAnteriores extends JFrame {
 		
 		
 
-		// imprimir en consola para verificar que se están cargando los datos
-		// correctamente
-//		System.out.println("Cargando ELS: " + r.getEls() + ", Marca: " + r.getMarca() + ", Modelo: " + r.getModelo()
-//				+ ", Nombre Equipo: " + r.getEquipo() + ", Cliente: " + r.getCliente() + ", Sucursal: "
-//				+ r.getSucursal() + ", Diagnóstico: " + "..." + ", Informe Cliente: " + "..." + ", Fecha Entrada: "
-//				+ r.getFechaEntrada() + ", Precio Pesos: " + r.getPrecioPesos() + ", Precio Dolar: "
-//				+ r.getPrecioDolar() + ", Nombre Tecnico: " + r.getTecnico()
-//				+ ", OC: " + r.getOrdenCompra()
-//				+ ", Cliente/Cliente: " + r.getClienteCliente()
-//				+ ", Remito Cliente: " + r.getRemitoCliente()
-//				+ ", Fecha Reparacion: " + r.getFechaReparacion()
-//				+ ", Estado Fisico: " + r.getEstadoFisico()
-//				+ ", Estado Tecnico: " + r.getEstadoTecnico()
-//				+ ", Estado Comercial: " + r.getEstadoComercial()
-//				+ ", Remito Salida: " + r.getRemitoSalida()
-//				+ ", Pago: " + r.getPago()
-//				+ ", Fecha Respuesta: " + r.getFechaRespuesta());
 
 	}
 

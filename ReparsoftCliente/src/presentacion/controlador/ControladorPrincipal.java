@@ -318,6 +318,7 @@ public class ControladorPrincipal implements ActionListener {
 			
 			
 			    ConectorAccess con = new ConectorAccess("F:/Ordenes de trabajo_BRC_be.accdb");
+//				ConectorAccess con = new ConectorAccess("F:/Ordenes de trabajo_be.accdb");
 			    List<ELSAnterior> datos = con.obtenerRegistrosELS();
 			    VentanaELSAnteriores v = new VentanaELSAnteriores(datos);
 			    v.setVisible(true);

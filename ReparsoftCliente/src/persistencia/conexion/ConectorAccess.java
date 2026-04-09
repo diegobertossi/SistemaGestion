@@ -23,7 +23,7 @@ public class ConectorAccess {
 	
 		
 		
-		String sql3 = "SELECT " +
+		String ObtenerSoloAccess = "SELECT " +
 			    "C.id, C.Razon_Social, C.CUIT, C.Domicilio, C.TelefonoEmpresa, C.Contacto, C.TelefonoContacto, C.CorreoElectronico, " +
 			    "R.ELS, FORMAT(R.[Fecha de reparacion], 'dd/mm/yyyy') AS FechaReparacionFormateada, FORMAT(R.[Fecha Entrada], 'dd/mm/yyyy') AS FechaEntradaFormateada, R.Falla, R.Solucion, R.[Informe cliente], " +
 			    "R.IDTecnico AS reparaciones_IDTecnico, R.EstadoTecnicoClave, R.EstadoComercialClave, R.EstadoFisicoClave, " +
@@ -44,10 +44,32 @@ public class ConectorAccess {
 			    "INNER JOIN Remitos AS REM ON R.CodigoRemito = REM.CodigoRemito) " +
 			    "INNER JOIN UbicacionRemitos AS U ON REM.IdUbicacion = U.IdUbicacion " +
 			    "WHERE R.ELS BETWEEN 1 AND 977 " +
-			    "ORDER BY R.ELS ASC";
+			    "ORDER BY R.ELS DESC";
+		
+		String obtenerTodosLosEquipos = "SELECT " +
+			    "C.id, C.Razon_Social, C.CUIT, C.Domicilio, C.TelefonoEmpresa, C.Contacto, C.TelefonoContacto, C.CorreoElectronico, " +
+			    "R.ELS, FORMAT(R.[Fecha de reparacion], 'dd/mm/yyyy') AS FechaReparacionFormateada, FORMAT(R.[Fecha Entrada], 'dd/mm/yyyy') AS FechaEntradaFormateada, R.Falla, R.Solucion, R.[Informe cliente], " +
+			    "R.IDTecnico AS reparaciones_IDTecnico, R.EstadoTecnicoClave, R.EstadoComercialClave, R.EstadoFisicoClave, " +
+			    "R.[Estado Fisico], R.[Estado Tecnico], R.[Estado Comercial], R.[Remito Cliente], R.[Orden de Compra], " +
+			    "R.[Agregado a remito], R.[Remito Generado], R.IDEquipo AS reparaciones_IDEquipo, R.CodigoRemito, " +
+			    "R.InformeEnviado,FORMAT(R.[FechAceptacion], 'dd/mm/yyyy') AS FechaAceptacionFormateada, R.PrecioPeso, R.PrecioDolar, R.PresupuestoGenerado, R.Enviado, " +
+			    "R.Pago, R.PresupuestoEnviado, " +
+			    "T.IdTecnico, T.Nombre AS NombreTecnico, T.Correo, " +  // <-- alias aquí
+			    "E.IdEquipo, E.Nombre AS NombreEquipo, E.Modelo, E.Marca, E.NumeroDeSerie, E.Aviso, E.[Cliente/Cliente], E.RemitoCliente, E.IDCliente, E.IDSuc, E.FechaFabricacion, " +  // <-- alias aquí
+			    "S.NombreSucursal, " +
+			    "REM.NumeroRemitoSalida, " +
+			    "U.Ubicacion, U.Codigo, U.IdUbicacion " +
+			    "FROM (((((reparaciones AS R " +
+			    "INNER JOIN Equipos AS E ON R.IDEquipo = E.IdEquipo) " +
+			    "INNER JOIN Cliente AS C ON E.IDCliente = C.id) " +
+			    "INNER JOIN Sucursal AS S ON E.IDSuc = S.IdSucursal) " +
+			    "INNER JOIN Tecnicos AS T ON R.IDTecnico = T.IdTecnico) " +
+			    "INNER JOIN Remitos AS REM ON R.CodigoRemito = REM.CodigoRemito) " +
+			    "INNER JOIN UbicacionRemitos AS U ON REM.IdUbicacion = U.IdUbicacion " +
+			    "ORDER BY R.ELS DESC";
 		
 
-        try (Connection conn = conectar(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql3)) {
+        try (Connection conn = conectar(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(ObtenerSoloAccess)) {
             while (rs.next()) {
                 ELSAnterior els = new ELSAnterior();
                 els.setEls("ELS " + rs.getString("ELS"));
