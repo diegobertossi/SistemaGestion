@@ -1,4 +1,3 @@
-/presentacion/
 /Agregar.png
 /Backup.png
 /Buscar.png
@@ -13,6 +12,7 @@
 /LogoFacebook.png
 /LogoIng.png
 /LogoLinkedin.png
+/LogoplacasComponentes.png
 /Presupuestos.png
 /REPARSOFT logo Inicio.png
 /REPARSOFT logo pequeño.png
@@ -21,14 +21,17 @@
 /Settings.png
 /Usuarios.png
 /VistaPropias/
+/admin_64x64.png
 /anterior.png
 /arrow_down.png
 /arrow_up.png
 /consumoAPI/
 /data-backup.png
 /dictionaries.cnf
+/dictionary_en.ortho
 /dictionary_es.ortho
 /dto/
+/electronico.png
 /eliminar.png
 /eliminar_32.png
 /email.png
@@ -50,5 +53,12 @@
 /org/
 /persistencia/
 /plantilla-logotipo-laptop-degradado.png
+/presentacion/
+/presupuestar.png
+/primero.png
+/refresh.png
+/siguiente.png
 /tiposPropios/
+/transformacion-digital.png
+/ultimo.png
 /vista/
