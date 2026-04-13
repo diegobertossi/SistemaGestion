@@ -125,21 +125,6 @@ public class ControladorUsuLogin {
 
 	}
 
-	public void verificarPermisosVentanaVisualizacion(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-
-		if (usu_login != null) {
-			List<PermisoDTO> permisos_principal = permisos.damePermisosPadres(usu_login.getIdRol());
-
-			if (!permisos_principal.contains(new PermisoDTO(0, 0, 0, "Presupuestos"))) {
-
-				ventanaVisualizarEquipos.getLabelPresupuesto().setVisible(false);
-				ventanaVisualizarEquipos.getPanel_presupuesto().setVisible(false);
-
-			}
-
-		}
-	}
-	
 	
 	public void verificarPermisosVentanaListados(VentanaListadoReparaciones ventanaListadoReparaciones) {
 	    if (usu_login != null) {
@@ -358,5 +343,10 @@ public class ControladorUsuLogin {
 	// }
 	// }
 	//
+
+	public void verificarPermisosVentanaVisualizacion(VentanaVisualizarEquipos ventanaVisualizarEquipos2) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -13,6 +13,7 @@ import dto.RepuestosDTO;
 import dto.RolDTO;
 import dto.SucursalDTO;
 import dto.UsuarioDTO;
+import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.ClienteDAO;
 import persistencia.dao.interfaz.ClienteWSPDAO;
 import persistencia.dao.interfaz.FacturacionXclienteDAO;
@@ -44,10 +45,26 @@ public class Agenda {
 	private RemitoDAO remito;	
 	private FacturacionXclienteDAO facturacionXcliente;
 	private String ubicacionBase;
+	private boolean esBaseAntigua;   // ← NUEVO: controla si usa base antigua
 
+	/**
+	 * Constructor original (mantenido por compatibilidad)
+	 */
 	public Agenda(String ubicacionDeBase) { 
+		this(ubicacionDeBase, Conexion.isModoAntigua());   // ← Usa el modo global actual
+	}
+
+	/**
+	 * Nuevo constructor que permite especificar si es base antigua
+	 */
+	public Agenda(String ubicacionDeBase, boolean esAntigua) { 
 		
 		this.ubicacionBase = ubicacionDeBase;
+		this.esBaseAntigua = esAntigua;
+
+		// Se fuerza la conexión con el modo correcto antes de instanciar los DAO
+		Conexion.getConexion(ubicacionDeBase, esAntigua);
+
 		Cliente = new ClienteDAOImpl(ubicacionDeBase);
 		ReparacionR = new ReparacionDAOImpl(ubicacionDeBase);
 		Repuestos = new RepuestosDAOImpl(ubicacionDeBase);
@@ -58,8 +75,8 @@ public class Agenda {
 		ClienteWSP = new ClienteWSPDAOImpl(ubicacionDeBase);
 		facturacionXcliente = new FacturacionXclienteDAOImp(ubicacionDeBase); 
 		
-		
-		
+		System.out.println("Agenda creada para ubicación: " + ubicacionDeBase + 
+				(esAntigua ? " → BASE ANTIGUA" : " → BASE NORMAL"));
 	}
 
 	// USUARIOS
@@ -86,34 +103,22 @@ public class Agenda {
 	@SuppressWarnings("rawtypes")
 	public void ListarTecnicos(JComboBox comboFiltroTecnico) {
 		usuario.comboFiltroTecnicos(comboFiltroTecnico);
-
 	}
 	
 	@SuppressWarnings("rawtypes")
 	public void ListarTecnicosV(JComboBox<?> comboTecnico) {
 		usuario.comboFiltroTecnicosV(comboTecnico);
-
-		
 	}
 	
-	/**
-	 * Obtiene el correo electrónico de un técnico por su nombre completo
-	 * @param nombreCompleto Nombre completo en formato "Nombre Apellido"
-	 * @return String con el correo del técnico, o null si no se encuentra
-	 */
 	public String obtenerCorreoPorNombre(String nombreCompleto) {
 	    return usuario.correoPorNombre(nombreCompleto);
 	}
 	
-	
-
-	
 	public int idUsuarioporNombre(String nombreTecnico) {
-		
 		return usuario.obtenerIDporNombre(nombreTecnico);
 	}
-	// ROLES
 
+	// ROLES
 	public void agregarRol(RolDTO nuevorol) {
 		rol.insert(nuevorol);
 	}
@@ -130,14 +135,11 @@ public class Agenda {
 		return rol.readAll();
 	}
 
-	
-	public String  obtenerRolXid(int id) {
+	public String obtenerRolXid(int id) {
 		return rol.readAllxid(id);
 	}
-	
+
 	// CLIENTES
-	
-	
 	public void agregarClientes(ClienteDTO nuevoCliente) {
 		Cliente.insert(nuevoCliente);
 	}
@@ -155,56 +157,41 @@ public class Agenda {
 	}
 
 	public void ListarCliente(JComboBox<?> box) {
-
 		Cliente.ListarClientes(box);
 	}
 
-	
 	public boolean reparacionAsociadaCliente(int idCliente) {
-		
 		return Cliente.obtenerReparacionxIDCliente(idCliente);
-		
 	}
-	
+
 	public String dameCuitPorIdCliente(int idCliente) {
-		
 		return Cliente.dameCuitPorIdCliente(idCliente);
-		
 	}
-	
+
 	public int dameIDcliente() {
 		return Cliente.obtenerIDcliente();
-
 	}
 
 	public int idClienteporNombre(String nombreCliente) {
 		return Cliente.obtenerIDporNombre(nombreCliente);
-
 	}
-	
+
 	public String ContactoPorCliente(String nombreCliente) {
 		return Cliente.obtenerContactoPorCliente(nombreCliente);
-
 	}
-	
+
 	public String obtenerTelefonoPorCliente(String OrgCliente) {
 		return Cliente.obtenerTelefonoPorCliente(OrgCliente);
 	}
 
-	
 	public String EmailPorCliente(String nombreCliente) {
-		
 		return Cliente.obtenerEmailPorCliente(nombreCliente);
 	}
 
 	public String dameUbucacionBase() {
-		
 		return ubicacionBase;
 	}
-	
-	
-	
-	
+
 	// SUCURSALES
 	public void agregarSucursal(SucursalDTO nuevaSucursal) {
 		Sucursal.insert(nuevaSucursal);
@@ -219,29 +206,23 @@ public class Agenda {
 	}
 
 	public List<SucursalDTO> obtenerSucursalesxCliente(int idCliente) {
-
 		return Sucursal.obtenerSucursalXidCliente(idCliente);
 	}
 
 	public void ListarSucursalesxCliente(JComboBox<?> box, int id) {
-
 		Sucursal.ListarSucursalesxCliente(box, id);
 	}
 
 	public void ListarSucursales(JComboBox<?> box) {
-
 		Sucursal.ListarSucursales(box);
 	}
 
 	public int dameIDsucursal() {
 		return Sucursal.obtenerIDsucursal();
-
 	}
 
 	public int cantSucursalesXCliente(int idcliente) {
-
 		return Sucursal.obtenercantidaddeSucursales(idcliente);
-
 	}
 
 	public void editarSucursal(SucursalDTO Sucursalaeditar) {
@@ -249,146 +230,99 @@ public class Agenda {
 	}
 
 	public boolean reparacionAsociada(int idsucursal) {
-
 		return Sucursal.obtenerReparacionxIDsSuc(idsucursal);
 	}
 
 	public int idSucursalporNombre(String nombreSucursal, int IDCliente) {
 		return Sucursal.obtenerIDporNombre(nombreSucursal, IDCliente);
 	}
-	
-	
-	
-	
+
 	public void ListarOrganizacionWSP(JComboBox<?> comboOrganizacion) {
-				
 		ClienteWSP.ListarClientesWSP(comboOrganizacion);
-		
 	}
-	
-	
+
 	public void ListarContactoxOrganizacion(JComboBox<?> comboNombreBuscado, String organizacionWSP) {
-		
 		ClienteWSP.ListarContactoxOrganizacion(comboNombreBuscado, organizacionWSP);
-		
 	}
-	
-	
+
 	public String obtenerTelefonoxContacto(String contactoWSP) {
-		
 		return ClienteWSP.obtenetTelefonoXcontacto(contactoWSP);
-		
 	}
-	
+
 	public List<ClienteWSPDTO> obtenerClientesWSP() {
 		return ClienteWSP.readAll();
 	}
-	
-	
+
 	public void agregarClienteWSP(ClienteWSPDTO nuevoClienteWSPDTO) {
 		ClienteWSP.insert(nuevoClienteWSPDTO);
-		
 	}
-	
-	
+
 	public void borrarClienteWSP(ClienteWSPDTO clienteWSP_a_eliminar) {
 		ClienteWSP.delete(clienteWSP_a_eliminar);
-		
 	}
-	
-	
-	
+
 	public void editarClienteWSP(ClienteWSPDTO clienteWSP_a_editar) {
-
 		ClienteWSP.edit(clienteWSP_a_editar);
-		
 	}
-	
-
 
 	// EQUIPOS
 	public void ListarEquipo(JComboBox<?> box) {
-
 		ReparacionR.ListarEquipo(box);
-
 	}
 
 	public void ListarModelos(JComboBox<?> box) {
-
 		ReparacionR.ListarModelos(box);
-
 	}
-	
+
 	public void ListarMarca(JComboBox<?> comboMarca) {
 		ReparacionR.ListarMarca(comboMarca);
-
 	}
 
 	public void ListarModelosxMarca(JComboBox<?> comboModelos, String marca) {
 		ReparacionR.ListarModelosxMarca(comboModelos, marca);
-
 	}
 
 	public void ListarSeriexModelo(JComboBox<?> comboSerie, String modelo) {
 		ReparacionR.ListarSeriexModelo(comboSerie, modelo);
-
 	}
-	
+
 	public void ListarSerie(JComboBox<?> comboSerie) {
 		ReparacionR.comboSerie(comboSerie);
-
 	}
 
 	// REPARACIONES
 	public void agregarReparacionR(ReparacionDTO nuevaReparacion) {
 		ReparacionR.insertEquipo(nuevaReparacion);
 		ReparacionR.insert(nuevaReparacion);
-
 	}
 
 	public void editarReparacionR(ReparacionDTO Reparacion_a_editar) {
-
 		ReparacionR.edit(Reparacion_a_editar);
 		ReparacionR.editEquipo(Reparacion_a_editar);
-		
-
 	}
-	
 
 	public void editarReparacionMarcarEnviados(ReparacionDTO reparacionAeditar) {
-		
 		ReparacionR.editMarcarEnviados(reparacionAeditar);
 	}
-	
-	
-	
+
 	public void editarReparacionAnularRemito(ReparacionDTO reparacionAeditar) {
-		
 		ReparacionR.editarReparacionAnularRemito(reparacionAeditar);
 	}
-	
-	
+
 	public void editarReparacionAgregarRemito(ReparacionDTO reparacionAeditar) {
-		
 		ReparacionR.editarReparacionAgregarRemito(reparacionAeditar);
 	}
-	
-	
-	public void editarReparacionAceptacion(ReparacionDTO reparacionAeditar) {
-		
-		ReparacionR.editarReparacionAceptacion(reparacionAeditar);
-		
-	}
-	public void editarReparacionPresupuesto(ReparacionDTO reparacionAeditar) {
-		
-		ReparacionR.editPresupuesto(reparacionAeditar);
-		
-	}
-	
-	public void editarReparacionPago(ReparacionDTO reparacionAeditar) {
 
+	public void editarReparacionAceptacion(ReparacionDTO reparacionAeditar) {
+		ReparacionR.editarReparacionAceptacion(reparacionAeditar);
+	}
+
+	public void editarReparacionPresupuesto(ReparacionDTO reparacionAeditar) {
+		ReparacionR.editPresupuesto(reparacionAeditar);
+	}
+
+	public void editarReparacionPago(ReparacionDTO reparacionAeditar) {
 		ReparacionR.editarReparacionPago(reparacionAeditar);
-		
 	}
 
 	public void borraReparacion(ReparacionDTO Reparacion_a_eliminar) {
@@ -398,44 +332,38 @@ public class Agenda {
 	public List<ReparacionDTO> obtenerReparacion() {
 		return ReparacionR.readAll();
 	}
-	
+
 	public List<ReparacionDTO> obtenerReparacionParaListadoMarcarAceptaciones() {
 		return ReparacionR.readAllListadoMarcarAceptaciones();
 	}
 
-
 	public ReparacionDTO dameReparacionXels(int i) {
 		return ReparacionR.obtenerReparacionXels(i);
 	}
-	
-	public ReparacionDTO dameReparacionXserie(String  i) {
+
+	public ReparacionDTO dameReparacionXserie(String i) {
 		return ReparacionR.obtenerReparacionXserie(i);
 	}
-
 
 	public int dameNumeroELS() {
 		return ReparacionR.obtenerNumeroELSels();
 	}
 
-	
 	public int dameNumeroELSbsas() {
 		return ReparacionR.obtenerNumeroELSbsas();
 	}
+
 	public int dameIDequipo() {
 		return ReparacionR.obtenerIDequipo();
-
 	}
 
 	public List<ReparacionDTO> obtenerReparacionXIDclienteIDsucursal(Integer IDcliente, Integer IDsucursal) {
 		return ReparacionR.readAllXIDclienteIDSucursal(IDcliente, IDsucursal);
 	}
-	
-	
+
 	public List<ReparacionDTO> obtenerReparacionesXremito(int iDremito) {
-		
 		return ReparacionR.readAllXIDremito(iDremito);
 	}
-	
 
 	public List<ReparacionDTO> obtenerReparacionPorCompOriginal(String componente) {
 		return ReparacionR.readAllxComponenteOriginal(componente);
@@ -444,35 +372,31 @@ public class Agenda {
 	public List<ReparacionDTO> obtenerReparacionPorCompReemplazo(String componente) {
 		return ReparacionR.readAllxComponenteReemplazo(componente);
 	}
-	
+
 	public int dameIngresosPorAnio(int anio) {
 		return ReparacionR.ingresosPorAnio(anio);
 	}
-	
+
 	public int dameDiagnosticosPorAnio(int anio) {
 		return ReparacionR.diagnosticosPorAnio(anio);
 	}
-	
+
 	public int dameReparadosPorAnio(int anio) {
 		return ReparacionR.reparadosPorAnio(anio);
 	}
 
-
 	public int dameSinFallaPorAnio(int anio) {
 		return ReparacionR.sinFallasPorAnio(anio);
 	}
-	
+
 	public int dameRepEnGtiaPorAnio(int anio) {
 		return ReparacionR.enGtiaPorAnio(anio);
-
 	}
-	
 
 	public int dameEnRepPorAnio(int anio) {
 		return ReparacionR.EnRepPorAnio(anio);
 	}
 
-	
 	public int dameVentasPorAnio(int anio) {
 		return ReparacionR.ventasPorAnio(anio);
 	}
@@ -480,7 +404,6 @@ public class Agenda {
 	public int dameSinRepAnio(int anio) {
 		return ReparacionR.SinRepPorAnio(anio);
 	}
-		
 
 	public int dameRepAcepPorAnio(int anio) {
 		return ReparacionR.RepAcepPorAnio(anio);
@@ -493,8 +416,7 @@ public class Agenda {
 	public int dameRepEsperaPorAnio(int anio) {
 		return ReparacionR.RepEsperaPorAnio(anio);
 	}
-	
-	
+
 	public double dameFacturacionPesoPorAnio(int anio) {
 		return ReparacionR.FacturacionPesoPorAnio(anio);
 	}
@@ -502,10 +424,8 @@ public class Agenda {
 	public double dameFacturacionDolarPorAnio(int anio) {
 		return ReparacionR.FacturacionDolarPorAnio(anio);
 	}
-	
-	
+
 	public int dameTotalIngresosXanioXcliente(int anio, int idCliente) {
-		
 		return ReparacionR.IngresosXanioXcliente(anio, idCliente);
 	}
 
@@ -545,21 +465,18 @@ public class Agenda {
 		return ReparacionR.RepEsperaXcliente(anio, idCliente);
 	}
 
-
 	public List<Integer> dameIngresosPorAnioPorMes(int anio) {
 		return ReparacionR.ingresosPorAnioPorMes(anio);
 	}
-	
-	
+
 	public List<Integer> dameDiagnosticosPorAnioPorMes(int anio) {
 		return ReparacionR.diagnosticoPorAnioPorMes(anio);
 	}
-	
+
 	public List<Double> dameFacturacionPorAnioPorMes(int anio) {
 		return ReparacionR.facturacionPorAnioPorMes(anio);
 	}
-	
-		
+
 	public List<Integer> dameDiagnosticosPorAnioPorTecnico(int anio, int idTecnico) {
 		return ReparacionR.diagnosticoPorAnioPorTecnico(anio, idTecnico);
 	}
@@ -571,7 +488,7 @@ public class Agenda {
 	public List<Double> dameFacturacionPorAnioPorTecnico(int anio, int idtecnico) {
 		return ReparacionR.facturacionPorAnioPorTecnico(anio, idtecnico);
 	}
-	
+
 	public List<Integer> dameIngresosPorAnioPorCliente(int anio, int idCliente) {
 		return ReparacionR.ingresosPorAnioPorCliente(anio, idCliente);
 	}
@@ -583,13 +500,11 @@ public class Agenda {
 	public List<Integer> dameAceptacionesPorAnioPorCliente(int anio, int idCliente) {
 		return ReparacionR.aceptacionesPorAnioPorCliente(anio, idCliente);
 	}
-	
 
 	public List<Integer> dameReparadosXmesXtecnico(int anio, int idTecnico) {
 		return ReparacionR.ReparadosXmesXtecnico(anio, idTecnico);
 	}
 
-	
 	public List<Integer> dameRepEnGtiaXmesXtecnico(int anio, int idTecnico) {
 		return ReparacionR.EnGtiaXmesXtecnico(anio, idTecnico);
 	}
@@ -609,7 +524,7 @@ public class Agenda {
 	public List<Integer> dameSinRepXmesXtecnico(int anio, int idTecnico) {
 		return ReparacionR.SinRepXmesXtecnico(anio, idTecnico);
 	}
-	
+
 	public List<Integer> dameRepAcepXmesXtecnico(int anio, int idTecnico) {
 		return ReparacionR.RepAcepXmesXtecnico(anio, idTecnico);
 	}
@@ -621,21 +536,19 @@ public class Agenda {
 	public List<Integer> dameEsperaXmesXtecnico(int anio, int idTecnico) {
 		return ReparacionR.EsperaRepXmesXtecnico(anio, idTecnico);
 	}
-	
 
 	public List<Double> dameFacturacionDolaresPorAnioPorTecnico(int anio, int idTecnico) {
 		return ReparacionR.FacturacionDolaresPorAnioPorTecnico(anio, idTecnico);
 	}
+
 	public double dameFacturacionPesoPorAnioPorCliente(int anio, int idCliente) {
-		return ReparacionR.FacturacionPesoPorAnioPorCliente(anio,idCliente );
+		return ReparacionR.FacturacionPesoPorAnioPorCliente(anio, idCliente);
 	}
 
 	public double dameFacturacionDolarPorAnioPorCliente(int anio, int idCliente) {
 		return ReparacionR.FacturacionDolarPorAnioPorCliente(anio, idCliente);
 	}
-	
-	
-	
+
 	public int dameTotalDiagnosticosXanioXtecnico(int anio, int idTecnico) {
 		return ReparacionR.DiagnosticosXanioXtecnico(anio, idTecnico);
 	}
@@ -683,17 +596,12 @@ public class Agenda {
 	public double dameFacturacionDolarPorAnioPorTecnico(int anio, int idTecnico) {
 		return ReparacionR.FacturacionDolarPorAnioPorTecnico(anio, idTecnico);
 	}
-	
-	
-	
+
 	public List<Integer> buscarEnCampos(String campo, String texto) {
 		return ReparacionR.buscarEnCampos(campo, texto);
 	}
 
-
-	
 	// REPUESTOS
-
 	public void agregarRepuesto(RepuestosDTO nuevoRepuesto) {
 		Repuestos.insert(nuevoRepuesto);
 	}
@@ -711,83 +619,63 @@ public class Agenda {
 	}
 
 	public void ListarRepuestos(JComboBox<?> box) {
-
 		Repuestos.ListarRepuestos(box);
 	}
-	
-	public void ListarRepuestosReemplazo(JComboBox<?> comboCompReemplazo) {
 
+	public void ListarRepuestosReemplazo(JComboBox<?> comboCompReemplazo) {
 		Repuestos.ListarRepuestosReemplazo(comboCompReemplazo);
-		
 	}
-	
-	
+
 	public List<RepuestosDTO> dameRepuestoXels(int i) {
 		return Repuestos.obtenerRepuestosXels(i);
 	}
 
 	public void ListarEstadoCom(JComboBox<?> comboFiltroEstadoCom) {
 		ReparacionR.ListarEstadoCom(comboFiltroEstadoCom);
-
 	}
 
 	public void ListarEstadoFis(JComboBox<?> comboFiltroEstadoFis) {
 		ReparacionR.ListarEstadoFis(comboFiltroEstadoFis);
-
 	}
 
 	public void ListarEstadoTec(JComboBox<?> comboFiltroEstadoTec) {
 		ReparacionR.comboFiltroEstadoTec(comboFiltroEstadoTec);
-
 	}
 
 	public void ListarAvisos(JComboBox<?> comboFiltroAviso) {
 		ReparacionR.comboFiltroAviso(comboFiltroAviso);
-
 	}
 
 	public void ListarELS(JComboBox<?> comboFiltroELS) {
 		ReparacionR.comboFiltroELS(comboFiltroELS);
-
 	}
 
 	// REMITOS
-	
 	public void agregarRemito(RemitoDTO nuevoRemito) {
 		remito.insert(nuevoRemito);
-	
 	}
 
 	public void ListarUbicacion(JComboBox<?> comboUbicacion) {
 		remito.ListarUbicacion(comboUbicacion);
-
 	}
-	
-	public void ListarRemitoPorUbicacion(JComboBox<?> box, int id) {		
-		
-		remito.ListarRemitoPorUbicacion(box, id);
 
+	public void ListarRemitoPorUbicacion(JComboBox<?> box, int id) {		
+		remito.ListarRemitoPorUbicacion(box, id);
 	}
 
 	public int obtenerNumeroRemito(int codigo) {
-
 		return remito.obtenerNumeroRemito(codigo);
-
 	}
 
 	public int dameIDRemito() {
-
 		return remito.obtenerIDRemito();
-
 	}
 
 	public int idRemitoXubicacionNumero(int iDubicacion, int numero) {
-		
 		return remito.idRemitoXubicacionNumero(iDubicacion, numero);
 	}
-	
+
 	public void eliminarRemito(int IDRemito) {
-		
 		remito.delete(IDRemito);
 	}
 
@@ -799,26 +687,26 @@ public class Agenda {
 		this.ubicacionBase = ubicacionBase;
 	}
 
-	
-	
 	public List<FacturacionXclienteDTO> dameFacturacionXcliente(int anio) {
 		return facturacionXcliente.readAll(anio);
 	}
 
-	
-	/**
-	 * Busca el historial de precios de reparaciones presupuestadas,
-	 * filtrando por nombre de equipo, marca o modelo (búsqueda parcial).
-	 * Solo retorna registros con precio cargado (PrecioPeso > 0 o PrecioDolar > 0).
-	 *
-	 * @param criterio  Campo por el que filtrar: "NOMBRE_EQUIPO", "MARCA" o "MODELO"
-	 * @param texto     Texto de búsqueda (se aplica con LIKE %texto%)
-	 * @return          Lista de ReparacionDTO con los datos del historial
-	 */
 	public List<ReparacionDTO> buscarHistorialPrecios(String criterio, String texto) {
 	    return ReparacionR.buscarHistorialPrecios(criterio, texto);
 	}
+
+	// ====================== MÉTODOS NUEVOS ======================
 	
-	
-	
+	public boolean isBaseAntigua() {
+		return esBaseAntigua;
+	}
+
+	public String getNombreBaseActual() {
+		if (ubicacionBase.equalsIgnoreCase("Bariloche")) {
+			return esBaseAntigua ? "ordenesbrcantiguas" : "ordenesbrc";
+		} else if (ubicacionBase.equalsIgnoreCase("Buenos Aires")) {
+			return esBaseAntigua ? "ordenesbsascantiguas" : "ordenesbsas";
+		}
+		return ubicacionBase + (esBaseAntigua ? "antiguas" : "");
+	}
 }

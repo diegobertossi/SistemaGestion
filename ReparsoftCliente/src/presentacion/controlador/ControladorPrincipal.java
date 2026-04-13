@@ -6,24 +6,21 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
 import javax.swing.JOptionPane;
+
 import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.SpellChecker;
 
 import modelo.Agenda;
-import modelo.ELSAnterior;
 import modelo.Permisos;
-import persistencia.conexion.ConectorAccess;
+import persistencia.conexion.Conexion;
 import presentacion.vista.VistaPrincipal;
 import presentacion.vista.VentanaBackUp;
 import presentacion.vista.VentanaClientes;
 import presentacion.vista.VentanaConfiguracion;
-import presentacion.vista.VentanaELSAnteriores;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaListadoReparaciones;
-
 import presentacion.vista.VentanaLogin;
 import presentacion.vista.VentanaPresupuestos;
 import presentacion.vista.VentanaRolesUsuarios;
@@ -57,7 +54,6 @@ public class ControladorPrincipal implements ActionListener {
 	private ControladorUsuarios controladoUsuario;
 	private ControladorBusquedas controladorBusqueda;
 	private ControladorPresupuestos controladorPresupuestos;
-	private ControladorUbicacionBase controladorUbicacionBase;
 	private ControladorConfiguraciones controladorconfiguraciones;
 
 	private VentanaLogin vistaLogin;
@@ -65,10 +61,11 @@ public class ControladorPrincipal implements ActionListener {
 	private String ubicacionDeBase;
 
 	public ControladorPrincipal(VistaPrincipal v, String ubicacionBase) {
-
 		this.vistaPrincipal = v;
-		this.modelo = new Agenda(ubicacionBase);
 		this.ubicacionDeBase = ubicacionBase;
+
+		// Crear el modelo usando el modo actual (normal o antigua)
+		this.modelo = crearAgendaActual(ubicacionBase);
 
 		this.vistaPrincipal.getBtncerrarSesion().addActionListener(this);
 
@@ -82,23 +79,28 @@ public class ControladorPrincipal implements ActionListener {
 		this.vistaPrincipal.getBotonBackUp().addActionListener(this);
 		this.vistaPrincipal.getBotonPresupuestos().addActionListener(this);
 		this.vistaPrincipal.getBotonConfiguracion().addActionListener(this);
-		this.vistaPrincipal.getBtnELSant().addActionListener(this);
 
 		controladorUsuLogin = new ControladorUsuLogin(new Permisos(ubicacionBase));
 
-		vistaPrincipal.getTextLugarBaseDatos().setText(ubicacionBase.toUpperCase());
+		// Actualizar label con información de base actual
+		String modo = Conexion.isModoAntigua() ? " - ANTIGUA" : " - NORMAL";
+		vistaPrincipal.getTextLugarBaseDatos().setText(ubicacionBase.toUpperCase() + modo);
+	}
 
+	/**
+	 * Crea una instancia de Agenda respetando siempre el modo actual (Normal / Antigua)
+	 */
+	private Agenda crearAgendaActual(String ubicacion) {
+		return new Agenda(ubicacion, Conexion.isModoAntigua());
 	}
 
 	public void inicializar() {
-
 		pedirInicioDeSesion();
 
 		SpellChecker.setUserDictionaryProvider(new FileUserDictionary());
 		try {
 			SpellChecker.registerDictionaries(new URL("file", null, "./Diccionario/"), "es");
 		} catch (MalformedURLException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 
@@ -109,12 +111,9 @@ public class ControladorPrincipal implements ActionListener {
 
 				if (opcion == JOptionPane.YES_OPTION) {
 					System.exit(0);
-
 				}
 			}
-
 		});
-
 	}
 
 	private void pedirInicioDeSesion() {
@@ -123,71 +122,52 @@ public class ControladorPrincipal implements ActionListener {
 			vistaLogin.getBtnAceptar().addActionListener(this);
 			vistaLogin.getBtnCancelar().addActionListener(this);
 
-			vistaLogin.getTxtUsuPass().addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-
-					controladorUsuLogin.validarSesion(vistaLogin, vistaPrincipal);
-					controladorUsuLogin.verificarPermisosMenu(vistaPrincipal);
-
-				}
+			vistaLogin.getTxtUsuPass().addActionListener(e -> {
+				controladorUsuLogin.validarSesion(vistaLogin, vistaPrincipal);
+				controladorUsuLogin.verificarPermisosMenu(vistaPrincipal);
 			});
-
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
 
 		if (arg0.getSource() == vistaLogin.getBtnAceptar()) {
 			controladorUsuLogin.validarSesion(vistaLogin, this.vistaPrincipal);
 			controladorUsuLogin.verificarPermisosMenu(vistaPrincipal);
 
 		} else if (arg0.getSource() == vistaLogin.getBtnCancelar()) {
-
-			int opcion = 0;
-
-			opcion = JOptionPane.showConfirmDialog(null, "¿Desea salir del sistema?", "Aviso",
+			int opcion = JOptionPane.showConfirmDialog(null, "¿Desea salir del sistema?", "Aviso",
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
-			switch (opcion) {
-			case JOptionPane.YES_OPTION: {
+			if (opcion == JOptionPane.YES_OPTION) {
 				System.exit(0);
-				break;
-			}
-			case JOptionPane.NO_OPTION:
-
+			} else {
 				vistaLogin.getTxtUsuLogin().requestFocus();
-
-				break;
-
 			}
 
-		}
-
-		else if (controladorUsuLogin.getUsu_login() == null) {
-			if (vistaLogin.isShowing()) {
+		} else if (controladorUsuLogin.getUsu_login() == null) {
+			if (vistaLogin != null && vistaLogin.isShowing()) {
 				vistaLogin.dispose();
 				vistaLogin = null;
 			}
 			JOptionPane.showMessageDialog(null, "Tiene que iniciar Sesión");
 			pedirInicioDeSesion();
+
 		} else if (arg0.getSource() == vistaPrincipal.getBotonUsuarios()) {
 
 			ventanaRolesUsuarios = new VentanaRolesUsuarios(controladoUsuario);
-			controladoUsuario = new ControladorUsuarios(ventanaRolesUsuarios, controladorUsuLogin, new Agenda(ubicacionDeBase));
+			controladoUsuario = new ControladorUsuarios(ventanaRolesUsuarios, controladorUsuLogin,
+					crearAgendaActual(ubicacionDeBase));
 
-		}
-
-		else if (arg0.getSource() == this.vistaPrincipal.getBtncerrarSesion()) {
+		} else if (arg0.getSource() == this.vistaPrincipal.getBtncerrarSesion()) {
 
 			this.controladorUsuLogin.cerrarSesion();
 			inicializar();
 
-		}
+		} else if (arg0.getSource() == vistaPrincipal.getBotonEquipos()) {
 
-		else if (arg0.getSource() == vistaPrincipal.getBotonEquipos()) {
+			modelo = crearAgendaActual(ubicacionDeBase);
 
 			ventanaEquipos = new VentanaEquipos(controladorReparacion);
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
@@ -206,23 +186,21 @@ public class ControladorPrincipal implements ActionListener {
 			ventanaPresupuestos.setVisible(false);
 			ventanaClientes.setVisible(false);
 
-		}
+		} else if (arg0.getSource() == vistaPrincipal.getBotonSalidas()) {
 
-		else if (arg0.getSource() == vistaPrincipal.getBotonSalidas()) {
-
+			modelo = crearAgendaActual(ubicacionDeBase);
 			ventanaSalidas = new VentanaSalidas(controladorSalidas);
-			controladorSalidas = new ControladorSalidas(ventanaSalidas, new Agenda(ubicacionDeBase));
+			controladorSalidas = new ControladorSalidas(ventanaSalidas, modelo);
 
-		}
+		} else if (arg0.getSource() == vistaPrincipal.getBotonClientes()) {
 
-		else if (arg0.getSource() == vistaPrincipal.getBotonClientes()) {
-
+			modelo = crearAgendaActual(ubicacionDeBase);
 			ventanaClientes = new VentanaClientes(controladorCliente);
-			controladorCliente = new ControladorCliente(ventanaClientes, new Agenda(ubicacionDeBase));
+			controladorCliente = new ControladorCliente(ventanaClientes, modelo);
 
-		}
+		} else if (arg0.getSource() == vistaPrincipal.getBotonListados()) {
 
-		else if (arg0.getSource() == vistaPrincipal.getBotonListados()) {
+			modelo = crearAgendaActual(ubicacionDeBase);
 
 			ventanaClientes = new VentanaClientes(controladorCliente);
 			controladorCliente = new ControladorCliente(ventanaClientes, modelo);
@@ -252,23 +230,21 @@ public class ControladorPrincipal implements ActionListener {
 			ventanaEquipos.setVisible(false);
 			ventanaSalidas.setVisible(false);
 
-		}
+		} else if (arg0.getSource() == vistaPrincipal.getBotonBackUp()) {
 
-		else if (arg0.getSource() == vistaPrincipal.getBotonBackUp()) {
-
+			modelo = crearAgendaActual(ubicacionDeBase);
 			ventanaBackUp = new VentanaBackUp(controladorBackup);
 			controladorBackup = new ControladorBackup(ventanaBackUp, modelo);
 
-		}
+		} else if (arg0.getSource() == vistaPrincipal.getBotonBusquedas()) {
 
-		else if (arg0.getSource() == vistaPrincipal.getBotonBusquedas()) {
+			modelo = crearAgendaActual(ubicacionDeBase);
 
-			
 			ventanaClientes = new VentanaClientes(controladorCliente);
 			controladorCliente = new ControladorCliente(ventanaClientes, modelo);
 
 			ventanaBusqueda = new VentanaBusqueda(controladorBusqueda);
-						
+
 			controladorUsuLogin.verificarPermisosVentanaListados(ventanaListadoReparaciones);
 
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
@@ -283,57 +259,35 @@ public class ControladorPrincipal implements ActionListener {
 			controladorReparacion = new ControladorReparacion(ventanaEquipos, controladorUsuLogin, modelo,
 					controladorPresupuestos, controladorSalidas, controladorCliente);
 
-			controladorBusqueda = new ControladorBusquedas(ventanaBusqueda,controladorReparacion, new Agenda(ubicacionDeBase));
+			controladorBusqueda = new ControladorBusquedas(ventanaBusqueda, controladorReparacion,
+					crearAgendaActual(ubicacionDeBase));
 
 			ventanaClientes.setVisible(false);
 			ventanaPresupuestos.setVisible(false);
 			ventanaEquipos.setVisible(false);
 			ventanaSalidas.setVisible(false);
-			
-			
-			
-			
-		}
 
-		else if (arg0.getSource() == vistaPrincipal.getBotonPresupuestos()) {
+		} else if (arg0.getSource() == vistaPrincipal.getBotonPresupuestos()) {
 
+			modelo = crearAgendaActual(ubicacionDeBase);
 			ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
 			controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);
 
-		}
-
-		else if (arg0.getSource() == vistaPrincipal.getBtnSalir()) {
+		} else if (arg0.getSource() == vistaPrincipal.getBtnSalir()) {
 
 			int opcion = JOptionPane.showConfirmDialog(vistaPrincipal, "¿Desea salir del sistema?", "Aviso",
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
 			if (opcion == JOptionPane.YES_OPTION) {
 				System.exit(0);
-
 			}
 
-		}
-		
-		else if (arg0.getSource() == vistaPrincipal.getBtnELSant()) {
-			
-			
-			    ConectorAccess con = new ConectorAccess("F:/Ordenes de trabajo_BRC_be.accdb");
-//				ConectorAccess con = new ConectorAccess("F:/Ordenes de trabajo_be.accdb");
-			    List<ELSAnterior> datos = con.obtenerRegistrosELS();
-			    VentanaELSAnteriores v = new VentanaELSAnteriores(datos);
-			    v.setVisible(true);
-			
-			
-		}
-
-		else if (arg0.getSource() == vistaPrincipal.getBotonConfiguracion()) {
+		} else if (arg0.getSource() == vistaPrincipal.getBotonConfiguracion()) {
 
 			ventanaConfiguracion = new VentanaConfiguracion(controladorconfiguraciones);
 			controladorconfiguraciones = new ControladorConfiguraciones(ventanaConfiguracion, controladorUsuLogin,
 					vistaPrincipal);
 
 		}
-
 	}
-
 }

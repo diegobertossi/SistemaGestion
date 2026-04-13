@@ -52,7 +52,6 @@ public class VistaPrincipal extends JFrame {
 	private JButton btncerrarSesion;
 	private JButton botonConfiguracion;
 	private JTextField textLugarBaseDatos;
-	private JButton btnELSant;
 
 	public VistaPrincipal() {
 		super();
@@ -112,16 +111,6 @@ public class VistaPrincipal extends JFrame {
 		panel_1.setBounds(0, 0, 480, 450);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
-		
-		btnELSant = new JButton("ELS ANT");
-		btnELSant.setToolTipText("Salir del Sistema");
-		btnELSant.setHorizontalTextPosition(SwingConstants.RIGHT);
-		btnELSant.setHorizontalAlignment(SwingConstants.LEFT);
-		btnELSant.setForeground(new Color(255, 0, 51));
-		btnELSant.setFont(new Font("Cambria", Font.BOLD, 10));
-		btnELSant.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnELSant.setBounds(376, 55, 97, 33);
-		panel_1.add(btnELSant);
 
 		textVersionSoft = new JTextField();
 		textVersionSoft.setBounds(316, 427, 166, 16);
@@ -470,11 +459,4 @@ public class VistaPrincipal extends JFrame {
 		this.textLugarBaseDatos = textLugarBaseDatos;
 	}
 
-	public JButton getBtnELSant() {
-		return btnELSant;
-	}
-
-	public void setBtnELSant(JButton btnELSant) {
-		this.btnELSant = btnELSant;
-	}
 }

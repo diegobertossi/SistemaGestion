@@ -300,4 +300,6 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
     
     @Override
     public void itemStateChanged(ItemEvent e) {}
+
+
 }

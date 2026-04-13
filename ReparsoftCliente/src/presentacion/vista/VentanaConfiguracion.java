@@ -20,8 +20,10 @@ public class VentanaConfiguracion extends JFrame
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JButton btnUbicacionSistema;
+	private JButton btnEquiposAntiguos;
 	@SuppressWarnings("unused")
 	private ControladorConfiguraciones controlador;
+	private JButton btnVolverBaseNormal;
 
 	public VentanaConfiguracion(ControladorConfiguraciones controlador) 
 	{
@@ -30,7 +32,7 @@ public class VentanaConfiguracion extends JFrame
 		//this.controlador = controlador;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 306, 155);
+		setBounds(100, 100, 442, 155);
 
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
@@ -46,8 +48,18 @@ public class VentanaConfiguracion extends JFrame
 				
 		btnUbicacionSistema = new JButton("<html><center>CAMBIAR UBICACION DEL SISTEMEA</html>");
 		btnUbicacionSistema.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnUbicacionSistema.setBounds(39, 33, 211, 50);
+		btnUbicacionSistema.setBounds(4, 22, 136, 72);
 		contentPane.add(btnUbicacionSistema);
+		
+		btnEquiposAntiguos = new JButton("<html><center>EQUIPOS ANTIGUOS</html>");
+		btnEquiposAntiguos.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnEquiposAntiguos.setBounds(144, 22, 136, 72);
+		contentPane.add(btnEquiposAntiguos);
+		
+		btnVolverBaseNormal = new JButton("<html><center>EQUIPOS ACTUALES</html>");
+		btnVolverBaseNormal.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnVolverBaseNormal.setBounds(284, 22, 136, 72);
+		contentPane.add(btnVolverBaseNormal);
 
 		
 		
@@ -62,9 +74,20 @@ public class VentanaConfiguracion extends JFrame
 		this.btnUbicacionSistema = btnUbicacionSistema;
 	}
 
+	public JButton getBtnEquiposAntiguos() {
+		return btnEquiposAntiguos;
+	}
 
-	
-	
-	
+	public void setBtnEquiposAntiguos(JButton btnEquiposAntiguos) {
+		this.btnEquiposAntiguos = btnEquiposAntiguos;
+	}
+
+	public JButton getBtnVolverBaseNormal() {
+		return btnVolverBaseNormal;
+	}
+
+	public void setBtnVolverBaseNormal(JButton btnVolverBaseNormal) {
+		this.btnVolverBaseNormal = btnVolverBaseNormal;
+	}
 }
 

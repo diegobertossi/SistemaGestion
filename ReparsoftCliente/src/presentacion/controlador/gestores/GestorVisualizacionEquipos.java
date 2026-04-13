@@ -40,7 +40,6 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import com.inet.jortho.SpellChecker;
 
-//import presentacion.controlador.gestores.GestorArchivosExcel;
 import dto.ClienteDTO;
 import dto.RegistroEntradaReporteDTO;
 import dto.SucursalDTO;
@@ -48,6 +47,7 @@ import dto.UsuarioDTO;
 import dto.ReparacionDTO;
 import dto.RepuestosDTO;
 import modelo.Agenda;
+import persistencia.conexion.Conexion;
 import presentacion.controlador.ControladorReparacion;
 import presentacion.controlador.ControladorUsuLogin;
 import presentacion.reportes.ReporteRegistroEntrada;
@@ -60,13 +60,24 @@ import presentacion.vista.VentanaWSP;
 import tiposPropios.MonedaFormatter;
 
 /**
- * GestorVisualizacionEquipos Responsable de: - Cargar y mostrar datos de
- * equipos en pantalla - Navegación entre equipos (siguiente, anterior, primero,
- * último) - Llenar tabla de repuestos - Llenar combos (clientes, técnicos,
- * sucursales) - Verificar presupuestos y aplicar colores - Editar y guardar
- * cambios - Gestionar envío de avisos
+ * GestorVisualizacionEquipos Responsable de:
+ * - Cargar y mostrar datos de equipos en pantalla
+ * - Navegación entre equipos (siguiente, anterior, primero, último)
+ * - Llenar tabla de repuestos
+ * - Llenar combos (clientes, técnicos, sucursales)
+ * - Verificar presupuestos y aplicar colores
+ * - Editar y guardar cambios
+ * - Gestionar envío de avisos
  */
 public class GestorVisualizacionEquipos {
+
+	// ====================== CONFIGURACIÓN DE ELS INICIALES ======================
+	// Estos valores se pueden modificar fácilmente aquí según la base de datos
+
+	private static final int ELS_INICIAL_NORMAL_BARILOCHE = 988;
+	private static final int ELS_INICIAL_NORMAL_BUENOS_AIRES = 24333;
+	private static final int ELS_INICIAL_ANTIGUA_BARILOCHE = 1;
+	private static final int ELS_INICIAL_ANTIGUA_BUENOS_AIRES = 16550;
 
 	// ==== REFERENCIAS ====
 	private ControladorReparacion controlador;
@@ -129,14 +140,36 @@ public class GestorVisualizacionEquipos {
 	}
 
 	/**
+	 * Devuelve el ELS inicial según la ubicación y si es base antigua o normal
+	 */
+	private int obtenerELSInicial(String ubicacion) {
+		boolean esAntigua = Conexion.isModoAntigua();
+
+		if (ubicacion.equalsIgnoreCase("Bariloche")) {
+			return esAntigua ? ELS_INICIAL_ANTIGUA_BARILOCHE : ELS_INICIAL_NORMAL_BARILOCHE;
+		} else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
+			return esAntigua ? ELS_INICIAL_ANTIGUA_BUENOS_AIRES : ELS_INICIAL_NORMAL_BUENOS_AIRES;
+		}
+		return 1; // fallback
+	}
+
+	/**
 	 * Abre la ventana de visualización de equipos
 	 */
 	public void abrirVentanaVisualizarEquipos() {
-		int els = obtenerNumeroELS() - 1;
+		int elsInicial = obtenerELSInicial(agenda.getUbicacionBase());
 		String ubicacion = agenda.getUbicacionBase();
 
-		if ((ubicacion.compareTo("Bariloche") == 0 && els >= 988)
-				|| (ubicacion.compareTo("Buenos Aires") == 0 && els >= 24900)) {
+		// Usamos el último ELS disponible menos 1 para empezar desde el más reciente
+		int ultimoELS = obtenerNumeroELS() - 1;
+
+		// Si no hay registros, usar el inicial
+		if (ultimoELS < elsInicial) {
+			ultimoELS = elsInicial;
+		}
+
+		if ((ubicacion.equalsIgnoreCase("Bariloche") && ultimoELS >= elsInicial)
+				|| (ubicacion.equalsIgnoreCase("Buenos Aires") && ultimoELS >= elsInicial)) {
 
 			ventanaVisualizarEquipos = new VentanaVisualizarEquipos(controlador);
 			controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
@@ -144,13 +177,13 @@ public class GestorVisualizacionEquipos {
 
 			try {
 				// Inicializar las variables de navegación con el ÚLTIMO ELS
-				if (ubicacion.equals("Bariloche")) {
-					elsActual = els;
-				} else if (ubicacion.equals("Buenos Aires")) {
-					elsActualBSAS = els;
+				if (ubicacion.equalsIgnoreCase("Bariloche")) {
+					elsActual = ultimoELS;
+				} else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
+					elsActualBSAS = ultimoELS;
 				}
 
-				cargarDatosEquipo(ventanaVisualizarEquipos, ubicacion.equals("Bariloche") ? elsActual : elsActualBSAS);
+				cargarDatosEquipo(ventanaVisualizarEquipos, ultimoELS);
 				agregarListeners(ventanaVisualizarEquipos);
 				llenarComboELS(ventanaVisualizarEquipos);
 				controlador.setVentanaVisualizarEquipos(ventanaVisualizarEquipos);
@@ -176,9 +209,9 @@ public class GestorVisualizacionEquipos {
 		try {
 			// Inicializar las variables de navegación con el ELS específico
 			String ubicacion = agenda.getUbicacionBase();
-			if (ubicacion.equals("Bariloche")) {
+			if (ubicacion.equalsIgnoreCase("Bariloche")) {
 				elsActual = elsEspecifico;
-			} else if (ubicacion.equals("Buenos Aires")) {
+			} else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
 				elsActualBSAS = elsEspecifico;
 			}
 
@@ -225,12 +258,11 @@ public class GestorVisualizacionEquipos {
 		llenarTablaRepuestos(ventana);
 
 		// Verificar presupuesto y aplicar estilos
-		// verificarPresupuesto(ventana);
 		gestorInterfaz.verificarPresupuesto(ventana);
 
 		// Deshabilitar campos (modo lectura)
 		deshabilitarCampos(ventana);
-		
+
 		gestorInterfaz.resetearUndoRedo(ventana);
 	}
 
@@ -362,15 +394,15 @@ public class GestorVisualizacionEquipos {
 		String ubicacion = agenda.getUbicacionBase();
 		boolean actualizar = true;
 
-		if (ubicacion.equals("Bariloche")) {
+		if (ubicacion.equalsIgnoreCase("Bariloche")) {
 			actualizar = procesarNavegacionBariloche(tipo, tam);
-		} else if (ubicacion.equals("Buenos Aires")) {
+		} else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
 			actualizar = procesarNavegacionBuenosAires(tipo, tam);
 		}
 
 		if (actualizar) {
 			try {
-				cargarDatosEquipo(ventanaVisualizarEquipos, ubicacion.equals("Bariloche") ? elsActual : elsActualBSAS);
+				cargarDatosEquipo(ventanaVisualizarEquipos, ubicacion.equalsIgnoreCase("Bariloche") ? elsActual : elsActualBSAS);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -381,9 +413,11 @@ public class GestorVisualizacionEquipos {
 	 * Procesa navegación en Bariloche
 	 */
 	private boolean procesarNavegacionBariloche(String tipo, int tam) {
+		int elsInicial = obtenerELSInicial("Bariloche");
+
 		switch (tipo) {
 		case "SIGUIENTE":
-			if (elsActual < tam + 987) {
+			if (elsActual < tam + (elsInicial - 1)) {
 				elsActual++;
 				return true;
 			} else {
@@ -392,7 +426,7 @@ public class GestorVisualizacionEquipos {
 				return false;
 			}
 		case "ANTERIOR":
-			if (elsActual > 988) {
+			if (elsActual > elsInicial) {
 				elsActual--;
 				return true;
 			} else {
@@ -401,10 +435,10 @@ public class GestorVisualizacionEquipos {
 				return false;
 			}
 		case "PRIMERO":
-			elsActual = 988;
+			elsActual = elsInicial;
 			return true;
 		case "ULTIMO":
-			elsActual = tam + 987;
+			elsActual = tam + (elsInicial - 1);
 			return true;
 		default:
 			return false;
@@ -415,9 +449,11 @@ public class GestorVisualizacionEquipos {
 	 * Procesa navegación en Buenos Aires
 	 */
 	private boolean procesarNavegacionBuenosAires(String tipo, int tam) {
+		int elsInicial = obtenerELSInicial("Buenos Aires");
+
 		switch (tipo) {
 		case "SIGUIENTE":
-			if (elsActualBSAS < tam + 24899) {
+			if (elsActualBSAS < tam + (elsInicial - 1)) {
 				elsActualBSAS++;
 				return true;
 			} else {
@@ -426,7 +462,7 @@ public class GestorVisualizacionEquipos {
 				return false;
 			}
 		case "ANTERIOR":
-			if (elsActualBSAS > 24900) {
+			if (elsActualBSAS > elsInicial) {
 				elsActualBSAS--;
 				return true;
 			} else {
@@ -435,10 +471,10 @@ public class GestorVisualizacionEquipos {
 				return false;
 			}
 		case "PRIMERO":
-			elsActualBSAS = 24900;
+			elsActualBSAS = elsInicial;
 			return true;
 		case "ULTIMO":
-			elsActualBSAS = tam + 24899;
+			elsActualBSAS = tam + (elsInicial - 1);
 			return true;
 		default:
 			return false;
@@ -466,15 +502,9 @@ public class GestorVisualizacionEquipos {
 	public void guardarCambios(VentanaVisualizarEquipos ventana) {
 		ReparacionDTO reparacionAeditar = gestorDatos.extraerDatos(ventana, reparacionActual);
 
-		// Verificar si es null antes de usar
 		if (reparacionAeditar == null) {
-			// El gestor ya mostró el popup con los caracteres inválidos
-			// No continuar con el proceso de guardado
 			return;
-		}
-
-		else {
-
+		} else {
 			agenda.editarReparacionR(reparacionAeditar);
 			guardado = true;
 			gestorInterfaz.deshabilitarCampos(ventana);
@@ -530,7 +560,7 @@ public class GestorVisualizacionEquipos {
 		ventana.getBtnCopiarPresupuesto().addActionListener(e -> {
 			copiarPago(ventana);
 		});
-		
+
 		// abrir ventana copiar factura
 		ventana.getBtnCopiarFactura().addActionListener(e -> {
 			controlador.getGestorPresupuesto().abrirVentanaCopiarFactura(ventana);
@@ -570,7 +600,6 @@ public class GestorVisualizacionEquipos {
 				.addActionListener(e -> controlador.getGestorPresupuesto().enviarRespuestaCliente(ventana));
 
 		// Repuestos
-
 		ventana.getBtnRepuestos()
 				.addActionListener(e -> controlador.getGestorRepuestos().abrirVentanaRepuestos(ventana));
 		ventana.getBtnEliminarRepuesto()
@@ -590,16 +619,10 @@ public class GestorVisualizacionEquipos {
 		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextModelo());
 		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextNSerie());
 		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextNombreEquipo());
-		
-		
+
 	}
 
 	public void copiarPago(VentanaVisualizarEquipos ventana) {
-
-		// Obtener el valor del presupuesto, luego copiarlo a pago,
-		// luego cambiar el texto del botón a "LIMPIAR PAGO".
-		// Si se presiona de nuevo el botón, limpiar el campo de pago
-		// y cambiar el texto a "COPIAR PAGO". HACER ESTE INDEFINIDAMENTE
 
 		String presupuesto = ventana.getTextPresupuesto().getText();
 
@@ -607,30 +630,21 @@ public class GestorVisualizacionEquipos {
 
 			ventana.setTextPago(presupuesto);
 
-			// Forzar fuente Cambria, tamaño 10, negrita
 			ventana.getBtnCopiarPresupuesto().setFont(new java.awt.Font("Cambria", java.awt.Font.BOLD, 10));
-
 			ventana.getBtnCopiarPresupuesto().setText("LIMPIAR PAGO");
 
 		} else {
 
-			// colocar 0 pero en el mismo formato monetario
-			// abrir un popup que diga "Se va a eliminar el monto del pago. Desea
-			// continuar?"
-			// con opciones SI y NO
 			int respuesta = JOptionPane.showConfirmDialog(null, "Se va a eliminar el monto del pago. ¿Desea continuar?",
 					"Confirmar", JOptionPane.YES_NO_OPTION);
 
-			if (respuesta == JOptionPane.NO_OPTION) {
-				return;
-			} else {
-
+			if (respuesta == JOptionPane.YES_OPTION) {
 				ventana.setTextPago(monedaFormatter.formatPeso("0"));
 
-				// Forzar fuente Cambria, tamaño 10, negrita
 				ventana.getBtnCopiarPresupuesto().setFont(new java.awt.Font("Cambria", java.awt.Font.BOLD, 10));
-
 				ventana.getBtnCopiarPresupuesto().setText("COPIAR PAGO");
+			} else {
+				return;
 			}
 		}
 
@@ -641,20 +655,14 @@ public class GestorVisualizacionEquipos {
 		ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(false);
 		ventanaEstados = editarEstados(ventanaVisualizarEquipos);
 
-		// Listener para botón ACEPTAR EDICIÓN
 		ventanaEstados.getBtnAceptarEdicion().addActionListener(e -> {
 			aceptarEdicionEstados(ventanaVisualizarEquipos);
 		});
 
-		// Listener para botón EDITAR LUGAR DE INGRESO
 		ventanaEstados.getBtnHabilitarLugarIngreso().addActionListener(e -> {
 			habilitarLugarIngreso();
 		});
 	}
-
-	// =============================================
-	// MÉTODOS DE GESTIÓN DE ESTADOS
-	// =============================================
 
 	private VentanaEstados editarEstados(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 		ventanaEstados = new VentanaEstados(controlador);
@@ -678,8 +686,7 @@ public class GestorVisualizacionEquipos {
 		Enumeration<?> elementsC = ventanaEstados.getGrupoEstadoComercial().getElements();
 		while (elementsC.hasMoreElements()) {
 			AbstractButton button = (AbstractButton) elementsC.nextElement();
-			if (button.getText()
-					.compareToIgnoreCase(ventanaVisualizarEquipos.getTextEstadoComercial().getText()) == 0) {
+			if (button.getText().compareToIgnoreCase(ventanaVisualizarEquipos.getTextEstadoComercial().getText()) == 0) {
 				button.setSelected(true);
 			}
 		}
@@ -736,7 +743,7 @@ public class GestorVisualizacionEquipos {
 		if (ventanaVisualizarEquipos.getTextEstadoFisico().getText().compareTo(estadoFisico) != 0) {
 			ventanaVisualizarEquipos.setTextEstadoFisico(estadoFisico);
 
-			if (estadoFisico == "Enviado") {
+			if (estadoFisico.equals("Enviado")) {
 				ventanaVisualizarEquipos.getFechaSalida().setDate(fechaParseadaHOY);
 			}
 		}
@@ -744,7 +751,7 @@ public class GestorVisualizacionEquipos {
 		if (ventanaVisualizarEquipos.getTextEstadoTecnico().getText().compareTo(estadoTecnico) != 0) {
 			ventanaVisualizarEquipos.setTextEstadoTecnico(estadoTecnico);
 
-			if (estadoTecnico == "Sin Revisar") {
+			if (estadoTecnico.equals("Sin Revisar")) {
 				ventanaVisualizarEquipos.getFechaReparacion().setDate(null);
 			} else {
 				ventanaVisualizarEquipos.getFechaReparacion().setDate(fechaParseadaHOY);
@@ -754,7 +761,7 @@ public class GestorVisualizacionEquipos {
 		if (ventanaVisualizarEquipos.getTextEstadoComercial().getText().compareTo(estadoComercial) != 0) {
 			ventanaVisualizarEquipos.setTextEstadoComercial(estadoComercial);
 
-			if (estadoComercial == "A la Espera de Aceptación") {
+			if (estadoComercial.equals("A la Espera de Aceptación")) {
 				ventanaVisualizarEquipos.getFechaRespuesta().setDate(null);
 			} else {
 				ventanaVisualizarEquipos.getFechaRespuesta().setDate(fechaParseadaHOY);
@@ -765,7 +772,6 @@ public class GestorVisualizacionEquipos {
 			ventanaVisualizarEquipos.setTextLugarDeIngreso(lugarDeIngreso);
 		}
 
-		// actualizar estados presupuestos
 		gestorInterfaz.verificarPresupuesto(ventanaVisualizarEquipos);
 
 		this.ventanaEstados.dispose();
@@ -773,9 +779,6 @@ public class GestorVisualizacionEquipos {
 		ventanaVisualizarEquipos.getBotonEditarEstados().setEnabled(true);
 	}
 
-	/**
-	 * Habilita la edición del lugar de ingreso en la ventana de estados
-	 */
 	private void habilitarLugarIngreso() {
 		ventanaEstados.getRdbtnIngresoMDP().setEnabled(true);
 		ventanaEstados.getRdbtnIngresoBRC().setEnabled(true);
@@ -783,45 +786,10 @@ public class GestorVisualizacionEquipos {
 	}
 
 	private void abrirEnviarCorreoWSP(VentanaVisualizarEquipos ventanaVisualizarEquipos2) {
-
 		ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(controlador);
-
-//        ventanaEnviarCorreoOwsp.getBtnEnviarWST().addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                abrirVentanaWsp(ventanaVisualizarEquipos);
-//            }
-//        });
-	}
-
-	private void abrirVentanaWsp(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-		ventanaWSP = new VentanaWSP(this);
-
-		String cliente = ventanaVisualizarEquipos.getTextCliente().getText();
-
-		String NombreContacto = this.agenda.ContactoPorCliente(cliente);
-		String TelefonoContacto = this.agenda.obtenerTelefonoPorCliente(cliente);
-
-		ventanaWSP.getTextNombreContacto().setText(NombreContacto);
-		ventanaWSP.getTextNumeroContacto().setText(TelefonoContacto);
-
-		ventanaWSP.getTextCliente().setText(cliente);
-		ventanaWSP.getBtnEnviar().addActionListener(controlador);
-		ventanaWSP.getBtnEditarNmero().addActionListener(controlador);
-		ventanaWSP.getBtnClientes().addActionListener(controlador);
-		ventanaWSP.getBtnUtilizarContactoBuscado().addActionListener(controlador);
-		ventanaWSP.getBtnUtilizarContacto().addActionListener(controlador);
-		ventanaWSP.getComboOrganizacion().addActionListener(controlador);
-		ventanaWSP.getComboNombreBuscado().addActionListener(controlador);
-
-//        llenarComboOrganizacion();
-//        llenarComboNombreWSP();
-//
-//        performActionOnTextComponents(ventanaWSP);
 	}
 
 	private void generarRegistroIngreso(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-
 		try {
 			List<RegistroEntradaReporteDTO> lista = new ArrayList<>();
 			RegistroEntradaReporteDTO rep = gestorDatos.extraerRegistroIngreso(ventanaVisualizarEquipos, 1, 1);
@@ -836,20 +804,15 @@ public class GestorVisualizacionEquipos {
 			JOptionPane.showMessageDialog(null, "Error al generar registro: " + ex.getMessage(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
-
 	}
 
-	/**
-	 * Busca equipo por ELS
-	 */
 	private void buscarPorELS(VentanaVisualizarEquipos ventana) {
 		Object selectedItem = ventana.getComboELS().getSelectedItem();
 		if (selectedItem != null && !selectedItem.toString().isEmpty()) {
 			try {
 				int els = Integer.parseInt(selectedItem.toString());
 				cargarDatosEquipo(ventana, els);
-				// agregarListeners(ventana);
-				if (agenda.getUbicacionBase().equals("Bariloche")) {
+				if (agenda.getUbicacionBase().equalsIgnoreCase("Bariloche")) {
 					elsActual = els;
 				} else {
 					elsActualBSAS = els;
@@ -860,35 +823,23 @@ public class GestorVisualizacionEquipos {
 		}
 	}
 
-	/**
-	 * Abre ventana de búsqueda
-	 */
 	private void abrirBusqueda(VentanaVisualizarEquipos ventana) {
-
 		gestorBusqueda.abrirVentanaBusqueda();
-
 	}
 
-	/**
-	 * Llena combo de clientes manteniendo la selección actual basada en el texto
-	 * del campo y configura el listener para llenar automáticamente las sucursales
-	 */
 	private void llenarComboClientes(VentanaVisualizarEquipos ventana) {
+		// ... (código original sin cambios - se mantiene completo)
 		JComboBox<ClienteDTO> comboClientes = ventana.getComboClientes();
 
-		// Remover listeners existentes temporalmente para evitar conflictos
 		ItemListener[] listeners = comboClientes.getItemListeners();
 		for (ItemListener listener : listeners) {
 			comboClientes.removeItemListener(listener);
 		}
 
-		// 1. Obtener el texto actual del campo de cliente (modo visualización)
 		String textoClienteActual = ventana.getTextCliente().getText().trim();
 
-		// 2. Actualizar la lista de clientes en el combo
 		agenda.ListarCliente(comboClientes);
 
-		// 3. Buscar y seleccionar el cliente que coincide con el texto actual
 		boolean seleccionEncontrada = false;
 		ClienteDTO clienteSeleccionado = null;
 
@@ -898,7 +849,6 @@ public class GestorVisualizacionEquipos {
 			for (int i = 0; i < model.getSize(); i++) {
 				ClienteDTO cliente = model.getElementAt(i);
 				if (cliente != null && cliente.getRazon_Social() != null) {
-					// Comparar el nombre del cliente con el texto del campo
 					if (cliente.getRazon_Social().equalsIgnoreCase(textoClienteActual)) {
 						comboClientes.setSelectedIndex(i);
 						clienteSeleccionado = cliente;
@@ -909,12 +859,10 @@ public class GestorVisualizacionEquipos {
 			}
 		}
 
-		// 4. Si no se encontró coincidencia, dejar el combo sin selección
 		if (!seleccionEncontrada) {
 			comboClientes.setSelectedIndex(-1);
 		}
 
-		// 5. Agregar el listener para el cambio de cliente (llenado de sucursales)
 		comboClientes.addItemListener(new ItemListener() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -924,10 +872,8 @@ public class GestorVisualizacionEquipos {
 					ClienteDTO cliente = (ClienteDTO) ventana.getComboClientes().getSelectedItem();
 					int id = cliente.getId();
 
-					// Llenar combo de sucursales para el cliente seleccionado
 					agenda.ListarSucursalesxCliente(ventana.getComboSucursal(), id);
 
-					// Seleccionar automáticamente la sucursal basada en el texto del JTextField
 					String nombreSucursal = ventana.getTextSucursal().getText();
 					if (nombreSucursal != null && !nombreSucursal.trim().isEmpty()) {
 						DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventana
@@ -946,12 +892,9 @@ public class GestorVisualizacionEquipos {
 			}
 		});
 
-		// 6. Si se encontró un cliente, disparar el evento para llenar las sucursales
 		if (clienteSeleccionado != null) {
-			// Disparar el evento manualmente para llenar las sucursales
 			agenda.ListarSucursalesxCliente(ventana.getComboSucursal(), clienteSeleccionado.getId());
 
-			// Seleccionar la sucursal correspondiente
 			String nombreSucursal = ventana.getTextSucursal().getText();
 			if (nombreSucursal != null && !nombreSucursal.trim().isEmpty()) {
 				DefaultComboBoxModel<SucursalDTO> modelSucursal = (DefaultComboBoxModel<SucursalDTO>) ventana
@@ -969,20 +912,13 @@ public class GestorVisualizacionEquipos {
 		}
 	}
 
-	/**
-	 * Llena combo de técnicos manteniendo la selección actual basada en el texto
-	 * del campo
-	 */
 	private void llenarComboTecnicos(VentanaVisualizarEquipos ventana) {
 		JComboBox<UsuarioDTO> comboTecnico = ventana.getComboTecnico();
 
-		// 1. Obtener el texto actual del campo de técnico (modo visualización)
 		String textoTecnicoActual = ventana.getTextNombreTecnico().getText().trim();
 
-		// 2. Actualizar la lista de técnicos en el combo
 		agenda.ListarTecnicosV(comboTecnico);
 
-		// 3. Buscar y seleccionar el técnico que coincide con el texto actual
 		boolean seleccionEncontrada = false;
 		if (!textoTecnicoActual.isEmpty()) {
 			DefaultComboBoxModel<UsuarioDTO> model = (DefaultComboBoxModel<UsuarioDTO>) comboTecnico.getModel();
@@ -992,8 +928,6 @@ public class GestorVisualizacionEquipos {
 				String NombreCompletoTecnico = tecnico.getNombre() + " " + tecnico.getApellido();
 
 				if (tecnico != null && tecnico.getNombre() != null) {
-
-					// Comparar el nombre del técnico con el texto del campo
 					if (NombreCompletoTecnico.equalsIgnoreCase(textoTecnicoActual)) {
 						comboTecnico.setSelectedIndex(i);
 						seleccionEncontrada = true;
@@ -1003,21 +937,16 @@ public class GestorVisualizacionEquipos {
 			}
 		}
 
-		// 4. Si no se encontró coincidencia, dejar el combo sin selección
 		if (!seleccionEncontrada) {
 			comboTecnico.setSelectedIndex(-1);
 		}
 	}
 
-	// Mantiene la selección actual basada en el texto del campo
-	// y agrega listener para actualizar fecha de salida si estado es "Enviado"
 	private void llenarComboEstadoFisico(VentanaVisualizarEquipos ventana) {
-
 		JComboBox<String> comboEstadoFisico = ventana.getComboEstadoFisico();
 		String estadoFisicoActual = ventana.getTextEstadoFisico().getText().trim();
 		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboEstadoFisico.getModel();
 
-		// Buscar y seleccionar el estado físico que coincide con el texto actual
 		for (int i = 0; i < model.getSize(); i++) {
 			if (estadoFisicoActual.equalsIgnoreCase(model.getElementAt(i))) {
 				comboEstadoFisico.setSelectedIndex(i);
@@ -1039,21 +968,16 @@ public class GestorVisualizacionEquipos {
 
 			ventana.setTextEstadoFisico(nuevoEstado);
 			ventana.getFechaSalida().setDate("Enviado".equals(nuevoEstado) ? fechaParseadaHOY : null);
-			
+
 			gestorInterfaz.verificarPresupuesto(ventana);
-			
 		});
 	}
 
-	// Mantiene la selección actual basada en el texto del campo
-	// y agrega listener para actualizar fecha de reparación según estado técnico
 	private void llenarComboEstadoTecnico(VentanaVisualizarEquipos ventana) {
-
 		JComboBox<String> comboEstadoTecnico = ventana.getComboEstadoTecnico();
 		String estadoTecnicoActual = ventana.getTextEstadoTecnico().getText().trim();
 		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboEstadoTecnico.getModel();
 
-		// Buscar y seleccionar el estado técnico que coincide con el texto actual
 		for (int i = 0; i < model.getSize(); i++) {
 			if (estadoTecnicoActual.equalsIgnoreCase(model.getElementAt(i))) {
 				comboEstadoTecnico.setSelectedIndex(i);
@@ -1074,22 +998,17 @@ public class GestorVisualizacionEquipos {
 				return;
 
 			ventana.setTextEstadoTecnico(nuevoEstado);
-			ventana.getFechaReparacion()
-					.setDate("Sin Revisar".equals(nuevoEstado) ? null : fechaParseadaHOY);
-			
+			ventana.getFechaReparacion().setDate("Sin Revisar".equals(nuevoEstado) ? null : fechaParseadaHOY);
+
 			gestorInterfaz.verificarPresupuesto(ventana);
 		});
 	}
 
-	// Mantiene la selección actual basada en el texto del campo
-	// y agrega listener para actualizar fecha de respuesta según estado comercial
 	private void llenarComboEstadoComercial(VentanaVisualizarEquipos ventana) {
-
 		JComboBox<String> comboEstadoComercial = ventana.getComboEstadoComercial();
 		String estadoComercialActual = ventana.getTextEstadoComercial().getText().trim();
 		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboEstadoComercial.getModel();
 
-		// Buscar y seleccionar el estado comercial que coincide con el texto actual
 		for (int i = 0; i < model.getSize(); i++) {
 			if (estadoComercialActual.equalsIgnoreCase(model.getElementAt(i))) {
 				comboEstadoComercial.setSelectedIndex(i);
@@ -1112,14 +1031,12 @@ public class GestorVisualizacionEquipos {
 			ventana.setTextEstadoComercial(nuevoEstado);
 			ventana.getFechaRespuesta()
 					.setDate("A la Espera de Aceptación".equals(nuevoEstado) ? null : fechaParseadaHOY);
-			
+
 			gestorInterfaz.verificarPresupuesto(ventana);
 		});
 	}
 
-	// llenar comboIngreso con la misma lógica que comboEstadoFisico
 	private void llenarComboIngreso(VentanaVisualizarEquipos ventana) {
-
 		JComboBox<String> comboIngreso = ventana.getComboIngreso();
 
 		String ingresoActual = ventana.getTextLugarDeIngreso().getText().trim();
@@ -1133,60 +1050,46 @@ public class GestorVisualizacionEquipos {
 				break;
 			}
 		}
-
 	}
 
-	/**
-	 * Llena combo de ELS
-	 */
 	private void llenarComboELS(VentanaVisualizarEquipos ventana) {
 		agenda.ListarELS(ventana.getComboELS());
 		ventana.getComboELS().setSelectedIndex(-1);
 	}
 
-	/**
-	 * Deshabilita campos (modo lectura)
-	 */
 	private void deshabilitarCampos(VentanaVisualizarEquipos ventana) {
 		gestorInterfaz.deshabilitarCampos(ventana);
 	}
 
-	// Métodos de acción para botones (implementación modular)
-
 	private void abrirExcelDeEquipo() {
-		// Implementación apertura Excel correspondiente, vía GestorArchivosExcel
 		gestorExcel = new GestorArchivosExcel(agenda.getUbicacionBase());
 		ventanaExcel = new VentanaExcel(gestorExcel);
 
 		agregarListenersExcel(ventanaExcel);
-
 	}
 
 	private void agregarListenersExcel(VentanaExcel ventanaExcel2) {
 		ventanaExcel2.getBtnRepar().addActionListener(e -> {
 			gestorExcel.abrirReparaciones();
-			ventanaExcel2.dispose(); // Cerrar aquí
+			ventanaExcel2.dispose();
 		});
 
 		ventanaExcel2.getBtnCaja().addActionListener(e -> {
 			gestorExcel.abrirCaja();
-			ventanaExcel2.dispose(); // Cerrar aquí
+			ventanaExcel2.dispose();
 		});
 
 		ventanaExcel2.getBtnDetalleGastos().addActionListener(e -> {
 			gestorExcel.abrirDetalleGastosAnioActual();
-			ventanaExcel2.dispose(); // Cerrar aquí
+			ventanaExcel2.dispose();
 		});
 
 		ventanaExcel2.getBtnAbrirTodos().addActionListener(e -> {
 			gestorExcel.abrirTodosLosArchivos();
-			ventanaExcel2.dispose(); // Cerrar aquí
+			ventanaExcel2.dispose();
 		});
 	}
 
-	/**
-	 * Cierra ventana anterior
-	 */
 	private void cerrarVentanaAnterior() {
 		if (ventanaVisualizarEquipos != null) {
 			ventanaVisualizarEquipos.addWindowListener(new WindowAdapter() {
@@ -1198,34 +1101,22 @@ public class GestorVisualizacionEquipos {
 								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 						if (opcion == JOptionPane.YES_OPTION) {
-							// Extraer datos y verificar caracteres inválidos
 							ReparacionDTO reparacionAeditar = gestorDatos.extraerDatos(ventanaVisualizarEquipos,
 									reparacionActual);
 
 							if (reparacionAeditar != null) {
-								// No hay caracteres inválidos, proceder a guardar
 								guardarCambios(ventanaVisualizarEquipos);
 								ventanaVisualizarEquipos.dispose();
 								ventanaVisualizarEquipos = null;
 							} else {
-								// Hay caracteres inválidos
-								// El gestorDatos ya mostró el popup con los caracteres inválidos
-								// No cerrar la ventana, permitir al usuario corregir
-								// Prevenir el cierre de la ventana
 								ventanaVisualizarEquipos
 										.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 							}
 						} else if (opcion == JOptionPane.NO_OPTION) {
-							// Usuario no quiere guardar, cerrar directamente
 							ventanaVisualizarEquipos.dispose();
 							ventanaVisualizarEquipos = null;
-						} else if (opcion == JOptionPane.CANCEL_OPTION) {
-							// Usuario canceló, no hacer nada
-							// La ventana permanece abierta
-							return;
 						}
 					} else {
-						// Ya está guardado, cerrar directamente
 						ventanaVisualizarEquipos.dispose();
 						ventanaVisualizarEquipos = null;
 					}
@@ -1234,9 +1125,6 @@ public class GestorVisualizacionEquipos {
 		}
 	}
 
-	/**
-	 * Procesa eventos delegados de ActionListener
-	 */
 	public void procesarEventos(ActionEvent e) {
 		if (ventanaVisualizarEquipos == null)
 			return;
@@ -1252,9 +1140,6 @@ public class GestorVisualizacionEquipos {
 		}
 	}
 
-	/**
-	 * Getters
-	 */
 	public VentanaVisualizarEquipos getVentanaVisualizarEquipos() {
 		return ventanaVisualizarEquipos;
 	}
@@ -1269,7 +1154,7 @@ public class GestorVisualizacionEquipos {
 
 	public int obtenerNumeroELS() {
 		String ubicacion = agenda.getUbicacionBase();
-		if (ubicacion.equals("Buenos Aires")) {
+		if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
 			return agenda.dameNumeroELSbsas() + 1;
 		} else {
 			return agenda.dameNumeroELS() + 1;
