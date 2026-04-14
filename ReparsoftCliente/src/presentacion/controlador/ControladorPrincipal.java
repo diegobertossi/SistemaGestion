@@ -83,7 +83,7 @@ public class ControladorPrincipal implements ActionListener {
 		controladorUsuLogin = new ControladorUsuLogin(new Permisos(ubicacionBase));
 
 		// Actualizar label con información de base actual
-		String modo = Conexion.isModoAntigua() ? " - ANTIGUA" : " - NORMAL";
+		String modo = Conexion.isModoAntigua() ? " - ANTIGUA" : " - ACTUAL";
 		vistaPrincipal.getTextLugarBaseDatos().setText(ubicacionBase.toUpperCase() + modo);
 	}
 

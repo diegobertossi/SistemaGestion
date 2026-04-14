@@ -459,4 +459,8 @@ public class VistaPrincipal extends JFrame {
 		this.textLugarBaseDatos = textLugarBaseDatos;
 	}
 
+	public String getUbicacionActual() {
+		return textLugarBaseDatos.getText();
+	}
+
 }

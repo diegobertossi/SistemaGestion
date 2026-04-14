@@ -72,7 +72,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
     private Agenda agenda;
 
     public ControladorBackup(VentanaBackUp ventanaBackUp, Agenda agenda) {
-
         this.ventanaBackUp = ventanaBackUp;
         this.agenda = agenda;
         this.ventanaBackUp.getBtnGenerarB().addActionListener(this);
@@ -321,7 +320,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
                     publish(15);
 
-                    // 2. Leer sentencias SQL del dump
+                    // 2. Leer sentencias SQL del dump (¡CORREGIDO!)
                     System.out.println("Leyendo sentencias SQL del dump...");
                     List<String> sentencias = parseSqlStatements(archivoTemporal);
                     int totalSentencias = sentencias.size();
@@ -351,8 +350,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
                         System.out.println("Limpiando base de datos remota...");
                         limpiarBaseDatos(conexionRemota);
 
-                        // CORRECCIÓN CRÍTICA: deshabilitar FK checks antes de restaurar
-                        // para evitar errores por orden de creación de tablas con FOREIGN KEYS
                         stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
                         stmt.execute("SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
 
@@ -366,8 +363,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
                         for (int i = 0; i < totalSentencias; i++) {
                             String s = sentencias.get(i).trim();
 
-                            // Saltar sentencias vacías, comentarios puros y sentencias de DB que
-                            // no aplican al esquema remoto
                             if (s.isEmpty()
                                     || s.startsWith("--")
                                     || s.toUpperCase().startsWith("CREATE DATABASE")
@@ -377,31 +372,26 @@ public class ControladorBackup implements ActionListener, MouseListener {
                                 continue;
                             }
 
-                            // Las líneas condicionales /*!...*/ del dump de mysqldump
-                            // NO se ejecutan aquí porque el parser las incluye como sentencias
-                            // vacías o con contenido que Clever Cloud puede rechazar.
-                            // Ya se manejan con SET FOREIGN_KEY_CHECKS=0 explícito arriba.
-                         // Saltar comentarios condicionales de mysqldump (/*!....*/)
-                         // y sentencias de configuración de charset que Clever Cloud no soporta bien
-                         if (s.startsWith("/*!") && s.endsWith("*/")) {
-                             sentenciasIgnoradas++;
-                             continue;
-                         }
-                         if (s.toUpperCase().contains("CHARACTER_SET_CLIENT")
-                                 || s.toUpperCase().contains("CHARACTER_SET_RESULTS")
-                                 || s.toUpperCase().contains("COLLATION_CONNECTION")
-                                 || s.toUpperCase().contains("SQL_NOTES")
-                                 || s.toUpperCase().contains("@OLD_")) {
-                             sentenciasIgnoradas++;
-                             continue;
-                         }
+                            // Saltar comentarios condicionales de mysqldump
+                            if (s.startsWith("/*!") && s.endsWith("*/")) {
+                                sentenciasIgnoradas++;
+                                continue;
+                            }
+                            if (s.toUpperCase().contains("CHARACTER_SET_CLIENT")
+                                    || s.toUpperCase().contains("CHARACTER_SET_RESULTS")
+                                    || s.toUpperCase().contains("COLLATION_CONNECTION")
+                                    || s.toUpperCase().contains("SQL_NOTES")
+                                    || s.toUpperCase().contains("@OLD_")) {
+                                sentenciasIgnoradas++;
+                                continue;
+                            }
 
                             try {
                                 stmt.execute(s);
                                 sentenciasEjecutadas++;
                             } catch (SQLException ex) {
                                 if (!ex.getMessage().contains("Access denied")) {
-                                    System.err.println("Error menor en sentencia (ignorado): " + ex.getMessage());
+                                    System.err.println("Error en sentencia (ignorada): " + ex.getMessage());
                                 }
                                 sentenciasIgnoradas++;
                             }
@@ -410,7 +400,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
                             publish(progreso);
                         }
 
-                        // CORRECCIÓN: rehabilitar FK checks al finalizar
                         stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
 
                         System.out.println("Restauración completada:");
@@ -454,6 +443,47 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
         return true;
     }
+
+    // ===================================================================
+    // MÉTODO CORREGIDO: ahora respeta escapes (\') de mysqldump
+    // ===================================================================
+    private List<String> parseSqlStatements(String filePath) throws IOException {
+        List<String> statements = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        boolean inSingleQuote = false;
+        boolean inDoubleQuote = false;
+        boolean escaped = false;
+
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(new FileInputStream(filePath), "UTF-8"))) {
+            int c;
+            while ((c = reader.read()) != -1) {
+                char ch = (char) c;
+                sb.append(ch);
+
+                if (escaped) {
+                    escaped = false;
+                } else if (ch == '\\') {
+                    escaped = true;
+                } else if (ch == '\'' && !inDoubleQuote) {
+                    inSingleQuote = !inSingleQuote;
+                } else if (ch == '"' && !inSingleQuote) {
+                    inDoubleQuote = !inDoubleQuote;
+                } else if (ch == ';' && !inSingleQuote && !inDoubleQuote) {
+                    statements.add(sb.toString().trim());
+                    sb.setLength(0);
+                }
+            }
+            if (sb.length() > 0 && sb.toString().trim().length() > 0) {
+                statements.add(sb.toString().trim());
+            }
+        }
+        return statements;
+    }
+
+    // ===================================================================
+    // Resto de métodos (sin cambios)
+    // ===================================================================
 
     public boolean ActualizarBackupMySQLremoto(String ubicacion, String cleverCloudHost, String cleverCloudPort,
             String cleverCloudUser, String cleverCloudPassword, String cleverCloudDatabase) {
@@ -611,9 +641,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
         return exitoso[0];
     }
 
-    /**
-     * Limpia todas las tablas de una base de datos deshabilitando las FK temporalmente.
-     */
     private void limpiarBaseDatos(Connection conexion) throws SQLException {
         try (Statement stmt = conexion.createStatement()) {
             stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
@@ -663,7 +690,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
                 if (rsCreate.next()) {
                     String createSQL = rsCreate.getString(2);
 
-                    // Normalizar charset para compatibilidad
                     createSQL = createSQL.replace("utf8mb3", "utf8mb4");
                     createSQL = createSQL.replaceAll("CHARSET=utf8(?!mb4)", "CHARSET=utf8mb4");
                     createSQL = createSQL.replaceAll("CHARACTER SET utf8(?!mb4)", "CHARACTER SET utf8mb4");
@@ -675,7 +701,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
                         stmtLocal.executeUpdate(createSQL);
                     } catch (SQLException e) {
                         System.err.println("Error al crear tabla con charset modificado, usando SQL original");
-                        System.err.println("Detalle: " + e.getMessage());
                         stmtLocal.executeUpdate(rsCreate.getString(2));
                     }
                 }
@@ -1020,9 +1045,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
         SwingUtilities.invokeLater(() -> worker.execute());
     }
 
-    /**
-     * Busca dinámicamente la ruta de instalación de MySQL.
-     */
     private String obtenerRutaMySQL() {
         String[] rutasMySQL = {
                 "C:\\Program Files\\MySQL\\MySQL Server 8.4\\bin\\",
@@ -1068,39 +1090,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
                         + "Rutas verificadas: MySQL Server 8.4, 8.0 y 5.5",
                 "Error - MySQL no encontrado", JOptionPane.ERROR_MESSAGE);
         return null;
-    }
-
-    /**
-     * Parsea el dump SQL separando correctamente las sentencias por ';',
-     * respetando los strings entre comillas simples y dobles.
-     */
-    private List<String> parseSqlStatements(String filePath) throws IOException {
-        List<String> statements = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        boolean inSingleQuote = false;
-        boolean inDoubleQuote = false;
-
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(new FileInputStream(filePath), "UTF-8"))) {
-            int c;
-            while ((c = reader.read()) != -1) {
-                char ch = (char) c;
-                sb.append(ch);
-
-                if (ch == '\'' && !inDoubleQuote) {
-                    inSingleQuote = !inSingleQuote;
-                } else if (ch == '"' && !inSingleQuote) {
-                    inDoubleQuote = !inDoubleQuote;
-                } else if (ch == ';' && !inSingleQuote && !inDoubleQuote) {
-                    statements.add(sb.toString().trim());
-                    sb.setLength(0);
-                }
-            }
-            if (sb.length() > 0 && sb.toString().trim().length() > 0) {
-                statements.add(sb.toString().trim());
-            }
-        }
-        return statements;
     }
 
     @Override
