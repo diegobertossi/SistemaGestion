@@ -57,10 +57,8 @@ public class ControladorUsuLogin {
 			vistaPrincipal.getBotonConfiguracion().setEnabled(true);
 			vistaLogin.dispose();
 
-			vistaPrincipal.getTextUsuario().setText("BIENVENIDO/A: " + usu_login.getNombre());			
-					
-			//vistaPrincipal.getTextUsuario().setText("BIENVENIDO/A: " + usu_login.getNombre());
-			
+			vistaPrincipal.getTextUsuario().setText("BIENVENIDO/A: " + usu_login.getNombre());
+
 			vistaPrincipal.getTextProgramador().setText("Diseñado por Diego H. Bertossi");
 			vistaPrincipal.getTextVersionSoft().setText("Versión Reparsoft 2.0");
 
@@ -125,41 +123,42 @@ public class ControladorUsuLogin {
 
 	}
 
-	
 	public void verificarPermisosVentanaListados(VentanaListadoReparaciones ventanaListadoReparaciones) {
-	    if (usu_login != null) {
-	        // Obtener la lista de permisos principales del usuario
-	        List<PermisoDTO> permisos_principal = permisos.damePermisosPadres(usu_login.getIdRol());
+		if (usu_login != null) {
+			// Obtener la lista de permisos principales del usuario
+			List<PermisoDTO> permisos_principal = permisos.damePermisosPadres(usu_login.getIdRol());
 
-	        if (permisos_principal != null && !permisos_principal.isEmpty()) {
-	            // Verificar si tiene el permiso "Presupuestos"
-	            boolean tienePermisoPresupuestos = permisos_principal.stream()
-	                    .anyMatch(permiso -> "Presupuestos".equalsIgnoreCase(permiso.getNombrePantalla()));
+			if (permisos_principal != null && !permisos_principal.isEmpty()) {
+				// Verificar si tiene el permiso "Presupuestos"
+				boolean tienePermisoPresupuestos = permisos_principal.stream()
+						.anyMatch(permiso -> "Presupuestos".equalsIgnoreCase(permiso.getNombrePantalla()));
 
-	            if (!tienePermisoPresupuestos) {
-	                System.out.println("NO TIENE PERMISO");
+				if (!tienePermisoPresupuestos) {
+					System.out.println("NO TIENE PERMISO");
 
-	                // Ocultar las columnas  20, 21, 22
-	                int[] columnas = {20, 21, 22};
-	                for (int columna : columnas) {
-	                    ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columna).setMaxWidth(0);
-	                    ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columna).setMinWidth(0);
-	                    ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columna).setPreferredWidth(0);
-	                }
+					// Ocultar las columnas 20, 21, 22
+					int[] columnas = { 20, 21, 22 };
+					for (int columna : columnas) {
+						ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columna)
+								.setMaxWidth(0);
+						ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columna)
+								.setMinWidth(0);
+						ventanaListadoReparaciones.getTblReparaciones().getColumnModel().getColumn(columna)
+								.setPreferredWidth(0);
+					}
 
-	                // Ocultar los checkboxes correspondientes
-	                ventanaListadoReparaciones.getChckbxPrecioPeso().setVisible(false);
-	                ventanaListadoReparaciones.getChckbxPrecioDolar().setVisible(false);
-	                ventanaListadoReparaciones.getChckbxPago().setVisible(false);
-	                ventanaListadoReparaciones.getBtnEstadisticas().setVisible(false);
-	                
-	            }
-	        } else {
-	            System.out.println("La lista de permisos está vacía o es nula.");
-	        }
-	    }
+					// Ocultar los checkboxes correspondientes
+					ventanaListadoReparaciones.getChckbxPrecioPeso().setVisible(false);
+					ventanaListadoReparaciones.getChckbxPrecioDolar().setVisible(false);
+					ventanaListadoReparaciones.getChckbxPago().setVisible(false);
+					ventanaListadoReparaciones.getBtnEstadisticas().setVisible(false);
+
+				}
+			} else {
+				System.out.println("La lista de permisos está vacía o es nula.");
+			}
+		}
 	}
-
 
 	// public void verificarPermisosInternacion(VistaInternaciones vista)
 	// {
@@ -345,8 +344,15 @@ public class ControladorUsuLogin {
 	//
 
 	public void verificarPermisosVentanaVisualizacion(VentanaVisualizarEquipos ventanaVisualizarEquipos2) {
-		// TODO Auto-generated method stub
-		
+
+		if (usu_login != null) {
+			List<PermisoDTO> permisos_principal = permisos.damePermisosPadres(usu_login.getIdRol());
+
+			if (!permisos_principal.contains(new PermisoDTO(0, 0, 0, "Presupuestos"))) {
+				ventanaVisualizarEquipos2.getPanel_presupuesto().setVisible(false);
+				ventanaVisualizarEquipos2.getLabelPresupuesto().setVisible(false);
+			}
+		}
 	}
 
 }
