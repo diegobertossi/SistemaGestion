@@ -48,30 +48,47 @@ public class TablaFiltros {
 			});
 
 			final int columnIndex = i;
+			final JTextField finalEditor = editor;   // para usar dentro de listeners
 
-			// Manejo de eventos para el JComboBox
+			// ActionListener (cambio de selección con mouse o flechas)
 			filterCombos[i].addActionListener(e -> {
 				if (filterCombos[columnIndex] != null) {
-					manejarFiltro(tabla, filterCombos[columnIndex], editor, fondoFiltros, fondoBusqueda, columnIndex);
+					manejarFiltro(tabla, filterCombos[columnIndex], finalEditor, fondoFiltros, fondoBusqueda, columnIndex);
 				}
 			});
 
+			// FocusListener (al perder foco con TAB o clic afuera)
 			filterCombos[i].addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {
 					if (filterCombos[columnIndex] != null) {
-						manejarFiltro(tabla, filterCombos[columnIndex], editor, fondoFiltros, fondoBusqueda,
+						manejarFiltro(tabla, filterCombos[columnIndex], finalEditor, fondoFiltros, fondoBusqueda,
 								columnIndex);
 					}
 				}
 			});
 
+			// ==================== SOLUCIÓN PARA ENTER ====================
+			// KeyListener en el ComboBox (por si acaso)
 			filterCombos[i].addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_ENTER && filterCombos[columnIndex] != null) {
-						manejarFiltro(tabla, filterCombos[columnIndex], editor, fondoFiltros, fondoBusqueda,
-								columnIndex);
+					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+						manejarFiltro(tabla, filterCombos[columnIndex], finalEditor, fondoFiltros, fondoBusqueda, columnIndex);
+						tabla.requestFocusInWindow();
+					}
+				}
+			});
+
+			// KeyListener en el Editor (JTextField) → ESTO ES LO QUE ARREGLA EL PROBLEMA
+			editor.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+						// Forzar selección del texto actual antes de filtrar
+						filterCombos[columnIndex].setSelectedItem(editor.getText().trim());
+						manejarFiltro(tabla, filterCombos[columnIndex], finalEditor, fondoFiltros, fondoBusqueda, columnIndex);
+						tabla.requestFocusInWindow();
 					}
 				}
 			});
@@ -96,19 +113,14 @@ public class TablaFiltros {
 		JScrollPane scrollPane = (JScrollPane) tabla.getParent().getParent();
 		scrollPane.setColumnHeaderView(headerContainer);
 
+		// Listener para redimensionar columnas
 		tabla.getColumnModel().addColumnModelListener(new javax.swing.event.TableColumnModelListener() {
 			@Override
-			public void columnAdded(javax.swing.event.TableColumnModelEvent e) {
-			}
-
+			public void columnAdded(javax.swing.event.TableColumnModelEvent e) {}
 			@Override
-			public void columnRemoved(javax.swing.event.TableColumnModelEvent e) {
-			}
-
+			public void columnRemoved(javax.swing.event.TableColumnModelEvent e) {}
 			@Override
-			public void columnMoved(javax.swing.event.TableColumnModelEvent e) {
-			}
-
+			public void columnMoved(javax.swing.event.TableColumnModelEvent e) {}
 			@Override
 			public void columnMarginChanged(javax.swing.event.ChangeEvent e) {
 				int xPosition = 0;
@@ -123,44 +135,35 @@ public class TablaFiltros {
 					xPosition += columnWidth;
 				}
 			}
-
 			@Override
-			public void columnSelectionChanged(javax.swing.event.ListSelectionEvent e) {
-			}
+			public void columnSelectionChanged(javax.swing.event.ListSelectionEvent e) {}
 		});
-		
-		
-		
 	}
-	
-	
-	
 
-public void deshabilitarAutofiltro(JTable tabla) {
-    if (filterCombos != null) {
-        for (JComboBox<String> combo : filterCombos) {
-            if (combo != null) {
-            	combo.setSelectedItem("Todos");
-                combo.setEnabled(false);
-                combo.setEditable(false);
-            }
-        }
-    }
-}
+	// ====================== MÉTODOS RESTANTES (sin cambios) ======================
 
+	public void deshabilitarAutofiltro(JTable tabla) {
+		if (filterCombos != null) {
+			for (JComboBox<String> combo : filterCombos) {
+				if (combo != null) {
+					combo.setSelectedItem("Todos");
+					combo.setEnabled(false);
+					combo.setEditable(false);
+				}
+			}
+		}
+	}
 
-public void habilitarAutofiltro(JTable tabla) {
-    if (filterCombos != null) {
-        for (JComboBox<String> combo : filterCombos) {
-            if (combo != null) {
-                combo.setEnabled(true);
-                combo.setEditable(true);
-            }
-        }
-    }
-}
-
-
+	public void habilitarAutofiltro(JTable tabla) {
+		if (filterCombos != null) {
+			for (JComboBox<String> combo : filterCombos) {
+				if (combo != null) {
+					combo.setEnabled(true);
+					combo.setEditable(true);
+				}
+			}
+		}
+	}
 
 	private void manejarFiltro(JTable tabla, JComboBox<String> comboBox, JTextField editor, Color fondoFiltros,
 			Color fondoBusqueda, int columnIndex) {
@@ -175,195 +178,172 @@ public void habilitarAutofiltro(JTable tabla) {
 		filtrarTabla(tabla, filterCombos);
 	}
 
-	
 	private void actualizarFiltroColumna(JTable tabla, JComboBox<String> comboBox, int columnIndex) {
-	    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-	    String columnName = tabla.getColumnName(columnIndex);
-	    comboBox.removeAllItems();
-	    comboBox.addItem("Todos");
+		DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+		String columnName = tabla.getColumnName(columnIndex);
+		comboBox.removeAllItems();
+		comboBox.addItem("Todos");
 
-	    Set<String> uniqueValues = new TreeSet<>((a, b) -> {
-	        if (esFecha(a) && esFecha(b)) {
-	            try {
-	                Date dateA = new SimpleDateFormat("yyyyMMdd").parse(a);
-	                Date dateB = new SimpleDateFormat("yyyyMMdd").parse(b);
-	                return dateA.compareTo(dateB);
-	            } catch (ParseException e) {
-	                return a.compareTo(b);
-	            }
-	        } else if (esNumero(a) && esNumero(b)) {
-	        	 return Double.compare(Double.parseDouble(a), Double.parseDouble(b));
-	        }
-	        return a.compareTo(b);
-	    });
+		Set<String> uniqueValues = new TreeSet<>((a, b) -> {
+			if (esFecha(a) && esFecha(b)) {
+				try {
+					Date dateA = new SimpleDateFormat("yyyyMMdd").parse(a);
+					Date dateB = new SimpleDateFormat("yyyyMMdd").parse(b);
+					return dateA.compareTo(dateB);
+				} catch (ParseException e) {
+					return a.compareTo(b);
+				}
+			} else if (esNumero(a) && esNumero(b)) {
+				return Double.compare(Double.parseDouble(a), Double.parseDouble(b));
+			}
+			return a.compareTo(b);
+		});
 
-	    for (int row = 0; row < model.getRowCount(); row++) {
-	        Object value = model.getValueAt(row, columnIndex);
-	        if (value != null) {
-	            String formattedValue = formatearSegunColumna(value.toString(), columnName);
-	            uniqueValues.add(formattedValue);
-	        }
-	    }
+		for (int row = 0; row < model.getRowCount(); row++) {
+			Object value = model.getValueAt(row, columnIndex);
+			if (value != null) {
+				String formattedValue = formatearSegunColumna(value.toString(), columnName);
+				uniqueValues.add(formattedValue);
+			}
+		}
 
-	    for (String value : uniqueValues) {
-	        comboBox.addItem(esFecha(value) ? formatearFecha(value) : value);
-	    }
+		for (String value : uniqueValues) {
+			comboBox.addItem(esFecha(value) ? formatearFecha(value) : value);
+		}
 	}
 
 	private String formatearSegunColumna(String value, String columnName) {
-	    if (esNumero(value)) {
-	        double numero = Double.parseDouble(value);
-	        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-	        symbols.setDecimalSeparator(',');
-	        symbols.setGroupingSeparator('.');
-	        
-	        DecimalFormat df = new DecimalFormat("#,##0.0", symbols);
-	        
-	        if (columnName.equalsIgnoreCase("PRECIO $") || columnName.equalsIgnoreCase("PAGO")) {
-	            return "$ " + df.format(numero);
-	        } else if (columnName.equalsIgnoreCase("PRECIO U$$")) {
-	            return "U$$ " + df.format(numero);
-	        }
-	    }
-	    return value;
-	}
+		if (esNumero(value)) {
+			double numero = Double.parseDouble(value);
+			DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+			symbols.setDecimalSeparator(',');
+			symbols.setGroupingSeparator('.');
 
+			DecimalFormat df = new DecimalFormat("#,##0.0", symbols);
+
+			if (columnName.equalsIgnoreCase("PRECIO $") || columnName.equalsIgnoreCase("PAGO")) {
+				return "$ " + df.format(numero);
+			} else if (columnName.equalsIgnoreCase("PRECIO U$$")) {
+				return "U$$ " + df.format(numero);
+			}
+		}
+		return value;
+	}
 
 	private boolean esNumero(String value) {
-	try {
-		Double.parseDouble(value);
-		return true;
-	} catch (NumberFormatException e) {
-		return false;
+		try {
+			Double.parseDouble(value);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
-}
 
 	private boolean esFecha(String value) {
-	    return value.length() == 8 && value.matches("\\d{8}");
+		return value.length() == 8 && value.matches("\\d{8}");
 	}
 
 	private String formatearFecha(String fecha) {
-	    try {
-	        Date date = new SimpleDateFormat("yyyyMMdd").parse(fecha);
-	        return new SimpleDateFormat("dd/MM/yyyy").format(date);
-	    } catch (ParseException e) {
-	        return fecha;
-	    }
+		try {
+			Date date = new SimpleDateFormat("yyyyMMdd").parse(fecha);
+			return new SimpleDateFormat("dd/MM/yyyy").format(date);
+		} catch (ParseException e) {
+			return fecha;
+		}
 	}
 
 	public void filtrarTabla(JTable tabla, JComboBox<String>[] filterCombos) {
-	    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-	    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-	    tabla.setRowSorter(sorter);
+		DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+		tabla.setRowSorter(sorter);
 
-	    ArrayList<RowFilter<Object, Object>> rowFilters = new ArrayList<>();
-	    
-	    
+		ArrayList<RowFilter<Object, Object>> rowFilters = new ArrayList<>();
 
-	    for (int i = 0; i < filterCombos.length; i++) {
-	        final int columnIndex = i;
-	        
-	           
-	        String columnName = tabla.getColumnName(columnIndex);
-	        if (filterCombos[columnIndex] != null) {
-	        	
-//	        	System.out.println(filterCombos[columnIndex].getSelectedItem());
-	        	
-	            String filterValue = (String) filterCombos[columnIndex].getSelectedItem();
+		for (int i = 0; i < filterCombos.length; i++) {
+			final int columnIndex = i;
+			String columnName = tabla.getColumnName(columnIndex);
 
-	            if (filterValue != null && !"Todos".equals(filterValue)) {
-	                // Manejo especial para columnas de precio
-	                if (columnName.equalsIgnoreCase("PRECIO $") || 
-	                    columnName.equalsIgnoreCase("PAGO") || 
-	                    columnName.equalsIgnoreCase("PRECIO U$$")) {
-	                    
-	                    // Extraer el valor numérico del formato mostrado (ej: "$ 1.234,56" -> 1234.56)
-	                    String numericValue = filterValue.replaceAll("[^\\d,]", "").replace(".", "").replace(",", ".");
+			if (filterCombos[columnIndex] != null) {
+				String filterValue = (String) filterCombos[columnIndex].getSelectedItem();
 
-	                    final double filterNumber;
-	                    try {
-	                        filterNumber = Double.parseDouble(numericValue);
-	                    } catch (NumberFormatException e) {
-	                        continue; // Si no es un número válido, ignorar este filtro
-	                    }
+				if (filterValue != null && !"Todos".equals(filterValue)) {
+					if (columnName.equalsIgnoreCase("PRECIO $") || 
+						columnName.equalsIgnoreCase("PAGO") || 
+						columnName.equalsIgnoreCase("PRECIO U$$")) {
 
-	                    rowFilters.add(new RowFilter<Object, Object>() {
-	                        @Override
-	                        public boolean include(Entry<?, ?> entry) {
-	                            try {
-	                                String cellValue = entry.getStringValue(columnIndex);
-	                                // Extraer valor numérico de la celda (puede estar formateado)
-	                                String cellNumericValue = cellValue.replaceAll("[^\\d,]", "").replace(".", "").replace(",", ".");
-	                                double cellNumber = Double.parseDouble(cellNumericValue)/10;
-	                                
-	                                // Comparar valores numéricos directamente
-	                                return Math.abs(cellNumber - filterNumber) < 0.001; // Tolerancia para decimales
-	                            } catch (Exception e) {
-	                                return false;
-	                            }
-	                        }
-	                    });
-	                }
-	                // Manejo especial para columnas de fecha
-	                else if (columnName.equals("ENTRADA") || columnName.equals("REVISIÓN") || columnName.equals("SALIDA")) {
-	                    String regex = Pattern.quote(obtenerFechaOriginal(filterValue)).replace("*", ".*");
-	                    rowFilters.add(RowFilter.regexFilter("(?i)" + regex, columnIndex));
-	                } 
-	                // Filtrado para texto normal con comodines y manejo de acentos
-	                else {
-	                    final String normalizedFilter = removeDiacritics(filterValue.toLowerCase());
-	                    final String regexPattern;
+						String numericValue = filterValue.replaceAll("[^\\d,]", "").replace(".", "").replace(",", ".");
 
-	                    if (normalizedFilter.contains("*")) {
-	                        String tempRegex = normalizedFilter.replace(".", "\\.").replace("*", ".*").replace("?", ".");
+						final double filterNumber;
+						try {
+							filterNumber = Double.parseDouble(numericValue);
+						} catch (NumberFormatException e) {
+							continue;
+						}
 
-	                        if (!normalizedFilter.startsWith("*") && !normalizedFilter.endsWith("*")) {
-	                            tempRegex = "^" + tempRegex + "$";
-	                        } else if (!normalizedFilter.startsWith("*")) {
-	                            tempRegex = "^" + tempRegex;
-	                        } else if (!normalizedFilter.endsWith("*")) {
-	                            tempRegex = tempRegex + "$";
-	                        }
-	                        regexPattern = tempRegex;
-	                    } else {
-	                        regexPattern = "^" + Pattern.quote(normalizedFilter) + "$";
-	                    }
+						rowFilters.add(new RowFilter<Object, Object>() {
+							@Override
+							public boolean include(Entry<?, ?> entry) {
+								try {
+									String cellValue = entry.getStringValue(columnIndex);
+									String cellNumericValue = cellValue.replaceAll("[^\\d,]", "").replace(".", "").replace(",", ".");
+									double cellNumber = Double.parseDouble(cellNumericValue) / 10;
+									return Math.abs(cellNumber - filterNumber) < 0.001;
+								} catch (Exception e) {
+									return false;
+								}
+							}
+						});
+					} else if (columnName.equals("ENTRADA") || columnName.equals("REVISIÓN") || columnName.equals("SALIDA")) {
+						String regex = Pattern.quote(obtenerFechaOriginal(filterValue)).replace("*", ".*");
+						rowFilters.add(RowFilter.regexFilter("(?i)" + regex, columnIndex));
+					} else {
+						final String normalizedFilter = removeDiacritics(filterValue.toLowerCase());
+						final String regexPattern;
 
-	                    rowFilters.add(new RowFilter<Object, Object>() {
-	                        @Override
-	                        public boolean include(Entry<?, ?> entry) {
-	                            String cellValue = entry.getStringValue(columnIndex);
-	                            String normalizedCellValue = removeDiacritics(cellValue.toLowerCase());
+						if (normalizedFilter.contains("*")) {
+							String tempRegex = normalizedFilter.replace(".", "\\.").replace("*", ".*").replace("?", ".");
+							if (!normalizedFilter.startsWith("*") && !normalizedFilter.endsWith("*")) {
+								tempRegex = "^" + tempRegex + "$";
+							} else if (!normalizedFilter.startsWith("*")) {
+								tempRegex = "^" + tempRegex;
+							} else if (!normalizedFilter.endsWith("*")) {
+								tempRegex = tempRegex + "$";
+							}
+							regexPattern = tempRegex;
+						} else {
+							regexPattern = "^" + Pattern.quote(normalizedFilter) + "$";
+						}
 
-	                            if (normalizedFilter.contains("*")) {
-	                                return normalizedCellValue.matches(regexPattern);
-	                            } else {
-	                                return normalizedCellValue.equals(normalizedFilter);
-	                            }
-	                        }
-	                    });
-	                }
-	            }
-	        }
-	    }
+						rowFilters.add(new RowFilter<Object, Object>() {
+							@Override
+							public boolean include(Entry<?, ?> entry) {
+								String cellValue = entry.getStringValue(columnIndex);
+								String normalizedCellValue = removeDiacritics(cellValue.toLowerCase());
+								if (normalizedFilter.contains("*")) {
+									return normalizedCellValue.matches(regexPattern);
+								} else {
+									return normalizedCellValue.equals(normalizedFilter);
+								}
+							}
+						});
+					}
+				}
+			}
+		}
 
-	    if (rowFilters.isEmpty()) {
-	        sorter.setRowFilter(null);
-	    } else {
-	        RowFilter<Object, Object> combinedFilter = RowFilter.andFilter(rowFilters);
-	        sorter.setRowFilter(combinedFilter);
-	    }
+		if (rowFilters.isEmpty()) {
+			sorter.setRowFilter(null);
+		} else {
+			sorter.setRowFilter(RowFilter.andFilter(rowFilters));
+		}
 	}
-	// Método auxiliar para eliminar acentos
+
 	private static String removeDiacritics(String str) {
-		if (str == null)
-			return null;
+		if (str == null) return null;
 		str = Normalizer.normalize(str, Normalizer.Form.NFD);
 		str = str.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 		return str;
 	}
-
-
 
 	private String obtenerFechaOriginal(String fechaFormateada) {
 		try {
@@ -373,5 +353,4 @@ public void habilitarAutofiltro(JTable tabla) {
 			return fechaFormateada;
 		}
 	}
-
 }
