@@ -576,13 +576,13 @@ public class VentanaMigracion extends JDialog {
     // ════════════════════════════════════════════════════════════════════════
     // MAIN PARA PRUEBA RÁPIDA (eliminar en producción)
     // ════════════════════════════════════════════════════════════════════════
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ignored) {}
-        SwingUtilities.invokeLater(() -> {
-            VentanaMigracion v = new VentanaMigracion(null);
-            v.setVisible(true);
-        });
-    }
+//    public static void main(String[] args) {
+//        try {
+//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//        } catch (Exception ignored) {}
+//        SwingUtilities.invokeLater(() -> {
+//            VentanaMigracion v = new VentanaMigracion(null);
+//            v.setVisible(true);
+//        });
+//    }
 }

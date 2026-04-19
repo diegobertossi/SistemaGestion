@@ -4,9 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import persistencia.conexion.Conexion;
 import presentacion.vista.VistaPrincipal;
+import vista.migracion.VentanaMigracion;
 import presentacion.vista.VentanaConfiguracion;
 import presentacion.vista.VentanaUbicacionBaseDeDatos;
 
@@ -15,6 +18,7 @@ public class ControladorConfiguraciones implements ActionListener {
 	private VentanaConfiguracion vistaConfiguracion;
 	private ControladorUsuLogin controladorUsuLogin;
 	private VistaPrincipal vistaPrincipal;
+	private vista.migracion.VentanaMigracion ventanaMigracion;
 
 	public ControladorConfiguraciones(VentanaConfiguracion vistaConfiguracion, 
 	                                  ControladorUsuLogin controladorUsuLogin, 
@@ -28,6 +32,7 @@ public class ControladorConfiguraciones implements ActionListener {
 		this.vistaConfiguracion.getBtnUbicacionSistema().addActionListener(this);
 		this.vistaConfiguracion.getBtnEquiposAntiguos().addActionListener(this);
 		this.vistaConfiguracion.getBtnVolverBaseNormal().addActionListener(this);
+		this.vistaConfiguracion.getBtnMigracion().addActionListener(this);
 	}
 
 	@Override
@@ -93,7 +98,27 @@ public class ControladorConfiguraciones implements ActionListener {
 			}
 		}
 		
+		// ====================== BOTÓN MIGRACIÓN ACCESS -> MYSQL ======================
+		else if (arg0.getSource() == vistaConfiguracion.getBtnMigracion()) {
+
+	        try {
+          UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+      } catch (Exception ignored) {}
+      SwingUtilities.invokeLater(() -> {
+          VentanaMigracion v = new VentanaMigracion(null);
+          v.setVisible(true);
+      });
+		}
+		
+		
 	}
+	
+	
+	
+
+	
+	
+	
 
 	/**
 	 * Obtiene la ubicación de forma segura evitando el fallback a "Bariloche" 

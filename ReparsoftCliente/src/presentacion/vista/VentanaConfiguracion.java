@@ -20,10 +20,13 @@ public class VentanaConfiguracion extends JFrame
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JButton btnUbicacionSistema;
+	private JButton btnVolverBaseNormal;
 	private JButton btnEquiposAntiguos;
+	private JButton btnMigracion;
+	
 	@SuppressWarnings("unused")
 	private ControladorConfiguraciones controlador;
-	private JButton btnVolverBaseNormal;
+	
 
 	public VentanaConfiguracion(ControladorConfiguraciones controlador) 
 	{
@@ -32,7 +35,7 @@ public class VentanaConfiguracion extends JFrame
 		//this.controlador = controlador;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 442, 155);
+		setBounds(100, 100, 442, 163);
 
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
 		this.setIconImage(icon);
@@ -48,18 +51,23 @@ public class VentanaConfiguracion extends JFrame
 				
 		btnUbicacionSistema = new JButton("<html><center>CAMBIAR UBICACION DEL SISTEMEA</html>");
 		btnUbicacionSistema.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnUbicacionSistema.setBounds(4, 22, 136, 72);
+		btnUbicacionSistema.setBounds(4, 30, 136, 63);
 		contentPane.add(btnUbicacionSistema);
 		
 		btnEquiposAntiguos = new JButton("<html><center>EQUIPOS ANTIGUOS</html>");
 		btnEquiposAntiguos.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnEquiposAntiguos.setBounds(144, 22, 136, 72);
+		btnEquiposAntiguos.setBounds(144, 30, 136, 63);
 		contentPane.add(btnEquiposAntiguos);
 		
 		btnVolverBaseNormal = new JButton("<html><center>EQUIPOS ACTUALES</html>");
 		btnVolverBaseNormal.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnVolverBaseNormal.setBounds(284, 22, 136, 72);
+		btnVolverBaseNormal.setBounds(284, 30, 136, 63);
 		contentPane.add(btnVolverBaseNormal);
+		
+		btnMigracion = new JButton("<html><center>MIGRACION ACCESS ->MYSQL</html>");
+		btnMigracion.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnMigracion.setBounds(100, 104, 225, 17);
+		contentPane.add(btnMigracion);
 
 		
 		
@@ -89,5 +97,16 @@ public class VentanaConfiguracion extends JFrame
 	public void setBtnVolverBaseNormal(JButton btnVolverBaseNormal) {
 		this.btnVolverBaseNormal = btnVolverBaseNormal;
 	}
+
+	public JButton getBtnMigracion() {
+		return btnMigracion;
+	}
+
+	public void setBtnMigracion(JButton btnMigracion) {
+		this.btnMigracion = btnMigracion;
+	}
+	
+	
+	
 }
 
