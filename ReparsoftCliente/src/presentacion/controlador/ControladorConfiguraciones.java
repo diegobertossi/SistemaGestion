@@ -101,13 +101,8 @@ public class ControladorConfiguraciones implements ActionListener {
 		// ====================== BOTÓN MIGRACIÓN ACCESS -> MYSQL ======================
 		else if (arg0.getSource() == vistaConfiguracion.getBtnMigracion()) {
 
-	        try {
-          UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      } catch (Exception ignored) {}
-      SwingUtilities.invokeLater(() -> {
-          VentanaMigracion v = new VentanaMigracion(null);
+          VentanaMigracion v = new VentanaMigracion();
           v.setVisible(true);
-      });
 		}
 		
 		

@@ -87,16 +87,30 @@ public class VentanaMigracion extends JDialog {
     // Estado interno
     private File    archivoAccdb;
     private boolean migracionEnCurso = false;
+    private GridBagConstraints c_1;
+    private GridBagConstraints c_2;
+    private GridBagConstraints c_3;
+    private GridBagConstraints c_4;
+    private GridBagConstraints c_5;
+    private GridBagConstraints c_6;
+    private GridBagConstraints c_7;
+    private GridBagConstraints c_8;
+    private GridBagConstraints c_9;
 
     // ── Constructor ─────────────────────────────────────────────────────────
-    public VentanaMigracion(Frame padre) {
-        super(padre, "Migración Access → MySQL", true);
+    public VentanaMigracion() {
+        super();
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setBounds(100, 100, 800, 720);
+        setResizable(false);
+		this.setLocationRelativeTo(null);
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		this.setIconImage(icon);
+
+        
         initComponents();
         layoutComponents();
         initEventos();
-        pack();
-        setMinimumSize(new Dimension(780, 720));
-        setLocationRelativeTo(padre);
     }
 
     // ════════════════════════════════════════════════════════════════════════
@@ -105,36 +119,29 @@ public class VentanaMigracion extends JDialog {
     private void initComponents() {
 
         // Archivo
-        txtRutaArchivo = new JTextField(40);
+        txtRutaArchivo = new JTextField();
         txtRutaArchivo.setEditable(false);
-        txtRutaArchivo.setBackground(Color.WHITE);
         btnSeleccionarArchivo = new JButton("Seleccionar...");
-        btnSeleccionarArchivo.setIcon(UIManager.getIcon("FileView.fileIcon"));
 
         // Rango ELS
         spnElsDesde = new JSpinner(new SpinnerNumberModel(ELS_MIN_DEFAULT, 1, 99999, 1));
         spnElsHasta = new JSpinner(new SpinnerNumberModel(ELS_MAX_DEFAULT, 1, 99999, 1));
-        ((JSpinner.DefaultEditor) spnElsDesde.getEditor()).getTextField().setColumns(6);
-        ((JSpinner.DefaultEditor) spnElsHasta.getEditor()).getTextField().setColumns(6);
-
-        // Staging — campos fijos
-        txtStagingHost = crearCampoFijo(STAGING_HOST, 12);
-        txtStagingPort = crearCampoFijo(STAGING_PORT, 5);
-        txtStagingDB   = crearCampoFijo(STAGING_DB,   14);
-        txtStagingUser = crearCampoFijo(STAGING_USER,  8);
-        txtStagingPass = crearPassFijo(STAGING_PASS,   8);
 
         // Destino — host/puerto/usuario fijos
-        txtDestinoHost = crearCampoFijo(DESTINO_HOST, 12);
-        txtDestinoPort = crearCampoFijo(DESTINO_PORT,  5);
-        txtDestinoUser = crearCampoFijo(DESTINO_USER,  8);
-        txtDestinoPass = crearPassFijo(DESTINO_PASS,   8);
+        txtDestinoHost = new JTextField(DESTINO_HOST);
+        txtDestinoHost.setEnabled(false);
+        txtDestinoPort = new JTextField(DESTINO_PORT);
+        txtDestinoPort.setEnabled(false);
+        txtDestinoUser = new JTextField(DESTINO_USER);
+        txtDestinoUser.setEnabled(false);
+        txtDestinoPass = new JPasswordField(DESTINO_PASS);
+        txtDestinoPass.setEnabled(false);
 
         // RadioButtons BD destino — grupo único (solo una selección posible)
-        rbBrcAnt = new JRadioButton("Datos de Bariloche Antiguos    → " + DB_BRC_ANT);
-        rbBasAnt = new JRadioButton("Datos de Buenos Aires Antiguos → " + DB_BAS_ANT);
-        rbBrcAct = new JRadioButton("Datos Bariloche Actuales       → " + DB_BRC_ACT);
-        rbBasAct = new JRadioButton("Datos Buenos Aires Actuales    → " + DB_BAS_ACT);
+        rbBrcAnt = new JRadioButton("Datos de Bariloche Antiguos");
+        rbBasAnt = new JRadioButton("Datos de Buenos Aires Antiguos");
+        rbBrcAct = new JRadioButton("Datos de Bariloche Actuales");
+        rbBasAct = new JRadioButton("Datos de Buenos Aires Actuales");
 
         ButtonGroup grupoBD = new ButtonGroup();
         grupoBD.add(rbBrcAnt);
@@ -144,15 +151,12 @@ public class VentanaMigracion extends JDialog {
         rbBrcAnt.setSelected(true); // selección por defecto
 
         // Progreso
-        progressBar = new JProgressBar(0, 100);
+        progressBar = new JProgressBar();
         progressBar.setStringPainted(true);
-        progressBar.setString("Listo");
-        progressBar.setPreferredSize(new Dimension(0, 24));
-
+        
         lblEstado = new JLabel("Seleccioná el archivo .accdb para comenzar.");
-        lblEstado.setFont(lblEstado.getFont().deriveFont(Font.ITALIC));
 
-        // Log oscuro
+        // Log
         txtLog = new JTextArea(12, 60);
         txtLog.setEditable(false);
         txtLog.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 11));
@@ -160,6 +164,14 @@ public class VentanaMigracion extends JDialog {
         txtLog.setForeground(new Color(180, 255, 180));
         txtLog.setCaretColor(Color.WHITE);
 
+        // Botones de acción
+//        btnMigrarStaging = new JButton("Staging");
+//        btnMergeDestino = new JButton("Merge");
+//        btnMigrarCompleto = new JButton("Completo");
+//        btnLimpiarLog = new JButton("Limpiar");
+//        btnCerrar = new JButton("Cerrar");
+        
+        
         // Botones de acción
         btnMigrarStaging  = new JButton("① Access → Staging");
         btnMergeDestino   = new JButton("② Staging → Destino");
@@ -172,63 +184,234 @@ public class VentanaMigracion extends JDialog {
         btnMigrarCompleto.setToolTipText("Ejecuta ambos pasos de forma encadenada");
 
         btnMigrarStaging.setBackground(new Color(70, 130, 180));
-        btnMigrarStaging.setForeground(Color.WHITE);
+        btnMigrarStaging.setForeground(Color.BLACK);
         btnMigrarStaging.setFocusPainted(false);
 
         btnMergeDestino.setBackground(new Color(60, 140, 60));
-        btnMergeDestino.setForeground(Color.WHITE);
+        btnMergeDestino.setForeground(Color.BLACK);
         btnMergeDestino.setFocusPainted(false);
 
         btnMigrarCompleto.setBackground(new Color(180, 80, 20));
-        btnMigrarCompleto.setForeground(Color.WHITE);
+        btnMigrarCompleto.setForeground(Color.BLACK);
         btnMigrarCompleto.setFocusPainted(false);
         btnMigrarCompleto.setFont(btnMigrarCompleto.getFont().deriveFont(Font.BOLD));
-
-        setBotonesHabilitados(false);
-    }
-
-    // ── Helpers para campos fijos ───────────────────────────────────────────
-    private JTextField crearCampoFijo(String valor, int cols) {
-        JTextField tf = new JTextField(valor, cols);
-        tf.setEditable(false);
-        tf.setEnabled(false);
-        tf.setDisabledTextColor(new Color(50, 50, 50));
-        tf.setBackground(new Color(230, 230, 230));
-        return tf;
-    }
-
-    private JPasswordField crearPassFijo(String valor, int cols) {
-        JPasswordField pf = new JPasswordField(valor, cols);
-        pf.setEditable(false);
-        pf.setEnabled(false);
-        pf.setDisabledTextColor(new Color(50, 50, 50));
-        pf.setBackground(new Color(230, 230, 230));
-        return pf;
+        
+        
+        
     }
 
     // ════════════════════════════════════════════════════════════════════════
     // LAYOUT
     // ════════════════════════════════════════════════════════════════════════
     private void layoutComponents() {
-        setLayout(new BorderLayout(8, 8));
-        getRootPane().setBorder(new EmptyBorder(10, 10, 10, 10));
+        // Panel superior
+        JPanel panelTop = new JPanel();
+        panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
+        getContentPane().add(panelTop, BorderLayout.NORTH);
 
-        // Panel superior: configuración
-        JPanel panelConfig = new JPanel();
-        panelConfig.setLayout(new BoxLayout(panelConfig, BoxLayout.Y_AXIS));
-        panelConfig.add(crearPanelArchivo());
-        panelConfig.add(Box.createVerticalStrut(6));
-        panelConfig.add(crearPanelRangoELS());
-        panelConfig.add(Box.createVerticalStrut(6));
+        // Archivo
+        JPanel panelArchivo = new JPanel(new BorderLayout(6, 0));
+        panelArchivo.setBorder(BorderFactory.createTitledBorder("Archivo Access"));
+        panelTop.add(panelArchivo);
 
+        panelArchivo.add(txtRutaArchivo, BorderLayout.CENTER);
+        panelArchivo.add(btnSeleccionarArchivo, BorderLayout.EAST);
+
+        // Rango
+        JPanel panelRango = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelRango.setBorder(BorderFactory.createTitledBorder("Rango ELS"));
+        panelTop.add(panelRango);
+
+        panelRango.add(new JLabel("Desde:"));
+        panelRango.add(spnElsDesde);
+        panelRango.add(new JLabel("Hasta:"));
+        panelRango.add(spnElsHasta);
+
+        // Conexiones
         JPanel panelConexiones = new JPanel(new GridLayout(1, 2, 6, 0));
-        panelConexiones.add(crearPanelStaging());
-        panelConexiones.add(crearPanelDestino());
-        panelConfig.add(panelConexiones);
+        panelTop.add(panelConexiones);
 
-        add(panelConfig, BorderLayout.NORTH);
+        // Staging
+        JPanel panelStaging = new JPanel(new GridBagLayout());
+        panelStaging.setBorder(BorderFactory.createTitledBorder("Staging"));
+        panelConexiones.add(panelStaging);
 
-        // Panel central: progreso + log
+        GridBagConstraints c;
+                
+                        c = new GridBagConstraints();
+                        c.insets = new Insets(0, 0, 5, 5);
+                        c.gridx = 0;
+                        c.gridy = 0;
+                        c.anchor = GridBagConstraints.WEST;
+                        JLabel label = new JLabel("Host:");
+                        panelStaging.add(label, c);
+        
+                // Staging — campos fijos
+                txtStagingHost = new JTextField(STAGING_HOST);
+                txtStagingHost.setEnabled(false);
+                c_1 = new GridBagConstraints();
+                c_1.insets = new Insets(0, 0, 5, 0);
+                c_1.gridx = 1;
+                c_1.gridy = 0;
+                c_1.fill = GridBagConstraints.HORIZONTAL;
+                c_1.weightx = 1;
+                panelStaging.add(txtStagingHost, c_1);
+        
+                c_2 = new GridBagConstraints();
+                c_2.insets = new Insets(0, 0, 5, 5);
+                c_2.gridx = 0;
+                c_2.gridy = 1;
+                c_2.anchor = GridBagConstraints.WEST;
+                JLabel label_1 = new JLabel("Puerto:");
+                panelStaging.add(label_1, c_2);
+                txtStagingPort = new JTextField(STAGING_PORT);
+                txtStagingPort.setEnabled(false);
+                c_3 = new GridBagConstraints();
+                c_3.insets = new Insets(0, 0, 5, 0);
+                c_3.gridx = 1;
+                c_3.gridy = 1;
+                c_3.fill = GridBagConstraints.HORIZONTAL;
+                c_3.weightx = 1;
+                panelStaging.add(txtStagingPort, c_3);
+                
+                        c_6 = new GridBagConstraints();
+                        c_6.insets = new Insets(0, 0, 5, 5);
+                        c_6.gridx = 0;
+                        c_6.gridy = 2;
+                        c_6.anchor = GridBagConstraints.WEST;
+                        JLabel label_3 = new JLabel("Usuario:");
+                        panelStaging.add(label_3, c_6);
+                txtStagingUser = new JTextField(STAGING_USER);
+                txtStagingUser.setEnabled(false);
+                c_7 = new GridBagConstraints();
+                c_7.insets = new Insets(0, 0, 5, 0);
+                c_7.gridx = 1;
+                c_7.gridy = 2;
+                c_7.fill = GridBagConstraints.HORIZONTAL;
+                c_7.weightx = 1;
+                panelStaging.add(txtStagingUser, c_7);
+                
+                        c_8 = new GridBagConstraints();
+                        c_8.insets = new Insets(0, 0, 5, 5);
+                        c_8.gridx = 0;
+                        c_8.gridy = 3;
+                        c_8.anchor = GridBagConstraints.WEST;
+                        JLabel label_4 = new JLabel("Pass:");
+                        panelStaging.add(label_4, c_8);
+                txtStagingPass = new JPasswordField(STAGING_PASS);
+                txtStagingPass.setEnabled(false);
+                c_9 = new GridBagConstraints();
+                c_9.insets = new Insets(0, 0, 5, 0);
+                c_9.gridx = 1;
+                c_9.gridy = 3;
+                c_9.fill = GridBagConstraints.HORIZONTAL;
+                c_9.weightx = 1;
+                panelStaging.add(txtStagingPass, c_9);
+        
+                c_4 = new GridBagConstraints();
+                c_4.insets = new Insets(0, 0, 5, 5);
+                c_4.gridx = 0;
+                c_4.gridy = 4;
+                c_4.anchor = GridBagConstraints.WEST;
+                JLabel label_2 = new JLabel("BD:");
+                panelStaging.add(label_2, c_4);
+        txtStagingDB = new JTextField(STAGING_DB);
+        txtStagingDB.setEnabled(false);
+        c_5 = new GridBagConstraints();
+        c_5.insets = new Insets(0, 0, 5, 0);
+        c_5.gridx = 1;
+        c_5.gridy = 4;
+        c_5.fill = GridBagConstraints.HORIZONTAL;
+        c_5.weightx = 1;
+        panelStaging.add(txtStagingDB, c_5);
+
+        // Destino
+        JPanel panelDestino = new JPanel(new GridBagLayout());
+        panelDestino.setBorder(BorderFactory.createTitledBorder("Destino"));
+        panelConexiones.add(panelDestino);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.anchor = GridBagConstraints.WEST;
+        panelDestino.add(new JLabel("Host:"), c);
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        panelDestino.add(txtDestinoHost, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 1;
+        c.anchor = GridBagConstraints.WEST;
+        panelDestino.add(new JLabel("Puerto:"), c);
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        panelDestino.add(txtDestinoPort, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 4;
+        c.anchor = GridBagConstraints.WEST;
+        panelDestino.add(new JLabel("BD:"), c);
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 4;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        panelDestino.add(rbBrcAnt, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 5;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        panelDestino.add(rbBasAnt, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 6;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        panelDestino.add(rbBrcAct, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 7;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        panelDestino.add(rbBasAct, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 2;
+        c.anchor = GridBagConstraints.WEST;
+        panelDestino.add(new JLabel("Usuario:"), c);
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 2;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        panelDestino.add(txtDestinoUser, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 3;
+        c.anchor = GridBagConstraints.WEST;
+        panelDestino.add(new JLabel("Pass:"), c);
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 3;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        panelDestino.add(txtDestinoPass, c);
+
+        // Panel central
         JPanel panelCentro = new JPanel(new BorderLayout(4, 4));
 
         JPanel panelEstado = new JPanel(new BorderLayout(4, 2));
@@ -242,123 +425,17 @@ public class VentanaMigracion extends JDialog {
                 TitledBorder.LEFT, TitledBorder.TOP));
         panelCentro.add(scrollLog, BorderLayout.CENTER);
 
-        add(panelCentro, BorderLayout.CENTER);
+        getContentPane().add(panelCentro, BorderLayout.CENTER);
 
-        // Panel inferior: botones
-        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 4));
+        // Panel botones
+        JPanel panelBotones = new JPanel();
+        getContentPane().add(panelBotones, BorderLayout.SOUTH);
+
         panelBotones.add(btnMigrarStaging);
         panelBotones.add(btnMergeDestino);
         panelBotones.add(btnMigrarCompleto);
-        panelBotones.add(Box.createHorizontalStrut(20));
         panelBotones.add(btnLimpiarLog);
         panelBotones.add(btnCerrar);
-
-        add(panelBotones, BorderLayout.SOUTH);
-    }
-
-    private JPanel crearPanelArchivo() {
-        JPanel panel = new JPanel(new BorderLayout(6, 0));
-        panel.setBorder(BorderFactory.createTitledBorder("Archivo de base de datos Access (.accdb)"));
-        panel.add(new JLabel("Archivo:  "), BorderLayout.WEST);
-        panel.add(txtRutaArchivo, BorderLayout.CENTER);
-        panel.add(btnSeleccionarArchivo, BorderLayout.EAST);
-        return panel;
-    }
-
-    private JPanel crearPanelRangoELS() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 4));
-        panel.setBorder(BorderFactory.createTitledBorder("Rango de ELS a migrar"));
-        panel.add(new JLabel("Desde ELS:"));
-        panel.add(spnElsDesde);
-        panel.add(Box.createHorizontalStrut(20));
-        panel.add(new JLabel("Hasta ELS:"));
-        panel.add(spnElsHasta);
-        return panel;
-    }
-
-    private JPanel crearPanelStaging() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBorder(BorderFactory.createTitledBorder("BD Staging (intermedia)"));
-
-        JLabel lblStagHost = new JLabel("Host:");
-        JLabel lblStagPort = new JLabel("Puerto:");
-        JLabel lblStagDB   = new JLabel("BD:");
-        JLabel lblStagUser = new JLabel("Usuario:");
-        JLabel lblStagPass = new JLabel("Contrase\u00f1a:");
-
-        GridBagConstraints sLH = new GridBagConstraints(); sLH.insets=new Insets(2,4,2,4); sLH.anchor=GridBagConstraints.WEST; sLH.gridx=0; sLH.gridy=0; sLH.fill=GridBagConstraints.NONE;       sLH.weightx=0;
-        GridBagConstraints sFH = new GridBagConstraints(); sFH.insets=new Insets(2,4,2,4); sFH.anchor=GridBagConstraints.WEST; sFH.gridx=1; sFH.gridy=0; sFH.fill=GridBagConstraints.HORIZONTAL; sFH.weightx=1;
-        GridBagConstraints sLP = new GridBagConstraints(); sLP.insets=new Insets(2,4,2,4); sLP.anchor=GridBagConstraints.WEST; sLP.gridx=0; sLP.gridy=1; sLP.fill=GridBagConstraints.NONE;       sLP.weightx=0;
-        GridBagConstraints sFP = new GridBagConstraints(); sFP.insets=new Insets(2,4,2,4); sFP.anchor=GridBagConstraints.WEST; sFP.gridx=1; sFP.gridy=1; sFP.fill=GridBagConstraints.HORIZONTAL; sFP.weightx=1;
-        GridBagConstraints sLD = new GridBagConstraints(); sLD.insets=new Insets(2,4,2,4); sLD.anchor=GridBagConstraints.WEST; sLD.gridx=0; sLD.gridy=2; sLD.fill=GridBagConstraints.NONE;       sLD.weightx=0;
-        GridBagConstraints sFD = new GridBagConstraints(); sFD.insets=new Insets(2,4,2,4); sFD.anchor=GridBagConstraints.WEST; sFD.gridx=1; sFD.gridy=2; sFD.fill=GridBagConstraints.HORIZONTAL; sFD.weightx=1;
-        GridBagConstraints sLU = new GridBagConstraints(); sLU.insets=new Insets(2,4,2,4); sLU.anchor=GridBagConstraints.WEST; sLU.gridx=0; sLU.gridy=3; sLU.fill=GridBagConstraints.NONE;       sLU.weightx=0;
-        GridBagConstraints sFU = new GridBagConstraints(); sFU.insets=new Insets(2,4,2,4); sFU.anchor=GridBagConstraints.WEST; sFU.gridx=1; sFU.gridy=3; sFU.fill=GridBagConstraints.HORIZONTAL; sFU.weightx=1;
-        GridBagConstraints sLPw= new GridBagConstraints(); sLPw.insets=new Insets(2,4,2,4);sLPw.anchor=GridBagConstraints.WEST;sLPw.gridx=0;sLPw.gridy=4;sLPw.fill=GridBagConstraints.NONE;       sLPw.weightx=0;
-        GridBagConstraints sFPw= new GridBagConstraints(); sFPw.insets=new Insets(2,4,2,4);sFPw.anchor=GridBagConstraints.WEST;sFPw.gridx=1;sFPw.gridy=4;sFPw.fill=GridBagConstraints.HORIZONTAL; sFPw.weightx=1;
-
-        panel.add(lblStagHost,    sLH);
-        panel.add(txtStagingHost, sFH);
-        panel.add(lblStagPort,    sLP);
-        panel.add(txtStagingPort, sFP);
-        panel.add(lblStagDB,      sLD);
-        panel.add(txtStagingDB,   sFD);
-        panel.add(lblStagUser,    sLU);
-        panel.add(txtStagingUser, sFU);
-        panel.add(lblStagPass,    sLPw);
-        panel.add(txtStagingPass, sFPw);
-
-        return panel;
-    }
-
-    private JPanel crearPanelDestino() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBorder(BorderFactory.createTitledBorder("BD Destino (producci\u00f3n)"));
-
-        JLabel lblDestHost  = new JLabel("Host:");
-        JLabel lblDestPort  = new JLabel("Puerto:");
-        JLabel lblDestBD    = new JLabel("BD:");
-        JLabel lblDestBD2   = new JLabel("");
-        JLabel lblDestBD3   = new JLabel("");
-        JLabel lblDestBD4   = new JLabel("");
-        JLabel lblDestUser  = new JLabel("Usuario:");
-        JLabel lblDestPass  = new JLabel("Contrase\u00f1a:");
-
-        GridBagConstraints dLH  = new GridBagConstraints(); dLH.insets=new Insets(2,4,2,4);  dLH.anchor=GridBagConstraints.WEST;  dLH.gridx=0;  dLH.gridy=0;  dLH.fill=GridBagConstraints.NONE;       dLH.weightx=0;
-        GridBagConstraints dFH  = new GridBagConstraints(); dFH.insets=new Insets(2,4,2,4);  dFH.anchor=GridBagConstraints.WEST;  dFH.gridx=1;  dFH.gridy=0;  dFH.fill=GridBagConstraints.HORIZONTAL; dFH.weightx=1;
-        GridBagConstraints dLP  = new GridBagConstraints(); dLP.insets=new Insets(2,4,2,4);  dLP.anchor=GridBagConstraints.WEST;  dLP.gridx=0;  dLP.gridy=1;  dLP.fill=GridBagConstraints.NONE;       dLP.weightx=0;
-        GridBagConstraints dFP  = new GridBagConstraints(); dFP.insets=new Insets(2,4,2,4);  dFP.anchor=GridBagConstraints.WEST;  dFP.gridx=1;  dFP.gridy=1;  dFP.fill=GridBagConstraints.HORIZONTAL; dFP.weightx=1;
-        GridBagConstraints dLB  = new GridBagConstraints(); dLB.insets=new Insets(2,4,2,4);  dLB.anchor=GridBagConstraints.WEST;  dLB.gridx=0;  dLB.gridy=2;  dLB.fill=GridBagConstraints.NONE;       dLB.weightx=0;
-        GridBagConstraints dFB  = new GridBagConstraints(); dFB.insets=new Insets(2,4,2,4);  dFB.anchor=GridBagConstraints.WEST;  dFB.gridx=1;  dFB.gridy=2;  dFB.fill=GridBagConstraints.HORIZONTAL; dFB.weightx=1;
-        GridBagConstraints dLB2 = new GridBagConstraints(); dLB2.insets=new Insets(2,4,2,4); dLB2.anchor=GridBagConstraints.WEST; dLB2.gridx=0; dLB2.gridy=3; dLB2.fill=GridBagConstraints.NONE;       dLB2.weightx=0;
-        GridBagConstraints dFB2 = new GridBagConstraints(); dFB2.insets=new Insets(2,4,2,4); dFB2.anchor=GridBagConstraints.WEST; dFB2.gridx=1; dFB2.gridy=3; dFB2.fill=GridBagConstraints.HORIZONTAL; dFB2.weightx=1;
-        GridBagConstraints dLB3 = new GridBagConstraints(); dLB3.insets=new Insets(2,4,2,4); dLB3.anchor=GridBagConstraints.WEST; dLB3.gridx=0; dLB3.gridy=4; dLB3.fill=GridBagConstraints.NONE;       dLB3.weightx=0;
-        GridBagConstraints dFB3 = new GridBagConstraints(); dFB3.insets=new Insets(2,4,2,4); dFB3.anchor=GridBagConstraints.WEST; dFB3.gridx=1; dFB3.gridy=4; dFB3.fill=GridBagConstraints.HORIZONTAL; dFB3.weightx=1;
-        GridBagConstraints dLB4 = new GridBagConstraints(); dLB4.insets=new Insets(2,4,2,4); dLB4.anchor=GridBagConstraints.WEST; dLB4.gridx=0; dLB4.gridy=5; dLB4.fill=GridBagConstraints.NONE;       dLB4.weightx=0;
-        GridBagConstraints dFB4 = new GridBagConstraints(); dFB4.insets=new Insets(2,4,2,4); dFB4.anchor=GridBagConstraints.WEST; dFB4.gridx=1; dFB4.gridy=5; dFB4.fill=GridBagConstraints.HORIZONTAL; dFB4.weightx=1;
-        GridBagConstraints dLU  = new GridBagConstraints(); dLU.insets=new Insets(2,4,2,4);  dLU.anchor=GridBagConstraints.WEST;  dLU.gridx=0;  dLU.gridy=6;  dLU.fill=GridBagConstraints.NONE;       dLU.weightx=0;
-        GridBagConstraints dFU  = new GridBagConstraints(); dFU.insets=new Insets(2,4,2,4);  dFU.anchor=GridBagConstraints.WEST;  dFU.gridx=1;  dFU.gridy=6;  dFU.fill=GridBagConstraints.HORIZONTAL; dFU.weightx=1;
-        GridBagConstraints dLPw = new GridBagConstraints(); dLPw.insets=new Insets(2,4,2,4); dLPw.anchor=GridBagConstraints.WEST; dLPw.gridx=0; dLPw.gridy=7; dLPw.fill=GridBagConstraints.NONE;       dLPw.weightx=0;
-        GridBagConstraints dFPw = new GridBagConstraints(); dFPw.insets=new Insets(2,4,2,4); dFPw.anchor=GridBagConstraints.WEST; dFPw.gridx=1; dFPw.gridy=7; dFPw.fill=GridBagConstraints.HORIZONTAL; dFPw.weightx=1;
-
-        panel.add(lblDestHost,    dLH);
-        panel.add(txtDestinoHost, dFH);
-        panel.add(lblDestPort,    dLP);
-        panel.add(txtDestinoPort, dFP);
-        panel.add(lblDestBD,      dLB);
-        panel.add(rbBrcAnt,       dFB);
-        panel.add(lblDestBD2,     dLB2);
-        panel.add(rbBasAnt,       dFB2);
-        panel.add(lblDestBD3,     dLB3);
-        panel.add(rbBrcAct,       dFB3);
-        panel.add(lblDestBD4,     dLB4);
-        panel.add(rbBasAct,       dFB4);
-        panel.add(lblDestUser,    dLU);
-        panel.add(txtDestinoUser, dFU);
-        panel.add(lblDestPass,    dLPw);
-        panel.add(txtDestinoPass, dFPw);
-
-        return panel;
     }
 
     // ════════════════════════════════════════════════════════════════════════
@@ -484,7 +561,7 @@ public class VentanaMigracion extends JDialog {
     }
 
     // ════════════════════════════════════════════════════════════════════════
-    // EJECUCIÓN EN HILO SEPARADO
+    // EJECUCIÓN EN HILO SEPARADO (sin cambios)
     // ════════════════════════════════════════════════════════════════════════
     private void ejecutarMigracionStaging() {
         ConfigMigracion config = obtenerConfiguracion();
@@ -525,7 +602,6 @@ public class VentanaMigracion extends JDialog {
                     migracionEnCurso = false;
                     setBotonesHabilitados(true);
                     progressBar.setValue(100);
-                    progressBar.setString("Completado");
                     lblEstado.setText("Merge a BD Destino finalizado. Revisá el log.");
                 });
             }
