@@ -158,4 +158,14 @@ public class ControladorUsuLogin {
             }
         }
     }
+    
+    
+    //verificar si el usuario tiene el rol "Administrador Programador"
+	public boolean esAdministradorProgramador() {
+		if (usu_login == null) {
+			return false;
+		}
+		String rol = usu_login.getNombreRol(usu_login.getIdRol());
+		return "Administrador Programador".equalsIgnoreCase(rol);
+	}
 }

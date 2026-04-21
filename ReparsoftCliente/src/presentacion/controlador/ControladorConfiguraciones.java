@@ -9,6 +9,7 @@ import javax.swing.UIManager;
 
 import persistencia.conexion.Conexion;
 import presentacion.vista.VistaPrincipal;
+import vista.migracion.MigracionController;
 import vista.migracion.VentanaMigracion;
 import presentacion.vista.VentanaConfiguracion;
 import presentacion.vista.VentanaUbicacionBaseDeDatos;
@@ -16,6 +17,7 @@ import presentacion.vista.VentanaUbicacionBaseDeDatos;
 public class ControladorConfiguraciones implements ActionListener {
 
 	private VentanaConfiguracion vistaConfiguracion;
+	private MigracionController controladormigracion;
 	private ControladorUsuLogin controladorUsuLogin;
 	private VistaPrincipal vistaPrincipal;
 	private vista.migracion.VentanaMigracion ventanaMigracion;
@@ -101,8 +103,9 @@ public class ControladorConfiguraciones implements ActionListener {
 		// ====================== BOTÓN MIGRACIÓN ACCESS -> MYSQL ======================
 		else if (arg0.getSource() == vistaConfiguracion.getBtnMigracion()) {
 
-          VentanaMigracion v = new VentanaMigracion();
-          v.setVisible(true);
+          VentanaMigracion v = new VentanaMigracion(controladormigracion);
+          
+        
 		}
 		
 		

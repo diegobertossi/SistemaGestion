@@ -319,6 +319,13 @@ public class ControladorPrincipal implements ActionListener {
                 return;
             }
             ventanaConfiguracion = new VentanaConfiguracion(controladorconfiguraciones);
+            
+            //si NO es Administrador Programador, que oculte el boton de migracion
+          
+			if (!controladorUsuLogin.esAdministradorProgramador()) {
+				ventanaConfiguracion.getBtnMigracion().setVisible(false);
+			}
+            
             controladorconfiguraciones = new ControladorConfiguraciones(ventanaConfiguracion, controladorUsuLogin,
                     vistaPrincipal);
         }

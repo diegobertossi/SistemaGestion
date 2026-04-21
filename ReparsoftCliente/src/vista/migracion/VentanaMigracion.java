@@ -6,6 +6,9 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+//importar MigracionController
+import vista.migracion.MigracionController;
+import vista.migracion.ConfigMigracion;
 
 /**
  * VentanaMigracion.java
@@ -21,10 +24,14 @@ import java.io.File;
  *     · Datos Buenos Aires Actuales  → ordenesbsas
  * - BD Destino: contraseña = "root"
  * - GridBagConstraints: instancia nueva por add() para compatibilidad con WindowBuilder
+ * - Agregados botones "Vaciar" junto a cada RadioButton de BD destino
  */
-public class VentanaMigracion extends JDialog {
+public class VentanaMigracion extends JFrame  {
 
     private static final long serialVersionUID = 1L;
+    
+    private MigracionController controlador;
+    private ConfigMigracion config;
 
     // ── Constantes por defecto ──────────────────────────────────────────────
     private static final int    ELS_MIN_DEFAULT   = 1;
@@ -72,6 +79,12 @@ public class VentanaMigracion extends JDialog {
     private JRadioButton   rbBrcAct;
     private JRadioButton   rbBasAct;
 
+    // Botones para vaciar bases de datos
+    private JButton        btnVaciarBrcAnt;
+    private JButton        btnVaciarBasAnt;
+    private JButton        btnVaciarBrcAct;
+    private JButton        btnVaciarBasAct;
+
     // Progreso y log
     private JProgressBar   progressBar;
     private JTextArea      txtLog;
@@ -98,19 +111,21 @@ public class VentanaMigracion extends JDialog {
     private GridBagConstraints c_9;
 
     // ── Constructor ─────────────────────────────────────────────────────────
-    public VentanaMigracion() {
+    public VentanaMigracion(MigracionController controlador) {
         super();
+        this.controlador = controlador;
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setBounds(100, 100, 800, 720);
         setResizable(false);
-		this.setLocationRelativeTo(null);
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
-		this.setIconImage(icon);
+        this.setLocationRelativeTo(null);
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+        this.setIconImage(icon);
 
-        
         initComponents();
         layoutComponents();
         initEventos();
+
+        this.setVisible(true);
     }
 
     // ════════════════════════════════════════════════════════════════════════
@@ -150,10 +165,43 @@ public class VentanaMigracion extends JDialog {
         grupoBD.add(rbBasAct);
         rbBrcAnt.setSelected(true); // selección por defecto
 
+        // Botones para vaciar bases de datos
+        btnVaciarBrcAnt = new JButton("Vaciar");
+        btnVaciarBrcAnt.setToolTipText("Eliminar todos los datos de " + DB_BRC_ANT);
+        btnVaciarBrcAnt.setFont(btnVaciarBrcAnt.getFont().deriveFont(9f));
+        btnVaciarBrcAnt.setPreferredSize(new Dimension(70, 24));
+        btnVaciarBrcAnt.setBackground(new Color(180, 60, 60));
+        btnVaciarBrcAnt.setForeground(Color.WHITE);
+        btnVaciarBrcAnt.setFocusPainted(false);
+
+        btnVaciarBasAnt = new JButton("Vaciar");
+        btnVaciarBasAnt.setToolTipText("Eliminar todos los datos de " + DB_BAS_ANT);
+        btnVaciarBasAnt.setFont(btnVaciarBasAnt.getFont().deriveFont(9f));
+        btnVaciarBasAnt.setPreferredSize(new Dimension(70, 24));
+        btnVaciarBasAnt.setBackground(new Color(180, 60, 60));
+        btnVaciarBasAnt.setForeground(Color.WHITE);
+        btnVaciarBasAnt.setFocusPainted(false);
+
+        btnVaciarBrcAct = new JButton("Vaciar");
+        btnVaciarBrcAct.setToolTipText("Eliminar todos los datos de " + DB_BRC_ACT);
+        btnVaciarBrcAct.setFont(btnVaciarBrcAct.getFont().deriveFont(9f));
+        btnVaciarBrcAct.setPreferredSize(new Dimension(70, 24));
+        btnVaciarBrcAct.setBackground(new Color(180, 60, 60));
+        btnVaciarBrcAct.setForeground(Color.WHITE);
+        btnVaciarBrcAct.setFocusPainted(false);
+
+        btnVaciarBasAct = new JButton("Vaciar");
+        btnVaciarBasAct.setToolTipText("Eliminar todos los datos de " + DB_BAS_ACT);
+        btnVaciarBasAct.setFont(btnVaciarBasAct.getFont().deriveFont(9f));
+        btnVaciarBasAct.setPreferredSize(new Dimension(70, 24));
+        btnVaciarBasAct.setBackground(new Color(180, 60, 60));
+        btnVaciarBasAct.setForeground(Color.WHITE);
+        btnVaciarBasAct.setFocusPainted(false);
+
         // Progreso
         progressBar = new JProgressBar();
         progressBar.setStringPainted(true);
-        
+
         lblEstado = new JLabel("Seleccioná el archivo .accdb para comenzar.");
 
         // Log
@@ -164,14 +212,6 @@ public class VentanaMigracion extends JDialog {
         txtLog.setForeground(new Color(180, 255, 180));
         txtLog.setCaretColor(Color.WHITE);
 
-        // Botones de acción
-//        btnMigrarStaging = new JButton("Staging");
-//        btnMergeDestino = new JButton("Merge");
-//        btnMigrarCompleto = new JButton("Completo");
-//        btnLimpiarLog = new JButton("Limpiar");
-//        btnCerrar = new JButton("Cerrar");
-        
-        
         // Botones de acción
         btnMigrarStaging  = new JButton("① Access → Staging");
         btnMergeDestino   = new JButton("② Staging → Destino");
@@ -195,9 +235,6 @@ public class VentanaMigracion extends JDialog {
         btnMigrarCompleto.setForeground(Color.BLACK);
         btnMigrarCompleto.setFocusPainted(false);
         btnMigrarCompleto.setFont(btnMigrarCompleto.getFont().deriveFont(Font.BOLD));
-        
-        
-        
     }
 
     // ════════════════════════════════════════════════════════════════════════
@@ -237,84 +274,84 @@ public class VentanaMigracion extends JDialog {
         panelConexiones.add(panelStaging);
 
         GridBagConstraints c;
-                
-                        c = new GridBagConstraints();
-                        c.insets = new Insets(0, 0, 5, 5);
-                        c.gridx = 0;
-                        c.gridy = 0;
-                        c.anchor = GridBagConstraints.WEST;
-                        JLabel label = new JLabel("Host:");
-                        panelStaging.add(label, c);
-        
-                // Staging — campos fijos
-                txtStagingHost = new JTextField(STAGING_HOST);
-                txtStagingHost.setEnabled(false);
-                c_1 = new GridBagConstraints();
-                c_1.insets = new Insets(0, 0, 5, 0);
-                c_1.gridx = 1;
-                c_1.gridy = 0;
-                c_1.fill = GridBagConstraints.HORIZONTAL;
-                c_1.weightx = 1;
-                panelStaging.add(txtStagingHost, c_1);
-        
-                c_2 = new GridBagConstraints();
-                c_2.insets = new Insets(0, 0, 5, 5);
-                c_2.gridx = 0;
-                c_2.gridy = 1;
-                c_2.anchor = GridBagConstraints.WEST;
-                JLabel label_1 = new JLabel("Puerto:");
-                panelStaging.add(label_1, c_2);
-                txtStagingPort = new JTextField(STAGING_PORT);
-                txtStagingPort.setEnabled(false);
-                c_3 = new GridBagConstraints();
-                c_3.insets = new Insets(0, 0, 5, 0);
-                c_3.gridx = 1;
-                c_3.gridy = 1;
-                c_3.fill = GridBagConstraints.HORIZONTAL;
-                c_3.weightx = 1;
-                panelStaging.add(txtStagingPort, c_3);
-                
-                        c_6 = new GridBagConstraints();
-                        c_6.insets = new Insets(0, 0, 5, 5);
-                        c_6.gridx = 0;
-                        c_6.gridy = 2;
-                        c_6.anchor = GridBagConstraints.WEST;
-                        JLabel label_3 = new JLabel("Usuario:");
-                        panelStaging.add(label_3, c_6);
-                txtStagingUser = new JTextField(STAGING_USER);
-                txtStagingUser.setEnabled(false);
-                c_7 = new GridBagConstraints();
-                c_7.insets = new Insets(0, 0, 5, 0);
-                c_7.gridx = 1;
-                c_7.gridy = 2;
-                c_7.fill = GridBagConstraints.HORIZONTAL;
-                c_7.weightx = 1;
-                panelStaging.add(txtStagingUser, c_7);
-                
-                        c_8 = new GridBagConstraints();
-                        c_8.insets = new Insets(0, 0, 5, 5);
-                        c_8.gridx = 0;
-                        c_8.gridy = 3;
-                        c_8.anchor = GridBagConstraints.WEST;
-                        JLabel label_4 = new JLabel("Pass:");
-                        panelStaging.add(label_4, c_8);
-                txtStagingPass = new JPasswordField(STAGING_PASS);
-                txtStagingPass.setEnabled(false);
-                c_9 = new GridBagConstraints();
-                c_9.insets = new Insets(0, 0, 5, 0);
-                c_9.gridx = 1;
-                c_9.gridy = 3;
-                c_9.fill = GridBagConstraints.HORIZONTAL;
-                c_9.weightx = 1;
-                panelStaging.add(txtStagingPass, c_9);
-        
-                c_4 = new GridBagConstraints();
-                c_4.insets = new Insets(0, 0, 5, 5);
-                c_4.gridx = 0;
-                c_4.gridy = 4;
-                c_4.anchor = GridBagConstraints.WEST;
-                JLabel label_2 = new JLabel("BD:");
-                panelStaging.add(label_2, c_4);
+
+        c = new GridBagConstraints();
+        c.insets = new Insets(0, 0, 5, 5);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.anchor = GridBagConstraints.WEST;
+        JLabel label = new JLabel("Host:");
+        panelStaging.add(label, c);
+
+        // Staging — campos fijos
+        txtStagingHost = new JTextField(STAGING_HOST);
+        txtStagingHost.setEnabled(false);
+        c_1 = new GridBagConstraints();
+        c_1.insets = new Insets(0, 0, 5, 0);
+        c_1.gridx = 1;
+        c_1.gridy = 0;
+        c_1.fill = GridBagConstraints.HORIZONTAL;
+        c_1.weightx = 1;
+        panelStaging.add(txtStagingHost, c_1);
+
+        c_2 = new GridBagConstraints();
+        c_2.insets = new Insets(0, 0, 5, 5);
+        c_2.gridx = 0;
+        c_2.gridy = 1;
+        c_2.anchor = GridBagConstraints.WEST;
+        JLabel label_1 = new JLabel("Puerto:");
+        panelStaging.add(label_1, c_2);
+        txtStagingPort = new JTextField(STAGING_PORT);
+        txtStagingPort.setEnabled(false);
+        c_3 = new GridBagConstraints();
+        c_3.insets = new Insets(0, 0, 5, 0);
+        c_3.gridx = 1;
+        c_3.gridy = 1;
+        c_3.fill = GridBagConstraints.HORIZONTAL;
+        c_3.weightx = 1;
+        panelStaging.add(txtStagingPort, c_3);
+
+        c_6 = new GridBagConstraints();
+        c_6.insets = new Insets(0, 0, 5, 5);
+        c_6.gridx = 0;
+        c_6.gridy = 2;
+        c_6.anchor = GridBagConstraints.WEST;
+        JLabel label_3 = new JLabel("Usuario:");
+        panelStaging.add(label_3, c_6);
+        txtStagingUser = new JTextField(STAGING_USER);
+        txtStagingUser.setEnabled(false);
+        c_7 = new GridBagConstraints();
+        c_7.insets = new Insets(0, 0, 5, 0);
+        c_7.gridx = 1;
+        c_7.gridy = 2;
+        c_7.fill = GridBagConstraints.HORIZONTAL;
+        c_7.weightx = 1;
+        panelStaging.add(txtStagingUser, c_7);
+
+        c_8 = new GridBagConstraints();
+        c_8.insets = new Insets(0, 0, 5, 5);
+        c_8.gridx = 0;
+        c_8.gridy = 3;
+        c_8.anchor = GridBagConstraints.WEST;
+        JLabel label_4 = new JLabel("Pass:");
+        panelStaging.add(label_4, c_8);
+        txtStagingPass = new JPasswordField(STAGING_PASS);
+        txtStagingPass.setEnabled(false);
+        c_9 = new GridBagConstraints();
+        c_9.insets = new Insets(0, 0, 5, 0);
+        c_9.gridx = 1;
+        c_9.gridy = 3;
+        c_9.fill = GridBagConstraints.HORIZONTAL;
+        c_9.weightx = 1;
+        panelStaging.add(txtStagingPass, c_9);
+
+        c_4 = new GridBagConstraints();
+        c_4.insets = new Insets(0, 0, 5, 5);
+        c_4.gridx = 0;
+        c_4.gridy = 4;
+        c_4.anchor = GridBagConstraints.WEST;
+        JLabel label_2 = new JLabel("BD:");
+        panelStaging.add(label_2, c_4);
         txtStagingDB = new JTextField(STAGING_DB);
         txtStagingDB.setEnabled(false);
         c_5 = new GridBagConstraints();
@@ -356,39 +393,6 @@ public class VentanaMigracion extends JDialog {
 
         c = new GridBagConstraints();
         c.gridx = 0;
-        c.gridy = 4;
-        c.anchor = GridBagConstraints.WEST;
-        panelDestino.add(new JLabel("BD:"), c);
-        c = new GridBagConstraints();
-        c.gridx = 1;
-        c.gridy = 4;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        panelDestino.add(rbBrcAnt, c);
-
-        c = new GridBagConstraints();
-        c.gridx = 1;
-        c.gridy = 5;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        panelDestino.add(rbBasAnt, c);
-
-        c = new GridBagConstraints();
-        c.gridx = 1;
-        c.gridy = 6;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        panelDestino.add(rbBrcAct, c);
-
-        c = new GridBagConstraints();
-        c.gridx = 1;
-        c.gridy = 7;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        panelDestino.add(rbBasAct, c);
-
-        c = new GridBagConstraints();
-        c.gridx = 0;
         c.gridy = 2;
         c.anchor = GridBagConstraints.WEST;
         panelDestino.add(new JLabel("Usuario:"), c);
@@ -410,6 +414,56 @@ public class VentanaMigracion extends JDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         panelDestino.add(txtDestinoPass, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 4;
+        c.anchor = GridBagConstraints.WEST;
+        panelDestino.add(new JLabel("BD:"), c);
+
+        // Panel para rbBrcAnt con su botón Vaciar
+        JPanel panelBrcAnt = new JPanel(new BorderLayout(5, 0));
+        panelBrcAnt.add(rbBrcAnt, BorderLayout.CENTER);
+        panelBrcAnt.add(btnVaciarBrcAnt, BorderLayout.EAST);
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 4;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        panelDestino.add(panelBrcAnt, c);
+
+        // Panel para rbBasAnt con su botón Vaciar
+        JPanel panelBasAnt = new JPanel(new BorderLayout(5, 0));
+        panelBasAnt.add(rbBasAnt, BorderLayout.CENTER);
+        panelBasAnt.add(btnVaciarBasAnt, BorderLayout.EAST);
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 5;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        panelDestino.add(panelBasAnt, c);
+
+        // Panel para rbBrcAct con su botón Vaciar
+        JPanel panelBrcAct = new JPanel(new BorderLayout(5, 0));
+        panelBrcAct.add(rbBrcAct, BorderLayout.CENTER);
+        panelBrcAct.add(btnVaciarBrcAct, BorderLayout.EAST);
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 6;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        panelDestino.add(panelBrcAct, c);
+
+        // Panel para rbBasAct con su botón Vaciar
+        JPanel panelBasAct = new JPanel(new BorderLayout(5, 0));
+        panelBasAct.add(rbBasAct, BorderLayout.CENTER);
+        panelBasAct.add(btnVaciarBasAct, BorderLayout.EAST);
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 7;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        panelDestino.add(panelBasAct, c);
 
         // Panel central
         JPanel panelCentro = new JPanel(new BorderLayout(4, 4));
@@ -502,6 +556,12 @@ public class VentanaMigracion extends JDialog {
             dispose();
         });
 
+        // ActionListeners para los botones Vaciar
+        btnVaciarBrcAnt.addActionListener(e -> vaciarBaseDatos(DB_BRC_ANT, "Bariloche Antiguos"));
+        btnVaciarBasAnt.addActionListener(e -> vaciarBaseDatos(DB_BAS_ANT, "Buenos Aires Antiguos"));
+        btnVaciarBrcAct.addActionListener(e -> vaciarBaseDatos(DB_BRC_ACT, "Bariloche Actuales"));
+        btnVaciarBasAct.addActionListener(e -> vaciarBaseDatos(DB_BAS_ACT, "Buenos Aires Actuales"));
+
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -561,7 +621,32 @@ public class VentanaMigracion extends JDialog {
     }
 
     // ════════════════════════════════════════════════════════════════════════
-    // EJECUCIÓN EN HILO SEPARADO (sin cambios)
+    // VACIAR BASE DE DATOS
+    // ════════════════════════════════════════════════════════════════════════
+    private void vaciarBaseDatos(String nombreBD, String descripcion) {
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "<html><font color='red'><b>¡ADVERTENCIA!</b></font><br><br>" +
+                "Está por eliminar TODOS los datos de la base de datos:<br>" +
+                "<b>" + nombreBD + "</b> (" + descripcion + ")<br><br>" +
+                "Esta acción NO se puede deshacer.<br><br>" +
+                "¿Está absolutamente seguro?</html>",
+                "Vaciar Base de Datos",
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            setBotonesHabilitados(false);
+            
+
+            new Thread(() -> {
+                MigracionController ctrl = new MigracionController(config, this::agregarLog, this::actualizarProgreso);
+                ctrl.vaciarBaseDatos(nombreBD);
+                // luego continuar con la migración...
+            }, "hilo-vaciar-bd").start();
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    // EJECUCIÓN EN HILO SEPARADO
     // ════════════════════════════════════════════════════════════════════════
     private void ejecutarMigracionStaging() {
         ConfigMigracion config = obtenerConfiguracion();
@@ -679,5 +764,9 @@ public class VentanaMigracion extends JDialog {
         btnMergeDestino.setEnabled(habilitado);
         btnMigrarCompleto.setEnabled(habilitado);
         btnSeleccionarArchivo.setEnabled(habilitado || archivoAccdb == null);
+        btnVaciarBrcAnt.setEnabled(habilitado);
+        btnVaciarBasAnt.setEnabled(habilitado);
+        btnVaciarBrcAct.setEnabled(habilitado);
+        btnVaciarBasAct.setEnabled(habilitado);
     }
 }

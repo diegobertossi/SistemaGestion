@@ -132,6 +132,24 @@ public class UsuarioDTO
 		return this.nombre +" "+this.apellido;
 		
 	}
+
+	public String getNombreRol(int idRol) {
+		
+		// devolvor el nombre del rol en base al idRol con switch case java 8
+		switch (idRol) {
+		case 1:
+			return "Administrador Programador";
+		case 2:
+			return "Tecnico";
+		case 3:
+			return "Contable";
+		case 4:
+			return "Tecnico Contable";
+		default:
+			return "Desconocido";
+		}
+		
+	}
 	
 	
 }
