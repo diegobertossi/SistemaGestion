@@ -158,6 +158,7 @@ public class ControladorPrincipal implements ActionListener {
                 controladorUsuLogin.mostrarMensajeSinPermiso();
                 return;
             }
+            if (!verificarModoNormal()) return;
             ventanaRolesUsuarios = new VentanaRolesUsuarios(controladoUsuario);
             controladoUsuario = new ControladorUsuarios(ventanaRolesUsuarios, controladorUsuLogin,
                     crearAgendaActual(ubicacionDeBase));
@@ -198,6 +199,7 @@ public class ControladorPrincipal implements ActionListener {
                 controladorUsuLogin.mostrarMensajeSinPermiso();
                 return;
             }
+            if (!verificarModoNormal()) return;
             modelo = crearAgendaActual(ubicacionDeBase);
             ventanaSalidas = new VentanaSalidas(controladorSalidas);
             controladorSalidas = new ControladorSalidas(ventanaSalidas, modelo);
@@ -208,6 +210,7 @@ public class ControladorPrincipal implements ActionListener {
                 controladorUsuLogin.mostrarMensajeSinPermiso();
                 return;
             }
+            if (!verificarModoNormal()) return;
             modelo = crearAgendaActual(ubicacionDeBase);
             ventanaClientes = new VentanaClientes(controladorCliente);
             controladorCliente = new ControladorCliente(ventanaClientes, modelo);
@@ -254,6 +257,7 @@ public class ControladorPrincipal implements ActionListener {
                 controladorUsuLogin.mostrarMensajeSinPermiso();
                 return;
             }
+            if (!verificarModoNormal()) return;
             modelo = crearAgendaActual(ubicacionDeBase);
             ventanaBackUp = new VentanaBackUp(controladorBackup);
             controladorBackup = new ControladorBackup(ventanaBackUp, modelo);
@@ -299,6 +303,7 @@ public class ControladorPrincipal implements ActionListener {
                 controladorUsuLogin.mostrarMensajeSinPermiso();
                 return;
             }
+            if (!verificarModoNormal()) return;
             modelo = crearAgendaActual(ubicacionDeBase);
             ventanaPresupuestos = new VentanaPresupuestos(controladorReparacion);
             controladorPresupuestos = new ControladorPresupuestos(ventanaPresupuestos, modelo);
@@ -330,4 +335,23 @@ public class ControladorPrincipal implements ActionListener {
                     vistaPrincipal);
         }
     }
+    
+    
+    
+    
+ // ── Método helper a agregar en ControladorPrincipal ──────────────────────
+    public boolean verificarModoNormal() {
+        if (Conexion.isModoAntigua()) {
+            JOptionPane.showMessageDialog(
+                vistaPrincipal,
+                "NO ES POSIBLE ACCEDER A ESTE MÓDULO CON DATOS ANTIGUOS.",
+                "Módulo no disponible",
+                JOptionPane.WARNING_MESSAGE
+            );
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

@@ -262,6 +262,11 @@ public class GestorVisualizacionEquipos {
 
 		// Deshabilitar campos (modo lectura)
 		deshabilitarCampos(ventana);
+		
+		
+		 if (Conexion.isModoAntigua()) {
+		        deshabilitarBotonesModoBloqueado(ventana);
+		        }
 
 		gestorInterfaz.resetearUndoRedo(ventana);
 	}
@@ -284,6 +289,21 @@ public class GestorVisualizacionEquipos {
 
 	}
 
+	
+	
+	private void deshabilitarBotonesModoBloqueado(VentanaVisualizarEquipos ventana) {
+	    ventana.getBtnEditar().setEnabled(false);
+	    ventana.getBtnGuardarCambios().setEnabled(false);
+	    ventana.getBotonAvisoEquipoListo().setEnabled(false);
+	    ventana.getBotonRespuestaAlTecnico().setEnabled(false);
+	    ventana.getBotonAvisoInforme().setEnabled(false);
+	    ventana.getBotonPresupuestar().setEnabled(false);
+	    ventana.getBtnfacturar().setEnabled(false);
+	    ventana.getBtnabrirExcel().setEnabled(false);
+	    ventana.getBtnGenerarRemito().setEnabled(false);
+	    ventana.getBtnenviarCorreoOwsp().setEnabled(false);
+	    ventana.getBtnCopiarFactura().setEnabled(false);
+	}
 	/**
 	 * Carga datos administrativos (cliente, sucursal, etc.)
 	 */

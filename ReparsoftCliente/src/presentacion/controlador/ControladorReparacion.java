@@ -15,6 +15,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import modelo.Agenda;
+import persistencia.conexion.Conexion;
 import presentacion.vista.VentanaEquipos;
 import presentacion.vista.VentanaVisualizarEquipos;
 import presentacion.controlador.gestores.GestorAgregarEquipo;
@@ -63,6 +64,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
     private ControladorPresupuestos controladorPresupuestos;
     private ControladorSalidas controladorSalidas;
     private ControladorCliente controladorCliente;
+    
     
     // ==== DATOS ====
     private Agenda agenda;
@@ -118,6 +120,15 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
             ventanaEquipos.dispose();
         } 
         else if (e.getSource() == ventanaEquipos.getBtnAgregarEquipos()) {
+            if (Conexion.isModoAntigua()) {
+                JOptionPane.showMessageDialog(
+                    ventanaEquipos,
+                    "NO ES POSIBLE ACCEDER A ESTE MÓDULO CON DATOS ANTIGUOS.",
+                    "Módulo no disponible",
+                    JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
             gestorAgregar.abrirVentanaAgregarEquipo();
             ventanaEquipos.dispose();
         }
