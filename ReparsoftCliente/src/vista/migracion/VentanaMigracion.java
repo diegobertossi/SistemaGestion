@@ -52,6 +52,8 @@ public class VentanaMigracion extends JFrame  {
     private static final String DB_BAS_ANT = "ordenesbsasantiguas";
     private static final String DB_BRC_ACT = "ordenesbrc";
     private static final String DB_BAS_ACT = "ordenesbsas";
+    
+
 
     // ── Componentes de la UI ────────────────────────────────────────────────
     private JTextField     txtRutaArchivo;
