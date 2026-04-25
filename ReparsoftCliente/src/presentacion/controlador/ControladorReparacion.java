@@ -120,7 +120,10 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
             ventanaEquipos.dispose();
         } 
         else if (e.getSource() == ventanaEquipos.getBtnAgregarEquipos()) {
-            if (Conexion.isModoAntigua()) {
+           
+        	
+        	if (controladorUsuLogin.getUsu_login().getIdRol() != 1) {
+        	if (Conexion.isModoAntigua()) {
                 JOptionPane.showMessageDialog(
                     ventanaEquipos,
                     "NO ES POSIBLE ACCEDER A ESTE MÓDULO CON DATOS ANTIGUOS.",
@@ -128,7 +131,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
                     JOptionPane.WARNING_MESSAGE
                 );
                 return;
-            }
+            }}
             gestorAgregar.abrirVentanaAgregarEquipo();
             ventanaEquipos.dispose();
         }

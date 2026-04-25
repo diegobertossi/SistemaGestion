@@ -636,7 +636,7 @@ public class VentanaMigracion extends JFrame  {
                 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            setBotonesHabilitados(false);
+            //setBotonesHabilitados(false);
             
 
             new Thread(() -> {

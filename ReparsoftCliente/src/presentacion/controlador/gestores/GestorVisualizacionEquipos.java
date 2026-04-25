@@ -263,11 +263,11 @@ public class GestorVisualizacionEquipos {
 		// Deshabilitar campos (modo lectura)
 		deshabilitarCampos(ventana);
 		
-		
+		if (controladorUsuLogin.getUsu_login().getIdRol() != 1) {
 		 if (Conexion.isModoAntigua()) {
 		        deshabilitarBotonesModoBloqueado(ventana);
 		        }
-
+		}
 		gestorInterfaz.resetearUndoRedo(ventana);
 	}
 
