@@ -84,9 +84,9 @@ public class VentanaEstados extends JFrame
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setBounds(0, 0, 756, 246);

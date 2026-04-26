@@ -16,9 +16,9 @@ public class VentanaDatosFacturacion extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
-        
+
         // Panel principal
         JPanel mainPanel = new JPanel();
         mainPanel.setFont(new Font("Cambria", Font.PLAIN, 14));

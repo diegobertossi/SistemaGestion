@@ -80,8 +80,9 @@ public class VentanaEliminarRemito extends JFrame {
 		setResizable(false);
 		this.controlador = controlador;
 
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
+
 		
 		this.this_windowOpened(null);
 		setSize(658, 348);

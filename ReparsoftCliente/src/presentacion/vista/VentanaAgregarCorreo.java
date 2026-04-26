@@ -33,8 +33,9 @@ public class VentanaAgregarCorreo extends JFrame
 		setResizable(false);
 		setTitle("Agregar Correo");
 		
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
+
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 490, 159);

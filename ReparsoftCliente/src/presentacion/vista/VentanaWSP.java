@@ -58,8 +58,9 @@ public class VentanaWSP extends JFrame {
 		setUndecorated(true);
 		setBounds(460, 260, 502, 418);
 		
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
+
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.inactiveCaption);

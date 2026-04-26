@@ -60,7 +60,7 @@ public class VistaPrincipal extends JFrame {
 		getContentPane().setBackground(new Color(219, 227, 246));
 		setMinimumSize(new Dimension(500, 400));
 		initialize();
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
 
 	}

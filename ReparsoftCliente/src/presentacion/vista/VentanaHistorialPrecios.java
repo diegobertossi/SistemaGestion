@@ -84,8 +84,9 @@ public class VentanaHistorialPrecios extends JFrame {
         setTitle("Historial de Precios");
 
         // Ícono igual al resto de ventanas del sistema
-        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
-        this.setIconImage(icon);
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
+		this.setIconImage(icon);
+
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 820, 620);

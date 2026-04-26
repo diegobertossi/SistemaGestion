@@ -42,8 +42,9 @@ public class VentanaQuitarCorreo extends JFrame {
 		setResizable(false);
 		setTitle("Quitar Correos");
 
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
+
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 617, 252);

@@ -55,8 +55,9 @@ public class VentanaEmail extends JFrame {
 		setUndecorated(true);
 		setBounds(460, 260, 739, 517);
 		
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
+
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.inactiveCaption);

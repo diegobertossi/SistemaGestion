@@ -59,8 +59,9 @@ public class VentanaIngresoDePago extends JFrame {
 		setResizable(false);
 		this.controlador = controlador;
 
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
+
 		
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

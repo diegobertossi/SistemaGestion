@@ -1,5 +1,6 @@
 package main;
 
+import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
 
@@ -34,9 +35,9 @@ public class Main {
 			e.printStackTrace();
 		}
 
-
-		
+				
 		VentanaUbicacionBaseDeDatos ventanaUbicacionBaseDeDatos = new VentanaUbicacionBaseDeDatos();
+		
 		ControladorUbicacionBase controlador = new ControladorUbicacionBase(ventanaUbicacionBaseDeDatos);
 		
 	

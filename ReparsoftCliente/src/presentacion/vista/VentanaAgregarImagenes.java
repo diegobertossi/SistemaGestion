@@ -53,8 +53,9 @@ public class VentanaAgregarImagenes extends JFrame {
 		setUndecorated(true);
 		setBounds(460, 260, 678, 558);
 		
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
+
 
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.inactiveCaption);

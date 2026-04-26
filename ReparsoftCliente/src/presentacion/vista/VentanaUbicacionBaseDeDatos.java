@@ -38,8 +38,9 @@ public class VentanaUbicacionBaseDeDatos extends JFrame
 
 		this.setLocationRelativeTo(null);
 
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
+
 		
 		contentPane = new JPanel();
 		contentPane.setOpaque(false);

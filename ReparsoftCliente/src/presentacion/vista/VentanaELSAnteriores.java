@@ -50,6 +50,10 @@ public class VentanaELSAnteriores extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
+		this.setIconImage(icon);
+
+		
 		// --- Diseño similar al tuyo ---
 		JLabel lblTitulo = new JLabel("CONSULTA ELS ANTERIORES");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 18));

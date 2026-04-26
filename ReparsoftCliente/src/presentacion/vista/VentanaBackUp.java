@@ -57,8 +57,9 @@ public class VentanaBackUp extends JFrame
 		setBounds(100, 100, 336, 208);
 		this.setLocationRelativeTo(null);
 		
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
+
 		
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.inactiveCaption);

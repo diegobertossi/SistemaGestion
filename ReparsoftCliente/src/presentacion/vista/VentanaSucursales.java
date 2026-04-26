@@ -78,8 +78,9 @@ public class VentanaSucursales extends JFrame
         setTitle("Sucursales");
         this.controladorSucursal = controladorSucursal;
 		
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
+
 		
 		setBounds(100, 100, 560, 507);
 		this.setLocationRelativeTo(null);

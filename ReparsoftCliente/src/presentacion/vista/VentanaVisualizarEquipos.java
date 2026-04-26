@@ -225,8 +225,9 @@ public class VentanaVisualizarEquipos extends JFrame {
 		setResizable(false);
 		this.controladorReparacion = controladorReparacion;
 
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
+
 
 		configurarAtajoGuardar();
 

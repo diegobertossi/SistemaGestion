@@ -39,8 +39,9 @@ public class VentanaLogin extends JFrame {
 		setBounds(460, 260, 439, 195);
 		
 		
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
+
 		//setAlwaysOnTop(true);
 		
 		JPanel panel = new JPanel();

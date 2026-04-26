@@ -99,8 +99,9 @@ public class VentanaMarcarAceptaciones extends JFrame {
 		super();
 		this.controladorPresupuestos = controladorPresupuestos;
 
-		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/multimetro.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
+
 		
 		this.this_windowOpened(null);
 		setSize(1200, 680);
