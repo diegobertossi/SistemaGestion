@@ -192,7 +192,7 @@ public class GestorPresupuestoFactura {
      * Envía aviso de informe
      */
     public void enviarAvisoInforme(VentanaVisualizarEquipos ventana) {
-        String correo = "diego.bertossi@elsweb.com.ar";
+    	String correo = "els@elsweb.com.ar; natalia.seip@elsweb.com.ar";
         enviarAviso(ventana, correo, "¿Desea enviar el aviso de 'Informe'?", "INFORME");
     }
     
@@ -200,8 +200,11 @@ public class GestorPresupuestoFactura {
      * Envía aviso de equipo listo
      */
     public void enviarAvisoEquipoListo(VentanaVisualizarEquipos ventana) {
-        String correo = "diego.bertossi@elsweb.com.ar";
-        enviarAviso(ventana, correo, "¿Desea enviar el aviso de 'Equipo Terminado'?", "EQUIPO_LISTO");
+        //String correo = "diego.bertossi@elsweb.com.ar";
+    	String correo = "els@elsweb.com.ar; natalia.seip@elsweb.com.ar";
+    	//String correo = "diego.bertossi@elsweb.com.ar; diego.bertossi@gmail.com";
+    	
+    	enviarAviso(ventana, correo, "¿Desea enviar el aviso de 'Equipo Terminado'?", "EQUIPO_LISTO");
     }
     
 

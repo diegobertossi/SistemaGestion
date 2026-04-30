@@ -547,7 +547,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		rutaImagen_5 = ventanaAgregarImagenes.getTxtRutaImagen_5().getText();
 		rutaImagen_6 = ventanaAgregarImagenes.getTxtRutaImagen_6().getText();
 
-		String emailPrueba = "diego.bertossi@gmail.com";
+		//String emailPrueba = "diego.bertossi@gmail.com";
 
 		ventanaAgregarImagenes.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -588,8 +588,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 				ventanaEmail.getTextCliente().setText(NombreCliente + " ( " + Sucursal + " ) ");
 				ventanaEmail.getTextNombreContacto().setText(NombreContacto);
 
-				// ventanaEmail.getTextEmailContacto().setText(emailContacto);
-				ventanaEmail.getTextEmailContacto().setText(emailPrueba);
+				 ventanaEmail.getTextEmailContacto().setText(emailContacto);
+				//ventanaEmail.getTextEmailContacto().setText(emailPrueba);
 
 				ventanaEmail.getTextAdjunto().setText(NombrePDF);
 
@@ -702,8 +702,8 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					ventanaEmail.getTextCliente().setText(cliente + " ( " + sucursal + " ) ");
 					ventanaEmail.getTextNombreContacto().setText(NombreContacto);
 
-					ventanaEmail.getTextEmailContacto().setText(emailPrueba);
-					// ventanaEmail.getTextEmailContacto().setText(emailContacto);
+					//ventanaEmail.getTextEmailContacto().setText(emailPrueba);
+					ventanaEmail.getTextEmailContacto().setText(emailContacto);
 					ventanaEmail.getTextAdjunto().setText(nombreWordNuevo);
 
 					String empresa = "ELS - Electronic Laboratory & Services.";
@@ -952,10 +952,11 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					String asunto = ventanaEmail.getTextAsunto().getText();
 					String cuerpo = ventanaEmail.getTextCuerpo().getText();
 					String nombreArchivo = ventanaEmail.getTextAdjunto().getText();
+					String ubicacion = agenda.getUbicacionBase(); // "Bariloche" o "Buenos Aires"
 
 					// Enviar el correo con los archivos adicionales
 					mails.EnviarMail.enviarInformeAlCliente(correo, asunto, cuerpo, nombreArchivo,
-							archivosAdjuntosExtras);
+							archivosAdjuntosExtras, ubicacion);
 
 					if (nombreArchivo.endsWith(".pdf")) {
 						ventanaGenerarPresupuesto.setChckPDFEnviado(true);
@@ -2047,12 +2048,49 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
+	/**
+	 * Valida una o más direcciones de correo electrónico separadas por punto y coma.
+	 * 
+	 * @param email Cadena con una o más direcciones de correo separadas por ;
+	 * @return true si TODAS las direcciones son válidas, false en caso contrario
+	 */
 	boolean validacionMail(String email) {
-
-		Pattern pattern = Pattern.compile(PATTERN_EMAIL);
-
-		Matcher matcher = pattern.matcher(email);
-		return matcher.matches();
+	    // Si la cadena está vacía o es nula, retornar false
+	    if (email == null || email.trim().isEmpty()) {
+	        System.out.println("Error: La cadena de correos está vacía");
+	        return false;
+	    }
+	    
+	    // Separar por punto y coma, ignorando espacios alrededor
+	    String[] emails = email.split(";");
+	    
+	    Pattern pattern = Pattern.compile(PATTERN_EMAIL);
+	    boolean todosValidos = true;
+	    StringBuilder emailsInvalidos = new StringBuilder();
+	    
+	    // Validar cada dirección de correo individualmente
+	    for (String emailIndividual : emails) {
+	        // Eliminar espacios al inicio y al final
+	        emailIndividual = emailIndividual.trim();
+	        
+	        // Si después de trim está vacío, saltar (por si hay dobles ;;)
+	        if (emailIndividual.isEmpty()) {
+	            continue;
+	        }
+	        
+	        // Validar el email individual
+	        Matcher matcher = pattern.matcher(emailIndividual);
+	        if (!matcher.matches()) {
+	            todosValidos = false;
+	            emailsInvalidos.append("'").append(emailIndividual).append("' ");
+	        }
+	    }
+	    
+	    if (!todosValidos) {
+	        System.out.println("Correos inválidos encontrados: " + emailsInvalidos.toString().trim());
+	    }
+	    
+	    return todosValidos;
 	}
 
 	@Override

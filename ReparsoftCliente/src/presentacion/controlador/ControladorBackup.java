@@ -93,6 +93,19 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		}
 	}
 
+	// NUEVO: método centralizado que combina ubicación + modo antiguo/actual
+	private String obtenerNombreBaseLocal() {
+		String ubicacion = agenda.getUbicacionBase();
+		boolean esAntigua = Conexion.isModoAntigua();
+
+		if (ubicacion.equalsIgnoreCase("Bariloche")) {
+			return esAntigua ? "ordenesbrcantiguas" : "ordenesbrc";
+		} else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
+			return esAntigua ? "ordenesbsasantiguas" : "ordenesbsas";
+		}
+		return "ordenesbrc"; // fallback
+	}
+
 	@SuppressWarnings({ "deprecation", "unused" })
 	public void actionPerformed(ActionEvent e) {
 
@@ -280,14 +293,15 @@ public class ControladorBackup implements ActionListener, MouseListener {
 			protected Void doInBackground() {
 				String archivoTemporal = null;
 				try {
-					String nombreBaseLocal = (ubicacion.equalsIgnoreCase("Bariloche")) ? "ordenesbrc" : "ordenesbsas";
+					// CORREGIDO: usa obtenerNombreBaseLocal() para considerar modo antiguo
+					String nombreBaseLocal = obtenerNombreBaseLocal();
 					archivoTemporal = System.getProperty("java.io.tmpdir") + File.separator + "backup_"
 							+ nombreBaseLocal + "_" + System.currentTimeMillis() + ".sql";
 
 					publish(5);
 
 					// 1. Crear dump local
-					System.out.println("Creando dump de la base de datos local...");
+					System.out.println("Creando dump de la base de datos local: " + nombreBaseLocal);
 					String mysqlPath = obtenerRutaMySQL();
 					if (mysqlPath == null) {
 						JOptionPane.showMessageDialog(null,
@@ -311,7 +325,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 					publish(15);
 
-					// 2. Leer sentencias SQL del dump (¡CORREGIDO!)
+					// 2. Leer sentencias SQL del dump
 					System.out.println("Leyendo sentencias SQL del dump...");
 					List<String> sentencias = parseSqlStatements(archivoTemporal);
 					int totalSentencias = sentencias.size();
@@ -431,9 +445,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		return true;
 	}
 
-	// ===================================================================
-	// MÉTODO CORREGIDO: ahora respeta escapes (\') de mysqldump
-	// ===================================================================
 	private List<String> parseSqlStatements(String filePath) throws IOException {
 		List<String> statements = new ArrayList<>();
 		StringBuilder sb = new StringBuilder();
@@ -468,10 +479,6 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		return statements;
 	}
 
-	// ===================================================================
-	// Resto de métodos (sin cambios)
-	// ===================================================================
-
 	public boolean ActualizarBackupMySQLremoto(String ubicacion, String cleverCloudHost, String cleverCloudPort,
 			String cleverCloudUser, String cleverCloudPassword, String cleverCloudDatabase) {
 
@@ -494,7 +501,8 @@ public class ControladorBackup implements ActionListener, MouseListener {
 				Connection conexionLocal = null;
 
 				try {
-					String nombreBaseLocal = (ubicacion.equalsIgnoreCase("Bariloche")) ? "ordenesbrc" : "ordenesbsas";
+					// CORREGIDO: usa obtenerNombreBaseLocal() para considerar modo antiguo
+					String nombreBaseLocal = obtenerNombreBaseLocal();
 					System.out.println("Iniciando actualización de " + nombreBaseLocal + " desde Clever Cloud...");
 
 					publish(5);
@@ -831,8 +839,8 @@ public class ControladorBackup implements ActionListener, MouseListener {
 						if (mysqlPath == null)
 							return null;
 
-						String nombreBaseLocal = agenda.getUbicacionBase().equalsIgnoreCase("Bariloche") ? "ordenesbrc"
-								: "ordenesbsas";
+						// CORREGIDO: usa obtenerNombreBaseLocal() para considerar modo antiguo
+						String nombreBaseLocal = obtenerNombreBaseLocal();
 
 						System.out.println("Importando backup:");
 						System.out.println("Base: " + nombreBaseLocal);
@@ -935,8 +943,8 @@ public class ControladorBackup implements ActionListener, MouseListener {
 					String rutaAguardar = ventanaOpcionesBackup.getTxtRutaArchivo().getText();
 					backupFile = new File(rutaAguardar + nombreAguardar);
 
-					String nombreBaseLocal = (agenda.getUbicacionBase().equalsIgnoreCase("Bariloche")) ? "ordenesbrc"
-							: "ordenesbsas";
+					// CORREGIDO: usa obtenerNombreBaseLocal() para considerar modo antiguo
+					String nombreBaseLocal = obtenerNombreBaseLocal();
 
 					String mysqlPath = obtenerRutaMySQL();
 					if (mysqlPath == null) {

@@ -269,13 +269,20 @@ public class ControladorPrincipal implements ActionListener {
 				controladorUsuLogin.mostrarMensajeSinPermiso();
 				return;
 			}
-			if (controladorUsuLogin.getUsu_login().getIdRol() != 1) {
-				if (!verificarModoNormal())
-					return;
-			}
+			
 			modelo = crearAgendaActual(ubicacionDeBase);
 			ventanaBackUp = new VentanaBackUp(controladorBackup);
 			controladorBackup = new ControladorBackup(ventanaBackUp, modelo);
+			
+			if (controladorUsuLogin.getUsu_login().getIdRol() != 1 && Conexion.isModoAntigua()) {
+				
+					//deshabilitar radiobutton de local y remoto dejando la seleccion en local
+					ventanaBackUp.getRdbtnLocal().setEnabled(false);
+					ventanaBackUp.getRdbtnRemoto().setEnabled(false);
+					
+			}
+			
+			
 
 		} else if (arg0.getSource() == vistaPrincipal.getBotonBusquedas()) {
 
