@@ -259,7 +259,7 @@ public class EnviarMail {
                     }
                 }
             }
-            
+            //diego
             // Convertir ArrayList a array
             BodyPart[] arrayAdjuntos = adjuntos.toArray(new BodyPart[0]);
 
