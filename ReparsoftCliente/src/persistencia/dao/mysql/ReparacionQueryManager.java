@@ -129,6 +129,58 @@ public class ReparacionQueryManager {
     }
 
     /**
+     * Obtiene una página de reparaciones (paginación server-side).
+     * @param limit  cantidad de registros por página
+     * @param offset desde qué registro empezar (página * limit)
+     */
+    // NUEVO: paginación server-side
+    public List<ReparacionDTO> readAllPaginado(int limit, int offset) {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Connection conn = null;
+        try {
+            conn = conexion.getSQLConexion();
+            statement = conn.prepareStatement(SQLQueries.READ_ALL_PAGINADO);
+            statement.setInt(1, limit);
+            statement.setInt(2, offset);
+            resultSet = statement.executeQuery();
+
+            return ReparacionMapper.mapToReparacionList(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        } finally {
+            closeResources(statement, resultSet, conn);
+        }
+    }
+
+    /**
+     * Cuenta el total de reparaciones para calcular páginas.
+     * Usa el mismo JOIN/WHERE que READ_ALL para ser consistente.
+     */
+    // NUEVO: conteo total para paginación
+    public int contarReparaciones() {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Connection conn = null;
+        try {
+            conn = conexion.getSQLConexion();
+            statement = conn.prepareStatement(SQLQueries.COUNT_REPARACIONES);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        } finally {
+            closeResources(statement, resultSet, conn);
+        }
+    }
+
+    /**
      * Obtiene una reparación por ELS
      */
     public ReparacionDTO obtenerReparacionXELS(Integer els) {
@@ -192,7 +244,7 @@ public class ReparacionQueryManager {
             
             if (resultSet.next()) {
                 int els = resultSet.getInt("MAX(ELS)");
-                return els == 0 ? 987 : els; // Valor por defecto si no hay registros
+                return els == 0 ? 987 : els;
             }
             return 987;
         } catch (SQLException e) {
@@ -204,7 +256,7 @@ public class ReparacionQueryManager {
     }
 
     /**
-     * Obtiene el máximo ELS para BSAS
+     * Obtiene el máximo ELS para Buenos Aires
      */
     public int obtenerMaximoELSBSAS() {
         PreparedStatement statement = null;
@@ -214,15 +266,15 @@ public class ReparacionQueryManager {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(SQLQueries.MAXIMO_ELS);
             resultSet = statement.executeQuery();
-            
+
             if (resultSet.next()) {
                 int els = resultSet.getInt("MAX(ELS)");
-                return els == 0 ? 24899 : els; // Valor por defecto si no hay registros
+                return els == 0 ? 16549 : els;
             }
-            return 24899;
+            return 16549;
         } catch (SQLException e) {
             e.printStackTrace();
-            return 24899;
+            return 16549;
         } finally {
             closeResources(statement, resultSet, conn);
         }
@@ -239,7 +291,7 @@ public class ReparacionQueryManager {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(SQLQueries.MAXIMO_ID_EQUIPO);
             resultSet = statement.executeQuery();
-            
+
             if (resultSet.next()) {
                 return resultSet.getInt("MAX(IdEquipo)");
             }
@@ -261,9 +313,7 @@ public class ReparacionQueryManager {
         try {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(SQLQueries.UPDATE_REPARACION);
-            
             setUpdateParameters(statement, reparacion);
-            
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -274,22 +324,18 @@ public class ReparacionQueryManager {
     }
 
     /**
-     * Actualiza un equipo
+     * Actualiza los datos del equipo con fecha
      */
     public boolean updateEquipo(ReparacionDTO reparacion) {
         PreparedStatement statement = null;
         Connection conn = null;
         try {
             conn = conexion.getSQLConexion();
-            
-            if (reparacion.getFechaFabr() != null) {
-                statement = conn.prepareStatement(SQLQueries.UPDATE_EQUIPO);
-                setEquipoParameters(statement, reparacion, true);
-            } else {
-                statement = conn.prepareStatement(SQLQueries.UPDATE_EQUIPO_SIN_FECHA);
-                setEquipoParameters(statement, reparacion, false);
-            }
-            
+            String fechaFabr = reparacion.getFechaFabr();
+            boolean conFecha = (fechaFabr != null && !fechaFabr.isEmpty());
+            String query = conFecha ? SQLQueries.UPDATE_EQUIPO : SQLQueries.UPDATE_EQUIPO_SIN_FECHA;
+            statement = conn.prepareStatement(query);
+            setEquipoParameters(statement, reparacion, conFecha);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -300,7 +346,7 @@ public class ReparacionQueryManager {
     }
 
     /**
-     * Actualiza para agregar remito
+     * Agrega remito a una reparación
      */
     public void updateAgregarRemito(ReparacionDTO reparacion) {
         PreparedStatement statement = null;
@@ -308,12 +354,10 @@ public class ReparacionQueryManager {
         try {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(SQLQueries.UPDATE_AGREGAR_REMITO);
-            
             statement.setBoolean(1, reparacion.getAgregadoaremito());
             statement.setBoolean(2, reparacion.getRemitoGenerado());
             statement.setInt(3, reparacion.getidRemito());
             statement.setInt(4, reparacion.getELS());
-            
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -323,7 +367,7 @@ public class ReparacionQueryManager {
     }
 
     /**
-     * Actualiza para marcar como enviados
+     * Marca reparaciones como enviadas
      */
     public void updateMarcarEnviados(ReparacionDTO reparacion) {
         PreparedStatement statement = null;
@@ -331,11 +375,9 @@ public class ReparacionQueryManager {
         try {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(SQLQueries.UPDATE_MARCAR_ENVIADOS);
-            
             statement.setString(1, reparacion.getEstadoFisico());
-            setTimestampParameter(statement, 2, reparacion.getFecha_Salida());
+            statement.setString(2, reparacion.getFecha_Salida());
             statement.setInt(3, reparacion.getELS());
-            
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -345,7 +387,7 @@ public class ReparacionQueryManager {
     }
 
     /**
-     * Actualiza para anular remito
+     * Anula el remito de una reparación
      */
     public void updateAnularRemito(ReparacionDTO reparacion) {
         PreparedStatement statement = null;
@@ -353,13 +395,11 @@ public class ReparacionQueryManager {
         try {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(SQLQueries.UPDATE_ANULAR_REMITO);
-            
             statement.setString(1, reparacion.getEstadoFisico());
             statement.setBoolean(2, reparacion.getAgregadoaremito());
             statement.setBoolean(3, reparacion.getRemitoGenerado());
             statement.setInt(4, reparacion.getidRemito());
             statement.setInt(5, reparacion.getELS());
-            
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -369,7 +409,7 @@ public class ReparacionQueryManager {
     }
 
     /**
-     * Actualiza presupuesto
+     * Actualiza datos de presupuesto
      */
     public void updatePresupuesto(ReparacionDTO reparacion) {
         PreparedStatement statement = null;
@@ -377,7 +417,6 @@ public class ReparacionQueryManager {
         try {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(SQLQueries.UPDATE_PRESUPUESTO);
-            
             statement.setString(1, reparacion.getInformecliente());
             setBigDecimalParameter(statement, 2, reparacion.getPrecioPeso());
             setBigDecimalParameter(statement, 3, reparacion.getPrecioDolar());
@@ -386,7 +425,6 @@ public class ReparacionQueryManager {
             setBooleanParameter(statement, 6, reparacion.getWORDgenerado());
             setBooleanParameter(statement, 7, reparacion.getWORDenviado());
             statement.setInt(8, reparacion.getELS());
-            
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -396,7 +434,7 @@ public class ReparacionQueryManager {
     }
 
     /**
-     * Actualiza aceptación
+     * Actualiza la aceptación de una reparación
      */
     public void updateAceptacion(ReparacionDTO reparacion) {
         PreparedStatement statement = null;
@@ -404,11 +442,9 @@ public class ReparacionQueryManager {
         try {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(SQLQueries.UPDATE_ACEPTACION);
-            
             setTimestampParameter(statement, 1, reparacion.getFechAceptacion());
             statement.setString(2, reparacion.getEstadoComercial());
             statement.setInt(3, reparacion.getELS());
-            
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -418,7 +454,7 @@ public class ReparacionQueryManager {
     }
 
     /**
-     * Actualiza pago
+     * Actualiza el pago de una reparación
      */
     public void updatePago(ReparacionDTO reparacion) {
         PreparedStatement statement = null;
@@ -426,13 +462,11 @@ public class ReparacionQueryManager {
         try {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(SQLQueries.UPDATE_PAGO);
-            
             setBigDecimalParameter(statement, 1, reparacion.getPrecioPeso());
             setBigDecimalParameter(statement, 2, reparacion.getPrecioDolar());
             setBigDecimalParameter(statement, 3, reparacion.getPago());
             statement.setString(4, reparacion.getEstadoComercial());
             statement.setInt(5, reparacion.getELS());
-            
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -454,7 +488,7 @@ public class ReparacionQueryManager {
             statement.setInt(1, idCliente);
             statement.setInt(2, idSucursal);
             resultSet = statement.executeQuery();
-            
+
             return ReparacionMapper.mapToReparacionList(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -476,7 +510,7 @@ public class ReparacionQueryManager {
             statement = conn.prepareStatement(SQLQueries.READ_ALL_X_ID_REMITO);
             statement.setInt(1, idRemito);
             resultSet = statement.executeQuery();
-            
+
             return ReparacionMapper.mapToReparacionList(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -498,7 +532,7 @@ public class ReparacionQueryManager {
             statement = conn.prepareStatement(SQLQueries.READ_ALL_X_COMP_ORIGINAL);
             statement.setString(1, componente);
             resultSet = statement.executeQuery();
-            
+
             return ReparacionMapper.mapToComponenteReparacionList(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -509,7 +543,7 @@ public class ReparacionQueryManager {
     }
 
     /**
-     * Obtiene reparaciones por componente reemplazo
+     * Obtiene reparaciones por componente de reemplazo
      */
     public List<ReparacionDTO> readAllXComponenteReemplazo(String componente) {
         PreparedStatement statement = null;
@@ -520,7 +554,7 @@ public class ReparacionQueryManager {
             statement = conn.prepareStatement(SQLQueries.READ_ALL_X_COMP_REEMPLAZO);
             statement.setString(1, componente);
             resultSet = statement.executeQuery();
-            
+
             return ReparacionMapper.mapToComponenteReparacionList(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -541,7 +575,7 @@ public class ReparacionQueryManager {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(SQLQueries.READ_ALL_LISTADO_MARCAR_ACEPTACIONES);
             resultSet = statement.executeQuery();
-            
+
             return ReparacionMapper.mapToBasicReparacionList(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -568,7 +602,7 @@ public class ReparacionQueryManager {
             statement = conn.prepareStatement(query);
             statement.setString(1, "%" + texto + "%");
             resultSet = statement.executeQuery();
-            
+
             return ReparacionMapper.mapToIntegerList(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -582,7 +616,7 @@ public class ReparacionQueryManager {
 
     private void setUpdateParameters(PreparedStatement statement, ReparacionDTO reparacion) throws SQLException {
         int paramIndex = 1;
-        
+
         setTimestampParameter(statement, paramIndex++, reparacion.getFecha_Entrada());
         setTimestampParameter(statement, paramIndex++, reparacion.getFechadereparacion());
         statement.setString(paramIndex++, reparacion.getFalla());
@@ -611,15 +645,14 @@ public class ReparacionQueryManager {
         setTimestampParameter(statement, paramIndex++, reparacion.getFecha_Salida());
         statement.setString(paramIndex++, reparacion.getNrofactura());
         statement.setString(paramIndex++, reparacion.getLugarDeIngreso());
-        
-        
+
         // Llave primaria
         statement.setInt(paramIndex, reparacion.getELS());
     }
 
     private void setEquipoParameters(PreparedStatement statement, ReparacionDTO reparacion, boolean conFecha) throws SQLException {
         int paramIndex = 1;
-        
+
         statement.setString(paramIndex++, reparacion.getNombreEquipo());
         statement.setString(paramIndex++, reparacion.getModelo());
         statement.setString(paramIndex++, reparacion.getMarca());
@@ -629,11 +662,11 @@ public class ReparacionQueryManager {
         statement.setString(paramIndex++, reparacion.getRemitoCliente());
         statement.setInt(paramIndex++, reparacion.getIDCliente());
         statement.setInt(paramIndex++, reparacion.getIDSuc());
-        
+
         if (conFecha) {
             statement.setString(paramIndex++, reparacion.getFechaFabr());
         }
-        
+
         statement.setInt(paramIndex, reparacion.getIDEquipo());
     }
 
@@ -685,7 +718,6 @@ public class ReparacionQueryManager {
         ResultSet resultSet = null;
         Connection conn = null;
         try {
-            // Mapear código interno → columna SQL válida
             String columna;
             switch (criterio) {
                 case "MARCA":         columna = "Equipos.Marca";   break;

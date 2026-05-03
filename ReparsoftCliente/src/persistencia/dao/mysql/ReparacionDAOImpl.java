@@ -493,4 +493,15 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 	public List<ReparacionDTO> buscarHistorialPrecios(String criterio, String texto) {
 		return queryManager.buscarHistorialPrecios(criterio, texto);
 	}
+	
+	@Override
+	public List<ReparacionDTO> readAllPaginado(int limit, int offset) {
+	    return queryManager.readAllPaginado(limit, offset);
+	}
+
+	@Override
+	public int contarReparaciones() {
+	    return queryManager.contarReparaciones();
+	}
+	
 }

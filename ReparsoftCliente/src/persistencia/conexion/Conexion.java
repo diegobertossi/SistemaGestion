@@ -14,70 +14,74 @@ public class Conexion {
     private String ubicacionActual;
     private boolean esBaseAntigua;
 
-    // Modo global que recuerda si estamos en base antigua
     private static boolean modoAntiguaGlobal = false;
 
     static {
-        // CONFIGURACIÓN FIJA PARA LOCALHOST (MySQL 8.4 LTS)
         props.setProperty("db.host", "localhost");
         props.setProperty("db.port", "3306");
         props.setProperty("db.user", "root");
         props.setProperty("db.password", "root");
 
         props.setProperty(
-        	    "db.options",
-        	    "useUnicode=true" +
-        	    "&characterEncoding=UTF-8" +
-        	    "&connectionCollation=utf8mb4_unicode_ci" +
-        	    "&serverTimezone=UTC" +
-        	    "&useSSL=false" +
-        	    "&allowPublicKeyRetrieval=true"
-        	);
+            "db.options",
+            "useUnicode=true" +
+            "&characterEncoding=UTF-8" +
+            "&connectionCollation=utf8mb4_unicode_ci" +
+            "&serverTimezone=UTC" +
+            "&useSSL=false" +
+            "&allowPublicKeyRetrieval=true"
+        );
 
         System.out.println("ℹ️ Usando configuración local fija para MySQL 8.4 LTS.");
     }
 
+    // ── Constructor privado ───────────────────────────────────────────────────
+    // Class.forName ya NO está aquí: lo precarga Main.java al arranque.
     private Conexion(String ubicacion, boolean esAntigua) {
         this.ubicacionActual = ubicacion;
-        this.esBaseAntigua = esAntigua;
+        this.esBaseAntigua   = esAntigua;
+        establecerConexion(ubicacion, esAntigua);
+    }
 
+    // ── Método estático para precargar el driver desde cualquier punto ────────
+    // Main.java lo llama al inicio. Queda aquí como utilidad por si se necesita
+    // en tests u otros contextos sin pasar por Main.
+    public static void precargarDriver() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("✅ Driver JDBC precargado correctamente.");
         } catch (ClassNotFoundException e) {
             System.err.println("❌ No se encontró el driver JDBC MySQL 8.x");
             JOptionPane.showMessageDialog(null,
                 "No se pudo cargar el driver JDBC MySQL.\n" + e.getMessage(),
                 "Error de Driver", JOptionPane.ERROR_MESSAGE);
         }
-
-        establecerConexion(ubicacion, esAntigua);
     }
 
+    // ── Conexión a la base ────────────────────────────────────────────────────
     private void establecerConexion(String ubicacion, boolean esAntigua) {
         String nombreBase;
 
         if (ubicacion.equalsIgnoreCase("Bariloche")) {
             nombreBase = esAntigua ? "ordenesbrcantiguas" : "ordenesbrc";
-        } 
-        else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
+        } else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
             nombreBase = esAntigua ? "ordenesbsasantiguas" : "ordenesbsas";
-        } 
-        else {
+        } else {
             nombreBase = ubicacion.toLowerCase().replaceAll("\\s+", "");
             if (esAntigua) nombreBase += "antiguas";
         }
 
         try {
-            String host = props.getProperty("db.host");
-            String port = props.getProperty("db.port");
-            String user = props.getProperty("db.user");
+            String host     = props.getProperty("db.host");
+            String port     = props.getProperty("db.port");
+            String user     = props.getProperty("db.user");
             String password = props.getProperty("db.password");
-            String options = props.getProperty("db.options");
+            String options  = props.getProperty("db.options");
 
             String url = "jdbc:mysql://" + host + ":" + port + "/" + nombreBase + "?" + options;
 
             conexion = DriverManager.getConnection(url, user, password);
-            System.out.println("✅ Conectado correctamente a: " + nombreBase + 
+            System.out.println("✅ Conectado correctamente a: " + nombreBase +
                              (esAntigua ? " (BASE ANTIGUA)" : " (BASE NORMAL)"));
 
         } catch (SQLException e) {
@@ -92,15 +96,16 @@ public class Conexion {
         }
     }
 
+    // ── Singleton ─────────────────────────────────────────────────────────────
     public static Conexion getConexion(String ubicacion) {
         return getConexion(ubicacion, modoAntiguaGlobal);
     }
 
     public static Conexion getConexion(String ubicacion, boolean esAntigua) {
-        if (instancia != null && 
-            (!instancia.ubicacionActual.equalsIgnoreCase(ubicacion) || 
-             instancia.esBaseAntigua != esAntigua)) {
-            
+        if (instancia != null &&
+            (!instancia.ubicacionActual.equalsIgnoreCase(ubicacion) ||
+              instancia.esBaseAntigua != esAntigua)) {
+
             instancia.cerrarConexion();
             instancia = null;
         }
@@ -110,10 +115,10 @@ public class Conexion {
         }
 
         modoAntiguaGlobal = esAntigua;
-
         return instancia;
     }
 
+    // ── Utilidades estáticas ──────────────────────────────────────────────────
     public static String getUbicacionActualStatic() {
         return (instancia != null) ? instancia.ubicacionActual : null;
     }
@@ -122,6 +127,7 @@ public class Conexion {
         return modoAntiguaGlobal;
     }
 
+    // ── Instancia ─────────────────────────────────────────────────────────────
     public Connection getSQLConexion() {
         try {
             if (conexion != null && !conexion.isClosed()) {

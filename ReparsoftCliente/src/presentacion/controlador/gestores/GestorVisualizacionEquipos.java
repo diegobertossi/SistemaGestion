@@ -807,7 +807,15 @@ public class GestorVisualizacionEquipos {
 
 	private void abrirEnviarCorreoWSP(VentanaVisualizarEquipos ventanaVisualizarEquipos2) {
 		ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(controlador);
+		//agregar listener a los dos botones de la ventanaEnviarCorreoOwsp
+		ventanaEnviarCorreoOwsp.getBtnEnviarWSP().addActionListener(e -> controlador.getGestorClientesWSP().abrirVentanaWSP());
+		//ventanaEnviarCorreoOwsp.getBtnEnviarCorreo().addActionListener(e -> controlador.getGestorPresupuesto().enviarCorre(ventanaVisualizarEquipos2));
+		
+
+		
+		
 	}
+	
 
 	private void generarRegistroIngreso(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
 		try {

@@ -17,7 +17,7 @@ public class VentanaEnviarCorreoOwsp extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JButton btnEnviarCorreo;
-	private JButton btnEnviarWST;
+	private JButton btnEnviarWSP;
 	@SuppressWarnings("unused")
 	private ControladorReparacion controlador;
 
@@ -48,20 +48,20 @@ public class VentanaEnviarCorreoOwsp extends JFrame {
 		btnEnviarCorreo.setBounds(39, 33, 100, 50);
 		contentPane.add(btnEnviarCorreo);
 
-		btnEnviarWST = new JButton("<html><center>ENVIAR WHATSAPP</html>");
-		btnEnviarWST.setFont(new Font("Cambria", Font.BOLD, 14));
-		btnEnviarWST.setBounds(149, 33, 100, 50);
-		contentPane.add(btnEnviarWST);
+		btnEnviarWSP = new JButton("<html><center>ENVIAR WHATSAPP</html>");
+		btnEnviarWSP.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnEnviarWSP.setBounds(149, 33, 100, 50);
+		contentPane.add(btnEnviarWSP);
 
 		this.setVisible(true);
 	}
 
-	public JButton getBtnEnviarWST() {
-		return btnEnviarWST;
+	public JButton getBtnEnviarWSP() {
+		return btnEnviarWSP;
 	}
 
-	public void setBtnEnviarWST(JButton btnEnviarWST) {
-		this.btnEnviarWST = btnEnviarWST;
+	public void setBtnEnviarWSP(JButton btnEnviarWSP) {
+		this.btnEnviarWSP = btnEnviarWSP;
 	}
 
 	public JButton getBtnEnviarCorreo() {

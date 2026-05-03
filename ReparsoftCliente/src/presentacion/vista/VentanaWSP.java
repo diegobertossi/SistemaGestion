@@ -166,7 +166,6 @@ public class VentanaWSP extends JFrame {
 		textMensaje = new JTextArea();
 		textMensaje.setFont(new Font("Cambria", Font.PLAIN, 12));
 		scrollPane.setViewportView(textMensaje);
-		textMensaje.setEditable(false);
 		textMensaje.setColumns(10);
 		
 		btnEnviar = new JButton("ENVIAR");

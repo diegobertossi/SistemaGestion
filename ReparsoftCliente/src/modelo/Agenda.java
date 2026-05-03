@@ -709,4 +709,15 @@ public class Agenda {
 		}
 		return ubicacionBase + (esBaseAntigua ? "antiguas" : "");
 	}
+	
+	
+	// NUEVO: paginación del listado
+	public List<ReparacionDTO> obtenerReparacionPaginada(int limit, int offset) {
+	    return ReparacionR.readAllPaginado(limit, offset);
+	}
+
+	public int contarReparaciones() {
+	    return ReparacionR.contarReparaciones();
+	}
+	
 }

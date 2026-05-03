@@ -139,7 +139,7 @@ public class ClienteWSPDAOImpl implements ClienteWSPDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			//conexion.cerrarConexion();
 		}
 		return ClientesWSP;
 	}
@@ -170,7 +170,7 @@ public class ClienteWSPDAOImpl implements ClienteWSPDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			//conexion.cerrarConexion();
 		}
 
 	}
@@ -219,7 +219,7 @@ public class ClienteWSPDAOImpl implements ClienteWSPDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+		//	conexion.cerrarConexion();
 		}
 
 	}
@@ -246,7 +246,7 @@ public class ClienteWSPDAOImpl implements ClienteWSPDAO {
 			e.printStackTrace();
 		} finally // Se ejecuta siempre
 		{
-			conexion.cerrarConexion();
+			//conexion.cerrarConexion();
 		}
 
 		return telefonoString;

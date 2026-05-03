@@ -196,7 +196,11 @@ public interface ReparacionDAO
 
 	public List<ReparacionDTO> buscarHistorialPrecios(String criterio, String texto);
 
+	// NUEVO: paginación server-side
+	List<ReparacionDTO> readAllPaginado(int limit, int offset);
 
+	// NUEVO: conteo total para calcular páginas
+	int contarReparaciones();
 
 
 	

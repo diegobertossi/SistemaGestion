@@ -445,16 +445,57 @@ public class SQLQueries {
         Arrays.asList("Falla", "Solucion", "Informecliente");
     
     public static final String BUSQUEDA_HISTORIAL_PRECIOS =
-    	    "SELECT reparaciones.ELS, Equipos.Nombre, Equipos.Marca, Equipos.Modelo, "
-    	    + "DATE_FORMAT(reparaciones.FechadeDiagnostico, '%%d/%%m/%%Y') AS FechaDiag, "
-    	    + "reparaciones.PrecioPeso, reparaciones.PrecioDolar "
-    	    + "FROM reparaciones "
-    	    + "INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.IdEquipo "
-    	    + "WHERE %s LIKE ? "
-    	    + "AND (reparaciones.PrecioPeso > 0 OR reparaciones.PrecioDolar > 0) "
-    	    + "AND reparaciones.EstadoComercial = 'Aceptado' "
-    	    + "ORDER BY reparaciones.FechadeDiagnostico DESC";
+        "SELECT reparaciones.ELS, Equipos.Nombre, Equipos.Marca, Equipos.Modelo, "
+        + "DATE_FORMAT(reparaciones.FechadeDiagnostico, '%%d/%%m/%%Y') AS FechaDiag, "
+        + "reparaciones.PrecioPeso, reparaciones.PrecioDolar "
+        + "FROM reparaciones "
+        + "INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.IdEquipo "
+        + "WHERE %s LIKE ? "
+        + "AND (reparaciones.PrecioPeso > 0 OR reparaciones.PrecioDolar > 0) "
+        + "AND reparaciones.EstadoComercial = 'Aceptado' "
+        + "ORDER BY reparaciones.FechadeDiagnostico DESC";
 
+    // ========== NUEVAS QUERIES PARA PAGINACIÓN ==========
 
+    /**
+     * Igual que READ_ALL pero con LIMIT y OFFSET para paginación server-side.
+     * Parámetros: 1=LIMIT (cantidad por página), 2=OFFSET (desde qué registro).
+     * NOTA: La query usa ORDER BY reparaciones.ELS DESC para mostrar los más
+     * recientes primero, manteniendo consistencia entre páginas.
+     */
+    public static final String READ_ALL_PAGINADO =
+        "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa, " +
+        "Cliente.Contacto, Cliente.TelefonoContacto, Cliente.CorreoElectronico,Sucursal.IdSucursal, Sucursal.NombreSucursal, " +
+        "reparaciones.ELS, DATE_FORMAT(FechaEntrada,'%Y%m%d') as FechaEntrada, DATE_FORMAT(FechadeDiagnostico,'%Y%m%d') as FechadeDiagnostico, " +
+        "reparaciones.Falla, reparaciones.Solucion, reparaciones.Informecliente, reparaciones.AvisoEnviado,reparaciones.PresupuestoEnviado, " +
+        "reparaciones.WordGenerado,reparaciones.WordEnviado, reparaciones.idUsuario,reparaciones.NombreUsuario, reparaciones.EstadoFisico, " +
+        "reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.RemitoCliente, reparaciones.OrdendeCompra, " +
+        "reparaciones.Agregadoaremito, reparaciones.RemitoGenerado, reparaciones.idEquipo, reparaciones.idRemito, reparaciones.idUsuario, " +
+        "DATE_FORMAT(FechAceptacion,'%Y%m%d') as FechAceptacion, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.Pago, " +
+        "usuario.idUsuario, usuario.nombre, Equipos.IdEquipo, Equipos.Nombre, Equipos.Modelo, Equipos.Marca, " +
+        "DATE_FORMAT(FechaFabr,'%Y%m%d') as FechaFabr, Equipos.NumeroDeSerie, Equipos.Aviso, Equipos.ClienteCliente, " +
+        "Equipos.RemitoCliente, Equipos.idCliente, reparaciones.PrecioPeso, reparaciones.PrecioDolar, reparaciones.PresupuestoGenerado, " +
+        "Equipos.idSucursal, usuario.email, Remitos.NumeroRemitoSalida, UbicacionRemitos.Ubicacion, UbicacionRemitos.Codigo, " +
+        "UbicacionRemitos.IdUbicacion, reparaciones.Pago, reparaciones.lugar_de_ingreso,reparaciones.NroFactura, DATE_FORMAT(FechaSalida,'%Y%m%d') as FechaSalida " +
+        "FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) " +
+        "INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON " +
+        "Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON " +
+        "UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion " +
+        "WHERE (((Cliente.idCliente)=Equipos.idCliente)) and ((Sucursal.IdSucursal)=Equipos.idSucursal) " +
+        "And ((usuario.IdUsuario)=reparaciones.idUsuario) " +
+        "ORDER BY reparaciones.ELS DESC " +
+        "LIMIT ? OFFSET ?";
 
+    /**
+     * Cuenta el total de reparaciones visibles (mismo JOIN y WHERE que READ_ALL).
+     * Se usa para calcular el total de páginas sin traer todos los datos.
+     */
+    public static final String COUNT_REPARACIONES =
+        "SELECT COUNT(*) " +
+        "FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) " +
+        "INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON " +
+        "Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON " +
+        "UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion " +
+        "WHERE (((Cliente.idCliente)=Equipos.idCliente)) and ((Sucursal.IdSucursal)=Equipos.idSucursal) " +
+        "And ((usuario.IdUsuario)=reparaciones.idUsuario)";
 }

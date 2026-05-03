@@ -91,6 +91,11 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JCheckBox chckbxPago;
 	private JCheckBox chckbxPrecioPeso;
 	private JButton btnEstadisticas;
+	
+	// NUEVO: componentes de paginación
+	private JButton btnAnterior;
+	private JButton btnSiguiente;
+	private JLabel lblInfoPagina;
 
 	public JToggleButton toggleBtnOcultar;
 	public JWindow windowOpciones;
@@ -143,6 +148,7 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelFiltros.setBackground(new Color(176, 196, 222));
 //		panelFiltros.setBorder(new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 128, 128)),
 //				new EmptyBorder(0, 5, 5, 10)));
+		
 		panelSuperior.add(panelFiltros, BorderLayout.CENTER);
 
 		btnEstadisticas = new JButton("ESTADÍSTICAS");
@@ -327,9 +333,16 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelCentral = new JPanel();
 		panelCentral.setBorder(new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 128, 128)),
 				new EmptyBorder(3, 5, 0, 5)));
+		
 		panelCentral.setBackground(new Color(176, 196, 222));
 		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
 		panelCentral.setLayout(new BorderLayout(0, 0));
+		
+		
+		
+		
+		
+		
 
 		modelReparaciones = new DefaultTableModel(new Object[][] {}, nombreColumnas) {
 			private static final long serialVersionUID = 1L;
@@ -360,8 +373,35 @@ public class VentanaListadoReparaciones extends JFrame {
 		scrollPane.setViewportView(tblListado);
 		panelCentral.add(scrollPane, BorderLayout.CENTER);
 
+		// NUEVO: panel inferior de paginación
+		JPanel panelPaginacion = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 5));
+		panelPaginacion.setBackground(new Color(176, 196, 222));
+		panelPaginacion.setBorder(new MatteBorder(1, 0, 0, 0, new Color(0, 128, 128)));
+
+		btnAnterior = new JButton("◄ ANTERIOR");
+		btnAnterior.setFont(new Font("Cambria", Font.BOLD, 13));
+		btnAnterior.setForeground(new Color(25, 25, 112));
+		btnAnterior.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnAnterior.setEnabled(false);
+
+		lblInfoPagina = new JLabel("Página 1");
+		lblInfoPagina.setFont(new Font("Cambria", Font.BOLD, 13));
+		lblInfoPagina.setForeground(new Color(25, 25, 112));
+
+		btnSiguiente = new JButton("SIGUIENTE ►");
+		btnSiguiente.setFont(new Font("Cambria", Font.BOLD, 13));
+		btnSiguiente.setForeground(new Color(25, 25, 112));
+		btnSiguiente.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSiguiente.setEnabled(false);
+
+		panelPaginacion.add(btnAnterior);
+		panelPaginacion.add(lblInfoPagina);
+		panelPaginacion.add(btnSiguiente);
+
+		panelCentral.add(panelPaginacion, BorderLayout.SOUTH);
+
 		int[] anchos = { 60, 80, 150, 150, 200, 100, 150, 100, 100, 80, 80, 110, 120, 150, 100, 100, 100, 100, 80, 80,
-				100, 100, 100, 80 };
+		        100, 100, 100, 80 };
 
 		for (int i = 0; i < tblListado.getColumnCount(); i++) {
 			tblListado.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
@@ -758,4 +798,10 @@ public class VentanaListadoReparaciones extends JFrame {
 	public void setNombresColumnas(String[] nombresColumnas) {
 		this.nombresColumnas = nombresColumnas;
 	}
+	
+	// NUEVO: getters paginación
+	public JButton getBtnAnterior() { return btnAnterior; }
+	public JButton getBtnSiguiente() { return btnSiguiente; }
+	public JLabel getLblInfoPagina() { return lblInfoPagina; }
+	
 }

@@ -3,45 +3,31 @@ package main;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
-
 import presentacion.controlador.ControladorUbicacionBase;
 import presentacion.vista.VentanaUbicacionBaseDeDatos;
 
-
 public class Main {
 
-	@SuppressWarnings("unused")
-	public static void main(String[] args) {
-		try {
-			// Correcion hecha por Chuster Boy ;)
+    @SuppressWarnings("unused")
+    public static void main(String[] args) {
+        
+        // Precarga el driver JDBC antes de mostrar cualquier ventana.
+        // Así ese costo no lo paga Conexion más tarde, bloqueando el EDT.
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("✅ Driver JDBC precargado correctamente.");
+        } catch (ClassNotFoundException e) {
+            System.err.println("❌ No se encontró el driver JDBC MySQL 8.x");
+            e.printStackTrace();
+        }
 
-			// UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
-			// UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
-			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-			//UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-			UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-			//**UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
-			//UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaBlueMoonLookAndFeel");
-			//com.jtattoo.plaf.mcwin.McWinLookAndFeel	
-						
-//			UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
-//            Synthetica a = new Synthetica(); 
-//            a.setVisible(true);
-			
-		
-			
+        try {
+            UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-				
-		VentanaUbicacionBaseDeDatos ventanaUbicacionBaseDeDatos = new VentanaUbicacionBaseDeDatos();
-		
-		ControladorUbicacionBase controlador = new ControladorUbicacionBase(ventanaUbicacionBaseDeDatos);
-		
-	
-
-
-	}
+        VentanaUbicacionBaseDeDatos ventanaUbicacionBaseDeDatos = new VentanaUbicacionBaseDeDatos();
+        ControladorUbicacionBase controlador = new ControladorUbicacionBase(ventanaUbicacionBaseDeDatos);
+    }
 }
