@@ -353,4 +353,10 @@ public class TablaFiltros {
 			return fechaFormateada;
 		}
 	}
+	
+	
+	
+	public JComboBox<String>[] getFilterCombos() {
+	    return filterCombos;
+	}
 }

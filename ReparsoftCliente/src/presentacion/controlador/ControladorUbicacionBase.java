@@ -47,16 +47,13 @@ public class ControladorUbicacionBase implements ActionListener {
             // SwingWorker: la conexión MySQL ocurre en background, no en el EDT
             SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-                private Agenda    agenda;
-                private Permisos  permisos;
                 private Exception errorOcurrido;
 
                 @Override
                 protected Void doInBackground() {
                     try {
-                        // Esto puede tardar: handshake TCP + autenticación MySQL
-                        agenda   = new Agenda(ubicacionBase, false);
-                        permisos = new Permisos(ubicacionBase);
+                        // Verificar conexión anticipadamente en background
+                        new Agenda(ubicacionBase, false);
                     } catch (Exception e) {
                         errorOcurrido = e;
                     }
@@ -65,7 +62,6 @@ public class ControladorUbicacionBase implements ActionListener {
 
                 @Override
                 protected void done() {
-                    // Restaurar cursor y controles (estamos de vuelta en el EDT)
                     vistaUbicacionBase.setCursor(Cursor.getDefaultCursor());
                     vistaUbicacionBase.getBtnAcceder().setEnabled(true);
                     vistaUbicacionBase.getComboUbicacion().setEnabled(true);
@@ -77,12 +73,11 @@ public class ControladorUbicacionBase implements ActionListener {
                         return;
                     }
 
-                    // Conexión exitosa: abrir la ventana principal
                     vistaUbicacionBase.dispose();
                     vistaUbicacionBase = null;
 
                     VistaPrincipal vista = new VistaPrincipal();
-                    ControladorPrincipal controlador = new ControladorPrincipal(vista, ubicacionBase, agenda, permisos);
+                    ControladorPrincipal controlador = new ControladorPrincipal(vista, ubicacionBase);
                     controlador.inicializar();
                 }
             };

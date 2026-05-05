@@ -120,6 +120,9 @@ public class ControladorListados
 	private MonedaFormatter monedaFormatter;
 
 	private int filtro;
+	// AGREGAR junto a las otras variables de instancia
+	private TablaFiltros tablaFiltros;
+	private Map<Integer, String> filtrosActivos = new HashMap<>();
 	
 	// NUEVO: estado de paginación
 	private static final int REGISTROS_POR_PAGINA = 100;
@@ -586,11 +589,15 @@ public class ControladorListados
 	private void cargarTablaListadoReparaciones() {
 	    if (ventanaListadoReparaciones == null) return;
 
+	    // Guardar estado de filtros ANTES de limpiar la tabla
+	    if (tablaFiltros != null) {
+	        guardarEstadoFiltros();
+	    }
+
 	    DefaultTableModel modeloTabla =
 	            (DefaultTableModel) ventanaListadoReparaciones.getModelReparaciones();
 	    modeloTabla.setRowCount(0);
 
-	    // Paginación server-side: traer solo la página actual
 	    int offset = paginaActual * REGISTROS_POR_PAGINA;
 	    this.Reparaciones_en_tabla =
 	            modelo.obtenerReparacionPaginada(REGISTROS_POR_PAGINA, offset);
@@ -611,13 +618,58 @@ public class ControladorListados
 
 	    ventanaListadoReparaciones.setCellRender(
 	            ventanaListadoReparaciones.getTblListado());
-	    TablaFiltros tablaFiltros = new TablaFiltros();
-	    tablaFiltros.agregarAutofiltros(
-	            ventanaListadoReparaciones.getTblListado());
+
+	    // Crear nuevos autofiltros y restaurar estado previo
+	    tablaFiltros = new TablaFiltros();
+	    tablaFiltros.agregarAutofiltros(ventanaListadoReparaciones.getTblListado());
+
+	    if (!filtrosActivos.isEmpty()) {
+	        restaurarFiltros();
+	    }
 
 	    actualizarControlsPaginacion();
 	    ventanaListadoReparaciones.setVisible(true);
 	}
+
+	private void guardarEstadoFiltros() {
+	    JComboBox<String>[] combos = tablaFiltros.getFilterCombos();
+	    if (combos == null) return;
+
+	    filtrosActivos.clear();
+	    for (int i = 0; i < combos.length; i++) {
+	        if (combos[i] != null) {
+	            Object seleccionado = combos[i].getSelectedItem();
+	            if (seleccionado != null && !"Todos".equals(seleccionado.toString())
+	                    && !seleccionado.toString().isEmpty()) {
+	                filtrosActivos.put(i, seleccionado.toString());
+	            }
+	        }
+	    }
+	}
+
+	private void restaurarFiltros() {
+	    JComboBox<String>[] combos = tablaFiltros.getFilterCombos();
+	    if (combos == null) return;
+
+	    for (Map.Entry<Integer, String> entry : filtrosActivos.entrySet()) {
+	        int col = entry.getKey();
+	        String valor = entry.getValue();
+	        if (col < combos.length && combos[col] != null) {
+	            combos[col].setSelectedItem(valor);
+	        }
+	    }
+
+	    // Aplicar los filtros sobre la tabla recargada
+	    tablaFiltros.filtrarTabla(
+	            ventanaListadoReparaciones.getTblListado(), combos);
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	// NUEVO: actualiza label y estado de botones según página actual
 	private void actualizarControlsPaginacion() {
@@ -635,62 +687,6 @@ public class ControladorListados
 	
 	
 
-//	// Método para guardar el estado actual de los filtros
-//	private Map<Integer, String> guardarEstadoFiltros() {
-//		if (ventanaListadoReparaciones == null) {
-//			return new HashMap<>(); // Retorna un mapa vacío si la ventana es null
-//		}
-//
-//		Map<Integer, String> filtros = new HashMap<>();
-//		JTable tabla = ventanaListadoReparaciones.getTblListado();
-//		TableRowSorter<?> sorter = (TableRowSorter<?>) tabla.getRowSorter();
-//
-//		if (sorter != null && sorter.getRowFilter() != null) {
-//			for (int i = 0; i < tabla.getColumnCount(); i++) {
-//				JComboBox<String> combo = (JComboBox<String>) ((JPanel) tabla.getTableHeader().getParent()
-//						.getComponent(0)).getComponent(i);
-//				if (combo != null && !"Todos".equals(combo.getSelectedItem())) {
-//					filtros.put(i, (String) combo.getSelectedItem());
-//				}
-//			}
-//		}
-//		return filtros;
-//	}
-
-//	// Método para restaurar los filtros guardados
-//	private void restaurarFiltros(Map<Integer, String> filtrosGuardados) {
-//		if (ventanaListadoReparaciones == null || filtrosGuardados.isEmpty()) {
-//			return; // Salir si la ventana es null o si no hay filtros guardados
-//		}
-//
-//		JTable tabla = ventanaListadoReparaciones.getTblListado();
-//		JPanel filterPanel = (JPanel) ((JPanel) tabla.getTableHeader().getParent()).getComponent(0);
-//
-//		// Esperar a que los componentes estén listos
-//		SwingUtilities.invokeLater(() -> {
-//			// Crear un array de JComboBox del tamaño adecuado
-//			JComboBox<String>[] combos = new JComboBox[filterPanel.getComponentCount()];
-//
-//			// Recoger todos los combobox del panel
-//			for (int i = 0; i < filterPanel.getComponentCount(); i++) {
-//				combos[i] = (JComboBox<String>) filterPanel.getComponent(i);
-//			}
-//
-//			// Aplicar los filtros guardados
-//			for (Map.Entry<Integer, String> entry : filtrosGuardados.entrySet()) {
-//				int colIndex = entry.getKey();
-//				String valorFiltro = entry.getValue();
-//
-//				if (colIndex < combos.length) {
-//					combos[colIndex].setSelectedItem(valorFiltro);
-//				}
-//			}
-//
-//			// Forzar la aplicación de los filtros
-//			TablaFiltros tablaFiltros = new TablaFiltros();
-//			tablaFiltros.filtrarTabla(tabla, combos);
-//		});
-//	}
 
 	public void agregarListenerVentanaListados() {
 
