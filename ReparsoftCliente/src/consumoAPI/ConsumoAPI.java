@@ -90,6 +90,7 @@ public class ConsumoAPI {
     public static double[] consultaCotizacionDolar() {
         double[] cotizacionesPromedios = {0, 0};
         try {
+        	
             URL url2 = new URL("https://dolarapi.com/v1/dolares");
 
             HttpURLConnection conn = (HttpURLConnection) url2.openConnection();
