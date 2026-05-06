@@ -1128,7 +1128,7 @@ public class ControladorListados
 	@SuppressWarnings("unchecked")
 	private void llenarcomboAnio() {
 
-		for (int i = 2024; i < 2030; i++) {
+		for (int i = 2017; i < 2030; i++) {
 
 			ventanaEstadisticas.getComboAnio().addItem(i);
 
