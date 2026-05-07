@@ -808,8 +808,15 @@ public class GestorVisualizacionEquipos {
 	private void abrirEnviarCorreoWSP(VentanaVisualizarEquipos ventanaVisualizarEquipos2) {
 		ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(controlador);
 		//agregar listener a los dos botones de la ventanaEnviarCorreoOwsp
-		ventanaEnviarCorreoOwsp.getBtnEnviarWSP().addActionListener(e -> controlador.getGestorClientesWSP().abrirVentanaWSP());
-		//ventanaEnviarCorreoOwsp.getBtnEnviarCorreo().addActionListener(e -> controlador.getGestorPresupuesto().enviarCorre(ventanaVisualizarEquipos2));
+		//ventanaEnviarCorreoOwsp.getBtnEnviarWSP().addActionListener(e -> controlador.getGestorClientesWSP().abrirVentanaWSP());
+	
+		
+		// Si se desea cerrar la ventanaEnviarCorreoOwsp después de enviar el mensaje, se puede agregar un listener al botón de envío que cierre la ventana:
+		ventanaEnviarCorreoOwsp.getBtnEnviarWSP().addActionListener(e -> {
+			controlador.getGestorClientesWSP().abrirVentanaWSP();
+			ventanaEnviarCorreoOwsp.dispose(); // Cierra la ventana después de enviar el mensaje
+		});
+		
 		
 
 		

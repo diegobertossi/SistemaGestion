@@ -12,6 +12,7 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Color;
 
 public class VentanaEnviarCorreoOwsp extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -44,11 +45,15 @@ public class VentanaEnviarCorreoOwsp extends JFrame {
 		contentPane.setLayout(null);
 
 		btnEnviarCorreo = new JButton("<html><center>ENVIAR CORREO</html>");
+		btnEnviarCorreo.setForeground(new Color(255, 255, 255));
+		btnEnviarCorreo.setBackground(new Color(100, 149, 237));
 		btnEnviarCorreo.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnEnviarCorreo.setBounds(39, 33, 100, 50);
 		contentPane.add(btnEnviarCorreo);
 
 		btnEnviarWSP = new JButton("<html><center>ENVIAR WHATSAPP</html>");
+		btnEnviarWSP.setForeground(new Color(255, 255, 255));
+		btnEnviarWSP.setBackground(new Color(0, 128, 128));
 		btnEnviarWSP.setFont(new Font("Cambria", Font.BOLD, 14));
 		btnEnviarWSP.setBounds(149, 33, 100, 50);
 		contentPane.add(btnEnviarWSP);

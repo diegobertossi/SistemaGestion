@@ -286,7 +286,7 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
     @Override
     public void mouseClicked(MouseEvent e) {
         gestorRepuestos.mouseClicked(e);
-        gestorClientesWSP.mouseClicked(e);
+       
     }
     
     @Override
