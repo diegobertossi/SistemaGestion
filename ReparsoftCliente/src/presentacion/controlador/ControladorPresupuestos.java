@@ -782,38 +782,42 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	}
 
-	else if(this.ventanaEmail!=null&&e.getSource()==this.ventanaEmail.getBtnAdjunto())
-	{
+	else if(this.ventanaEmail!=null && e.getSource()==this.ventanaEmail.getBtnAdjunto()) {
 
-		String nombreArchivo = ventanaEmail.getTextAdjunto().getText();
-		String ubicacion = agenda.getUbicacionBase();
+	    String nombreArchivo = ventanaEmail.getTextAdjunto().getText();
+	    String ubicacion = agenda.getUbicacionBase();
 
-		// Determinar la ruta base según la ubicación
-		String rutaBase;
-		switch (ubicacion) {
-		case "Bariloche":
-			rutaBase = "F:/ELS/Bariloche/Administracion/Sistema/";
-			break;
-		case "Buenos Aires":
-			rutaBase = "F:/ELS/Administracion/Sistema/";
-			break;
-		default:
-			System.err.println("Ubicación no válida: " + ubicacion);
-			return;
-		}
+	    String rutaBase;
+	    switch (ubicacion) {
+	    case "Bariloche":
+	        rutaBase = "F:/ELS/Bariloche/Administracion/Sistema/";
+	        break;
+	    case "Buenos Aires":
+	        rutaBase = "F:/ELS/Administracion/Sistema/";
+	        break;
+	    default:
+	        System.err.println("Ubicación no válida: " + ubicacion);
+	        return;
+	    }
 
-		// Determinar el subdirectorio según el tipo de archivo
-		String subdirectorio = btnPresupuestoPDF ? "Presupuestos PDF/" : "Informes Siemens/";
+	    // CORRECCIÓN: determinar subdirectorio por extensión, no por estado del booleano
+	    String subdirectorio;
+	    if (nombreArchivo.endsWith(".pdf")) {
+	        subdirectorio = "Presupuestos PDF/";
+	    } else if (nombreArchivo.endsWith(".docx")) {
+	        subdirectorio = "Informes Siemens/";
+	    } else {
+	        subdirectorio = "";
+	    }
 
-		// Construir ruta completa y abrir archivo
-		File path = new File(rutaBase + subdirectorio + nombreArchivo);
+	    File path = new File(rutaBase + subdirectorio + nombreArchivo);
 
-		try {
-			Desktop.getDesktop().open(path);
-		} catch (IOException ex) {
-			System.err.println("Error al abrir el archivo: " + path.getAbsolutePath());
-			ex.printStackTrace();
-		}
+	    try {
+	        Desktop.getDesktop().open(path);
+	    } catch (IOException ex) {
+	        System.err.println("Error al abrir el archivo: " + path.getAbsolutePath());
+	        ex.printStackTrace();
+	    }
 	}
 
 	else if(this.ventanaGenerarPresupuesto!=null&&e.getSource()==this.ventanaGenerarPresupuesto.getVisualizarPresupuestoPDF())
