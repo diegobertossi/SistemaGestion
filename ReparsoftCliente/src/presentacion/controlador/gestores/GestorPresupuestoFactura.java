@@ -406,4 +406,11 @@ public class GestorPresupuestoFactura {
             }
         }
     }
+    
+    
+    
+    public void abrirEnvioCorreoPresupuestoExistente(int numeroELS) {
+        controladorPresupuestos.abrirEnvioCorreoPresupuestoExistente(numeroELS);
+    }
+    
 }

@@ -806,21 +806,23 @@ public class GestorVisualizacionEquipos {
 	}
 
 	private void abrirEnviarCorreoWSP(VentanaVisualizarEquipos ventanaVisualizarEquipos2) {
-		ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(controlador);
-		//agregar listener a los dos botones de la ventanaEnviarCorreoOwsp
-		//ventanaEnviarCorreoOwsp.getBtnEnviarWSP().addActionListener(e -> controlador.getGestorClientesWSP().abrirVentanaWSP());
-	
-		
-		// Si se desea cerrar la ventanaEnviarCorreoOwsp después de enviar el mensaje, se puede agregar un listener al botón de envío que cierre la ventana:
-		ventanaEnviarCorreoOwsp.getBtnEnviarWSP().addActionListener(e -> {
-			controlador.getGestorClientesWSP().abrirVentanaWSP();
-			ventanaEnviarCorreoOwsp.dispose(); // Cierra la ventana después de enviar el mensaje
-		});
-		
-		
+	    ventanaEnviarCorreoOwsp = new VentanaEnviarCorreoOwsp(controlador);
 
-		
-		
+	    ventanaEnviarCorreoOwsp.getBtnEnviarWSP().addActionListener(e -> {
+	        controlador.getGestorClientesWSP().abrirVentanaWSP();
+	        ventanaEnviarCorreoOwsp.dispose();
+	    });
+
+	    ventanaEnviarCorreoOwsp.getBtnEnviarCorreo().addActionListener(e -> {
+	        // Obtener el ELS actual según la ubicación
+	        String ubicacion = agenda.getUbicacionBase();
+	        int elsParaEnviar = ubicacion.equalsIgnoreCase("Buenos Aires") ? elsActualBSAS : elsActual;
+
+	        // Delegar al ControladorPresupuestos — él verifica si el PDF fue generado
+	        controlador.getGestorPresupuesto().abrirEnvioCorreoPresupuestoExistente(elsParaEnviar);
+
+	        ventanaEnviarCorreoOwsp.dispose();
+	    });
 	}
 	
 

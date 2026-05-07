@@ -1,5 +1,6 @@
 package presentacion.controlador.gestores;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 
 
@@ -63,16 +64,7 @@ public class GestorClientesWSP {
         ventanaWSP.getTextMensaje().setText("Hola, Adjunto el informe/presupuesto de\nreparación del equipo.\nQuedo a disposición para cualquier consulta.");
     }
 
-    // =====================================================================
-    // ENVÍO DE MENSAJE — MÉTODO CORREGIDO
-    // =====================================================================
 
-    /**
-     * Envía el mensaje por WhatsApp.
-     * Usa ConsumoAPI.abrirWSP(numero, mensaje) que detecta automáticamente
-     * si WhatsApp Desktop está instalado y lo usa directamente, evitando
-     * abrir el navegador. Si no está instalado, cae al navegador.
-     */
     private void enviarMensajeWSP() {
         String numero  = ventanaWSP.getTextNumero().getText().trim();
         String mensaje = ventanaWSP.getTextMensaje().getText().trim();
@@ -84,11 +76,37 @@ public class GestorClientesWSP {
         }
 
         try {
-            // Llamada con 2 parámetros: usa Desktop si está disponible, navegador si no
             consumoAPI.ConsumoAPI.abrirWSP(numero, mensaje);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,
                 "Error al enviar: " + ex.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Abrir explorador de carpetas según ubicación
+        String ubicacion = agenda.dameUbucacionBase();
+        String ruta;
+
+        if (ubicacion != null && ubicacion.equalsIgnoreCase("Bariloche")) {
+            ruta = "F:\\els\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF";
+        } else if (ubicacion != null && ubicacion.equalsIgnoreCase("Buenos Aires")) {
+            ruta = "F:\\els\\Administracion\\Sistema\\Presupuestos PDF";
+        } else {
+            return; // Ubicación no reconocida, no abre nada
+        }
+
+        try {
+            java.io.File carpeta = new java.io.File(ruta);
+            if (carpeta.exists() && carpeta.isDirectory()) {
+                Desktop.getDesktop().open(carpeta);
+            } else {
+                JOptionPane.showMessageDialog(null,
+                    "No se encontró la carpeta:\n" + ruta,
+                    "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,
+                "No se pudo abrir el explorador:\n" + ex.getMessage(),
                 "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

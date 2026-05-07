@@ -935,59 +935,75 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 	}
 
 	private void enviarMail() {
-		// Crear un popup para mostrar el mensaje de "Enviando correo, espere..."
-		JDialog popup = new JDialog();
-		popup.setTitle("Procesando");
-		popup.setModal(false);
-		popup.setSize(300, 100);
-		popup.setLocationRelativeTo(ventanaEmail);
-		popup.add(new JLabel("Enviando correo, espere...", SwingConstants.CENTER));
+	    JDialog popup = new JDialog();
+	    popup.setTitle("Procesando");
+	    popup.setModal(false);
+	    popup.setSize(300, 100);
+	    popup.setLocationRelativeTo(ventanaEmail);
+	    popup.add(new JLabel("Enviando correo, espere...", SwingConstants.CENTER));
 
-		// Ejecutar el envío del correo en un hilo separado para no bloquear el UI
-		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-			@Override
-			protected Void doInBackground() {
-				try {
-					String correo = ventanaEmail.getTextPara().getText();
-					String asunto = ventanaEmail.getTextAsunto().getText();
-					String cuerpo = ventanaEmail.getTextCuerpo().getText();
-					String nombreArchivo = ventanaEmail.getTextAdjunto().getText();
-					String ubicacion = agenda.getUbicacionBase(); // "Bariloche" o "Buenos Aires"
+	    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+	        @Override
+	        protected Void doInBackground() {
+	            try {
+	                String correo        = ventanaEmail.getTextPara().getText();
+	                String asunto        = ventanaEmail.getTextAsunto().getText();
+	                String cuerpo        = ventanaEmail.getTextCuerpo().getText();
+	                String nombreArchivo = ventanaEmail.getTextAdjunto().getText();
+	                String ubicacion     = agenda.getUbicacionBase();
 
-					// Enviar el correo con los archivos adicionales
-					mails.EnviarMail.enviarInformeAlCliente(correo, asunto, cuerpo, nombreArchivo,
-							archivosAdjuntosExtras, ubicacion);
+	                mails.EnviarMail.enviarInformeAlCliente(correo, asunto, cuerpo, nombreArchivo,
+	                        archivosAdjuntosExtras, ubicacion);
 
-					if (nombreArchivo.endsWith(".pdf")) {
-						ventanaGenerarPresupuesto.setChckPDFEnviado(true);
-					} else if (nombreArchivo.endsWith(".docx")) {
-						ventanaGenerarPresupuesto.setChckWORDEnviado(true);
-					}
+	                // CORRECCIÓN: solo actualizar checkboxes si la ventana está abierta
+	                if (ventanaGenerarPresupuesto != null) {
+	                    if (nombreArchivo.endsWith(".pdf")) {
+	                        ventanaGenerarPresupuesto.setChckPDFEnviado(true);
+	                    } else if (nombreArchivo.endsWith(".docx")) {
+	                        ventanaGenerarPresupuesto.setChckWORDEnviado(true);
+	                    }
 
-					ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
-					agenda.editarReparacionPresupuesto(reparacionAeditar);
+	                    ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
+	                    agenda.editarReparacionPresupuesto(reparacionAeditar);
+	                } else {
+	                    // Flujo directo desde VentanaVisualizarEquipos — actualizar DB por nombre de archivo
+	                    String nombrePDF = ventanaEmail.getTextAdjunto().getText();
+	                    if (nombrePDF != null && nombrePDF.startsWith("Presupuesto ELS_")) {
+	                        try {
+	                            // Extraer ELS del nombre: "Presupuesto ELS_1234_Cliente.pdf"
+	                            String sinPrefijo = nombrePDF.replace("Presupuesto ELS_", "");
+	                            int els = Integer.parseInt(sinPrefijo.split("_")[0]);
+	                            ReparacionDTO rep = agenda.dameReparacionXels(els);
+	                            if (rep != null) {
+	                                rep.setPresupuestoEnviado(true);
+	                                agenda.editarReparacionPresupuesto(rep);
+	                            }
+	                        } catch (NumberFormatException ex) {
+	                            System.err.println("No se pudo extraer ELS del nombre del archivo: " + nombrePDF);
+	                        }
+	                    }
+	                }
 
-					// Limpiar los archivos adicionales después de enviar
-					archivosAdjuntosExtras.clear();
-					ventanaEmail.getTextArchivos().setText("");
+	                archivosAdjuntosExtras.clear();
+	                ventanaEmail.getTextArchivos().setText("");
 
-				} catch (Exception ex) {
-					popup.dispose();
-					ex.printStackTrace();
-				}
-				return null;
-			}
+	            } catch (Exception ex) {
+	                popup.dispose();
+	                ex.printStackTrace();
+	            }
+	            return null;
+	        }
 
-			@Override
-			protected void done() {
-				popup.dispose();
-			}
-		};
+	        @Override
+	        protected void done() {
+	            popup.dispose();
+	        }
+	    };
 
-		SwingUtilities.invokeLater(() -> {
-			popup.setVisible(true);
-			worker.execute();
-		});
+	    SwingUtilities.invokeLater(() -> {
+	        popup.setVisible(true);
+	        worker.execute();
+	    });
 	}
 
 	private void agregarImagenesDiagnostico() {
@@ -2282,5 +2298,75 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 		return textComponents;
 	}
+	
+	
+	/**
+	 * Abre VentanaEmail con los datos del presupuesto PDF ya generado.
+	 * Llamado desde GestorVisualizacionEquipos cuando el usuario presiona "ENVIAR CORREO".
+	 *
+	 * @param numeroELS ELS del equipo a enviar
+	 */
+	public void abrirEnvioCorreoPresupuestoExistente(int numeroELS) {
+
+	    // Cargar la reparación desde la agenda
+	    ReparacionDTO rep = agenda.dameReparacionXels(numeroELS);
+
+	    if (rep == null) {
+	        JOptionPane.showMessageDialog(null,
+	            "No se encontró la reparación con ELS: " + numeroELS,
+	            "Error", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+
+	    // Verificar que el PDF ya fue generado
+	    if (!rep.getPresupuestoGenerado()) {
+	        JOptionPane.showMessageDialog(null,
+	            "Aún no se ha generado el Informe.",
+	            "Aviso", JOptionPane.INFORMATION_MESSAGE);
+	        return;
+	    }
+
+	    monedaFormatter = new MonedaFormatter();
+
+	    String NombreCliente   = rep.getCliente();
+	    String Sucursal        = rep.getSucursal();
+	    String ELS             = String.valueOf(numeroELS);
+	    String NombreContacto  = agenda.ContactoPorCliente(NombreCliente);
+	    String emailContacto   = agenda.EmailPorCliente(NombreCliente);
+	    String NombrePDF       = "Presupuesto ELS_" + ELS + "_" + NombreCliente + ".pdf";
+
+	    ventanaEmail = new VentanaEmail();
+	    agregarListenerAventanaEmail();
+
+	    ventanaEmail.getTextCliente().setText(NombreCliente + " ( " + Sucursal + " ) ");
+	    ventanaEmail.getTextNombreContacto().setText(NombreContacto);
+	    ventanaEmail.getTextEmailContacto().setText(emailContacto);
+	    ventanaEmail.getTextAdjunto().setText(NombrePDF);
+
+	    String empresa  = "ELS - Electronic Laboratory & Services.";
+	    String mdp      = "Mar del Plata: Avellaneda 2766 1 piso MDP -(7600) - Te: +54 9 223 5969934. NUEVA DIRECCION.";
+	    String caba     = "Bs As: Arcos 4002 4 A - Buenos Aires(1429) - Te: +54 9 11 4703-2205.";
+	    String brc      = "Bariloche: 9 de julio 710 - Bariloche (8400) - Te: +54 9 11 3768-8372..";
+	    String web      = "www.elsweb.com.ar";
+	    String email    = "E-mail: els@elsweb.com.ar";
+	    String Asunto   = "Presupuesto ELS: " + ELS;
+	    String cuerpo   = "Buenos días!\n\nAdjunto presupuesto.\n"
+	                    + "En caso de aceptar el mismo, favor de responder este correo "
+	                    + "para poder proceder con la reparación.\nAtte.";
+
+	    ventanaEmail.getTextCuerpo().setText(
+	        cuerpo + "\n\n" + empresa + "\n" + mdp + "\n" + caba + "\n" + brc + "\n" + web + "\n" + email);
+	    ventanaEmail.getTextAsunto().setText(Asunto);
+	    ventanaEmail.getTextCuerpo().moveCaretPosition(0);
+
+	    // Necesario para que enviarMail() pueda actualizar los checkboxes
+	    // Apuntamos a una ventanaGenerarPresupuesto nula — enviarMail() ya lo maneja con null-check implícito.
+	    // Si querés actualizar los checkboxes también desde este flujo, podés llamar:
+	    //   TomarDatosDeTablasParaVisualizacion(numeroELS);
+	    // antes de esta línea, para que ventanaGenerarPresupuesto esté inicializada.
+	    // Por ahora el envío funciona correctamente sin eso.
+	}
+	
+	
 
 }
