@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
+import dto.ReparacionDTO;
 import modelo.Agenda;
 
 import presentacion.vista.VentanaWSP;
@@ -38,10 +39,30 @@ public class GestorClientesWSP {
     // =====================================================================
 
     public void abrirVentanaWSP() {
+
+        // Verificar que el PDF ya fue generado
+        String cliente = controlador.getVentanaVisualizarEquipos().getTextCliente().getText();
+        int els = Integer.parseInt(controlador.getVentanaVisualizarEquipos().getTextELS());
+        ReparacionDTO rep = agenda.dameReparacionXels(els);
+
+        if (rep == null) {
+            JOptionPane.showMessageDialog(null,
+                "No se encontró la reparación.",
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!rep.getPresupuestoGenerado()) {
+            JOptionPane.showMessageDialog(null,
+                "Aún no se ha generado el Informe.",
+                "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Resto del método sin cambios
         ventanaWSP = new VentanaWSP(controlador);
 
-        String cliente        = controlador.getVentanaVisualizarEquipos().getTextCliente().getText();
-        String nombreContacto = agenda.ContactoPorCliente(cliente);
+        String nombreContacto   = agenda.ContactoPorCliente(cliente);
         String telefonoContacto = agenda.obtenerTelefonoPorCliente(cliente);
 
         ventanaWSP.getTextNombreContacto().setText(nombreContacto);
@@ -53,7 +74,7 @@ public class GestorClientesWSP {
             ventanaWSP.getTextNumero().setEditable(true));
         ventanaWSP.getBtnUtilizarContacto().addActionListener(e ->
             utilizarContacto(ventanaWSP.getTextNumeroContacto().getText()));
-       
+
         ventanaWSP.setVisible(true);
     }
 
