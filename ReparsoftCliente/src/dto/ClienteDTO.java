@@ -21,6 +21,7 @@ public class ClienteDTO
 		this.Contacto=Contacto;
 		this.TelefonoContacto= TelefonoContacto;		
 		this.CorreoElectronico = CorreoElectronico;
+		
 	}
 
 	public int getId() {
