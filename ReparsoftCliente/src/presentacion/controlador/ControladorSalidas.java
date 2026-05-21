@@ -555,32 +555,45 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 		
 	}
 
-	private void generarRemito(VentanaRemitos ventanaRemitos, int filas) {
+private void generarRemito(VentanaRemitos ventanaRemitos, int filas) {
 
 		int seleccion = JOptionPane.showConfirmDialog(ventanaRemitos, "Desea generar un remito para este/os equipos?",
-				"Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				"Confirmaci\u00f3n", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 		if (seleccion == JOptionPane.YES_OPTION) {
 
-			JDialog popup = new JDialog();
-			popup.setTitle("Procesando");
-			popup.setModal(false);
-			popup.setSize(300, 100);
-			popup.setLocationRelativeTo(ventanaRemitos);
-			popup.add(new JLabel("Generando Remito, espere...", SwingConstants.CENTER));
+			presentacion.vista.VentanaProgreso progreso = new presentacion.vista.VentanaProgreso("GENERANDO REMITO");
+			progreso.mostrar();
 
-			// Ejecutar el envío del correo en un hilo separado para no bloquear el UI
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 				@Override
 				protected Void doInBackground() {
 					try {
+						long inicio = System.currentTimeMillis();
 
 						List<RemitoDTO> lista = new ArrayList<RemitoDTO>();
 						RemitoDTO nuevoRemito = TomarDatos();
 						lista.add(nuevoRemito);
 						ReporteRemitoSalida reporte = new ReporteRemitoSalida(nuevoRemito, lista, agenda);
-						reporte.mostrar();
-						reporte.guardar();
+
+						new Thread(() -> {
+							reporte.guardar();
+						}).start();
+
+						while (System.currentTimeMillis() - inicio < 2000) {
+							Thread.sleep(100);
+						}
+
+						SwingUtilities.invokeLater(() -> {
+							reporte.mostrar();
+						});
+
+						while (!reporte.isViewerVisible()) {
+							Thread.sleep(100);
+							if (System.currentTimeMillis() - inicio > 10000) {
+								break;
+							}
+						}
 
 						RemitoDTO nuevoRemitoTabla = TomarDatosParaTabla();
 						agenda.agregarRemito(nuevoRemitoTabla);
@@ -589,50 +602,38 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 
 							Boolean agregar = (Boolean) ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8);
 
-							if (agregar != null) {
-								if (agregar) {
-
-									ReparacionDTO reparacionAeditar = TomarDatosPantalla(i);
-									agenda.editarReparacionAgregarRemito(reparacionAeditar);
-
-								}
+							if (agregar != null && agregar) {
+								ReparacionDTO reparacionAeditar = TomarDatosPantalla(i);
+								agenda.editarReparacionAgregarRemito(reparacionAeditar);
 							}
 
 						}
 
-						JOptionPane.showMessageDialog(null,
-								"Se ha guardodo el remito " + ventanaRemitos.getTextRemitoConformado().getText());
+						SwingUtilities.invokeLater(() -> {
+							progreso.cerrar();
+						});
 
-						ventanaRemitos.getComboUbicacion().setEnabled(false);
-						ventanaRemitos.getTxtNumeroRemito().setEnabled(false);
-						ventanaRemitos.getBtnVisualizarRemito().setEnabled(false);
-						ventanaRemitos.getBtnGuardarRemito().setEnabled(false);
-						ventanaRemitos.getTextCantBultos().setEnabled(false);
-						ventanaRemitos.getTblEquiposParaRemito().setEnabled(false);
-						ventanaRemitos.getBtnCambiarN().setEnabled(false);
+						SwingUtilities.invokeLater(() -> {
+							ventanaRemitos.dispose();
+							JOptionPane.showMessageDialog(null,
+									"Se ha guardado el remito " + ventanaRemitos.getTextRemitoConformado().getText());
+						});
 
 					} catch (Exception ex) {
-						popup.dispose();
+						SwingUtilities.invokeLater(() -> {
+							progreso.cerrar();
+						});
 						ex.printStackTrace();
-						// JOptionPane.showMessageDialog(null, "El correo NO ha sido enviado.", "Error
-						// de envío", JOptionPane.WARNING_MESSAGE);
 					}
 					return null;
 				}
 
 				@Override
 				protected void done() {
-					// Cerrar el popup después de completar el envío
-					popup.dispose();
-
 				}
 			};
 
-			// Mostrar el popup y ejecutar el SwingWorker
-			SwingUtilities.invokeLater(() -> {
-				popup.setVisible(true);
-				worker.execute();
-			});
+worker.execute();
 
 		}
 

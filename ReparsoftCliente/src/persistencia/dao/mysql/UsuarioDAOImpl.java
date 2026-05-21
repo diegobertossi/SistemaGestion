@@ -9,340 +9,272 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
-import dto.UsuarioDTO;
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.UsuarioDAO;
+import dto.UsuarioDTO;
 
 public class UsuarioDAOImpl implements UsuarioDAO {
-	private static final String insert = "INSERT INTO usuario(idUsuario, idRol, dni, nombre, apellido, telefono, email, login, pass) "
-			+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-	private static final String delete = "DELETE FROM usuario WHERE idUsuario = ?";
+    private static final String INSERT = "INSERT INTO usuario(idUsuario,idRol,dni,nombre,apellido,telefono,email,login,pass) VALUES(?,?,?,?,?,?,?,?,?)";
+    private static final String DELETE = "DELETE FROM usuario WHERE idUsuario = ?";
+    private static final String READ_ALL = "SELECT * FROM usuario WHERE dni <> 0";
+    private static final String READ_LOGIN = "SELECT * FROM usuario WHERE login = ? AND pass = ?";
+    private static final String READ_ALL_TECNICO = "SELECT DISTINCT usuario.nombre, usuario.apellido FROM usuario WHERE usuario.idUsuario <> 1";
+    private static final String READ_ALL_TECNICO_VISUALIZACION = "SELECT DISTINCT usuario.nombre, usuario.apellido FROM usuario";
+    private static final String ID_POR_NOMBRE = "SELECT idUsuario FROM usuario WHERE nombre = ? AND apellido = ?";
+    private static final String CORREO_POR_NOMBRE = "SELECT email FROM usuario WHERE nombre = ? AND apellido = ?";
+    private static final String READ_BY_DNI = "SELECT * FROM usuario WHERE dni = ?";
+    private static final String READ_ALL_BY_ROL = "SELECT * FROM usuario WHERE idRol = ?";
+    private static final String READ_ALL_PAGINADO = "SELECT * FROM usuario WHERE dni <> 0 ORDER BY nombre ASC LIMIT ? OFFSET ?";
+    private static final String COUNT_ALL = "SELECT COUNT(*) FROM usuario WHERE dni <> 0";
+    private static final String UPDATE_USUARIO = "UPDATE usuario SET idRol = ?, dni = ?, nombre = ?, apellido = ?, telefono = ?, email = ?, login = ?, pass = ? WHERE idUsuario = ?";
 
-	private static final String readall = "SELECT * FROM usuario WHERE dni <> 0";
+    private Conexion conexion;
 
-	private static final String readLogin = "SELECT * FROM usuario WHERE login = ? AND pass = ?";
+    public UsuarioDAOImpl(String ubicacionBase) {
+        this.conexion = Conexion.getConexion(ubicacionBase);
+    }
 
-	private static final String readallTecnico = "SELECT DISTINCT usuario.nombre, usuario.apellido "
-			+ "FROM usuario WHERE usuario.idUsuario <> 1";
+    @Override
+    public boolean insert(UsuarioDTO usuario) {
+        String sql = INSERT;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, usuario.getIdUsuario());
+            stmt.setInt(2, usuario.getIdRol());
+            stmt.setInt(3, usuario.getDni());
+            stmt.setString(4, usuario.getNombre());
+            stmt.setString(5, usuario.getApellido());
+            stmt.setString(6, usuario.getTelefono());
+            stmt.setString(7, usuario.getEmail());
+            stmt.setString(8, usuario.getLogin());
+            stmt.setString(9, usuario.getPass());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al insertar usuario: " + usuario.getIdUsuario(), e);
+            return false;
+        }
+    }
 
-	private static final String readallTecnicoVisualizacion = "SELECT DISTINCT usuario.nombre, usuario.apellido "
-			+ "FROM usuario";
+    @Override
+    public boolean delete(UsuarioDTO usuario) {
+        String sql = DELETE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, usuario.getIdUsuario());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al eliminar usuario: " + usuario.getIdUsuario(), e);
+            return false;
+        }
+    }
 
-	private static final String IDporNombre = "SELECT idUsuario FROM usuario WHERE nombre = ? AND apellido = ?";
+    @Override
+    public boolean edit(UsuarioDTO usuario) {
+        String sql = UPDATE_USUARIO;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, usuario.getIdRol());
+            stmt.setInt(2, usuario.getDni());
+            stmt.setString(3, usuario.getNombre());
+            stmt.setString(4, usuario.getApellido());
+            stmt.setString(5, usuario.getTelefono());
+            stmt.setString(6, usuario.getEmail());
+            stmt.setString(7, usuario.getLogin());
+            stmt.setString(8, usuario.getPass());
+            stmt.setInt(9, usuario.getIdUsuario());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al editar usuario: " + usuario.getIdUsuario(), e);
+            return false;
+        }
+    }
 
-	private static final String correoPorNombre = "SELECT email FROM usuario WHERE nombre = ? AND apellido = ?";
+    @Override
+    public List<UsuarioDTO> readAll() {
+        List<UsuarioDTO> usuarios = new ArrayList<>();
+        String sql = READ_ALL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                usuarios.add(mapearUsuario(rs));
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al leer todos los usuarios", e);
+        }
+        return usuarios;
+    }
 
-	public static String ubicacion;
-	private Conexion conexion;;
+    @Override
+    public List<UsuarioDTO> readAllPaginado(int limit, int offset) {
+        List<UsuarioDTO> usuarios = new ArrayList<>();
+        String sql = READ_ALL_PAGINADO;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, limit);
+            stmt.setInt(2, offset);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    usuarios.add(mapearUsuario(rs));
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al leer usuarios paginados", e);
+        }
+        return usuarios;
+    }
 
-	@SuppressWarnings("unused")
-	public UsuarioDAOImpl(String ubicacionBase) {
+    @Override
+    public int contarUsuarios() {
+        String sql = COUNT_ALL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al contar usuarios", e);
+        }
+        return 0;
+    }
 
-		ubicacion = ubicacionBase;
-		conexion = Conexion.getConexion(ubicacion);
-	}
+    @Override
+    public UsuarioDTO obtenerMedico(int dni) {
+        String sql = READ_BY_DNI;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, dni);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapearUsuario(rs);
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener usuario por DNI: " + dni, e);
+        }
+        return null;
+    }
 
-	public boolean insert(UsuarioDTO user) {
-		PreparedStatement statement;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(insert);
-			statement.setInt(1, user.getIdUsuario());
-			statement.setInt(2, user.getIdRol());
-			statement.setInt(3, user.getDni());
-			statement.setString(4, user.getNombre());
-			statement.setString(5, user.getApellido());
-			statement.setString(6, user.getTelefono());
-			statement.setString(7, user.getEmail());
-			statement.setString(8, user.getLogin());
-			statement.setString(9, user.getPass());
+    @Override
+    public List<UsuarioDTO> readAllXRol(int idRol) {
+        List<UsuarioDTO> usuarios = new ArrayList<>();
+        String sql = READ_ALL_BY_ROL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, idRol);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    usuarios.add(mapearUsuario(rs));
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al leer usuarios por rol: " + idRol, e);
+        }
+        return usuarios;
+    }
 
-			if (statement.executeUpdate() > 0) // Si se ejecut� devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
+    @Override
+    public UsuarioDTO readUsuLogin(String login, String pass) {
+        String sql = READ_LOGIN;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, login);
+            stmt.setString(2, pass);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapearUsuario(rs);
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al autenticar usuario: " + login, e);
+        }
+        return null;
+    }
 
-	public boolean delete(UsuarioDTO user_a_eliminar) {
-		PreparedStatement statement;
-		int chequeoUpdate = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(delete);
-			statement.setString(1, Integer.toString(user_a_eliminar.getIdUsuario()));
-			chequeoUpdate = statement.executeUpdate();
-			if (chequeoUpdate > 0) // Si se ejecut� devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public void comboFiltroTecnicosV(JComboBox combo) {
+        String sql = READ_ALL_TECNICO_VISUALIZACION;
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        combo.setModel(model);
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                model.addElement(new UsuarioDTO(rs.getString("nombre"), rs.getString("apellido")));
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al cargar combo tecnicos visualizacion", e);
+        }
+    }
 
-	public boolean edit(UsuarioDTO user_a_editar) {
-		PreparedStatement statement;
-		try {
-			statement = conexion.getSQLConexion()
-					.prepareStatement("UPDATE usuario SET idUsuario = '" + user_a_editar.getIdUsuario() + "' , "
-							+ "idRol = '" + user_a_editar.getIdRol() + "' ," + "dni = '" + user_a_editar.getDni()
-							+ "' ," + "nombre = '" + user_a_editar.getNombre() + "' ," + "apellido = '"
-							+ user_a_editar.getApellido() + "' ," + "telefono = '" + user_a_editar.getTelefono() + "' ,"
-							+ "email = '" + user_a_editar.getEmail() + "'  ," + " login = '" + user_a_editar.getLogin()
-							+ "' ," + " pass = '" + user_a_editar.getPass() + "' " + " WHERE idUsuario = "
-							+ user_a_editar.getIdUsuario() + "");
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public void comboFiltroTecnicos(JComboBox combo) {
+        String sql = READ_ALL_TECNICO;
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        combo.setModel(model);
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                model.addElement(new UsuarioDTO(rs.getString("nombre"), rs.getString("apellido")));
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al cargar combo tecnicos", e);
+        }
+    }
 
-			if (statement.executeUpdate() > 0) // Si se ejecut� devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
+    @Override
+    public int obtenerIDporNombre(String nombreCompleto) {
+        if (nombreCompleto == null || nombreCompleto.trim().isEmpty()) {
+            return 1;
+        }
+        String sql = ID_POR_NOMBRE;
+        String[] partes = nombreCompleto.trim().split(" ", 2);
+        if (partes.length < 2) {
+            return 1;
+        }
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, partes[0]);
+            stmt.setString(2, partes[1]);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("idUsuario");
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener ID por nombre: " + nombreCompleto, e);
+        }
+        return 1;
+    }
 
-	public List<UsuarioDTO> readAll() {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<UsuarioDTO> usuarios = new ArrayList<UsuarioDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readall);
-			resultSet = statement.executeQuery();
+    @Override
+    public String correoPorNombre(String nombreCompleto) {
+        if (nombreCompleto == null || nombreCompleto.trim().isEmpty()) {
+            return null;
+        }
+        String sql = CORREO_POR_NOMBRE;
+        String[] partes = nombreCompleto.trim().split(" ", 2);
+        if (partes.length < 2) {
+            return null;
+        }
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, partes[0]);
+            stmt.setString(2, partes[1]);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("email");
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener correo: " + nombreCompleto, e);
+        }
+        return null;
+    }
 
-			while (resultSet.next()) {
-				usuarios.add(new UsuarioDTO(resultSet.getInt("idUsuario"), resultSet.getInt("idRol"),
-						resultSet.getInt("dni"), resultSet.getString("nombre"), resultSet.getString("apellido"),
-						resultSet.getString("telefono"), resultSet.getString("email"), resultSet.getString("login"),
-						resultSet.getString("pass")));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-		return usuarios;
-	}
-
-	public UsuarioDTO obtenerMedico(int dni) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<UsuarioDTO> usuarios = new ArrayList<UsuarioDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement("select * from usuario where dni=" + dni + ";");
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				usuarios.add(new UsuarioDTO(resultSet.getInt("idUsuario"), resultSet.getInt("idRol"),
-						resultSet.getInt("dni"), resultSet.getString("nombre"), resultSet.getString("apellido"),
-						resultSet.getString("telefono"), resultSet.getString("email")));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-		return usuarios.get(0);
-	}
-
-	public List<UsuarioDTO> readAllXRol(int idRol) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<UsuarioDTO> usuarios = new ArrayList<UsuarioDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement("select * from usuario where idRol=" + idRol + ";");
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				usuarios.add(new UsuarioDTO(resultSet.getInt("idUsuario"), resultSet.getInt("idRol"),
-						resultSet.getInt("dni"), resultSet.getString("nombre"), resultSet.getString("apellido"),
-						resultSet.getString("telefono"), resultSet.getString("email"), resultSet.getString("login"),
-						""));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-		return usuarios;
-	}
-
-	@Override
-	public UsuarioDTO readUsuLogin(String login, String pass) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		UsuarioDTO usuarios = null;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readLogin);
-			statement.setString(1, login);
-			statement.setString(2, pass);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				usuarios = new UsuarioDTO(resultSet.getInt("idUsuario"), resultSet.getInt("idRol"),
-						resultSet.getInt("dni"), resultSet.getString("nombre"), resultSet.getString("apellido"),
-						resultSet.getString("telefono"), resultSet.getString("email"), resultSet.getString("login"),
-						resultSet.getString("pass"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-		return usuarios;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void comboFiltroTecnicosV(JComboBox comboFiltroTecnico) {
-
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<UsuarioDTO> Usuarios = new ArrayList<UsuarioDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallTecnicoVisualizacion);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			comboFiltroTecnico.setModel(value);
-
-			while (resultSet.next()) {
-
-				value.addElement(new UsuarioDTO(resultSet.getString(1), resultSet.getString(2)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void comboFiltroTecnicos(JComboBox comboFiltroTecnico) {
-
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallTecnico);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			comboFiltroTecnico.setModel(value);
-
-			while (resultSet.next()) {
-
-				value.addElement(new UsuarioDTO(resultSet.getString(1), resultSet.getString(2)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-
-	}
-
-	@Override
-	public int obtenerIDporNombre(String nombreTecnico) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int idUsuario = 0;
-
-		if (nombreTecnico.compareTo("") > 0 && nombreTecnico.compareTo(" ") > 0) {
-			String[] partes = nombreTecnico.split(" ");
-			String nombre = partes[0];
-			String apellido = partes[1];
-
-			try {
-				statement = conexion.getSQLConexion().prepareStatement(IDporNombre);
-				statement.setString(1, nombre);
-				statement.setString(2, apellido);
-				resultSet = statement.executeQuery();
-
-				while (resultSet.next()) {
-					idUsuario = resultSet.getInt("idUsuario");
-
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally // Se ejecuta siempre
-			{
-				// No cerrar la conexión aquí - se maneja en el singleton
-			}
-		} else
-			idUsuario = 1;
-
-		return idUsuario;
-
-	}
-
-	/**
-	 * Obtiene el correo electrónico de un usuario por su nombre y apellido
-	 * 
-	 * @param nombreCompleto Nombre completo del usuario en formato "Nombre
-	 *                       Apellido"
-	 * @return String con el email del usuario, o null si no se encuentra
-	 */
-	@Override
-	public String correoPorNombre(String nombreCompleto) {
-		PreparedStatement statement;
-		ResultSet resultSet;
-		String email = null;
-
-		// Validar que el parámetro no esté vacío
-		if (nombreCompleto == null || nombreCompleto.trim().isEmpty()) {
-			return null;
-		}
-
-		try {
-			// Dividir el nombre completo en nombre y apellido
-			String[] partes = nombreCompleto.trim().split(" ", 2); // Limitar a 2 partes
-
-			if (partes.length < 2) {
-				System.out.println("Formato incorrecto. Se esperaba 'Nombre Apellido'");
-				return null;
-			}
-
-			String nombre = partes[0];
-			String apellido = partes[1];
-
-			// Preparar y ejecutar la consulta
-			statement = conexion.getSQLConexion().prepareStatement(correoPorNombre);
-			statement.setString(1, nombre);
-			statement.setString(2, apellido);
-			resultSet = statement.executeQuery();
-
-			// Obtener el resultado
-			if (resultSet.next()) {
-				email = resultSet.getString("email");
-			}
-
-		} catch (SQLException e) {
-			System.err.println("Error al obtener correo del usuario: " + nombreCompleto);
-			e.printStackTrace();
-		} finally {
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-
-		return email;
-	}
-
+    private UsuarioDTO mapearUsuario(ResultSet rs) throws SQLException {
+        return new UsuarioDTO(
+            rs.getInt("idUsuario"),
+            rs.getInt("idRol"),
+            rs.getInt("dni"),
+            rs.getString("nombre"),
+            rs.getString("apellido"),
+            rs.getString("telefono"),
+            rs.getString("email"),
+            rs.getString("login"),
+            rs.getString("pass")
+        );
+    }
 }

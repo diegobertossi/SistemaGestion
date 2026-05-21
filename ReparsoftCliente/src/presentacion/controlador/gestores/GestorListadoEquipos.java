@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import modelo.Agenda;
 import presentacion.controlador.ControladorReparacion;
@@ -35,6 +36,7 @@ public class GestorListadoEquipos {
 	private MonedaFormatter monedaFormatter;
 	private VentanaExcel ventanaExcel;
 	private GestorArchivosExcel gestorExcel;
+	private GestorDatos gestorDatos;
 
 	/**
 	 * Constructor
@@ -44,6 +46,7 @@ public class GestorListadoEquipos {
 		this.agenda = agenda;
 		this.ventanasAbiertas = new ArrayList<>();
 		this.monedaFormatter = new MonedaFormatter();
+		this.gestorDatos = new GestorDatos(agenda);
 	}
 
 	/**
@@ -167,62 +170,60 @@ public class GestorListadoEquipos {
 		controlador.getGestorInterfaz().agregarListenersPrecios(ventanaVisualizarEquipos);
 	}
 
-	/**
-	 * Genera registro de ingreso
-	 */
-	/**
-	 * Genera registro de ingreso desde ventana de visualización
-	 */
 	private void generarRegistroIngreso(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-		try {
-			List<dto.RegistroEntradaReporteDTO> lista = new ArrayList<>();
+		presentacion.vista.VentanaProgreso progreso = new presentacion.vista.VentanaProgreso("GENERANDO REGISTRO");
+		progreso.mostrar();
 
-			// Extraer datos de la reparación actual
-			int els = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
-			String falla = ventanaVisualizarEquipos.getTextFalla().getText();
-			String remito = ventanaVisualizarEquipos.getTextRemitoCliente().getText();
-			String nombreEquipo = ventanaVisualizarEquipos.getTextNombreEquipo().getText();
-			String modelo = ventanaVisualizarEquipos.getTextModelo().getText();
-			String marca = ventanaVisualizarEquipos.getTextMarca().getText();
-			String serie = ventanaVisualizarEquipos.getTextNSerie().getText();
-			String aviso = ventanaVisualizarEquipos.getTextAvisoCliente().getText();
-			String clienteCliente = ventanaVisualizarEquipos.getTextClienteCliente().getText();
-			String cliente = ventanaVisualizarEquipos.getTextCliente().getText();
-			String sucursal = ventanaVisualizarEquipos.getTextSucursal().getText();
+		new Thread(() -> {
+			try {
+				long inicio = System.currentTimeMillis();
+				List<dto.RegistroEntradaReporteDTO> lista = new ArrayList<>();
+				dto.RegistroEntradaReporteDTO rep = gestorDatos.extraerRegistroIngreso(ventanaVisualizarEquipos, 1, 1);
 
-			// Obtener IDs
-			int idCliente = agenda.idClienteporNombre(cliente);
-			int idSucursal = agenda.idSucursalporNombre(sucursal, idCliente);
-			int idEquipo = agenda.dameIDequipo();
+				if (rep != null) {
+					lista.add(rep);
+					presentacion.reportes.ReporteRegistroEntrada reporte = new presentacion.reportes.ReporteRegistroEntrada(rep, lista, agenda);
 
-			// Parsear fecha
-			java.util.Date fechaEntradaVisual = ventanaVisualizarEquipos.getFechaEntrada().getDate();
-			String fechaEntrada = null;
-			if (fechaEntradaVisual != null) {
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-				fechaEntrada = dateFormat.format(fechaEntradaVisual);
+					new Thread(() -> {
+						reporte.guardar();
+					}).start();
+
+					while (System.currentTimeMillis() - inicio < 2000) {
+						Thread.sleep(100);
+					}
+
+					SwingUtilities.invokeLater(() -> {
+						reporte.mostrar();
+					});
+
+					while (!reporte.isViewerVisible()) {
+						Thread.sleep(100);
+						if (System.currentTimeMillis() - inicio > 10000) {
+							break;
+						}
+					}
+
+					SwingUtilities.invokeLater(() -> {
+						progreso.cerrar();
+					});
+				} else {
+					while (System.currentTimeMillis() - inicio < 2000) {
+						Thread.sleep(100);
+					}
+					SwingUtilities.invokeLater(() -> {
+						progreso.cerrar();
+						JOptionPane.showMessageDialog(null, "No se encontraron datos para el registro", "Aviso",
+								JOptionPane.INFORMATION_MESSAGE);
+					});
+				}
+			} catch (Exception ex) {
+				SwingUtilities.invokeLater(() -> {
+					progreso.cerrar();
+					JOptionPane.showMessageDialog(null, "Error al generar registro: " + ex.getMessage(), "Error",
+							JOptionPane.ERROR_MESSAGE);
+				});
 			}
-
-			// Obtener estado físico
-			String estadoFisico = ventanaVisualizarEquipos.getTextEstadoFisico().getText();
-			String estadoTecnico = "Sin Revisar";
-
-			// Crear DTO
-			dto.RegistroEntradaReporteDTO rep = new dto.RegistroEntradaReporteDTO(els, fechaEntrada, falla,
-					estadoFisico, estadoTecnico, remito, idEquipo, nombreEquipo, modelo, marca, serie, aviso,
-					clienteCliente, idCliente, idSucursal, cliente, sucursal);
-
-			if (rep != null) {
-				lista.add(rep);
-				presentacion.reportes.ReporteRegistroEntrada reporte = new presentacion.reportes.ReporteRegistroEntrada(
-						rep, lista, agenda);
-				reporte.mostrar();
-			}
-		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, "Error al generar registro: " + ex.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-			ex.printStackTrace();
-		}
+		}).start();
 	}
 
 	/**
@@ -250,10 +251,16 @@ public class GestorListadoEquipos {
 		presentacion.vista.VentanaEnviarCorreoOwsp ventanaEnviarCorreoOwsp = new presentacion.vista.VentanaEnviarCorreoOwsp(
 				controlador);
 
-//        ventanaEnviarCorreoOwsp.getBtnEnviarWST().addActionListener(e -> 
-//            controlador.getGestorClientesWSP().abrirVentanaWSP());
-//        
-//        ventanaEnviarCorreoOwsp.setVisible(true);
+		ventanaEnviarCorreoOwsp.getBtnEnviarWSP().addActionListener(e -> {
+			controlador.getGestorClientesWSP().abrirVentanaWSP(ventanaVisualizarEquipos);
+			ventanaEnviarCorreoOwsp.dispose();
+		});
+
+		ventanaEnviarCorreoOwsp.getBtnEnviarCorreo().addActionListener(e -> {
+			int els = Integer.parseInt(ventanaVisualizarEquipos.getTextELS());
+			controlador.getGestorPresupuesto().abrirEnvioCorreoPresupuestoExistente(els);
+			ventanaEnviarCorreoOwsp.dispose();
+		});
 	}
 
 	/**

@@ -13,364 +13,263 @@ import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.ClienteDAO;
 import dto.ClienteDTO;
 
-
 public class ClienteDAOImpl implements ClienteDAO {
-	
-	
-	
-	private static String insert = "";
-	private static String delete = "";
-	private static String readall = "";
-	private static String readallV = "";
-	private static String maximoIDcliente = "";
-	private static String IDporNombre = "";
-	private static String cuitPorID = "";
-	private static String ContactoPorNombre = "";
-	private static String EmailPorNombre = "";
-	private static String TelefonolPorNombre = "";
-	private static String cantidadReparacionesxCliente = ""; 
-	public static String ubicacion;
-	private Conexion conexion;
-	
-	
-	
-	public ClienteDAOImpl(String ubicacionBase) {
-		// TODO Auto-generated constructor stub
-		
-		insert = "INSERT INTO Cliente(idCliente,nombre, CUIT,Domicilio,TelefonoEmpresa,Contacto,TelefonoContacto,CorreoElectronico) VALUES(? , ? , ? , ? , ? , ? , ? , ?)";
-		delete = "DELETE FROM Cliente WHERE idCliente = ?";
-		readall = "SELECT * FROM Cliente ORDER BY Nombre ASC";
-		readallV = "SELECT * FROM Cliente";
-		maximoIDcliente = "Select MAX(idCliente) from Cliente";
-		IDporNombre = "Select idCliente from Cliente where nombre =? ";
-		cuitPorID = "Select CUIT from Cliente where idCliente =?";
-		ContactoPorNombre = "Select Contacto from Cliente where nombre =? ";
-		EmailPorNombre = "Select CorreoElectronico from Cliente where nombre =? ";
-		TelefonolPorNombre = "Select TelefonoContacto from Cliente where nombre =? ";
-		cantidadReparacionesxCliente = "Select count(*) as total from Cliente INNER JOIN Equipos ON Cliente.idCliente = Equipos.idCliente where Cliente.idCliente = ?";
-				
-		ubicacion = ubicacionBase;
-		conexion = Conexion.getConexion(ubicacion);
-	
-		
-	}	
-	
-	
-	
-	
-	
 
+    private static final String INSERT = "INSERT INTO Cliente(idCliente,nombre,CUIT,Domicilio,TelefonoEmpresa,Contacto,TelefonoContacto,CorreoElectronico) VALUES(?,?,?,?,?,?,?,?)";
+    private static final String DELETE = "DELETE FROM Cliente WHERE idCliente = ?";
+    private static final String READ_ALL = "SELECT * FROM Cliente ORDER BY Nombre ASC";
+    private static final String READ_ALL_V = "SELECT * FROM Cliente";
+    private static final String MAXIMO_ID = "SELECT MAX(idCliente) FROM Cliente";
+    private static final String ID_POR_NOMBRE = "SELECT idCliente FROM Cliente WHERE nombre = ?";
+    private static final String CUIT_POR_ID = "SELECT CUIT FROM Cliente WHERE idCliente = ?";
+    private static final String CONTACTO_POR_NOMBRE = "SELECT Contacto FROM Cliente WHERE nombre = ?";
+    private static final String EMAIL_POR_NOMBRE = "SELECT CorreoElectronico FROM Cliente WHERE nombre = ?";
+    private static final String TELEFONO_POR_NOMBRE = "SELECT TelefonoContacto FROM Cliente WHERE nombre = ?";
+    private static final String CANTIDAD_REPARACIONES = "SELECT COUNT(*) FROM Cliente INNER JOIN Equipos ON Cliente.idCliente = Equipos.idCliente WHERE Cliente.idCliente = ?";
+    private static final String READ_ALL_PAGINADO = "SELECT * FROM Cliente ORDER BY Nombre ASC LIMIT ? OFFSET ?";
+    private static final String COUNT_ALL = "SELECT COUNT(*) FROM Cliente";
 
+    private Conexion conexion;
 
-	public boolean insert(ClienteDTO Cliente) {
-		PreparedStatement statement;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(insert);
-			statement.setInt(1, Cliente.getId());
-			statement.setString(2, Cliente.getRazon_Social());
-			statement.setString(3, Cliente.getCUIT());
-			statement.setString(4, Cliente.getDomicilio());
-			statement.setString(5, Cliente.getTelefonoEmpresa());
-			statement.setString(6, Cliente.getContacto());
-			statement.setString(7, Cliente.getTelefonoContacto());
-			statement.setString(8, Cliente.getCorreoElectronico());
+    public ClienteDAOImpl(String ubicacionBase) {
+        this.conexion = Conexion.getConexion(ubicacionBase);
+    }
 
-			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
+    @Override
+    public boolean insert(ClienteDTO cliente) {
+        String sql = INSERT;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, cliente.getId());
+            stmt.setString(2, cliente.getRazon_Social());
+            stmt.setString(3, cliente.getCUIT());
+            stmt.setString(4, cliente.getDomicilio());
+            stmt.setString(5, cliente.getTelefonoEmpresa());
+            stmt.setString(6, cliente.getContacto());
+            stmt.setString(7, cliente.getTelefonoContacto());
+            stmt.setString(8, cliente.getCorreoElectronico());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al insertar cliente: " + cliente.getId(), e);
+            return false;
+        }
+    }
 
-	public boolean delete(ClienteDTO cliente_a_eliminar) {
-		PreparedStatement statement;
-		int chequeoUpdate = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(delete);
-			statement.setString(1, Integer.toString(cliente_a_eliminar.getId()));
-			chequeoUpdate = statement.executeUpdate();
-			if (chequeoUpdate > 0) // Si se ejecutó devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
+    @Override
+    public boolean delete(ClienteDTO cliente) {
+        String sql = DELETE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, cliente.getId());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al eliminar cliente: " + cliente.getId(), e);
+            return false;
+        }
+    }
 
-	public List<ClienteDTO> readAll() {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readall);
-			resultSet = statement.executeQuery();
+    @Override
+    public List<ClienteDTO> readAll() {
+        List<ClienteDTO> clientes = new ArrayList<>();
+        String sql = READ_ALL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                clientes.add(mapearCliente(rs));
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al leer todos los clientes", e);
+        }
+        return clientes;
+    }
 
-			while (resultSet.next()) {
-				Clientes.add(new ClienteDTO(resultSet.getInt("idCliente"), resultSet.getString("nombre"),
-						resultSet.getString("CUIT"), resultSet.getString("Domicilio"),
-						resultSet.getString("TelefonoEmpresa"), resultSet.getString("Contacto"),
-						resultSet.getString("TelefonoContacto"), resultSet.getString("CorreoElectronico")));
+    @Override
+    public List<ClienteDTO> readAllPaginado(int limit, int offset) {
+        List<ClienteDTO> clientes = new ArrayList<>();
+        String sql = READ_ALL_PAGINADO;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, limit);
+            stmt.setInt(2, offset);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    clientes.add(mapearCliente(rs));
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al leer clientes paginados", e);
+        }
+        return clientes;
+    }
 
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-		return Clientes;
-	}
+    @Override
+    public int contarClientes() {
+        String sql = COUNT_ALL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al contar clientes", e);
+        }
+        return 0;
+    }
 
-	@Override
-	public int obtenerIDcliente() {
+    @Override
+    public int obtenerIDcliente() {
+        String sql = MAXIMO_ID;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener maximo ID cliente", e);
+        }
+        return 0;
+    }
 
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int idcliente = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(maximoIDcliente);
-			resultSet = statement.executeQuery();
+    @Override
+    public boolean edit(ClienteDTO cliente) {
+        String sql = "UPDATE Cliente SET nombre = ?, CUIT = ?, Domicilio = ?, TelefonoEmpresa = ?, Contacto = ?, TelefonoContacto = ?, CorreoElectronico = ? WHERE idCliente = ?";
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, cliente.getRazon_Social());
+            stmt.setString(2, cliente.getCUIT());
+            stmt.setString(3, cliente.getDomicilio());
+            stmt.setString(4, cliente.getTelefonoEmpresa());
+            stmt.setString(5, cliente.getContacto());
+            stmt.setString(6, cliente.getTelefonoContacto());
+            stmt.setString(7, cliente.getCorreoElectronico());
+            stmt.setInt(8, cliente.getId());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al editar cliente: " + cliente.getId(), e);
+            return false;
+        }
+    }
 
-			while (resultSet.next()) {
-				idcliente = resultSet.getInt("MAX(idcliente)");
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    public void ListarClientes(JComboBox box) {
+        String sql = READ_ALL_V;
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        box.setModel(model);
+        model.addElement(new ClienteDTO(0, "-- Seleccionar Cliente --", "", "", "", "", "", ""));
 
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                model.addElement(mapearCliente(rs));
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al listar clientes en combo", e);
+        }
+    }
 
-		return idcliente;
-	}
+    @Override
+    public int obtenerIDporNombre(String nombreCliente) {
+        String sql = ID_POR_NOMBRE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, nombreCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("idCliente");
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener ID por nombre: " + nombreCliente, e);
+        }
+        return 0;
+    }
 
-	public boolean edit(ClienteDTO Cliente_a_editar) {
-		PreparedStatement statement;
-		try {
-			statement = conexion.getSQLConexion()
-					.prepareStatement("UPDATE Cliente SET idCliente = '" + Cliente_a_editar.getId() + "' , "
-							+ "nombre = '" + Cliente_a_editar.getRazon_Social() + "' ," + "CUIT = '"
-							+ Cliente_a_editar.getCUIT() + "' ," + "Domicilio = '" + Cliente_a_editar.getDomicilio()
-							+ "' ," + "TelefonoEmpresa = '" + Cliente_a_editar.getTelefonoEmpresa() + "' ,"
-							+ "Contacto = '" + Cliente_a_editar.getContacto() + "' ," + "TelefonoContacto = '"
-							+ Cliente_a_editar.getTelefonoContacto() + "'  ," + " CorreoElectronico = '"
-							+ Cliente_a_editar.getCorreoElectronico() + "' "
+    @Override
+    public String obtenerContactoPorCliente(String nombreCliente) {
+        String sql = CONTACTO_POR_NOMBRE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, nombreCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("Contacto");
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener contacto: " + nombreCliente, e);
+        }
+        return "";
+    }
 
-							+ " WHERE idCliente = " + Cliente_a_editar.getId() + "");
+    @Override
+    public String obtenerEmailPorCliente(String nombreCliente) {
+        String sql = EMAIL_POR_NOMBRE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, nombreCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("CorreoElectronico");
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener email: " + nombreCliente, e);
+        }
+        return "";
+    }
 
-			if (statement.executeUpdate() > 0) // Si se ejecut� devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
+    @Override
+    public boolean obtenerReparacionxIDCliente(int idCliente) {
+        String sql = CANTIDAD_REPARACIONES;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, idCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al verificar reparaciones por cliente: " + idCliente, e);
+        }
+        return false;
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes", "unused" })
-	@Override
-	public void ListarClientes(JComboBox box) {
-		DefaultComboBoxModel value;
+    @Override
+    public String obtenerTelefonoPorCliente(String nombreCliente) {
+        String sql = TELEFONO_POR_NOMBRE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, nombreCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("TelefonoContacto");
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener telefono: " + nombreCliente, e);
+        }
+        return "";
+    }
 
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallV);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			box.setModel(value);
+    @Override
+    public String dameCuitPorIdCliente(int idCliente) {
+        String sql = CUIT_POR_ID;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, idCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("CUIT");
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener CUIT por ID: " + idCliente, e);
+        }
+        return "";
+    }
 
-			value.addElement(new ClienteDTO(0, "-- Seleccionar Cliente --", "", "", "", "", "", ""));
-
-			while (resultSet.next()) {
-
-				value.addElement(new ClienteDTO(resultSet.getInt(1), resultSet.getString(2),
-						resultSet.getString("CUIT"), resultSet.getString("Domicilio"),
-						resultSet.getString("TelefonoEmpresa"), resultSet.getString("Contacto"),
-						resultSet.getString("TelefonoContacto"), resultSet.getString("CorreoElectronico")));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-			// conexion.cerrarConexion();
-		}
-
-	}
-
-	@Override
-	public int obtenerIDporNombre(String nombreCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int idcliente = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(IDporNombre);
-			statement.setString(1, nombreCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				idcliente = resultSet.getInt("idCliente");
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-
-		return idcliente;
-	}
-
-	@Override
-	public String obtenerContactoPorCliente(String nombreCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		String Contacto = "";
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(ContactoPorNombre);
-			statement.setString(1, nombreCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				Contacto = resultSet.getString("Contacto");
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-
-		return Contacto;
-	}
-
-	@Override
-	public String obtenerEmailPorCliente(String nombreCliente) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		String email = "";
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(EmailPorNombre);
-			statement.setString(1, nombreCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				email = resultSet.getString("CorreoElectronico");
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-
-		return email;
-	}
-
-	@Override
-	public boolean obtenerReparacionxIDCliente(int idCliente) {
-		int cantidad = 0;
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(cantidadReparacionesxCliente);
-			statement.setInt(1, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidad = Integer.parseInt(resultSet.getString("total"));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-
-		if (cantidad == 0)
-			return false;
-		else
-			return true;
-	}
-
-	@Override
-	public String obtenerTelefonoPorCliente(String orgCliente) {
-		
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		String telefono = "";
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(TelefonolPorNombre);
-			statement.setString(1, orgCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				telefono = resultSet.getString("TelefonoContacto");
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-
-		return telefono;
-	}
-
-
-
-
-
-
-
-
-	@Override
-	public String dameCuitPorIdCliente(int idCliente) {
-		
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		String cuit = "";
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(cuitPorID);
-			statement.setInt(1, idCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				cuit = resultSet.getString("CUIT");
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-
-		return cuit;
-	}
-
-	
-	
-
+    private ClienteDTO mapearCliente(ResultSet rs) throws SQLException {
+        return new ClienteDTO(
+            rs.getInt("idCliente"),
+            rs.getString("nombre"),
+            rs.getString("CUIT"),
+            rs.getString("Domicilio"),
+            rs.getString("TelefonoEmpresa"),
+            rs.getString("Contacto"),
+            rs.getString("TelefonoContacto"),
+            rs.getString("CorreoElectronico")
+        );
+    }
 }

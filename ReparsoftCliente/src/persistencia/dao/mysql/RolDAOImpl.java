@@ -11,128 +11,89 @@ import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.RolDAO;
 
 public class RolDAOImpl implements RolDAO {
-	private static final String insert = "INSERT INTO rol(idRol, nombre) VALUES(?, ?)";
-	private static final String delete = "DELETE FROM rol WHERE idRol = ?";
-	private static final String readall = "SELECT * FROM rol";
-	private static final String readallxid = "SELECT nombre FROM rol WHERE idRol = ?";
-	public static String ubicacion;
-	private Conexion conexion;
-	
 
-	@SuppressWarnings("unused")
-	public RolDAOImpl(String ubicacionBase) {
-		final String insert = "INSERT INTO rol(idRol, nombre) VALUES(?, ?)";
-		final String delete = "DELETE FROM rol WHERE idRol = ?";
-		final String readall = "SELECT * FROM rol";
-		final String readallxid = "SELECT nombre FROM rol WHERE idRol = ?";
-		ubicacion = ubicacionBase;
-		conexion = Conexion.getConexion(ubicacion);
-		
-	}
+    private static final String INSERT = "INSERT INTO rol(idRol,nombre) VALUES(?,?)";
+    private static final String DELETE = "DELETE FROM rol WHERE idRol = ?";
+    private static final String READ_ALL = "SELECT * FROM rol";
+    private static final String READ_BY_ID = "SELECT nombre FROM rol WHERE idRol = ?";
+    private static final String UPDATE_ROL = "UPDATE rol SET nombre = ? WHERE idRol = ?";
 
-	
-	
-	
-	
-	public boolean insert(RolDTO rol) {
-		PreparedStatement statement;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(insert);
-			statement.setInt(1, rol.getIdRol());
-			statement.setString(2, rol.getNombre());
+    private Conexion conexion;
 
-			if (statement.executeUpdate() > 0) // Si se ejecut� devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
+    public RolDAOImpl(String ubicacionBase) {
+        this.conexion = Conexion.getConexion(ubicacionBase);
+    }
 
-	public boolean delete(RolDTO rol_a_eliminar) {
-		PreparedStatement statement;
-		int chequeoUpdate = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(delete);
-			statement.setString(1, Integer.toString(rol_a_eliminar.getIdRol()));
-			chequeoUpdate = statement.executeUpdate();
-			if (chequeoUpdate > 0) // Si se ejecut� devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
+    @Override
+    public boolean insert(RolDTO rol) {
+        String sql = INSERT;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, rol.getIdRol());
+            stmt.setString(2, rol.getNombre());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al insertar rol: " + rol.getIdRol(), e);
+            return false;
+        }
+    }
 
-	public boolean edit(RolDTO rol_a_editar) {
-		PreparedStatement statement;
-		try {
-			statement = conexion.getSQLConexion()
-					.prepareStatement("UPDATE rol SET idRol='" + rol_a_editar.getIdRol() + "' , " + "nombre = '"
-							+ rol_a_editar.getNombre() + "'" + "WHERE idRol = " + rol_a_editar.getIdRol() + "");
+    @Override
+    public boolean delete(RolDTO rol) {
+        String sql = DELETE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, rol.getIdRol());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al eliminar rol: " + rol.getIdRol(), e);
+            return false;
+        }
+    }
 
-			if (statement.executeUpdate() > 0) // Si se ejecut� devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
+    @Override
+    public boolean edit(RolDTO rol) {
+        String sql = UPDATE_ROL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, rol.getNombre());
+            stmt.setInt(2, rol.getIdRol());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al editar rol: " + rol.getIdRol(), e);
+            return false;
+        }
+    }
 
-	public List<RolDTO> readAll() {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<RolDTO> roles = new ArrayList<RolDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readall);
-			resultSet = statement.executeQuery();
+    @Override
+    public List<RolDTO> readAll() {
+        List<RolDTO> roles = new ArrayList<>();
+        String sql = READ_ALL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                roles.add(mapearRol(rs));
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al leer todos los roles", e);
+        }
+        return roles;
+    }
 
-			while (resultSet.next()) {
-				roles.add(new RolDTO(resultSet.getInt("idRol"), resultSet.getString("nombre")));
+    @Override
+    public String readAllxid(int id) {
+        String sql = READ_BY_ID;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("nombre");
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al leer rol por ID: " + id, e);
+        }
+        return "";
+    }
 
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return roles;
-	}
-
-	@Override
-	public String readAllxid(int id) {
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		String nombre = "";
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallxid);
-			statement.setInt(1, id);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				nombre = resultSet.getString("nombre");
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return nombre;
-
-	}
-
+    private RolDTO mapearRol(ResultSet rs) throws SQLException {
+        return new RolDTO(rs.getInt("idRol"), rs.getString("nombre"));
+    }
 }

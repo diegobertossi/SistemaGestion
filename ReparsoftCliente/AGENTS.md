@@ -4,7 +4,7 @@ Sistema de gestión de taller de reparaciones (Reparsoft) - Aplicación de escri
 
 ## 1. Concepto y visión
 
-Reparsoft es un sistema de gestión integral para talleres de reparación de equipos electrónicos. La aplicación permite administrar clientes, equipos, reparaciones, presupuestos, remitos, facturacion y reportes. Es una aplicacion de escritorio robusta con interfaz Swing que gestiona el ciclo completo de una reparacion: desde el ingreso del equipo hasta la facturacion y entrega al cliente.
+Reparsoft es un sistema de gestión integral para talleres de reparación de equipos electrónicos. La aplicación permite administrar clientes, equipos, reparaciones, presupuestos, remitos, facturación y reportes. Es una aplicación de escritorio robusta con interfaz Swing que gestiona el ciclo completo de una reparación: desde el ingreso del equipo hasta la facturación y entrega al cliente.
 
 ## 2. Stack tecnológico
 
@@ -17,7 +17,7 @@ Reparsoft es un sistema de gestión integral para talleres de reparación de equ
 - **PDF**: iText 2.1.7 / OpenPDF 1.3.30
 - **Spell Check**: JOrtho
 - **Email**: JavaMail (javax.mail)
-- **Build**: Eclipse build system (compilacion manual)
+- **Build**: Eclipse build system (compilación manual)
 - **Output**: `bin/`
 
 ## 3. Estructura del proyecto
@@ -111,6 +111,8 @@ ReparsoftCliente/
 │   │           ├── ReparacionDAOImpl.java
 │   │           ├── UsuarioDAOImpl.java
 │   │           ├── ReparacionQueryManager.java
+│   │           ├── SQLQueries.java       # Queries SQL centralizadas
+│   │           ├── LogDAO.java           # Sistema de logging
 │   │           └── ... (mas implementaciones)
 │   ├── mails/
 │   │   └── EnviarMail.java              # Envio de emails
@@ -138,7 +140,8 @@ ReparsoftCliente/
 ├── sql/                                 # Scripts SQL y backups
 ├── Recursos/                            # Recursos adicionales
 ├── reportes/                            # Plantillas JasperReports (.jrxml)
-└── Fonts/                               # Fuentes personalizadas
+├── Fonts/                               # Fuentes personalizadas
+└── .opencode/skills/                   # Skills para OpenCode
 ```
 
 ## 4. Convenciones y patrones
@@ -155,6 +158,57 @@ ReparsoftCliente/
 - Nombres de metodos: lowerCamelCase (`obtenerClientes`, `guardarReparacion`)
 - Controladores como punto de union entre vistas y DAOs
 - Gestores para logica de negocio compleja
+- **Queries SQL en constantes `private static final String`** al inicio de cada DAO
+- **Usar `try-with-resources`** para `PreparedStatement` y `ResultSet`
+- **Parametrizar TODAS las queries** con `?` y `setString/setInt/etc`
+- **Usar `LogDAO.error()`** en lugar de `e.printStackTrace()`
+
+### Patrón DAO refactorizado
+
+```java
+public class XxxDAOImpl implements XxxDAO {
+
+    private static final String INSERT = "INSERT INTO tabla(campo) VALUES(?)";
+    private static final String UPDATE = "UPDATE tabla SET campo = ? WHERE id = ?";
+
+    private Conexion conexion;
+
+    public XxxDAOImpl(String ubicacionBase) {
+        this.conexion = Conexion.getConexion(ubicacionBase);
+    }
+
+    @Override
+    public boolean insert(DTO dto) {
+        String sql = INSERT;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, dto.getCampo());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al insertar dto", e);
+            return false;
+        }
+    }
+
+    @Override
+    public List<DTO> readAll() {
+        List<DTO> lista = new ArrayList<>();
+        String sql = READ_ALL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                lista.add(mapearDTO(rs));
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al leer todos los dtos", e);
+        }
+        return lista;
+    }
+
+    private DTO mapearDTO(ResultSet rs) throws SQLException {
+        return new DTO(...);
+    }
+}
+```
 
 ### Gestores (gestores/)
 Los gestores encapsulan logica de negocio compleja que involucra multiples operaciones. Ejemplos:
@@ -199,8 +253,10 @@ props.setProperty("db.password", "root");
 ```
 
 ### Migración legacy
-- `VentanaMigracion.java` permite migrar datos desde Access (.mdb) a MySQL
+- `VentanaMigracion.java` permite migrar datos desde Access (.mdb/.accdb) a MySQL
 - `ConectorAccess.java` maneja conexiones Access legacy
+- `MigracionController.java` gestiona la migración paso a paso
+- BDs destino: `ordenesbrcantiguas`, `ordenesbsasantiguas`, `ordenesbrc`, `ordenesbsas`
 
 ## 7. Dependencias clave
 
@@ -214,6 +270,7 @@ props.setProperty("db.password", "root");
 | `jcalendar-1.4.jar` | Selector de fechas |
 | `JTattoo-1.6.11.jar` | Look and Feel |
 | `jortho.jar` | Corrector ortográfico |
+| `ucanaccess-5.0.1.jar` | Acceso a Access legacy |
 
 ## 8. Comandos de desarrollo
 
@@ -242,3 +299,26 @@ mysqldump -u root -p reparsoft > sql/Backup_Reparsoft_$(date +%Y-%m-%d).sql
 - **Spanish naming** - Paquetes y conceptos de negocio en español
 - **Singletons** - Usar para Conexion y servicios compartidos
 - **Nombres descriptivos** - Preferir nombres largos claros (`ventanaListadoReparaciones`) sobre abreviaturas
+
+## 10. Archivos de infraestructura
+
+### LogDAO (persistencia.dao.mysql.LogDAO)
+Sistema de logging centralizado:
+```java
+LogDAO.error("Error al insertar cliente", e);
+LogDAO.info("Cliente insertado exitosamente");
+LogDAO.warning("Cliente duplicado omitido");
+```
+
+### SQLQueries (persistencia.dao.mysql.SQLQueries)
+Contiene todas las queries SQL centralizadas en constantes para ReparacionDAO. Mantiene consistencia entre módulos.
+
+## 11. Migración y backup (NO MODIFICAR)
+
+Las herramientas de migración y backup son **críticas para el negocio**:
+- `VentanaMigracion.java` - Interfaz de migración Access → MySQL
+- `MigracionController.java` - Lógica de migración con ID blindado
+- `ConfigMigracion.java` - Configuración de conexiones
+- `ControladorBackup.java` - Backup/restore de MySQL
+
+**Cualquier refactor debe mantener backwards compatibility con estas clases.**

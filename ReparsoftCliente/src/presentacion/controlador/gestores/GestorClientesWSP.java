@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 import dto.ReparacionDTO;
 import modelo.Agenda;
-
+import presentacion.vista.VentanaVisualizarEquipos;
 import presentacion.vista.VentanaWSP;
 
 /**
@@ -39,10 +39,16 @@ public class GestorClientesWSP {
     // =====================================================================
 
     public void abrirVentanaWSP() {
+        if (controlador.getVentanaVisualizarEquipos() != null) {
+            abrirVentanaWSP(controlador.getVentanaVisualizarEquipos());
+        }
+    }
 
-        // Verificar que el PDF ya fue generado
-        String cliente = controlador.getVentanaVisualizarEquipos().getTextCliente().getText();
-        int els = Integer.parseInt(controlador.getVentanaVisualizarEquipos().getTextELS());
+    public void abrirVentanaWSP(VentanaVisualizarEquipos ventana) {
+        if (ventana == null) return;
+
+        String cliente = ventana.getTextCliente().getText();
+        int els = Integer.parseInt(ventana.getTextELS());
         ReparacionDTO rep = agenda.dameReparacionXels(els);
 
         if (rep == null) {
@@ -59,7 +65,6 @@ public class GestorClientesWSP {
             return;
         }
 
-        // Resto del método sin cambios
         ventanaWSP = new VentanaWSP(controlador);
 
         String nombreContacto   = agenda.ContactoPorCliente(cliente);
@@ -130,6 +135,8 @@ public class GestorClientesWSP {
                 "No se pudo abrir el explorador:\n" + ex.getMessage(),
                 "Error", JOptionPane.ERROR_MESSAGE);
         }
+
+        ventanaWSP.dispose();
     }
 
  // =====================================================================

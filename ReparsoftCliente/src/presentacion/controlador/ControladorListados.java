@@ -680,9 +680,13 @@ public class ControladorListados
 	        String.format("Página %d de %d  |  %d - %d de %d registros",
 	            paginaActual + 1, totalPaginas, desde, hasta, totalRegistros));
 
-	    ventanaListadoReparaciones.getBtnAnterior().setEnabled(paginaActual > 0);
-	    ventanaListadoReparaciones.getBtnSiguiente()
-	            .setEnabled(paginaActual < totalPaginas - 1);
+	    boolean hayAnterior = paginaActual > 0;
+	    boolean haySiguiente = paginaActual < totalPaginas - 1;
+
+	    ventanaListadoReparaciones.getBtnPrimero().setEnabled(hayAnterior);
+	    ventanaListadoReparaciones.getBtnAnterior().setEnabled(hayAnterior);
+	    ventanaListadoReparaciones.getBtnSiguiente().setEnabled(haySiguiente);
+	    ventanaListadoReparaciones.getBtnUltimo().setEnabled(haySiguiente);
 	}
 	
 	
@@ -807,6 +811,11 @@ public class ControladorListados
 		this.ventanaListadoReparaciones.getChckbxPago().addMouseListener(this);
 		
 		// NUEVO: listeners de paginación
+		this.ventanaListadoReparaciones.getBtnPrimero().addActionListener(e -> {
+		    paginaActual = 0;
+		    cargarTablaListadoReparaciones();
+		});
+
 		this.ventanaListadoReparaciones.getBtnAnterior().addActionListener(e -> {
 		    if (paginaActual > 0) {
 		        paginaActual--;
@@ -819,6 +828,11 @@ public class ControladorListados
 		        paginaActual++;
 		        cargarTablaListadoReparaciones();
 		    }
+		});
+
+		this.ventanaListadoReparaciones.getBtnUltimo().addActionListener(e -> {
+		    paginaActual = totalPaginas - 1;
+		    cargarTablaListadoReparaciones();
 		});
 		
 		

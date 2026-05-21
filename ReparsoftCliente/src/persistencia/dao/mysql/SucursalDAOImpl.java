@@ -15,337 +15,220 @@ import dto.ReparacionDTO;
 import dto.SucursalDTO;
 
 public class SucursalDAOImpl implements SucursalDAO {
-	private static final String insert = "INSERT INTO Sucursal(IdSucursal,NombreSucursal,idCliente,DomicilioSucursal,ContactoSucursal,TelefonoSucursal,CorreoElectronico) VALUES(? , ? , ? , ? , ? , ? , ? )";
-	private static final String delete = "DELETE FROM Sucursal WHERE IdSucursal = ?";
-	private static final String readall = "SELECT * FROM Sucursal";
-	private static final String maximoIDsucursal = "Select MAX(idsucursal) from Sucursal";
-	private static final String cantidadSucxCliente = "Select count(*) as total from Sucursal where idCliente = ?";
-
-	private static final String cantidadReparacionesxSuc = "Select count(*) as total from Sucursal INNER JOIN Equipos ON Sucursal.idsucursal = Equipos.IdSucursal where Sucursal.idsucursal = ?";
-
-	private static final String readallxCliente = "SELECT * FROM Sucursal where idCliente = ? ORDER BY NombreSucursal ASC";
-	private static final String readallSucursal = "SELECT Sucursal.NombreSucursal FROM Sucursal group by Sucursal.NombreSucursal";
-
-	private static final String IDporNombre = "Select IdSucursal from Sucursal where NombreSucursal =? and idCliente=? ";
-	
-	public static String ubicacion;
-	private Conexion conexion;
-	
-	
-	@SuppressWarnings("unused")
-	public SucursalDAOImpl(String ubicacionBase) {
-		// TODO Auto-generated constructor stub
-	
-	final String insert = "INSERT INTO Sucursal(IdSucursal,NombreSucursal,idCliente,DomicilioSucursal,ContactoSucursal,TelefonoSucursal,CorreoElectronico) VALUES(? , ? , ? , ? , ? , ? , ? )";
-	final String delete = "DELETE FROM Sucursal WHERE IdSucursal = ?";
-	final String readall = "SELECT * FROM Sucursal";
-	final String maximoIDsucursal = "Select MAX(idsucursal) from Sucursal";
-	final String cantidadSucxCliente = "Select count(*) as total from Sucursal where idCliente = ?";
-
-	final String cantidadReparacionesxSuc = "Select count(*) as total from Sucursal INNER JOIN Equipos ON Sucursal.idsucursal = Equipos.IdSucursal where Sucursal.idsucursal = ?";
-
-	final String readallxCliente = "SELECT * FROM Sucursal where idCliente = ?";
-	final String readallSucursal = "SELECT Sucursal.NombreSucursal FROM Sucursal group by Sucursal.NombreSucursal";
-
-	final String IDporNombre = "Select IdSucursal from Sucursal where NombreSucursal =? and idCliente=? ";
-	ubicacion = ubicacionBase;
-	conexion = Conexion.getConexion(ubicacion);
-	
-	
-	
-	}
-
-
-
-
-	public boolean insert(SucursalDTO Sucursal) {
-		PreparedStatement statement;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(insert);
-			statement.setInt(1, Sucursal.getIdSucursal());
-			statement.setString(2, Sucursal.getNombreSucursal());
-			statement.setInt(3, Sucursal.getIdClientesuc());
-			statement.setString(4, Sucursal.getDomicilioSucursal());
-			statement.setString(5, Sucursal.getContactoSucursal());
-			statement.setString(6, Sucursal.getTelefonoSucursal());
-			statement.setString(7, Sucursal.getCorreoElectronico());
-
-			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
-
-	public boolean delete(SucursalDTO Sucursal_a_eliminar) {
-		PreparedStatement statement;
-		int chequeoUpdate = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(delete);
-			statement.setString(1, Integer.toString(Sucursal_a_eliminar.getIdSucursal()));
-			chequeoUpdate = statement.executeUpdate();
-			if (chequeoUpdate > 0) // Si se ejecutó devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
-
-	public List<SucursalDTO> readAll() {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<SucursalDTO> Sucursal = new ArrayList<SucursalDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readall);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				Sucursal.add(new SucursalDTO(resultSet.getInt("IdSucursal"), resultSet.getString("NombreSucursal"),
-						resultSet.getInt("idCliente"), resultSet.getString("DomicilioSucursal"),
-						resultSet.getString("ContactoSucursal"), resultSet.getString("TelefonoSucursal"),
-						resultSet.getString("CorreoElectronico")));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-		return Sucursal;
-	}
-
-	@Override
-	public List<SucursalDTO> obtenerSucursalXidCliente(Integer i) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<SucursalDTO> Sucursal = new ArrayList<SucursalDTO>();
-		// String query = "select * from reparacionesT where ELS = ?";
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallxCliente);
-			statement.setInt(1, i);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				Sucursal.add(new SucursalDTO(resultSet.getInt("IdSucursal"), resultSet.getString("NombreSucursal"),
-						resultSet.getInt("idCliente"), resultSet.getString("DomicilioSucursal"),
-						resultSet.getString("ContactoSucursal"), resultSet.getString("TelefonoSucursal"),
-						resultSet.getString("CorreoElectronico")));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-		return Sucursal;
-	}
-
-	@Override
-	public int obtenerIDsucursal() {
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int idsucursal = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(maximoIDsucursal);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				idsucursal = resultSet.getInt("MAX(idsucursal)");
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-
-		return idsucursal;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
-	public void ListarSucursalesxCliente(JComboBox box, int id) {
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<SucursalDTO> Sucursal = new ArrayList<SucursalDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallxCliente);
-			statement.setInt(1, id);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			box.setModel(value);
-
-			// value.addElement(new SucursalDTO(0, "-- Seleccionar Sucursal --",0,"","", 0,
-			// ""));
-
-			while (resultSet.next()) {
-				value.addElement(new SucursalDTO(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3),
-						resultSet.getString(4), resultSet.getString(5), resultSet.getString(6),
-						resultSet.getString(7)));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-
-	}
-
-	@Override
-	public int obtenercantidaddeSucursales(int idcliente) {
-
-		int cantidad = 0;
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(cantidadSucxCliente);
-			statement.setInt(1, idcliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidad = Integer.parseInt(resultSet.getString("total"));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-		return cantidad;
-	}
-
-	public boolean edit(SucursalDTO Sucursal_a_editar) {
-		PreparedStatement statement;
-		try {
-			statement = conexion.getSQLConexion()
-					.prepareStatement("UPDATE Sucursal SET IdSucursal = '" + Sucursal_a_editar.getIdSucursal() + "' , "
-							+ "NombreSucursal = '" + Sucursal_a_editar.getNombreSucursal() + "' ," + "idCliente = '"
-							+ Sucursal_a_editar.getIdClientesuc() + "' ," + "DomicilioSucursal = '"
-							+ Sucursal_a_editar.getDomicilioSucursal() + "' ," + "ContactoSucursal = '"
-							+ Sucursal_a_editar.getContactoSucursal() + "' ," + "TelefonoSucursal = '"
-							+ Sucursal_a_editar.getTelefonoSucursal() + "' ," + "CorreoElectronico = '"
-							+ Sucursal_a_editar.getCorreoElectronico() + "' "
-
-							+ " WHERE IdSucursal = " + Sucursal_a_editar.getIdSucursal() + "");
-
-			if (statement.executeUpdate() > 0) // Si se ejecut� devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
-
-	@Override
-	public boolean obtenerReparacionxIDsSuc(int idsucu) {
-
-		int cantidad = 0;
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(cantidadReparacionesxSuc);
-			statement.setInt(1, idsucu);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				cantidad = Integer.parseInt(resultSet.getString("total"));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-
-		if (cantidad == 0)
-			return false;
-		else
-			return true;
-	}
-
-	@Override
-	public int obtenerIDporNombre(String nombreSucursal, int IDCliente) {
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int idsucursal = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(IDporNombre);
-			statement.setString(1, nombreSucursal);
-			statement.setInt(2, IDCliente);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				idsucursal = resultSet.getInt("IdSucursal");
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			// No cerrar la conexión aquí - se maneja en el singleton
-		}
-
-		return idsucursal;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void ListarSucursales(JComboBox ComboSucursales) {
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<ClienteDTO> Clientes = new ArrayList<ClienteDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallSucursal);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			ComboSucursales.setModel(value);
-
-
-
-			while (resultSet.next()) {
-
-
-				value.addElement(new ReparacionDTO(resultSet.getString(1)));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-	}
 
-
-
+    private static final String INSERT = "INSERT INTO Sucursal(IdSucursal,NombreSucursal,idCliente,DomicilioSucursal,ContactoSucursal,TelefonoSucursal,CorreoElectronico) VALUES(?,?,?,?,?,?,?)";
+    private static final String DELETE = "DELETE FROM Sucursal WHERE IdSucursal = ?";
+    private static final String READ_ALL = "SELECT * FROM Sucursal";
+    private static final String MAXIMO_ID = "SELECT MAX(idsucursal) FROM Sucursal";
+    private static final String CANTIDAD_SUC_X_CLIENTE = "SELECT COUNT(*) as total FROM Sucursal WHERE idCliente = ?";
+    private static final String CANTIDAD_REP_X_SUC = "SELECT COUNT(*) as total FROM Sucursal INNER JOIN Equipos ON Sucursal.idsucursal = Equipos.IdSucursal WHERE Sucursal.idsucursal = ?";
+    private static final String READ_BY_CLIENTE = "SELECT * FROM Sucursal WHERE idCliente = ? ORDER BY NombreSucursal ASC";
+    private static final String READ_NOMBRES = "SELECT NombreSucursal FROM Sucursal GROUP BY NombreSucursal";
+    private static final String ID_POR_NOMBRE = "SELECT IdSucursal FROM Sucursal WHERE NombreSucursal = ? AND idCliente = ?";
+    private static final String UPDATE_SUCURSAL = "UPDATE Sucursal SET NombreSucursal = ?, idCliente = ?, DomicilioSucursal = ?, ContactoSucursal = ?, TelefonoSucursal = ?, CorreoElectronico = ? WHERE IdSucursal = ?";
+
+    private Conexion conexion;
+
+    public SucursalDAOImpl(String ubicacionBase) {
+        this.conexion = Conexion.getConexion(ubicacionBase);
+    }
+
+    @Override
+    public boolean insert(SucursalDTO sucursal) {
+        String sql = INSERT;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, sucursal.getIdSucursal());
+            stmt.setString(2, sucursal.getNombreSucursal());
+            stmt.setInt(3, sucursal.getIdClientesuc());
+            stmt.setString(4, sucursal.getDomicilioSucursal());
+            stmt.setString(5, sucursal.getContactoSucursal());
+            stmt.setString(6, sucursal.getTelefonoSucursal());
+            stmt.setString(7, sucursal.getCorreoElectronico());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al insertar sucursal: " + sucursal.getIdSucursal(), e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean delete(SucursalDTO sucursal) {
+        String sql = DELETE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, sucursal.getIdSucursal());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al eliminar sucursal: " + sucursal.getIdSucursal(), e);
+            return false;
+        }
+    }
+
+    @Override
+    public List<SucursalDTO> readAll() {
+        List<SucursalDTO> sucursales = new ArrayList<>();
+        String sql = READ_ALL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                sucursales.add(mapearSucursal(rs));
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al leer todas las sucursales", e);
+        }
+        return sucursales;
+    }
+
+    @Override
+    public List<SucursalDTO> obtenerSucursalXidCliente(Integer idCliente) {
+        List<SucursalDTO> sucursales = new ArrayList<>();
+        String sql = READ_BY_CLIENTE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, idCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    sucursales.add(mapearSucursal(rs));
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al leer sucursales por cliente: " + idCliente, e);
+        }
+        return sucursales;
+    }
+
+    @Override
+    public int obtenerIDsucursal() {
+        String sql = MAXIMO_ID;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener maximo ID sucursal", e);
+        }
+        return 0;
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public void ListarSucursalesxCliente(JComboBox box, int idCliente) {
+        String sql = READ_BY_CLIENTE;
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        box.setModel(model);
+
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, idCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    model.addElement(new SucursalDTO(
+                        rs.getInt("IdSucursal"),
+                        rs.getString("NombreSucursal"),
+                        rs.getInt("idCliente"),
+                        rs.getString("DomicilioSucursal"),
+                        rs.getString("ContactoSucursal"),
+                        rs.getString("TelefonoSucursal"),
+                        rs.getString("CorreoElectronico")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al listar sucursales por cliente: " + idCliente, e);
+        }
+    }
+
+    @Override
+    public int obtenercantidaddeSucursales(int idCliente) {
+        String sql = CANTIDAD_SUC_X_CLIENTE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, idCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total");
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al contar sucursales por cliente: " + idCliente, e);
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean edit(SucursalDTO sucursal) {
+        String sql = UPDATE_SUCURSAL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, sucursal.getNombreSucursal());
+            stmt.setInt(2, sucursal.getIdClientesuc());
+            stmt.setString(3, sucursal.getDomicilioSucursal());
+            stmt.setString(4, sucursal.getContactoSucursal());
+            stmt.setString(5, sucursal.getTelefonoSucursal());
+            stmt.setString(6, sucursal.getCorreoElectronico());
+            stmt.setInt(7, sucursal.getIdSucursal());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al editar sucursal: " + sucursal.getIdSucursal(), e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean obtenerReparacionxIDsSuc(int idSucursal) {
+        String sql = CANTIDAD_REP_X_SUC;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, idSucursal);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total") > 0;
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al verificar reparaciones por sucursal: " + idSucursal, e);
+        }
+        return false;
+    }
+
+    @Override
+    public int obtenerIDporNombre(String nombreSucursal, int idCliente) {
+        String sql = ID_POR_NOMBRE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, nombreSucursal);
+            stmt.setInt(2, idCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("IdSucursal");
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener ID por nombre: " + nombreSucursal, e);
+        }
+        return 0;
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public void ListarSucursales(JComboBox box) {
+        String sql = READ_NOMBRES;
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        box.setModel(model);
+
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                model.addElement(new ReparacionDTO(rs.getString(1)));
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al listar sucursales", e);
+        }
+    }
+
+    private SucursalDTO mapearSucursal(ResultSet rs) throws SQLException {
+        return new SucursalDTO(
+            rs.getInt("IdSucursal"),
+            rs.getString("NombreSucursal"),
+            rs.getInt("idCliente"),
+            rs.getString("DomicilioSucursal"),
+            rs.getString("ContactoSucursal"),
+            rs.getString("TelefonoSucursal"),
+            rs.getString("CorreoElectronico")
+        );
+    }
 }

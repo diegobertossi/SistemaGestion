@@ -10,16 +10,13 @@ import persistencia.dao.interfaz.ReparacionDAO;
 
 public class ReparacionDAOImpl implements ReparacionDAO {
 
-    public static String ubicacion;
     private Conexion conexion;
     private ReparacionQueryManager queryManager;
     private ReparacionEstadisticasManager estadisticasManager;
     private ReparacionComboManager comboManager;
 
-    @SuppressWarnings("unused")
     public ReparacionDAOImpl(String ubicacionBase) {
-        ubicacion = ubicacionBase;
-        conexion = Conexion.getConexion(ubicacion);
+        conexion = Conexion.getConexion(ubicacionBase);
         
         // Inicializar los gestores especializados
         this.queryManager = new ReparacionQueryManager(conexion);

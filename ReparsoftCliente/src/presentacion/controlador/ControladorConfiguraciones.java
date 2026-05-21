@@ -8,6 +8,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import persistencia.conexion.Conexion;
+import presentacion.vista.SplashWindow;
 import presentacion.vista.VistaPrincipal;
 import vista.migracion.MigracionController;
 import vista.migracion.VentanaMigracion;
@@ -53,7 +54,7 @@ public class ControladorConfiguraciones implements ActionListener {
 					vistaConfiguracion.dispose();
 
 				VentanaUbicacionBaseDeDatos ventanaUbicacionBaseDeDatos = new VentanaUbicacionBaseDeDatos();
-				new ControladorUbicacionBase(ventanaUbicacionBaseDeDatos);
+				new ControladorUbicacionBase(ventanaUbicacionBaseDeDatos, null);
 			}
 		}
 

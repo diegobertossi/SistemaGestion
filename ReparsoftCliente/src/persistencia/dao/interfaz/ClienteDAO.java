@@ -18,6 +18,10 @@ public interface ClienteDAO
 	
 	public List<ClienteDTO> readAll();
 	
+	List<ClienteDTO> readAllPaginado(int limit, int offset);
+	
+	int contarClientes();
+	
 	public void ListarClientes(@SuppressWarnings("rawtypes") JComboBox box);
 	
 	public int obtenerIDcliente();

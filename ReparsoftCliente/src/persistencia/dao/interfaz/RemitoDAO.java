@@ -16,7 +16,7 @@ public interface RemitoDAO
 
 	public boolean delete(int ID_remito);
 	
-	public List<RemitoDAO> readAll();
+	public List<RemitoDTO> readAll();
 	
 	public void ListarUbicacion(JComboBox<?> box);
 

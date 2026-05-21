@@ -1,33 +1,63 @@
 package main;
 
-import javax.swing.ImageIcon;
+import java.awt.EventQueue;
+
 import javax.swing.UIManager;
 
-import presentacion.controlador.ControladorUbicacionBase;
+import presentacion.vista.SplashWindow;
 import presentacion.vista.VentanaUbicacionBaseDeDatos;
 
 public class Main {
 
-    @SuppressWarnings("unused")
     public static void main(String[] args) {
-        
-        // Precarga el driver JDBC antes de mostrar cualquier ventana.
-        // Así ese costo no lo paga Conexion más tarde, bloqueando el EDT.
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("✅ Driver JDBC precargado correctamente.");
-        } catch (ClassNotFoundException e) {
-            System.err.println("❌ No se encontró el driver JDBC MySQL 8.x");
-            e.printStackTrace();
-        }
+        final SplashWindow splash = new SplashWindow();
+        splash.mostrar();
 
-        try {
-            UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        EventQueue.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        VentanaUbicacionBaseDeDatos ventanaUbicacionBaseDeDatos = new VentanaUbicacionBaseDeDatos();
-        ControladorUbicacionBase controlador = new ControladorUbicacionBase(ventanaUbicacionBaseDeDatos);
+            final VentanaUbicacionBaseDeDatos ventana = new VentanaUbicacionBaseDeDatos();
+            ventana.setVisible(false);
+
+            new Thread(() -> {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ignored) {}
+
+                splash.disposeConTransicion();
+
+                new Thread(() -> {
+                    while (splash.isVisible()) {
+                        try {
+                            Thread.sleep(30);
+                        } catch (InterruptedException ignored) {}
+                    }
+
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ignored) {}
+
+                    EventQueue.invokeLater(() -> {
+                        ventana.setVisible(true);
+                        ventana.setAlwaysOnTop(true);
+                        ventana.toFront();
+                        ventana.requestFocus();
+                        ventana.setAlwaysOnTop(false);
+                        presentacion.controlador.ControladorUbicacionBase controlador =
+                            new presentacion.controlador.ControladorUbicacionBase(ventana, splash);
+                    });
+                }).start();
+            }).start();
+
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

@@ -1,68 +1,58 @@
 package presentacion.reportes;
 
-import java.io.File;
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.view.JasperViewer;
-import dto.RegistroPresupuestoDTO;
 import dto.RegistroResumenTecnicoDTO;
 
 @SuppressWarnings("deprecation")
 public class ReporteResumenTecnico {
-	private static JasperReport reporte;
-	private static JasperViewer reporteViewer;
-	private static JasperPrint reporteLleno;
-	private Map<String, Object> parametersMap = new HashMap<String, Object>();
-	private String reportFileName = "";
-	private String nombreArchivoPDF = "";
-	private String outFileName = "";
+	private static final ConcurrentHashMap<String, JasperReport> cache = new ConcurrentHashMap<>();
 
-	private int ELS;
-	private String Cliente = "";
+	private JasperReport reporte;
+	private JasperViewer reporteViewer;
+	private JasperPrint reporteLleno;
+	private String reportFileName = "reportes\\ResumenTecnico.jasper";
 
-	// Recibe la lista de PRESUPUESTOS para armar el reporte
-	public ReporteResumenTecnico(RegistroResumenTecnicoDTO resumeDeDatos, List<RegistroResumenTecnicoDTO> resumen)
-
-	{
-		reportFileName = "reportes\\ResumenTecnico.jasper";
-//		ELS = reparacion.getELS();
-//		Cliente = reparacion.getCliente();
-
+	public ReporteResumenTecnico(RegistroResumenTecnicoDTO resumeDeDatos, List<RegistroResumenTecnicoDTO> resumen) {
 		try {
-
-			ReporteResumenTecnico.reporte = (JasperReport) JRLoader.loadObjectFromFile(reportFileName);
-			ReporteResumenTecnico.reporteLleno = JasperFillManager.fillReport(ReporteResumenTecnico.reporte,
-					parametersMap,
-
+			this.reporte = getCachedReport(reportFileName);
+			this.reporteLleno = JasperFillManager.fillReport(this.reporte,
+					new HashMap<String, Object>(),
 					new JRBeanCollectionDataSource(resumen, false));
-
 		} catch (JRException ex) {
 			ex.printStackTrace();
 		}
+	}
 
+	private static JasperReport getCachedReport(String path) throws JRException {
+		JasperReport report = cache.get(path);
+		if (report == null) {
+			report = (JasperReport) JRLoader.loadObjectFromFile(path);
+			cache.put(path, report);
+		}
+		return report;
 	}
 
 	public void mostrar() {
+		this.reporteViewer = new JasperViewer(this.reporteLleno, false);
+		this.reporteViewer.setVisible(true);
 
-		ReporteResumenTecnico.reporteViewer = new JasperViewer(ReporteResumenTecnico.reporteLleno, false);
-		ReporteResumenTecnico.reporteViewer.setVisible(true);
+		SwingUtilities.invokeLater(() -> {
+			reporteViewer.toFront();
+			reporteViewer.repaint();
+			reporteViewer.requestFocus();
+		});
 	}
-
-	
 }

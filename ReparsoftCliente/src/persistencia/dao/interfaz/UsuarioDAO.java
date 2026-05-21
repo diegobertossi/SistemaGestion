@@ -16,8 +16,13 @@ public interface UsuarioDAO
 	
 	public List<UsuarioDTO> readAll();
 	
+	List<UsuarioDTO> readAllPaginado(int limit, int offset);
 	
-	public List<UsuarioDTO> readAllXRol(int idRol);
+	int contarUsuarios();
+	
+	List<UsuarioDTO> readAllXRol(int idRol);
+	
+	UsuarioDTO obtenerMedico(int dni);
 
 	public UsuarioDTO readUsuLogin(String login, String pass);
 

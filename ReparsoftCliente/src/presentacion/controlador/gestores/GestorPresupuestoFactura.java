@@ -269,13 +269,9 @@ public class GestorPresupuestoFactura {
         if (seleccion != JOptionPane.YES_OPTION) return;
         
         // Dialog de procesamiento
-        JDialog popup = new JDialog();
-        popup.setTitle("Procesando");
-        popup.setModal(false);
-        popup.setSize(300, 100);
-        popup.setLocationRelativeTo(ventana);
-        popup.add(new JLabel("Enviando correo, espere...", SwingConstants.CENTER));
-        
+        presentacion.vista.VentanaProgreso progreso = new presentacion.vista.VentanaProgreso("ENVIANDO CORREO");
+        progreso.mostrar();
+
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
@@ -285,59 +281,58 @@ public class GestorPresupuestoFactura {
                     String sucursal = ventana.getTextSucursal().getText();
                     ReparacionDTO reparacion = controlador.getGestorVisualizacion().getReparacionActual();
                     
-                    switch (tipoAviso) {
+				String error = null;
+					switch (tipoAviso) {
                         case "RESPUESTA_CLIENTE":
-                            mails.EnviarMail.enviarAvisoRespuestaCliente(correo, els, 
+                            error = mails.EnviarMail.enviarAvisoRespuestaClienteSinDialogo(correo, els,
                                 cliente, sucursal, reparacion.getEstadoComercial());
                             break;
                         case "EQUIPO_LISTO":
-                            mails.EnviarMail.enviarAvisoEquipoTerminado(correo, els, 
+                            error = mails.EnviarMail.enviarAvisoEquipoTerminadoSinDialogo(correo, els,
                                 cliente, sucursal);
                             break;
                         case "INFORME":
-                            mails.EnviarMail.enviarAvisoInforme(correo, els, 
+                            error = mails.EnviarMail.enviarAvisoInformeSinDialogo(correo, els,
                                 cliente, sucursal);
-                            
-                            // Marcar checkbox como enviado
-                            SwingUtilities.invokeLater(() -> {
-                                ventana.setChckbxAvisoEnviado(true);
-                            });
-                            
-                            // Actualizar el DTO con el nuevo estado
-                            reparacion.setAvisoEnviado(true);
-                            
-                            // Guardar inmediatamente en la base de datos
-                            agenda.editarReparacionR(reparacion);
-                            
-                            System.out.println("Aviso de informe marcado y guardado para ELS: " + els);
                             break;
                     }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+
+					progreso.cerrar();
+
+					if (error != null) {
+						JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.WARNING_MESSAGE);
+						return null;
+					}
+
+					JOptionPane.showMessageDialog(null,
+							"El correo se envi\u00f3 exitosamente.",
+							"Confirmaci\u00f3n de env\u00edo", JOptionPane.INFORMATION_MESSAGE);
+
+					if (tipoAviso.equals("INFORME")) {
+						SwingUtilities.invokeLater(() -> {
+							ventana.setChckbxAvisoEnviado(true);
+						});
+						reparacion.setAvisoEnviado(true);
+						agenda.editarReparacionR(reparacion);
+					}
+				} catch (Exception ex) {
+					progreso.cerrar();
+					ex.printStackTrace();
+				}
                 return null;
             }
             
             @Override
             protected void done() {
-                popup.dispose();
-                
-                // Refrescar la pantalla para mostrar los cambios guardados
                 if (tipoAviso.equals("INFORME")) {
                     refrescarPantalla(ventana);
                 }
-                
-//                JOptionPane.showMessageDialog(ventana, "Correo enviado correctamente.", 
-//                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
             }
         };
         
-        SwingUtilities.invokeLater(() -> {
-            popup.setVisible(true);
-            worker.execute();
-        });
+        worker.execute();
     }
-    
+
     
     
     /**

@@ -384,22 +384,61 @@ public class GestorAgregarEquipo {
      */
     private void generarRegistroIngreso() {
         if (!validarDatos()) return;
-        
-        try {
-            List<RegistroEntradaReporteDTO> lista = new ArrayList<>();
-            RegistroEntradaReporteDTO rep = gestorDatos.extraerRegistroIngreso(ventanaAgregarEquipo, 
-                idClienteSeleccionado, idSucursalSeleccionada);
-            
-            if (rep != null) {
-                lista.add(rep);
-                ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista, agenda);
-                reporte.mostrar();
-                reporte.guardar();
+
+        presentacion.vista.VentanaProgreso progreso = new presentacion.vista.VentanaProgreso("GENERANDO REGISTRO");
+        progreso.mostrar();
+
+        new Thread(() -> {
+            try {
+                long inicio = System.currentTimeMillis();
+                List<RegistroEntradaReporteDTO> lista = new ArrayList<>();
+                RegistroEntradaReporteDTO rep = gestorDatos.extraerRegistroIngreso(ventanaAgregarEquipo,
+                    idClienteSeleccionado, idSucursalSeleccionada);
+
+                if (rep != null) {
+                    lista.add(rep);
+                    ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista, agenda);
+
+                    new Thread(() -> {
+                        reporte.guardar();
+                    }).start();
+
+                    while (System.currentTimeMillis() - inicio < 2000) {
+                        Thread.sleep(100);
+                    }
+
+                    SwingUtilities.invokeLater(() -> {
+                        reporte.mostrar();
+                    });
+
+                    while (!reporte.isViewerVisible()) {
+                        Thread.sleep(100);
+                        if (System.currentTimeMillis() - inicio > 10000) {
+                            break;
+                        }
+                    }
+
+                    SwingUtilities.invokeLater(() -> {
+                        progreso.cerrar();
+                    });
+                } else {
+                    while (System.currentTimeMillis() - inicio < 2000) {
+                        Thread.sleep(100);
+                    }
+                    SwingUtilities.invokeLater(() -> {
+                        progreso.cerrar();
+                        JOptionPane.showMessageDialog(null, "No se encontraron datos para el registro", "Aviso",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    });
+                }
+            } catch (Exception ex) {
+                SwingUtilities.invokeLater(() -> {
+                    progreso.cerrar();
+                    JOptionPane.showMessageDialog(null, "Error al generar registro: " + ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                });
             }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error al generar registro: " + ex.getMessage(), 
-                "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        }).start();
     }
     
     /**

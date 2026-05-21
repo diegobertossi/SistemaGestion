@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.swing.SwingUtilities;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -15,34 +18,42 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import dto.UsuarioDTO;
 
-public class ReporteAgenda
-{
+public class ReporteAgenda {
+	private static final ConcurrentHashMap<String, JasperReport> cache = new ConcurrentHashMap<>();
+
 	private JasperReport reporte;
 	private JasperViewer reporteViewer;
-	private JasperPrint	reporteLleno;
-	
-	//Recibe la lista de personas para armar el reporte
-    public ReporteAgenda(List<UsuarioDTO> personas)
-    {
-    	//Hardcodeado
+	private JasperPrint reporteLleno;
+
+	public ReporteAgenda(List<UsuarioDTO> personas) {
 		Map<String, Object> parametersMap = new HashMap<String, Object>();
-		parametersMap.put("Fecha", new SimpleDateFormat("dd/MM/yyyy").format(new Date()));		
-    	try		{
-    		
-			this.reporte = (JasperReport) JRLoader.loadObjectFromFile( "reportes\\ReporteAgenda.jasper" );
-			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap, 
+		parametersMap.put("Fecha", new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+		try {
+			this.reporte = getCachedReport("reportes\\ReporteAgenda.jasper");
+			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
 					new JRBeanCollectionDataSource(personas));
-		}
-		catch( JRException ex ) 
-		{
+		} catch (JRException ex) {
 			ex.printStackTrace();
 		}
-    }       
-    
-    public void mostrar()
-	{
-		this.reporteViewer = new JasperViewer(this.reporteLleno,false);
-		this.reporteViewer.setVisible(true);
 	}
-   
-}	
+
+	private static JasperReport getCachedReport(String path) throws JRException {
+		JasperReport report = cache.get(path);
+		if (report == null) {
+			report = (JasperReport) JRLoader.loadObjectFromFile(path);
+			cache.put(path, report);
+		}
+		return report;
+	}
+
+	public void mostrar() {
+		this.reporteViewer = new JasperViewer(this.reporteLleno, false);
+		this.reporteViewer.setVisible(true);
+
+		SwingUtilities.invokeLater(() -> {
+			reporteViewer.toFront();
+			reporteViewer.repaint();
+			reporteViewer.requestFocus();
+		});
+	}
+}

@@ -6,8 +6,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -23,93 +24,93 @@ import dto.RegistroEntradaReporteDTO;
 import modelo.Agenda;
 
 public class ReporteRegistroEntrada {
-	private static JasperReport reporte;
-	private static JasperViewer reporteViewer;
-	private static JasperPrint reporteLleno;
+	private static final ConcurrentHashMap<String, JasperReport> cache = new ConcurrentHashMap<>();
 
-	private String reportFileName = "";
+	private JasperReport reporte;
+	private JasperViewer reporteViewer;
+	private JasperPrint reporteLleno;
+
+	private String reportFileName = "reportes\\ReporteRegistroEntrada2.jasper";
 	private String nombreArchivoPDF = "";
 	private String outFileName = "";
 	private Agenda agenda;
 	private int ELS;
+	private long tiempoApertura = 0;
 
-	// Recibe la lista de personas para armar el reporte
 	public ReporteRegistroEntrada(RegistroEntradaReporteDTO reparacion, List<RegistroEntradaReporteDTO> reparaciones,
-			Agenda agenda)
-
-	{
-
-		// Hardcodeado
-
+			Agenda agenda) {
 		java.util.Date fecha = new Date();
 		SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
 		String fechas = "";
 		try {
 			fecha = dateFormat1.parse(reparacion.getFecha_Entrada());
-
 			fechas = dateFormat2.format(fecha);
-
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		ELS = reparacion.getELS();
 		this.agenda = agenda;
-		
+
 		Map<String, Object> parametersMap = new HashMap<String, Object>();
 		parametersMap.put("fechaEntrada", fechas);
-		// parametersMap.put("cliente", reparacion.getCliente());
 
 		try {
-
-			ReporteRegistroEntrada.reporte = (JasperReport) JRLoader
-					.loadObjectFromFile("reportes\\ReporteRegistroEntrada2.jasper");
-			ReporteRegistroEntrada.reporteLleno = JasperFillManager.fillReport(ReporteRegistroEntrada.reporte,
+			this.reporte = getCachedReport(reportFileName);
+			this.reporteLleno = JasperFillManager.fillReport(this.reporte,
 					parametersMap, new JRBeanCollectionDataSource(reparaciones, false));
 		} catch (JRException ex) {
 			ex.printStackTrace();
 		}
 	}
 
+	private static JasperReport getCachedReport(String path) throws JRException {
+		JasperReport report = cache.get(path);
+		if (report == null) {
+			report = (JasperReport) JRLoader.loadObjectFromFile(path);
+			cache.put(path, report);
+		}
+		return report;
+	}
+
 	public void mostrar() {
+		this.reporteViewer = new JasperViewer(this.reporteLleno, false);
+		this.tiempoApertura = System.currentTimeMillis();
+		this.reporteViewer.setVisible(true);
 
-		ReporteRegistroEntrada.reporteViewer = new JasperViewer(ReporteRegistroEntrada.reporteLleno, false);
-		ReporteRegistroEntrada.reporteViewer.setVisible(true);
+		SwingUtilities.invokeLater(() -> {
+			reporteViewer.toFront();
+			reporteViewer.repaint();
+			reporteViewer.requestFocus();
+		});
+	}
 
+	public boolean isViewerVisible() {
+		return this.reporteViewer != null && this.reporteViewer.isVisible();
+	}
+
+	public long getTiempoApertura() {
+		return this.tiempoApertura;
 	}
 
 	public void guardar() {
-
 		nombreArchivoPDF = "ELS_" + ELS + ".pdf";
-		
-		
+
 		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
-
 			outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Registros de Ingreso\\" + nombreArchivoPDF;
-			
-
 		} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
-
 			outFileName = "F:\\ELS\\Administracion\\Sistema\\Registros de Ingreso\\" + nombreArchivoPDF;
-
 		}
-		
-		JRPdfExporter exporter = new JRPdfExporter();
 
+		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(new SimpleExporterInput(reporteLleno));
 		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outFileName));
 
 		try {
-
 			exporter.exportReport();
-
 		} catch (JRException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
-	
 }

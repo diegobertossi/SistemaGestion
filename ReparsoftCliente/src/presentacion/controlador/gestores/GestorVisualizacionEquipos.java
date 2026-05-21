@@ -827,20 +827,59 @@ public class GestorVisualizacionEquipos {
 	
 
 	private void generarRegistroIngreso(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
-		try {
-			List<RegistroEntradaReporteDTO> lista = new ArrayList<>();
-			RegistroEntradaReporteDTO rep = gestorDatos.extraerRegistroIngreso(ventanaVisualizarEquipos, 1, 1);
+		presentacion.vista.VentanaProgreso progreso = new presentacion.vista.VentanaProgreso("GENERANDO REGISTRO");
+		progreso.mostrar();
 
-			if (rep != null) {
-				lista.add(rep);
-				ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista, agenda);
-				reporte.mostrar();
-				reporte.guardar();
+		new Thread(() -> {
+			try {
+				long inicio = System.currentTimeMillis();
+				List<RegistroEntradaReporteDTO> lista = new ArrayList<>();
+				RegistroEntradaReporteDTO rep = gestorDatos.extraerRegistroIngreso(ventanaVisualizarEquipos, 1, 1);
+
+				if (rep != null) {
+					lista.add(rep);
+					ReporteRegistroEntrada reporte = new ReporteRegistroEntrada(rep, lista, agenda);
+
+					new Thread(() -> {
+						reporte.guardar();
+					}).start();
+
+					while (System.currentTimeMillis() - inicio < 2000) {
+						Thread.sleep(100);
+					}
+
+					SwingUtilities.invokeLater(() -> {
+						reporte.mostrar();
+					});
+
+					while (!reporte.isViewerVisible()) {
+						Thread.sleep(100);
+						if (System.currentTimeMillis() - inicio > 10000) {
+							break;
+						}
+					}
+
+					SwingUtilities.invokeLater(() -> {
+						progreso.cerrar();
+					});
+				} else {
+					while (System.currentTimeMillis() - inicio < 2000) {
+						Thread.sleep(100);
+					}
+					SwingUtilities.invokeLater(() -> {
+						progreso.cerrar();
+						JOptionPane.showMessageDialog(null, "No se encontraron datos para el registro", "Aviso",
+								JOptionPane.INFORMATION_MESSAGE);
+					});
+				}
+			} catch (Exception ex) {
+				SwingUtilities.invokeLater(() -> {
+					progreso.cerrar();
+					JOptionPane.showMessageDialog(null, "Error al generar registro: " + ex.getMessage(), "Error",
+							JOptionPane.ERROR_MESSAGE);
+				});
 			}
-		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, "Error al generar registro: " + ex.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
+		}).start();
 	}
 
 	private void buscarPorELS(VentanaVisualizarEquipos ventana) {

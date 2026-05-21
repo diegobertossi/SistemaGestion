@@ -6,67 +6,43 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.FacturacionXclienteDAO;
-import persistencia.dao.interfaz.RepuestoDAO;
 import dto.FacturacionXclienteDTO;
-import dto.RepuestosDTO;
 
 public class FacturacionXclienteDAOImp implements FacturacionXclienteDAO {
-	
-	
-	public static String ubicacion;
-	private Conexion conexion;
-	
-	
-	private static final String readall = "select Cliente.idCliente, Cliente.nombre, SUM(PrecioPeso) from reparaciones INNER JOIN (Equipos INNER JOIN Cliente ON Equipos.idCliente = Cliente.idCliente)  ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.EstadoComercial = 'Aceptado' group by Equipos.idCliente order by  SUM(PrecioPeso) DESC";
-	
-	
-	@SuppressWarnings("unused")
-	public FacturacionXclienteDAOImp(String ubicacionBase) {
-		
-		
-		
-		
-		final String readallxCliente = "SELECT reemplazos.idReemplazos, reemplazos.ELS, reemplazos.ref, reemplazos.original, reemplazos.reemplazo,reemplazos.notas FROM reemplazos WHERE ELS = ?";
-				
-		
-		ubicacion = ubicacionBase;
-		conexion = Conexion.getConexion(ubicacion);
-		
-	}
 
-	
-	
-	
-	public List<FacturacionXclienteDTO> readAll(int anio) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<FacturacionXclienteDTO> listaClientes = new ArrayList<FacturacionXclienteDTO>();
-		
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readall);
-			statement.setInt(1, anio);
-			resultSet = statement.executeQuery();
+    private static final String READ_ALL = "SELECT Cliente.idCliente, Cliente.nombre, SUM(PrecioPeso) "
+            + "FROM reparaciones "
+            + "INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo "
+            + "INNER JOIN Cliente ON Equipos.idCliente = Cliente.idCliente "
+            + "WHERE YEAR(reparaciones.FechAceptacion) = ? AND reparaciones.EstadoComercial = 'Aceptado' "
+            + "GROUP BY Equipos.idCliente ORDER BY SUM(PrecioPeso) DESC";
 
-			while (resultSet.next()) {
-				listaClientes.add(new FacturacionXclienteDTO(resultSet.getInt(1), resultSet.getString(2), resultSet.getDouble(3)));
+    private Conexion conexion;
 
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return listaClientes;
-	}
+    public FacturacionXclienteDAOImp(String ubicacionBase) {
+        this.conexion = Conexion.getConexion(ubicacionBase);
+    }
 
-	
-
-	
-
+    @Override
+    public List<FacturacionXclienteDTO> readAll(int anio) {
+        List<FacturacionXclienteDTO> lista = new ArrayList<>();
+        String sql = READ_ALL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, anio);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new FacturacionXclienteDTO(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getDouble(3)
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al leer facturacion por cliente: anio=" + anio, e);
+        }
+        return lista;
+    }
 }

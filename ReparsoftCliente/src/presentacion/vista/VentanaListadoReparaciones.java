@@ -93,8 +93,10 @@ public class VentanaListadoReparaciones extends JFrame {
 	private JButton btnEstadisticas;
 	
 	// NUEVO: componentes de paginación
+	private JButton btnPrimero;
 	private JButton btnAnterior;
 	private JButton btnSiguiente;
+	private JButton btnUltimo;
 	private JLabel lblInfoPagina;
 
 	public JToggleButton toggleBtnOcultar;
@@ -374,13 +376,17 @@ public class VentanaListadoReparaciones extends JFrame {
 		panelCentral.add(scrollPane, BorderLayout.CENTER);
 
 		// NUEVO: panel inferior de paginación
-		JPanel panelPaginacion = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 5));
+		JPanel panelPaginacion = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
 		panelPaginacion.setBackground(new Color(176, 196, 222));
 		panelPaginacion.setBorder(new MatteBorder(1, 0, 0, 0, new Color(0, 128, 128)));
 
-		btnAnterior = new JButton("◄ ANTERIOR");
-		btnAnterior.setFont(new Font("Cambria", Font.BOLD, 13));
-		btnAnterior.setForeground(new Color(25, 25, 112));
+		btnPrimero = new JButton();
+		btnPrimero.setIcon(new ImageIcon(this.getClass().getResource("/primero.png")));
+		btnPrimero.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnPrimero.setEnabled(false);
+
+		btnAnterior = new JButton();
+		btnAnterior.setIcon(new ImageIcon(this.getClass().getResource("/anterior.png")));
 		btnAnterior.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAnterior.setEnabled(false);
 
@@ -388,15 +394,21 @@ public class VentanaListadoReparaciones extends JFrame {
 		lblInfoPagina.setFont(new Font("Cambria", Font.BOLD, 13));
 		lblInfoPagina.setForeground(new Color(25, 25, 112));
 
-		btnSiguiente = new JButton("SIGUIENTE ►");
-		btnSiguiente.setFont(new Font("Cambria", Font.BOLD, 13));
-		btnSiguiente.setForeground(new Color(25, 25, 112));
+		btnSiguiente = new JButton();
+		btnSiguiente.setIcon(new ImageIcon(this.getClass().getResource("/siguiente.png")));
 		btnSiguiente.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSiguiente.setEnabled(false);
 
+		btnUltimo = new JButton();
+		btnUltimo.setIcon(new ImageIcon(this.getClass().getResource("/ultimo.png")));
+		btnUltimo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnUltimo.setEnabled(false);
+
+		panelPaginacion.add(btnPrimero);
 		panelPaginacion.add(btnAnterior);
 		panelPaginacion.add(lblInfoPagina);
 		panelPaginacion.add(btnSiguiente);
+		panelPaginacion.add(btnUltimo);
 
 		panelCentral.add(panelPaginacion, BorderLayout.SOUTH);
 
@@ -800,8 +812,10 @@ public class VentanaListadoReparaciones extends JFrame {
 	}
 	
 	// NUEVO: getters paginación
+	public JButton getBtnPrimero() { return btnPrimero; }
 	public JButton getBtnAnterior() { return btnAnterior; }
 	public JButton getBtnSiguiente() { return btnSiguiente; }
+	public JButton getBtnUltimo() { return btnUltimo; }
 	public JLabel getLblInfoPagina() { return lblInfoPagina; }
 	
 }

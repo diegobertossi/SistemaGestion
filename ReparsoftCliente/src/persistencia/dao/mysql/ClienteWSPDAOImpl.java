@@ -9,248 +9,190 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
-
-//import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
-
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.ClienteWSPDAO;
 import dto.ClienteWSPDTO;
 
 public class ClienteWSPDAOImpl implements ClienteWSPDAO {
-	private static final String insert = "INSERT INTO ClienteWSP(idClienteWSP,organizacion, nombreWSP,TelefonoWSP) VALUES(? , ? , ? , ? )";
-	private static final String delete = "DELETE FROM ClienteWSP WHERE idClienteWSP = ?";
-	private static final String readall = "SELECT * FROM ClienteWSP";
-	@SuppressWarnings("unused")
-	private static final String maximoIDcliente = "Select MAX(idClienteWSP) from ClienteWSP";
-	@SuppressWarnings("unused")
-	private static final String IDporNombre = "Select idClienteWSP from ClienteWSP where nombre =? ";
-	private static final String readallContactoXorganizacion = "Select nombreWSP from ClienteWSP where organizacion =? ";
-	private static final String readallTelefonoXContacto = "Select TelefonoWSP from ClienteWSP where nombreWSP =? ";
-	
-	private static final String readallSinRepetidos = "SELECT DISTINCTROW  organizacion FROM ClienteWSP"; 
-	// private static final String ContactoPorNombre = "Select Contacto from Cliente
-	// where nombre =? ";
-	// private static final String EmailPorNombre = "Select CorreoElectronico from
-	// Cliente where nombre =? ";
-	
-	private static  String ubicacion;
-	private Conexion conexion;
 
-	
+    private static final String INSERT = "INSERT INTO ClienteWSP(idClienteWSP,organizacion,nombreWSP,TelefonoWSP) VALUES(?,?,?,?)";
+    private static final String DELETE = "DELETE FROM ClienteWSP WHERE idClienteWSP = ?";
+    private static final String READ_ALL = "SELECT * FROM ClienteWSP";
+    private static final String MAXIMO_ID = "SELECT MAX(idClienteWSP) FROM ClienteWSP";
+    private static final String ID_POR_NOMBRE = "SELECT idClienteWSP FROM ClienteWSP WHERE nombre = ?";
+    private static final String CONTACTO_X_ORGANIZACION = "SELECT nombreWSP FROM ClienteWSP WHERE organizacion = ?";
+    private static final String TELEFONO_X_CONTACTO = "SELECT TelefonoWSP FROM ClienteWSP WHERE nombreWSP = ?";
+    private static final String SIN_REPETIDOS = "SELECT DISTINCTROW organizacion FROM ClienteWSP";
+    private static final String UPDATE_CLIENTE_WSP = "UPDATE ClienteWSP SET organizacion = ?, nombreWSP = ?, TelefonoWSP = ? WHERE idClienteWSP = ?";
 
-	@SuppressWarnings("unused")
-	public ClienteWSPDAOImpl(String ubicacionBase) {
-		final String insert = "INSERT INTO ClienteWSP(idClienteWSP,organizacion, nombreWSP,TelefonoWSP) VALUES(? , ? , ? , ? )";
-		final String delete = "DELETE FROM ClienteWSP WHERE idClienteWSP = ?";
-		final String readall = "SELECT * FROM ClienteWSP";
-		final String maximoIDcliente = "Select MAX(idClienteWSP) from ClienteWSP";
-		final String IDporNombre = "Select idClienteWSP from ClienteWSP where nombre =? ";
-		final String readallContactoXorganizacion = "Select nombreWSP from ClienteWSP where organizacion =? ";
-		final String readallTelefonoXContacto = "Select TelefonoWSP from ClienteWSP where nombreWSP =? ";
-		final String readallSinRepetidos = "SELECT DISTINCTROW  organizacion FROM ClienteWSP";
-		ubicacion = ubicacionBase;
-		conexion = Conexion.getConexion(ubicacion);
-		
-	}
+    private Conexion conexion;
 
-	
-	
+    public ClienteWSPDAOImpl(String ubicacionBase) {
+        this.conexion = Conexion.getConexion(ubicacionBase);
+    }
 
-	
-	
-	@Override
-	public boolean insert(ClienteWSPDTO ClienteWSP) {
-		PreparedStatement statement;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(insert);
-			statement.setInt(1, ClienteWSP.getIdClienteWSP());
-			statement.setString(2, ClienteWSP.getOrganizacion());
-			statement.setString(3, ClienteWSP.getNombreWSP());
-			statement.setString(4, ClienteWSP.getTelefonoWSP());
+    @Override
+    public boolean insert(ClienteWSPDTO clienteWSP) {
+        String sql = INSERT;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, clienteWSP.getIdClienteWSP());
+            stmt.setString(2, clienteWSP.getOrganizacion());
+            stmt.setString(3, clienteWSP.getNombreWSP());
+            stmt.setString(4, clienteWSP.getTelefonoWSP());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al insertar cliente WSP: " + clienteWSP.getIdClienteWSP(), e);
+            return false;
+        }
+    }
 
-			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
+    @Override
+    public boolean edit(ClienteWSPDTO clienteWSP) {
+        String sql = UPDATE_CLIENTE_WSP;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, clienteWSP.getOrganizacion());
+            stmt.setString(2, clienteWSP.getNombreWSP());
+            stmt.setString(3, clienteWSP.getTelefonoWSP());
+            stmt.setInt(4, clienteWSP.getIdClienteWSP());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al editar cliente WSP: " + clienteWSP.getIdClienteWSP(), e);
+            return false;
+        }
+    }
 
-	@Override
-	public boolean edit(ClienteWSPDTO Cliente_a_editar) {
-		PreparedStatement statement;
-		try {
-			statement = conexion.getSQLConexion()
-					.prepareStatement("UPDATE ClienteWSP SET idClienteWSP = '" + Cliente_a_editar.getIdClienteWSP() + "' , "
-							+ "organizacion = '" + Cliente_a_editar.getOrganizacion() + "' ," + "nombreWSP = '" + Cliente_a_editar.getNombreWSP()
-							+ "' ," + "TelefonoWSP = '" + Cliente_a_editar.getTelefonoWSP()  + "' " + " WHERE idClienteWSP = "
-							+ Cliente_a_editar.getIdClienteWSP() + "");
+    @Override
+    public boolean delete(ClienteWSPDTO clienteWSP) {
+        String sql = DELETE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, clienteWSP.getIdClienteWSP());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al eliminar cliente WSP: " + clienteWSP.getIdClienteWSP(), e);
+            return false;
+        }
+    }
 
-			if (statement.executeUpdate() > 0) // Si se ejecut� devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
+    @Override
+    public List<ClienteWSPDTO> readAll() {
+        List<ClienteWSPDTO> clientes = new ArrayList<>();
+        String sql = READ_ALL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                clientes.add(mapearClienteWSP(rs));
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al leer todos los clientes WSP", e);
+        }
+        return clientes;
+    }
 
-	@Override
-	public boolean delete(ClienteWSPDTO Cliente_a_eliminar) {
-		
-		PreparedStatement statement;
-		int chequeoUpdate = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(delete);
-			statement.setString(1, Integer.toString(Cliente_a_eliminar.getIdClienteWSP()));
-			chequeoUpdate = statement.executeUpdate();
-			if (chequeoUpdate > 0) // Si se ejecut� devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-		
-	}
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public void ListarClientesWSP(JComboBox box) {
+        String sql = SIN_REPETIDOS;
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        box.setModel(model);
+        model.addElement(new ClienteWSPDTO(0, "-- Seleccionar Cliente --", "", ""));
 
-	@Override
-	public List<ClienteWSPDTO> readAll() {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<ClienteWSPDTO> ClientesWSP = new ArrayList<ClienteWSPDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readall);
-			resultSet = statement.executeQuery();
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                model.addElement(new ClienteWSPDTO(rs.getString("organizacion")));
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al listar clientes WSP", e);
+        }
+    }
 
-			while (resultSet.next()) {
-				ClientesWSP.add(new ClienteWSPDTO(resultSet.getInt("idClienteWSP"), resultSet.getString("organizacion"),
-						resultSet.getString("nombreWSP"), resultSet.getString("TelefonoWSP")));
+    @Override
+    public int obtenerIDclienteWSP() {
+        String sql = MAXIMO_ID;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener maximo ID cliente WSP", e);
+        }
+        return 0;
+    }
 
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			//conexion.cerrarConexion();
-		}
-		return ClientesWSP;
-	}
+    @Override
+    public int obtenerIDporNombreWSP(String nombreCliente) {
+        String sql = ID_POR_NOMBRE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, nombreCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("idClienteWSP");
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener ID por nombre WSP: " + nombreCliente, e);
+        }
+        return 0;
+    }
 
-	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
-	@Override
-	public void ListarClientesWSP(JComboBox box) {
-		DefaultComboBoxModel value;
+    @Override
+    public String obtenerNumeroPorCliente(String nombreCliente) {
+        String sql = TELEFONO_X_CONTACTO;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, nombreCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString(1);
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener numero por cliente WSP: " + nombreCliente, e);
+        }
+        return "";
+    }
 
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<ClienteWSPDTO> ClientesWSP = new ArrayList<ClienteWSPDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallSinRepetidos);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			box.setModel(value);
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public void ListarContactoxOrganizacion(JComboBox combo, String organizacion) {
+        String sql = CONTACTO_X_ORGANIZACION;
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        combo.setModel(model);
 
-			value.addElement(new ClienteWSPDTO(0, "-- Seleccionar Cliente --", "", ""));
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, organizacion);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    model.addElement(new ClienteWSPDTO(rs.getString(1)));
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al listar contactos por organizacion: " + organizacion, e);
+        }
+    }
 
-			while (resultSet.next()) {
+    @Override
+    public String obtenetTelefonoXcontacto(String nombreBuscado) {
+        String sql = TELEFONO_X_CONTACTO;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, nombreBuscado);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString(1);
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener telefono por contacto: " + nombreBuscado, e);
+        }
+        return "";
+    }
 
-				value.addElement(
-						new ClienteWSPDTO( resultSet.getString("organizacion")));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			//conexion.cerrarConexion();
-		}
-
-	}
-
-	@Override
-	public int obtenerIDclienteWSP() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int obtenerIDporNombreWSP(String nombreCliente) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String obtenerNumeroPorCliente(String nombreClienteWSP) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void ListarContactoxOrganizacion(JComboBox comboNombreBuscado, String organizacionWSP) {
-
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		// ArrayList<SucursalDTO> Sucursal = new ArrayList<SucursalDTO>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallContactoXorganizacion);
-			statement.setString(1, organizacionWSP);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			comboNombreBuscado.setModel(value);
-
-			while (resultSet.next()) {
-
-				value.addElement(new ClienteWSPDTO(resultSet.getString(1)));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-		//	conexion.cerrarConexion();
-		}
-
-	}
-
-	@Override
-	public String obtenetTelefonoXcontacto(String nombreBuscado) {
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-
-		String telefonoString = "";
-
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallTelefonoXContacto);
-			statement.setString(1, nombreBuscado);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				telefonoString = resultSet.getString(1);
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			//conexion.cerrarConexion();
-		}
-
-		return telefonoString;
-
-	}
-
+    private ClienteWSPDTO mapearClienteWSP(ResultSet rs) throws SQLException {
+        return new ClienteWSPDTO(
+            rs.getInt("idClienteWSP"),
+            rs.getString("organizacion"),
+            rs.getString("nombreWSP"),
+            rs.getString("TelefonoWSP")
+        );
+    }
 }

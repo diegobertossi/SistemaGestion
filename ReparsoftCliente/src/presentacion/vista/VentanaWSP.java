@@ -60,7 +60,7 @@ public class VentanaWSP extends JFrame {
 
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(95, 158, 160));
+		panel.setBackground(new Color(180, 215, 190));
 		panel.setBorder(null);
 		panel.setBounds(0, 0, 434, 262);
 		getContentPane().add(panel);
@@ -68,10 +68,10 @@ public class VentanaWSP extends JFrame {
 		
 		textCliente = new JTextField();
 		textCliente.setHorizontalAlignment(SwingConstants.CENTER);
-		textCliente.setForeground(new Color(255, 255, 255));
+		textCliente.setForeground(new Color(50, 95, 65));
 		textCliente.setFont(new Font("Cambria", Font.BOLD, 20));
 		textCliente.setBorder(null);
-		textCliente.setBackground(new Color(95, 158, 160));
+		textCliente.setBackground(new Color(180, 215, 190));
 		textCliente.setBounds(37, 3, 461, 31);
 		panel.add(textCliente);
 		textCliente.setColumns(10);
@@ -81,7 +81,7 @@ public class VentanaWSP extends JFrame {
 		panel.add(separator);
 		
 		panel_1 = new JPanel();
-		panel_1.setBackground(new Color(95, 158, 160));
+		panel_1.setBackground(new Color(180, 215, 190));
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_1.setBounds(37, 48, 461, 92);
 		panel.add(panel_1);
@@ -90,7 +90,7 @@ public class VentanaWSP extends JFrame {
 		JLabel lblContactoSugerido = new JLabel("CONTACTO SUGERIDO");
 		lblContactoSugerido.setBounds(145, 5, 170, 20);
 		panel_1.add(lblContactoSugerido);
-		lblContactoSugerido.setForeground(new Color(255, 255, 255));
+		lblContactoSugerido.setForeground(new Color(50, 95, 65));
 		lblContactoSugerido.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		textNombreContacto = new JTextField();
@@ -98,10 +98,10 @@ public class VentanaWSP extends JFrame {
 		textNombreContacto.setEditable(false);
 		textNombreContacto.setBounds(94, 36, 244, 20);
 		panel_1.add(textNombreContacto);
-		textNombreContacto.setForeground(Color.BLACK);
+		textNombreContacto.setForeground(new Color(50, 80, 60));
 		textNombreContacto.setFont(new Font("Cambria", Font.BOLD, 12));
 		textNombreContacto.setBorder(null);
-		textNombreContacto.setBackground(new Color(176, 196, 222));
+		textNombreContacto.setBackground(new Color(235, 250, 240));
 		textNombreContacto.setColumns(10);
 		
 		textNumeroContacto = new JTextField();
@@ -109,20 +109,20 @@ public class VentanaWSP extends JFrame {
 		textNumeroContacto.setEditable(false);
 		textNumeroContacto.setBounds(94, 61, 244, 20);
 		panel_1.add(textNumeroContacto);
-		textNumeroContacto.setForeground(Color.BLACK);
+		textNumeroContacto.setForeground(new Color(50, 80, 60));
 		textNumeroContacto.setFont(new Font("Cambria", Font.BOLD, 12));
 		textNumeroContacto.setBorder(null);
-		textNumeroContacto.setBackground(new Color(176, 196, 222));
+		textNumeroContacto.setBackground(new Color(235, 250, 240));
 		textNumeroContacto.setColumns(10);
 		
 		JLabel lblNombre_1 = new JLabel("Contacto");
-		lblNombre_1.setForeground(new Color(255, 255, 255));
+		lblNombre_1.setForeground(new Color(50, 95, 65));
 		lblNombre_1.setFont(new Font("Cambria", Font.BOLD, 16));
 		lblNombre_1.setBounds(10, 36, 84, 20);
 		panel_1.add(lblNombre_1);
 		
 		JLabel lblTelfono_1 = new JLabel("Teléfono");
-		lblTelfono_1.setForeground(new Color(255, 255, 255));
+		lblTelfono_1.setForeground(new Color(50, 95, 65));
 		lblTelfono_1.setFont(new Font("Cambria", Font.BOLD, 16));
 		lblTelfono_1.setBounds(10, 61, 84, 20);
 		panel_1.add(lblTelfono_1);
@@ -130,16 +130,16 @@ public class VentanaWSP extends JFrame {
 		btnUtilizarContacto = new JButton("<html>UTILIZAR</html>");
 		btnUtilizarContacto.setBounds(355, 34, 100, 47);
 		panel_1.add(btnUtilizarContacto);
-		btnUtilizarContacto.setBackground(UIManager.getColor("Button.background"));
+		btnUtilizarContacto.setBackground(new Color(65, 145, 85));
 		btnUtilizarContacto.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnUtilizarContacto.setForeground(new Color(0, 100, 0));
+		btnUtilizarContacto.setForeground(Color.WHITE);
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(54, 148, 426, 2);
 		panel.add(separator_1);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(95, 158, 160));
+		panel_2.setBackground(new Color(180, 215, 190));
 		panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_2.setBounds(37, 158, 461, 146);
 		panel.add(panel_2);
@@ -148,17 +148,17 @@ public class VentanaWSP extends JFrame {
 		JLabel labelPara = new JLabel("Número:");
 		labelPara.setBounds(10, 17, 81, 18);
 		panel_2.add(labelPara);
-		labelPara.setForeground(new Color(255, 255, 255));
+		labelPara.setForeground(new Color(50, 95, 65));
 		labelPara.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		JLabel labelCuerpo = new JLabel("Mensaje:");
 		labelCuerpo.setBounds(10, 46, 81, 18);
 		panel_2.add(labelCuerpo);
-		labelCuerpo.setForeground(new Color(255, 255, 255));
+		labelCuerpo.setForeground(new Color(50, 95, 65));
 		labelCuerpo.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		textNumero = new JTextField();
-		textNumero.setBackground(new Color(176, 196, 222));
+		textNumero.setBackground(new Color(235, 250, 240));
 		textNumero.setBounds(94, 16, 244, 20);
 		panel_2.add(textNumero);
 		textNumero.setEditable(false);
@@ -166,17 +166,17 @@ public class VentanaWSP extends JFrame {
 		textNumero.setColumns(10);
 		
 		btnEnviar = new JButton("ENVIAR");
-		btnEnviar.setBackground(new Color(0, 100, 0));
+		btnEnviar.setBackground(new Color(65, 145, 85));
 		btnEnviar.setBounds(355, 90, 100, 47);
 		panel_2.add(btnEnviar);
-		btnEnviar.setForeground(new Color(255, 255, 255));
+		btnEnviar.setForeground(Color.WHITE);
 		btnEnviar.setFont(new Font("Cambria", Font.BOLD, 12));
 		
 		btnEditarNmero = new JButton("<html>EDITAR</html>");
 		btnEditarNmero.setBounds(355, 16, 100, 20);
 		panel_2.add(btnEditarNmero);
-		btnEditarNmero.setBackground(UIManager.getColor("Button.background"));
-		btnEditarNmero.setForeground(new Color(0, 100, 0));
+		btnEditarNmero.setBackground(new Color(65, 145, 85));
+		btnEditarNmero.setForeground(Color.WHITE);
 		btnEditarNmero.setFont(new Font("Cambria", Font.BOLD, 12));
 		
 		scrollPane = new JScrollPane();
@@ -185,7 +185,7 @@ public class VentanaWSP extends JFrame {
 		
 		textMensaje = new JTextArea();
 		textMensaje.setLocation(0, 46);
-		textMensaje.setBackground(new Color(176, 196, 222));
+		textMensaje.setBackground(new Color(235, 250, 240));
 		textMensaje.setFont(new Font("Cambria", Font.PLAIN, 12));
 		scrollPane.setViewportView(textMensaje);
 		textMensaje.setColumns(10);

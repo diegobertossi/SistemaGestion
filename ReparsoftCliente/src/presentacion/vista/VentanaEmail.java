@@ -9,6 +9,7 @@ import javax.swing.SwingWorker;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
@@ -59,14 +60,14 @@ public class VentanaEmail extends JFrame {
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setUndecorated(true);
-		setBounds(460, 260, 724, 569);
+		setBounds(460, 260, 724, 600);
 		
 		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Iconosoft.png"));
 		this.setIconImage(icon);
 
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(100, 149, 237));
+		panel.setBackground(new Color(190, 215, 240));
 		panel.setBorder(null);
 		panel.setBounds(0, 0, 434, 262);
 		getContentPane().add(panel);
@@ -75,10 +76,10 @@ public class VentanaEmail extends JFrame {
 		textCliente = new JTextField();
 		textCliente.setHorizontalAlignment(SwingConstants.CENTER);
 		textCliente.setEditable(false);
-		textCliente.setForeground(new Color(255, 255, 255));
+		textCliente.setForeground(new Color(50, 80, 120));
 		textCliente.setFont(new Font("Cambria", Font.BOLD, 22));
 		textCliente.setBorder(null);
-		textCliente.setBackground(new Color(100, 149, 237));
+		textCliente.setBackground(new Color(190, 215, 240));
 		textCliente.setBounds(30, 11, 663, 31);
 		panel.add(textCliente);
 		textCliente.setColumns(10);
@@ -93,120 +94,121 @@ public class VentanaEmail extends JFrame {
 		
 		panel_2 = new JPanel();
 		panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_2.setBackground(new Color(100, 149, 237));
-		panel_2.setBounds(38, 169, 643, 341);
+		panel_2.setBackground(new Color(190, 215, 240));
+		panel_2.setBounds(38, 169, 643, 373);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 		
 		JLabel labelPara = new JLabel("Para:");
 		labelPara.setBounds(10, 12, 151, 18);
 		panel_2.add(labelPara);
-		labelPara.setForeground(new Color(255, 255, 255));
+		labelPara.setForeground(new Color(50, 80, 120));
 		labelPara.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		JLabel labelCC = new JLabel("CC:");
 		labelCC.setBounds(10, 38, 151, 18);
 		panel_2.add(labelCC);
-		labelCC.setForeground(new Color(255, 255, 255));
+		labelCC.setForeground(new Color(50, 80, 120));
 		labelCC.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		JLabel labelArchivos = new JLabel("Archivos Adjuntos");
 		labelArchivos.setBounds(10, 112, 151, 18);
 		panel_2.add(labelArchivos);
-		labelArchivos.setForeground(new Color(255, 255, 255));
+		labelArchivos.setForeground(new Color(50, 80, 120));
 		labelArchivos.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		JLabel labelAsunto = new JLabel("Asunto: ");
 		labelAsunto.setBounds(10, 63, 151, 18);
 		panel_2.add(labelAsunto);
-		labelAsunto.setForeground(new Color(255, 255, 255));
+		labelAsunto.setForeground(new Color(50, 80, 120));
 		labelAsunto.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		JLabel labelAjunto = new JLabel("Informe Adjunto: ");
 		labelAjunto.setBounds(10, 88, 151, 18);
 		panel_2.add(labelAjunto);
-		labelAjunto.setForeground(new Color(255, 255, 255));
+		labelAjunto.setForeground(new Color(50, 80, 120));
 		labelAjunto.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		textPara = new JTextField();
-		textPara.setBounds(160, 11, 359, 20);
+		textPara.setBounds(160, 11, 331, 20);
 		panel_2.add(textPara);
-		textPara.setBackground(new Color(255, 255, 204));
+		textPara.setBackground(new Color(235, 245, 255));
 		textPara.setFont(new Font("Cambria", Font.PLAIN, 11));
 		textPara.setColumns(10);
 		
 		textCC = new JTextField();
-		textCC.setBounds(160, 37, 359, 20);
+		textCC.setBounds(160, 37, 331, 20);
 		panel_2.add(textCC);
-		textCC.setBackground(new Color(255, 255, 204));
+		textCC.setBackground(new Color(235, 245, 255));
 		textCC.setFont(new Font("Cambria", Font.PLAIN, 11));
 		textCC.setColumns(10);
 		
 		textAsunto = new JTextField();
-		textAsunto.setBounds(160, 62, 359, 20);
+		textAsunto.setBounds(160, 62, 331, 20);
 		panel_2.add(textAsunto);
-		textAsunto.setBackground(new Color(255, 255, 204));
+		textAsunto.setBackground(new Color(235, 245, 255));
 		textAsunto.setFont(new Font("Cambria", Font.PLAIN, 11));
 		textAsunto.setColumns(10);
 		
 		textArchivos = new JTextField();
-		textArchivos.setBounds(160, 111, 359, 20);
+		textArchivos.setBounds(160, 111, 331, 20);
 		panel_2.add(textArchivos);
-		textArchivos.setBackground(new Color(255, 255, 204));
+		textArchivos.setBackground(new Color(235, 245, 255));
 		textArchivos.setFont(new Font("Cambria", Font.PLAIN, 11));
 		textArchivos.setColumns(10);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 160, 450, 170);
+		scrollPane.setBounds(10, 160, 481, 202);
 		panel_2.add(scrollPane);
 		
 		textCuerpo = new JTextArea();
 		textCuerpo.setLocation(0, 157);
 		textCuerpo.setSize(359, 113);
-		textCuerpo.setBackground(new Color(255, 255, 204));
+		textCuerpo.setMargin(new Insets(5, 5, 5, 5));
+		textCuerpo.setBackground(new Color(235, 245, 255));
 		textCuerpo.setFont(new Font("Cambria", Font.PLAIN, 11));
 		scrollPane.setViewportView(textCuerpo);
 		textCuerpo.setEditable(false);
 		textCuerpo.setColumns(10);
 		
 		textAdjunto = new JTextField();
-		textAdjunto.setBounds(160, 87, 359, 20);
+		textAdjunto.setBounds(160, 87, 331, 20);
 		panel_2.add(textAdjunto);
-		textAdjunto.setBackground(new Color(255, 255, 204));
+		textAdjunto.setBackground(new Color(235, 245, 255));
 		textAdjunto.setFont(new Font("Cambria", Font.PLAIN, 11));
 		textAdjunto.setColumns(10);
 		
 		JLabel labelCuerpo = new JLabel("Mensaje:");
 		labelCuerpo.setBounds(10, 134, 81, 18);
 		panel_2.add(labelCuerpo);
-		labelCuerpo.setForeground(Color.WHITE);
+		labelCuerpo.setForeground(new Color(50, 80, 120));
 		labelCuerpo.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		btnEnviar = new JButton("ENVIAR");
-		btnEnviar.setBounds(535, 283, 98, 47);
+		btnEnviar.setBounds(535, 327, 98, 35);
 		panel_2.add(btnEnviar);
-		btnEnviar.setBackground(new Color(204, 255, 255));
-		btnEnviar.setForeground(new Color(0, 0, 0));
+		btnEnviar.setBackground(new Color(65, 140, 210));
+		btnEnviar.setForeground(Color.WHITE);
 		btnEnviar.setFont(new Font("Cambria", Font.BOLD, 12));
 		
 		btnEditar = new JButton("EDITAR");
-		btnEditar.setBounds(470, 189, 163, 25);
+		btnEditar.setBounds(535, 199, 98, 35);
 		panel_2.add(btnEditar);
 		btnEditar.setFont(new Font("Cambria", Font.BOLD, 12));
 		
 		btnAdjunto = new JButton("<html><center>VER INFORME<html>");
-		btnAdjunto.setBounds(470, 217, 163, 25);
+		btnAdjunto.setBounds(535, 238, 98, 35);
 		panel_2.add(btnAdjunto);
 		btnAdjunto.setFont(new Font("Cambria", Font.BOLD, 12));
 		
 		btnAdjuntarArchivo = new JButton("<html><center>ADJUNTAR ARCHIVO<html>");
-		btnAdjuntarArchivo.setBounds(470, 160, 163, 25);
+		btnAdjuntarArchivo.setBounds(535, 160, 98, 35);
 		panel_2.add(btnAdjuntarArchivo);
-		btnAdjuntarArchivo.setFont(new Font("Cambria", Font.BOLD, 12));
+		btnAdjuntarArchivo.setFont(new Font("Cambria", Font.BOLD, 10));
 		
 		panel_1 = new JPanel();
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_1.setBackground(new Color(100, 149, 237));
+		panel_1.setBackground(new Color(190, 215, 240));
 		panel_1.setBounds(38, 55, 643, 93);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
@@ -214,48 +216,49 @@ public class VentanaEmail extends JFrame {
 		JLabel lblContactoSugerido = new JLabel("CONTACTO SUGERIDO");
 		lblContactoSugerido.setBounds(236, 0, 170, 20);
 		panel_1.add(lblContactoSugerido);
-		lblContactoSugerido.setForeground(Color.WHITE);
+		lblContactoSugerido.setForeground(new Color(50, 80, 120));
 		lblContactoSugerido.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		lblNombre = new JLabel("Contacto");
 		lblNombre.setBounds(10, 30, 84, 20);
 		panel_1.add(lblNombre);
-		lblNombre.setForeground(Color.WHITE);
+		lblNombre.setForeground(new Color(50, 80, 120));
 		lblNombre.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		lblTelfono = new JLabel("Correo");
 		lblTelfono.setBounds(10, 55, 84, 20);
 		panel_1.add(lblTelfono);
-		lblTelfono.setForeground(Color.WHITE);
+		lblTelfono.setForeground(new Color(50, 80, 120));
 		lblTelfono.setFont(new Font("Cambria", Font.BOLD, 16));
 		
 		textNombreContacto = new JTextField();
-		textNombreContacto.setBounds(160, 30, 359, 20);
+		textNombreContacto.setBounds(160, 30, 328, 20);
 		panel_1.add(textNombreContacto);
 		textNombreContacto.setHorizontalAlignment(SwingConstants.CENTER);
-		textNombreContacto.setForeground(Color.BLACK);
+		textNombreContacto.setForeground(new Color(50, 80, 120));
 		textNombreContacto.setFont(new Font("Cambria", Font.BOLD, 12));
 		textNombreContacto.setEditable(false);
 		textNombreContacto.setColumns(10);
 		textNombreContacto.setBorder(null);
-		textNombreContacto.setBackground(new Color(255, 255, 204));
+		textNombreContacto.setBackground(new Color(235, 245, 255));
 		
 		textEmailContacto = new JTextField();
-		textEmailContacto.setBounds(160, 56, 359, 20);
+		textEmailContacto.setBounds(160, 56, 328, 20);
 		panel_1.add(textEmailContacto);
 		textEmailContacto.setHorizontalAlignment(SwingConstants.CENTER);
-		textEmailContacto.setForeground(Color.BLACK);
+		textEmailContacto.setForeground(new Color(50, 80, 120));
 		textEmailContacto.setFont(new Font("Cambria", Font.BOLD, 12));
 		textEmailContacto.setEditable(false);
 		textEmailContacto.setColumns(10);
 		textEmailContacto.setBorder(null);
-		textEmailContacto.setBackground(new Color(255, 255, 204));
+		textEmailContacto.setBackground(new Color(235, 245, 255));
 		
 		btnAgregarContacto = new JButton("UTILIZAR");
 		btnAgregarContacto.setBounds(535, 28, 98, 47);
 		panel_1.add(btnAgregarContacto);
 		btnAgregarContacto.setFont(new Font("Cambria", Font.BOLD, 12));
-		btnAgregarContacto.setForeground(new Color(0, 0, 0));
+		btnAgregarContacto.setBackground(new Color(65, 140, 210));
+		btnAgregarContacto.setForeground(Color.WHITE);
 		
 				setLocationCenter();
 		setVisible(true);

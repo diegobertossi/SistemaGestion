@@ -14,256 +14,146 @@ import persistencia.dao.interfaz.RemitoDAO;
 import dto.RemitoDTO;
 
 public class RemitoDAOImpl implements RemitoDAO {
-	private static final String insert = "INSERT INTO Remitos(idRemito,NumeroRemitoSalida, IdUbicacion) VALUES(? , ? , ? )";
-	// private static final String delete = "DELETE FROM Cliente WHERE idCliente =
-	// ?";
-	@SuppressWarnings("unused")
-	private static final String readall = "SELECT * FROM Remitos";
-	private static final String readallUbicacion = "SELECT Codigo, Ubicacion FROM UbicacionRemitos order by Codigo";
-	private static final String numeroRemito = "SELECT MAX(Remitos.NumeroRemitoSalida) FROM Remitos join UbicacionRemitos on UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion where UbicacionRemitos.Codigo=?";
-	private static final String maximoIDremito = "Select MAX(idRemito) from Remitos";
-	private static final String delete = "DELETE FROM Remitos WHERE idRemito = ?";
 
-	private static final String buscarIDdRemitoXubicacionNumero = "SELECT * FROM Remitos where IdUbicacion = ? and NumeroRemitoSalida = ?";
-	
-	private static final String readallxUbicacion = "SELECT * FROM Remitos where IdUbicacion = ?";
-	public static String ubicacion;
-	private Conexion conexion;
-	
-	
+    private static final String INSERT = "INSERT INTO Remitos(idRemito,NumeroRemitoSalida,IdUbicacion) VALUES(?,?,?)";
+    private static final String DELETE = "DELETE FROM Remitos WHERE idRemito = ?";
+    private static final String READ_ALL = "SELECT * FROM Remitos";
+    private static final String READ_UBICACIONES = "SELECT Codigo, Ubicacion FROM UbicacionRemitos ORDER BY Codigo";
+    private static final String NUMERO_REMITO = "SELECT MAX(Remitos.NumeroRemitoSalida) FROM Remitos JOIN UbicacionRemitos ON UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion WHERE UbicacionRemitos.Codigo = ?";
+    private static final String MAXIMO_ID = "SELECT MAX(idRemito) FROM Remitos";
+    private static final String READ_BY_UBICACION_NUMERO = "SELECT * FROM Remitos WHERE IdUbicacion = ? AND NumeroRemitoSalida = ?";
+    private static final String READ_BY_UBICACION = "SELECT * FROM Remitos WHERE IdUbicacion = ?";
 
-	
+    private Conexion conexion;
 
-	@SuppressWarnings("unused")
-	public RemitoDAOImpl(String ubicacionBase) {
-		
-		
-		final String insert = "INSERT INTO Remitos(idRemito,NumeroRemitoSalida, IdUbicacion) VALUES(? , ? , ? )";
-		// private static final String delete = "DELETE FROM Cliente WHERE idCliente =
-		// ?";
-		final String readall = "SELECT * FROM Remitos";
-		final String readallUbicacion = "SELECT Codigo, Ubicacion FROM UbicacionRemitos order by Codigo";
-		final String numeroRemito = "SELECT MAX(Remitos.NumeroRemitoSalida) FROM Remitos join UbicacionRemitos on UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion where UbicacionRemitos.Codigo=?";
-		final String maximoIDremito = "Select MAX(idRemito) from Remitos";
-		final String delete = "DELETE FROM Remitos WHERE idRemito = ?";
+    public RemitoDAOImpl(String ubicacionBase) {
+        this.conexion = Conexion.getConexion(ubicacionBase);
+    }
 
-		final String buscarIDdRemitoXubicacionNumero = "SELECT * FROM Remitos where IdUbicacion = ? and NumeroRemitoSalida = ?";
-		
-		final String readallxUbicacion = "SELECT * FROM Remitos where IdUbicacion = ?";
-		ubicacion = ubicacionBase;
-		conexion = Conexion.getConexion(ubicacion);
-		
-	}
-	
-	
+    @Override
+    public boolean insert(RemitoDTO remito) {
+        String sql = INSERT;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, remito.getIdRemito());
+            stmt.setInt(2, remito.getNumeroRemitoSalida());
+            stmt.setInt(3, remito.getIdUbicacion());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al insertar remito: " + remito.getIdRemito(), e);
+            return false;
+        }
+    }
 
-	public boolean insert(RemitoDTO Remito) {
-		PreparedStatement statement;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(insert);
-			statement.setInt(1, Remito.getIdRemito());
-			statement.setInt(2, Remito.getNumeroRemitoSalida());
-			statement.setInt(3, Remito.getIdUbicacion());
+    @Override
+    public boolean delete(int idRemito) {
+        String sql = DELETE;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, idRemito);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al eliminar remito: " + idRemito, e);
+            return false;
+        }
+    }
 
-			if (statement.executeUpdate() > 0) // Si se ejecutó devuelvo true
-				return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-		return false;
-	}
+    @Override
+    public List<RemitoDTO> readAll() {
+        return null;
+    }
 
-	public boolean delete(int  remito_a_eliminar) {
-		 PreparedStatement statement;
-		 int chequeoUpdate=0;
-		 try
-		 {
-		 statement = conexion.getSQLConexion().prepareStatement(delete);
-		 statement.setString(1, Integer.toString(remito_a_eliminar));
-		 chequeoUpdate = statement.executeUpdate();
-		 if(chequeoUpdate > 0) //Si se ejecutó devuelvo true
-		 return true;
-		 }
-		 catch (SQLException e)
-		 {
-		 e.printStackTrace();
-		 }
-		 finally //Se ejecuta siempre
-		 {
-		 conexion.cerrarConexion();
-		 }
-		return false;
-	}
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public void ListarUbicacion(JComboBox box) {
+        String sql = READ_UBICACIONES;
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        box.setModel(model);
+        model.addElement("--Seleccionar Ubicación--");
 
-	@Override
-	public List<RemitoDAO> readAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                if (rs.getString("Codigo") != null) {
+                    int codigo = rs.getInt("Codigo");
+                    if (codigo == 2 || codigo == 5 || codigo == 6 || codigo == 7) {
+                        model.addElement("000" + codigo + " - " + rs.getString("Ubicacion"));
+                    } else {
+                        model.addElement(codigo + " - " + rs.getString("Ubicacion"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al listar ubicaciones", e);
+        }
+    }
 
-	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
-	@Override
-	public void ListarUbicacion(JComboBox box) {
-		DefaultComboBoxModel value;
+    @Override
+    public int obtenerNumeroRemito(int codigo) {
+        String sql = NUMERO_REMITO;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, codigo);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener numero remito: " + codigo, e);
+        }
+        return 0;
+    }
 
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<String> Ubicacion = new ArrayList<String>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallUbicacion);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			box.setModel(value);
+    @Override
+    public boolean edit(RemitoDTO remito) {
+        return false;
+    }
 
-			value.addElement("--Seleccionar Ubicación--");
-			
-			while (resultSet.next()) {
+    @Override
+    public int obtenerIDRemito() {
+        String sql = MAXIMO_ID;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener maximo ID remito", e);
+        }
+        return 0;
+    }
 
-				if (resultSet.getString("Codigo") != null) {
-					if (resultSet.getInt("Codigo") == 2 || resultSet.getInt("Codigo") == 5
-							|| resultSet.getInt("Codigo") == 6|| resultSet.getInt("Codigo") == 7) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public void ListarRemitoPorUbicacion(JComboBox box, int idUbicacion) {
+        String sql = READ_BY_UBICACION;
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        box.setModel(model);
 
-						value.addElement("000" + resultSet.getInt("Codigo") + " - " + resultSet.getString("Ubicacion"));
-					} else
-						value.addElement(resultSet.getInt("Codigo") + " - " + resultSet.getString("Ubicacion"));
-				}
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, idUbicacion);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    model.addElement(String.format("%05d", rs.getInt("NumeroRemitoSalida")));
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al listar remitos por ubicacion: " + idUbicacion, e);
+        }
+    }
 
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@Override
-	public int obtenerNumeroRemito(int codigo) {
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-
-		int numerodeRemito = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(numeroRemito);
-			statement.setInt(1, codigo);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				numerodeRemito = resultSet.getInt(1);
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return numerodeRemito;
-	}
-
-	@Override
-	public boolean edit(RemitoDTO Remito) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public int obtenerIDRemito() {
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int idRemito = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(maximoIDremito);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				idRemito = resultSet.getInt("MAX(idRemito)");
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return idRemito;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
-	@Override
-	public void ListarRemitoPorUbicacion(JComboBox box, int id) {
-
-		DefaultComboBoxModel value;
-
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		ArrayList<String> numeroRemito = new ArrayList<String>();
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(readallxUbicacion);
-			statement.setInt(1, id);
-			resultSet = statement.executeQuery();
-			value = new DefaultComboBoxModel();
-			box.setModel(value);
-
-			// value.addElement(new SucursalDTO(0, "-- Seleccionar Sucursal --",0,"","", 0,
-			// ""));
-			
-			
-			while (resultSet.next()) {
-
-				value.addElement(String.format("%05d", resultSet.getInt("NumeroRemitoSalida")));
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-	}
-
-	@Override
-	public int idRemitoXubicacionNumero(int ubicacion, int numero) {
-		
-		
-		PreparedStatement statement;
-		ResultSet resultSet; // Guarda el resultado de la query
-		int idRemito = 0;
-		try {
-			statement = conexion.getSQLConexion().prepareStatement(buscarIDdRemitoXubicacionNumero);
-			statement.setInt(1, ubicacion);
-			statement.setInt(2, numero);
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				idRemito = resultSet.getInt("idRemito");
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally // Se ejecuta siempre
-		{
-			conexion.cerrarConexion();
-		}
-
-		return idRemito;
-		
-		
-		
-		
-		
-		
-		
-	}
-
+    @Override
+    public int idRemitoXubicacionNumero(int idUbicacion, int numero) {
+        String sql = READ_BY_UBICACION_NUMERO;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, idUbicacion);
+            stmt.setInt(2, numero);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("idRemito");
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al buscar remito por ubicacion y numero", e);
+        }
+        return 0;
+    }
 }
