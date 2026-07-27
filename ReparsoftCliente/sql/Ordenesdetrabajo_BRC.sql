@@ -39,6 +39,9 @@ CREATE TABLE `cliente` (
   `Contacto` longtext,
   `TelefonoContacto` varchar(50) DEFAULT NULL,
   `CorreoElectronico` varchar(255) DEFAULT NULL,
+  `tipo_documento` varchar(10) DEFAULT 'CUIT',
+  `condicion_iva` varchar(60) DEFAULT NULL,
+  `tipo_persona` varchar(20) DEFAULT 'empresa',
   PRIMARY KEY (`idCliente`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

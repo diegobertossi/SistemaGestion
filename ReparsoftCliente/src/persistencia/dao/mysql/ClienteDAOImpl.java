@@ -15,7 +15,7 @@ import dto.ClienteDTO;
 
 public class ClienteDAOImpl implements ClienteDAO {
 
-    private static final String INSERT = "INSERT INTO Cliente(idCliente,nombre,CUIT,Domicilio,TelefonoEmpresa,Contacto,TelefonoContacto,CorreoElectronico) VALUES(?,?,?,?,?,?,?,?)";
+    private static final String INSERT = "INSERT INTO Cliente(idCliente,nombre,CUIT,Domicilio,TelefonoEmpresa,Contacto,TelefonoContacto,CorreoElectronico,tipo_documento,condicion_iva,tipo_persona) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
     private static final String DELETE = "DELETE FROM Cliente WHERE idCliente = ?";
     private static final String READ_ALL = "SELECT * FROM Cliente ORDER BY Nombre ASC";
     private static final String READ_ALL_V = "SELECT * FROM Cliente";
@@ -47,6 +47,9 @@ public class ClienteDAOImpl implements ClienteDAO {
             stmt.setString(6, cliente.getContacto());
             stmt.setString(7, cliente.getTelefonoContacto());
             stmt.setString(8, cliente.getCorreoElectronico());
+            stmt.setString(9, cliente.getTipoDocumento() != null ? cliente.getTipoDocumento() : "CUIT");
+            stmt.setString(10, cliente.getCondicionIva() != null ? cliente.getCondicionIva() : "");
+            stmt.setString(11, cliente.getTipoPersona() != null ? cliente.getTipoPersona() : "empresa");
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             LogDAO.error("Error al insertar cliente: " + cliente.getId(), e);
@@ -129,7 +132,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 
     @Override
     public boolean edit(ClienteDTO cliente) {
-        String sql = "UPDATE Cliente SET nombre = ?, CUIT = ?, Domicilio = ?, TelefonoEmpresa = ?, Contacto = ?, TelefonoContacto = ?, CorreoElectronico = ? WHERE idCliente = ?";
+        String sql = "UPDATE Cliente SET nombre = ?, CUIT = ?, Domicilio = ?, TelefonoEmpresa = ?, Contacto = ?, TelefonoContacto = ?, CorreoElectronico = ?, tipo_documento = ?, condicion_iva = ?, tipo_persona = ? WHERE idCliente = ?";
         try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
             stmt.setString(1, cliente.getRazon_Social());
             stmt.setString(2, cliente.getCUIT());
@@ -138,7 +141,10 @@ public class ClienteDAOImpl implements ClienteDAO {
             stmt.setString(5, cliente.getContacto());
             stmt.setString(6, cliente.getTelefonoContacto());
             stmt.setString(7, cliente.getCorreoElectronico());
-            stmt.setInt(8, cliente.getId());
+            stmt.setString(8, cliente.getTipoDocumento() != null ? cliente.getTipoDocumento() : "CUIT");
+            stmt.setString(9, cliente.getCondicionIva() != null ? cliente.getCondicionIva() : "");
+            stmt.setString(10, cliente.getTipoPersona() != null ? cliente.getTipoPersona() : "empresa");
+            stmt.setInt(11, cliente.getId());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             LogDAO.error("Error al editar cliente: " + cliente.getId(), e);
@@ -152,7 +158,7 @@ public class ClienteDAOImpl implements ClienteDAO {
         String sql = READ_ALL_V;
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         box.setModel(model);
-        model.addElement(new ClienteDTO(0, "-- Seleccionar Cliente --", "", "", "", "", "", ""));
+        model.addElement(new ClienteDTO(0, "-- Seleccionar Cliente --", "", "", "", "", "", "", "CUIT", "", "empresa"));
 
         try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
@@ -261,6 +267,12 @@ public class ClienteDAOImpl implements ClienteDAO {
     }
 
     private ClienteDTO mapearCliente(ResultSet rs) throws SQLException {
+        String tipoDoc = null;
+        String condIva = null;
+        String tipoPer = null;
+        try { tipoDoc = rs.getString("tipo_documento"); } catch (SQLException e) {}
+        try { condIva = rs.getString("condicion_iva"); } catch (SQLException e) {}
+        try { tipoPer = rs.getString("tipo_persona"); } catch (SQLException e) {}
         return new ClienteDTO(
             rs.getInt("idCliente"),
             rs.getString("nombre"),
@@ -269,7 +281,10 @@ public class ClienteDAOImpl implements ClienteDAO {
             rs.getString("TelefonoEmpresa"),
             rs.getString("Contacto"),
             rs.getString("TelefonoContacto"),
-            rs.getString("CorreoElectronico")
+            rs.getString("CorreoElectronico"),
+            tipoDoc != null ? tipoDoc : "CUIT",
+            condIva != null ? condIva : "",
+            tipoPer != null ? tipoPer : "empresa"
         );
     }
 }

@@ -20,6 +20,9 @@ CREATE TABLE `Cliente` (
   `Contacto` LONGTEXT, 
   `TelefonoContacto` VARCHAR(50), 
   `CorreoElectronico` VARCHAR(255), 
+  `tipo_documento` VARCHAR(10) DEFAULT 'CUIT', 
+  `condicion_iva` VARCHAR(60), 
+  `tipo_persona` VARCHAR(20) DEFAULT 'empresa', 
   PRIMARY KEY (`idCliente`)
 ) ;
 
