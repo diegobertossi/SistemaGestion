@@ -207,10 +207,6 @@ public class ReparacionComboManager {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                conexion.cerrarConexion();
-            }
         }
     }
 }

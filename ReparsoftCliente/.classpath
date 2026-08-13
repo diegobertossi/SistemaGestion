@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="img"/>
 	<classpathentry kind="src" path="Diccionario"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-beanutils-1.9.0.jar"/>
@@ -61,7 +62,15 @@
 	<classpathentry kind="lib" path="Fonts/Roboto.jar"/>
 	<classpathentry kind="lib" path="Fonts/MyfuenteCambria.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-j-8.4.0.jar"/>
+	<classpathentry kind="lib" path="lib/jbcrypt-0.4.jar"/>
 	<classpathentry kind="lib" path="lib/gson-2.10.1.jar"/>
+	<classpathentry kind="lib" path="lib-test/junit-4.13.2.jar"/>
+	<classpathentry kind="lib" path="lib-test/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="lib-test/mockito-core-4.11.0.jar"/>
+	<classpathentry kind="lib" path="lib-test/byte-buddy-1.12.23.jar"/>
+	<classpathentry kind="lib" path="lib-test/byte-buddy-agent-1.12.23.jar"/>
+	<classpathentry kind="lib" path="lib-test/objenesis-3.3.jar"/>
+	<classpathentry kind="lib" path="lib-test/mockito-inline-4.11.0.jar"/>
 	<classpathentry kind="lib" path="lib/pdfbox-2.0.36.jar"/>
 	<classpathentry kind="lib" path="lib/fontbox-2.0.36.jar"/>
 	<classpathentry kind="lib" path="lib/ucanaccess-5.0.1.jar"/>

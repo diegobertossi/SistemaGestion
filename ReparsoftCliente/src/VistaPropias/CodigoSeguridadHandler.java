@@ -6,6 +6,8 @@ import presentacion.controlador.ControladorReparacion;
 import presentacion.controlador.ControladorUsuarios;
 import presentacion.vista.VentanaCodigoSeguridad;
 
+import util.Config;
+
 import java.awt.event.*;
 
 public class CodigoSeguridadHandler {
@@ -39,7 +41,7 @@ public class CodigoSeguridadHandler {
 
 	// Verifica el código de seguridad
 	protected boolean verificarCodigoSeguridad(String codigo) {
-		if (codigo.compareTo("0000") == 0) {
+		if (codigo.compareTo(Config.get("security.codigo.acceso", "0000")) == 0) {
 			
 			
 			acceso=true;

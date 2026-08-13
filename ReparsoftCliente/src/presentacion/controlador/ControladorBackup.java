@@ -36,6 +36,7 @@ import persistencia.conexion.Conexion;
 import presentacion.vista.PopupProgresoBackup;
 import presentacion.vista.VentanaBackUp;
 import presentacion.vista.VentanaOpcionesBackup;
+import util.Config;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,17 +52,17 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 	private String rutadefaultBackup = "";
 
-	private String cleverCloudHostBRC = "b1zeyndbfc1bmeiernaw-mysql.services.clever-cloud.com";
-	private String cleverCloudPortBRC = "3306";
-	private String cleverCloudUserBRC = "uhhm5ckiyyizik8y";
-	private String cleverCloudPasswordBRC = "TXJcnVkA9yW9JDaUNg0a";
-	private String cleverCloudDatabaseBRC = "b1zeyndbfc1bmeiernaw";
+	private String cleverCloudHostBRC = Config.get("clever.brc.host", "b1zeyndbfc1bmeiernaw-mysql.services.clever-cloud.com");
+	private String cleverCloudPortBRC = Config.get("clever.brc.port", "3306");
+	private String cleverCloudUserBRC = Config.get("clever.brc.user", "uhhm5ckiyyizik8y");
+	private String cleverCloudPasswordBRC = Config.get("clever.brc.password", "TXJcnVkA9yW9JDaUNg0a");
+	private String cleverCloudDatabaseBRC = Config.get("clever.brc.database", "b1zeyndbfc1bmeiernaw");
 
-	private String cleverCloudHostBSAS = "bewqn4ds4dxour1xkgu6-mysql.services.clever-cloud.com";
-	private String cleverCloudPortBSAS = "3306";
-	private String cleverCloudUserBSAS = "uocexuvpspnbuath";
-	private String cleverCloudPasswordBSAS = "waHWGTIYsS52IV0ZiOLU";
-	private String cleverCloudDatabaseBSAS = "bewqn4ds4dxour1xkgu6";
+	private String cleverCloudHostBSAS = Config.get("clever.bsas.host", "bewqn4ds4dxour1xkgu6-mysql.services.clever-cloud.com");
+	private String cleverCloudPortBSAS = Config.get("clever.bsas.port", "3306");
+	private String cleverCloudUserBSAS = Config.get("clever.bsas.user", "uocexuvpspnbuath");
+	private String cleverCloudPasswordBSAS = Config.get("clever.bsas.password", "waHWGTIYsS52IV0ZiOLU");
+	private String cleverCloudDatabaseBSAS = Config.get("clever.bsas.database", "bewqn4ds4dxour1xkgu6");
 
 	private String cleverCloudHost = "";
 	private String cleverCloudPort = "";
@@ -309,8 +310,12 @@ public class ControladorBackup implements ActionListener, MouseListener {
 						return null;
 					}
 
-					List<String> comando = Arrays.asList(mysqlPath + "mysqldump", "--host=localhost", "--port=3306",
-							"--user=root", "--password=root", "--default-character-set=utf8mb4", "--single-transaction",
+					List<String> comando = Arrays.asList(mysqlPath + "mysqldump",
+							"--host=" + Config.get("db.host", "localhost"),
+							"--port=" + Config.get("db.port", "3306"),
+							"--user=" + Config.get("db.user", "root"),
+							"--password=" + Config.get("db.password", "root"),
+							"--default-character-set=utf8mb4", "--single-transaction",
 							"--routines", "--triggers", "--no-create-db", "--column-statistics=0", nombreBaseLocal);
 
 					ProcessBuilder pb = new ProcessBuilder(comando);
@@ -848,10 +853,10 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 						List<String> command = new ArrayList<>();
 						command.add(mysqlPath + "mysql.exe");
-						command.add("--host=localhost");
-						command.add("--port=3306");
-						command.add("--user=root");
-						command.add("--password=root");
+						command.add("--host=" + Config.get("db.host", "localhost"));
+						command.add("--port=" + Config.get("db.port", "3306"));
+						command.add("--user=" + Config.get("db.user", "root"));
+						command.add("--password=" + Config.get("db.password", "root"));
 						command.add("--default-character-set=utf8mb4");
 						command.add(nombreBaseLocal);
 
@@ -959,10 +964,10 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 					List<String> command = new ArrayList<>();
 					command.add(mysqlPath + "mysqldump.exe");
-					command.add("--host=localhost");
-					command.add("--port=3306");
-					command.add("--user=root");
-					command.add("--password=root");
+					command.add("--host=" + Config.get("db.host", "localhost"));
+					command.add("--port=" + Config.get("db.port", "3306"));
+					command.add("--user=" + Config.get("db.user", "root"));
+					command.add("--password=" + Config.get("db.password", "root"));
 					command.add("--default-character-set=utf8mb4");
 					command.add("--column-statistics=0");
 					command.add("--routines");

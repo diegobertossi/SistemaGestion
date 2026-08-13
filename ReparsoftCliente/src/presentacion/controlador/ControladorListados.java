@@ -89,6 +89,7 @@ import presentacion.vista.VentanaResumenMensualTecnico;
 import presentacion.vista.VentanaVisualizarEquipos;
 import tiposPropios.MonedaFormatter;
 import presentacion.reportes.ReporteResumenTecnico;
+import util.Config;
 import java.util.Comparator;
 import java.util.HashMap;
 
@@ -557,7 +558,7 @@ public class ControladorListados
 
 	protected boolean verificarCodigoSeguridad(String codigo) {
 
-		if (codigo.compareTo("0000") == 0) {
+		if (codigo.compareTo(Config.get("security.codigo.acceso", "0000")) == 0) {
 
 			ventanaCodigoSeguridad.getPanelCodigo().setVisible(false);
 			ventanaCodigoSeguridad.getPanelDetalle().setVisible(true);

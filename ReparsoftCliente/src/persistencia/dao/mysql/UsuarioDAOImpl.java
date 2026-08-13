@@ -9,16 +9,19 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.UsuarioDAO;
 import dto.UsuarioDTO;
+import util.CryptoUtil;
 
 public class UsuarioDAOImpl implements UsuarioDAO {
 
     private static final String INSERT = "INSERT INTO usuario(idUsuario,idRol,dni,nombre,apellido,telefono,email,login,pass) VALUES(?,?,?,?,?,?,?,?,?)";
     private static final String DELETE = "DELETE FROM usuario WHERE idUsuario = ?";
     private static final String READ_ALL = "SELECT * FROM usuario WHERE dni <> 0";
-    private static final String READ_LOGIN = "SELECT * FROM usuario WHERE login = ? AND pass = ?";
+    private static final String READ_LOGIN = "SELECT * FROM usuario WHERE login = ?";
     private static final String READ_ALL_TECNICO = "SELECT DISTINCT usuario.nombre, usuario.apellido FROM usuario WHERE usuario.idUsuario <> 1";
     private static final String READ_ALL_TECNICO_VISUALIZACION = "SELECT DISTINCT usuario.nombre, usuario.apellido FROM usuario";
     private static final String ID_POR_NOMBRE = "SELECT idUsuario FROM usuario WHERE nombre = ? AND apellido = ?";
@@ -47,7 +50,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             stmt.setString(6, usuario.getTelefono());
             stmt.setString(7, usuario.getEmail());
             stmt.setString(8, usuario.getLogin());
-            stmt.setString(9, usuario.getPass());
+            stmt.setString(9, CryptoUtil.encrypt(usuario.getPass()));
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             LogDAO.error("Error al insertar usuario: " + usuario.getIdUsuario(), e);
@@ -78,7 +81,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             stmt.setString(5, usuario.getTelefono());
             stmt.setString(6, usuario.getEmail());
             stmt.setString(7, usuario.getLogin());
-            stmt.setString(8, usuario.getPass());
+            String pass = usuario.getPass();
+            stmt.setString(8, (pass != null && !pass.isEmpty()) ? CryptoUtil.encrypt(pass) : pass);
             stmt.setInt(9, usuario.getIdUsuario());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -172,16 +176,51 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         String sql = READ_LOGIN;
         try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
             stmt.setString(1, login);
-            stmt.setString(2, pass);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return mapearUsuario(rs);
+                    UsuarioDTO usuario = mapearUsuario(rs);
+                    String stored = usuario.getPass();
+                    System.out.println("[LOGIN DEBUG] login=" + login + " | stored='" + stored + "' | stored.length=" + (stored != null ? stored.length() : "null") + " | pass='" + pass + "'");
+                    if (stored != null && !stored.isEmpty()) {
+                        // 1. Plain text (sin encriptar, migración directa) - PRIMERO
+                        if (pass.equals(stored)) {
+                            // Actualizar a formato encriptado AES
+                            String encrypted = CryptoUtil.encrypt(pass);
+                            actualizarPassEncriptado(usuario.getIdUsuario(), encrypted);
+                            return usuario;
+                        }
+                        // 2. Legacy BCrypt (hash empieza con $2a$/$2b$/$2y$) - verificar formato ANTES de llamar checkpw
+                        else if (stored.startsWith("$2a$") || stored.startsWith("$2b$") || stored.startsWith("$2y$")) {
+                            if (BCrypt.checkpw(pass, stored)) {
+                                return usuario;
+                            }
+                        }
+                        // 3. AES (nuevo formato Base64) - todo lo demás
+                        else {
+                            String decrypted = CryptoUtil.decrypt(stored);
+                            System.out.println("[LOGIN DEBUG] AES decrypted='" + decrypted + "'");
+                            if (pass.equals(decrypted)) {
+                                return usuario;
+                            }
+                        }
+                    }
                 }
             }
         } catch (SQLException e) {
             LogDAO.error("Error al autenticar usuario: " + login, e);
         }
         return null;
+    }
+
+    private void actualizarPassEncriptado(int idUsuario, String encryptedPass) {
+        String sql = "UPDATE usuario SET pass = ? WHERE idUsuario = ?";
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, encryptedPass);
+            stmt.setInt(2, idUsuario);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            LogDAO.error("Error actualizando pass encriptado para usuario " + idUsuario, e);
+        }
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

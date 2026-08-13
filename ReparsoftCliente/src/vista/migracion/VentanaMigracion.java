@@ -9,6 +9,7 @@ import java.io.File;
 //importar MigracionController
 import vista.migracion.MigracionController;
 import vista.migracion.ConfigMigracion;
+import util.Config;
 
 /**
  * VentanaMigracion.java
@@ -36,16 +37,16 @@ public class VentanaMigracion extends JFrame  {
     // ── Constantes por defecto ──────────────────────────────────────────────
     private static final int    ELS_MIN_DEFAULT   = 1;
     private static final int    ELS_MAX_DEFAULT   = 1;
-    private static final String STAGING_HOST      = "localhost";
-    private static final String STAGING_PORT      = "3306";
-    private static final String STAGING_DB        = "reparsoft_staging";
-    private static final String STAGING_USER      = "root";
-    private static final String STAGING_PASS      = "root";
+    private static final String STAGING_HOST      = Config.get("migracion.staging.host", "localhost");
+    private static final String STAGING_PORT      = Config.get("migracion.staging.port", "3306");
+    private static final String STAGING_DB        = Config.get("migracion.staging.database", "reparsoft_staging");
+    private static final String STAGING_USER      = Config.get("migracion.staging.user", "root");
+    private static final String STAGING_PASS      = Config.get("migracion.staging.password", "root");
 
-    private static final String DESTINO_HOST      = "localhost";
-    private static final String DESTINO_PORT      = "3306";
-    private static final String DESTINO_USER      = "root";
-    private static final String DESTINO_PASS      = "root";
+    private static final String DESTINO_HOST      = Config.get("migracion.destino.host", "localhost");
+    private static final String DESTINO_PORT      = Config.get("migracion.destino.port", "3306");
+    private static final String DESTINO_USER      = Config.get("migracion.destino.user", "root");
+    private static final String DESTINO_PASS      = Config.get("migracion.destino.password", "root");
 
     // Nombres de las 4 BDs destino
     private static final String DB_BRC_ANT = "ordenesbrcantiguas";

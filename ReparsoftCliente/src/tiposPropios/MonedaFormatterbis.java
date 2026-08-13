@@ -37,21 +37,31 @@ public class MonedaFormatterbis {
     }
 
     public double parseAmount(String amount) {
-        // Elimina todos los caracteres no numéricos, excepto comas y puntos
-        String cleanedAmount = amount.replaceAll("[^0-9,.]", "");
-
+        if (amount == null || amount.trim().isEmpty()) {
+            return 0.0;
+        }
+        // Elimina símbolos de moneda y espacios, conserva dígitos, coma y punto
+        String cleanedAmount = amount.replaceAll("[^0-9.,]", "");
+        
+        // Detecta formato por posición del último separador
+        int lastComma = cleanedAmount.lastIndexOf(',');
+        int lastDot = cleanedAmount.lastIndexOf('.');
+        
+        if (lastComma > lastDot) {
+            // Formato argentino: 1.234,56 (punto = miles, coma = decimal)
+            cleanedAmount = cleanedAmount.replace(".", "");
+            cleanedAmount = cleanedAmount.replace(",", ".");
+        } else if (lastDot > lastComma) {
+            // Formato inglés: 1,234.56 (coma = miles, punto = decimal)
+            cleanedAmount = cleanedAmount.replace(",", "");
+        }
+        // Si no hay separadores o solo uno, parseo directo
+        
         try {
-            // Sustituye comas por puntos para obtener un formato válido para Double
-        	//cleanedAmount = cleanedAmount.replace(".", ",");
-        	cleanedAmount = cleanedAmount.replace(",", ".");
-
-            // Intenta analizar el número
-        	
             return Double.parseDouble(cleanedAmount);
-            
         } catch (NumberFormatException e) {
-        	System.out.println("error numero " + cleanedAmount);
-            return 0.00; // Valor predeterminado si no se puede analizar el número
+            System.out.println("error numero " + cleanedAmount);
+            return 0.00;
         }
     }
     

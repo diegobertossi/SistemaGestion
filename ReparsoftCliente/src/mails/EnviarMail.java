@@ -10,44 +10,28 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import javax.swing.JOptionPane;
 
+import util.Config;
+
 public class EnviarMail {
 
-    // Puerto común para todos los servidores SMTP
-    private static final String PORT = "587";
-    
-    // Configuración para Aviso de Informe (Gmail)
-    private static final String HOST_AVISO_INFORME = "smtp.gmail.com";
-    private static final String USER_AVISO_INFORME = "enviodeinformeels@gmail.com";
-    private static final String PASSWORD_AVISO_INFORME = "aejjmhcufyorcdme";
-    
-    // Configuración para Aviso de Equipo Terminado (Gmail)
-    private static final String HOST_EQUIPO_TERMINADO = "smtp.gmail.com";
-    private static final String USER_EQUIPO_TERMINADO = "enviodeaceptacion@gmail.com";
-    private static final String PASSWORD_EQUIPO_TERMINADO = "jcagbiwpahvcfqrf";
-    
-    // Configuración para Respuesta al Cliente (Gmail)
-    private static final String HOST_RESPUESTA_CLIENTE = "smtp.gmail.com";
-    private static final String USER_RESPUESTA_CLIENTE = "enviodeaceptacion@gmail.com";
-    private static final String PASSWORD_RESPUESTA_CLIENTE = "jcagbiwpahvcfqrf";
-    
-    // Configuración para Buenos Aires (Corporativo)
-    private static final String HOST_BUENOS_AIRES = "smtp.elsweb.com.ar";
-    private static final String USER_BUENOS_AIRES = "els@elsweb.com.ar";
-    private static final String PASSWORD_BUENOS_AIRES = "Minu4141";
-    
-    // Configuración para Bariloche (Corporativo)
-    private static final String HOST_BARILOCHE = "smtp.elsweb.com.ar";
-    private static final String USER_BARILOCHE = "diego.bertossi@elsweb.com.ar";
-    private static final String PASSWORD_BARILOCHE = "Diego1216";
+    private static String getHost(String key, String fallback) { return Config.get(key + ".host", fallback); }
+    private static String getPort(String key, String fallback) { return Config.get(key + ".port", fallback); }
+    private static String getUser(String key, String fallback) { return Config.get(key + ".user", fallback); }
+    private static String getPass(String key, String fallback) { return Config.get(key + ".password", fallback); }
+    private static String getProto(String key, String fallback) { return Config.get(key + ".protocol", fallback); }
 
-    // Método para obtener propiedades del servidor SMTP según el host
-    private static Properties getMailProperties(String host, String user) {
+    // Método para obtener propiedades del servidor SMTP desde config
+    private static Properties getMailProperties(String host, String port, String user, String protocol) {
         Properties props = new Properties();
         props.setProperty("mail.smtp.host", host);
-        props.setProperty("mail.smtp.starttls.enable", "true");
-        props.setProperty("mail.smtp.port", PORT);
+        props.setProperty("mail.smtp.port", port);
         props.setProperty("mail.smtp.user", user);
         props.setProperty("mail.smtp.auth", "true");
+        if ("smtps".equalsIgnoreCase(protocol) || "ssl".equalsIgnoreCase(protocol)) {
+            props.setProperty("mail.smtp.ssl.enable", "true");
+        } else {
+            props.setProperty("mail.smtp.starttls.enable", "true");
+        }
         return props;
     }
 
@@ -68,6 +52,26 @@ public class EnviarMail {
         return emailsValidos.toArray(new String[0]);
     }
 
+    // Método auxiliar para obtener propiedades SMTP desde config
+    private static Properties getMailProperties(String hostKey, String userKey, String passKey) {
+        String host = getHost(hostKey, "smtp.gmail.com");
+        String port = getPort(hostKey, "587");
+        String user = getUser(hostKey, "");
+        String pass = getPass(hostKey, "");
+        String proto = getProto(hostKey, "smtp");
+        Properties props = new Properties();
+        props.setProperty("mail.smtp.host", host);
+        props.setProperty("mail.smtp.port", port);
+        props.setProperty("mail.smtp.user", user);
+        props.setProperty("mail.smtp.auth", "true");
+        if ("smtps".equalsIgnoreCase(proto) || "ssl".equalsIgnoreCase(proto)) {
+            props.setProperty("mail.smtp.ssl.enable", "true");
+        } else {
+            props.setProperty("mail.smtp.starttls.enable", "true");
+        }
+        return props;
+    }
+
     // Resultado del envío sin diálogo
     private static class SendResult {
         final boolean success;
@@ -81,7 +85,9 @@ public class EnviarMail {
 
     // Envío raw sin mostrar diálogos (retorna resultado)
     private static SendResult enviarCorreoSinDialogo(String from, String destinatarios, String subject, String cuerpo,
-                                                     String host, String user, String password, BodyPart... adjuntos) {
+                                                     String hostKey, String userKey, String passKey, BodyPart... adjuntos) {
+        String host = getHost(hostKey, "smtp.gmail.com");
+        String user = getUser(hostKey, "");
         try {
             String[] listaDestinatarios = parseDestinatarios(destinatarios);
 
@@ -89,11 +95,23 @@ public class EnviarMail {
                 return new SendResult(false, "No se encontraron direcciones de correo válidas.");
             }
 
-            Properties props = getMailProperties(host, user);
+            String port = getPort(hostKey, "587");
+            String pass = getPass(hostKey, "");
+            String proto = getProto(hostKey, "smtp");
+            Properties props = new Properties();
+            props.setProperty("mail.smtp.host", host);
+            props.setProperty("mail.smtp.port", port);
+            props.setProperty("mail.smtp.user", user);
+            props.setProperty("mail.smtp.auth", "true");
+            if ("smtps".equalsIgnoreCase(proto) || "ssl".equalsIgnoreCase(proto)) {
+                props.setProperty("mail.smtp.ssl.enable", "true");
+            } else {
+                props.setProperty("mail.smtp.starttls.enable", "true");
+            }
             Session session = Session.getInstance(props, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(user, password);
+                    return new PasswordAuthentication(getUser(hostKey, ""), getPass(hostKey, ""));
                 }
             });
 
@@ -133,8 +151,8 @@ public class EnviarMail {
 
     // Método original con diálogos (delega a enviarCorreoSinDialogo)
     private static boolean enviarCorreo(String from, String destinatarios, String subject, String cuerpo,
-                                        String host, String user, String password, BodyPart... adjuntos) {
-        SendResult result = enviarCorreoSinDialogo(from, destinatarios, subject, cuerpo, host, user, password, adjuntos);
+                                        String hostKey, String userKey, String passKey, BodyPart... adjuntos) {
+        SendResult result = enviarCorreoSinDialogo(from, destinatarios, subject, cuerpo, hostKey, userKey, passKey, adjuntos);
         JOptionPane.showMessageDialog(null, result.message,
             result.success ? "Confirmaci\u00f3n de env\u00edo" : "Error",
             result.success ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.WARNING_MESSAGE);
@@ -143,62 +161,60 @@ public class EnviarMail {
 
     // Método sobrecargado para enviar correos sin adjuntos
     private static boolean enviarCorreo(String from, String destinatarios, String subject, String cuerpo,
-                                        String host, String user, String password) {
-        return enviarCorreo(from, destinatarios, subject, cuerpo, host, user, password, new BodyPart[0]);
+                                        String hostKey, String userKey, String passKey) {
+        return enviarCorreo(from, destinatarios, subject, cuerpo, hostKey, userKey, passKey, new BodyPart[0]);
     }
 
-    // Métodos específicos para cada tipo de correo
-    
-    // enviarAvisoInforme - Usa configuración de aviso de informe (Gmail)
+    // enviarAvisoInforme - Usa configuración SMTP avisoinforme
     public static void enviarAvisoInforme(String correo, String ELS, String Cliente, String Sucursal) {
-        String from = "Equipos Diagnosticados ELS <enviodeinformeels@gmail.com>";
+        String from = "Equipos Diagnosticados ELS <" + getUser("smtp.avisoinforme", "") + ">";
         String subject = "ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - DIAGNOSTICADO";
         enviarCorreo(from, correo, subject, "",
-                     HOST_AVISO_INFORME, USER_AVISO_INFORME, PASSWORD_AVISO_INFORME);
+                     "smtp.avisoinforme", "smtp.avisoinforme", "smtp.avisoinforme");
     }
 
     // enviarAvisoInforme sin JOptionPane (retorna mensaje)
     public static String enviarAvisoInformeSinDialogo(String correo, String ELS, String Cliente, String Sucursal) {
-        String from = "Equipos Diagnosticados ELS <enviodeinformeels@gmail.com>";
+        String from = "Equipos Diagnosticados ELS <" + getUser("smtp.avisoinforme", "") + ">";
         String subject = "ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - DIAGNOSTICADO";
         SendResult r = enviarCorreoSinDialogo(from, correo, subject, "",
-                     HOST_AVISO_INFORME, USER_AVISO_INFORME, PASSWORD_AVISO_INFORME);
+                     "smtp.avisoinforme", "smtp.avisoinforme", "smtp.avisoinforme");
         return r.success ? null : r.message;
     }
 
-    // enviarAvisoEquipoTerminado - Usa configuración de equipo terminado (Gmail)
+    // enviarAvisoEquipoTerminado - Usa configuración SMTP equipoterminado
     public static void enviarAvisoEquipoTerminado(String correo, String ELS, String Cliente, String Sucursal) {
-        String from = "Equipos Terminados ELS <enviodeaceptacion@gmail.com>";
+        String from = "Equipos Terminados ELS <" + getUser("smtp.equipoterminado", "") + ">";
         String subject = "ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - TERMINADO";
         enviarCorreo(from, correo, subject, "",
-                     HOST_EQUIPO_TERMINADO, USER_EQUIPO_TERMINADO, PASSWORD_EQUIPO_TERMINADO);
+                     "smtp.equipoterminado", "smtp.equipoterminado", "smtp.equipoterminado");
     }
 
     // enviarAvisoEquipoTerminado sin JOptionPane (retorna mensaje)
     public static String enviarAvisoEquipoTerminadoSinDialogo(String correo, String ELS, String Cliente, String Sucursal) {
-        String from = "Equipos Terminados ELS <enviodeaceptacion@gmail.com>";
+        String from = "Equipos Terminados ELS <" + getUser("smtp.equipoterminado", "") + ">";
         String subject = "ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - TERMINADO";
         SendResult r = enviarCorreoSinDialogo(from, correo, subject, "",
-                     HOST_EQUIPO_TERMINADO, USER_EQUIPO_TERMINADO, PASSWORD_EQUIPO_TERMINADO);
+                     "smtp.equipoterminado", "smtp.equipoterminado", "smtp.equipoterminado");
         return r.success ? null : r.message;
     }
 
-    // enviarAvisoRespuestaCliente - Usa configuración de respuesta al cliente (Gmail)
+    // enviarAvisoRespuestaCliente - Usa configuración SMTP respuestacliente
     public static void enviarAvisoRespuestaCliente(String correo, String ELS, String Cliente, String Sucursal, String EstadoComercial) {
-        String from = "Respuesta de Clientes ELS <enviodeaceptacion@gmail.com>";
+        String from = "Respuesta de Clientes ELS <" + getUser("smtp.respuestacliente", "") + ">";
         String subject = "ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - " + EstadoComercial;
         String cuerpo = "PROCEDER SEGÚN CORRESPONDA";
         enviarCorreo(from, correo, subject, cuerpo,
-                     HOST_RESPUESTA_CLIENTE, USER_RESPUESTA_CLIENTE, PASSWORD_RESPUESTA_CLIENTE);
+                     "smtp.respuestacliente", "smtp.respuestacliente", "smtp.respuestacliente");
     }
 
     // enviarAvisoRespuestaCliente sin JOptionPane (retorna mensaje)
     public static String enviarAvisoRespuestaClienteSinDialogo(String correo, String ELS, String Cliente, String Sucursal, String EstadoComercial) {
-        String from = "Respuesta de Clientes ELS <enviodeaceptacion@gmail.com>";
+        String from = "Respuesta de Clientes ELS <" + getUser("smtp.respuestacliente", "") + ">";
         String subject = "ELS: " + ELS + " " + Cliente + "-" + Sucursal + " - " + EstadoComercial;
         String cuerpo = "PROCEDER SEGÚN CORRESPONDA";
         SendResult r = enviarCorreoSinDialogo(from, correo, subject, cuerpo,
-                     HOST_RESPUESTA_CLIENTE, USER_RESPUESTA_CLIENTE, PASSWORD_RESPUESTA_CLIENTE);
+                     "smtp.respuestacliente", "smtp.respuestacliente", "smtp.respuestacliente");
         return r.success ? null : r.message;
     }
 
@@ -220,40 +236,33 @@ public class EnviarMail {
     // Método principal con todos los parámetros incluyendo ubicación (CORPORATIVO)
     public static void enviarInformeAlCliente(String correo, String asunto, String cuerpo, String nombreArchivo, ArrayList<File> archivosAdicionales, String ubicacion) {
         try {
-            // Determinar la ruta según la ubicación y las credenciales
             String rutaArchivoPDF;
             String rutaArchivoDOCX;
-            String host;
-            String user;
-            String password;
+            String hostKey, userKey, passKey;
             String from;
             
             if (ubicacion != null && ubicacion.equalsIgnoreCase("Buenos Aires")) {
-                rutaArchivoPDF = "F:/ELS/Administracion/Sistema/Presupuestos PDF/";
-                rutaArchivoDOCX = "F:/ELS/Administracion/Sistema/Informes Siemens/";
-                host = HOST_BUENOS_AIRES;
-                user = USER_BUENOS_AIRES;
-                password = PASSWORD_BUENOS_AIRES;
-                from = "ELS <" + user + ">";
+                rutaArchivoPDF = Config.get("files.buenosaires.pdf.path", "F:/ELS/Administracion/Sistema/Presupuestos PDF/");
+                rutaArchivoDOCX = Config.get("files.buenosaires.docx.path", "F:/ELS/Administracion/Sistema/Informes Siemens/");
+                hostKey = "smtp.buenosaires";
+                userKey = "smtp.buenosaires";
+                passKey = "smtp.buenosaires";
+                from = "ELS <" + getUser("smtp.buenosaires", "") + ">";
             } else {
-                // Por defecto: Bariloche
-                rutaArchivoPDF = "F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/";
-                rutaArchivoDOCX = "F:/ELS/Administracion/Sistema/Informes Siemens/";
-                host = HOST_BARILOCHE;
-                user = USER_BARILOCHE;
-                password = PASSWORD_BARILOCHE;
-                from = "ELS <" + user + ">";
+                rutaArchivoPDF = Config.get("files.bariloche.pdf.path", "F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/");
+                rutaArchivoDOCX = Config.get("files.bariloche.docx.path", "F:/ELS/Administracion/Sistema/Informes Siemens/");
+                hostKey = "smtp.bariloche";
+                userKey = "smtp.bariloche";
+                passKey = "smtp.bariloche";
+                from = "ELS <" + getUser("smtp.bariloche", "") + ">";
             }
             
             System.out.println("Enviando informe con configuración:");
-            System.out.println("  Host: " + host);
-            System.out.println("  User: " + user);
+            System.out.println("  Host: " + getHost(hostKey, ""));
+            System.out.println("  User: " + getUser(userKey, ""));
             System.out.println("  Ubicación: " + ubicacion);
             
-            // Lista para almacenar todos los adjuntos
             ArrayList<BodyPart> adjuntos = new ArrayList<>();
-            
-            // Agregar el archivo principal (informe PDF o DOCX)
             BodyPart adjuntoPrincipal = new MimeBodyPart();
             File archivoPrincipal;
             
@@ -296,7 +305,7 @@ public class EnviarMail {
             // Convertir ArrayList a array
             BodyPart[] arrayAdjuntos = adjuntos.toArray(new BodyPart[0]);
 
-            enviarCorreo(from, correo, asunto, cuerpo, host, user, password, arrayAdjuntos);
+            enviarCorreo(from, correo, asunto, cuerpo, hostKey, userKey, passKey, arrayAdjuntos);
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se pudo adjuntar el archivo.", "Error", JOptionPane.WARNING_MESSAGE);
@@ -311,25 +320,23 @@ public class EnviarMail {
         try {
             String rutaArchivoPDF;
             String rutaArchivoDOCX;
-            String host;
-            String user;
-            String password;
+            String hostKey, userKey, passKey;
             String from;
 
             if (ubicacion != null && ubicacion.equalsIgnoreCase("Buenos Aires")) {
-                rutaArchivoPDF = "F:/ELS/Administracion/Sistema/Presupuestos PDF/";
-                rutaArchivoDOCX = "F:/ELS/Administracion/Sistema/Informes Siemens/";
-                host = HOST_BUENOS_AIRES;
-                user = USER_BUENOS_AIRES;
-                password = PASSWORD_BUENOS_AIRES;
-                from = "ELS <" + user + ">";
+                rutaArchivoPDF = Config.get("files.buenosaires.pdf.path", "F:/ELS/Administracion/Sistema/Presupuestos PDF/");
+                rutaArchivoDOCX = Config.get("files.buenosaires.docx.path", "F:/ELS/Administracion/Sistema/Informes Siemens/");
+                hostKey = "smtp.buenosaires";
+                userKey = "smtp.buenosaires";
+                passKey = "smtp.buenosaires";
+                from = "ELS <" + getUser("smtp.buenosaires", "") + ">";
             } else {
-                rutaArchivoPDF = "F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/";
-                rutaArchivoDOCX = "F:/ELS/Administracion/Sistema/Informes Siemens/";
-                host = HOST_BARILOCHE;
-                user = USER_BARILOCHE;
-                password = PASSWORD_BARILOCHE;
-                from = "ELS <" + user + ">";
+                rutaArchivoPDF = Config.get("files.bariloche.pdf.path", "F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/");
+                rutaArchivoDOCX = Config.get("files.bariloche.docx.path", "F:/ELS/Administracion/Sistema/Informes Siemens/");
+                hostKey = "smtp.bariloche";
+                userKey = "smtp.bariloche";
+                passKey = "smtp.bariloche";
+                from = "ELS <" + getUser("smtp.bariloche", "") + ">";
             }
 
             ArrayList<BodyPart> adjuntos = new ArrayList<>();
@@ -367,7 +374,7 @@ public class EnviarMail {
             }
 
             BodyPart[] arrayAdjuntos = adjuntos.toArray(new BodyPart[0]);
-            SendResult r = enviarCorreoSinDialogo(from, correo, asunto, cuerpo, host, user, password, arrayAdjuntos);
+            SendResult r = enviarCorreoSinDialogo(from, correo, asunto, cuerpo, hostKey, userKey, passKey, arrayAdjuntos);
             return r.success ? null : r.message;
 
         } catch (Exception e) {

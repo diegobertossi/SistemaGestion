@@ -28,6 +28,8 @@ import javax.swing.undo.UndoManager;
 import VistaPropias.CodigoSeguridadHandler;
 import dto.PermisoDTO;
 import dto.ReparacionDTO;
+import util.Config;
+import util.CryptoUtil;
 import dto.RolDTO;
 import dto.UsuarioDTO;
 import modelo.Agenda;
@@ -147,6 +149,14 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 
+					String nuevaPass = this.ventanaRolesUsuarios.getTxtPass().getText();
+					if (nuevaPass == null || nuevaPass.trim().isEmpty()) {
+						JOptionPane.showMessageDialog(null,
+								"La contraseña es obligatoria para nuevos usuarios", "CAMPO VACÍO",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+
 					UsuarioDTO nuevoUsuario = new UsuarioDTO(0, rolElegido.getIdRol() + 1,
 							Integer.parseInt(this.ventanaRolesUsuarios.getTxtDNI().getText()),
 							this.ventanaRolesUsuarios.getTxtNombreUsuario().getText(),
@@ -184,7 +194,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 					this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setText("");
 					this.ventanaRolesUsuarios.getTxtEmailUsuario().setText("");
 					this.ventanaRolesUsuarios.getTxtLogin().setText("");
-					this.ventanaRolesUsuarios.getTxtPass().setText("");
+					this.ventanaRolesUsuarios.getTxtPass().setText("••••••");
 					this.ventanaRolesUsuarios.getTextRol().setText("");
 
 					usuarioElegido = null;
@@ -200,7 +210,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setText("");
 				this.ventanaRolesUsuarios.getTxtEmailUsuario().setText("");
 				this.ventanaRolesUsuarios.getTxtLogin().setText("");
-				this.ventanaRolesUsuarios.getTxtPass().setText("");
+				this.ventanaRolesUsuarios.getTxtPass().setText("••••••");
 				this.ventanaRolesUsuarios.getTextRol().setText("");
 				usuarioElegido = null;
 				rolElegido = null;
@@ -239,7 +249,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setText("");
 				this.ventanaRolesUsuarios.getTxtEmailUsuario().setText("");
 				this.ventanaRolesUsuarios.getTxtLogin().setText("");
-				this.ventanaRolesUsuarios.getTxtPass().setText("");
+				this.ventanaRolesUsuarios.getTxtPass().setText("••••••");
 				this.ventanaRolesUsuarios.getTextRol().setText("");
 
 				usuarioElegido = null;
@@ -286,7 +296,10 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						usuarioElegido.setTelefono(this.ventanaRolesUsuarios.getTxtTelefonoUsuario().getText());
 						usuarioElegido.setEmail(this.ventanaRolesUsuarios.getTxtEmailUsuario().getText());
 						usuarioElegido.setLogin(this.ventanaRolesUsuarios.getTxtLogin().getText());
-						usuarioElegido.setPass(this.ventanaRolesUsuarios.getTxtPass().getText());
+						String nuevaPass = this.ventanaRolesUsuarios.getTxtPass().getText();
+						if (nuevaPass != null && !nuevaPass.trim().isEmpty()) {
+							usuarioElegido.setPass(nuevaPass); // se hasheará en DAO
+						}
 
 						agenda.editarUsuario(usuarioElegido);
 						llenarTablaUsuarios();
@@ -406,7 +419,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						this.ventanaRolesUsuarios.getTxtEmailUsuario().setText("");
 						this.ventanaRolesUsuarios.getTextRol().setText("");
 						this.ventanaRolesUsuarios.getTxtLogin().setText("");
-						this.ventanaRolesUsuarios.getTxtPass().setText("");
+						this.ventanaRolesUsuarios.getTxtPass().setText("••••••");
 
 						usuarioElegido = null;
 						rolElegido = null;
@@ -439,7 +452,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 			else if (e.getSource() == this.ventanaRolesUsuarios.getBtnMostrarContraseña()) {
 
-				if (usuarioElegido != null && usuarioElegido.getIdUsuario() == 2) {
+				if (usuarioElegido != null && usuarioElegido.getIdRol() == 1) {
 
 					ventanaCodigoSeguridad = new VentanaCodigoSeguridad();
 					ventanaCodigoSeguridad.getBtnAceptar().addActionListener(this::accionAceptar);
@@ -489,12 +502,28 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 	public void mostrarOcultar() {
 
 		if (passwordVisible) {
-			// Si la contraseña es visible, ocultarla
+			// Si la contraseña es visible, ocultarla (puntos)
 			ventanaRolesUsuarios.getTxtPass().setEchoChar('\u2022');
+			ventanaRolesUsuarios.getTxtPass().setText("\u2022\u2022\u2022\u2022\u2022\u2022");
 			passwordVisible = false;
 
 		} else {
-			// Si la contraseña está oculta, mostrarla
+			// Si la contraseña está oculta, mostrar la real (desencriptada)
+			if (usuarioElegido != null && usuarioElegido.getPass() != null && !usuarioElegido.getPass().isEmpty()) {
+				String stored = usuarioElegido.getPass();
+				String realPass;
+				// Desencriptar según formato
+				if (stored.startsWith("$2a$") || stored.startsWith("$2b$") || stored.startsWith("$2y$")) {
+					// BCrypt legacy - no se puede desencriptar
+					realPass = "********";
+				} else if (CryptoUtil.isLegacyBcrypt(stored)) {
+					realPass = "********";
+				} else {
+					// AES encriptado
+					realPass = CryptoUtil.decrypt(stored);
+				}
+				ventanaRolesUsuarios.getTxtPass().setText(realPass);
+			}
 			ventanaRolesUsuarios.getTxtPass().setEchoChar((char) 0);
 			passwordVisible = true;
 		}
@@ -503,7 +532,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 	// Verifica el código de seguridad
 	protected boolean verificarCodigoSeguridad(String codigo) {
-		if (codigo.compareTo("0000") == 0) {
+		if (codigo.compareTo(Config.get("security.codigo.acceso", "0000")) == 0) {
 
 			ventanaCodigoSeguridad.dispose();
 			ventanaCodigoSeguridad = null;
@@ -834,7 +863,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setText(usuarioElegido.getTelefono());
 						this.ventanaRolesUsuarios.getTxtEmailUsuario().setText(usuarioElegido.getEmail());
 						this.ventanaRolesUsuarios.getTxtLogin().setText(usuarioElegido.getLogin());
-						this.ventanaRolesUsuarios.getTxtPass().setText(usuarioElegido.getPass());
+						// Cargar 6 puntos fijos por defecto
+						this.ventanaRolesUsuarios.getTxtPass().setText("••••••");
 						ventanaRolesUsuarios.getTxtPass().setEchoChar('\u2022');
 						passwordVisible = false;
 

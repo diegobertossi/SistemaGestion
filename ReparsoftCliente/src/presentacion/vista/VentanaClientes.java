@@ -13,6 +13,8 @@ import javax.swing.table.TableColumn;
 
 import VistaPropias.CellRendererTablaClientes;
 import presentacion.controlador.ControladorCliente;
+import util.PlaceholderTextArea;
+import util.PlaceholderTextField;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 
@@ -55,6 +57,7 @@ public class VentanaClientes extends JFrame {
 	private JButton btnGuardar;
 	private JButton btnAgregarCorreo;
 	private JButton btnQuitarCorreo;
+	private JButton btnEquiparar;
 
 	private DefaultTableModel modelClientes;
 	private String[] nombreColumnas = { "Nombre", "CUIT" };
@@ -64,20 +67,20 @@ public class VentanaClientes extends JFrame {
 	@SuppressWarnings("unused")
 	private ControladorCliente controladorCliente;
 
-	private JTextField txtNombreCliente;
+	private PlaceholderTextField txtNombreCliente;
 	private JLabel lblNombreCliente;
-	private JTextField txtCUIT;
+	private PlaceholderTextField txtCUIT;
 	private JLabel lblCUIT;
-	private JTextField txtDireccion;
+	private PlaceholderTextField txtDireccion;
 	private JLabel lblDiereccion;
-	private JTextField txtContacto;
+	private PlaceholderTextField txtContacto;
 	private JLabel lblContacto;
-	private JTextField txtTelEmpresa;
+	private PlaceholderTextField txtTelEmpresa;
 	@SuppressWarnings("unused")
 	private JLabel lblTelEmpresa;
-	private JTextField txtTelContacto;
+	private PlaceholderTextField txtTelContacto;
 	private JLabel lblTelContacto;
-	private JTextArea txtCorreo;
+	private PlaceholderTextArea txtCorreo;
 	private JLabel lblCorreo;
 	private JComboBox<String> cmbTipoDocumento;
 	private JComboBox<String> cmbCondicionIva;
@@ -235,6 +238,14 @@ public class VentanaClientes extends JFrame {
 		btnGenerarSucursales.setBackground(new Color(240, 240, 240));
 		btnGenerarSucursales.setFont(new Font("Cambria", Font.BOLD, 14));
 
+		btnEquiparar = new JButton("EQUIPARAR FACTURASOFT");
+		btnEquiparar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnEquiparar.setToolTipText("Iguala los datos de clientes en FacturaSoft tomando Reparsoft como patrón");
+		btnEquiparar.setBounds(443, 18, 199, 30);
+		panel.add(btnEquiparar);
+		btnEquiparar.setBackground(new Color(240, 240, 240));
+		btnEquiparar.setFont(new Font("Cambria", Font.BOLD, 11));
+
 		panel_1 = new JPanel();
 		panel_1.setBackground(new Color(119, 136, 153));
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -248,7 +259,7 @@ public class VentanaClientes extends JFrame {
 		lblNombreCliente.setBounds(6, 54, 84, 20);
 		panel_1.add(lblNombreCliente);
 
-		txtNombreCliente = new JTextField();
+		txtNombreCliente = new PlaceholderTextField();
 		txtNombreCliente.setEditable(false);
 		txtNombreCliente.setBackground(new Color(240, 240, 240));
 		txtNombreCliente.setFont(new Font("Cambria", Font.BOLD, 12));
@@ -262,7 +273,7 @@ public class VentanaClientes extends JFrame {
 		lblCUIT.setBounds(197, 77, 48, 20);
 		panel_1.add(lblCUIT);
 
-		txtCUIT = new JTextField();
+		txtCUIT = new PlaceholderTextField();
 		txtCUIT.setEditable(false);
 		txtCUIT.setBackground(new Color(240, 240, 240));
 		txtCUIT.setFont(new Font("Cambria", Font.PLAIN, 12));
@@ -276,7 +287,7 @@ public class VentanaClientes extends JFrame {
 		lblDiereccion.setBounds(6, 99, 84, 20);
 		panel_1.add(lblDiereccion);
 
-		txtDireccion = new JTextField();
+		txtDireccion = new PlaceholderTextField();
 		txtDireccion.setEditable(false);
 		txtDireccion.setBackground(new Color(240, 240, 240));
 		txtDireccion.setFont(new Font("Cambria", Font.PLAIN, 12));
@@ -290,7 +301,7 @@ public class VentanaClientes extends JFrame {
 		lblContacto.setBounds(6, 121, 84, 20);
 		panel_1.add(lblContacto);
 
-		txtContacto = new JTextField();
+		txtContacto = new PlaceholderTextField();
 		txtContacto.setEditable(false);
 		txtContacto.setBackground(new Color(240, 240, 240));
 		txtContacto.setFont(new Font("Cambria", Font.PLAIN, 12));
@@ -304,7 +315,7 @@ public class VentanaClientes extends JFrame {
 		lblTelContacto.setBounds(6, 144, 98, 20);
 		panel_1.add(lblTelContacto);
 
-		txtTelContacto = new JTextField();
+		txtTelContacto = new PlaceholderTextField();
 		txtTelContacto.setEditable(false);
 		txtTelContacto.setBackground(new Color(240, 240, 240));
 		txtTelContacto.setFont(new Font("Cambria", Font.PLAIN, 12));
@@ -366,7 +377,7 @@ public class VentanaClientes extends JFrame {
 		lblCorreo.setBounds(6, 191, 84, 20);
 		panel_1.add(lblCorreo);
 
-		txtCorreo = new JTextArea();
+		txtCorreo = new PlaceholderTextArea();
 		txtCorreo.setEditable(false);
 		txtCorreo.setBackground(new Color(240, 240, 240));
 		txtCorreo.setFont(new Font("Cambria", Font.PLAIN, 12));
@@ -379,7 +390,7 @@ public class VentanaClientes extends JFrame {
 		scrollCorreo.setBounds(114, 166, 267, 70);
 		panel_1.add(scrollCorreo);
 
-		txtTelEmpresa = new JTextField();
+		txtTelEmpresa = new PlaceholderTextField();
 		txtTelEmpresa.setEditable(false);
 		txtTelEmpresa.setFont(new Font("Cambria", Font.PLAIN, 12));
 		txtTelEmpresa.setColumns(10);
@@ -445,7 +456,22 @@ public class VentanaClientes extends JFrame {
 		lblClientes.setBounds(20, 18, 117, 31);
 		panel.add(lblClientes);
 
+		actualizarPlaceholders();
+
 		this.setVisible(true);
+	}
+
+	public void actualizarPlaceholders() {
+		String opcional = "Opcional";
+		boolean empresa = rdEmpresa.isSelected();
+
+		txtNombreCliente.setPlaceholder("Nombre");
+		txtContacto.setPlaceholder("Contacto");
+		txtTelContacto.setPlaceholder("Tel. Contacto");
+		txtCUIT.setPlaceholder(empresa ? "N° Doc." : opcional);
+		txtCorreo.setPlaceholder(empresa ? "Email" : opcional);
+		txtDireccion.setPlaceholder(opcional);
+		txtTelEmpresa.setPlaceholder(opcional);
 	}
 
 	public JLabel getLblSucursales() {
@@ -492,7 +518,7 @@ public class VentanaClientes extends JFrame {
 		return txtNombreCliente;
 	}
 
-	public void setTxtNombreCliente(JTextField txtNombreCliente) {
+	public void setTxtNombreCliente(PlaceholderTextField txtNombreCliente) {
 		this.txtNombreCliente = txtNombreCliente;
 	}
 
@@ -500,7 +526,7 @@ public class VentanaClientes extends JFrame {
 		return txtCUIT;
 	}
 
-	public void setTxtCUIT(JTextField txtCUIT) {
+	public void setTxtCUIT(PlaceholderTextField txtCUIT) {
 		this.txtCUIT = txtCUIT;
 	}
 
@@ -508,7 +534,7 @@ public class VentanaClientes extends JFrame {
 		return txtDireccion;
 	}
 
-	public void setTxtDireccion(JTextField txtDireccion) {
+	public void setTxtDireccion(PlaceholderTextField txtDireccion) {
 		this.txtDireccion = txtDireccion;
 	}
 
@@ -516,7 +542,7 @@ public class VentanaClientes extends JFrame {
 		return txtContacto;
 	}
 
-	public void setTxtContacto(JTextField txtContacto) {
+	public void setTxtContacto(PlaceholderTextField txtContacto) {
 		this.txtContacto = txtContacto;
 	}
 
@@ -524,7 +550,7 @@ public class VentanaClientes extends JFrame {
 		return txtTelEmpresa;
 	}
 
-	public void setTxtTelEmpresa(JTextField txtTelEmpresa) {
+	public void setTxtTelEmpresa(PlaceholderTextField txtTelEmpresa) {
 		this.txtTelEmpresa = txtTelEmpresa;
 	}
 
@@ -532,7 +558,7 @@ public class VentanaClientes extends JFrame {
 		return txtTelContacto;
 	}
 
-	public void setTxtTelContacto(JTextField txtTelContacto) {
+	public void setTxtTelContacto(PlaceholderTextField txtTelContacto) {
 		this.txtTelContacto = txtTelContacto;
 	}
 
@@ -540,7 +566,7 @@ public class VentanaClientes extends JFrame {
 		return txtCorreo;
 	}
 
-	public void setTxtCorreo(JTextArea txtCorreo) {
+	public void setTxtCorreo(PlaceholderTextArea txtCorreo) {
 		this.txtCorreo = txtCorreo;
 	}
 
@@ -590,6 +616,10 @@ public class VentanaClientes extends JFrame {
 
 	public JButton getBtnQuitarCorreo() {
 		return btnQuitarCorreo;
+	}
+
+	public JButton getBtnEquiparar() {
+		return btnEquiparar;
 	}
 
 	public JComboBox<String> getCmbTipoDocumento() {

@@ -706,10 +706,6 @@ public class ReparacionQueryManager {
             if (statement != null) statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                conexion.cerrarConexion();
-            }
         }
     }
 

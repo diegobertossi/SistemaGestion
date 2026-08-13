@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -40,6 +42,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
@@ -57,6 +61,7 @@ import presentacion.vista.VentanaQuitarCorreo;
 import presentacion.vista.VentanaSucursales;
 import dto.ClienteDTO;
 import dto.SucursalDTO;
+import util.Config;
 
 public class ControladorCliente implements ActionListener, MouseListener {
 	private VentanaClientes ventanaClientes;
@@ -150,6 +155,28 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 	public void actionPerformed(ActionEvent e) {
 
+		// =================== TIPO DE PERSONA (solo en modo agregar) ===================
+		if (!editando && clienteElegido == null) {
+			if (e.getSource() == this.ventanaClientes.getRdParticular()) {
+				this.ventanaClientes.getCmbCondicionIva().setSelectedItem("Consumidor Final");
+				this.ventanaClientes.getCmbTipoDocumento().setSelectedItem("DNI");
+				ventanaClientes.actualizarPlaceholders();
+				return;
+			}
+			if (e.getSource() == this.ventanaClientes.getRdEmpresa()) {
+				this.ventanaClientes.getCmbCondicionIva().setSelectedItem("IVA Responsable Inscripto");
+				this.ventanaClientes.getCmbTipoDocumento().setSelectedItem("CUIT");
+				ventanaClientes.actualizarPlaceholders();
+				return;
+			}
+		}
+
+		// =================== BOTÓN EQUIPARAR CON FACTURASOFT ===================
+		if (e.getSource() == this.ventanaClientes.getBtnEquiparar()) {
+			equipararConFacturaSoft();
+			return;
+		}
+
 		// =================== BOTÓN EDITAR (CORREGIDO) ===================
 		if (e.getSource() == this.ventanaClientes.getBtnEditar()) {
 			int filaSeleccionada = this.ventanaClientes.getTablaClientes().getSelectedRow();
@@ -195,6 +222,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					} else {
 						this.ventanaClientes.getRdEmpresa().setSelected(true);
 					}
+					this.ventanaClientes.actualizarPlaceholders();
 
 					// Al presionar Editar
 					String correos = clienteElegido.getCorreoElectronico();
@@ -261,8 +289,10 @@ public class ControladorCliente implements ActionListener, MouseListener {
 			if (!editando && clienteElegido == null) {
 				// *** MODO AGREGAR CLIENTE ***
 				// Validación mejorada
-				if (nombreTexto == null || nombreTexto.trim().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "El campo Nombre no puede estar vacío",
+				String camposObligatorios = validarCamposObligatorios();
+				if (!camposObligatorios.isEmpty()) {
+					JOptionPane.showMessageDialog(null,
+							"Los siguientes campos son obligatorios: " + camposObligatorios,
 							"Error al guardar Cliente", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
@@ -312,8 +342,10 @@ public class ControladorCliente implements ActionListener, MouseListener {
 			} else if (editando && clienteElegido != null) {
 				// *** MODO EDITAR CLIENTE ***
 				// Validación robusta para edición
-				if (nombreTexto == null || nombreTexto.trim().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "El campo Nombre no puede estar vacío",
+				String camposObligatorios = validarCamposObligatorios();
+				if (!camposObligatorios.isEmpty()) {
+					JOptionPane.showMessageDialog(null,
+							"Los siguientes campos son obligatorios: " + camposObligatorios,
 							"Error al guardar Cliente", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
@@ -383,7 +415,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 										"Ingrese la Contraseña de Seguridad : ", "");
 								if (respuesta != null) {
 
-									if (respuesta.compareTo("0000") == 0) {
+									if (respuesta.compareTo(Config.get("security.codigo.acceso", "0000")) == 0) {
 
 										this.agenda.borrarSucursal(SucursalesEncliente);
 										this.agenda.borrarCliente(clienteElegido);
@@ -662,7 +694,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 									"Ingrese la Contraseña de Seguridad : ", "");
 							if (respuesta != null) {
 
-								if (respuesta.compareTo("0000") == 0) {
+								if (respuesta.compareTo(Config.get("security.codigo.acceso", "0000")) == 0) {
 
 									if (cantidadSucursalesXCliente(clienteElegido.getId()) > 1) {
 
@@ -1060,6 +1092,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		this.ventanaClientes.getCmbTipoDocumento().setSelectedItem("CUIT");
 		this.ventanaClientes.getCmbCondicionIva().setSelectedItem("");
 		this.ventanaClientes.getRdEmpresa().setSelected(true);
+		this.ventanaClientes.actualizarPlaceholders();
 
 	}
 
@@ -1069,6 +1102,36 @@ public class ControladorCliente implements ActionListener, MouseListener {
 
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
+	}
+
+	private String validarCamposObligatorios() {
+		boolean empresa = this.ventanaClientes.getRdEmpresa().isSelected();
+		List<String> faltantes = new ArrayList<>();
+
+		if (this.ventanaClientes.getTxtNombreCliente().getText() == null
+				|| this.ventanaClientes.getTxtNombreCliente().getText().trim().isEmpty()) {
+			faltantes.add("Nombre");
+		}
+		if (this.ventanaClientes.getTxtContacto().getText() == null
+				|| this.ventanaClientes.getTxtContacto().getText().trim().isEmpty()) {
+			faltantes.add("Contacto");
+		}
+		if (this.ventanaClientes.getTxtTelContacto().getText() == null
+				|| this.ventanaClientes.getTxtTelContacto().getText().trim().isEmpty()) {
+			faltantes.add("Tel. Contacto");
+		}
+		if (empresa) {
+			if (this.ventanaClientes.getTxtCUIT().getText() == null
+					|| this.ventanaClientes.getTxtCUIT().getText().trim().isEmpty()) {
+				faltantes.add("N° Doc.");
+			}
+			if (this.ventanaClientes.getTxtCorreo().getText() == null
+					|| this.ventanaClientes.getTxtCorreo().getText().trim().isEmpty()) {
+				faltantes.add("Email");
+			}
+		}
+
+		return String.join(", ", faltantes);
 	}
 
 	private boolean ReparacionAsociadaAsuc(int idsucursal) {
@@ -1177,6 +1240,9 @@ public class ControladorCliente implements ActionListener, MouseListener {
 		this.ventanaClientes.getBtnVisualizarSucursales().addActionListener(this);
 		this.ventanaClientes.getBtnAgregarCorreo().addActionListener(this);
 		this.ventanaClientes.getBtnQuitarCorreo().addActionListener(this);
+		this.ventanaClientes.getBtnEquiparar().addActionListener(this);
+		this.ventanaClientes.getRdParticular().addActionListener(this);
+		this.ventanaClientes.getRdEmpresa().addActionListener(this);
 		agregarListenerSeleccionTabla();
 
 		return ventanaClientes;
@@ -1296,6 +1362,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 			} else {
 				ventanaClientes.getRdEmpresa().setSelected(true);
 			}
+			ventanaClientes.actualizarPlaceholders();
 
 			// Lógica de visibilidad de sucursales
 			int cantSuc = cantidadSucursalesXCliente(clienteElegido.getId());
@@ -1484,16 +1551,20 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	/**
 	 * Inserta o actualiza un cliente en la base FacturaSoft según ubicación.
 	 * Si ya existe por els_referencia → UPDATE; si no → INSERT.
+	 * Retorna 1 si insertó, 0 si actualizó, -1 si hubo error.
 	 */
-	private void sincronizarConFacturaSoft(ClienteDTO c) {
+	private int sincronizarConFacturaSoft(ClienteDTO c) {
 		String ubicacion = Conexion.getUbicacionActualStatic();
-		String dbFactura = ubicacion.equalsIgnoreCase("Bariloche")
-			? "facturacion_db_brc" : "facturacion_db_bsas";
+		boolean esBariloche = ubicacion.equalsIgnoreCase("Bariloche");
+		String dbFactura = esBariloche
+			? Config.get("facturasoft.brc.database", "facturacion_db_brc")
+			: Config.get("facturasoft.bsas.database", "facturacion_db_bsas");
+		String clave = esBariloche ? "facturasoft.brc" : "facturasoft.bsas";
 
-		String host = "localhost";
-		String port = "3306";
-		String user = "root";
-		String pass = "root";
+		String host = Config.get(clave + ".host", "localhost");
+		String port = Config.get(clave + ".port", "3306");
+		String user = Config.get(clave + ".user", "root");
+		String pass = Config.get(clave + ".password", "root");
 		String opts = "useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false";
 		String url = "jdbc:mysql://" + host + ":" + port + "/" + dbFactura + "?" + opts;
 
@@ -1511,7 +1582,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					+ "condicion_iva=?, domicilio=?, telefono=?, telefono_contacto=?, email=?, "
 					+ "tipo_persona=?, activo=1 WHERE els_referencia=?");
 				psUpd.setString(1, c.getTipoDocumento());
-				psUpd.setString(2, c.getCUIT());
+				setDocumento(psUpd, 2, c.getCUIT());
 				psUpd.setString(3, c.getRazon_Social());
 				psUpd.setString(4, c.getCondicionIva());
 				psUpd.setString(5, c.getDomicilio());
@@ -1524,6 +1595,9 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				psUpd.close();
 				System.out.println("✅ Sync FacturaSoft: actualizado cliente #" + c.getId()
 					+ " en " + dbFactura);
+				rs.close();
+				psSelect.close();
+				return 0;
 			} else {
 				// INSERT
 				PreparedStatement psIns = conn.prepareStatement(
@@ -1532,7 +1606,7 @@ public class ControladorCliente implements ActionListener, MouseListener {
 					+ "els_referencia, activo, tipo_persona) "
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'reparsoft', ?, 1, ?)");
 				psIns.setString(1, c.getTipoDocumento());
-				psIns.setString(2, c.getCUIT());
+				setDocumento(psIns, 2, c.getCUIT());
 				psIns.setString(3, c.getRazon_Social());
 				psIns.setString(4, c.getCondicionIva());
 				psIns.setString(5, c.getDomicilio());
@@ -1543,16 +1617,167 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				psIns.setString(10, c.getTipoPersona());
 				psIns.executeUpdate();
 				psIns.close();
+				rs.close();
+				psSelect.close();
 				System.out.println("✅ Sync FacturaSoft: insertado cliente #" + c.getId()
 					+ " en " + dbFactura);
+				return 1;
 			}
-
-			rs.close();
-			psSelect.close();
 
 		} catch (SQLException e) {
 			System.err.println("❌ Error sync FacturaSoft (cliente #" + c.getId() + "): "
 				+ e.getMessage());
+			return -1;
+		}
+	}
+
+	/**
+	 * Equipara TODOS los clientes de la BD actual con FacturaSoft.
+	 * Vacía la tabla de clientes de FacturaSoft y la llena con los clientes
+	 * de Reparsoft (patrón). Los CUIT vacíos se guardan como NULL en nro_documento.
+	 */
+	private void equipararConFacturaSoft() {
+		int respuesta = JOptionPane.showConfirmDialog(ventanaClientes,
+			"Se VACIARÁ la tabla de clientes de FacturaSoft y se llenará con\n"
+			+ "todos los clientes de la base actual (patrón Reparsoft).\n\n"
+			+ "Los clientes con CUIT vacío se guardarán con nro_documento = NULL.\n\n"
+			+ "¿Desea continuar?",
+			"Equiparar con FacturaSoft", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		if (respuesta != JOptionPane.YES_OPTION) return;
+
+		List<ClienteDTO> clientes = agenda.obtenerCliente();
+
+		SwingWorker<int[], Void> worker = new SwingWorker<int[], Void>() {
+			@Override
+			protected int[] doInBackground() {
+				String ubicacion = Conexion.getUbicacionActualStatic();
+				boolean esBariloche = ubicacion.equalsIgnoreCase("Bariloche");
+				String dbFactura = esBariloche
+					? Config.get("facturasoft.brc.database", "facturacion_db_brc")
+					: Config.get("facturasoft.bsas.database", "facturacion_db_bsas");
+				String clave = esBariloche ? "facturasoft.brc" : "facturasoft.bsas";
+				String host = Config.get(clave + ".host", "localhost");
+				String port = Config.get(clave + ".port", "3306");
+				String user = Config.get(clave + ".user", "root");
+				String pass = Config.get(clave + ".password", "root");
+				String opts = "useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false";
+				String url = "jdbc:mysql://" + host + ":" + port + "/" + dbFactura + "?" + opts;
+
+				int insertados = 0;
+				int errores = 0;
+				Connection conn = null;
+				try {
+					conn = DriverManager.getConnection(url, user, pass);
+
+					// 1. Garantizar nro_documento NULL (permite CUIT vacío sin colisión de uk_documento)
+					garantizarNroDocumentoNullable(conn);
+
+					// 2. Vaciar la tabla y reinsertar todo en una transacción
+					conn.setAutoCommit(false);
+					try (Statement stmt = conn.createStatement()) {
+						stmt.executeUpdate("DELETE FROM clientes");
+					}
+
+					try (PreparedStatement psIns = conn.prepareStatement(
+						"INSERT INTO clientes (tipo_documento, nro_documento, razon_social, "
+						+ "condicion_iva, domicilio, telefono, telefono_contacto, email, origen, "
+						+ "els_referencia, activo, tipo_persona) "
+						+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'reparsoft', ?, 1, ?)")) {
+						for (ClienteDTO c : clientes) {
+							try {
+								psIns.setString(1, c.getTipoDocumento());
+								setDocumento(psIns, 2, c.getCUIT());
+								psIns.setString(3, c.getRazon_Social());
+								psIns.setString(4, c.getCondicionIva());
+								psIns.setString(5, c.getDomicilio());
+								psIns.setString(6, c.getTelefonoEmpresa());
+								psIns.setString(7, c.getTelefonoContacto());
+								psIns.setString(8, c.getCorreoElectronico());
+								psIns.setInt(9, c.getId());
+								psIns.setString(10, c.getTipoPersona());
+								psIns.executeUpdate();
+								insertados++;
+							} catch (SQLException e) {
+								errores++;
+								System.err.println("❌ Error insertando cliente #" + c.getId()
+									+ ": " + e.getMessage());
+							}
+						}
+					}
+					conn.commit();
+					System.out.println("✅ Equiparación completada en " + dbFactura
+						+ ": " + insertados + " insertados, " + errores + " errores");
+
+				} catch (SQLException e) {
+					errores++;
+					e.printStackTrace();
+					try { if (conn != null) conn.rollback(); } catch (SQLException re) { }
+				} finally {
+					try { if (conn != null) { conn.setAutoCommit(true); conn.close(); } } catch (SQLException e) { }
+				}
+				return new int[] { insertados, errores };
+			}
+
+			@Override
+			protected void done() {
+				try {
+					int[] r = get();
+					JOptionPane.showMessageDialog(ventanaClientes,
+						"Equiparación finalizada.\n\n"
+						+ "Insertados: " + r[0] + "\n"
+						+ "Errores: " + r[1],
+						"Resultado", JOptionPane.INFORMATION_MESSAGE);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(ventanaClientes,
+						"Ocurrió un error durante la equiparación: " + ex.getMessage(),
+						"Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		};
+		worker.execute();
+	}
+
+	/**
+	 * Asigna el número de documento; si está vacío o nulo, guarda NULL.
+	 */
+	private void setDocumento(PreparedStatement ps, int index, String cuit) throws SQLException {
+		String doc = (cuit == null || cuit.trim().isEmpty()) ? null : cuit.trim();
+		if (doc == null) {
+			ps.setNull(index, Types.VARCHAR);
+		} else {
+			ps.setString(index, doc);
+		}
+	}
+
+	/**
+	 * Verifica si la columna nro_documento de clientes admite NULL; si no,
+	 * la altera para habilitarlo (permite varios clientes con documento vacío
+	 * sin chocar con el índice único uk_documento).
+	 */
+	private void garantizarNroDocumentoNullable(Connection conn) throws SQLException {
+		String dbName = conn.getCatalog();
+		String columnType = null;
+		try (PreparedStatement ps = conn.prepareStatement(
+			"SELECT COLUMN_TYPE, IS_NULLABLE FROM information_schema.COLUMNS "
+			+ "WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'clientes' AND COLUMN_NAME = 'nro_documento'")) {
+			ps.setString(1, dbName);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					columnType = rs.getString("COLUMN_TYPE");
+					if ("YES".equalsIgnoreCase(rs.getString("IS_NULLABLE"))) {
+						return;
+					}
+				}
+			}
+		}
+		if (columnType != null) {
+			try (Statement stmt = conn.createStatement()) {
+				stmt.executeUpdate("ALTER TABLE clientes MODIFY COLUMN nro_documento " + columnType + " NULL");
+			}
+			System.out.println("✅ nro_documento habilitado a NULL en " + dbName + ".clientes");
+		} else {
+			System.err.println("⚠️ No se encontró la columna nro_documento en " + dbName + ".clientes");
 		}
 	}
 
@@ -1561,13 +1786,18 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	 */
 	private void eliminarEnFacturaSoft(int idCliente) {
 		String ubicacion = Conexion.getUbicacionActualStatic();
-		String dbFactura = ubicacion.equalsIgnoreCase("Bariloche")
-			? "facturacion_db_brc" : "facturacion_db_bsas";
+		boolean esBariloche = ubicacion.equalsIgnoreCase("Bariloche");
+		String dbFactura = esBariloche
+			? Config.get("facturasoft.brc.database", "facturacion_db_brc")
+			: Config.get("facturasoft.bsas.database", "facturacion_db_bsas");
+		String clave = esBariloche ? "facturasoft.brc" : "facturasoft.bsas";
 
-		String url = "jdbc:mysql://localhost:3306/" + dbFactura
+		String url = "jdbc:mysql://" + Config.get(clave + ".host", "localhost") + ":"
+			+ Config.get(clave + ".port", "3306") + "/" + dbFactura
 			+ "?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false";
 
-		try (Connection conn = DriverManager.getConnection(url, "root", "root")) {
+		try (Connection conn = DriverManager.getConnection(url,
+				Config.get(clave + ".user", "root"), Config.get(clave + ".password", "root"))) {
 			PreparedStatement ps = conn.prepareStatement(
 				"UPDATE clientes SET activo=0 WHERE els_referencia=?");
 			ps.setInt(1, idCliente);
