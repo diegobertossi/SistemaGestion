@@ -24,6 +24,8 @@ public class RemitoDAOImpl implements RemitoDAO {
     private static final String READ_BY_UBICACION_NUMERO = "SELECT * FROM Remitos WHERE IdUbicacion = ? AND NumeroRemitoSalida = ?";
     private static final String READ_BY_UBICACION = "SELECT * FROM Remitos WHERE IdUbicacion = ?";
 
+    private static final String UPDATE_REMITO = "UPDATE Remitos SET NumeroRemitoSalida = ?, IdUbicacion = ? WHERE idRemito = ?";
+
     private Conexion conexion;
 
     public RemitoDAOImpl(String ubicacionBase) {
@@ -58,7 +60,21 @@ public class RemitoDAOImpl implements RemitoDAO {
 
     @Override
     public List<RemitoDTO> readAll() {
-        return null;
+        List<RemitoDTO> remitos = new ArrayList<>();
+        String sql = READ_ALL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                remitos.add(new RemitoDTO(
+                    rs.getInt("IdUbicacion"),
+                    rs.getInt("NumeroRemitoSalida"),
+                    rs.getInt("idRemito")
+                ));
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al leer todos los remitos", e);
+        }
+        return remitos;
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -104,7 +120,16 @@ public class RemitoDAOImpl implements RemitoDAO {
 
     @Override
     public boolean edit(RemitoDTO remito) {
-        return false;
+        String sql = UPDATE_REMITO;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setInt(1, remito.getNumeroRemitoSalida());
+            stmt.setInt(2, remito.getIdUbicacion());
+            stmt.setInt(3, remito.getIdRemito());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error al editar remito: " + remito.getIdRemito(), e);
+            return false;
+        }
     }
 
     @Override

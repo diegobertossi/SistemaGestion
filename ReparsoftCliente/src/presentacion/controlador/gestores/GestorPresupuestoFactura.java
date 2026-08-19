@@ -23,6 +23,7 @@ import modelo.Agenda;
 import presentacion.controlador.ControladorReparacion;
 import presentacion.controlador.ControladorPresupuestos;
 import presentacion.controlador.ControladorSalidas;
+import persistencia.dao.mysql.LogDAO;
 import presentacion.vista.VentanaVisualizarEquipos;
 import presentacion.vista.VentanaDatosFacturacion;
 import presentacion.vista.VentanaGenerarPresupuesto;
@@ -317,7 +318,7 @@ public class GestorPresupuestoFactura {
 					}
 				} catch (Exception ex) {
 					progreso.cerrar();
-					ex.printStackTrace();
+					LogDAO.error("Error al enviar presupuesto por mail", ex);
 				}
                 return null;
             }
@@ -343,7 +344,7 @@ public class GestorPresupuestoFactura {
             int els = Integer.parseInt(ventana.getTextELS());
             controlador.getGestorVisualizacion().cargarDatosEquipo(ventana, els);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LogDAO.error("Error al refrescar pantalla", ex);
         }
     }
     

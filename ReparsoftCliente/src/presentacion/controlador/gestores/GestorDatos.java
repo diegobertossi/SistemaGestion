@@ -172,11 +172,6 @@ public class GestorDatos {
 				remitoGenerado, lugarIngreso, numeroFactura, fechaSalida);
 	}
 
-	private int IDUsuarioPorNombre(String nombreTecnico) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	/**
 	 * Extrae datos de agregar equipo
 	 */

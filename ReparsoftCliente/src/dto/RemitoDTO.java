@@ -141,12 +141,6 @@ public class RemitoDTO
 	}
 
 
-	public String getFecha_Entrada() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 	public String getCliente() {
 		return Cliente;
 	}
