@@ -31,6 +31,15 @@ public class Config {
                 return;
             } catch (IOException ignored) {}
         }
+        // Último recurso: config.properties empaquetada dentro del jar
+        try (InputStream is = Config.class.getResourceAsStream("/config.properties")) {
+            if (is != null) {
+                PROPS.load(is);
+                System.out.println("✅ Config cargada desde el classpath (dentro del jar)");
+                cargado = true;
+                return;
+            }
+        } catch (IOException ignored) {}
         System.err.println("⚠️ config.properties no encontrado; usando defaults hardcodeados");
         cargado = true;
     }

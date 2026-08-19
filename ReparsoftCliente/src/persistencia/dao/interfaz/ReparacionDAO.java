@@ -7,6 +7,7 @@ import javax.swing.JComboBox;
 import org.apache.logging.log4j.util.Strings;
 
 import dto.ReparacionDTO;
+import persistencia.dao.mysql.ReparacionEstadisticasManager;
 
 
 
@@ -64,6 +65,8 @@ public interface ReparacionDAO
 	public void comboFiltroELS(JComboBox<?> comboFiltroELS);
 
 	public List<ReparacionDTO> readAllXIDclienteIDSucursal(Integer IDCliente, Integer IDSucursal);
+	
+	public List<ReparacionDTO> readAllXIDclienteIDSucursalResumido(Integer IDCliente, Integer IDSucursal);
 
 	public void comboSerie(JComboBox<?> comboSerie);
 
@@ -78,6 +81,8 @@ public interface ReparacionDAO
 	public List<ReparacionDTO> readAllListadoMarcarAceptaciones();
 
 	public int ingresosPorAnio(int anio);
+
+	public ReparacionEstadisticasManager.TotalesPorAnio obtenerTotalesPorAnio(int anio);
 
 	public int diagnosticosPorAnio(int anio);
 	

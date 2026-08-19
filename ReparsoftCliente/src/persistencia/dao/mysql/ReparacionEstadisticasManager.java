@@ -71,6 +71,75 @@ public class ReparacionEstadisticasManager {
         return executeCountQuery(SQLQueries.REP_ESPERA_POR_ANIO, anio);
     }
 
+    /**
+     * Resultado consolidado de todos los totales por año
+     */
+    public static class TotalesPorAnio {
+        public int ingresos;
+        public int diagnosticos;
+        public double facturacionPeso;
+        public double facturacionDolar;
+        public int reparados;
+        public int sinFallas;
+        public int enGtia;
+        public int enRep;
+        public int ventas;
+        public int sinRep;
+        public int repAcep;
+        public int repNoAcep;
+        public int repEspera;
+    }
+
+    /**
+     * Obtiene todos los totales por año en 3 consultas en lugar de 12.
+     */
+    public TotalesPorAnio obtenerTotalesPorAnio(int anio) {
+        TotalesPorAnio totales = new TotalesPorAnio();
+        totales.ingresos = executeCountQuery(SQLQueries.INGRESOS_POR_ANIO, anio);
+
+        double[] diagnostico = executeSummaryQuery(SQLQueries.RESUMEN_DIAGNOSTICOS_POR_ANIO, anio, 10);
+        totales.diagnosticos = (int) diagnostico[0];
+        totales.reparados = (int) diagnostico[1];
+        totales.sinFallas = (int) diagnostico[2];
+        totales.enGtia = (int) diagnostico[3];
+        totales.enRep = (int) diagnostico[4];
+        totales.ventas = (int) diagnostico[5];
+        totales.sinRep = (int) diagnostico[6];
+        totales.repAcep = (int) diagnostico[7];
+        totales.repNoAcep = (int) diagnostico[8];
+        totales.repEspera = (int) diagnostico[9];
+
+        double[] aceptacion = executeSummaryQuery(SQLQueries.RESUMEN_ACEPTACION_POR_ANIO, anio, 2);
+        totales.facturacionPeso = aceptacion[0];
+        totales.facturacionDolar = aceptacion[1];
+
+        return totales;
+    }
+
+    private double[] executeSummaryQuery(String query, int anio, int cantidadColumnas) {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Connection conn = null;
+        double[] datos = new double[cantidadColumnas];
+        try {
+            conn = conexion.getSQLConexion();
+            statement = conn.prepareStatement(query);
+            statement.setInt(1, anio);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                for (int i = 0; i < datos.length; i++) {
+                    double valor = resultSet.getDouble(i + 1);
+                    datos[i] = resultSet.wasNull() ? 0.0 : valor;
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error en executeSummaryQuery", e);
+        } finally {
+            closeResources(statement, resultSet, conn);
+        }
+        return datos;
+    }
+
     // ========== ESTADÍSTICAS POR CLIENTE ==========
 
     public int ingresosXanioXcliente(int anio, int idCliente) {
@@ -267,7 +336,7 @@ public class ReparacionEstadisticasManager {
             
             return ReparacionMapper.mapToSingleInteger(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en executeCountQuery", e);
             return 0;
         } finally {
             closeResources(statement, resultSet, conn);
@@ -286,7 +355,7 @@ public class ReparacionEstadisticasManager {
             
             return ReparacionMapper.mapToSingleDouble(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en executeSumQuery", e);
             return 0.0;
         } finally {
             closeResources(statement, resultSet, conn);
@@ -305,7 +374,7 @@ public class ReparacionEstadisticasManager {
             
             return ReparacionMapper.mapToMonthlyIntegerList(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en executeMonthlyCountQuery", e);
             return initializeMonthlyIntegerList();
         } finally {
             closeResources(statement, resultSet, conn);
@@ -324,7 +393,7 @@ public class ReparacionEstadisticasManager {
             
             return ReparacionMapper.mapToMonthlyDoubleList(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en executeMonthlySumQuery", e);
             return initializeMonthlyDoubleList();
         } finally {
             closeResources(statement, resultSet, conn);
@@ -358,7 +427,7 @@ public class ReparacionEstadisticasManager {
             if (resultSet != null) resultSet.close();
             if (statement != null) statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en closeResources", e);
         }
     }
 }

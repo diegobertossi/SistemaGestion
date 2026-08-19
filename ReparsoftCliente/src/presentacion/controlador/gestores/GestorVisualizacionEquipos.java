@@ -1,6 +1,7 @@
 package presentacion.controlador.gestores;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +35,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -106,6 +108,7 @@ public class GestorVisualizacionEquipos {
 	private int elsActual = 988;
 	private int elsActualBSAS = 24900;
 	private boolean guardado = true;
+	private volatile int elsCargaAsync = -1;
 
 	// ==== FORMATEO ====
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -156,7 +159,7 @@ public class GestorVisualizacionEquipos {
 	/**
 	 * Abre la ventana de visualización de equipos
 	 */
-	public void abrirVentanaVisualizarEquipos() {
+	public void abrirVentanaVisualizarEquipos() throws ParseException {
 		int elsInicial = obtenerELSInicial(agenda.getUbicacionBase());
 		String ubicacion = agenda.getUbicacionBase();
 
@@ -175,23 +178,19 @@ public class GestorVisualizacionEquipos {
 			controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
 			SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
 
-			try {
-				// Inicializar las variables de navegación con el ÚLTIMO ELS
-				if (ubicacion.equalsIgnoreCase("Bariloche")) {
-					elsActual = ultimoELS;
-				} else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
-					elsActualBSAS = ultimoELS;
-				}
-
-				cargarDatosEquipo(ventanaVisualizarEquipos, ultimoELS);
-				agregarListeners(ventanaVisualizarEquipos);
-				llenarComboELS(ventanaVisualizarEquipos);
-				controlador.setVentanaVisualizarEquipos(ventanaVisualizarEquipos);
-
-				cerrarVentanaAnterior();
-			} catch (ParseException e) {
-				e.printStackTrace();
+			// Inicializar las variables de navegación con el ÚLTIMO ELS
+			if (ubicacion.equalsIgnoreCase("Bariloche")) {
+				elsActual = ultimoELS;
+			} else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
+				elsActualBSAS = ultimoELS;
 			}
+
+			cargarDatosEquipoAsync(ventanaVisualizarEquipos, ultimoELS);
+			agregarListeners(ventanaVisualizarEquipos);
+			llenarComboELS(ventanaVisualizarEquipos);
+			controlador.setVentanaVisualizarEquipos(ventanaVisualizarEquipos);
+
+			cerrarVentanaAnterior();
 		} else {
 			JOptionPane.showMessageDialog(null, "No se ha ingresado ningún equipo.", "Mensaje Informativo",
 					JOptionPane.INFORMATION_MESSAGE);
@@ -201,34 +200,77 @@ public class GestorVisualizacionEquipos {
 	/**
 	 * Abre la ventana de visualización de equipos con un ELS específico
 	 */
-	public void abrirVentanaVisualizarEquipos(int elsEspecifico) {
+	public void abrirVentanaVisualizarEquipos(int elsEspecifico) throws ParseException {
 		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(controlador);
 		controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
 		SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
 
-		try {
-			// Inicializar las variables de navegación con el ELS específico
-			String ubicacion = agenda.getUbicacionBase();
-			if (ubicacion.equalsIgnoreCase("Bariloche")) {
-				elsActual = elsEspecifico;
-			} else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
-				elsActualBSAS = elsEspecifico;
+		// Inicializar las variables de navegación con el ELS específico
+		String ubicacion = agenda.getUbicacionBase();
+		if (ubicacion.equalsIgnoreCase("Bariloche")) {
+			elsActual = elsEspecifico;
+		} else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
+			elsActualBSAS = elsEspecifico;
+		}
+
+		cargarDatosEquipoAsync(ventanaVisualizarEquipos, elsEspecifico);
+		agregarListeners(ventanaVisualizarEquipos);
+		llenarComboELS(ventanaVisualizarEquipos);
+		controlador.setVentanaVisualizarEquipos(ventanaVisualizarEquipos);
+		cerrarVentanaAnterior();
+	}
+
+	/**
+	 * Carga los datos de un equipo en segundo plano y rellena la ventana cuando
+	 * están listos. La ventana queda visible de inmediato.
+	 */
+	public void cargarDatosEquipoAsync(final VentanaVisualizarEquipos ventana, final int numeroELS) {
+		elsCargaAsync = numeroELS;
+		ventana.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+		new SwingWorker<Object[], Void>() {
+			@Override
+			protected Object[] doInBackground() throws Exception {
+				ReparacionDTO reparacion = agenda.dameReparacionXels(numeroELS);
+				List<RepuestosDTO> repuestos = reparacion != null ? agenda.dameRepuestoXels(numeroELS) : null;
+				return new Object[] { reparacion, repuestos };
 			}
 
-			cargarDatosEquipo(ventanaVisualizarEquipos, elsEspecifico);
-			agregarListeners(ventanaVisualizarEquipos);
-			llenarComboELS(ventanaVisualizarEquipos);
-			controlador.setVentanaVisualizarEquipos(ventanaVisualizarEquipos);
-			cerrarVentanaAnterior();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+			@Override
+			protected void done() {
+				ventana.setCursor(Cursor.getDefaultCursor());
+
+				try {
+					// Si el usuario ya navegó o se cargó otro equipo, descartar
+					if (elsCargaAsync != numeroELS) {
+						return;
+					}
+
+					Object[] datos = get();
+					ReparacionDTO reparacion = (ReparacionDTO) datos[0];
+					@SuppressWarnings("unchecked")
+					List<RepuestosDTO> repuestos = (List<RepuestosDTO>) datos[1];
+
+					if (reparacion == null) {
+						JOptionPane.showMessageDialog(null, "Equipo no encontrado", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+
+					reparacionActual = reparacion;
+					llenarDatosVisualizacion(ventana, reparacion, repuestos);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		}.execute();
 	}
 
 	/**
 	 * Carga los datos de un equipo específico en la ventana
 	 */
 	void cargarDatosEquipo(VentanaVisualizarEquipos ventana, int numeroELS) throws ParseException {
+		elsCargaAsync = -1; // invalidar cualquier carga asíncrona en vuelo
 		reparacionActual = agenda.dameReparacionXels(numeroELS);
 
 		if (reparacionActual == null) {
@@ -236,8 +278,16 @@ public class GestorVisualizacionEquipos {
 			return;
 		}
 
+		llenarDatosVisualizacion(ventana, reparacionActual, agenda.dameRepuestoXels(numeroELS));
+	}
+
+	/**
+	 * Rellena la ventana con la reparación ya obtenida (ejecutar en EDT)
+	 */
+	private void llenarDatosVisualizacion(VentanaVisualizarEquipos ventana, ReparacionDTO reparacion,
+			List<RepuestosDTO> repuestos) throws ParseException {
 		// Establecer ELS
-		ventana.setTextELS(Integer.toString(numeroELS));
+		ventana.setTextELS(Integer.toString(reparacion.getELS()));
 
 		// Cargar datos técnicos
 		cargarDatosTecnicos(ventana);
@@ -255,7 +305,7 @@ public class GestorVisualizacionEquipos {
 		cargarValoresMonetarios(ventana);
 
 		// Llenar tabla de repuestos
-		llenarTablaRepuestos(ventana);
+		llenarTablaRepuestos(ventana, repuestos);
 
 		// Verificar presupuesto y aplicar estilos
 		gestorInterfaz.verificarPresupuesto(ventana);
@@ -384,9 +434,17 @@ public class GestorVisualizacionEquipos {
 		modelo.setRowCount(0);
 
 		int els = Integer.parseInt(ventana.getTextELS());
-		this.repuestosEnTabla = (List<RepuestosDTO>) agenda.dameRepuestoXels(els);
+		List<RepuestosDTO> repuestos = agenda.dameRepuestoXels(els);
+		llenarTablaRepuestos(ventana, repuestos);
+	}
 
-		for (RepuestosDTO repuesto : repuestosEnTabla) {
+	private void llenarTablaRepuestos(VentanaVisualizarEquipos ventana, List<RepuestosDTO> repuestos) {
+		DefaultTableModel modelo = ventana.getModelRepuestos();
+		modelo.setRowCount(0);
+
+		this.repuestosEnTabla = repuestos;
+
+		for (RepuestosDTO repuesto : repuestos) {
 			Object[] fila = { repuesto.getRef(), repuesto.getOriginal(), repuesto.getReemplazo(), repuesto.getNotas() };
 			modelo.addRow(fila);
 		}
@@ -410,7 +468,7 @@ public class GestorVisualizacionEquipos {
 			guardarCambiosSiNecesario();
 		}
 
-		int tam = agenda.obtenerReparacion().size();
+		int tam = agenda.contarReparaciones();
 		String ubicacion = agenda.getUbicacionBase();
 		boolean actualizar = true;
 
@@ -844,10 +902,6 @@ public class GestorVisualizacionEquipos {
 						reporte.guardar();
 					}).start();
 
-					while (System.currentTimeMillis() - inicio < 2000) {
-						Thread.sleep(100);
-					}
-
 					SwingUtilities.invokeLater(() -> {
 						reporte.mostrar();
 					});
@@ -863,9 +917,6 @@ public class GestorVisualizacionEquipos {
 						progreso.cerrar();
 					});
 				} else {
-					while (System.currentTimeMillis() - inicio < 2000) {
-						Thread.sleep(100);
-					}
 					SwingUtilities.invokeLater(() -> {
 						progreso.cerrar();
 						JOptionPane.showMessageDialog(null, "No se encontraron datos para el registro", "Aviso",

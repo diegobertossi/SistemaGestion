@@ -1,6 +1,7 @@
 package presentacion.reportes;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -23,6 +24,8 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.view.JasperViewer;
 import dto.RemitoDTO;
 import modelo.Agenda;
+import persistencia.dao.mysql.LogDAO;
+import util.RutasSistema;
 
 @SuppressWarnings("deprecation")
 public class ReporteRemitoSalida {
@@ -78,7 +81,7 @@ public class ReporteRemitoSalida {
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
 					new JRBeanCollectionDataSource(Remito, false));
 		} catch (JRException ex) {
-			ex.printStackTrace();
+			LogDAO.error("Error al llenar reporte de remito: " + NumeroRemito, ex);
 		}
 	}
 
@@ -89,6 +92,18 @@ public class ReporteRemitoSalida {
 			cache.put(path, report);
 		}
 		return report;
+	}
+
+	public static void precargar() {
+		String[] paths = { "reportes\\RemitoPreImpreso.jasper", "reportes\\RemitoComun.jasper" };
+		for (String path : paths) {
+			try {
+				JasperReport reporte = getCachedReport(path);
+				JasperFillManager.fillReport(reporte, new HashMap<String, Object>(),
+						new JRBeanCollectionDataSource(new ArrayList<Object>(), false));
+			} catch (JRException e) {
+			}
+		}
 	}
 
 	public void mostrar() {
@@ -111,23 +126,23 @@ public class ReporteRemitoSalida {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void guardar() {
+	public boolean guardar() {
 		nombreArchivoPDF = NumeroRemito + "-" + ubicacionRemito + "_" + NombreCliente + ".pdf";
 		String ubicacionSistema = agenda.getUbicacionBase();
 
 		if (ubicacionSistema.compareTo("Bariloche") == 0) {
 			if (reportFileName.compareTo("reportes\\RemitoComun.jasper") == 0) {
-				outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Remitos PDF\\Remitos Comunes\\" + nombreArchivoPDF;
+				outFileName = RutasSistema.adaptar("F:\\ELS\\Bariloche\\Administracion\\Sistema\\Remitos PDF\\Remitos Comunes\\") + nombreArchivoPDF;
 			}
 			if (reportFileName.compareTo("reportes\\RemitoPreImpreso.jasper") == 0) {
-				outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Remitos PDF\\Remitos PreImpresos\\" + nombreArchivoPDF;
+				outFileName = RutasSistema.adaptar("F:\\ELS\\Bariloche\\Administracion\\Sistema\\Remitos PDF\\Remitos PreImpresos\\") + nombreArchivoPDF;
 			}
 		} else if (ubicacionSistema.compareTo("Buenos Aires") == 0) {
 			if (reportFileName.compareTo("reportes\\RemitoComun.jasper") == 0) {
-				outFileName = "F:\\ELS\\Administracion\\Sistema\\Remitos PDF\\Remitos Comunes\\" + nombreArchivoPDF;
+				outFileName = RutasSistema.adaptar("F:\\ELS\\Administracion\\Sistema\\Remitos PDF\\Remitos Comunes\\") + nombreArchivoPDF;
 			}
 			if (reportFileName.compareTo("reportes\\RemitoPreImpreso.jasper") == 0) {
-				outFileName = "F:\\ELS\\Administracion\\Sistema\\Remitos PDF\\Remitos PreImpresos\\" + nombreArchivoPDF;
+				outFileName = RutasSistema.adaptar("F:\\ELS\\Administracion\\Sistema\\Remitos PDF\\Remitos PreImpresos\\") + nombreArchivoPDF;
 			}
 		}
 
@@ -137,8 +152,14 @@ public class ReporteRemitoSalida {
 
 		try {
 			exporter.exportReport();
+			return true;
 		} catch (JRException e) {
-			e.printStackTrace();
+			LogDAO.error("Error al exportar remito PDF: " + nombreArchivoPDF, e);
+			return false;
 		}
+	}
+
+	public String getPdfGuardado() {
+		return outFileName;
 	}
 }

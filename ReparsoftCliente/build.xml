@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  build.xml - empaquetado reproducible de ReparSoft.
+  Uso:  ant (default=exe) -> jar + libs + exe del instalador
+        ant jar     -> dist\ReparSoft.jar + dist\libs\ (74 jars)
+        ant dist    -> ademas copia jar + libs al instalador
+        ant exe     -> ademas regenera ReparSoft.exe (launch4j)
+        ant installer -> ademas regenera el instalador NSIS (~2 min)
+        ant compile-tests -> compila test -> test-bin
+  Correr en Eclipse: clic derecho sobre build.xml -> Run As -> Ant Build.
+  Cerrar ReparSoft.exe antes de exe/installer (archivo bloqueado).
+-->
+<project name="ReparsoftCliente" default="exe" basedir=".">
+	<property name="src.dir" value="src"/>
+	<property name="test.dir" value="test"/>
+	<property name="build.dir" value="bin"/>
+	<property name="test.build.dir" value="test-bin"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="jar.name" value="ReparSoft.jar"/>
+	<property name="main.class" value="main.Main"/>
+	<property name="jdk.home" value="C:\jdk8u422-b05"/>
+	<property name="instalador.dir" value="F:\Trabajo\Java\Instalador\Nuevo Instalador 64 bits"/>
+	<property name="launch4jc" value="${instalador.dir}\launch4j\launch4jc.exe"/>
+	<property name="makensis" value="C:\Program Files (x86)\NSIS\makensis.exe"/>
+
+	<path id="compile.classpath">
+		<fileset dir="lib" includes="*.jar"/>
+		<fileset dir="lib-test" includes="*.jar"/>
+	</path>
+
+	<target name="clean">
+		<delete includeemptydirs="true">
+			<fileset dir="${build.dir}">
+				<exclude name=".gitignore"/>
+			</fileset>
+		</delete>
+		<delete dir="${dist.dir}"/>
+	</target>
+
+	<target name="compile" depends="clean">
+		<mkdir dir="${build.dir}"/>
+		<javac srcdir="${src.dir}" destdir="${build.dir}" encoding="UTF-8"
+		       source="1.8" target="1.8" includeantruntime="false"
+		       classpathref="compile.classpath" debug="true"
+		       fork="true" executable="${jdk.home}\bin\javac.exe"/>
+		<copy todir="${build.dir}">
+			<fileset dir="img"/>
+		</copy>
+		<copy todir="${build.dir}">
+			<fileset dir="Diccionario"/>
+		</copy>
+		<copy file="config.properties" todir="${build.dir}"/>
+	</target>
+
+	<target name="compile-tests" depends="compile">
+		<mkdir dir="${test.build.dir}"/>
+		<path id="test.classpath">
+			<pathelement path="${build.dir}"/>
+			<path refid="compile.classpath"/>
+		</path>
+		<javac srcdir="${test.dir}" destdir="${test.build.dir}" encoding="UTF-8"
+		       source="1.8" target="1.8" includeantruntime="false"
+		       classpathref="test.classpath" debug="true"
+		       fork="true" executable="${jdk.home}\bin\javac.exe"/>
+	</target>
+
+	<target name="jar" depends="compile">
+		<local name="jar.classpath"/>
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${dist.dir}/libs"/>
+		<copy todir="${dist.dir}/libs">
+			<fileset dir="lib" includes="*.jar"/>
+			<fileset dir="lib-test" includes="*.jar"/>
+		</copy>
+		<path id="libs.path">
+			<fileset dir="${dist.dir}/libs" includes="*.jar"/>
+		</path>
+		<manifestclasspath property="jar.classpath" jarfile="${dist.dir}/${jar.name}">
+			<classpath refid="libs.path"/>
+		</manifestclasspath>
+		<jar destfile="${dist.dir}/${jar.name}" basedir="${build.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="${main.class}"/>
+				<attribute name="Class-Path" value="${jar.classpath}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="dist" depends="jar">
+		<copy file="${dist.dir}/${jar.name}" todir="${instalador.dir}"/>
+		<copy file="config.properties" todir="${instalador.dir}"/>
+		<delete dir="${instalador.dir}/libs"/>
+		<copy todir="${instalador.dir}/libs">
+			<fileset dir="${dist.dir}/libs" includes="*.jar"/>
+		</copy>
+	</target>
+
+	<target name="exe" depends="dist">
+		<exec executable="${launch4jc}" failonerror="true">
+			<arg value="${instalador.dir}\ReparSoft_launch4j.xml"/>
+		</exec>
+	</target>
+
+	<target name="installer" depends="exe">
+		<exec executable="${makensis}" failonerror="true">
+			<arg value="${instalador.dir}\ReparSoft_G.nsi"/>
+		</exec>
+	</target>
+</project>

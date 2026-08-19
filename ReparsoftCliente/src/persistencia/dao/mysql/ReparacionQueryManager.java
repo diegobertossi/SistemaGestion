@@ -49,7 +49,7 @@ public class ReparacionQueryManager {
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en insert", e);
             return false;
         } finally {
             closeResources(statement, null, conn);
@@ -80,7 +80,7 @@ public class ReparacionQueryManager {
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en insertEquipo", e);
             return false;
         } finally {
             closeResources(statement, null, conn);
@@ -100,7 +100,7 @@ public class ReparacionQueryManager {
             
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en delete", e);
             return false;
         } finally {
             closeResources(statement, null, conn);
@@ -121,7 +121,7 @@ public class ReparacionQueryManager {
             
             return ReparacionMapper.mapToReparacionList(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en readAll", e);
             return new ArrayList<>();
         } finally {
             closeResources(statement, resultSet, conn);
@@ -147,7 +147,7 @@ public class ReparacionQueryManager {
 
             return ReparacionMapper.mapToReparacionList(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en readAllPaginado", e);
             return new ArrayList<>();
         } finally {
             closeResources(statement, resultSet, conn);
@@ -173,7 +173,7 @@ public class ReparacionQueryManager {
             }
             return 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en contarReparaciones", e);
             return 0;
         } finally {
             closeResources(statement, resultSet, conn);
@@ -198,7 +198,7 @@ public class ReparacionQueryManager {
             }
             return null;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en obtenerReparacionXELS", e);
             return null;
         } finally {
             closeResources(statement, resultSet, conn);
@@ -223,7 +223,7 @@ public class ReparacionQueryManager {
             }
             return null;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en obtenerReparacionXSerie", e);
             return null;
         } finally {
             closeResources(statement, resultSet, conn);
@@ -248,7 +248,7 @@ public class ReparacionQueryManager {
             }
             return 987;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en obtenerMaximoELS", e);
             return 987;
         } finally {
             closeResources(statement, resultSet, conn);
@@ -273,7 +273,7 @@ public class ReparacionQueryManager {
             }
             return 16549;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en obtenerMaximoELSBSAS", e);
             return 16549;
         } finally {
             closeResources(statement, resultSet, conn);
@@ -297,7 +297,7 @@ public class ReparacionQueryManager {
             }
             return 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en obtenerMaximoIDEquipo", e);
             return 0;
         } finally {
             closeResources(statement, resultSet, conn);
@@ -316,7 +316,7 @@ public class ReparacionQueryManager {
             setUpdateParameters(statement, reparacion);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en update", e);
             return false;
         } finally {
             closeResources(statement, null, conn);
@@ -338,7 +338,7 @@ public class ReparacionQueryManager {
             setEquipoParameters(statement, reparacion, conFecha);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en updateEquipo", e);
             return false;
         } finally {
             closeResources(statement, null, conn);
@@ -360,7 +360,7 @@ public class ReparacionQueryManager {
             statement.setInt(4, reparacion.getELS());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en updateAgregarRemito", e);
         } finally {
             closeResources(statement, null, conn);
         }
@@ -380,7 +380,7 @@ public class ReparacionQueryManager {
             statement.setInt(3, reparacion.getELS());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en updateMarcarEnviados", e);
         } finally {
             closeResources(statement, null, conn);
         }
@@ -402,7 +402,7 @@ public class ReparacionQueryManager {
             statement.setInt(5, reparacion.getELS());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en updateAnularRemito", e);
         } finally {
             closeResources(statement, null, conn);
         }
@@ -427,7 +427,7 @@ public class ReparacionQueryManager {
             statement.setInt(8, reparacion.getELS());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en updatePresupuesto", e);
         } finally {
             closeResources(statement, null, conn);
         }
@@ -447,7 +447,7 @@ public class ReparacionQueryManager {
             statement.setInt(3, reparacion.getELS());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en updateAceptacion", e);
         } finally {
             closeResources(statement, null, conn);
         }
@@ -469,7 +469,7 @@ public class ReparacionQueryManager {
             statement.setInt(5, reparacion.getELS());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en updatePago", e);
         } finally {
             closeResources(statement, null, conn);
         }
@@ -491,7 +491,44 @@ public class ReparacionQueryManager {
 
             return ReparacionMapper.mapToReparacionList(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en readAllXIDClienteIDSucursal", e);
+            return new ArrayList<>();
+        } finally {
+            closeResources(statement, resultSet, conn);
+        }
+    }
+
+    /**
+     * Obtiene reparaciones por ID de cliente y sucursal con las columnas mínimas
+     * que muestra la tabla de equipos del remito (mismas filas, menos datos transferidos).
+     */
+    public List<ReparacionDTO> readAllXIDClienteIDSucursalResumido(Integer idCliente, Integer idSucursal) {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Connection conn = null;
+        try {
+            conn = conexion.getSQLConexion();
+            statement = conn.prepareStatement(SQLQueries.REPARACIONES_X_CLIENTE_SUCURSAL_RESUMIDO);
+            statement.setInt(1, idCliente);
+            statement.setInt(2, idSucursal);
+            resultSet = statement.executeQuery();
+
+            List<ReparacionDTO> reparaciones = new ArrayList<>();
+            while (resultSet.next()) {
+                reparaciones.add(new ReparacionDTO(
+                        resultSet.getInt("ELS"),
+                        resultSet.getString("Nombre"),
+                        resultSet.getString("Marca"),
+                        resultSet.getString("Modelo"),
+                        resultSet.getString("NumeroDeSerie"),
+                        resultSet.getString("Aviso"),
+                        resultSet.getString("EstadoTecnico"),
+                        resultSet.getString("EstadoComercial"),
+                        resultSet.getBoolean("Agregadoaremito")));
+            }
+            return reparaciones;
+        } catch (SQLException e) {
+            LogDAO.error("Error en readAllXIDClienteIDSucursalResumido", e);
             return new ArrayList<>();
         } finally {
             closeResources(statement, resultSet, conn);
@@ -513,7 +550,7 @@ public class ReparacionQueryManager {
 
             return ReparacionMapper.mapToReparacionList(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en readAllXIDRemito", e);
             return new ArrayList<>();
         } finally {
             closeResources(statement, resultSet, conn);
@@ -535,7 +572,7 @@ public class ReparacionQueryManager {
 
             return ReparacionMapper.mapToComponenteReparacionList(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en readAllXComponenteOriginal", e);
             return new ArrayList<>();
         } finally {
             closeResources(statement, resultSet, conn);
@@ -557,7 +594,7 @@ public class ReparacionQueryManager {
 
             return ReparacionMapper.mapToComponenteReparacionList(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en readAllXComponenteReemplazo", e);
             return new ArrayList<>();
         } finally {
             closeResources(statement, resultSet, conn);
@@ -578,7 +615,7 @@ public class ReparacionQueryManager {
 
             return ReparacionMapper.mapToBasicReparacionList(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en readAllListadoMarcarAceptaciones", e);
             return new ArrayList<>();
         } finally {
             closeResources(statement, resultSet, conn);
@@ -605,7 +642,7 @@ public class ReparacionQueryManager {
 
             return ReparacionMapper.mapToIntegerList(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en buscarEnCampos", e);
             return new ArrayList<>();
         } finally {
             closeResources(statement, resultSet, conn);
@@ -705,7 +742,7 @@ public class ReparacionQueryManager {
             if (resultSet != null) resultSet.close();
             if (statement != null) statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en closeResources", e);
         }
     }
 
@@ -735,7 +772,7 @@ public class ReparacionQueryManager {
             return ReparacionMapper.mapToHistorialPreciosList(resultSet);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en buscarHistorialPrecios", e);
             return new ArrayList<>();
         } finally {
             closeResources(statement, resultSet, conn);

@@ -38,13 +38,24 @@ mysql-connector-j-8.4.0, jasperreports-6.21.3, poi-5.2.3, openpdf-1.3.30, JTatto
 ## Development commands
 
 ```bash
-# Compile
-javac -d bin -cp "lib/*" -sourcepath src src/main/Main.java
-# Run
-java -cp "bin;lib/*" main.Main
+# Compile + jar reproducible (thin jar: Main-Class main.Main + Class-Path libs/*)
+# En Eclipse: clic derecho en build.xml -> Run As -> Ant Build (default = exe: jar + libs + exe)
+# Cerrar ReparSoft.exe antes de exe/installer (archivo bloqueado)
+java -cp "lib/ant-launcher-1.10.12.jar" org.apache.tools.ant.launch.Launcher -f build.xml
+# Targets: clean | compile | compile-tests | jar (dist/ReparSoft.jar + dist/libs/) | dist (copia a instalador) | exe (launch4j) | installer (NSIS, ~2 min)
+# Tests: build_test.cmd compile | compile-tests | test
+# Run (desde la raiz del proyecto, requiere reportes/ en el CWD)
+java -cp "dist/ReparSoft.jar;dist/libs/*" main.Main
 # MySQL backup
 mysqldump -u root -p reparsoft > sql/Backup_$(date +%Y-%m-%d).sql
 ```
+
+## Empaquetado (thin jar) — IMPORTANTE
+
+- `build.xml` compila `src` (UTF-8, javac forkeado de `C:\jdk8u422-b05`) a `bin`, copia `img/` y `Diccionario/`, arma `dist/ReparSoft.jar` con manifest `Main-Class: main.Main` + `Class-Path: libs/...` (74 jars, auto-generado). El default `exe` regenera además `ReparSoft.exe` vía `launch4j\launch4jc.exe`; `installer` corre makensis (NSIS).
+- `dist/` está git-ignored; `bin/` está trackeado y `clean` conserva `bin/.gitignore`.
+- La carpeta `libs/` del jar = todos los jars de `lib/` + `lib-test/` (sin itext). NO copiar `lib/*` a mano: usar `ant dist`.
+- `itext-2.1.7.js8.jar` NO debe volver al classpath: duplica `com.lowagie.*` de openpdf y rompe el export PDF del remito (NoSuchMethodError). Todos los jars viven en `lib/` (jgoodies, javax.mail, miglayout, fuentes incluidas).
 
 ## Conventions
 

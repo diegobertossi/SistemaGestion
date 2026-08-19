@@ -13,6 +13,7 @@ import modelo.Permisos;
 import presentacion.vista.SplashWindow;
 import presentacion.vista.VentanaUbicacionBaseDeDatos;
 import presentacion.vista.VistaPrincipal;
+import util.RutasSistema;
 
 public class ControladorUbicacionBase implements ActionListener {
 
@@ -47,9 +48,11 @@ public class ControladorUbicacionBase implements ActionListener {
             }
 
             ubicacionBase = vistaUbicacionBase.getComboUbicacion().getSelectedItem().toString();
+            RutasSistema.setModoPrueba(vistaUbicacionBase.getBtnModoPrueba().isSelected());
 
             vistaUbicacionBase.getBtnAcceder().setEnabled(false);
             vistaUbicacionBase.getComboUbicacion().setEnabled(false);
+            vistaUbicacionBase.getBtnModoPrueba().setEnabled(false);
             vistaUbicacionBase.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
             SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
@@ -71,6 +74,7 @@ public class ControladorUbicacionBase implements ActionListener {
                     vistaUbicacionBase.setCursor(Cursor.getDefaultCursor());
                     vistaUbicacionBase.getBtnAcceder().setEnabled(true);
                     vistaUbicacionBase.getComboUbicacion().setEnabled(true);
+                    vistaUbicacionBase.getBtnModoPrueba().setEnabled(true);
 
                     if (errorOcurrido != null) {
                         JOptionPane.showMessageDialog(null,

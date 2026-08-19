@@ -403,10 +403,6 @@ public class GestorAgregarEquipo {
                         reporte.guardar();
                     }).start();
 
-                    while (System.currentTimeMillis() - inicio < 2000) {
-                        Thread.sleep(100);
-                    }
-
                     SwingUtilities.invokeLater(() -> {
                         reporte.mostrar();
                     });
@@ -422,9 +418,6 @@ public class GestorAgregarEquipo {
                         progreso.cerrar();
                     });
                 } else {
-                    while (System.currentTimeMillis() - inicio < 2000) {
-                        Thread.sleep(100);
-                    }
                     SwingUtilities.invokeLater(() -> {
                         progreso.cerrar();
                         JOptionPane.showMessageDialog(null, "No se encontraron datos para el registro", "Aviso",

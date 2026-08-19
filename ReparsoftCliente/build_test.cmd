@@ -9,7 +9,7 @@ REM ============================================================
 setlocal enabledelayedexpansion
 set JAVAC=C:\jdk8u422-b05\bin\javac.exe
 set JAVA=C:\jdk8u422-b05\bin\java.exe
-set CP=test-bin;bin;lib/*;lib-test/*;miglayout15-swing.jar;javax.mail.jar;jgoodies-forms-1.8.0.jar;Fonts/Roboto.jar;Fonts/MyfuenteCambria.jar
+set CP=test-bin;bin;lib/*;lib-test/*
 
 if "%1"=="compile" goto compile
 if "%1"=="compile-tests" goto compile-tests

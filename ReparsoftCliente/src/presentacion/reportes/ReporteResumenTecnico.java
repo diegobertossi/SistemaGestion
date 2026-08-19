@@ -15,6 +15,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import dto.RegistroResumenTecnicoDTO;
+import persistencia.dao.mysql.LogDAO;
 
 @SuppressWarnings("deprecation")
 public class ReporteResumenTecnico {
@@ -32,7 +33,7 @@ public class ReporteResumenTecnico {
 					new HashMap<String, Object>(),
 					new JRBeanCollectionDataSource(resumen, false));
 		} catch (JRException ex) {
-			ex.printStackTrace();
+			LogDAO.error("Error al llenar reporte de resumen tecnico", ex);
 		}
 	}
 
@@ -43,6 +44,13 @@ public class ReporteResumenTecnico {
 			cache.put(path, report);
 		}
 		return report;
+	}
+
+	public static void precargar() {
+		try {
+			getCachedReport("reportes\\ResumenTecnico.jasper");
+		} catch (JRException e) {
+		}
 	}
 
 	public void mostrar() {

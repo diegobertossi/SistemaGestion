@@ -116,25 +116,38 @@ public class ControladorCliente implements ActionListener, MouseListener {
 	}
 
 	public void llenarTabla() {
-		this.ventanaClientes.getModelClientes().setRowCount(0); // Para vaciar
-																// la tabla
-		this.ventanaClientes.getModelClientes().setColumnCount(0);
-		this.ventanaClientes.getModelClientes().setColumnIdentifiers(this.ventanaClientes.getNombreColumnas());
+		final VentanaClientes ventana = this.ventanaClientes;
 
-		this.Clientes_en_tabla = agenda.obtenerCliente();
+		new SwingWorker<List<ClienteDTO>, Void>() {
+			@Override
+			protected List<ClienteDTO> doInBackground() throws Exception {
+				return agenda.obtenerCliente();
+			}
 
-		for (int i = 0; i < this.Clientes_en_tabla.size(); i++) {
-			Object[] fila = { this.Clientes_en_tabla.get(i).getRazon_Social(), this.Clientes_en_tabla.get(i).getCUIT(),
-					this.Clientes_en_tabla.get(i).getDomicilio(), this.Clientes_en_tabla.get(i).getContacto(),
-					this.Clientes_en_tabla.get(i).getTelefonoContacto(),
-					this.Clientes_en_tabla.get(i).getCorreoElectronico() };
-			this.ventanaClientes.getModelClientes().addRow(fila);
-		}
+			@Override
+			protected void done() {
+				try {
+					List<ClienteDTO> clientes = get();
+					Clientes_en_tabla = clientes;
 
-		ventanaClientes.setCellRender(this.ventanaClientes.getTablaClientes());
+					ventana.getModelClientes().setRowCount(0);
+					ventana.getModelClientes().setColumnCount(0);
+					ventana.getModelClientes().setColumnIdentifiers(ventana.getNombreColumnas());
 
-		tablaFiltros.agregarAutofiltros(this.ventanaClientes.getTablaClientes());
+					for (ClienteDTO cliente : clientes) {
+						Object[] fila = { cliente.getRazon_Social(), cliente.getCUIT(), cliente.getDomicilio(),
+								cliente.getContacto(), cliente.getTelefonoContacto(),
+								cliente.getCorreoElectronico() };
+						ventana.getModelClientes().addRow(fila);
+					}
 
+					ventana.setCellRender(ventana.getTablaClientes());
+					tablaFiltros.agregarAutofiltros(ventana.getTablaClientes());
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		}.execute();
 	}
 
 	private void llenarTablaSucursales(int idCliente) {

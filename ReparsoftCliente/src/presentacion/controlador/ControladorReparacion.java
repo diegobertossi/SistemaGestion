@@ -116,7 +116,12 @@ public class ControladorReparacion implements ActionListener, MouseListener, Key
     public void actionPerformed(ActionEvent e) {
         // Navegación principal
         if (e.getSource() == ventanaEquipos.getBtnVisualizarEquipos()) {
-            gestorVisualizacion.abrirVentanaVisualizarEquipos();
+            try {
+				gestorVisualizacion.abrirVentanaVisualizarEquipos();
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
             ventanaEquipos.dispose();
         } 
         else if (e.getSource() == ventanaEquipos.getBtnAgregarEquipos()) {

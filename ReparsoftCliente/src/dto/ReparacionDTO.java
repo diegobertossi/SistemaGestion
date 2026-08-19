@@ -151,6 +151,21 @@ public class ReparacionDTO {
 
 	}
 
+	public ReparacionDTO(int ELS, String NombreEquipo, String Marca, String Modelo, String NumeroDeSerie,
+			String Aviso, String EstadoTecnico, String EstadoComercial, boolean Agregadoaremito) {
+
+		this.ELS = ELS;
+		this.NombreEquipo = NombreEquipo;
+		this.Marca = Marca;
+		this.Modelo = Modelo;
+		this.NumeroDeSerie = NumeroDeSerie;
+		this.Aviso = Aviso;
+		this.EstadoTecnico = EstadoTecnico;
+		this.EstadoComercial = EstadoComercial;
+		this.Agregadoaremito = Agregadoaremito;
+
+	}
+
 	public ReparacionDTO(int ELS, String Fecha_Entrada, String Fechadereparacion, String Falla, String Solucion,
 			String Informecliente, String EstadoFisico, String EstadoTecnico, String EstadoComercial,
 			String RemitoCliente, int IDEquipo, int IDremito, String Cliente, String Sucursal, String FechAceptacion,

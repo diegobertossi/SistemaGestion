@@ -1,6 +1,7 @@
 package persistencia.dao.mysql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -12,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -142,5 +144,46 @@ public class ReparacionDAOImplTest {
         when(mockConn.prepareStatement(anyString())).thenThrow(new SQLException("BD caída"));
         ReparacionDAOImpl dao = new ReparacionDAOImpl("Bariloche");
         assertNull(dao.obtenerReparacionXels(1));
+    }
+
+    /** La query resumida del remito mapea las 9 columnas de la grilla (sin JOIN de Equipos.Nombre). */
+    @Test
+    public void readAllXIDclienteIDSucursalResumido_mapeaColumnasDeGrilla() throws SQLException {
+        when(mockRs.next()).thenReturn(true).thenReturn(true).thenReturn(false);
+        when(mockRs.getInt("ELS")).thenReturn(101).thenReturn(102);
+        when(mockRs.getString("Nombre")).thenReturn("TV Samsung 50").thenReturn("PC HP");
+        when(mockRs.getString("Marca")).thenReturn("Samsung").thenReturn("HP");
+        when(mockRs.getString("Modelo")).thenReturn("UE50").thenReturn("Pavilion");
+        when(mockRs.getString("NumeroDeSerie")).thenReturn("SN-1").thenReturn("SN-2");
+        when(mockRs.getString("Aviso")).thenReturn("Lunes").thenReturn("Viernes");
+        when(mockRs.getString("EstadoTecnico")).thenReturn("En Reparación").thenReturn("Terminado");
+        when(mockRs.getString("EstadoComercial")).thenReturn("Aceptado").thenReturn("NO Aceptado");
+        when(mockRs.getBoolean("Agregadoaremito")).thenReturn(false).thenReturn(false);
+
+        ReparacionDAOImpl dao = new ReparacionDAOImpl("Bariloche");
+        List<ReparacionDTO> lista = dao.readAllXIDclienteIDSucursalResumido(7, 3);
+
+        assertEquals(2, lista.size());
+        assertEquals(101, lista.get(0).getELS());
+        assertEquals("TV Samsung 50", lista.get(0).getNombreEquipo());
+        assertEquals("Samsung", lista.get(0).getMarca());
+        assertEquals("UE50", lista.get(0).getModelo());
+        assertEquals("SN-1", lista.get(0).getNumeroDeSerie());
+        assertEquals("Lunes", lista.get(0).getAviso());
+        assertEquals("En Reparación", lista.get(0).getEstadoTecnico());
+        assertEquals("Aceptado", lista.get(0).getEstadoComercial());
+        assertFalse(lista.get(0).getAgregadoaremito());
+        assertEquals(102, lista.get(1).getELS());
+        assertEquals("PC HP", lista.get(1).getNombreEquipo());
+        verify(mockStmt).setInt(1, 7);
+        verify(mockStmt).setInt(2, 3);
+    }
+
+    /** Sin filas, la query resumida devuelve lista vacía (no null). */
+    @Test
+    public void readAllXIDclienteIDSucursalResumido_sinResultadosDevuelveListaVacia() throws SQLException {
+        when(mockRs.next()).thenReturn(false);
+        ReparacionDAOImpl dao = new ReparacionDAOImpl("Bariloche");
+        assertEquals(0, dao.readAllXIDclienteIDSucursalResumido(7, 3).size());
     }
 }

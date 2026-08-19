@@ -22,6 +22,7 @@ public class ClienteDAOImpl implements ClienteDAO {
     private static final String MAXIMO_ID = "SELECT MAX(idCliente) FROM Cliente";
     private static final String ID_POR_NOMBRE = "SELECT idCliente FROM Cliente WHERE nombre = ?";
     private static final String CUIT_POR_ID = "SELECT CUIT FROM Cliente WHERE idCliente = ?";
+    private static final String POR_RAZON_SOCIAL = "SELECT CUIT, Domicilio FROM Cliente WHERE nombre = ?";
     private static final String CONTACTO_POR_NOMBRE = "SELECT Contacto FROM Cliente WHERE nombre = ?";
     private static final String EMAIL_POR_NOMBRE = "SELECT CorreoElectronico FROM Cliente WHERE nombre = ?";
     private static final String TELEFONO_POR_NOMBRE = "SELECT TelefonoContacto FROM Cliente WHERE nombre = ?";
@@ -114,6 +115,23 @@ public class ClienteDAOImpl implements ClienteDAO {
             LogDAO.error("Error al contar clientes", e);
         }
         return 0;
+    }
+
+    @Override
+    public ClienteDTO obtenerPorRazonSocial(String nombre) {
+        String sql = POR_RAZON_SOCIAL;
+        try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
+            stmt.setString(1, nombre);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new ClienteDTO(0, nombre, rs.getString("CUIT"), rs.getString("Domicilio"),
+                            null, null, null, null);
+                }
+            }
+        } catch (SQLException e) {
+            LogDAO.error("Error al obtener cliente por razon social: " + nombre, e);
+        }
+        return null;
     }
 
     @Override

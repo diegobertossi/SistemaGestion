@@ -55,6 +55,7 @@ import VistaPropias.CorrectorGramaticalAPI.ErrorGramatical;
 import VistaPropias.CorrectorGramaticalAPI.ResultadoRevision;
 import VistaPropias.DialogoRevisionGramatical;
 import modelo.Agenda;
+import util.RutasSistema;
 import presentacion.reportes.ReportePresupuesto;
 import presentacion.vista.VentanaAgregarImagenes;
 import presentacion.vista.VentanaEmail;
@@ -512,8 +513,11 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			progreso.mostrar();
 
 			new Thread(() -> {
+				final boolean[] guardadoPresupuesto = new boolean[] { false };
+				final String[] pdfPresupuesto = new String[] { null };
+				final ReportePresupuesto[] reporteHolder = new ReportePresupuesto[1];
+
 				try {
-					long inicio = System.currentTimeMillis();
 
 					if (btnPresupuestoPDF) {
 
@@ -521,12 +525,25 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						RegistroPresupuestoDTO rep = TomarDatosPantallaPresupuesto();
 						lista.add(rep);
 						ReportePresupuesto reporte = new ReportePresupuesto(rep, lista, agenda);
-						reporte.guardar();
+						reporteHolder[0] = reporte;
+
+						Thread guardarThread = new Thread(() -> {
+							guardadoPresupuesto[0] = reporte.guardar();
+						});
+						guardarThread.start();
 
 						ventanaGenerarPresupuesto.setChckPDFGenerado(true);
 
 						ReparacionDTO reparacionAeditar = TomarDatosPresupuesto();
 						agenda.editarReparacionPresupuesto(reparacionAeditar);
+
+						try {
+							guardarThread.join();
+						} catch (InterruptedException ex) {
+							Thread.currentThread().interrupt();
+						}
+
+						pdfPresupuesto[0] = reporte.getPdfGuardado();
 
 					} else {
 
@@ -536,10 +553,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 						switch (agenda.getUbicacionBase()) {
 						case "Bariloche":
-							pathBase = "F:/els/Bariloche/Administracion/Sistema/Informes Siemens/";
+							pathBase = RutasSistema.adaptar("F:/els/Bariloche/Administracion/Sistema/Informes Siemens/");
 							break;
 						case "Buenos Aires":
-							pathBase = "F:/els/Administracion/Sistema/Informes Siemens/";
+							pathBase = RutasSistema.adaptar("F:/els/Administracion/Sistema/Informes Siemens/");
 							break;
 						}
 
@@ -591,10 +608,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 							f.printStackTrace();
 						}
 					}
-
-					while (System.currentTimeMillis() - inicio < 2000) {
-						Thread.sleep(100);
-					}
 				} catch (Exception ex) {
 					progreso.cerrar();
 				}
@@ -607,13 +620,12 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					}
 
 					if (btnPresupuestoPDF) {
+						mostrarPdfPresupuesto(reporteHolder[0], pdfPresupuesto[0], guardadoPresupuesto[0]);
+
 						String[] opciones = {"EMAIL", "WHATSAPP", "NINGUNO"};
-						int seleccion3 = JOptionPane.showOptionDialog(ventanaGenerarPresupuesto,
+						int seleccion3 = mostrarOpcionesSiempreArriba(
 								"Se ha generado el presupuesto correctamente.\n\u00bfDesea enviarlo?",
-								"Presupuesto generado",
-								JOptionPane.DEFAULT_OPTION,
-								JOptionPane.QUESTION_MESSAGE,
-								null, opciones, opciones[2]);
+								"Presupuesto generado", opciones, 2, ventanaGenerarPresupuesto);
 
 						String NombreCliente = ventanaGenerarPresupuesto.getTextCliente().getText();
 						String Sucursal = ventanaGenerarPresupuesto.getTextSucursal().getText();
@@ -663,9 +675,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 								consumoAPI.ConsumoAPI.abrirWSP(numero, mensaje);
 								String ubicacion = agenda.dameUbucacionBase();
 								if (ubicacion != null) {
-									String ruta = ubicacion.equalsIgnoreCase("Bariloche")
-										? "F:\\els\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF"
-										: "F:\\els\\Administracion\\Sistema\\Presupuestos PDF";
+								String ruta = ubicacion.equalsIgnoreCase("Bariloche")
+									? RutasSistema.adaptar("F:\\els\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF")
+									: RutasSistema.adaptar("F:\\els\\Administracion\\Sistema\\Presupuestos PDF");
 									try {
 										Desktop.getDesktop().open(new java.io.File(ruta));
 									} catch (Exception ex) {
@@ -749,10 +761,10 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			String rutaBase;
 			switch (ubicacion) {
 			case "Bariloche":
-				rutaBase = "F:/ELS/Bariloche/Administracion/Sistema/";
+				rutaBase = RutasSistema.adaptar("F:/ELS/Bariloche/Administracion/Sistema/");
 				break;
 			case "Buenos Aires":
-				rutaBase = "F:/ELS/Administracion/Sistema/";
+				rutaBase = RutasSistema.adaptar("F:/ELS/Administracion/Sistema/");
 				break;
 			default:
 				System.err.println("Ubicación no válida: " + ubicacion);
@@ -795,8 +807,30 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 				lista.add(rep);
 
-				ReportePresupuesto reporte = new ReportePresupuesto(rep, lista, agenda);
-				reporte.mostrar();
+				presentacion.vista.VentanaProgreso progreso = new presentacion.vista.VentanaProgreso(
+						"GENERANDO PRESUPUESTO");
+				progreso.mostrar();
+
+				final ReportePresupuesto[] reporte = new ReportePresupuesto[1];
+				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+					@Override
+					protected Void doInBackground() throws Exception {
+						reporte[0] = new ReportePresupuesto(rep, lista, agenda);
+						return null;
+					}
+
+					@Override
+					protected void done() {
+						progreso.cerrar();
+						try {
+							get();
+							reporte[0].mostrar();
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					}
+				};
+				worker.execute();
 			}
 
 		}
@@ -1814,7 +1848,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		} else {
 
-			PrecioDolar = monedaFormatter.parseAmount(this.ventanaIngresoDePago.getTextPrecioDolar().getText());
+			PrecioDolar = monedaFormatter.parseAmount(this.ventanaGenerarPresupuesto.getTextPrecioDolar().getText());
 
 		}
 
@@ -1892,7 +1926,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		String aviso = this.ventanaGenerarPresupuesto.getTextAviso().getText();
 		String ClienteCliente = this.ventanaGenerarPresupuesto.getTextClienteCliente().getText();
 		String Cliente = this.ventanaGenerarPresupuesto.getTextCliente().getText();
-		String Sucursal = this.ventanaGenerarPresupuesto.getTextCliente().getText();
+		String Sucursal = this.ventanaGenerarPresupuesto.getTextSucursal().getText();
 		boolean chckpesos = this.ventanaGenerarPresupuesto.getChckPesos().isSelected();
 		boolean chckdolar = this.ventanaGenerarPresupuesto.getChckDolar().isSelected();
 		boolean chckIVA = this.ventanaGenerarPresupuesto.getChckIVA().isSelected();
@@ -2314,5 +2348,42 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		default:
 			break;
 		}
+	}
+
+	private void mostrarPdfPresupuesto(ReportePresupuesto reporte, String pdfGuardado, boolean guardado) {
+		if (guardado && pdfGuardado != null && !pdfGuardado.isEmpty() && Desktop.isDesktopSupported()) {
+			try {
+				File pdf = new File(pdfGuardado);
+				if (pdf.exists()) {
+					Desktop.getDesktop().open(pdf);
+					return;
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		if (reporte != null) {
+			reporte.mostrar();
+		}
+	}
+
+	private int mostrarOpcionesSiempreArriba(String mensaje, String titulo, String[] opciones, int porDefecto,
+			java.awt.Component parent) {
+		JOptionPane pane = new JOptionPane(mensaje, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, null,
+				opciones, opciones[porDefecto]);
+		JDialog dialogo = pane.createDialog(parent, titulo);
+		dialogo.setAlwaysOnTop(true);
+		dialogo.setVisible(true);
+
+		Object valor = pane.getValue();
+		if (valor == null) {
+			return -1;
+		}
+		for (int i = 0; i < opciones.length; i++) {
+			if (opciones[i].equals(valor)) {
+				return i;
+			}
+		}
+		return -1;
 	}
 }

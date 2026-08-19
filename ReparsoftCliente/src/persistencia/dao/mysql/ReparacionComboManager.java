@@ -16,6 +16,7 @@ import persistencia.conexion.Conexion;
 public class ReparacionComboManager {
 
     private Conexion conexion;
+    private volatile List<String> cacheELS = null;
 
     public ReparacionComboManager(Conexion conexion) {
         this.conexion = conexion;
@@ -49,12 +50,22 @@ public class ReparacionComboManager {
     }
 
     /**
-     * Llena un JComboBox con ELS
+     * Llena un JComboBox con ELS. La lista se cachea en sesión y se invalida al
+     * insertar una reparación nueva.
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void listarELS(JComboBox comboBox) {
-        List<String> datos = executeComboQuery(SQLQueries.READ_ALL_ELS);
-        populateComboBox(comboBox, datos);
+        if (cacheELS == null) {
+            cacheELS = executeComboQuery(SQLQueries.READ_ALL_ELS);
+        }
+        populateComboBox(comboBox, cacheELS);
+    }
+
+    /**
+     * Invalida el cache de ELS (llamar tras insertar/borrar reparaciones)
+     */
+    public void invalidarCacheELS() {
+        cacheELS = null;
     }
 
     /**
@@ -141,7 +152,7 @@ public class ReparacionComboManager {
                 datos.add(resultSet.getString(1));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en executeComboQuery", e);
         } finally {
             closeResources(statement, resultSet, conn);
         }
@@ -169,7 +180,7 @@ public class ReparacionComboManager {
                 datos.add(resultSet.getString(1));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en executeComboQueryWithParam", e);
         } finally {
             closeResources(statement, resultSet, conn);
         }
@@ -206,7 +217,7 @@ public class ReparacionComboManager {
                 statement.close();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogDAO.error("Error en closeResources", e);
         }
     }
 }

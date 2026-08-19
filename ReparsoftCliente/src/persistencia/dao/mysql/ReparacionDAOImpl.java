@@ -28,17 +28,29 @@ public class ReparacionDAOImpl implements ReparacionDAO {
 
     @Override
     public boolean insert(ReparacionDTO reparacion) {
-        return queryManager.insert(reparacion);
+        boolean resultado = queryManager.insert(reparacion);
+        if (resultado) {
+            comboManager.invalidarCacheELS();
+        }
+        return resultado;
     }
 
     @Override
     public boolean insertEquipo(ReparacionDTO reparacion) {
-        return queryManager.insertEquipo(reparacion);
+        boolean resultado = queryManager.insertEquipo(reparacion);
+        if (resultado) {
+            comboManager.invalidarCacheELS();
+        }
+        return resultado;
     }
 
     @Override
     public boolean delete(ReparacionDTO reparacion) {
-        return queryManager.delete(reparacion);
+        boolean resultado = queryManager.delete(reparacion);
+        if (resultado) {
+            comboManager.invalidarCacheELS();
+        }
+        return resultado;
     }
 
     @Override
@@ -117,6 +129,11 @@ public class ReparacionDAOImpl implements ReparacionDAO {
     }
 
     @Override
+    public List<ReparacionDTO> readAllXIDclienteIDSucursalResumido(Integer idCliente, Integer idSucursal) {
+        return queryManager.readAllXIDClienteIDSucursalResumido(idCliente, idSucursal);
+    }
+
+    @Override
     public List<ReparacionDTO> readAllXIDremito(int idRemito) {
         return queryManager.readAllXIDRemito(idRemito);
     }
@@ -146,6 +163,11 @@ public class ReparacionDAOImpl implements ReparacionDAO {
     @Override
     public int ingresosPorAnio(int anio) {
         return estadisticasManager.ingresosPorAnio(anio);
+    }
+
+    @Override
+    public ReparacionEstadisticasManager.TotalesPorAnio obtenerTotalesPorAnio(int anio) {
+        return estadisticasManager.obtenerTotalesPorAnio(anio);
     }
 
     @Override

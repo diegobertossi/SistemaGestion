@@ -22,6 +22,8 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.view.JasperViewer;
 import dto.RegistroEntradaReporteDTO;
 import modelo.Agenda;
+import persistencia.dao.mysql.LogDAO;
+import util.RutasSistema;
 
 public class ReporteRegistroEntrada {
 	private static final ConcurrentHashMap<String, JasperReport> cache = new ConcurrentHashMap<>();
@@ -47,7 +49,7 @@ public class ReporteRegistroEntrada {
 			fecha = dateFormat1.parse(reparacion.getFecha_Entrada());
 			fechas = dateFormat2.format(fecha);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			LogDAO.error("Error al parsear fecha de entrada ELS_" + reparacion.getELS(), e);
 		}
 
 		ELS = reparacion.getELS();
@@ -61,7 +63,7 @@ public class ReporteRegistroEntrada {
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte,
 					parametersMap, new JRBeanCollectionDataSource(reparaciones, false));
 		} catch (JRException ex) {
-			ex.printStackTrace();
+			LogDAO.error("Error al llenar reporte de registro de entrada ELS_" + ELS, ex);
 		}
 	}
 
@@ -72,6 +74,13 @@ public class ReporteRegistroEntrada {
 			cache.put(path, report);
 		}
 		return report;
+	}
+
+	public static void precargar() {
+		try {
+			getCachedReport("reportes\\ReporteRegistroEntrada2.jasper");
+		} catch (JRException e) {
+		}
 	}
 
 	public void mostrar() {
@@ -98,9 +107,9 @@ public class ReporteRegistroEntrada {
 		nombreArchivoPDF = "ELS_" + ELS + ".pdf";
 
 		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
-			outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Registros de Ingreso\\" + nombreArchivoPDF;
+			outFileName = RutasSistema.adaptar("F:\\ELS\\Bariloche\\Administracion\\Sistema\\Registros de Ingreso\\") + nombreArchivoPDF;
 		} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
-			outFileName = "F:\\ELS\\Administracion\\Sistema\\Registros de Ingreso\\" + nombreArchivoPDF;
+			outFileName = RutasSistema.adaptar("F:\\ELS\\Administracion\\Sistema\\Registros de Ingreso\\") + nombreArchivoPDF;
 		}
 
 		JRPdfExporter exporter = new JRPdfExporter();
@@ -110,7 +119,7 @@ public class ReporteRegistroEntrada {
 		try {
 			exporter.exportReport();
 		} catch (JRException e) {
-			e.printStackTrace();
+			LogDAO.error("Error al exportar registro de entrada PDF", e);
 		}
 	}
 }

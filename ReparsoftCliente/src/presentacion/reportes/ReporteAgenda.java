@@ -17,6 +17,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import dto.UsuarioDTO;
+import persistencia.dao.mysql.LogDAO;
 
 public class ReporteAgenda {
 	private static final ConcurrentHashMap<String, JasperReport> cache = new ConcurrentHashMap<>();
@@ -33,7 +34,7 @@ public class ReporteAgenda {
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
 					new JRBeanCollectionDataSource(personas));
 		} catch (JRException ex) {
-			ex.printStackTrace();
+			LogDAO.error("Error al llenar reporte de agenda", ex);
 		}
 	}
 
@@ -44,6 +45,13 @@ public class ReporteAgenda {
 			cache.put(path, report);
 		}
 		return report;
+	}
+
+	public static void precargar() {
+		try {
+			getCachedReport("reportes\\ReporteAgenda.jasper");
+		} catch (JRException e) {
+		}
 	}
 
 	public void mostrar() {

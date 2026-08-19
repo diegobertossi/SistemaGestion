@@ -152,6 +152,19 @@ public class SQLQueries {
         "reparaciones.EstadoComercial='NO Aceptado' ) and reparaciones.EstadoFisico != 'Enviado' and " +
         "reparaciones.Agregadoaremito != 1 and Cliente.idCliente = ? and Sucursal.IdSucursal = ? order by ELS";
 
+    /** Solo las 9 columnas que muestra la tabla de equipos del remito (mismas filas que READ_ALL_X_ID_CLIENTE_ID_SUCURSAL). */
+    public static final String REPARACIONES_X_CLIENTE_SUCURSAL_RESUMIDO =
+        "SELECT reparaciones.ELS, Equipos.Nombre, Equipos.Modelo, Equipos.Marca, Equipos.NumeroDeSerie, " +
+        "Equipos.Aviso, reparaciones.EstadoTecnico, reparaciones.EstadoComercial, reparaciones.Agregadoaremito " +
+        "FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) " +
+        "INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON " +
+        "Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON " +
+        "UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion " +
+        "WHERE (((Cliente.idCliente)=Equipos.idCliente) And (Sucursal.IdSucursal)=Equipos.idSucursal) " +
+        "and ((usuario.IdUsuario)=reparaciones.idUsuario) and (reparaciones.EstadoComercial='Aceptado' || " +
+        "reparaciones.EstadoComercial='NO Aceptado' ) and reparaciones.EstadoFisico != 'Enviado' and " +
+        "reparaciones.Agregadoaremito != 1 and Cliente.idCliente = ? and Sucursal.IdSucursal = ? order by reparaciones.ELS";
+
     public static final String READ_ALL_X_ID_REMITO = 
         "SELECT * FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON " +
         "Cliente.IdCliente = Sucursal.idCliente) INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) " +
@@ -302,6 +315,29 @@ public class SQLQueries {
     
     public static final String REP_ESPERA_POR_ANIO = 
         "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación'";
+
+    // Consultas consolidadas por año (1 scan por grupo en lugar de 12 scans)
+    // FechadeDiagnostico: diagnosticos, reparados, sinFallas, enGtia, enRep, ventas, sinRep, repAcep, repNoAcep, repEspera
+    public static final String RESUMEN_DIAGNOSTICOS_POR_ANIO = 
+        "select " +
+        "SUM(CASE WHEN reparaciones.EstadoTecnico != 'Sin Revisar' THEN 1 ELSE 0 END), " +
+        "SUM(CASE WHEN reparaciones.EstadoTecnico IN ('Reparado','No Aceptaron Reparación') THEN 1 ELSE 0 END), " +
+        "SUM(CASE WHEN reparaciones.EstadoTecnico = 'Sin Falla' THEN 1 ELSE 0 END), " +
+        "SUM(CASE WHEN reparaciones.EstadoTecnico = 'Reparado en Garantía' THEN 1 ELSE 0 END), " +
+        "SUM(CASE WHEN reparaciones.EstadoTecnico = 'En Reparación' THEN 1 ELSE 0 END), " +
+        "SUM(CASE WHEN reparaciones.EstadoTecnico = 'Vendido' THEN 1 ELSE 0 END), " +
+        "SUM(CASE WHEN reparaciones.EstadoTecnico = 'Sin Reparación' THEN 1 ELSE 0 END), " +
+        "SUM(CASE WHEN reparaciones.EstadoTecnico = 'Reparado' AND reparaciones.EstadoComercial = 'Aceptado' THEN 1 ELSE 0 END), " +
+        "SUM(CASE WHEN (reparaciones.EstadoTecnico = 'Reparado' OR reparaciones.EstadoTecnico = 'No Aceptaron Reparación') AND reparaciones.EstadoComercial = 'NO Aceptado' THEN 1 ELSE 0 END), " +
+        "SUM(CASE WHEN reparaciones.EstadoTecnico = 'Reparado' AND reparaciones.EstadoComercial = 'A la Espera de Aceptación' THEN 1 ELSE 0 END) " +
+        "from reparaciones where YEAR(reparaciones.FechadeDiagnostico) = ?";
+
+    // FechAceptacion: facturacionPeso, facturacionDolar
+    public static final String RESUMEN_ACEPTACION_POR_ANIO = 
+        "select " +
+        "SUM(CASE WHEN reparaciones.EstadoComercial = 'Aceptado' THEN reparaciones.PrecioPeso ELSE 0 END), " +
+        "SUM(CASE WHEN reparaciones.EstadoComercial = 'Aceptado' THEN reparaciones.PrecioDolar ELSE 0 END) " +
+        "from reparaciones where YEAR(reparaciones.FechAceptacion) = ?";
 
     // Consultas estadísticas por mes
     public static final String INGRESOS_POR_ANIO_X_MES = 
@@ -492,10 +528,11 @@ public class SQLQueries {
      */
     public static final String COUNT_REPARACIONES =
         "SELECT COUNT(*) " +
-        "FROM UbicacionRemitos INNER JOIN (Remitos INNER JOIN (((Cliente INNER JOIN Sucursal ON Cliente.IdCliente = Sucursal.idCliente) " +
-        "INNER JOIN Equipos ON Cliente.idCliente=Equipos.idCliente) INNER JOIN (reparaciones INNER JOIN usuario) ON " +
-        "Equipos.IdEquipo=reparaciones.idEquipo) ON Remitos.idRemito=reparaciones.idRemito) ON " +
-        "UbicacionRemitos.IdUbicacion=Remitos.IdUbicacion " +
-        "WHERE (((Cliente.idCliente)=Equipos.idCliente)) and ((Sucursal.IdSucursal)=Equipos.idSucursal) " +
-        "And ((usuario.IdUsuario)=reparaciones.idUsuario)";
+        "FROM reparaciones " +
+        "INNER JOIN Equipos ON Equipos.IdEquipo = reparaciones.idEquipo " +
+        "INNER JOIN usuario ON usuario.IdUsuario = reparaciones.idUsuario " +
+        "INNER JOIN Remitos ON Remitos.idRemito = reparaciones.idRemito " +
+        "INNER JOIN UbicacionRemitos ON UbicacionRemitos.IdUbicacion = Remitos.IdUbicacion " +
+        "INNER JOIN Cliente ON Cliente.idCliente = Equipos.idCliente " +
+        "INNER JOIN Sucursal ON Sucursal.IdSucursal = Equipos.idSucursal";
 }

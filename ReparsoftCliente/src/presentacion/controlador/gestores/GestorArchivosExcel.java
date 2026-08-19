@@ -9,6 +9,8 @@ import java.util.Calendar;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
+import util.RutasSistema;
+
 /**
  * Clase para gestionar la apertura de archivos Excel con manejo de contraseñas,
  * vínculos y dependencias
@@ -210,9 +212,9 @@ public class GestorArchivosExcel {
 	 */
 	private String construirRutaBase() {
 		if (ubicacionBase.equals("Bariloche")) {
-			return "F:\\els\\Bariloche\\Administracion\\Sistema\\Excels\\";
+			return RutasSistema.adaptar("F:\\els\\Bariloche\\Administracion\\Sistema\\Excels\\");
 		} else if (ubicacionBase.equals("Buenos Aires")) {
-			return "F:\\els\\Administracion\\Sistema\\Excels\\";
+			return RutasSistema.adaptar("F:\\els\\Administracion\\Sistema\\Excels\\");
 		}
 		return "";
 	}

@@ -1,6 +1,7 @@
 package presentacion.controlador;
 
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -20,7 +22,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -43,6 +44,7 @@ import dto.ClienteDTO;
 
 import dto.RemitoDTO;
 import dto.ReparacionDTO;
+import dto.SucursalDTO;
 
 public class ControladorSalidas implements ActionListener, MouseListener, ItemListener, KeyListener {
 	private VentanaSalidas ventanaSalidas;
@@ -146,9 +148,25 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 			ventanaSeleccionarCliente.getBtnAceptar().addActionListener(this);
 			ventanaSeleccionarCliente.getBtnCancelar().addActionListener(this);
 
-			agenda.ListarCliente(ventanaSeleccionarCliente.getComboCliente());
-			
-			VistaPropias.AutoCompletarComboBox.enable(ventanaSeleccionarCliente.getComboCliente(), false, true);
+			SwingWorker<Void, Void> cargarClientes = new SwingWorker<Void, Void>() {
+				@Override
+				protected Void doInBackground() {
+					agenda.ListarCliente(ventanaSeleccionarCliente.getComboCliente());
+					return null;
+				}
+
+				@Override
+				protected void done() {
+					try {
+						get();
+						VistaPropias.AutoCompletarComboBox.enable(ventanaSeleccionarCliente.getComboCliente(), false,
+								true);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+			};
+			cargarClientes.execute();
 
 			ventanaSeleccionarCliente.getComboCliente().addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
@@ -381,22 +399,24 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 			if (ventanaSeleccionarCliente.getComboCliente().getSelectedItem() != null && ventanaSeleccionarCliente
 					.getComboCliente().getSelectedItem() != ventanaSeleccionarCliente.getComboCliente().getItemAt(0)) {
 
-				clienteSeleccionado = ventanaSeleccionarCliente.getComboCliente().getSelectedItem().toString();
-				sucursalSeleccionada = ventanaSeleccionarCliente.getComboSucursal().getSelectedItem().toString();
+				if (ventanaSeleccionarCliente.getComboSucursal().getSelectedItem() == null) {
+					JOptionPane.showMessageDialog(null, "Debe seleccionar una Sucursal");
+					return;
+				}
+
+				ClienteDTO clienteDTO = (ClienteDTO) ventanaSeleccionarCliente.getComboCliente().getSelectedItem();
+				SucursalDTO sucursalDTO = (SucursalDTO) ventanaSeleccionarCliente.getComboSucursal().getSelectedItem();
+
+				String Cliente = clienteDTO.getRazon_Social();
+				String Sucursal = sucursalDTO.getNombreSucursal();
+				clienteSeleccionado = Cliente;
+				sucursalSeleccionada = Sucursal;
 
 				ventanaRemitos = new VentanaRemitos(this);
 
 				agregarListenersVentanaRemitos();
 
-				llenarComboUbicacion();
-
-				String Cliente = ventanaSeleccionarCliente.getComboCliente().getSelectedItem().toString();
-				String Sucursal = ventanaSeleccionarCliente.getComboSucursal().getSelectedItem().toString();
-
-				int idCliente = agenda.idClienteporNombre(Cliente);
-				int idSucursal = agenda.idSucursalporNombre(Sucursal, idCliente);
-
-				cargarTablaEquiposParaRemito(idCliente, idSucursal);
+				cargarTablaEquiposParaRemito(clienteDTO.getId(), sucursalDTO.getIdSucursal());
 
 				ventanaRemitos.getTxtCliente().setText(Cliente + " " + "_" + Sucursal + "_");
 
@@ -446,9 +466,31 @@ public class ControladorSalidas implements ActionListener, MouseListener, ItemLi
 				List<RemitoDTO> lista = new ArrayList<RemitoDTO>();
 				RemitoDTO rep = TomarDatos();
 				lista.add(rep);
-				ReporteRemitoSalida reporte = new ReporteRemitoSalida(rep, lista, agenda);
-				reporte.mostrar();
-			
+
+				presentacion.vista.VentanaProgreso progreso = new presentacion.vista.VentanaProgreso(
+						"GENERANDO REMITO");
+				progreso.mostrar();
+
+				final ReporteRemitoSalida[] reporte = new ReporteRemitoSalida[1];
+				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+					@Override
+					protected Void doInBackground() throws Exception {
+						reporte[0] = new ReporteRemitoSalida(rep, lista, agenda);
+						return null;
+					}
+
+					@Override
+					protected void done() {
+						progreso.cerrar();
+						try {
+							get();
+							reporte[0].mostrar();
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					}
+				};
+				worker.execute();
 			}
 
 			ventanaRemitos.setCursor(Cursor.getDefaultCursor());
@@ -565,37 +607,23 @@ private void generarRemito(VentanaRemitos ventanaRemitos, int filas) {
 			presentacion.vista.VentanaProgreso progreso = new presentacion.vista.VentanaProgreso("GENERANDO REMITO");
 			progreso.mostrar();
 
-			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 				@Override
 				protected Void doInBackground() {
 					try {
-						long inicio = System.currentTimeMillis();
-
 						List<RemitoDTO> lista = new ArrayList<RemitoDTO>();
-						RemitoDTO nuevoRemito = TomarDatos();
+						int idRemito = agenda.dameIDRemito() + 1;
+						RemitoDTO nuevoRemito = TomarDatos(idRemito);
 						lista.add(nuevoRemito);
 						ReporteRemitoSalida reporte = new ReporteRemitoSalida(nuevoRemito, lista, agenda);
 
-						new Thread(() -> {
-							reporte.guardar();
-						}).start();
-
-						while (System.currentTimeMillis() - inicio < 2000) {
-							Thread.sleep(100);
-						}
-
-						SwingUtilities.invokeLater(() -> {
-							reporte.mostrar();
+						final boolean[] guardadoOk = new boolean[1];
+						Thread guardarThread = new Thread(() -> {
+							guardadoOk[0] = reporte.guardar();
 						});
+						guardarThread.start();
 
-						while (!reporte.isViewerVisible()) {
-							Thread.sleep(100);
-							if (System.currentTimeMillis() - inicio > 10000) {
-								break;
-							}
-						}
-
-						RemitoDTO nuevoRemitoTabla = TomarDatosParaTabla();
+						RemitoDTO nuevoRemitoTabla = TomarDatosParaTabla(idRemito);
 						agenda.agregarRemito(nuevoRemitoTabla);
 
 						for (int i = 0; i < filas; i++) {
@@ -603,20 +631,33 @@ private void generarRemito(VentanaRemitos ventanaRemitos, int filas) {
 							Boolean agregar = (Boolean) ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8);
 
 							if (agregar != null && agregar) {
-								ReparacionDTO reparacionAeditar = TomarDatosPantalla(i);
+								ReparacionDTO reparacionAeditar = TomarDatosPantalla(i, idRemito);
 								agenda.editarReparacionAgregarRemito(reparacionAeditar);
 							}
 
 						}
 
+						try {
+							guardarThread.join();
+						} catch (InterruptedException ex) {
+							Thread.currentThread().interrupt();
+						}
+
+						final boolean guardado = guardadoOk[0];
+						final String pdfGuardado = reporte.getPdfGuardado();
 						SwingUtilities.invokeLater(() -> {
 							progreso.cerrar();
-						});
-
-						SwingUtilities.invokeLater(() -> {
+							mostrarPdfRemito(reporte, pdfGuardado);
 							ventanaRemitos.dispose();
-							JOptionPane.showMessageDialog(null,
-									"Se ha guardado el remito " + ventanaRemitos.getTextRemitoConformado().getText());
+							if (guardado) {
+								mostrarMensajeSiempreArriba(
+										"Se ha guardado el remito " + ventanaRemitos.getTextRemitoConformado().getText(),
+										"Remito guardado", JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								mostrarMensajeSiempreArriba(
+										"No se pudo guardar el PDF del remito. Se muestra el remito en pantalla.",
+										"Error al guardar", JOptionPane.ERROR_MESSAGE);
+							}
 						});
 
 					} catch (Exception ex) {
@@ -637,6 +678,29 @@ worker.execute();
 
 		}
 
+	}
+
+	private void mostrarPdfRemito(ReporteRemitoSalida reporte, String pdfGuardado) {
+		if (pdfGuardado != null && !pdfGuardado.isEmpty() && Desktop.isDesktopSupported()) {
+			try {
+				File pdf = new File(pdfGuardado);
+				if (pdf.exists()) {
+					Desktop.getDesktop().open(pdf);
+					return;
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		reporte.mostrar();
+	}
+
+	private void mostrarMensajeSiempreArriba(String mensaje, String titulo, int tipo) {
+		JOptionPane pane = new JOptionPane(mensaje, tipo);
+		JDialog dialogo = pane.createDialog(null, titulo);
+		dialogo.setAlwaysOnTop(true);
+		dialogo.setModal(true);
+		dialogo.setVisible(true);
 	}
 
 	public void agregarListenersVentanaRemitos() {
@@ -768,13 +832,11 @@ worker.execute();
 		}
 	}
 
-	private ReparacionDTO TomarDatosPantalla(int i) {
+	private ReparacionDTO TomarDatosPantalla(int i, int idRemito) {
 
 		int ELS = Integer.parseInt(this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 0).toString());
 		boolean agregadoAremito = (Boolean) this.ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8);
 		boolean remitoGenerado = true;
-
-		int idRemito = this.agenda.dameIDRemito();
 
 		ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, agregadoAremito, remitoGenerado, idRemito);
 
@@ -816,10 +878,13 @@ worker.execute();
 	}
 
 	private RemitoDTO TomarDatos() {
+		return TomarDatos(this.agenda.dameIDRemito() + 1);
+	}
+
+	private RemitoDTO TomarDatos(int idRemito) {
 
 		Integer IdUbicacion = IDdeUbicacion();
 		Integer codigoUbicacion = CodigoDeUbicacion(ventanaRemitos.getTextRemitoConformado().getText());
-		Integer IdRemito = this.agenda.dameIDRemito() + 1;
 		Integer numeroRemitoSalida = Integer.parseInt((String) ventanaRemitos.getTxtNumeroRemito().getValue());
 
 		List<String> descripcion = new ArrayList<String>();
@@ -851,33 +916,29 @@ worker.execute();
 		String RemitoConformado = this.ventanaRemitos.getTextRemitoConformado().getText();
 		int cantBultos = Integer.parseInt(this.ventanaRemitos.getTextCantBultos().getText());
 
-		List<ClienteDTO> clientes = agenda.obtenerCliente();
+		ClienteDTO clienteEncontrado = agenda.obtenerClientePorRazonSocial(NombreCliente);
+		String cuit = clienteEncontrado != null ? clienteEncontrado.getCUIT() : "";
+		String domicilio = clienteEncontrado != null ? clienteEncontrado.getDomicilio() : "";
 
-		Optional<ClienteDTO> clienteEncontrado = clientes.stream()
-				.filter(cliente -> cliente.getRazon_Social().equalsIgnoreCase(NombreCliente)).findFirst();
-
-		RemitoDTO nuevoRemito = new RemitoDTO(IdUbicacion, codigoUbicacion, IdRemito, numeroRemitoSalida, descripcion,
-				NombreCliente, RemitoConformado, cantBultos, clienteEncontrado.get().getCUIT(),
-				clienteEncontrado.get().getDomicilio());
+		RemitoDTO nuevoRemito = new RemitoDTO(IdUbicacion, codigoUbicacion, idRemito, numeroRemitoSalida, descripcion,
+				NombreCliente, RemitoConformado, cantBultos, cuit, domicilio);
 		
 				return nuevoRemito;
 	}
 
 	@SuppressWarnings("unused")
-	private RemitoDTO TomarDatosParaTabla() {
+	private RemitoDTO TomarDatosParaTabla(int idRemito) {
 
 		Integer IdUbicacion = IDdeUbicacion();
-		Integer codigoUbicacion = CodigoDeUbicacion(ventanaRemitos.getTextRemitoConformado().getText());
-		Integer IdRemito = this.agenda.dameIDRemito() + 1;
 		Integer numeroRemitoSalida = Integer.parseInt((String) ventanaRemitos.getTxtNumeroRemito().getValue());
 
-		RemitoDTO nuevoRemito = new RemitoDTO(IdUbicacion, numeroRemitoSalida, IdRemito);
+		RemitoDTO nuevoRemito = new RemitoDTO(IdUbicacion, numeroRemitoSalida, idRemito);
 
 		return nuevoRemito;
 	}
 
 	@SuppressWarnings("deprecation")
-	private void cargarTablaEquiposParaRemito(int idCliente, int idSucursal) {
+	private void cargarTablaEquiposParaRemito(final int idCliente, final int idSucursal) {
 
 		this.ventanaRemitos.getModelEquiposParaRemito().setRowCount(0); // Para
 		// vaciar
@@ -885,23 +946,43 @@ worker.execute();
 		this.ventanaRemitos.getModelEquiposParaRemito().setColumnCount(0);
 		this.ventanaRemitos.getModelEquiposParaRemito().setColumnIdentifiers(this.ventanaRemitos.getNombreColumnas());
 
-		this.Reparaciones_en_tabla = (List<ReparacionDTO>) agenda.obtenerReparacionXIDclienteIDsucursal(idCliente,
-				idSucursal);
+		this.ventanaRemitos.getBtnGuardarRemito().setEnabled(false);
 
-		for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
+		SwingWorker<List<ReparacionDTO>, Void> worker = new SwingWorker<List<ReparacionDTO>, Void>() {
+			@Override
+			protected List<ReparacionDTO> doInBackground() {
+				return (List<ReparacionDTO>) agenda.obtenerReparacionResumenXIDclienteIDsucursal(idCliente,
+						idSucursal);
+			}
 
-			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
-					this.Reparaciones_en_tabla.get(i).getNombreEquipo(), this.Reparaciones_en_tabla.get(i).getMarca(),
-					this.Reparaciones_en_tabla.get(i).getModelo(), this.Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
-					this.Reparaciones_en_tabla.get(i).getAviso(), this.Reparaciones_en_tabla.get(i).getEstadoTecnico(),
-					this.Reparaciones_en_tabla.get(i).getEstadoComercial(),
-					this.Reparaciones_en_tabla.get(i).getAgregadoaremito()
+			@Override
+			protected void done() {
+				try {
+					Reparaciones_en_tabla = get();
+					for (int i = 0; i < Reparaciones_en_tabla.size(); i++) {
 
-			};
-			this.ventanaRemitos.getModelEquiposParaRemito().addRow(fila);
-		}
+						Object[] fila = { Reparaciones_en_tabla.get(i).getELS(),
+								Reparaciones_en_tabla.get(i).getNombreEquipo(),
+								Reparaciones_en_tabla.get(i).getMarca(), Reparaciones_en_tabla.get(i).getModelo(),
+								Reparaciones_en_tabla.get(i).getNumeroDeSerie(),
+								Reparaciones_en_tabla.get(i).getAviso(),
+								Reparaciones_en_tabla.get(i).getEstadoTecnico(),
+								Reparaciones_en_tabla.get(i).getEstadoComercial(),
+								Reparaciones_en_tabla.get(i).getAgregadoaremito()
 
-		ventanaRemitos.setCellRender(this.ventanaRemitos.getTblEquiposParaRemito());
+						};
+						ventanaRemitos.getModelEquiposParaRemito().addRow(fila);
+					}
+
+					ventanaRemitos.setCellRender(ventanaRemitos.getTblEquiposParaRemito());
+					llenarComboUbicacion();
+					ventanaRemitos.getBtnGuardarRemito().setEnabled(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		worker.execute();
 
 		this.ventanaRemitos.show();
 
@@ -918,24 +999,46 @@ worker.execute();
 		this.ventanaRemitos.getModelEquiposParaRemito().setColumnCount(0);
 		this.ventanaRemitos.getModelEquiposParaRemito().setColumnIdentifiers(this.ventanaRemitos.getNombreColumnas());
 
-		this.reparacion = agenda.dameReparacionXels(els);
-
-		Object[] fila = { this.reparacion.getELS(), this.reparacion.getNombreEquipo(), this.reparacion.getMarca(),
-				this.reparacion.getModelo(), this.reparacion.getNumeroDeSerie(), this.reparacion.getAviso(),
-				this.reparacion.getEstadoTecnico(), this.reparacion.getEstadoComercial(),
-				this.reparacion.getAgregadoaremito() };
-		this.ventanaRemitos.getModelEquiposParaRemito().addRow(fila);
-
-		ventanaRemitos.setCellRender(this.ventanaRemitos.getTblEquiposParaRemito());
-
-		String Cliente = this.reparacion.getCliente();
-		String Sucursal = this.reparacion.getSucursal();
-
-		ventanaRemitos.getTxtCliente().setText(Cliente + " " + "_" + Sucursal + "_");
+		ventanaRemitos.getBtnGuardarRemito().setEnabled(false);
 
 		this.ventanaRemitos.show();
 
-		llenarComboUbicacion();
+		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+			@Override
+			protected Void doInBackground() {
+				reparacion = agenda.dameReparacionXels(els);
+				agenda.ListarUbicacion(ventanaRemitos.getComboUbicacion());
+				return null;
+			}
+
+			@Override
+			protected void done() {
+				try {
+					get();
+					if (reparacion == null)
+						return;
+
+					Object[] fila = { reparacion.getELS(), reparacion.getNombreEquipo(), reparacion.getMarca(),
+							reparacion.getModelo(), reparacion.getNumeroDeSerie(), reparacion.getAviso(),
+							reparacion.getEstadoTecnico(), reparacion.getEstadoComercial(),
+							reparacion.getAgregadoaremito() };
+					ventanaRemitos.getModelEquiposParaRemito().addRow(fila);
+
+					ventanaRemitos.setCellRender(ventanaRemitos.getTblEquiposParaRemito());
+
+					String Cliente = reparacion.getCliente();
+					String Sucursal = reparacion.getSucursal();
+
+					ventanaRemitos.getTxtCliente().setText(Cliente + " " + "_" + Sucursal + "_");
+
+					ventanaRemitos.getBtnGuardarRemito().setEnabled(true);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		};
+		worker.execute();
+
 		return ventanaRemitos;
 
 	}
@@ -1000,22 +1103,11 @@ worker.execute();
 	@SuppressWarnings("unused")
 	private int CodigoDeUbicacion(String ubicacion) {
 
-		int numero;
-
-		int codigo;
-
 		String[] parts = ubicacion.split(" - ");
 		part1 = parts[0]; // 123
 		part2 = parts[1]; // 654321
-		//
-		// System.out.println(part1);
-		// System.out.println(part2);
 
-		codigo = Integer.parseInt(part1);
-
-		numero = agenda.obtenerNumeroRemito(codigo) + 1;
-
-		return codigo;
+		return Integer.parseInt(part1);
 
 	}
 

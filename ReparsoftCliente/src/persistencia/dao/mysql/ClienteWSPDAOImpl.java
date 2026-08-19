@@ -19,7 +19,7 @@ public class ClienteWSPDAOImpl implements ClienteWSPDAO {
     private static final String DELETE = "DELETE FROM ClienteWSP WHERE idClienteWSP = ?";
     private static final String READ_ALL = "SELECT * FROM ClienteWSP";
     private static final String MAXIMO_ID = "SELECT MAX(idClienteWSP) FROM ClienteWSP";
-    private static final String ID_POR_NOMBRE = "SELECT idClienteWSP FROM ClienteWSP WHERE nombre = ?";
+    private static final String ID_POR_NOMBRE = "SELECT idClienteWSP FROM ClienteWSP WHERE nombreWSP = ?";
     private static final String CONTACTO_X_ORGANIZACION = "SELECT nombreWSP FROM ClienteWSP WHERE organizacion = ?";
     private static final String TELEFONO_X_CONTACTO = "SELECT TelefonoWSP FROM ClienteWSP WHERE nombreWSP = ?";
     private static final String SIN_REPETIDOS = "SELECT DISTINCTROW organizacion FROM ClienteWSP";

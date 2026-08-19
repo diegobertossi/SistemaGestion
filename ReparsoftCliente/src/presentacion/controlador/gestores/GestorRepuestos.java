@@ -101,10 +101,6 @@ public class GestorRepuestos {
      */
     public void editarRepuesto(VentanaVisualizarEquipos ventanaVisualizarEquipos) {
     	
-    	int i = ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow();
-    	repuestosEnTabla = controlador.getGestorVisualizacion().getRepuestosEnTabla();
-    	repuestoSeleccionado = repuestosEnTabla.get(i);
-    	
         int fila = ventanaVisualizarEquipos.getTablaRepuestos().getSelectedRow();
        
         if (fila < 0) {
@@ -114,6 +110,10 @@ public class GestorRepuestos {
         }
         
         try {
+            repuestosEnTabla = controlador.getGestorVisualizacion().getRepuestosEnTabla();
+            repuestoSeleccionado = (repuestosEnTabla != null && fila < repuestosEnTabla.size())
+                    ? repuestosEnTabla.get(fila) : null;
+            
             DefaultTableModel modelo = ventanaVisualizarEquipos.getModelRepuestos();
             String referencia = modelo.getValueAt(fila, 0).toString();
             String original = modelo.getValueAt(fila, 1).toString();

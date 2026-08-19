@@ -176,6 +176,10 @@ public class Agenda {
 		return Cliente.obtenerIDporNombre(nombreCliente);
 	}
 
+	public ClienteDTO obtenerClientePorRazonSocial(String nombreCliente) {
+		return Cliente.obtenerPorRazonSocial(nombreCliente);
+	}
+
 	public String ContactoPorCliente(String nombreCliente) {
 		return Cliente.obtenerContactoPorCliente(nombreCliente);
 	}
@@ -361,6 +365,10 @@ public class Agenda {
 		return ReparacionR.readAllXIDclienteIDSucursal(IDcliente, IDsucursal);
 	}
 
+	public List<ReparacionDTO> obtenerReparacionResumenXIDclienteIDsucursal(Integer IDcliente, Integer IDsucursal) {
+		return ReparacionR.readAllXIDclienteIDSucursalResumido(IDcliente, IDsucursal);
+	}
+
 	public List<ReparacionDTO> obtenerReparacionesXremito(int iDremito) {
 		return ReparacionR.readAllXIDremito(iDremito);
 	}
@@ -375,6 +383,13 @@ public class Agenda {
 
 	public int dameIngresosPorAnio(int anio) {
 		return ReparacionR.ingresosPorAnio(anio);
+	}
+
+	/**
+	 * Todos los totales por año en una única operación consolidada
+	 */
+	public persistencia.dao.mysql.ReparacionEstadisticasManager.TotalesPorAnio obtenerTotalesPorAnio(int anio) {
+		return ReparacionR.obtenerTotalesPorAnio(anio);
 	}
 
 	public int dameDiagnosticosPorAnio(int anio) {

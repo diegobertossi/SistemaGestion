@@ -10,6 +10,7 @@ import dto.ReparacionDTO;
 import modelo.Agenda;
 import presentacion.vista.VentanaVisualizarEquipos;
 import presentacion.vista.VentanaWSP;
+import util.RutasSistema;
 
 /**
  * GestorClientesWSP
@@ -114,9 +115,9 @@ public class GestorClientesWSP {
         String ruta;
 
         if (ubicacion != null && ubicacion.equalsIgnoreCase("Bariloche")) {
-            ruta = "F:\\els\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF";
+            ruta = RutasSistema.adaptar("F:\\els\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF");
         } else if (ubicacion != null && ubicacion.equalsIgnoreCase("Buenos Aires")) {
-            ruta = "F:\\els\\Administracion\\Sistema\\Presupuestos PDF";
+            ruta = RutasSistema.adaptar("F:\\els\\Administracion\\Sistema\\Presupuestos PDF");
         } else {
             return; // Ubicación no reconocida, no abre nada
         }

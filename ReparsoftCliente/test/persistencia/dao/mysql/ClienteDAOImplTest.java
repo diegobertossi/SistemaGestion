@@ -188,6 +188,37 @@ public class ClienteDAOImplTest {
         assertEquals("", dao.obtenerContactoPorCliente("Nadie"));
     }
 
+    /** obtenerPorRazonSocial consulta por nombre y mapea CUIT + Domicilio (sin leer toda la tabla). */
+    @Test
+    public void obtenerPorRazonSocial_mapeaCuitYDomicilio() throws SQLException {
+        when(mockRs.next()).thenReturn(true);
+        when(mockRs.getString("CUIT")).thenReturn("30-11111111-1");
+        when(mockRs.getString("Domicilio")).thenReturn("Calle 1");
+
+        ClienteDAOImpl dao = new ClienteDAOImpl("Bariloche");
+        ClienteDTO clienteEncontrado = dao.obtenerPorRazonSocial("Cliente SA");
+
+        assertEquals("Cliente SA", clienteEncontrado.getRazon_Social());
+        assertEquals("30-11111111-1", clienteEncontrado.getCUIT());
+        assertEquals("Calle 1", clienteEncontrado.getDomicilio());
+    }
+
+    /** obtenerPorRazonSocial sin coincidencias devuelve null (sin excepción). */
+    @Test
+    public void obtenerPorRazonSocial_sinResultadosDevuelveNull() throws SQLException {
+        when(mockRs.next()).thenReturn(false);
+        ClienteDAOImpl dao = new ClienteDAOImpl("Bariloche");
+        assertEquals(null, dao.obtenerPorRazonSocial("Inexistente"));
+    }
+
+    /** obtenerPorRazonSocial ante excepción SQL devuelve null (sin reventar). */
+    @Test
+    public void obtenerPorRazonSocial_conExcepcionSQLDevuelveNull() throws SQLException {
+        when(mockConn.prepareStatement(anyString())).thenThrow(new SQLException("error de red"));
+        ClienteDAOImpl dao = new ClienteDAOImpl("Bariloche");
+        assertEquals(null, dao.obtenerPorRazonSocial("Cliente SA"));
+    }
+
     /** obtenerReparacionxIDCliente informa true cuando el COUNT es > 0. */
     @Test
     public void obtenerReparacionxIDCliente_detectaReparaciones() throws SQLException {

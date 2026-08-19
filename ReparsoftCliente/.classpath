@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="src" path="test">
+		<output>test-bin</output>
+	</classpathentry>
 	<classpathentry kind="src" path="img"/>
 	<classpathentry kind="src" path="Diccionario"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-beanutils-1.9.0.jar"/>
@@ -10,7 +12,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/JTattoo-1.6.11.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jcalendar-1.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jgoodies-forms-1.8.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/swingx-all-1.6.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/liquidlnf.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/syntheticaBlackEye.jar"/>
@@ -27,7 +29,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/syntheticaSkyMetallic.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/syntheticaWhiteVision.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jortho.jar"/>
-	<classpathentry exported="true" kind="lib" path="javax.mail.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/javax.mail.jar"/>
 	<classpathentry kind="lib" path="lib/activation.jar"/>
 	<classpathentry kind="lib" path="lib/json-20220320.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections4-4.4.jar"/>
@@ -42,7 +44,6 @@
 	<classpathentry kind="lib" path="lib/jackson-dataformat-xml-2.14.1.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-core-2.14.1.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-annotations-2.14.1.jar"/>
-	<classpathentry kind="lib" path="lib/itext-2.1.7.js8.jar"/>
 	<classpathentry kind="lib" path="lib/xmlbeans-5.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/SparseBitSet-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/poi-ooxml-lite-5.2.3.jar"/>
@@ -59,8 +60,8 @@
 	<classpathentry kind="lib" path="lib/ant-1.10.12.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-core-2.20.0.jar"/>
 	<classpathentry kind="lib" path="lib/jasperreports-6.21.3.jar"/>
-	<classpathentry kind="lib" path="Fonts/Roboto.jar"/>
-	<classpathentry kind="lib" path="Fonts/MyfuenteCambria.jar"/>
+	<classpathentry kind="lib" path="lib/Roboto.jar"/>
+	<classpathentry kind="lib" path="lib/MyfuenteCambria.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-j-8.4.0.jar"/>
 	<classpathentry kind="lib" path="lib/jbcrypt-0.4.jar"/>
 	<classpathentry kind="lib" path="lib/gson-2.10.1.jar"/>
@@ -83,7 +84,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
+	<classpathentry kind="lib" path="lib/miglayout15-swing.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="module" value="true"/>

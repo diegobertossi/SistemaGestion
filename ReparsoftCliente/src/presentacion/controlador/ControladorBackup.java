@@ -37,6 +37,7 @@ import presentacion.vista.PopupProgresoBackup;
 import presentacion.vista.VentanaBackUp;
 import presentacion.vista.VentanaOpcionesBackup;
 import util.Config;
+import util.RutasSistema;
 
 import java.util.Arrays;
 import java.util.List;
@@ -117,9 +118,9 @@ public class ControladorBackup implements ActionListener, MouseListener {
 				+ (dia.getYear() + 1900) + ".sql";
 
 		if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
-			rutadefaultBackup = "F:\\els\\Administracion\\Sistema\\Base de datos\\Backups\\";
+			rutadefaultBackup = RutasSistema.adaptar("F:\\els\\Administracion\\Sistema\\Base de datos\\Backups\\");
 		} else if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
-			rutadefaultBackup = "F:\\els\\Bariloche\\Administracion\\Sistema\\Base de datos\\Backups\\";
+			rutadefaultBackup = RutasSistema.adaptar("F:\\els\\Bariloche\\Administracion\\Sistema\\Base de datos\\Backups\\");
 		}
 
 		String NombreBackUpSinExtension = "Backup Reparsoft " + dia.getDate() + "-" + (dia.getMonth() + 1) + "-"

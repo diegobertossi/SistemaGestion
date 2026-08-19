@@ -66,7 +66,7 @@ public class GestorListadoEquipos {
 		ventanaVisualizarEquipos.setTextELS(Integer.toString(numeroELS));
 
 		// Cargar datos en la ventana
-		controlador.getGestorVisualizacion().cargarDatosEquipo(ventanaVisualizarEquipos, numeroELS);
+		controlador.getGestorVisualizacion().cargarDatosEquipoAsync(ventanaVisualizarEquipos, numeroELS);
 
 		// Agregar listeners específicos para listado
 		// agregarListenersVentanaVisualizarEquiposListado(ventanaVisualizarEquipos);
@@ -94,7 +94,7 @@ public class GestorListadoEquipos {
 		ventanaVisualizarEquipos.setTextELS(Integer.toString(numeroELS));
 
 		// Cargar datos en la ventana
-		controlador.getGestorVisualizacion().cargarDatosEquipo(ventanaVisualizarEquipos, numeroELS);
+		controlador.getGestorVisualizacion().cargarDatosEquipoAsync(ventanaVisualizarEquipos, numeroELS);
 
 		return ventanaVisualizarEquipos;
 	}
@@ -188,10 +188,6 @@ public class GestorListadoEquipos {
 						reporte.guardar();
 					}).start();
 
-					while (System.currentTimeMillis() - inicio < 2000) {
-						Thread.sleep(100);
-					}
-
 					SwingUtilities.invokeLater(() -> {
 						reporte.mostrar();
 					});
@@ -207,9 +203,6 @@ public class GestorListadoEquipos {
 						progreso.cerrar();
 					});
 				} else {
-					while (System.currentTimeMillis() - inicio < 2000) {
-						Thread.sleep(100);
-					}
 					SwingUtilities.invokeLater(() -> {
 						progreso.cerrar();
 						JOptionPane.showMessageDialog(null, "No se encontraron datos para el registro", "Aviso",

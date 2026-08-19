@@ -180,7 +180,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                 if (rs.next()) {
                     UsuarioDTO usuario = mapearUsuario(rs);
                     String stored = usuario.getPass();
-                    System.out.println("[LOGIN DEBUG] login=" + login + " | stored='" + stored + "' | stored.length=" + (stored != null ? stored.length() : "null") + " | pass='" + pass + "'");
                     if (stored != null && !stored.isEmpty()) {
                         // 1. Plain text (sin encriptar, migración directa) - PRIMERO
                         if (pass.equals(stored)) {
@@ -198,7 +197,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                         // 3. AES (nuevo formato Base64) - todo lo demás
                         else {
                             String decrypted = CryptoUtil.decrypt(stored);
-                            System.out.println("[LOGIN DEBUG] AES decrypted='" + decrypted + "'");
                             if (pass.equals(decrypted)) {
                                 return usuario;
                             }

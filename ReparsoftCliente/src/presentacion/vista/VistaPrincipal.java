@@ -4,10 +4,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-
 import javax.swing.UIManager;
 import java.awt.Color;
 
@@ -27,14 +23,12 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
+import util.RutasSistema;
 import java.awt.Rectangle;
 
 public class VistaPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JMenuItem btnTecnicos;
-	private JMenuItem btnClientes;
-	private JMenuItem btnReparaciones;
 	private JButton botonClientes;
 	private JButton botonEquipos;
 	private JButton botonSalidas;
@@ -44,6 +38,7 @@ public class VistaPrincipal extends JFrame {
 	private JButton botonUsuarios;
 	private JButton botonBackUp;
 	private JButton btnSalir;
+	private JLabel lblModoPrueba;
 	private JPanel panelDeControl;
 	private JTextField textUsuario;
 	private JTextField textVersionSoft;
@@ -148,6 +143,14 @@ public class VistaPrincipal extends JFrame {
 		btnSalir.setIcon(new ImageIcon(this.getClass().getResource("/Icono salir.png")));
 		btnSalir.setHorizontalTextPosition(SwingConstants.RIGHT);
 
+		lblModoPrueba = new JLabel("SISTEMA EN MODO PRUEBA");
+		lblModoPrueba.setHorizontalAlignment(SwingConstants.CENTER);
+		lblModoPrueba.setForeground(new Color(255, 0, 51));
+		lblModoPrueba.setFont(new Font("Cambria", Font.BOLD, 9));
+		lblModoPrueba.setBounds(352, 46, 124, 14);
+		lblModoPrueba.setVisible(RutasSistema.esModoPrueba());
+		panel_1.add(lblModoPrueba);
+
 		panelDeControl = new JPanel();
 		panelDeControl.setBounds(10, 208, 462, 201);
 		panel_1.add(panelDeControl);
@@ -157,10 +160,6 @@ public class VistaPrincipal extends JFrame {
 
 		botonEquipos = new JButton("EQUIPOS");
 		botonEquipos.setForeground(new Color(0, 0, 128));
-		botonEquipos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
 		botonEquipos.setBounds(11, 13, 143, 49);
 		botonEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonEquipos.setFont(new Font("Cambria", Font.BOLD, 13));
@@ -240,10 +239,6 @@ public class VistaPrincipal extends JFrame {
 
 		botonConfiguracion = new JButton("CONFIGURACIÓN");
 		botonConfiguracion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonConfiguracion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		botonConfiguracion.setToolTipText("Configuraciones del Sistema");
 		botonConfiguracion.setForeground(new Color(0, 0, 128));
 		botonConfiguracion.setFont(new Font("Cambria", Font.BOLD, 13));
@@ -379,30 +374,6 @@ public class VistaPrincipal extends JFrame {
 
 	}
 
-	public JMenuItem getBtnTecnicos() {
-		return btnTecnicos;
-	}
-
-	public void setBtnTecnicos(JMenuItem btnTecnicos) {
-		this.btnTecnicos = btnTecnicos;
-	}
-
-	public JMenuItem getBtnClientes() {
-		return btnClientes;
-	}
-
-	public void setBtnClientes(JMenuItem btnClientes) {
-		this.btnClientes = btnClientes;
-	}
-
-	public JMenuItem getBtnReparaciones() {
-		return btnReparaciones;
-	}
-
-	public void setBtnReparaciones(JMenuItem btnReparaciones) {
-		this.btnReparaciones = btnClientes;
-	}
-
 	public JTextField getTextUsuario() {
 		return textUsuario;
 	}
@@ -429,6 +400,10 @@ public class VistaPrincipal extends JFrame {
 
 	public JButton getBtnSalir() {
 		return btnSalir;
+	}
+
+	public JLabel getLblModoPrueba() {
+		return lblModoPrueba;
 	}
 
 	public void setBtnSalir(JButton btnSalir) {

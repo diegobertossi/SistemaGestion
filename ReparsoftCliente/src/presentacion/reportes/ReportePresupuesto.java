@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import net.sf.jasperreports.engine.JRException;
@@ -26,6 +25,8 @@ import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 import net.sf.jasperreports.view.JasperViewer;
 import dto.RegistroPresupuestoDTO;
 import modelo.Agenda;
+import persistencia.dao.mysql.LogDAO;
+import util.RutasSistema;
 
 @SuppressWarnings("deprecation")
 public class ReportePresupuesto {
@@ -48,31 +49,12 @@ public class ReportePresupuesto {
 		Cliente = reparacion.getCliente();
 		this.agenda = agenda;
 
-		JTextField imagePathField = new JTextField(30);
-		imagePathField.setEditable(false);
-		JTextField imagePathField2 = new JTextField(30);
-		imagePathField2.setEditable(false);
-		JTextField imagePathField3 = new JTextField(30);
-		imagePathField3.setEditable(false);
-		JTextField imagePathField4 = new JTextField(30);
-		imagePathField4.setEditable(false);
-		JTextField imagePathField5 = new JTextField(30);
-		imagePathField5.setEditable(false);
-		JTextField imagePathField6 = new JTextField(30);
-		imagePathField6.setEditable(false);
-
 		try {
 			this.reporte = getCachedReport(reportFileName);
-			parametersMap.put("imagePath", imagePathField.getText().isEmpty() ? null : imagePathField.getText());
-			parametersMap.put("imagePath2", imagePathField2.getText().isEmpty() ? null : imagePathField2.getText());
-			parametersMap.put("imagePath3", imagePathField3.getText().isEmpty() ? null : imagePathField3.getText());
-			parametersMap.put("imagePath4", imagePathField4.getText().isEmpty() ? null : imagePathField4.getText());
-			parametersMap.put("imagePath5", imagePathField5.getText().isEmpty() ? null : imagePathField5.getText());
-			parametersMap.put("imagePath6", imagePathField6.getText().isEmpty() ? null : imagePathField6.getText());
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
 					new JRBeanCollectionDataSource(Presupuesto, false));
 		} catch (JRException ex) {
-			ex.printStackTrace();
+			LogDAO.error("Error al llenar reporte de presupuesto ELS_" + ELS, ex);
 		}
 	}
 
@@ -83,6 +65,15 @@ public class ReportePresupuesto {
 			cache.put(path, report);
 		}
 		return report;
+	}
+
+	public static void precargar() {
+		try {
+			JasperReport reporte = getCachedReport("reportes\\Presupuesto.jasper");
+			JasperFillManager.fillReport(reporte, new HashMap<String, Object>(),
+					new JRBeanCollectionDataSource(new java.util.ArrayList<Object>(), false));
+		} catch (JRException e) {
+		}
 	}
 
 	public void mostrar() {
@@ -110,13 +101,13 @@ public class ReportePresupuesto {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void guardar() {
+	public boolean guardar() {
 		nombreArchivoPDF = "Presupuesto ELS_" + ELS + "_" + Cliente + ".pdf";
 
 		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
-			outFileName = "F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF\\" + nombreArchivoPDF;
+			outFileName = RutasSistema.adaptar("F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF\\") + nombreArchivoPDF;
 		} else if (agenda.getUbicacionBase().compareTo("Buenos Aires") == 0) {
-			outFileName = "F:\\ELS\\Administracion\\Sistema\\Presupuestos PDF\\" + nombreArchivoPDF;
+			outFileName = RutasSistema.adaptar("F:\\ELS\\Administracion\\Sistema\\Presupuestos PDF\\") + nombreArchivoPDF;
 		}
 
 		File archivoPDF = new File(outFileName);
@@ -125,7 +116,7 @@ public class ReportePresupuesto {
 				"El archivo PDF est\u00e1 abierto en otro programa.\n" +
 				"Por favor, cierre el archivo:\n'" + nombreArchivoPDF + "'\ne intente nuevamente.",
 				"Archivo en Uso", JOptionPane.WARNING_MESSAGE);
-			return;
+			return false;
 		}
 
 		JRPdfExporter exporter = new JRPdfExporter();
@@ -138,11 +129,17 @@ public class ReportePresupuesto {
 
 		try {
 			exporter.exportReport();
+			return true;
 		} catch (JRException e) {
 			JOptionPane.showMessageDialog(null,
 				"Error al exportar el reporte: " + e.getMessage(),
 				"Error", JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
+			LogDAO.error("Error al exportar presupuesto PDF", e);
+			return false;
 		}
+	}
+
+	public String getPdfGuardado() {
+		return outFileName;
 	}
 }

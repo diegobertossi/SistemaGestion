@@ -15,6 +15,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
 import java.awt.Cursor;
 
 public class VentanaUbicacionBaseDeDatos extends JFrame 
@@ -26,6 +28,8 @@ public class VentanaUbicacionBaseDeDatos extends JFrame
 	private JPanel panel;
 	
 	private JComboBox comboUbicacion;
+	private JToggleButton btnModoPrueba;
+	private boolean cambiandoModo = false;
 	
 	public VentanaUbicacionBaseDeDatos() 
 	{
@@ -61,9 +65,42 @@ public class VentanaUbicacionBaseDeDatos extends JFrame
 			btnAcceder.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			btnAcceder.setBackground(new Color(176, 196, 222));
 			btnAcceder.setForeground(new Color(30, 144, 255));
-			btnAcceder.setBounds(111, 55, 134, 38);
+			btnAcceder.setBounds(96, 55, 118, 38);
 			panel.add(btnAcceder);
 			btnAcceder.setFont(new Font("Cambria", Font.BOLD, 14));
+
+			btnModoPrueba = new JToggleButton("<html><center>PRUEBA</html>", true);
+			btnModoPrueba.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			btnModoPrueba.setBackground(new Color(255, 179, 179));
+			btnModoPrueba.setForeground(new Color(122, 10, 10));
+			btnModoPrueba.setToolTipText("Modo PRUEBA: los reportes y excels se guardan en la carpeta de pruebas");
+			btnModoPrueba.setBounds(228, 57, 110, 34);
+			panel.add(btnModoPrueba);
+			btnModoPrueba.setFont(new Font("Cambria", Font.BOLD, 14));
+			btnModoPrueba.addActionListener(evt -> {
+				if (cambiandoModo) {
+					return;
+				}
+				cambiandoModo = true;
+				try {
+					String modoNuevo = btnModoPrueba.isSelected() ? "PRUEBA" : "PRODUCCION";
+					String descripcion = btnModoPrueba.isSelected()
+							? "Los reportes y excels se guardarán en la carpeta de pruebas."
+							: "Los reportes y excels se guardarán en la carpeta real.";
+					int opcion = JOptionPane.showConfirmDialog(btnModoPrueba,
+							"¿Desea cambiar el modo del sistema a " + modoNuevo + "?\n\n" + descripcion,
+							"Cambio de Modo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					if (opcion != JOptionPane.YES_OPTION) {
+						btnModoPrueba.setSelected(!btnModoPrueba.isSelected());
+					}
+				} finally {
+					cambiandoModo = false;
+				}
+				btnModoPrueba.setText(btnModoPrueba.isSelected() ? "<html><center>PRUEBA</html>" : "<html><center>PRODUCCION</html>");
+				btnModoPrueba.setToolTipText(btnModoPrueba.isSelected()
+						? "Modo PRUEBA: los reportes y excels se guardan en la carpeta de pruebas"
+						: "Modo PRODUCCION: los reportes y excels se guardan en la carpeta real");
+			});
 			
 			JLabel lblNewLabel_1 = new JLabel("UBICACION DEL SISTEMA :");
 			lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
@@ -113,6 +150,14 @@ public class VentanaUbicacionBaseDeDatos extends JFrame
 
 	public void setComboUbicacion(JComboBox comboUbicacion) {
 		this.comboUbicacion = comboUbicacion;
+	}
+
+	public JToggleButton getBtnModoPrueba() {
+		return btnModoPrueba;
+	}
+
+	public void setBtnModoPrueba(JToggleButton btnModoPrueba) {
+		this.btnModoPrueba = btnModoPrueba;
 	}
 }
 

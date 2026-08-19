@@ -11,14 +11,16 @@ import javax.mail.internet.*;
 import javax.swing.JOptionPane;
 
 import util.Config;
+import util.RutasSistema;
 
 public class EnviarMail {
 
-    private static String getHost(String key, String fallback) { return Config.get(key + ".host", fallback); }
-    private static String getPort(String key, String fallback) { return Config.get(key + ".port", fallback); }
-    private static String getUser(String key, String fallback) { return Config.get(key + ".user", fallback); }
-    private static String getPass(String key, String fallback) { return Config.get(key + ".password", fallback); }
-    private static String getProto(String key, String fallback) { return Config.get(key + ".protocol", fallback); }
+    // Si no existe la clave por categoría (smtp.xxx.host), cae a la genérica (smtp.host)
+    private static String getHost(String key, String fallback) { return Config.get(key + ".host", Config.get("smtp.host", fallback)); }
+    private static String getPort(String key, String fallback) { return Config.get(key + ".port", Config.get("smtp.port", fallback)); }
+    private static String getUser(String key, String fallback) { return Config.get(key + ".user", Config.get("smtp.user", fallback)); }
+    private static String getPass(String key, String fallback) { return Config.get(key + ".password", Config.get("smtp.password", fallback)); }
+    private static String getProto(String key, String fallback) { return Config.get(key + ".protocol", Config.get("smtp.protocol", fallback)); }
 
     // Método para obtener propiedades del servidor SMTP desde config
     private static Properties getMailProperties(String host, String port, String user, String protocol) {
@@ -242,15 +244,15 @@ public class EnviarMail {
             String from;
             
             if (ubicacion != null && ubicacion.equalsIgnoreCase("Buenos Aires")) {
-                rutaArchivoPDF = Config.get("files.buenosaires.pdf.path", "F:/ELS/Administracion/Sistema/Presupuestos PDF/");
-                rutaArchivoDOCX = Config.get("files.buenosaires.docx.path", "F:/ELS/Administracion/Sistema/Informes Siemens/");
+                rutaArchivoPDF = RutasSistema.adaptar(Config.get("files.buenosaires.pdf.path", "F:/ELS/Administracion/Sistema/Presupuestos PDF/"));
+                rutaArchivoDOCX = RutasSistema.adaptar(Config.get("files.buenosaires.docx.path", "F:/ELS/Administracion/Sistema/Informes Siemens/"));
                 hostKey = "smtp.buenosaires";
                 userKey = "smtp.buenosaires";
                 passKey = "smtp.buenosaires";
                 from = "ELS <" + getUser("smtp.buenosaires", "") + ">";
             } else {
-                rutaArchivoPDF = Config.get("files.bariloche.pdf.path", "F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/");
-                rutaArchivoDOCX = Config.get("files.bariloche.docx.path", "F:/ELS/Administracion/Sistema/Informes Siemens/");
+                rutaArchivoPDF = RutasSistema.adaptar(Config.get("files.bariloche.pdf.path", "F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/"));
+                rutaArchivoDOCX = RutasSistema.adaptar(Config.get("files.bariloche.docx.path", "F:/ELS/Bariloche/Administracion/Sistema/Informes Siemens/"));
                 hostKey = "smtp.bariloche";
                 userKey = "smtp.bariloche";
                 passKey = "smtp.bariloche";
@@ -324,15 +326,15 @@ public class EnviarMail {
             String from;
 
             if (ubicacion != null && ubicacion.equalsIgnoreCase("Buenos Aires")) {
-                rutaArchivoPDF = Config.get("files.buenosaires.pdf.path", "F:/ELS/Administracion/Sistema/Presupuestos PDF/");
-                rutaArchivoDOCX = Config.get("files.buenosaires.docx.path", "F:/ELS/Administracion/Sistema/Informes Siemens/");
+                rutaArchivoPDF = RutasSistema.adaptar(Config.get("files.buenosaires.pdf.path", "F:/ELS/Administracion/Sistema/Presupuestos PDF/"));
+                rutaArchivoDOCX = RutasSistema.adaptar(Config.get("files.buenosaires.docx.path", "F:/ELS/Administracion/Sistema/Informes Siemens/"));
                 hostKey = "smtp.buenosaires";
                 userKey = "smtp.buenosaires";
                 passKey = "smtp.buenosaires";
                 from = "ELS <" + getUser("smtp.buenosaires", "") + ">";
             } else {
-                rutaArchivoPDF = Config.get("files.bariloche.pdf.path", "F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/");
-                rutaArchivoDOCX = Config.get("files.bariloche.docx.path", "F:/ELS/Administracion/Sistema/Informes Siemens/");
+                rutaArchivoPDF = RutasSistema.adaptar(Config.get("files.bariloche.pdf.path", "F:/ELS/Bariloche/Administracion/Sistema/Presupuestos PDF/"));
+                rutaArchivoDOCX = RutasSistema.adaptar(Config.get("files.bariloche.docx.path", "F:/ELS/Bariloche/Administracion/Sistema/Informes Siemens/"));
                 hostKey = "smtp.bariloche";
                 userKey = "smtp.bariloche";
                 passKey = "smtp.bariloche";
