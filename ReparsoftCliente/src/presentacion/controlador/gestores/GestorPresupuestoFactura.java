@@ -1,5 +1,6 @@
 package presentacion.controlador.gestores;
 
+import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -67,28 +68,54 @@ public class GestorPresupuestoFactura {
     }
     
     /**
-     * Abre ventana de presupuesto
+     * Abre ventana de presupuesto. La consulta de la reparación corre en
+     * segundo plano para no bloquear la EDT; la ventana se construye y
+     * rellena cuando los datos están listos.
      */
-    public void abrirPresupuesto(VentanaVisualizarEquipos ventana) {
+    public void abrirPresupuesto(final VentanaVisualizarEquipos ventana) {
         if (ventana.getBtnGuardarCambios().isEnabled()) {
-            JOptionPane.showMessageDialog(null, 
-                "Debe guardar los cambios realizados para poder presupuestar.", 
+            JOptionPane.showMessageDialog(null,
+                "Debe guardar los cambios realizados para poder presupuestar.",
                 "Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        
-        int els = Integer.parseInt(ventana.getTextELS());
-        ventanaPresupuesto = controladorPresupuestos.TomarDatosDeTablasParaVisualizacion(els);
-        
-        if (ventanaPresupuesto != null) {
-            controladorPresupuestos.agregarListenersVentanaGenerarPresupuesto();
-            ventanaPresupuesto.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    refrescarPantalla(ventana);
+
+        final int els = Integer.parseInt(ventana.getTextELS());
+        ventana.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+        new SwingWorker<ReparacionDTO, Void>() {
+            @Override
+            protected ReparacionDTO doInBackground() {
+                return agenda.dameReparacionXels(els);
+            }
+
+            @Override
+            protected void done() {
+                ventana.setCursor(Cursor.getDefaultCursor());
+                try {
+                    ReparacionDTO reparacion = get();
+                    if (reparacion == null) {
+                        JOptionPane.showMessageDialog(null, "No se encontraron datos para la reparación " + els,
+                                "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                    ventanaPresupuesto = controladorPresupuestos.TomarDatosDeTablasParaVisualizacion(reparacion);
+                    if (ventanaPresupuesto != null) {
+                        controladorPresupuestos.agregarListenersVentanaGenerarPresupuesto();
+                        ventanaPresupuesto.addWindowListener(new WindowAdapter() {
+                            @Override
+                            public void windowClosed(WindowEvent e) {
+                                refrescarPantalla(ventana);
+                            }
+                        });
+                    }
+                } catch (Exception ex) {
+                    LogDAO.error("Error al abrir presupuesto para ELS " + els, ex);
+                    JOptionPane.showMessageDialog(null, "No se pudo cargar los datos de la reparación " + els,
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            });
-        }
+            }
+        }.execute();
     }
     
     /**

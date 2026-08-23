@@ -50,6 +50,7 @@ import dto.ReparacionDTO;
 import dto.RepuestosDTO;
 import modelo.Agenda;
 import persistencia.conexion.Conexion;
+import persistencia.dao.mysql.LogDAO;
 import presentacion.controlador.ControladorReparacion;
 import presentacion.controlador.ControladorUsuLogin;
 import presentacion.reportes.ReporteRegistroEntrada;
@@ -461,30 +462,47 @@ public class GestorVisualizacionEquipos {
 	}
 
 	/**
-	 * Procesa navegación entre equipos
+	 * Procesa navegación entre equipos. El conteo de reparaciones y la carga de
+	 * datos se ejecutan en segundo plano para no bloquear la EDT.
 	 */
-	public void procesarNavegacion(String tipo) {
+	public void procesarNavegacion(final String tipo) {
 		if (!guardado) {
 			guardarCambiosSiNecesario();
 		}
 
-		int tam = agenda.contarReparaciones();
-		String ubicacion = agenda.getUbicacionBase();
-		boolean actualizar = true;
+		final String ubicacion = agenda.getUbicacionBase();
+		ventanaVisualizarEquipos.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-		if (ubicacion.equalsIgnoreCase("Bariloche")) {
-			actualizar = procesarNavegacionBariloche(tipo, tam);
-		} else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
-			actualizar = procesarNavegacionBuenosAires(tipo, tam);
-		}
-
-		if (actualizar) {
-			try {
-				cargarDatosEquipo(ventanaVisualizarEquipos, ubicacion.equalsIgnoreCase("Bariloche") ? elsActual : elsActualBSAS);
-			} catch (ParseException e) {
-				e.printStackTrace();
+		new SwingWorker<Integer, Void>() {
+			@Override
+			protected Integer doInBackground() throws Exception {
+				return agenda.contarReparaciones();
 			}
-		}
+
+			@Override
+			protected void done() {
+				try {
+					int tam = get();
+					boolean actualizar = true;
+
+					if (ubicacion.equalsIgnoreCase("Bariloche")) {
+						actualizar = procesarNavegacionBariloche(tipo, tam);
+					} else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
+						actualizar = procesarNavegacionBuenosAires(tipo, tam);
+					}
+
+					if (actualizar) {
+						cargarDatosEquipoAsync(ventanaVisualizarEquipos,
+								ubicacion.equalsIgnoreCase("Bariloche") ? elsActual : elsActualBSAS);
+					} else {
+						ventanaVisualizarEquipos.setCursor(Cursor.getDefaultCursor());
+					}
+				} catch (Exception ex) {
+					ventanaVisualizarEquipos.setCursor(Cursor.getDefaultCursor());
+					LogDAO.error("Error al procesar navegación", ex);
+				}
+			}
+		}.execute();
 	}
 
 	/**

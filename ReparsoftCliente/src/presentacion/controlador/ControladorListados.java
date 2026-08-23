@@ -80,6 +80,7 @@ import dto.RegistroResumenTecnicoDTO;
 import dto.ReparacionDTO;
 import dto.RepuestosDTO;
 import modelo.Agenda;
+import persistencia.dao.mysql.LogDAO;
 import presentacion.reportes.ReportePresupuesto;
 import presentacion.vista.VentanaCodigoSeguridad;
 import presentacion.vista.VentanaEquipos;
@@ -130,6 +131,7 @@ public class ControladorListados
 	private static final int REGISTROS_POR_PAGINA = 100;
 	private int paginaActual = 0;   // base 0
 	private int totalPaginas  = 1;
+	private boolean cargandoPagina = false;
 	private int totalRegistros = 0;
 	
 	
@@ -646,13 +648,36 @@ public class ControladorListados
 	private void cargarTablaListadoReparaciones() {
 	    if (ventanaListadoReparaciones == null) return;
 
+	    // Ignorar clics mientras hay una carga en curso
+	    if (cargandoPagina) return;
+	    cargandoPagina = true;
+
 	    // Guardar estado de filtros ANTES de limpiar la tabla
 	    if (tablaFiltros != null) {
 	        guardarEstadoFiltros();
 	    }
 
-	    int offset = paginaActual * REGISTROS_POR_PAGINA;
-	    cargarTablaConDatos(modelo.obtenerReparacionPaginada(REGISTROS_POR_PAGINA, offset));
+	    final int offset = paginaActual * REGISTROS_POR_PAGINA;
+	    ventanaListadoReparaciones.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+	    new SwingWorker<List<ReparacionDTO>, Void>() {
+	        @Override
+	        protected List<ReparacionDTO> doInBackground() throws Exception {
+	            return modelo.obtenerReparacionPaginada(REGISTROS_POR_PAGINA, offset);
+	        }
+
+	        @Override
+	        protected void done() {
+	            cargandoPagina = false;
+	            try {
+	                cargarTablaConDatos(get());
+	                ventanaListadoReparaciones.setCursor(Cursor.getDefaultCursor());
+	            } catch (Exception ex) {
+	                ventanaListadoReparaciones.setCursor(Cursor.getDefaultCursor());
+	                LogDAO.error("Error al cargar página de reparaciones (offset " + offset + ")", ex);
+	            }
+	        }
+	    }.execute();
 	}
 
 	private void cargarTablaConDatos(List<ReparacionDTO> reparaciones) {

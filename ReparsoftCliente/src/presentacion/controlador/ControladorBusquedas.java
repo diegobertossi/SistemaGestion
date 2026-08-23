@@ -14,10 +14,12 @@ import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.SwingWorker;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import dto.ReparacionDTO;
 import modelo.Agenda;
+import persistencia.dao.mysql.LogDAO;
 import presentacion.vista.VentanaBusqueda;
 import presentacion.vista.VentanaListadoReparaciones;
 import presentacion.vista.VentanaTablaBusqueda;
@@ -141,8 +143,11 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 	}
 
 	@SuppressWarnings("deprecation")
-	private void cargarTablaListadoBusqueda(String componente) {
-		
+	private void cargarTablaListadoBusqueda(final String componente) {
+
+		final boolean porComponenteOriginal = ventanaBusqueda.getRdbComponenteOriginal().isSelected();
+		final boolean porComponenteReemplazo = ventanaBusqueda.getRdbComponenteReemplazado().isSelected();
+
 		this.ventanaTablaBusqueda.getModelReparaciones().setRowCount(0); // Para
 		// vaciar
 		// tabla
@@ -150,38 +155,54 @@ public class ControladorBusquedas implements ActionListener, MouseListener, KeyL
 		this.ventanaTablaBusqueda.getModelReparaciones()
 				.setColumnIdentifiers(this.ventanaTablaBusqueda.getNombreColumnas());
 
-		if (ventanaBusqueda.getRdbComponenteOriginal().isSelected()) {
-
-			this.Reparaciones_en_tabla = modelo.obtenerReparacionPorCompOriginal(componente);
-
-		}
-
-		if (ventanaBusqueda.getRdbComponenteReemplazado().isSelected()) {
-
-			this.Reparaciones_en_tabla = modelo.obtenerReparacionPorCompReemplazo(componente);
-
-		}
-
-		for (int i = 0; i < this.Reparaciones_en_tabla.size(); i++) {
-
-			Object[] fila = { this.Reparaciones_en_tabla.get(i).getELS(),
-					this.Reparaciones_en_tabla.get(i).getFecha_Entrada(),
-					this.Reparaciones_en_tabla.get(i).getCliente(), this.Reparaciones_en_tabla.get(i).getSucursal(),
-					this.Reparaciones_en_tabla.get(i).getNombreEquipo(), this.Reparaciones_en_tabla.get(i).getMarca(),
-					this.Reparaciones_en_tabla.get(i).getModelo(),
-					this.Reparaciones_en_tabla.get(i).getComponenteOriginal(),
-					this.Reparaciones_en_tabla.get(i).getComponenteReemplazo(),};
-			this.ventanaTablaBusqueda.getModelReparaciones().addRow(fila);
-		}
-
-		ventanaTablaBusqueda.setCellRender(this.ventanaTablaBusqueda.getTblReparaciones());
-	
-		ventanaTablaBusqueda.getTblReparaciones().addMouseMotionListener(this);
-		
-		this.ventanaTablaBusqueda.getTblReparaciones().addMouseListener(this);
-		
-		
+		final VentanaTablaBusqueda ventanaTabla = this.ventanaTablaBusqueda;
+		ventanaTabla.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		this.ventanaTablaBusqueda.show();
+
+		new SwingWorker<List<ReparacionDTO>, Void>() {
+			@Override
+			protected List<ReparacionDTO> doInBackground() {
+				if (porComponenteOriginal) {
+					return modelo.obtenerReparacionPorCompOriginal(componente);
+				}
+				if (porComponenteReemplazo) {
+					return modelo.obtenerReparacionPorCompReemplazo(componente);
+				}
+				return null;
+			}
+
+			@Override
+			protected void done() {
+				ventanaTabla.setCursor(Cursor.getDefaultCursor());
+				try {
+					Reparaciones_en_tabla = get();
+
+					if (Reparaciones_en_tabla == null) {
+						return;
+					}
+
+					for (int i = 0; i < Reparaciones_en_tabla.size(); i++) {
+
+						Object[] fila = { Reparaciones_en_tabla.get(i).getELS(),
+								Reparaciones_en_tabla.get(i).getFecha_Entrada(),
+								Reparaciones_en_tabla.get(i).getCliente(), Reparaciones_en_tabla.get(i).getSucursal(),
+								Reparaciones_en_tabla.get(i).getNombreEquipo(), Reparaciones_en_tabla.get(i).getMarca(),
+								Reparaciones_en_tabla.get(i).getModelo(),
+								Reparaciones_en_tabla.get(i).getComponenteOriginal(),
+								Reparaciones_en_tabla.get(i).getComponenteReemplazo(), };
+						ventanaTabla.getModelReparaciones().addRow(fila);
+					}
+
+					ventanaTabla.setCellRender(ventanaTabla.getTblReparaciones());
+
+					ventanaTabla.getTblReparaciones().addMouseMotionListener(ControladorBusquedas.this);
+
+					ventanaTabla.getTblReparaciones().addMouseListener(ControladorBusquedas.this);
+				} catch (Exception ex) {
+					LogDAO.error("Error al buscar reparaciones por componente " + componente, ex);
+				}
+			}
+		}.execute();
 
 	}
 

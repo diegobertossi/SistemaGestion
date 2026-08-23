@@ -1611,6 +1611,22 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 	public VentanaGenerarPresupuesto TomarDatosDeTablasParaVisualizacion(int numeroELS) {
 
+		return TomarDatosDeTablasParaVisualizacion(agenda.dameReparacionXels(numeroELS));
+
+	}
+
+	/**
+	 * Construye la ventana de presupuesto con la reparación ya cargada. Permite
+	 * que la consulta a la base de datos se haga fuera de la EDT.
+	 */
+	public VentanaGenerarPresupuesto TomarDatosDeTablasParaVisualizacion(ReparacionDTO reparacionCargada) {
+
+		reparacion = reparacionCargada;
+
+		if (reparacion == null) {
+			return null;
+		}
+
 		monedaFormatter = new MonedaFormatter();
 
 		ventanaGenerarPresupuesto = new VentanaGenerarPresupuesto(this);
@@ -1619,9 +1635,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
-		reparacion = agenda.dameReparacionXels(numeroELS);
-
-		String ELS = String.valueOf(numeroELS);
+		String ELS = String.valueOf(reparacion.getELS());
 		String Cliente = reparacion.getCliente();
 		String Sucursal = reparacion.getSucursal();
 		String Equipo = reparacion.getNombreEquipo();

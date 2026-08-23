@@ -107,6 +107,11 @@ public class ReporteRemitoSalida {
 	}
 
 	public void mostrar() {
+		if (this.reporteLleno == null) {
+			LogDAO.error("No se pudo mostrar el remito " + NumeroRemito
+					+ ": el reporte no fue llenado (reporteLleno null)", null);
+			return;
+		}
 		this.reporteViewer = new JasperViewer(this.reporteLleno, false);
 		this.reporteViewer.setVisible(true);
 
@@ -144,6 +149,12 @@ public class ReporteRemitoSalida {
 			if (reportFileName.compareTo("reportes\\RemitoPreImpreso.jasper") == 0) {
 				outFileName = RutasSistema.adaptar("F:\\ELS\\Administracion\\Sistema\\Remitos PDF\\Remitos PreImpresos\\") + nombreArchivoPDF;
 			}
+		}
+
+		if (reporteLleno == null) {
+			LogDAO.error("No se pudo guardar el remito " + NumeroRemito
+					+ ": el reporte no fue llenado (reporteLleno null)", null);
+			return false;
 		}
 
 		JRPdfExporter exporter = new JRPdfExporter();

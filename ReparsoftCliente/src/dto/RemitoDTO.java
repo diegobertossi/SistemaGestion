@@ -16,6 +16,7 @@ public class RemitoDTO
 	private int cantBultos; 
 	private String cuit;
 	private String domicilio;
+	private String fecha_Entrada;
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -165,6 +166,14 @@ public class RemitoDTO
 
 	public void setCuit(String cuit) {
 		this.cuit = cuit;
+	}
+
+	public String getFecha_Entrada() {
+		return fecha_Entrada;
+	}
+
+	public void setFecha_Entrada(String fecha_Entrada) {
+		this.fecha_Entrada = fecha_Entrada;
 	}
 	
 
