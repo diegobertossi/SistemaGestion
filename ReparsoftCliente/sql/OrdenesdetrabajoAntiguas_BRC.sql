@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS `ordenesbsas`;
+DROP DATABASE IF EXISTS `ordenesbrcantiguas`;
 
-CREATE DATABASE IF NOT EXISTS `ordenesbsas` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `ordenesbsas`;
+CREATE DATABASE IF NOT EXISTS `ordenesbrcantiguas` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `ordenesbrcantiguas`;
 
 -- =============================================
 -- Table structure for table 'Cliente'
@@ -301,11 +301,8 @@ CREATE TABLE `permisos` (
   KEY `idx_permisos_idPantalla` (`idPantalla`),
   CONSTRAINT `fk_permisos_pantalla` FOREIGN KEY (`idPantalla`) REFERENCES `pantalla` (`idPantalla`),
   CONSTRAINT `fk_permisos_rol` FOREIGN KEY (`idRol`) REFERENCES `rol` (`idRol`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
-
-
 
 -- =============================================
 -- Inserting data for table 'pantalla'
@@ -320,7 +317,6 @@ UNLOCK TABLES;
 -- =============================================
 -- Inserting data for table 'permisos'
 -- =============================================
-
 
 LOCK TABLES `permisos` WRITE;
 /*!40000 ALTER TABLE `permisos` DISABLE KEYS */;

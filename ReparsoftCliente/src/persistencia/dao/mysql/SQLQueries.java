@@ -65,6 +65,9 @@ public class SQLQueries {
         "UPDATE reparaciones SET PrecioPeso = ?, PrecioDolar = ?, " +
         "Pago = ?, EstadoComercial = ? WHERE ELS = ?";
 
+    public static final String UPDATE_REASIGNAR_USUARIO = 
+        "UPDATE reparaciones SET idUsuario = ? WHERE idUsuario = ?";
+
     // Consultas de selección principales
     public static final String READ_ALL = 
         "SELECT Cliente.idCliente, Cliente.nombre, Cliente.CUIT, Cliente.Domicilio, Cliente.TelefonoEmpresa, " +
@@ -276,45 +279,45 @@ public class SQLQueries {
 
     // Consultas estadísticas generales
     public static final String INGRESOS_POR_ANIO = 
-        "select count(*) from reparaciones where YEAR(FechaEntrada) = ?";
+        "select count(*) from reparaciones where FechaEntrada >= MAKEDATE(?, 1) AND FechaEntrada < MAKEDATE(?, 1) + INTERVAL 1 YEAR";
     
     public static final String DIAGNOSTICOS_POR_ANIO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico != 'Sin Revisar'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico != 'Sin Revisar'";
     
     public static final String FACTURACION_PESOS_POR_ANIO = 
         "select SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo " +
-        "where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.EstadoComercial = 'Aceptado'";
+        "where reparaciones.FechAceptacion >= MAKEDATE(?, 1) AND reparaciones.FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoComercial = 'Aceptado'";
     
     public static final String FACTURACION_DOLAR_POR_ANIO = 
         "select SUM(PrecioDolar) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo " +
-        "where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.EstadoComercial = 'Aceptado'";
+        "where reparaciones.FechAceptacion >= MAKEDATE(?, 1) AND reparaciones.FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoComercial = 'Aceptado'";
     
     public static final String REPARADOS_POR_ANIO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación')";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación')";
     
     public static final String SIN_FALLAS_POR_ANIO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Falla'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'Sin Falla'";
     
     public static final String REP_EN_GTIA_POR_ANIO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado en Garantía'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'Reparado en Garantía'";
     
     public static final String EN_REP_POR_ANIO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'En Reparación'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'En Reparación'";
     
     public static final String VENTAS_POR_ANIO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Vendido'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'Vendido'";
     
     public static final String SIN_REP_POR_ANIO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Reparación'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'Sin Reparación'";
     
     public static final String REP_ACEP_POR_ANIO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado'";
     
     public static final String REP_NO_ACEP_POR_ANIO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado'";
     
     public static final String REP_ESPERA_POR_ANIO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación'";
 
     // Consultas consolidadas por año (1 scan por grupo en lugar de 12 scans)
     // FechadeDiagnostico: diagnosticos, reparados, sinFallas, enGtia, enRep, ventas, sinRep, repAcep, repNoAcep, repEspera
@@ -330,151 +333,151 @@ public class SQLQueries {
         "SUM(CASE WHEN reparaciones.EstadoTecnico = 'Reparado' AND reparaciones.EstadoComercial = 'Aceptado' THEN 1 ELSE 0 END), " +
         "SUM(CASE WHEN (reparaciones.EstadoTecnico = 'Reparado' OR reparaciones.EstadoTecnico = 'No Aceptaron Reparación') AND reparaciones.EstadoComercial = 'NO Aceptado' THEN 1 ELSE 0 END), " +
         "SUM(CASE WHEN reparaciones.EstadoTecnico = 'Reparado' AND reparaciones.EstadoComercial = 'A la Espera de Aceptación' THEN 1 ELSE 0 END) " +
-        "from reparaciones where YEAR(reparaciones.FechadeDiagnostico) = ?";
+        "from reparaciones where reparaciones.FechadeDiagnostico >= MAKEDATE(?, 1) AND reparaciones.FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR";
 
     // FechAceptacion: facturacionPeso, facturacionDolar
     public static final String RESUMEN_ACEPTACION_POR_ANIO = 
         "select " +
         "SUM(CASE WHEN reparaciones.EstadoComercial = 'Aceptado' THEN reparaciones.PrecioPeso ELSE 0 END), " +
         "SUM(CASE WHEN reparaciones.EstadoComercial = 'Aceptado' THEN reparaciones.PrecioDolar ELSE 0 END) " +
-        "from reparaciones where YEAR(reparaciones.FechAceptacion) = ?";
+        "from reparaciones where reparaciones.FechAceptacion >= MAKEDATE(?, 1) AND reparaciones.FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR";
 
     // Consultas estadísticas por mes
     public static final String INGRESOS_POR_ANIO_X_MES = 
-        "select MONTH(reparaciones.FechaEntrada), count(*) from reparaciones where YEAR(FechaEntrada) = ? group by MONTH(FechaEntrada)";
+        "select MONTH(reparaciones.FechaEntrada), count(*) from reparaciones where FechaEntrada >= MAKEDATE(?, 1) AND FechaEntrada < MAKEDATE(?, 1) + INTERVAL 1 YEAR group by MONTH(FechaEntrada)";
     
     public static final String DIAGNOSTICO_POR_ANIO_X_MES = 
-        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.EstadoTecnico != 'Sin Revisar' group by MONTH(FechadeDiagnostico)";
+        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico != 'Sin Revisar' group by MONTH(FechadeDiagnostico)";
     
     public static final String FACTURACION_POR_ANIO_X_MES = 
-        "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(FechAceptacion)";
+        "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones where FechAceptacion >= MAKEDATE(?, 1) AND FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(FechAceptacion)";
 
     // Consultas estadísticas por técnico
     public static final String DIAGNOSTICO_POR_ANIO_X_TECNICO = 
-        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico != 'Sin Revisar' group by MONTH(FechadeDiagnostico)";
+        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico != 'Sin Revisar' group by MONTH(FechadeDiagnostico)";
     
     public static final String FACTURACION_POR_ANIO_X_TECNICO = 
-        "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(FechAceptacion)";
+        "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones where FechAceptacion >= MAKEDATE(?, 1) AND FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(FechAceptacion)";
     
     public static final String ACEPTACIONES_POR_ANIO_X_TECNICO = 
-        "select MONTH(reparaciones.FechAceptacion), count(*) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(FechAceptacion)";
+        "select MONTH(reparaciones.FechAceptacion), count(*) from reparaciones where FechAceptacion >= MAKEDATE(?, 1) AND FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'Vendido') and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(FechAceptacion)";
     
     public static final String FACTURACION_DOLAR_POR_ANIO_X_TECNICO_X_MES = 
-        "select MONTH(reparaciones.FechAceptacion), SUM(PrecioDolar) from reparaciones where YEAR(FechAceptacion) = ? and reparaciones.idUsuario =? and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(FechAceptacion)";
+        "select MONTH(reparaciones.FechAceptacion), SUM(PrecioDolar) from reparaciones where FechAceptacion >= MAKEDATE(?, 1) AND FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(FechAceptacion)";
 
     // Consultas estadísticas por cliente
     public static final String INGRESOS_X_ANIO_X_CLIENTE = 
-        "select MONTH(reparaciones.FechaEntrada),count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechaEntrada) = ? and Equipos.idCliente = ? group by MONTH(FechaEntrada)";
+        "select MONTH(reparaciones.FechaEntrada),count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechaEntrada >= MAKEDATE(?, 1) AND reparaciones.FechaEntrada < MAKEDATE(?, 1) + INTERVAL 1 YEAR and Equipos.idCliente = ? group by MONTH(FechaEntrada)";
     
     public static final String ACEPTACIONES_POR_ANIO_X_CLIENTE = 
-        "select MONTH(reparaciones.FechAceptacion), count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ? and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
+        "select MONTH(reparaciones.FechAceptacion), count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechAceptacion >= MAKEDATE(?, 1) AND reparaciones.FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR and Equipos.idCliente = ? and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
     
     public static final String FACTURACION_POR_ANIO_X_CLIENTE = 
-        "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ? and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
+        "select MONTH(reparaciones.FechAceptacion), SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechAceptacion >= MAKEDATE(?, 1) AND reparaciones.FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR and Equipos.idCliente = ? and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(reparaciones.FechAceptacion)";
 
     // Consultas estadísticas totales por cliente
     public static final String TOTAL_INGRESOS_X_ANIO_X_CLIENTE = 
-        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechaEntrada) = ? and Equipos.idCliente = ?";
+        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechaEntrada >= MAKEDATE(?, 1) AND reparaciones.FechaEntrada < MAKEDATE(?, 1) + INTERVAL 1 YEAR and Equipos.idCliente = ?";
     
     public static final String TOTAL_REPARADOS_X_ANIO_X_CLIENTE = 
-        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación') and Equipos.idCliente = ?";
+        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechadeDiagnostico >= MAKEDATE(?, 1) AND reparaciones.FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación') and Equipos.idCliente = ?";
     
     public static final String TOTAL_REP_EN_GTIA_X_ANIO_X_CLIENTE = 
-        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado en Garantía' and Equipos.idCliente = ?";
+        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechadeDiagnostico >= MAKEDATE(?, 1) AND reparaciones.FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'Reparado en Garantía' and Equipos.idCliente = ?";
     
     public static final String TOTAL_SIN_FALLA_X_ANIO_X_CLIENTE = 
-        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Falla' and Equipos.idCliente = ?";
+        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechadeDiagnostico >= MAKEDATE(?, 1) AND reparaciones.FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'Sin Falla' and Equipos.idCliente = ?";
     
     public static final String TOTAL_EN_REP_X_ANIO_X_CLIENTE = 
-        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'En Reparación' and Equipos.idCliente = ?";
+        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechadeDiagnostico >= MAKEDATE(?, 1) AND reparaciones.FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'En Reparación' and Equipos.idCliente = ?";
     
     public static final String TOTAL_VENTAS_X_ANIO_X_CLIENTE = 
-        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Vendido' and Equipos.idCliente = ?";
+        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechadeDiagnostico >= MAKEDATE(?, 1) AND reparaciones.FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'Vendido' and Equipos.idCliente = ?";
     
     public static final String TOTAL_SIN_REP_X_ANIO_X_CLIENTE = 
-        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Sin Reparación' and Equipos.idCliente = ?";
+        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechadeDiagnostico >= MAKEDATE(?, 1) AND reparaciones.FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'Sin Reparación' and Equipos.idCliente = ?";
     
     public static final String TOTAL_REP_ACEP_X_ANIO_X_CLIENTE = 
-        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado' and Equipos.idCliente = ?";
+        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechadeDiagnostico >= MAKEDATE(?, 1) AND reparaciones.FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado' and Equipos.idCliente = ?";
     
     public static final String TOTAL_REP_NO_ACEP_X_ANIO_X_CLIENTE = 
-        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado' and Equipos.idCliente = ?";
+        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechadeDiagnostico >= MAKEDATE(?, 1) AND reparaciones.FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado' and Equipos.idCliente = ?";
     
     public static final String TOTAL_REP_ESPERA_X_ANIO_X_CLIENTE = 
-        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechadeDiagnostico) = ? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación' and Equipos.idCliente = ?";
+        "select count(*) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechadeDiagnostico >= MAKEDATE(?, 1) AND reparaciones.FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación' and Equipos.idCliente = ?";
 
     // Consultas de facturación por cliente
     public static final String FACTURACION_PESO_POR_ANIO_POR_CLIENTE = 
-        "select SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ? and reparaciones.EstadoComercial = 'Aceptado'";
+        "select SUM(PrecioPeso) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechAceptacion >= MAKEDATE(?, 1) AND reparaciones.FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR and Equipos.idCliente = ? and reparaciones.EstadoComercial = 'Aceptado'";
     
     public static final String FACTURACION_DOLAR_POR_ANIO_POR_CLIENTE = 
-        "select SUM(PrecioDolar) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where YEAR(reparaciones.FechAceptacion) = ? and Equipos.idCliente = ? and reparaciones.EstadoComercial = 'Aceptado'";
+        "select SUM(PrecioDolar) from reparaciones INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo where reparaciones.FechAceptacion >= MAKEDATE(?, 1) AND reparaciones.FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR and Equipos.idCliente = ? and reparaciones.EstadoComercial = 'Aceptado'";
 
     // Consultas de facturación por técnico
     public static final String FACTURACION_DOLAR_POR_ANIO_POR_TECNICO = 
-        "select SUM(PrecioDolar) from reparaciones where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.idUsuario =? and reparaciones.EstadoComercial = 'Aceptado'";
+        "select SUM(PrecioDolar) from reparaciones where reparaciones.FechAceptacion >= MAKEDATE(?, 1) AND reparaciones.FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoComercial = 'Aceptado'";
     
     public static final String FACTURACION_PESO_POR_ANIO_POR_TECNICO = 
-        "select SUM(PrecioPeso) from reparaciones where YEAR(reparaciones.FechAceptacion) = ? and reparaciones.idUsuario =? and reparaciones.EstadoComercial = 'Aceptado'";
+        "select SUM(PrecioPeso) from reparaciones where reparaciones.FechAceptacion >= MAKEDATE(?, 1) AND reparaciones.FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoComercial = 'Aceptado'";
 
     // Consultas estadísticas totales por técnico
     public static final String TOTAL_REP_ESPERA_X_ANIO_X_TECNICO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación'";
     
     public static final String TOTAL_REP_NO_ACEP_X_ANIO_X_TECNICO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado'";
     
     public static final String TOTAL_REP_ACEP_X_ANIO_X_TECNICO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado'";
     
     public static final String TOTAL_SIN_REP_X_ANIO_X_TECNICO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Reparación'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Reparación'";
     
     public static final String TOTAL_VENTAS_X_ANIO_X_TECNICO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Vendido'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Vendido'";
     
     public static final String TOTAL_EN_REP_X_ANIO_X_TECNICO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'En Reparación'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'En Reparación'";
     
     public static final String TOTAL_REP_EN_GTIA_X_ANIO_X_TECNICO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado en Garantía'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado en Garantía'";
     
     public static final String TOTAL_SIN_FALLA_X_ANIO_X_TECNICO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Falla'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Falla'";
     
     public static final String TOTAL_REPARADOS_X_ANIO_X_TECNICO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación')";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación')";
     
     public static final String TOTAL_DIAGNOSTICOS_X_ANIO_X_TECNICO = 
-        "select count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico != 'Sin Revisar'";
+        "select count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico != 'Sin Revisar'";
 
     // Consultas estadísticas por mes y técnico
     public static final String REPARADOS_X_MES_X_TECNICO = 
-        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) group by MONTH(FechadeDiagnostico)";
+        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) group by MONTH(FechadeDiagnostico)";
     
     public static final String SIN_REP_X_MES_X_TECNICO = 
-        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Reparación' group by MONTH(FechadeDiagnostico)";
+        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Reparación' group by MONTH(FechadeDiagnostico)";
     
     public static final String VENTAS_X_MES_X_TECNICO = 
-        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Vendido' group by MONTH(FechadeDiagnostico)";
+        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Vendido' group by MONTH(FechadeDiagnostico)";
     
     public static final String EN_REP_X_MES_X_TECNICO = 
-        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'En Reparación' group by MONTH(FechadeDiagnostico)";
+        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'En Reparación' group by MONTH(FechadeDiagnostico)";
     
     public static final String SIN_FALLA_X_MES_X_TECNICO = 
-        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Falla' group by MONTH(FechadeDiagnostico)";
+        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Sin Falla' group by MONTH(FechadeDiagnostico)";
     
     public static final String EN_GTIA_X_MES_X_TECNICO = 
-        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado en Garantía' group by MONTH(FechadeDiagnostico)";
+        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado en Garantía' group by MONTH(FechadeDiagnostico)";
     
     public static final String REP_ESPERA_X_MES_X_TECNICO = 
-        "select MONTH(reparaciones.FechadeDiagnostico),count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación' group by MONTH(FechadeDiagnostico)";
+        "select MONTH(reparaciones.FechadeDiagnostico),count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'A la Espera de Aceptación' group by MONTH(FechadeDiagnostico)";
     
     public static final String REP_NO_ACEP_X_MES_X_TECNICO = 
-        "select MONTH(reparaciones.FechadeDiagnostico),count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado' group by MONTH(FechadeDiagnostico)";
+        "select MONTH(reparaciones.FechadeDiagnostico),count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and (reparaciones.EstadoTecnico = 'Reparado' or reparaciones.EstadoTecnico = 'No Aceptaron Reparación' ) and reparaciones.EstadoComercial = 'NO Aceptado' group by MONTH(FechadeDiagnostico)";
     
     public static final String REP_ACEP_X_MES_X_TECNICO = 
-        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where YEAR(FechadeDiagnostico) = ? and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(FechadeDiagnostico)";
+        "select MONTH(reparaciones.FechadeDiagnostico), count(*) from reparaciones where FechadeDiagnostico >= MAKEDATE(?, 1) AND FechadeDiagnostico < MAKEDATE(?, 1) + INTERVAL 1 YEAR and reparaciones.idUsuario =? and reparaciones.EstadoTecnico = 'Reparado' and reparaciones.EstadoComercial = 'Aceptado' group by MONTH(FechadeDiagnostico)";
 
     // Campos permitidos para búsqueda
     public static final List<String> CAMPOS_PERMITIDOS_BUSQUEDA = 

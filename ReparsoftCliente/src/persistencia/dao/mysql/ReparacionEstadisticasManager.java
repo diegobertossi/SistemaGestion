@@ -125,6 +125,7 @@ public class ReparacionEstadisticasManager {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(query);
             statement.setInt(1, anio);
+            statement.setInt(2, anio);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 for (int i = 0; i < datos.length; i++) {
@@ -331,9 +332,9 @@ public class ReparacionEstadisticasManager {
         try {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(query);
-            setParameters(statement, params);
+            setParameters(statement, duplicarAnio(params));
             resultSet = statement.executeQuery();
-            
+
             return ReparacionMapper.mapToSingleInteger(resultSet);
         } catch (SQLException e) {
             LogDAO.error("Error en executeCountQuery", e);
@@ -350,9 +351,9 @@ public class ReparacionEstadisticasManager {
         try {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(query);
-            setParameters(statement, params);
+            setParameters(statement, duplicarAnio(params));
             resultSet = statement.executeQuery();
-            
+
             return ReparacionMapper.mapToSingleDouble(resultSet);
         } catch (SQLException e) {
             LogDAO.error("Error en executeSumQuery", e);
@@ -369,9 +370,9 @@ public class ReparacionEstadisticasManager {
         try {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(query);
-            setParameters(statement, params);
+            setParameters(statement, duplicarAnio(params));
             resultSet = statement.executeQuery();
-            
+
             return ReparacionMapper.mapToMonthlyIntegerList(resultSet);
         } catch (SQLException e) {
             LogDAO.error("Error en executeMonthlyCountQuery", e);
@@ -388,9 +389,9 @@ public class ReparacionEstadisticasManager {
         try {
             conn = conexion.getSQLConexion();
             statement = conn.prepareStatement(query);
-            setParameters(statement, params);
+            setParameters(statement, duplicarAnio(params));
             resultSet = statement.executeQuery();
-            
+
             return ReparacionMapper.mapToMonthlyDoubleList(resultSet);
         } catch (SQLException e) {
             LogDAO.error("Error en executeMonthlySumQuery", e);
@@ -404,6 +405,23 @@ public class ReparacionEstadisticasManager {
         for (int i = 0; i < params.length; i++) {
             statement.setInt(i + 1, params[i]);
         }
+    }
+
+    /**
+     * Las consultas por año filtran con un rango sargable:
+     *   col >= MAKEDATE(?, 1) AND col < MAKEDATE(?, 1) + INTERVAL 1 YEAR
+     * lo que requiere el año dos veces. Este helper devuelve una copia de los
+     * parámetros con el primero (siempre el año) duplicado, manteniendo el
+     * orden: (anio) -> (anio, anio) y (anio, filtro) -> (anio, anio, filtro).
+     */
+    private static int[] duplicarAnio(int... params) {
+        int[] conAnioDuplicado = new int[params.length + 1];
+        conAnioDuplicado[0] = params[0];
+        conAnioDuplicado[1] = params[0];
+        for (int i = 1; i < params.length; i++) {
+            conAnioDuplicado[i + 1] = params[i];
+        }
+        return conAnioDuplicado;
     }
 
     private List<Integer> initializeMonthlyIntegerList() {

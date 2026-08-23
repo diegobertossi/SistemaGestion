@@ -34,6 +34,7 @@ import dto.RolDTO;
 import dto.UsuarioDTO;
 import modelo.Agenda;
 import modelo.Permisos;
+import persistencia.dao.mysql.LogDAO;
 import presentacion.vista.VentanaRolesUsuarios;
 import presentacion.vista.VentanaCodigoSeguridad;
 import presentacion.vista.VentanaPermisos;
@@ -568,21 +569,10 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 
 	private void editarReparacionesSinTecnico(int idTecnico) {
 
-		this.Reparaciones = (List<ReparacionDTO>) agenda.obtenerReparacion();
-
-		for (int i = 0; i < this.Reparaciones.size(); i++) {
-
-			if (Reparaciones.get(i).getidUsuario() == idTecnico) {
-
-				int ELS = Reparaciones.get(i).getELS();
-				int idUsuarioBorrado = 1;
-
-				ReparacionDTO reparacionAeditar = new ReparacionDTO(ELS, idUsuarioBorrado);
-				this.agenda.editarReparacionR(reparacionAeditar);
-
-			}
-
-		}
+		int idUsuarioBorrado = 1;
+		int actualizadas = this.agenda.reasignarReparacionesDeUsuario(idUsuarioBorrado, idTecnico);
+		LogDAO.info("Reasignadas " + actualizadas + " reparaciones del técnico eliminado " + idTecnico
+				+ " al usuario " + idUsuarioBorrado);
 
 	}
 

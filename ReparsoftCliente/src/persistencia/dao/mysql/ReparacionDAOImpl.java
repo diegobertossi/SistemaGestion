@@ -124,6 +124,11 @@ public class ReparacionDAOImpl implements ReparacionDAO {
     }
 
     @Override
+    public int reasignarReparacionesDeUsuario(int idUsuarioNuevo, int idUsuarioAnterior) {
+        return queryManager.updateReasignarUsuario(idUsuarioNuevo, idUsuarioAnterior);
+    }
+
+    @Override
     public List<ReparacionDTO> readAllXIDclienteIDSucursal(Integer idCliente, Integer idSucursal) {
         return queryManager.readAllXIDClienteIDSucursal(idCliente, idSucursal);
     }

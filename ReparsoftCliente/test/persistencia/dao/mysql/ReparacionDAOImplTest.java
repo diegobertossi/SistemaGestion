@@ -186,4 +186,26 @@ public class ReparacionDAOImplTest {
         ReparacionDAOImpl dao = new ReparacionDAOImpl("Bariloche");
         assertEquals(0, dao.readAllXIDclienteIDSucursalResumido(7, 3).size());
     }
+
+    /** reasignarReparacionesDeUsuario ejecuta UPDATE con ambos ids y devuelve filas afectadas. */
+    @Test
+    public void reasignarReparacionesDeUsuario_ejecutaUpdateConParametros() throws SQLException {
+        when(mockStmt.executeUpdate()).thenReturn(3);
+
+        ReparacionDAOImpl dao = new ReparacionDAOImpl("Bariloche");
+        int actualizadas = dao.reasignarReparacionesDeUsuario(1, 9);
+
+        assertEquals(3, actualizadas);
+        verify(mockStmt).setInt(1, 1);   // idUsuario nuevo
+        verify(mockStmt).setInt(2, 9);   // idUsuario anterior
+        verify(mockStmt).executeUpdate();
+    }
+
+    /** Ante excepción SQL, devuelve 0 sin propagar el fallo. */
+    @Test
+    public void reasignarReparacionesDeUsuario_conErrorDevuelveCero() throws SQLException {
+        when(mockConn.prepareStatement(anyString())).thenThrow(new SQLException("BD caída"));
+        ReparacionDAOImpl dao = new ReparacionDAOImpl("Bariloche");
+        assertEquals(0, dao.reasignarReparacionesDeUsuario(1, 9));
+    }
 }

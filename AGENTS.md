@@ -31,6 +31,8 @@ host=localhost, port=3306, user=root, password=root
 ```
 DB names: `ordenesbrc` / `ordenesbsas` (normal), `ordenesbrcantiguas` / `ordenesbsasantiguas` (legacy). Also supports Access via UCanAccess.
 
+**IMPORTANTE — cambios de esquema:** cualquier ALTER TABLE / índice / columna nueva debe aplicarse a las 4 bases (`ordenesbrc`, `ordenesbsas`, `ordenesbrcantiguas`, `ordenesbsasantiguas`). Los scripts de esquema van en `ReparsoftCliente/sql/` (ej. `indices_rendimiento.sql`: índices de fechas/EstadoComercial + FULLTEXT para las 4 bases — `FechaEntrada`, `FechadeDiagnostico`, `FechAceptacion` son la base de las estadísticas con rangos `MAKEDATE(?,1)` reemplazando `YEAR()= ?` no-sargable).
+
 ## Key dependencies (in ReparsoftCliente/lib/)
 
 mysql-connector-j-8.4.0, jasperreports-6.21.3, poi-5.2.3, openpdf-1.3.30, JTattoo-1.6.11, ucanaccess-5.0.1, gson-2.10.1

@@ -5,7 +5,6 @@ import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.ParseException;
 import java.util.List;
 
 import javax.swing.text.AttributeSet;
@@ -18,6 +17,8 @@ import javax.swing.text.StyledDocument;
 
 import modelo.Agenda;
 import presentacion.controlador.ControladorReparacion;
+import presentacion.vista.VentanaProgreso;
+import persistencia.dao.mysql.LogDAO;
 import presentacion.vista.VentanaBusquedaEquipo;
 import presentacion.vista.VentanaVisualizarEquipos;
 
@@ -70,13 +71,14 @@ public class GestorBusqueda {
     }
     
     /**
-     * Realiza búsqueda en campos
+     * Realiza búsqueda en campos. La consulta corre en segundo plano para no
+     * bloquear la EDT (búsqueda por texto con LIKE sobre columnas grandes).
      */
     private void realizarBusqueda() {
         ventanaBusqueda.getTextPane().setText("");
-        
+
         String campoBusqueda = ventanaBusqueda.getComboBuscador().getSelectedItem().toString();
-        
+
         // Mapear nombres de campo a columnas de BD
         switch (campoBusqueda) {
             case "Falla":
@@ -89,11 +91,28 @@ public class GestorBusqueda {
                 campoBusqueda = "Informecliente";
                 break;
         }
-        
-        String textoBusqueda = ventanaBusqueda.getTextField().getText();
-        List<Integer> resultados = agenda.buscarEnCampos(campoBusqueda, textoBusqueda);
-        
-        mostrarResultados(resultados);
+
+        final String textoBusqueda = ventanaBusqueda.getTextField().getText();
+        final String campoFinal = campoBusqueda;
+
+        ventanaBusqueda.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+        new javax.swing.SwingWorker<List<Integer>, Void>() {
+            @Override
+            protected List<Integer> doInBackground() throws Exception {
+                return agenda.buscarEnCampos(campoFinal, textoBusqueda);
+            }
+
+            @Override
+            protected void done() {
+                ventanaBusqueda.setCursor(Cursor.getDefaultCursor());
+                try {
+                    mostrarResultados(get());
+                } catch (Exception ex) {
+                    LogDAO.error("Error en búsqueda por " + campoFinal + " '" + textoBusqueda + "'", ex);
+                }
+            }
+        }.execute();
     }
     
     /**
@@ -179,11 +198,11 @@ public class GestorBusqueda {
             }
             
             ventana.setTextELS(Integer.toString(els));
-            controlador.getGestorVisualizacion().cargarDatosEquipo(ventana, els);
-            
+            controlador.getGestorVisualizacion().cargarDatosEquipoAsync(ventana, els);
 
-        } catch (ParseException ex) {
-            ex.printStackTrace();
+
+        } catch (Exception ex) {
+            LogDAO.error("Error al navegar al equipo ELS " + els, ex);
         }
     }
     

@@ -31,6 +31,8 @@ public interface ReparacionDAO
 	public void editarReparacionAceptacion(ReparacionDTO reparacionAeditar);
 	
 	public void editarReparacionPago(ReparacionDTO reparacionAeditar);
+
+	public int reasignarReparacionesDeUsuario(int idUsuarioNuevo, int idUsuarioAnterior);
 	
 	public boolean editEquipo(ReparacionDTO reparacion_a_editar);
 		

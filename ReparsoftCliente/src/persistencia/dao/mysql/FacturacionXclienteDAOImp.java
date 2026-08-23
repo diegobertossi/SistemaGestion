@@ -16,7 +16,7 @@ public class FacturacionXclienteDAOImp implements FacturacionXclienteDAO {
             + "FROM reparaciones "
             + "INNER JOIN Equipos ON reparaciones.idEquipo = Equipos.idEquipo "
             + "INNER JOIN Cliente ON Equipos.idCliente = Cliente.idCliente "
-            + "WHERE YEAR(reparaciones.FechAceptacion) = ? AND reparaciones.EstadoComercial = 'Aceptado' "
+            + "WHERE reparaciones.FechAceptacion >= MAKEDATE(?, 1) AND reparaciones.FechAceptacion < MAKEDATE(?, 1) + INTERVAL 1 YEAR AND reparaciones.EstadoComercial = 'Aceptado' "
             + "GROUP BY Equipos.idCliente ORDER BY SUM(PrecioPeso) DESC";
 
     private Conexion conexion;
@@ -31,6 +31,7 @@ public class FacturacionXclienteDAOImp implements FacturacionXclienteDAO {
         String sql = READ_ALL;
         try (PreparedStatement stmt = conexion.getSQLConexion().prepareStatement(sql)) {
             stmt.setInt(1, anio);
+            stmt.setInt(2, anio);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     lista.add(new FacturacionXclienteDTO(

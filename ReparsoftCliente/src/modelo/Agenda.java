@@ -329,6 +329,15 @@ public class Agenda {
 		ReparacionR.editarReparacionPago(reparacionAeditar);
 	}
 
+	/**
+	 * Reasigna todas las reparaciones de un usuario a otro en una sola
+	 * operación SQL (usado al eliminar un técnico/usuario del sistema).
+	 * @return cantidad de reparaciones actualizadas
+	 */
+	public int reasignarReparacionesDeUsuario(int idUsuarioNuevo, int idUsuarioAnterior) {
+		return ReparacionR.reasignarReparacionesDeUsuario(idUsuarioNuevo, idUsuarioAnterior);
+	}
+
 	public void borraReparacion(ReparacionDTO Reparacion_a_eliminar) {
 		ReparacionR.delete(Reparacion_a_eliminar);
 	}

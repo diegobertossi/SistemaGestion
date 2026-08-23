@@ -409,6 +409,29 @@ public class ReparacionQueryManager {
     }
 
     /**
+     * Reasigna todas las reparaciones de un usuario a otro en una sola
+     * operación (ej. al eliminar un técnico). Evita cargar el READ_ALL
+     * completo para hacer un update fila por fila.
+     * @return cantidad de filas actualizadas
+     */
+    public int updateReasignarUsuario(int idUsuarioNuevo, int idUsuarioAnterior) {
+        PreparedStatement statement = null;
+        Connection conn = null;
+        try {
+            conn = conexion.getSQLConexion();
+            statement = conn.prepareStatement(SQLQueries.UPDATE_REASIGNAR_USUARIO);
+            statement.setInt(1, idUsuarioNuevo);
+            statement.setInt(2, idUsuarioAnterior);
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            LogDAO.error("Error en updateReasignarUsuario", e);
+            return 0;
+        } finally {
+            closeResources(statement, null, conn);
+        }
+    }
+
+    /**
      * Actualiza datos de presupuesto
      */
     public void updatePresupuesto(ReparacionDTO reparacion) {

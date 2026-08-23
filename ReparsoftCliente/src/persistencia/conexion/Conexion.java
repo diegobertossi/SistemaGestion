@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 public class Conexion {
 
-    private static Conexion instancia;
+    private static volatile Conexion instancia;
     private Connection conexion;
     private static Properties props = new Properties();
     private String ubicacionActual;
@@ -29,7 +29,9 @@ public class Conexion {
             "&connectionCollation=utf8mb4_unicode_ci" +
             "&serverTimezone=UTC" +
             "&useSSL=false" +
-            "&allowPublicKeyRetrieval=true"
+            "&allowPublicKeyRetrieval=true" +
+            "&connectTimeout=5000" +
+            "&socketTimeout=120000"
         );
 
         System.out.println("ℹ️ Usando configuración local fija para MySQL 8.4 LTS.");
@@ -101,7 +103,7 @@ public class Conexion {
         return getConexion(ubicacion, modoAntiguaGlobal);
     }
 
-    public static Conexion getConexion(String ubicacion, boolean esAntigua) {
+    public static synchronized Conexion getConexion(String ubicacion, boolean esAntigua) {
         if (instancia != null &&
             (!instancia.ubicacionActual.equalsIgnoreCase(ubicacion) ||
               instancia.esBaseAntigua != esAntigua)) {
@@ -128,21 +130,20 @@ public class Conexion {
     }
 
     // ── Instancia ─────────────────────────────────────────────────────────────
-    public Connection getSQLConexion() {
+    public synchronized Connection getSQLConexion() {
         try {
-            if (conexion != null && !conexion.isClosed()) {
-                return conexion;
-            } else if (conexion != null) {
-                establecerConexion(ubicacionActual, esBaseAntigua);
+            if (conexion != null && !conexion.isClosed() && conexion.isValid(2)) {
                 return conexion;
             }
+            // Conexión cerrada o muerta: reconectar
+            establecerConexion(ubicacionActual, esBaseAntigua);
         } catch (SQLException e) {
             System.err.println("❌ Error al verificar/reconectar: " + e.getMessage());
         }
         return conexion;
     }
 
-    public void cerrarConexion() {
+    public synchronized void cerrarConexion() {
         if (conexion != null) {
             try {
                 conexion.close();
