@@ -58,6 +58,21 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
     
 	private List<ReparacionDTO> Reparaciones;
 	private boolean passwordVisible = false;
+	private static final String PASSWORD_PLACEHOLDER = "\u2022\u2022\u2022\u2022\u2022\u2022"; // "••••••"
+
+	/**
+	 * Devuelve la contraseña escrita por el usuario, o cadena vacía si el campo
+	 * está vacío o contiene el placeholder visual de seis puntos (no es una
+	 * contraseña real). Se usa al crear/editar usuarios para no guardar los
+	 * puntos como contraseña literal.
+	 */
+	static String passwordReal(String valorCampo) {
+		if (valorCampo == null) {
+			return "";
+		}
+		String limpio = valorCampo.trim();
+		return limpio.equals(PASSWORD_PLACEHOLDER) ? "" : limpio;
+	}
 	private ControladorUsuLogin controladorUsuLogin; 
 	private List<RolDTO> rolesMostradosEnCombo;
 
@@ -150,8 +165,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 
-					String nuevaPass = this.ventanaRolesUsuarios.getTxtPass().getText();
-					if (nuevaPass == null || nuevaPass.trim().isEmpty()) {
+					String nuevaPass = passwordReal(this.ventanaRolesUsuarios.getTxtPass().getText());
+					if (nuevaPass.isEmpty()) {
 						JOptionPane.showMessageDialog(null,
 								"La contraseña es obligatoria para nuevos usuarios", "CAMPO VACÍO",
 								JOptionPane.ERROR_MESSAGE);
@@ -165,7 +180,7 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 							this.ventanaRolesUsuarios.getTxtTelefonoUsuario().getText(),
 							this.ventanaRolesUsuarios.getTxtEmailUsuario().getText(),
 							this.ventanaRolesUsuarios.getTxtLogin().getText(),
-							this.ventanaRolesUsuarios.getTxtPass().getText());
+							nuevaPass);
 
 					agenda.agregarUsuario(nuevoUsuario);
 					llenarTablaUsuarios();
@@ -250,7 +265,11 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 				this.ventanaRolesUsuarios.getTxtTelefonoUsuario().setText("");
 				this.ventanaRolesUsuarios.getTxtEmailUsuario().setText("");
 				this.ventanaRolesUsuarios.getTxtLogin().setText("");
-				this.ventanaRolesUsuarios.getTxtPass().setText("••••••");
+				// Campo vacío para que el usuario escriba: con visualización
+				// deshabilitada se escribe en puntos (echoChar), con visualización
+				// habilitada se ven los caracteres reales.
+				this.ventanaRolesUsuarios.getTxtPass().setText("");
+				this.ventanaRolesUsuarios.getTxtPass().setEchoChar(passwordVisible ? (char) 0 : '•');
 				this.ventanaRolesUsuarios.getTextRol().setText("");
 
 				usuarioElegido = null;
@@ -297,8 +316,8 @@ public class ControladorUsuarios implements ActionListener, MouseListener {
 						usuarioElegido.setTelefono(this.ventanaRolesUsuarios.getTxtTelefonoUsuario().getText());
 						usuarioElegido.setEmail(this.ventanaRolesUsuarios.getTxtEmailUsuario().getText());
 						usuarioElegido.setLogin(this.ventanaRolesUsuarios.getTxtLogin().getText());
-						String nuevaPass = this.ventanaRolesUsuarios.getTxtPass().getText();
-						if (nuevaPass != null && !nuevaPass.trim().isEmpty()) {
+						String nuevaPass = passwordReal(this.ventanaRolesUsuarios.getTxtPass().getText());
+						if (!nuevaPass.isEmpty()) {
 							usuarioElegido.setPass(nuevaPass); // se hasheará en DAO
 						}
 

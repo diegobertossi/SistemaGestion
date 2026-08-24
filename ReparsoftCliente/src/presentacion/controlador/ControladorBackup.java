@@ -33,6 +33,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import modelo.Agenda;
 import persistencia.conexion.Conexion;
+import persistencia.dao.mysql.LogDAO;
 import presentacion.vista.PopupProgresoBackup;
 import presentacion.vista.VentanaBackUp;
 import presentacion.vista.VentanaOpcionesBackup;
@@ -369,6 +370,7 @@ public class ControladorBackup implements ActionListener, MouseListener {
 						System.out.println("Restaurando backup en Clever Cloud...");
 						int sentenciasEjecutadas = 0;
 						int sentenciasIgnoradas = 0;
+						List<String> erroresDetallados = new ArrayList<>();
 
 						for (int i = 0; i < totalSentencias; i++) {
 							String s = sentencias.get(i).trim();
@@ -397,10 +399,19 @@ public class ControladorBackup implements ActionListener, MouseListener {
 								stmt.execute(s);
 								sentenciasEjecutadas++;
 							} catch (SQLException ex) {
+								sentenciasIgnoradas++;
+								// Registrar el error con detalle: si falla un CREATE TABLE, la tabla
+								// entera queda ausente en el remoto y luego la importacion baja sin ella.
+								String preview = s.length() > 100 ? s.substring(0, 100) + "..." : s;
+								String detalle = "sentencia[" + i + "]: " + preview.replace('\n', ' ')
+										+ "  -->  " + ex.getMessage();
+								erroresDetallados.add(detalle);
 								if (!ex.getMessage().contains("Access denied")) {
 									System.err.println("Error en sentencia (ignorada): " + ex.getMessage());
 								}
-								sentenciasIgnoradas++;
+								if (s.toUpperCase().startsWith("CREATE TABLE") || s.toUpperCase().startsWith("DROP TABLE")) {
+									LogDAO.error("Falló DDL durante backup remoto: " + detalle, ex);
+								}
 							}
 
 							int progreso = 30 + (int) ((i + 1) * 65.0 / totalSentencias);
@@ -412,12 +423,47 @@ public class ControladorBackup implements ActionListener, MouseListener {
 						System.out.println("Restauración completada:");
 						System.out.println("- Sentencias ejecutadas exitosamente: " + sentenciasEjecutadas);
 						System.out.println("- Sentencias ignoradas: " + sentenciasIgnoradas);
+
+						publish(100);
+
+						// 5. Verificación: las tablas del remoto deben coincidir con las del dump local
+						List<String> tablasRemotas = listarTablas(conexionRemota);
+						List<String> tablasLocales = new ArrayList<>(
+								listarTablas(Conexion.getConexion(ubicacion).getSQLConexion()));
+						tablasLocales.removeAll(tablasRemotas); // quedan las que faltan en remoto
+
+						if (!erroresDetallados.isEmpty() || !tablasLocales.isEmpty()) {
+							StringBuilder resumen = new StringBuilder();
+							resumen.append("El backup remoto subió con ADVERTENCIAS.\n\n");
+							if (!tablasLocales.isEmpty()) {
+								resumen.append("Tablas que FALTAN en la base remota:\n  ")
+										.append(String.join(", ", tablasLocales)).append("\n\n");
+								LogDAO.error("Backup remoto incompleto: faltan tablas en destino: "
+										+ String.join(", ", tablasLocales), null);
+							}
+							if (!erroresDetallados.isEmpty()) {
+								resumen.append("Sentencias con error (").append(erroresDetallados.size())
+										.append("):\n");
+								int max = Math.min(5, erroresDetallados.size());
+								for (int k = 0; k < max; k++) {
+									resumen.append("  - ").append(erroresDetallados.get(k)).append("\n");
+								}
+								if (erroresDetallados.size() > max) {
+									resumen.append("  ... y ").append(erroresDetallados.size() - max).append(" más.\n");
+								}
+								resumen.append("\nRevise el log para el detalle completo.");
+							}
+
+							LogDAO.error("Backup remoto terminó con " + erroresDetallados.size()
+									+ " sentencias con error", null);
+
+							JOptionPane.showMessageDialog(null, resumen.toString(),
+									"Backup remoto con advertencias", JOptionPane.WARNING_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(null, "Backup remoto completado exitosamente", "Backup Exitoso",
+									JOptionPane.INFORMATION_MESSAGE);
+						}
 					}
-
-					publish(100);
-
-					JOptionPane.showMessageDialog(null, "Backup remoto completado exitosamente", "Backup Exitoso",
-							JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -642,6 +688,19 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		}
 
 		return exitoso[0];
+	}
+
+	/**
+	 * Devuelve los nombres de todas las tablas de la conexión.
+	 */
+	private List<String> listarTablas(Connection conexion) throws SQLException {
+		List<String> tablas = new ArrayList<>();
+		try (Statement stmt = conexion.createStatement(); ResultSet rs = stmt.executeQuery("SHOW TABLES")) {
+			while (rs.next()) {
+				tablas.add(rs.getString(1));
+			}
+		}
+		return tablas;
 	}
 
 	private void limpiarBaseDatos(Connection conexion) throws SQLException {

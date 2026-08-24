@@ -22,7 +22,8 @@ CREATE TABLE `cliente` (
   `tipo_documento` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'CUIT',
   `condicion_iva` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tipo_persona` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'empresa',
-  PRIMARY KEY (`idCliente`)
+  PRIMARY KEY (`idCliente`),
+  KEY `idx_cliente_nombre` (`nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -239,6 +240,7 @@ CREATE TABLE `reparaciones` (
   KEY `idx_rep_usuario_acept` (`idUsuario`,`FechAceptacion`),
   KEY `idx_rep_estados` (`EstadoComercial`,`EstadoFisico`,`Agregadoaremito`),
   KEY `idx_rep_nrofactura` (`NroFactura`),
+  FULLTEXT KEY `ft_reparaciones_texto` (`Falla`,`Solucion`,`Informecliente`),
   CONSTRAINT `fk_rep_equipo` FOREIGN KEY (`idEquipo`) REFERENCES `equipos` (`IdEquipo`),
   CONSTRAINT `fk_rep_remito` FOREIGN KEY (`idRemito`) REFERENCES `remitos` (`idRemito`),
   CONSTRAINT `fk_rep_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`)

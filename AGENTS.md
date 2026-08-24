@@ -16,6 +16,9 @@ Java 8, Swing (JTattoo Aluminium L&F), MySQL 8, JasperReports 6.21, Apache POI 5
 
 Notable: `org/eclipse/wb/swing/FocusTraversalOnArray.java` (WindowBuilder helper), `util/GeneradorPlanPDF.java`
 
+Herramientas de datos (standalone, en src/util/):
+- `NormalizadorMojibake.java` — detecta y revierte doble-encoding UTF-8→CP850 (mojibake histórico: `Climatizaci├│n`→`Climatización`, `ÔÇ£`→`“`). `main(JDBC_URL user pass)` es dry-run (solo reporta); con `--apply` aplica UPDATEs. Solo toca valores con síntomas (box-drawing `U+2500-U+257F`, `ÔÇ`, `â€`, `Ã`+letra) y es 100% segura: requiere que el texto sea codificable a CP850 y que el resultado quede sin nuevos artefactos. No toca `pass`. Aplicado 2026-08-23 a las 4 locales + 2 cloud (1377 celdas solo en ordenesbrc) — verificadas por HEX en bytes. **OJO en Windows:** nunca usar `mysqldump > archivo` ni `Get-Content | mysql` de PowerShell para mover datos con tildes — la consola recodifica (CP850) y corrompe UTF-8. Usar `--result-file` en mysqldump o el flujo JDBC.
+
 ## Architecture
 
 - **MVC**: Controladores (13 files in `presentacion/controlador/`) implement `ActionListener`; vistas in `presentacion/vista/`

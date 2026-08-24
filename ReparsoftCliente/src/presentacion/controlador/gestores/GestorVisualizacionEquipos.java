@@ -1064,27 +1064,45 @@ public class GestorVisualizacionEquipos {
 
 		agenda.ListarTecnicosV(comboTecnico);
 
-		boolean seleccionEncontrada = false;
-		if (!textoTecnicoActual.isEmpty()) {
-			DefaultComboBoxModel<UsuarioDTO> model = (DefaultComboBoxModel<UsuarioDTO>) comboTecnico.getModel();
+		DefaultComboBoxModel<UsuarioDTO> model = (DefaultComboBoxModel<UsuarioDTO>) comboTecnico.getModel();
+		resolverSeleccionTecnico(model, textoTecnicoActual);
+	}
 
-			for (int i = 0; i < model.getSize(); i++) {
-				UsuarioDTO tecnico = model.getElementAt(i);
-				String NombreCompletoTecnico = tecnico.getNombre() + " " + tecnico.getApellido();
+	/**
+	 * Selecciona en el modelo el técnico cuyo nombre completo ("Nombre Apellido")
+	 * coincide con el indicado. Si no existe (el usuario fue eliminado de la
+	 * tabla usuario), lo agrega como ítem adicional y lo selecciona: de esa
+	 * manera la asociación nombre↔reparación se conserva al editar y el nombre
+	 * no se pierde al guardar.
+	 * (Lógica pura sobre el modelo del combo: testeable sin Swing visual.)
+	 */
+	static void resolverSeleccionTecnico(DefaultComboBoxModel<UsuarioDTO> model, String nombreCompletoTecnico) {
+		String texto = nombreCompletoTecnico == null ? "" : nombreCompletoTecnico.trim();
 
-				if (tecnico != null && tecnico.getNombre() != null) {
-					if (NombreCompletoTecnico.equalsIgnoreCase(textoTecnicoActual)) {
-						comboTecnico.setSelectedIndex(i);
-						seleccionEncontrada = true;
-						break;
-					}
+		if (texto.isEmpty()) {
+			model.setSelectedItem(null);
+			return;
+		}
+
+		for (int i = 0; i < model.getSize(); i++) {
+			UsuarioDTO tecnico = model.getElementAt(i);
+
+			if (tecnico != null && tecnico.getNombre() != null) {
+				String nombreCompleto = tecnico.getNombre() + " " + tecnico.getApellido();
+				if (nombreCompleto.equalsIgnoreCase(texto)) {
+					model.setSelectedItem(tecnico);
+					return;
 				}
 			}
 		}
 
-		if (!seleccionEncontrada) {
-			comboTecnico.setSelectedIndex(-1);
-		}
+		// Técnico eliminado: agregar un ítem con su nombre para no perderlo
+		String[] partes = texto.split(" ", 2);
+		UsuarioDTO tecnicoEliminado = partes.length == 2
+				? new UsuarioDTO(partes[0], partes[1])
+				: new UsuarioDTO(texto, "");
+		model.addElement(tecnicoEliminado);
+		model.setSelectedItem(tecnicoEliminado);
 	}
 
 	private void llenarComboEstadoFisico(VentanaVisualizarEquipos ventana) {

@@ -208,4 +208,17 @@ public class ReparacionDAOImplTest {
         ReparacionDAOImpl dao = new ReparacionDAOImpl("Bariloche");
         assertEquals(0, dao.reasignarReparacionesDeUsuario(1, 9));
     }
+
+    /**
+     * Comportamiento pedido: al eliminar un usuario, su nombre debe permanecer
+     * asociado a sus reparaciones. La sentencia de reasignación solo reasigna
+     * idUsuario y NO debe tocar la columna NombreUsuario.
+     */
+    @Test
+    public void sqlReasignarUsuario_noTocaNombreUsuario() {
+        String sql = persistencia.dao.mysql.SQLQueries.UPDATE_REASIGNAR_USUARIO;
+        org.junit.Assert.assertTrue(sql.contains("SET idUsuario = ?"));
+        org.junit.Assert.assertTrue(sql.contains("WHERE idUsuario = ?"));
+        org.junit.Assert.assertFalse(sql.contains("NombreUsuario"));
+    }
 }
