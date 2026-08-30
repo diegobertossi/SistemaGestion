@@ -138,11 +138,13 @@ public class ControladorBackup implements ActionListener, MouseListener {
 				ventanaOpcionesBackup.getBtnResetDatos().addActionListener(this);
 				ventanaOpcionesBackup.getTxtNombreArchivo().setText(NombreBackUp);
 				ventanaOpcionesBackup.getTxtRutaArchivo().setText(rutadefaultBackup);
+				ventanaBackUp.dispose();
 			} else if (seleccion == ventanaBackUp.getRdbtnRemoto().getModel()) {
 				int opcion = JOptionPane.showConfirmDialog(null,
 						"Se sobreescribirá el archivo remoto anterior. ¿Desea continuar?", "Confirmar Backup Remoto",
 						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (opcion == JOptionPane.YES_OPTION) {
+					ventanaBackUp.dispose();
 					GenerarBackupMySQLRemotoConSwingWorker(agenda.getUbicacionBase(), cleverCloudHost, cleverCloudPort,
 							cleverCloudUser, cleverCloudPassword, cleverCloudDatabase);
 				}
@@ -153,12 +155,14 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 		if (ventanaBackUp != null && e.getSource() == ventanaBackUp.getBtnImportarB()) {
 			if (seleccion == ventanaBackUp.getRdbtnLocal().getModel()) {
+				ventanaBackUp.dispose();
 				ActualizarBackupMySQLlocal();
 			} else if (seleccion == ventanaBackUp.getRdbtnRemoto().getModel()) {
 				int opcion = JOptionPane.showConfirmDialog(null,
 						"Se sobreescribirá la base de datos local. ¿Desea continuar?", "Confirmar Importación Remota",
 						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (opcion == JOptionPane.YES_OPTION) {
+					ventanaBackUp.dispose();
 					ActualizarBackupMySQLremotoConSwingWorker(agenda.getUbicacionBase(), cleverCloudHost,
 							cleverCloudPort, cleverCloudUser, cleverCloudPassword, cleverCloudDatabase);
 				}
@@ -1069,6 +1073,8 @@ public class ControladorBackup implements ActionListener, MouseListener {
 									"Archivo de backup generado exitosamente.\n" + "Tamaño: " + fileSizeKB + " KB\n"
 											+ "Ubicación: " + backupFile.getAbsolutePath(),
 									"Backup Exitoso", JOptionPane.INFORMATION_MESSAGE);
+							ventanaOpcionesBackup.dispose();
+							ventanaOpcionesBackup = null;
 						} else {
 							JOptionPane.showMessageDialog(null,
 									"El archivo de backup se generó pero está vacío o no existe.", "Advertencia",
@@ -1108,9 +1114,11 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 			@Override
 			protected void done() {
+				if (ventanaOpcionesBackup != null) {
+					ventanaOpcionesBackup.getGlassPane().setVisible(false);
+					ventanaOpcionesBackup.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				}
 				ventanaBackUp.getGlassPane().setVisible(false);
-				ventanaOpcionesBackup.getGlassPane().setVisible(false);
-				ventanaOpcionesBackup.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				ventanaBackUp.getBtnGenerarB().setEnabled(true);
 				ventanaBackUp.getBtnImportarB().setEnabled(true);
 				popup.cerrar();

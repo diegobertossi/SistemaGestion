@@ -1,6 +1,7 @@
 package presentacion.controlador;
 
 import java.awt.AWTEvent;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -51,13 +52,14 @@ import VistaPropias.TableCopyHandler;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.Axis;
+import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarPainter;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
@@ -73,6 +75,7 @@ import org.jfree.chart.labels.IntervalCategoryItemLabelGenerator;
 import org.jfree.chart.labels.ItemLabelAnchor;
 import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
+import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
 
 import dto.FacturacionXclienteDTO;
 import dto.RegistroPresupuestoDTO;
@@ -150,25 +153,27 @@ public class ControladorListados
 	private List<FacturacionXclienteDTO> itemFacturacion_en_tabla;
 
 	private CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();
-	private Font titleFont = new Font("Arial", Font.BOLD, 20); // Por ejemplo, Arial, negrita, tamaño 16
-	private Font labelFont = new Font("Arial", Font.BOLD, 18); // Por ejemplo, Arial, tamaño 12
+	private Font titleFont = new Font("Arial", Font.BOLD, 20);
+	private Font labelFont = new Font("Arial", Font.BOLD, 18);
 	private Font labelFontPie = new Font("Arial", Font.PLAIN, 12);
-	private Color labelColor2 = Color.BLACK; // Cambiar color de la letra
-	private Color labelColor = Color.darkGray; // Cambiar color de la letra
+	private Color labelColor = Color.darkGray;
 
-	private ItemLabelPosition positionNumeroGrande = new ItemLabelPosition(ItemLabelAnchor.CENTER, // Posición dentro de
-																									// la barra
-			TextAnchor.BASELINE_CENTER, // Alineación vertical
-			TextAnchor.BASELINE_CENTER, // Alineación de texto
-			// 0
-			-Math.PI / 2.0 // Rotación del texto (90 grados para vertical)
-	);
-	private ItemLabelPosition positionNumeroChico = new ItemLabelPosition(ItemLabelAnchor.CENTER, // Posición dentro de
-																									// la barra
-			TextAnchor.BASELINE_CENTER, // Alineación vertical
-			TextAnchor.BASELINE_CENTER, // Alineación de texto
-			0 // Rotación del texto (90 grados para vertical)
-	);
+	private ItemLabelPosition positionNumeroGrande = new ItemLabelPosition(ItemLabelAnchor.CENTER,
+			TextAnchor.BASELINE_CENTER, TextAnchor.BASELINE_CENTER, -Math.PI / 2.0);
+	private ItemLabelPosition positionNumeroChico = new ItemLabelPosition(ItemLabelAnchor.CENTER,
+			TextAnchor.BASELINE_CENTER, TextAnchor.BASELINE_CENTER, 0);
+
+	private ChartPanel chartPanelIngresos;
+	private ChartPanel chartPanelDiagnosticos;
+	private ChartPanel chartPanelFacturacion;
+
+	private static final String[] MESES = {"ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"};
+
+	private final Map<String, Object[]> cacheGraficosAnio = new HashMap<>();
+	private final Map<String, Object[]> cacheGraficosTecnico = new HashMap<>();
+	private final Map<String, Object[]> cacheGraficosCliente = new HashMap<>();
+
+	private boolean cargandoGraficos = false;
 
 	private String[] nombresColumnas = { "ELS", "ENTRADA", "CLIENTE", "SUCURSAL", "EQUIPO", "MARCA", "MODELO",
 			"N° SERIE", "AVISO", "REVISIÓN", "SALIDA", "CLIENTE/CLIENTE", "ESTADO TEC", "ESTADO COM", "ESTADO FIS",
@@ -248,6 +253,12 @@ public class ControladorListados
 				&& arg0.getSource() == this.ventanaListadoReparaciones.getBtnEstadisticas()) {
 
 			ventanaEstadisticas = new VentanaEstadisticas(this);
+			
+			// Reset chart panels for new window
+			chartPanelIngresos = null;
+			chartPanelDiagnosticos = null;
+			chartPanelFacturacion = null;
+			
 			agregarListenerAventanaEstadisticas();
 			monedaFormatter = new MonedaFormatter();
 			seleccionDetalleEstadisticas = "OCULTAR DETALLE";
@@ -1112,6 +1123,19 @@ public class ControladorListados
 		ventanaEstadisticas.getBtnConfiguracion().addActionListener(this);
 		ventanaEstadisticas.getBtnFacturacionPorCliente().addActionListener(this);
 		ventanaEstadisticas.getBtnResumenMensualTecnico().addActionListener(this);
+
+		// Cleanup on window close
+		ventanaEstadisticas.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				chartPanelIngresos = null;
+				chartPanelDiagnosticos = null;
+				chartPanelFacturacion = null;
+				cacheGraficosAnio.clear();
+				cacheGraficosTecnico.clear();
+				cacheGraficosCliente.clear();
+			}
+		});
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1127,12 +1151,17 @@ public class ControladorListados
 		ventanaEstadisticas.getComboFiltro().addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 
-				if (ventanaEstadisticas.getComboFiltro().getSelectedItem() != null) {
+				if (e.getStateChange() != ItemEvent.SELECTED || ventanaEstadisticas.getComboFiltro().getSelectedItem() == null) {
+					return;
+				}
 
-					filtro = ventanaEstadisticas.getComboFiltro().getSelectedIndex();
-					// System.out.println(ventanaEstadisticas.getComboFiltro().getSelectedIndex());
+				filtro = ventanaEstadisticas.getComboFiltro().getSelectedIndex();
 
-					switch (filtro) {
+				cacheGraficosAnio.clear();
+				cacheGraficosTecnico.clear();
+				cacheGraficosCliente.clear();
+
+				switch (filtro) {
 
 					case 0:
 
@@ -1145,10 +1174,10 @@ public class ControladorListados
 						ventanaEstadisticas.getComboCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
 
-						ventanaEstadisticas.getPanel_Ingresos().removeAll();
-						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
-						ventanaEstadisticas.getPanel_Facturacion().removeAll();
-						ventanaEstadisticas.repaint();
+						inicializarChartPanelsSiNecesario();
+						chartPanelIngresos.setChart(crearChartVacio(""));
+						chartPanelDiagnosticos.setChart(crearChartVacio(""));
+						chartPanelFacturacion.setChart(crearChartVacio(""));
 
 						break;
 
@@ -1162,11 +1191,6 @@ public class ControladorListados
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
 						ventanaEstadisticas.getComboCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
-
-						ventanaEstadisticas.getPanel_Ingresos().removeAll();
-						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
-						ventanaEstadisticas.getPanel_Facturacion().removeAll();
-						ventanaEstadisticas.repaint();
 
 						break;
 
@@ -1186,11 +1210,6 @@ public class ControladorListados
 						ventanaEstadisticas.getComboCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
 
-						ventanaEstadisticas.getPanel_Ingresos().removeAll();
-						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
-						ventanaEstadisticas.getPanel_Facturacion().removeAll();
-						ventanaEstadisticas.repaint();
-
 						break;
 					case 3:
 
@@ -1206,18 +1225,11 @@ public class ControladorListados
 						ventanaEstadisticas.getComboTecnico().setVisible(false);
 						ventanaEstadisticas.getPanel_Datos().setVisible(false);
 
-						ventanaEstadisticas.getPanel_Ingresos().removeAll();
-						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
-						ventanaEstadisticas.getPanel_Facturacion().removeAll();
-						ventanaEstadisticas.repaint();
-
 						break;
 
 					default:
 						break;
 					}
-
-				}
 
 			}
 		});
@@ -1236,19 +1248,27 @@ public class ControladorListados
 		ventanaEstadisticas.getComboAnio().addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 
-				if (ventanaEstadisticas.getComboAnio().getSelectedItem() != null) {
+				if (e.getStateChange() != ItemEvent.SELECTED || ventanaEstadisticas.getComboAnio().getSelectedItem() == null) {
+					return;
+				}
 
-					ventanaEstadisticas.getLblAnioDatos()
-							.setText(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
-					ventanaEstadisticas.getPanel_Datos().setVisible(true);
+				ventanaEstadisticas.getLblAnioDatos()
+						.setText(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
+				ventanaEstadisticas.getPanel_Datos().setVisible(true);
 
-					llenarDatosAnuales();
+				cacheGraficosAnio.clear();
+				cacheGraficosTecnico.clear();
+				cacheGraficosCliente.clear();
 
-					switch (filtro) {
+				llenarDatosAnuales();
+
+				switch (filtro) {
 					case 0:
-						ventanaEstadisticas.getPanel_Ingresos().removeAll();
-						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
-						ventanaEstadisticas.getPanel_Facturacion().removeAll();
+
+						inicializarChartPanelsSiNecesario();
+						chartPanelIngresos.setChart(crearChartVacio(""));
+						chartPanelDiagnosticos.setChart(crearChartVacio(""));
+						chartPanelFacturacion.setChart(crearChartVacio(""));
 
 						ventanaEstadisticas.getPanel_datosPorAnio().setVisible(false);
 						ventanaEstadisticas.getPanel_datosPorCliente().setVisible(false);
@@ -1262,10 +1282,6 @@ public class ControladorListados
 					case 1:
 
 						llenarDatosPorAnio();
-
-						ventanaEstadisticas.getPanel_Ingresos().removeAll();
-						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
-						ventanaEstadisticas.getPanel_Facturacion().removeAll();
 
 						ventanaEstadisticas.getPanel_datosPorCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_facturacionPorCliente().setVisible(false);
@@ -1288,10 +1304,6 @@ public class ControladorListados
 					case 2:
 
 						llenarDatosPorTecnico();
-
-						ventanaEstadisticas.getPanel_Ingresos().removeAll();
-						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
-						ventanaEstadisticas.getPanel_Facturacion().removeAll();
 
 						ventanaEstadisticas.getPanel_datosPorCliente().setVisible(false);
 						ventanaEstadisticas.getPanel_datosPorAnio().setVisible(false);
@@ -1321,10 +1333,6 @@ public class ControladorListados
 					case 3:
 
 						llenarDatosPorCliente();
-
-						ventanaEstadisticas.getPanel_Ingresos().removeAll();
-						ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
-						ventanaEstadisticas.getPanel_Facturacion().removeAll();
 
 						ventanaEstadisticas.getPanel_datosPorAnio().setVisible(false);
 						ventanaEstadisticas.getPanel_datosPorTecnico().setVisible(false);
@@ -1356,8 +1364,6 @@ public class ControladorListados
 						break;
 					}
 
-				}
-
 			}
 		});
 
@@ -1385,14 +1391,21 @@ public class ControladorListados
 		ventanaEstadisticas.getComboTecnico().addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 
+				if (e.getStateChange() != ItemEvent.SELECTED) {
+					return;
+				}
+
 				if (ventanaEstadisticas.getComboTecnico().getSelectedItem() != null) {
 
 					ventanaEstadisticas.getComboAnio().setSelectedIndex(-1);
-					ventanaEstadisticas.getPanel_Ingresos().removeAll();
-					ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
-					ventanaEstadisticas.getPanel_Facturacion().removeAll();
-					ventanaEstadisticas.repaint();
+					cacheGraficosTecnico.clear();
 
+				} else {
+					// Selection cleared
+					inicializarChartPanelsSiNecesario();
+					chartPanelIngresos.setChart(crearChartVacio(""));
+					chartPanelDiagnosticos.setChart(crearChartVacio(""));
+					chartPanelFacturacion.setChart(crearChartVacio(""));
 				}
 
 			}
@@ -1408,14 +1421,21 @@ public class ControladorListados
 		ventanaEstadisticas.getComboCliente().addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 
+				if (e.getStateChange() != ItemEvent.SELECTED) {
+					return;
+				}
+
 				if (ventanaEstadisticas.getComboCliente().getSelectedItem() != null) {
 
 					ventanaEstadisticas.getComboAnio().setSelectedIndex(-1);
-					ventanaEstadisticas.getPanel_Ingresos().removeAll();
-					ventanaEstadisticas.getPanel_Diagnosticos().removeAll();
-					ventanaEstadisticas.getPanel_Facturacion().removeAll();
-					ventanaEstadisticas.repaint();
+					cacheGraficosCliente.clear();
 
+				} else {
+					// Selection cleared
+					inicializarChartPanelsSiNecesario();
+					chartPanelIngresos.setChart(crearChartVacio(""));
+					chartPanelDiagnosticos.setChart(crearChartVacio(""));
+					chartPanelFacturacion.setChart(crearChartVacio(""));
 				}
 
 			}
@@ -1704,441 +1724,333 @@ public class ControladorListados
 	}
 
 	private void mostrarGraficosPorAnio() {
+		if (cargandoGraficos) return;
+		cargandoGraficos = true;
+
+		inicializarChartPanelsSiNecesario();
 
 		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
+		String cacheKey = "anio_" + anio;
 
-		List<Integer> listaIngresos = modelo.dameIngresosPorAnioPorMes(anio);
-		List<Integer> listaDiagnosticos = modelo.dameDiagnosticosPorAnioPorMes(anio);
-		List<Double> listaFacturacion = modelo.dameFacturacionPorAnioPorMes(anio);
-
-		DefaultCategoryDataset datosIngresos = new DefaultCategoryDataset();
-		DefaultCategoryDataset datosDiagnosticos = new DefaultCategoryDataset();
-		DefaultCategoryDataset datosFacturacion = new DefaultCategoryDataset();
-
-		datosIngresos.setValue(listaIngresos.get(0), "Ingresos", "ENE");
-		datosIngresos.setValue(listaIngresos.get(1), "Ingresos", "FEB");
-		datosIngresos.setValue(listaIngresos.get(2), "Ingresos", "MAR");
-		datosIngresos.setValue(listaIngresos.get(3), "Ingresos", "ABR");
-		datosIngresos.setValue(listaIngresos.get(4), "Ingresos", "MAY");
-		datosIngresos.setValue(listaIngresos.get(5), "Ingresos", "JUN");
-		datosIngresos.setValue(listaIngresos.get(6), "Ingresos", "JUL");
-		datosIngresos.setValue(listaIngresos.get(7), "Ingresos", "AGO");
-		datosIngresos.setValue(listaIngresos.get(8), "Ingresos", "SEP");
-		datosIngresos.setValue(listaIngresos.get(9), "Ingresos", "OCT");
-		datosIngresos.setValue(listaIngresos.get(10), "Ingresos", "NOV");
-		datosIngresos.setValue(listaIngresos.get(11), "Ingresos", "DIC");
-
-		datosDiagnosticos.setValue(listaDiagnosticos.get(0), "Diagnósticos", "ENE");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(1), "Diagnósticos", "FEB");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(2), "Diagnósticos", "MAR");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(3), "Diagnósticos", "ABR");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(4), "Diagnósticos", "MAY");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(5), "Diagnósticos", "JUN");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(6), "Diagnósticos", "JUL");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(7), "Diagnósticos", "AGO");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(8), "Diagnósticos", "SEP");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(9), "Diagnósticos", "OCT");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(10), "Diagnósticos", "NOV");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(11), "Diagnósticos", "DIC");
-
-		datosFacturacion.setValue(listaFacturacion.get(0), "Facturación", "ENE");
-		datosFacturacion.setValue(listaFacturacion.get(1), "Facturación", "FEB");
-		datosFacturacion.setValue(listaFacturacion.get(2), "Facturación", "MAR");
-		datosFacturacion.setValue(listaFacturacion.get(3), "Facturación", "ABR");
-		datosFacturacion.setValue(listaFacturacion.get(4), "Facturación", "MAY");
-		datosFacturacion.setValue(listaFacturacion.get(5), "Facturación", "JUN");
-		datosFacturacion.setValue(listaFacturacion.get(6), "Facturación", "JUL");
-		datosFacturacion.setValue(listaFacturacion.get(7), "Facturación", "AGO");
-		datosFacturacion.setValue(listaFacturacion.get(8), "Facturación", "SEP");
-		datosFacturacion.setValue(listaFacturacion.get(9), "Facturación", "OCT");
-		datosFacturacion.setValue(listaFacturacion.get(10), "Facturación", "NOV");
-		datosFacturacion.setValue(listaFacturacion.get(11), "Facturación", "DIC");
-
-		JFreeChart grafico_ingresos = ChartFactory.createBarChart("INGRESOS", "", "Cantidad", datosIngresos,
-				PlotOrientation.VERTICAL, false, true, false);
-		JFreeChart grafico_diagnosticos = ChartFactory.createBarChart("DIAGNÓSTICOS", "", "Cantidad", datosDiagnosticos,
-				PlotOrientation.VERTICAL, false, true, false);
-		JFreeChart grafico_facturacion = ChartFactory.createBarChart("FACTURACIÓN", null, "Pesos($)", datosFacturacion,
-				PlotOrientation.VERTICAL, false, true, false);
-
-		NumberAxis yAxisIngresos = (NumberAxis) grafico_ingresos.getCategoryPlot().getRangeAxis();
-		yAxisIngresos.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
-		NumberAxis yAxisDiagnosticos = (NumberAxis) grafico_diagnosticos.getCategoryPlot().getRangeAxis();
-		yAxisDiagnosticos.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
-		CategoryPlot plot_ingreso = (CategoryPlot) grafico_ingresos.getPlot();
-		CategoryPlot plot_diagnostico = (CategoryPlot) grafico_diagnosticos.getPlot();
-		CategoryPlot plot_facturacion = (CategoryPlot) grafico_facturacion.getPlot();
-
-		BarRenderer renderer_ingreso = (BarRenderer) plot_ingreso.getRenderer();
-		renderer_ingreso.setDrawBarOutline(false);
-		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, new Color(100, 149, 237), 0.0f, 0.0f,
-				new Color(70, 130, 180));
-		renderer_ingreso.setSeriesPaint(0, gp0);
-
-		BarRenderer renderer_diagnostico = (BarRenderer) plot_diagnostico.getRenderer();
-		renderer_diagnostico.setDrawBarOutline(false);
-		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, new Color(102, 205, 170), 0.0f, 0.0f,
-				new Color(60, 179, 113));
-		renderer_diagnostico.setSeriesPaint(0, gp1);
-
-		BarRenderer renderer_facturacion = (BarRenderer) plot_facturacion.getRenderer();
-		renderer_facturacion.setDrawBarOutline(false);
-		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, new Color(240, 128, 128), 0.0f, 0.0f, new Color(205, 92, 92));
-		renderer_facturacion.setSeriesPaint(0, gp2);
-
-		grafico_ingresos.getTitle().setFont(titleFont);
-		grafico_ingresos.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-
-		grafico_diagnosticos.getTitle().setFont(titleFont);
-		grafico_diagnosticos.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-
-		grafico_facturacion.getTitle().setFont(titleFont);
-		grafico_facturacion.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-
-		renderer_ingreso.setItemLabelGenerator(generator);
-		renderer_diagnostico.setItemLabelGenerator(generator);
-		renderer_facturacion.setItemLabelGenerator(generator);
-
-		renderer_ingreso.setItemLabelFont(labelFont);
-		renderer_ingreso.setItemLabelPaint(labelColor);
-
-		renderer_diagnostico.setItemLabelFont(labelFont);
-		renderer_diagnostico.setItemLabelPaint(labelColor);
-
-		renderer_facturacion.setItemLabelFont(labelFont);
-		renderer_facturacion.setItemLabelPaint(labelColor);
-
-		renderer_ingreso.setItemLabelsVisible(true);
-		renderer_diagnostico.setItemLabelsVisible(true);
-		renderer_facturacion.setItemLabelsVisible(true);
-
-		renderer_facturacion.setPositiveItemLabelPosition(positionNumeroGrande);
-		renderer_diagnostico.setPositiveItemLabelPosition(positionNumeroChico);
-		renderer_ingreso.setPositiveItemLabelPosition(positionNumeroChico);
-
-		ChartPanel panelGraficoIngresos = new ChartPanel(grafico_ingresos);
-		panelGraficoIngresos.setMouseWheelEnabled(true);
-
-		ChartPanel panelGraficoDiagnosticos = new ChartPanel(grafico_diagnosticos);
-		panelGraficoDiagnosticos.setMouseWheelEnabled(true);
-
-		ChartPanel panelGraficoFacturacion = new ChartPanel(grafico_facturacion);
-		panelGraficoFacturacion.setMouseWheelEnabled(true);
-
-		panelGraficoIngresos.setMinimumDrawHeight(400);
-		panelGraficoIngresos.setMaximumDrawWidth(1280);
-
-		panelGraficoDiagnosticos.setMinimumDrawHeight(400);
-		panelGraficoDiagnosticos.setMaximumDrawWidth(1280);
-
-		panelGraficoFacturacion.setMinimumDrawHeight(400);
-		panelGraficoFacturacion.setMaximumDrawWidth(1280);
-
-		ventanaEstadisticas.getPanel_Ingresos().add(panelGraficoIngresos);
-		ventanaEstadisticas.getPanel_Diagnosticos().add(panelGraficoDiagnosticos);
-		ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoFacturacion);
-
-		if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
-
-			ventanaEstadisticas.getPanel_Facturacion().setVisible(true);
-
-		} else {
-
-			ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
-
+		Object[] cached = cacheGraficosAnio.get(cacheKey);
+		if (cached != null) {
+			aplicarChartsDesdeCache(cached);
+			cargandoGraficos = false;
+			return;
 		}
 
-		ventanaEstadisticas.repaint();
+		// Show empty charts while loading
+		chartPanelIngresos.setChart(crearChartVacio("INGRESOS"));
+		chartPanelDiagnosticos.setChart(crearChartVacio("DIAGNÓSTICOS"));
+		chartPanelFacturacion.setChart(crearChartVacio("FACTURACIÓN"));
 
+		new SwingWorker<Object[], Void>() {
+			@Override
+			protected Object[] doInBackground() throws Exception {
+				List<Integer> listaIngresos = modelo.dameIngresosPorAnioPorMes(anio);
+				List<Integer> listaDiagnosticos = modelo.dameDiagnosticosPorAnioPorMes(anio);
+				List<Double> listaFacturacion = modelo.dameFacturacionPorAnioPorMes(anio);
+				return new Object[]{listaIngresos, listaDiagnosticos, listaFacturacion};
+			}
+
+			@Override
+			protected void done() {
+				try {
+					Object[] data = get();
+					cacheGraficosAnio.put(cacheKey, data);
+					crearChartsPorAnio(data);
+				} catch (Exception ex) {
+					LogDAO.error("Error cargando gráficos por año", ex);
+				} finally {
+					cargandoGraficos = false;
+				}
+			}
+		}.execute();
+	}
+
+	private void inicializarChartPanelsSiNecesario() {
+		if (chartPanelIngresos != null) return;
+
+		chartPanelIngresos = new ChartPanel(null);
+		chartPanelIngresos.setMouseWheelEnabled(true);
+		chartPanelIngresos.setMinimumDrawHeight(400);
+		chartPanelIngresos.setMaximumDrawWidth(1280);
+
+		chartPanelDiagnosticos = new ChartPanel(null);
+		chartPanelDiagnosticos.setMouseWheelEnabled(true);
+		chartPanelDiagnosticos.setMinimumDrawHeight(400);
+		chartPanelDiagnosticos.setMaximumDrawWidth(1280);
+
+		chartPanelFacturacion = new ChartPanel(null);
+		chartPanelFacturacion.setMouseWheelEnabled(true);
+		chartPanelFacturacion.setMinimumDrawHeight(400);
+		chartPanelFacturacion.setMaximumDrawWidth(1280);
+
+		ventanaEstadisticas.getPanel_Ingresos().add(chartPanelIngresos, "chart");
+		ventanaEstadisticas.getPanel_Diagnosticos().add(chartPanelDiagnosticos, "chart");
+		ventanaEstadisticas.getPanel_Facturacion().add(chartPanelFacturacion, "chart");
+	}
+
+	private JFreeChart crearChartVacio(String titulo) {
+		DefaultCategoryDataset emptyDataset = new DefaultCategoryDataset();
+		JFreeChart chart = ChartFactory.createBarChart(titulo, "", "Cantidad", emptyDataset,
+				PlotOrientation.VERTICAL, false, true, false);
+		
+		Color fondoPastel = new Color(220, 228, 240);
+		Color plotPastel = new Color(235, 240, 248);
+		Color ejeColor = new Color(160, 170, 185);
+		chart.setBackgroundPaint(fondoPastel);
+		chart.getTitle().setFont(new Font("Segoe UI", Font.BOLD, 16));
+		chart.getTitle().setPaint(new Color(60, 60, 60));
+		
+		CategoryPlot plot = (CategoryPlot) chart.getPlot();
+		plot.setBackgroundPaint(plotPastel);
+		plot.setRangeGridlinePaint(new Color(200, 208, 220));
+		plot.setDomainGridlinePaint(new Color(200, 208, 220));
+		plot.setOutlineVisible(true);
+		plot.setOutlinePaint(ejeColor);
+		plot.setOutlineStroke(new BasicStroke(1.0f));
+		plot.setInsets(new RectangleInsets(5, 10, 5, 10));
+		
+		CategoryAxis domainAxis = plot.getDomainAxis();
+		domainAxis.setTickLabelFont(new Font("Segoe UI", Font.PLAIN, 11));
+		domainAxis.setTickLabelPaint(new Color(70, 70, 70));
+		domainAxis.setAxisLineVisible(true);
+		domainAxis.setAxisLinePaint(ejeColor);
+		domainAxis.setAxisLineStroke(new BasicStroke(1.0f));
+		domainAxis.setTickMarksVisible(true);
+		domainAxis.setTickMarkPaint(ejeColor);
+		domainAxis.setTickMarkStroke(new BasicStroke(1.0f));
+		
+		NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+		rangeAxis.setTickLabelFont(new Font("Segoe UI", Font.PLAIN, 11));
+		rangeAxis.setTickLabelPaint(new Color(70, 70, 70));
+		rangeAxis.setAxisLineVisible(true);
+		rangeAxis.setAxisLinePaint(ejeColor);
+		rangeAxis.setAxisLineStroke(new BasicStroke(1.0f));
+		rangeAxis.setTickMarksVisible(true);
+		rangeAxis.setTickMarkPaint(ejeColor);
+		rangeAxis.setTickMarkStroke(new BasicStroke(1.0f));
+		
+		return chart;
+	}
+
+	private void crearChartsPorAnio(Object[] data) {
+		List<Integer> listaIngresos = (List<Integer>) data[0];
+		List<Integer> listaDiagnosticos = (List<Integer>) data[1];
+		List<Double> listaFacturacion = (List<Double>) data[2];
+
+		DefaultCategoryDataset datosIngresos = crearDataset(listaIngresos, "Ingresos");
+		DefaultCategoryDataset datosDiagnosticos = crearDataset(listaDiagnosticos, "Diagnósticos");
+		DefaultCategoryDataset datosFacturacion = crearDataset(listaFacturacion, "Facturación");
+
+		// Colores estilo Aluminium L&F (azules/grises)
+		Color azulClaro = new Color(180, 200, 230);
+		Color azulOscuro = new Color(70, 110, 160);
+		Color verdeClaro = new Color(160, 210, 180);
+		Color verdeOscuro = new Color(60, 140, 90);
+		Color rojoClaro = new Color(230, 160, 160);
+		Color rojoOscuro = new Color(180, 80, 80);
+		Color moradoClaro = new Color(200, 170, 230);
+		Color moradoOscuro = new Color(130, 90, 170);
+
+		JFreeChart graficoIngresos = crearBarChart("INGRESOS", "", "Cantidad", datosIngresos, azulClaro, azulOscuro);
+		JFreeChart graficoDiagnosticos = crearBarChart("DIAGNÓSTICOS", "", "Cantidad", datosDiagnosticos, verdeClaro, verdeOscuro);
+		JFreeChart graficoFacturacion = crearBarChart("FACTURACIÓN", null, "Pesos($)", datosFacturacion, rojoClaro, rojoOscuro);
+
+		configurarEjeEntero(graficoIngresos);
+		configurarEjeEntero(graficoDiagnosticos);
+
+		aplicarEstiloComun(graficoIngresos, graficoDiagnosticos, graficoFacturacion);
+
+		actualizarChartPanels(graficoIngresos, graficoDiagnosticos, graficoFacturacion);
+
+		if (seleccionDetalleEstadisticas.compareTo("MOSTRAR DETALLE") == 0) {
+			ventanaEstadisticas.getPanel_Facturacion().setVisible(true);
+		} else {
+			ventanaEstadisticas.getPanel_Facturacion().setVisible(false);
+		}
+		ventanaEstadisticas.repaint();
+	}
+
+	private void aplicarChartsDesdeCache(Object[] data) {
+		List<Integer> listaIngresos = (List<Integer>) data[0];
+		List<Integer> listaDiagnosticos = (List<Integer>) data[1];
+		List<Double> listaFacturacion = (List<Double>) data[2];
+		crearChartsPorAnio(data);
 	}
 
 	private void mostrarGraficosPorTecnico() {
+		if (cargandoGraficos) return;
+		if (ventanaEstadisticas.getComboTecnico() == null || ventanaEstadisticas.getComboTecnico().getSelectedIndex() == -1) {
+			return;
+		}
+		cargandoGraficos = true;
 
 		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
 		String tecnico = ventanaEstadisticas.getComboTecnico().getSelectedItem().toString();
-
 		int idTecnico = modelo.idUsuarioporNombre(tecnico);
+		String cacheKey = "tecnico_" + anio + "_" + idTecnico;
 
-		List<Integer> listaDiagnosticos = modelo.dameDiagnosticosPorAnioPorTecnico(anio, idTecnico);
-		List<Integer> listaAceptaciones = modelo.dameAceptacionesPorAnioPorTecnico(anio, idTecnico);
-		List<Double> listaFacturacion = modelo.dameFacturacionPorAnioPorTecnico(anio, idTecnico);
+		Object[] cached = cacheGraficosTecnico.get(cacheKey);
+		if (cached != null) {
+			aplicarChartsTecnicoDesdeCache(cached);
+			cargandoGraficos = false;
+			return;
+		}
 
-		DefaultCategoryDataset datosDiagnosticos = new DefaultCategoryDataset();
-		DefaultCategoryDataset datosAceptaciones = new DefaultCategoryDataset();
-		DefaultCategoryDataset datosFacturacion = new DefaultCategoryDataset();
+		inicializarChartPanelsSiNecesario();
 
-		datosDiagnosticos.setValue(listaDiagnosticos.get(0), "Diagnósticos", "ENE");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(1), "Diagnósticos", "FEB");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(2), "Diagnósticos", "MAR");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(3), "Diagnósticos", "ABR");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(4), "Diagnósticos", "MAY");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(5), "Diagnósticos", "JUN");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(6), "Diagnósticos", "JUL");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(7), "Diagnósticos", "AGO");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(8), "Diagnósticos", "SEP");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(9), "Diagnósticos", "OCT");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(10), "Diagnósticos", "NOV");
-		datosDiagnosticos.setValue(listaDiagnosticos.get(11), "Diagnósticos", "DIC");
+		chartPanelIngresos.setChart(crearChartVacio("ACEPTACIONES"));
+		chartPanelDiagnosticos.setChart(crearChartVacio("DIAGNÓSTICOS"));
+		chartPanelFacturacion.setChart(crearChartVacio("FACTURACIÓN"));
 
-		datosAceptaciones.setValue(listaAceptaciones.get(0), "Aceptaciones", "ENE");
-		datosAceptaciones.setValue(listaAceptaciones.get(1), "Aceptaciones", "FEB");
-		datosAceptaciones.setValue(listaAceptaciones.get(2), "Aceptaciones", "MAR");
-		datosAceptaciones.setValue(listaAceptaciones.get(3), "Aceptaciones", "ABR");
-		datosAceptaciones.setValue(listaAceptaciones.get(4), "Aceptaciones", "MAY");
-		datosAceptaciones.setValue(listaAceptaciones.get(5), "Aceptaciones", "JUN");
-		datosAceptaciones.setValue(listaAceptaciones.get(6), "Aceptaciones", "JUL");
-		datosAceptaciones.setValue(listaAceptaciones.get(7), "Aceptaciones", "AGO");
-		datosAceptaciones.setValue(listaAceptaciones.get(8), "Aceptaciones", "SEP");
-		datosAceptaciones.setValue(listaAceptaciones.get(9), "Aceptaciones", "OCT");
-		datosAceptaciones.setValue(listaAceptaciones.get(10), "Aceptaciones", "NOV");
-		datosAceptaciones.setValue(listaAceptaciones.get(11), "Aceptaciones", "DIC");
+		new SwingWorker<Object[], Void>() {
+			@Override
+			protected Object[] doInBackground() throws Exception {
+				List<Integer> listaDiagnosticos = modelo.dameDiagnosticosPorAnioPorTecnico(anio, idTecnico);
+				List<Integer> listaAceptaciones = modelo.dameAceptacionesPorAnioPorTecnico(anio, idTecnico);
+				List<Double> listaFacturacion = modelo.dameFacturacionPorAnioPorTecnico(anio, idTecnico);
+				return new Object[]{listaDiagnosticos, listaAceptaciones, listaFacturacion};
+			}
 
-		datosFacturacion.setValue(listaFacturacion.get(0), "Facturación", "ENE");
-		datosFacturacion.setValue(listaFacturacion.get(1), "Facturación", "FEB");
-		datosFacturacion.setValue(listaFacturacion.get(2), "Facturación", "MAR");
-		datosFacturacion.setValue(listaFacturacion.get(3), "Facturación", "ABR");
-		datosFacturacion.setValue(listaFacturacion.get(4), "Facturación", "MAY");
-		datosFacturacion.setValue(listaFacturacion.get(5), "Facturación", "JUN");
-		datosFacturacion.setValue(listaFacturacion.get(6), "Facturación", "JUL");
-		datosFacturacion.setValue(listaFacturacion.get(7), "Facturación", "AGO");
-		datosFacturacion.setValue(listaFacturacion.get(8), "Facturación", "SEP");
-		datosFacturacion.setValue(listaFacturacion.get(9), "Facturación", "OCT");
-		datosFacturacion.setValue(listaFacturacion.get(10), "Facturación", "NOV");
-		datosFacturacion.setValue(listaFacturacion.get(11), "Facturación", "DIC");
+			@Override
+			protected void done() {
+				try {
+					Object[] data = get();
+					cacheGraficosTecnico.put(cacheKey, data);
+					crearChartsPorTecnico(data);
+				} catch (Exception ex) {
+					LogDAO.error("Error cargando gráficos por técnico", ex);
+				} finally {
+					cargandoGraficos = false;
+				}
+			}
+		}.execute();
+	}
 
-		JFreeChart grafico_diagnosticos = ChartFactory.createBarChart("DIAGNÓSTICOS", "", "Cantidad", datosDiagnosticos,
-				PlotOrientation.VERTICAL, false, true, false);
-		JFreeChart grafico_aceptaciones = ChartFactory.createBarChart("ACEPTACIONES", "", "Cantidad", datosAceptaciones,
-				PlotOrientation.VERTICAL, false, true, false);
-		JFreeChart grafico_facturacion = ChartFactory.createBarChart("FACTURACIÓN", null, "Pesos($)", datosFacturacion,
-				PlotOrientation.VERTICAL, false, true, false);
+	private void crearChartsPorTecnico(Object[] data) {
+		List<Integer> listaDiagnosticos = (List<Integer>) data[0];
+		List<Integer> listaAceptaciones = (List<Integer>) data[1];
+		List<Double> listaFacturacion = (List<Double>) data[2];
 
-		NumberAxis yAxisaceptaciones = (NumberAxis) grafico_aceptaciones.getCategoryPlot().getRangeAxis();
-		yAxisaceptaciones.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+		DefaultCategoryDataset datosDiagnosticos = crearDataset(listaDiagnosticos, "Diagnósticos");
+		DefaultCategoryDataset datosAceptaciones = crearDataset(listaAceptaciones, "Aceptaciones");
+		DefaultCategoryDataset datosFacturacion = crearDataset(listaFacturacion, "Facturación");
 
-		NumberAxis yAxisDiagnosticos = (NumberAxis) grafico_diagnosticos.getCategoryPlot().getRangeAxis();
-		yAxisDiagnosticos.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+		// Colores estilo Aluminium L&F
+		Color azulClaro = new Color(180, 200, 230);
+		Color azulOscuro = new Color(70, 110, 160);
+		Color verdeClaro = new Color(160, 210, 180);
+		Color verdeOscuro = new Color(60, 140, 90);
+		Color rojoClaro = new Color(230, 160, 160);
+		Color rojoOscuro = new Color(180, 80, 80);
+		Color moradoClaro = new Color(200, 170, 230);
+		Color moradoOscuro = new Color(130, 90, 170);
 
-		CategoryPlot plot_aceptaciones = (CategoryPlot) grafico_aceptaciones.getPlot();
-		CategoryPlot plot_diagnostico = (CategoryPlot) grafico_diagnosticos.getPlot();
-		CategoryPlot plot_facturacion = (CategoryPlot) grafico_facturacion.getPlot();
+		JFreeChart graficoDiagnosticos = crearBarChart("DIAGNÓSTICOS", "", "Cantidad", datosDiagnosticos, verdeClaro, verdeOscuro);
+		JFreeChart graficoAceptaciones = crearBarChart("ACEPTACIONES", "", "Cantidad", datosAceptaciones, moradoClaro, moradoOscuro);
+		JFreeChart graficoFacturacion = crearBarChart("FACTURACIÓN", null, "Pesos($)", datosFacturacion, rojoClaro, rojoOscuro);
 
-		BarRenderer renderer_diagnostico = (BarRenderer) plot_diagnostico.getRenderer();
-		renderer_diagnostico.setDrawBarOutline(false);
-		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, new Color(102, 205, 170), 0.0f, 0.0f,
-				new Color(60, 179, 113));
-		renderer_diagnostico.setSeriesPaint(0, gp1);
+		configurarEjeEntero(graficoDiagnosticos);
+		configurarEjeEntero(graficoAceptaciones);
 
-		BarRenderer renderer_aceptaciones = (BarRenderer) plot_aceptaciones.getRenderer();
-		renderer_aceptaciones.setDrawBarOutline(false);
-		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, new Color(186, 85, 211), 0.0f, 0.0f, new Color(148, 0, 211));
-		renderer_aceptaciones.setSeriesPaint(0, gp0);
+		aplicarEstiloComun(graficoDiagnosticos, graficoAceptaciones, graficoFacturacion);
 
-		BarRenderer renderer_facturacion = (BarRenderer) plot_facturacion.getRenderer();
-		renderer_facturacion.setDrawBarOutline(false);
-		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, new Color(240, 128, 128), 0.0f, 0.0f, new Color(205, 92, 92));
-		renderer_facturacion.setSeriesPaint(0, gp2);
-
-		grafico_aceptaciones.getTitle().setFont(titleFont);
-		grafico_aceptaciones.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-
-		grafico_diagnosticos.getTitle().setFont(titleFont);
-		grafico_diagnosticos.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-
-		grafico_facturacion.getTitle().setFont(titleFont);
-		grafico_facturacion.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-
-		renderer_aceptaciones.setItemLabelGenerator(generator);
-		renderer_diagnostico.setItemLabelGenerator(generator);
-		renderer_facturacion.setItemLabelGenerator(generator);
-
-		renderer_aceptaciones.setItemLabelFont(labelFont);
-		renderer_aceptaciones.setItemLabelPaint(labelColor);
-
-		renderer_diagnostico.setItemLabelFont(labelFont);
-		renderer_diagnostico.setItemLabelPaint(labelColor);
-
-		renderer_facturacion.setItemLabelFont(labelFont);
-		renderer_facturacion.setItemLabelPaint(labelColor);
-
-		renderer_aceptaciones.setItemLabelsVisible(true);
-		renderer_diagnostico.setItemLabelsVisible(true);
-		renderer_facturacion.setItemLabelsVisible(true);
-
-		renderer_facturacion.setPositiveItemLabelPosition(positionNumeroGrande);
-		renderer_diagnostico.setPositiveItemLabelPosition(positionNumeroChico);
-		renderer_aceptaciones.setPositiveItemLabelPosition(positionNumeroChico);
-
-		ChartPanel panelGraficoAceptaciones = new ChartPanel(grafico_aceptaciones);
-		panelGraficoAceptaciones.setMouseWheelEnabled(true);
-
-		ChartPanel panelGraficoDiagnosticos = new ChartPanel(grafico_diagnosticos);
-		panelGraficoDiagnosticos.setMouseWheelEnabled(true);
-
-		ChartPanel panelGraficoFacturacion = new ChartPanel(grafico_facturacion);
-		panelGraficoFacturacion.setMouseWheelEnabled(true);
-
-		panelGraficoAceptaciones.setMinimumDrawHeight(400);
-		panelGraficoAceptaciones.setMaximumDrawWidth(1280);
-
-		panelGraficoDiagnosticos.setMinimumDrawHeight(400);
-		panelGraficoDiagnosticos.setMaximumDrawWidth(1280);
-
-		panelGraficoFacturacion.setMinimumDrawHeight(400);
-		panelGraficoFacturacion.setMaximumDrawWidth(1280);
-
-		ventanaEstadisticas.getPanel_Diagnosticos().add(panelGraficoAceptaciones, BorderLayout.CENTER);
-		ventanaEstadisticas.getPanel_Ingresos().add(panelGraficoDiagnosticos, BorderLayout.CENTER);
-		ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoFacturacion, BorderLayout.CENTER);
+		actualizarChartPanels(graficoDiagnosticos, graficoAceptaciones, graficoFacturacion);
 
 		ventanaEstadisticas.repaint();
+	}
 
+	private void aplicarChartsTecnicoDesdeCache(Object[] data) {
+		crearChartsPorTecnico(data);
 	}
 
 	private void mostrarGraficosPorCliente() {
+		if (cargandoGraficos) return;
+		if (ventanaEstadisticas.getComboCliente() == null || ventanaEstadisticas.getComboCliente().getSelectedIndex() == -1) {
+			return;
+		}
+		cargandoGraficos = true;
 
 		int anio = Integer.parseInt(ventanaEstadisticas.getComboAnio().getSelectedItem().toString());
 		String cliente = ventanaEstadisticas.getComboCliente().getSelectedItem().toString();
-
 		int idCliente = modelo.idClienteporNombre(cliente);
+		String cacheKey = "cliente_" + anio + "_" + idCliente;
 
-		List<Integer> listaIngresos = modelo.dameIngresosPorAnioPorCliente(anio, idCliente);
-		List<Integer> listaAceptaciones = modelo.dameAceptacionesPorAnioPorCliente(anio, idCliente);
-		List<Double> listaFacturacion = modelo.dameFacturacionPorAnioPorCliente(anio, idCliente);
+		Object[] cached = cacheGraficosCliente.get(cacheKey);
+		if (cached != null) {
+			aplicarChartsClienteDesdeCache(cached);
+			cargandoGraficos = false;
+			return;
+		}
 
-		DefaultCategoryDataset datosIngresos = new DefaultCategoryDataset();
-		DefaultCategoryDataset datosAceptaciones = new DefaultCategoryDataset();
-		DefaultCategoryDataset datosFacturacion = new DefaultCategoryDataset();
-		CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();
+		inicializarChartPanelsSiNecesario();
 
-		datosIngresos.setValue(listaIngresos.get(0), "Ingresos", "ENE");
-		datosIngresos.setValue(listaIngresos.get(1), "Ingresos", "FEB");
-		datosIngresos.setValue(listaIngresos.get(2), "Ingresos", "MAR");
-		datosIngresos.setValue(listaIngresos.get(3), "Ingresos", "ABR");
-		datosIngresos.setValue(listaIngresos.get(4), "Ingresos", "MAY");
-		datosIngresos.setValue(listaIngresos.get(5), "Ingresos", "JUN");
-		datosIngresos.setValue(listaIngresos.get(6), "Ingresos", "JUL");
-		datosIngresos.setValue(listaIngresos.get(7), "Ingresos", "AGO");
-		datosIngresos.setValue(listaIngresos.get(8), "Ingresos", "SEP");
-		datosIngresos.setValue(listaIngresos.get(9), "Ingresos", "OCT");
-		datosIngresos.setValue(listaIngresos.get(10), "Ingresos", "NOV");
-		datosIngresos.setValue(listaIngresos.get(11), "Ingresos", "DIC");
+		chartPanelIngresos.setChart(crearChartVacio("INGRESOS"));
+		chartPanelDiagnosticos.setChart(crearChartVacio("ACEPTACIONES"));
+		chartPanelFacturacion.setChart(crearChartVacio("FACTURACIÓN"));
 
-		datosAceptaciones.setValue(listaAceptaciones.get(0), "Aceptaciones", "ENE");
-		datosAceptaciones.setValue(listaAceptaciones.get(1), "Aceptaciones", "FEB");
-		datosAceptaciones.setValue(listaAceptaciones.get(2), "Aceptaciones", "MAR");
-		datosAceptaciones.setValue(listaAceptaciones.get(3), "Aceptaciones", "ABR");
-		datosAceptaciones.setValue(listaAceptaciones.get(4), "Aceptaciones", "MAY");
-		datosAceptaciones.setValue(listaAceptaciones.get(5), "Aceptaciones", "JUN");
-		datosAceptaciones.setValue(listaAceptaciones.get(6), "Aceptaciones", "JUL");
-		datosAceptaciones.setValue(listaAceptaciones.get(7), "Aceptaciones", "AGO");
-		datosAceptaciones.setValue(listaAceptaciones.get(8), "Aceptaciones", "SEP");
-		datosAceptaciones.setValue(listaAceptaciones.get(9), "Aceptaciones", "OCT");
-		datosAceptaciones.setValue(listaAceptaciones.get(10), "Aceptaciones", "NOV");
-		datosAceptaciones.setValue(listaAceptaciones.get(11), "Aceptaciones", "DIC");
+		new SwingWorker<Object[], Void>() {
+			@Override
+			protected Object[] doInBackground() throws Exception {
+				List<Integer> listaIngresos = modelo.dameIngresosPorAnioPorCliente(anio, idCliente);
+				List<Integer> listaAceptaciones = modelo.dameAceptacionesPorAnioPorCliente(anio, idCliente);
+				List<Double> listaFacturacion = modelo.dameFacturacionPorAnioPorCliente(anio, idCliente);
+				return new Object[]{listaIngresos, listaAceptaciones, listaFacturacion};
+			}
 
-		datosFacturacion.setValue(listaFacturacion.get(0), "Facturación", "ENE");
-		datosFacturacion.setValue(listaFacturacion.get(1), "Facturación", "FEB");
-		datosFacturacion.setValue(listaFacturacion.get(2), "Facturación", "MAR");
-		datosFacturacion.setValue(listaFacturacion.get(3), "Facturación", "ABR");
-		datosFacturacion.setValue(listaFacturacion.get(4), "Facturación", "MAY");
-		datosFacturacion.setValue(listaFacturacion.get(5), "Facturación", "JUN");
-		datosFacturacion.setValue(listaFacturacion.get(6), "Facturación", "JUL");
-		datosFacturacion.setValue(listaFacturacion.get(7), "Facturación", "AGO");
-		datosFacturacion.setValue(listaFacturacion.get(8), "Facturación", "SEP");
-		datosFacturacion.setValue(listaFacturacion.get(9), "Facturación", "OCT");
-		datosFacturacion.setValue(listaFacturacion.get(10), "Facturación", "NOV");
-		datosFacturacion.setValue(listaFacturacion.get(11), "Facturación", "DIC");
+			@Override
+			protected void done() {
+				try {
+					Object[] data = get();
+					cacheGraficosCliente.put(cacheKey, data);
+					crearChartsPorCliente(data);
+				} catch (Exception ex) {
+					LogDAO.error("Error cargando gráficos por cliente", ex);
+				} finally {
+					cargandoGraficos = false;
+				}
+			}
+		}.execute();
+	}
 
-		JFreeChart grafico_Ingresos = ChartFactory.createBarChart("INGRESOS", "", "Cantidad", datosIngresos,
-				PlotOrientation.VERTICAL, false, true, false);
-		JFreeChart grafico_aceptaciones = ChartFactory.createBarChart("ACEPTACIONES", "", "Cantidad", datosAceptaciones,
-				PlotOrientation.VERTICAL, false, true, false);
-		JFreeChart grafico_facturacion = ChartFactory.createBarChart("FACTURACIÓN", null, "Pesos($)", datosFacturacion,
-				PlotOrientation.VERTICAL, false, true, false);
+	private void crearChartsPorCliente(Object[] data) {
+		List<Integer> listaIngresos = (List<Integer>) data[0];
+		List<Integer> listaAceptaciones = (List<Integer>) data[1];
+		List<Double> listaFacturacion = (List<Double>) data[2];
 
-		NumberAxis yAxisIngresos = (NumberAxis) grafico_Ingresos.getCategoryPlot().getRangeAxis();
-		yAxisIngresos.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+		DefaultCategoryDataset datosIngresos = crearDataset(listaIngresos, "Ingresos");
+		DefaultCategoryDataset datosAceptaciones = crearDataset(listaAceptaciones, "Aceptaciones");
+		DefaultCategoryDataset datosFacturacion = crearDataset(listaFacturacion, "Facturación");
 
-		NumberAxis yAxisAceptaciones = (NumberAxis) grafico_aceptaciones.getCategoryPlot().getRangeAxis();
-		yAxisAceptaciones.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+		// Colores estilo Aluminium L&F
+		Color azulClaro = new Color(180, 200, 230);
+		Color azulOscuro = new Color(70, 110, 160);
+		Color verdeClaro = new Color(160, 210, 180);
+		Color verdeOscuro = new Color(60, 140, 90);
+		Color rojoClaro = new Color(230, 160, 160);
+		Color rojoOscuro = new Color(180, 80, 80);
+		Color moradoClaro = new Color(200, 170, 230);
+		Color moradoOscuro = new Color(130, 90, 170);
 
-		CategoryPlot plot_ingreso = (CategoryPlot) grafico_Ingresos.getPlot();
-		CategoryPlot plot_aceptaciones = (CategoryPlot) grafico_aceptaciones.getPlot();
-		CategoryPlot plot_facturacion = (CategoryPlot) grafico_facturacion.getPlot();
+		JFreeChart graficoIngresos = crearBarChart("INGRESOS", "", "Cantidad", datosIngresos, azulClaro, azulOscuro);
+		JFreeChart graficoAceptaciones = crearBarChart("ACEPTACIONES", "", "Cantidad", datosAceptaciones, moradoClaro, moradoOscuro);
+		JFreeChart graficoFacturacion = crearBarChart("FACTURACIÓN", null, "Pesos($)", datosFacturacion, rojoClaro, rojoOscuro);
 
-		BarRenderer renderer_ingreso = (BarRenderer) plot_ingreso.getRenderer();
-		renderer_ingreso.setDrawBarOutline(false);
-		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, new Color(100, 149, 237), 0.0f, 0.0f,
-				new Color(70, 130, 180));
-		renderer_ingreso.setSeriesPaint(0, gp1);
+		configurarEjeEntero(graficoIngresos);
+		configurarEjeEntero(graficoAceptaciones);
 
-		BarRenderer renderer_aceptaciones = (BarRenderer) plot_aceptaciones.getRenderer();
-		renderer_aceptaciones.setDrawBarOutline(false);
-		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, new Color(186, 85, 211), 0.0f, 0.0f, new Color(148, 0, 211));
-		renderer_aceptaciones.setSeriesPaint(0, gp0);
+		aplicarEstiloComun(graficoIngresos, graficoAceptaciones, graficoFacturacion);
 
-		BarRenderer renderer_facturacion = (BarRenderer) plot_facturacion.getRenderer();
-		renderer_facturacion.setDrawBarOutline(false);
-		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, new Color(240, 128, 128), 0.0f, 0.0f, new Color(205, 92, 92));
-		renderer_facturacion.setSeriesPaint(0, gp2);
-
-		grafico_aceptaciones.getTitle().setFont(titleFont);
-		grafico_aceptaciones.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-
-		grafico_Ingresos.getTitle().setFont(titleFont);
-		grafico_Ingresos.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-
-		grafico_facturacion.getTitle().setFont(titleFont);
-		grafico_facturacion.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
-
-		renderer_aceptaciones.setItemLabelGenerator(generator);
-		renderer_ingreso.setItemLabelGenerator(generator);
-		renderer_facturacion.setItemLabelGenerator(generator);
-
-		renderer_aceptaciones.setItemLabelFont(labelFont);
-		renderer_aceptaciones.setItemLabelPaint(labelColor);
-
-		renderer_ingreso.setItemLabelFont(labelFont);
-		renderer_ingreso.setItemLabelPaint(labelColor);
-
-		renderer_facturacion.setItemLabelFont(labelFont);
-		renderer_facturacion.setItemLabelPaint(labelColor);
-
-		renderer_aceptaciones.setItemLabelsVisible(true);
-		renderer_ingreso.setItemLabelsVisible(true);
-		renderer_facturacion.setItemLabelsVisible(true);
-
-		renderer_facturacion.setPositiveItemLabelPosition(positionNumeroGrande);
-		renderer_ingreso.setPositiveItemLabelPosition(positionNumeroChico);
-		renderer_aceptaciones.setPositiveItemLabelPosition(positionNumeroChico);
-
-		ChartPanel panelGraficoAceptaciones = new ChartPanel(grafico_aceptaciones);
-		panelGraficoAceptaciones.setMouseWheelEnabled(true);
-
-		ChartPanel panelGraficoIngresos = new ChartPanel(grafico_Ingresos);
-		panelGraficoIngresos.setMouseWheelEnabled(true);
-
-		ChartPanel panelGraficoFacturacion = new ChartPanel(grafico_facturacion);
-		panelGraficoFacturacion.setMouseWheelEnabled(true);
-
-		ventanaEstadisticas.getPanel_Ingresos().add(panelGraficoIngresos, BorderLayout.CENTER);
-		ventanaEstadisticas.getPanel_Diagnosticos().add(panelGraficoAceptaciones, BorderLayout.CENTER);
-		ventanaEstadisticas.getPanel_Facturacion().add(panelGraficoFacturacion, BorderLayout.CENTER);
-
-		panelGraficoAceptaciones.setMinimumDrawHeight(400);
-		panelGraficoAceptaciones.setMaximumDrawWidth(1280);
-
-		panelGraficoIngresos.setMinimumDrawHeight(400);
-		panelGraficoIngresos.setMaximumDrawWidth(1280);
-
-		panelGraficoFacturacion.setMinimumDrawHeight(400);
-		panelGraficoFacturacion.setMaximumDrawWidth(1280);
+		actualizarChartPanels(graficoIngresos, graficoAceptaciones, graficoFacturacion);
 
 		ventanaEstadisticas.repaint();
+	}
 
+	private void aplicarChartsClienteDesdeCache(Object[] data) {
+		crearChartsPorCliente(data);
 	}
 
 	private void mostrarGraficoFacturacionXcliente() {
@@ -2146,36 +2058,52 @@ public class ControladorListados
 		DefaultPieDataset dataset = createDataset();
 
 		// Crear el gráfico de torta
-		JFreeChart chart = ChartFactory.createPieChart("", dataset, false, // Incluir leyenda
-				true, false);
-
-		// Color labelBackColor = new Color(210, 210, 210);
-
-		Color BackgrounColor = new Color(197, 202, 233);
-		Color BorderLine = new Color(121, 134, 203);
+		JFreeChart chart = ChartFactory.createPieChart("", dataset, false, true, false);
+		
+		Color fondoPastel = new Color(220, 228, 240);
+		Color plotPastel = new Color(235, 240, 248);
+		Color ejeColor = new Color(160, 170, 185);
+		chart.setBackgroundPaint(fondoPastel);
 
 		PiePlot plot = (PiePlot) chart.getPlot();
+		plot.setBackgroundPaint(plotPastel);
 		plot.setStartAngle(290);
-		plot.setBackgroundPaint(BackgrounColor);
-		// plot.setBaseSectionOutlinePaint(BorderLine);
 		plot.setDirection(Rotation.CLOCKWISE);
-
-		plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: {2}"));
-
-		plot.setLabelFont(labelFontPie);
-		plot.setLabelBackgroundPaint(BackgrounColor);
-		plot.setLabelOutlinePaint(BackgrounColor);
-
-		plot.setShadowPaint(Color.BLACK);
+		plot.setOutlineVisible(true);
+		plot.setOutlinePaint(ejeColor);
+		plot.setOutlineStroke(new BasicStroke(1.0f));
+		plot.setShadowPaint(null);
 		plot.setSectionOutlinesVisible(false);
+		plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: {2}"));
+		plot.setLabelFont(labelFontPie);
+		plot.setLabelBackgroundPaint(new Color(255, 255, 255, 200));
+		plot.setLabelOutlinePaint(null);
+
+		// Colores estilo Aluminium L&F para torta (tonos pastel más oscuros)
+		Color[] colores = {
+			new Color(140, 170, 200),  // azulClaro
+			new Color(130, 180, 150),  // verdeClaro
+			new Color(200, 130, 130),  // rojoClaro
+			new Color(170, 140, 200),  // moradoClaro
+			new Color(190, 170, 120),  // beige
+			new Color(120, 170, 180),  // celeste
+			new Color(180, 130, 130),  // coral suave
+			new Color(140, 180, 150),  // verde menta
+			new Color(180, 150, 180),  // lila
+			new Color(146, 166, 192),  // Light Steel Blue
+		};
+		for (int i = 0; i < Math.min(dataset.getItemCount(), colores.length); i++) {
+			plot.setSectionPaint(dataset.getKey(i), colores[i]);
+		}
 
 		ChartPanel chartGraficoFacturacion = new ChartPanel(chart);
 		chartGraficoFacturacion.setMouseWheelEnabled(true);
-		chartGraficoFacturacion.setBackground(BorderLine);
+		chartGraficoFacturacion.setBackground(Color.WHITE);
 
+		ventanaFacturacionXcliente.getPanelGraficoCliente().removeAll();
 		ventanaFacturacionXcliente.getPanelGraficoCliente().add(chartGraficoFacturacion, BorderLayout.CENTER);
-
-		// ventanaFacturacionXcliente.getPanelGraficoCliente().repaint();
+		ventanaFacturacionXcliente.getPanelGraficoCliente().revalidate();
+		ventanaFacturacionXcliente.getPanelGraficoCliente().repaint();
 
 	}
 
@@ -2414,6 +2342,132 @@ public class ControladorListados
 
 			}
 		}
+	}
+
+	private DefaultCategoryDataset crearDataset(List<? extends Number> valores, String seriesName) {
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		for (int i = 0; i < Math.min(valores.size(), 12); i++) {
+			dataset.setValue(valores.get(i), seriesName, MESES[i]);
+		}
+		return dataset;
+	}
+
+private JFreeChart crearBarChart(String title, String categoryLabel, String valueLabel,
+		DefaultCategoryDataset dataset, Color startColor, Color endColor) {
+	JFreeChart chart = ChartFactory.createBarChart(title, categoryLabel, valueLabel, dataset,
+			PlotOrientation.VERTICAL, false, true, false);
+	
+	Color fondoPastel = new Color(220, 228, 240);
+	Color plotPastel = new Color(235, 240, 248);
+	Color ejeColor = new Color(160, 170, 185);
+	chart.setBackgroundPaint(fondoPastel);
+	chart.getTitle().setFont(new Font("Segoe UI", Font.BOLD, 16));
+	chart.getTitle().setPaint(new Color(60, 60, 60));
+	
+	CategoryPlot plot = (CategoryPlot) chart.getPlot();
+	plot.setBackgroundPaint(plotPastel);
+	plot.setRangeGridlinePaint(new Color(200, 208, 220));
+	plot.setDomainGridlinePaint(new Color(200, 208, 220));
+	plot.setOutlineVisible(true);
+	plot.setOutlinePaint(ejeColor);
+	plot.setOutlineStroke(new BasicStroke(1.0f));
+	plot.setInsets(new RectangleInsets(5, 10, 5, 10));
+		
+		CategoryAxis domainAxis = plot.getDomainAxis();
+		domainAxis.setTickLabelFont(new Font("Segoe UI", Font.PLAIN, 11));
+		domainAxis.setTickLabelPaint(new Color(70, 70, 70));
+		domainAxis.setAxisLineVisible(true);
+		domainAxis.setAxisLinePaint(ejeColor);
+		domainAxis.setAxisLineStroke(new BasicStroke(1.0f));
+		domainAxis.setTickMarksVisible(true);
+		domainAxis.setTickMarkPaint(ejeColor);
+		domainAxis.setTickMarkStroke(new BasicStroke(1.0f));
+		
+		NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+		rangeAxis.setTickLabelFont(new Font("Segoe UI", Font.PLAIN, 11));
+		rangeAxis.setTickLabelPaint(new Color(70, 70, 70));
+		rangeAxis.setAxisLineVisible(true);
+		rangeAxis.setAxisLinePaint(ejeColor);
+		rangeAxis.setAxisLineStroke(new BasicStroke(1.0f));
+		rangeAxis.setTickMarksVisible(true);
+		rangeAxis.setTickMarkPaint(ejeColor);
+		rangeAxis.setTickMarkStroke(new BasicStroke(1.0f));
+		
+		BarRenderer renderer = (BarRenderer) plot.getRenderer();
+		renderer.setDrawBarOutline(false);
+		renderer.setShadowVisible(false);
+		renderer.setMaximumBarWidth(0.07);
+		renderer.setItemMargin(0.03);
+		GradientPaint gp = new GradientPaint(0.0f, 0.0f, startColor, 0.0f, 0.0f, endColor);
+		renderer.setSeriesPaint(0, gp);
+		
+		renderer.setItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+		renderer.setItemLabelFont(new Font("Segoe UI", Font.BOLD, 12));
+		renderer.setItemLabelPaint(new Color(60, 60, 60));
+		renderer.setItemLabelsVisible(true);
+		renderer.setPositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, TextAnchor.BOTTOM_CENTER));
+		
+		return chart;
+	}
+
+	private void configurarEjeEntero(JFreeChart chart) {
+		NumberAxis yAxis = (NumberAxis) chart.getCategoryPlot().getRangeAxis();
+		yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+	}
+
+	private void aplicarEstiloComun(JFreeChart... charts) {
+		for (JFreeChart chart : charts) {
+			chart.getTitle().setFont(titleFont);
+			chart.getTitle().setPadding(new RectangleInsets(20, 0, 0, 0));
+			CategoryPlot plot = (CategoryPlot) chart.getPlot();
+			BarRenderer renderer = (BarRenderer) plot.getRenderer();
+			renderer.setItemLabelGenerator(generator);
+			renderer.setItemLabelFont(labelFont);
+			renderer.setItemLabelPaint(labelColor);
+			renderer.setItemLabelsVisible(true);
+		}
+		if (charts.length >= 3) {
+			((CategoryPlot) charts[2].getPlot()).getRenderer().setPositiveItemLabelPosition(positionNumeroGrande);
+			((CategoryPlot) charts[0].getPlot()).getRenderer().setPositiveItemLabelPosition(positionNumeroChico);
+			((CategoryPlot) charts[1].getPlot()).getRenderer().setPositiveItemLabelPosition(positionNumeroChico);
+		}
+	}
+
+	private void actualizarChartPanels(JFreeChart chart1, JFreeChart chart2, JFreeChart chart3) {
+		if (chartPanelIngresos == null) {
+			chartPanelIngresos = new ChartPanel(chart1);
+			chartPanelIngresos.setMouseWheelEnabled(true);
+			chartPanelIngresos.setMinimumDrawHeight(400);
+			chartPanelIngresos.setMaximumDrawWidth(1280);
+			ventanaEstadisticas.getPanel_Ingresos().add(chartPanelIngresos);
+		} else {
+			chartPanelIngresos.setChart(chart1);
+		}
+
+		if (chartPanelDiagnosticos == null) {
+			chartPanelDiagnosticos = new ChartPanel(chart2);
+			chartPanelDiagnosticos.setMouseWheelEnabled(true);
+			chartPanelDiagnosticos.setMinimumDrawHeight(400);
+			chartPanelDiagnosticos.setMaximumDrawWidth(1280);
+			ventanaEstadisticas.getPanel_Diagnosticos().add(chartPanelDiagnosticos);
+		} else {
+			chartPanelDiagnosticos.setChart(chart2);
+		}
+
+		if (chartPanelFacturacion == null) {
+			chartPanelFacturacion = new ChartPanel(chart3);
+			chartPanelFacturacion.setMouseWheelEnabled(true);
+			chartPanelFacturacion.setMinimumDrawHeight(400);
+			chartPanelFacturacion.setMaximumDrawWidth(1280);
+			ventanaEstadisticas.getPanel_Facturacion().add(chartPanelFacturacion);
+		} else {
+			chartPanelFacturacion.setChart(chart3);
+		}
+
+		ventanaEstadisticas.getPanel_Ingresos().revalidate();
+		ventanaEstadisticas.getPanel_Diagnosticos().revalidate();
+		ventanaEstadisticas.getPanel_Facturacion().revalidate();
 	}
 
 }

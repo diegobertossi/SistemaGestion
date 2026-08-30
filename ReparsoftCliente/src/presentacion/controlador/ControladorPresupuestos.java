@@ -1975,7 +1975,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		}
 
 		RegistroPresupuestoDTO nuevoPresupuesto = new RegistroPresupuestoDTO(ELS, InformeCliente, RemitoCLiente,
-				PrecioPeso, PrecioDolar, NombreEquipo, Modelo, Marca, Serie, ClienteCliente, aviso, Sucursal, Cliente,
+				PrecioPeso, PrecioDolar, NombreEquipo, Modelo, Marca, Serie, aviso, ClienteCliente, Cliente, Sucursal,
 				chckpesos, chckdolar, chckIVA, CondicionesMoneda, CondicionesPago, plazoEntrega, rutaImagen_1,
 				rutaImagen_2, rutaImagen_3, rutaImagen_4, rutaImagen_5, rutaImagen_6);
 

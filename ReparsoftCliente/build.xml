@@ -89,7 +89,8 @@
 	<target name="dist" depends="jar">
 		<copy file="${dist.dir}/${jar.name}" todir="${instalador.dir}"/>
 		<copy file="config.properties" todir="${instalador.dir}"/>
-		<delete dir="${instalador.dir}/libs"/>
+		<delete dir="${instalador.dir}/libs" failonerror="false"/>
+		<mkdir dir="${instalador.dir}/libs"/>
 		<copy todir="${instalador.dir}/libs">
 			<fileset dir="${dist.dir}/libs" includes="*.jar"/>
 		</copy>
