@@ -78,6 +78,7 @@ public class ReportePresupuesto {
 
 	public void mostrar() {
 		this.reporteViewer = new JasperViewer(this.reporteLleno, false);
+		VisorReportes.configurar(this.reporteViewer, "Presupuesto ELS " + ELS + " - " + Cliente);
 		this.reporteViewer.setVisible(true);
 
 		SwingUtilities.invokeLater(() -> {

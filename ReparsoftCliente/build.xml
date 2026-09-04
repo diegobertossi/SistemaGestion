@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
+<!-- 
   build.xml - empaquetado reproducible de ReparSoft.
   Uso:  ant (default=exe) -> jar + libs + exe del instalador
         ant jar     -> dist\ReparSoft.jar + dist\libs\ (74 jars)
         ant dist    -> ademas copia jar + libs al instalador
         ant exe     -> ademas regenera ReparSoft.exe (launch4j)
         ant installer -> ademas regenera el instalador NSIS (~2 min)
+        ant actualizador -> ademas regenera el actualizador NSIS (parche sin BD/carpetas)
         ant compile-tests -> compila test -> test-bin
   Correr en Eclipse: clic derecho sobre build.xml -> Run As -> Ant Build.
   Cerrar ReparSoft.exe antes de exe/installer (archivo bloqueado).
@@ -105,6 +106,14 @@
 	<target name="installer" depends="exe">
 		<exec executable="${makensis}" failonerror="true">
 			<arg value="${instalador.dir}\ReparSoft_G.nsi"/>
+		</exec>
+	</target>
+
+	<!-- Parche: solo actualiza archivos de programa en una instalacion existente
+	     (sin MySQL, sin carpetas de datos, sin tocar config.properties) -->
+	<target name="actualizador" depends="exe">
+		<exec executable="${makensis}" failonerror="true">
+			<arg value="${instalador.dir}\ReparSoft_Actualizador.nsi"/>
 		</exec>
 	</target>
 </project>

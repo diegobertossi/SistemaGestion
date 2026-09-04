@@ -85,6 +85,7 @@ public class ReporteRegistroEntrada {
 
 	public void mostrar() {
 		this.reporteViewer = new JasperViewer(this.reporteLleno, false);
+		VisorReportes.configurar(this.reporteViewer, "Registro de Ingreso ELS " + ELS);
 		this.tiempoApertura = System.currentTimeMillis();
 		this.reporteViewer.setVisible(true);
 

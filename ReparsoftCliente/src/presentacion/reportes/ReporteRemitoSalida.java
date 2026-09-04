@@ -113,6 +113,8 @@ public class ReporteRemitoSalida {
 			return;
 		}
 		this.reporteViewer = new JasperViewer(this.reporteLleno, false);
+		VisorReportes.configurar(this.reporteViewer,
+				"Remito " + NumeroRemito + "-" + ubicacionRemito + " - " + NombreCliente);
 		this.reporteViewer.setVisible(true);
 
 		SwingUtilities.invokeLater(() -> {

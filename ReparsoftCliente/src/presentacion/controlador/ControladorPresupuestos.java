@@ -513,8 +513,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 			progreso.mostrar();
 
 			new Thread(() -> {
-				final boolean[] guardadoPresupuesto = new boolean[] { false };
-				final String[] pdfPresupuesto = new String[] { null };
 				final ReportePresupuesto[] reporteHolder = new ReportePresupuesto[1];
 
 				try {
@@ -528,7 +526,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						reporteHolder[0] = reporte;
 
 						Thread guardarThread = new Thread(() -> {
-							guardadoPresupuesto[0] = reporte.guardar();
+							reporte.guardar();
 						});
 						guardarThread.start();
 
@@ -542,8 +540,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						} catch (InterruptedException ex) {
 							Thread.currentThread().interrupt();
 						}
-
-						pdfPresupuesto[0] = reporte.getPdfGuardado();
 
 					} else {
 
@@ -620,7 +616,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 					}
 
 					if (btnPresupuestoPDF) {
-						mostrarPdfPresupuesto(reporteHolder[0], pdfPresupuesto[0], guardadoPresupuesto[0]);
+						reporteHolder[0].mostrar();
 
 						String[] opciones = {"EMAIL", "WHATSAPP", "NINGUNO"};
 						int seleccion3 = mostrarOpcionesSiempreArriba(
@@ -2361,23 +2357,6 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 
 		default:
 			break;
-		}
-	}
-
-	private void mostrarPdfPresupuesto(ReportePresupuesto reporte, String pdfGuardado, boolean guardado) {
-		if (guardado && pdfGuardado != null && !pdfGuardado.isEmpty() && Desktop.isDesktopSupported()) {
-			try {
-				File pdf = new File(pdfGuardado);
-				if (pdf.exists()) {
-					Desktop.getDesktop().open(pdf);
-					return;
-				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		}
-		if (reporte != null) {
-			reporte.mostrar();
 		}
 	}
 

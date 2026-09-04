@@ -1,7 +1,6 @@
 package presentacion.controlador;
 
 import java.awt.Cursor;
-import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -14,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -644,10 +642,9 @@ private void generarRemito(VentanaRemitos ventanaRemitos, int filas) {
 						}
 
 						final boolean guardado = guardadoOk[0];
-						final String pdfGuardado = reporte.getPdfGuardado();
 						SwingUtilities.invokeLater(() -> {
 							progreso.cerrar();
-							mostrarPdfRemito(reporte, pdfGuardado);
+							reporte.mostrar();
 							ventanaRemitos.dispose();
 							if (guardado) {
 								mostrarMensajeSiempreArriba(
@@ -678,21 +675,6 @@ worker.execute();
 
 		}
 
-	}
-
-	private void mostrarPdfRemito(ReporteRemitoSalida reporte, String pdfGuardado) {
-		if (pdfGuardado != null && !pdfGuardado.isEmpty() && Desktop.isDesktopSupported()) {
-			try {
-				File pdf = new File(pdfGuardado);
-				if (pdf.exists()) {
-					Desktop.getDesktop().open(pdf);
-					return;
-				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		}
-		reporte.mostrar();
 	}
 
 	private void mostrarMensajeSiempreArriba(String mensaje, String titulo, int tipo) {

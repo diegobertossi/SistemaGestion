@@ -10,6 +10,8 @@ Java 8, Swing (JTattoo Aluminium L&F), MySQL 8, JasperReports 6.21, Apache POI 5
 
 `ReparsoftCliente/src/main/Main.java` → splash → `VentanaUbicacionBaseDeDatos` (DB selection) → `VentanaLogin` → `VistaPrincipal`
 
+Modo PRUEBA/PRODUCCION: el toggle vive en `VistaPrincipal` (debajo de SALIR), visible solo para el rol "Administrador Programador" (`ControladorUsuLogin.esAdministradorProgramador()` al loguear; se oculta al cerrar sesión). `util/RutasSistema` lo persiste con `java.util.prefs.Preferences` (nodo `reparsoft` → en Windows `HKCU\Software\JavaSoft\Prefs\reparsoft`), así que el sistema recuerda el modo al reabrirse. Solo cambia las rutas de guardado de reportes/excels/backups (carpeta `Sistema Reparsoft Pruebas`), NO las bases MySQL. Default si nunca se tocó: PRUEBA.
+
 ## Structure (src/ top-level dirs under ReparsoftCliente/)
 
 `consumoAPI/ dto/ mails/ main/ modelo/ org/ persistencia/ presentacion/ tiposPropios/ util/ vista/ VistaPropias/`
@@ -27,11 +29,14 @@ Herramientas de datos (standalone, en src/util/):
 - **Singleton**: `Conexion.java` for MySQL connection
 - **Spanish naming** for business concepts (clientes, equipos, presupuestos, remitos...)
 
-## DB connection (Conexion.java defaults)
+## DB connection (config.properties — NO versionado)
 
-```
-host=localhost, port=3306, user=root, password=root
-```
+Las credenciales se leen de `config.properties` (vía `util.Config`; `Conexion.java` ya NO las hardcodea — usa los mismos defaults como último recurso). Claves: `db.host/db.port/db.user/db.password/db.options`.
+
+Desde 2026-09-01 las apps usan el usuario dedicado **`reparsoft_app`@`localhost`** (grants por `sql/crear_usuario_reparsoft.sql`: ALL sobre las 8 bases `ordenes*`/`reparsoft_staging`/`facturacion_db*` + `PROCESS`, `SET_ANY_DEFINER`, `SYSTEM_USER` globales — requeridos por mysqldump 8.4 y restores con DEFINER=root). `root@localhost` tiene password fuerte y NO se usa en la app (solo admin manual/Workbench). Kit de migración para PCs ya instaladas: `F:\Trabajo\actualizacion_credenciales_2026\`. El instalador NSIS crea `reparsoft_app` y jamás debe volver a fijar `root/root`: en PC limpia fija la fuerte de root y crea el usuario (`CreateAppUserMySQL64`); si MySQL ya estaba instalado, `EnsureAppUserExisting` intenta con la fuerte y luego con `root/root` (rotándola si era el caso); `configurar_mysql.bat` (reparación interactiva del usuario) se genera SIEMPRE; `config.properties` se copia también a la carpeta de FacturaSoft.
+
+**GOTCHA NSIS (crítico, medido):** `nsExec::ExecToLog/ExecToStack` NO pasa por cmd.exe, por lo que la redirección `mysql ... < script.sql` no funciona (mysql recibe `<` como argumento literal → exit 1 y no ejecuta nada). Todo `nsExec` con `<` debe envolverse: `nsExec::ExecToLog 'cmd /c ""$MySQLBinPath\mysql.exe" -u root < "$TEMP\x.sql""'`. Esto era un bug latente del instalador viejo (los métodos 0/2/4 de seteo de password nunca andaban; salvaba mysqladmin del método 1).
+
 DB names: `ordenesbrc` / `ordenesbsas` (normal), `ordenesbrcantiguas` / `ordenesbsasantiguas` (legacy). Also supports Access via UCanAccess.
 
 **IMPORTANTE — cambios de esquema:** cualquier ALTER TABLE / índice / columna nueva debe aplicarse a las 4 bases (`ordenesbrc`, `ordenesbsas`, `ordenesbrcantiguas`, `ordenesbsasantiguas`). Los scripts de esquema van en `ReparsoftCliente/sql/` (ej. `indices_rendimiento.sql`: índices de fechas/EstadoComercial + FULLTEXT para las 4 bases — `FechaEntrada`, `FechadeDiagnostico`, `FechAceptacion` son la base de las estadísticas con rangos `MAKEDATE(?,1)` reemplazando `YEAR()= ?` no-sargable).
@@ -47,7 +52,7 @@ mysql-connector-j-8.4.0, jasperreports-6.21.3, poi-5.2.3, openpdf-1.3.30, JTatto
 # En Eclipse: clic derecho en build.xml -> Run As -> Ant Build (default = exe: jar + libs + exe)
 # Cerrar ReparSoft.exe antes de exe/installer (archivo bloqueado)
 java -cp "lib/ant-launcher-1.10.12.jar" org.apache.tools.ant.launch.Launcher -f build.xml
-# Targets: clean | compile | compile-tests | jar (dist/ReparSoft.jar + dist/libs/) | dist (copia a instalador) | exe (launch4j) | installer (NSIS, ~2 min)
+# Targets: clean | compile | compile-tests | jar (dist/ReparSoft.jar + dist/libs/) | dist (copia a instalador) | exe (launch4j) | installer (NSIS, ~2 min) | actualizador (NSIS parche)
 # Tests: build_test.cmd compile | compile-tests | test
 # Run (desde la raiz del proyecto, requiere reportes/ en el CWD)
 java -cp "dist/ReparSoft.jar;dist/libs/*" main.Main
@@ -80,3 +85,5 @@ mysqldump -u root -p reparsoft > sql/Backup_$(date +%Y-%m-%d).sql
 ## Reports
 
 6 `.jrxml` templates in `reportes/`: Presupuesto, RemitoComun, RemitoPreImpreso, ResumenTecnico, ReporteRegistroEntrada2, Presupuesto_1 (in reportes/MyReports/)
+
+Visualización: todos los reportes se muestran con el visor interno JasperViewer (NO se abre el PDF con el lector externo; el PDF igual se guarda a disco para mail/WSP/archivo). `presentacion/reportes/VisorReportes.java` customiza el visor (título+ícono en ventana, zoom "página completa" al abrir vía windowOpened + doClick del toggle del toolbar, botón Guardar oculto). Si se cambia de versión de JasperReports, re-verificar esas customizaciones internas (dependen de la estructura del toolbar `net.sf.jasperreports.swing.JRViewerToolbar`).

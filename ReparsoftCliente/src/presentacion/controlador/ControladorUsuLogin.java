@@ -53,6 +53,7 @@ public class ControladorUsuLogin {
             vistaPrincipal.getBotonBackUp().setEnabled(true);
             vistaPrincipal.getBotonUsuarios().setEnabled(true);
             vistaPrincipal.getBotonConfiguracion().setEnabled(true);
+            vistaPrincipal.getBtnModoPrueba().setVisible(esAdministradorProgramador());
             vistaLogin.dispose();
 
             vistaPrincipal.getTextUsuario().setText("BIENVENIDO/A: " + usu_login.getNombre());

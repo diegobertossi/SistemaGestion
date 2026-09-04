@@ -49,10 +49,12 @@ public Connection getConnection() {
 ## Configuración de conexión
 
 ```java
-props.setProperty("db.host", "localhost");
-props.setProperty("db.port", "3306");
-props.setProperty("db.user", "root");
-props.setProperty("db.password", "root");
+// Las credenciales se leen de config.properties via util.Config
+// (usuario de aplicacion: reparsoft_app@localhost, NO root).
+props.setProperty("db.host", Config.get("db.host", "localhost"));
+props.setProperty("db.port", Config.get("db.port", "3306"));
+props.setProperty("db.user", Config.get("db.user", "reparsoft_app"));
+props.setProperty("db.password", Config.get("db.password", ""));
 props.setProperty("db.options", 
     "useUnicode=true&characterEncoding=UTF-8&" +
     "connectionCollation=utf8mb4_unicode_ci&" +

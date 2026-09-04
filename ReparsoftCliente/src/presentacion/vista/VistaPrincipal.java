@@ -18,6 +18,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
 import javax.swing.border.BevelBorder;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -38,7 +40,8 @@ public class VistaPrincipal extends JFrame {
 	private JButton botonUsuarios;
 	private JButton botonBackUp;
 	private JButton btnSalir;
-	private JLabel lblModoPrueba;
+	private JToggleButton btnModoPrueba;
+	private boolean cambiandoModo = false;
 	private JPanel panelDeControl;
 	private JTextField textUsuario;
 	private JTextField textVersionSoft;
@@ -143,13 +146,44 @@ public class VistaPrincipal extends JFrame {
 		btnSalir.setIcon(new ImageIcon(this.getClass().getResource("/Icono salir.png")));
 		btnSalir.setHorizontalTextPosition(SwingConstants.RIGHT);
 
-		lblModoPrueba = new JLabel("SISTEMA EN MODO PRUEBA");
-		lblModoPrueba.setHorizontalAlignment(SwingConstants.CENTER);
-		lblModoPrueba.setForeground(new Color(255, 0, 51));
-		lblModoPrueba.setFont(new Font("Cambria", Font.BOLD, 9));
-		lblModoPrueba.setBounds(352, 46, 124, 14);
-		lblModoPrueba.setVisible(RutasSistema.esModoPrueba());
-		panel_1.add(lblModoPrueba);
+		boolean modoPruebaInicial = RutasSistema.esModoPrueba();
+		btnModoPrueba = new JToggleButton(modoPruebaInicial ? "<html><center>PRUEBA</html>" : "<html><center>PRODUCCION</html>", modoPruebaInicial);
+		btnModoPrueba.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnModoPrueba.setBackground(new Color(255, 179, 179));
+		btnModoPrueba.setForeground(new Color(122, 10, 10));
+		btnModoPrueba.setBounds(370, 48, 110, 34);
+		btnModoPrueba.setFont(new Font("Cambria", Font.BOLD, 14));
+		btnModoPrueba.setToolTipText(modoPruebaInicial
+				? "Modo PRUEBA: los reportes y excels se guardan en la carpeta de pruebas"
+				: "Modo PRODUCCION: los reportes y excels se guardan en la carpeta real");
+		btnModoPrueba.setVisible(false);
+		panel_1.add(btnModoPrueba);
+		btnModoPrueba.addActionListener(evt -> {
+			if (cambiandoModo) {
+				return;
+			}
+			cambiandoModo = true;
+			try {
+				String modoNuevo = btnModoPrueba.isSelected() ? "PRUEBA" : "PRODUCCION";
+				String descripcion = btnModoPrueba.isSelected()
+						? "Los reportes y excels se guardarán en la carpeta de pruebas."
+						: "Los reportes y excels se guardarán en la carpeta real.";
+				int opcion = JOptionPane.showConfirmDialog(btnModoPrueba,
+						"¿Desea cambiar el modo del sistema a " + modoNuevo + "?\n\n" + descripcion,
+						"Cambio de Modo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (opcion != JOptionPane.YES_OPTION) {
+					btnModoPrueba.setSelected(!btnModoPrueba.isSelected());
+				}
+			} finally {
+				cambiandoModo = false;
+			}
+			boolean modoPrueba = btnModoPrueba.isSelected();
+			RutasSistema.setModoPrueba(modoPrueba);
+			btnModoPrueba.setText(modoPrueba ? "<html><center>PRUEBA</html>" : "<html><center>PRODUCCION</html>");
+			btnModoPrueba.setToolTipText(modoPrueba
+					? "Modo PRUEBA: los reportes y excels se guardan en la carpeta de pruebas"
+					: "Modo PRODUCCION: los reportes y excels se guardan en la carpeta real");
+		});
 
 		panelDeControl = new JPanel();
 		panelDeControl.setBounds(10, 208, 462, 201);
@@ -402,8 +436,12 @@ public class VistaPrincipal extends JFrame {
 		return btnSalir;
 	}
 
-	public JLabel getLblModoPrueba() {
-		return lblModoPrueba;
+	public JToggleButton getBtnModoPrueba() {
+		return btnModoPrueba;
+	}
+
+	public void setBtnModoPrueba(JToggleButton btnModoPrueba) {
+		this.btnModoPrueba = btnModoPrueba;
 	}
 
 	public void setBtnSalir(JButton btnSalir) {

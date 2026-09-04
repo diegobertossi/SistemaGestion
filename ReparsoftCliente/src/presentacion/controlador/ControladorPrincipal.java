@@ -176,6 +176,7 @@ public class ControladorPrincipal implements ActionListener {
         } else if (arg0.getSource() == this.vistaPrincipal.getBtncerrarSesion()) {
         	//cerrarConfiguracionSiEstaAbierta(); // AGREGAR
             this.controladorUsuLogin.cerrarSesion();
+            this.vistaPrincipal.getBtnModoPrueba().setVisible(false);
             inicializar();
 
         // ── Salir ────────────────────────────────────────────────────────────

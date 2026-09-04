@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
+import util.Config;
+
 /**
  * MigracionController.java - VERSIÓN BLINDADA (11 ABR 2026)
  *
@@ -1204,10 +1206,13 @@ public class MigracionController {
 		log("INFO", "MySQL encontrado en: " + mysqlExe);
 		log("INFO", "Ejecutando script: " + scriptPath);
 
-		// ── Ejecutar: mysql -u root -proot nombreBD < script.sql ─────────────
+		// ── Ejecutar: mysql -u <db.user> -p<db.password> nombreBD < script.sql ──
+		// Credenciales desde config.properties (db.user / db.password)
+		String mysqlUser = Config.get("db.user", "root");
+		String mysqlPass = Config.get("db.password", "root");
 		try {
-			ProcessBuilder pb = new ProcessBuilder(mysqlExe, "-u", "root", "-p" + "root", // sin espacio entre -p y la
-																							// contraseña
+			ProcessBuilder pb = new ProcessBuilder(mysqlExe, "-u", mysqlUser, "-p" + mysqlPass, // sin espacio entre -p
+																								// y la contraseña
 					nombreBD // base de datos destino
 			);
 

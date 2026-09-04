@@ -1,2 +1,8 @@
 # Salida del build Ant (ReparSoft.jar + libs/)
 dist/
+
+# Credenciales y configs locales (usar config.properties.example como plantilla)
+ReparsoftCliente/config.properties
+ReparsoftCliente/bin/config.properties
+ReparsoftCliente/Recursos/db_config.properties
+ReparsoftCliente/resources/db_config.properties

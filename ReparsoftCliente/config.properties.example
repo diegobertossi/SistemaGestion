@@ -1,56 +1,58 @@
-# Configuración de ReparsoftCliente
-# No commitear credenciales reales; usar variables de entorno en producción
+# Configuración de ReparsoftCliente — PLANTILLA
+# Copiar como config.properties y completar los valores reales.
+# config.properties NO está versionado (contiene credenciales).
 
 # --- MySQL Principal (Reparaciones) ---
+# Usuario de aplicación: reparsoft_app@localhost (ver sql/crear_usuario_reparsoft.sql)
 db.host=localhost
 db.port=3306
-db.user=root
-db.password=root
+db.user=reparsoft_app
+db.password=COMPLETAR
 db.options=useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
 
 # --- SMTP (EnviarMail) ---
 smtp.host=smtp.gmail.com
 smtp.port=587
-smtp.user=enviodeaceptacion@gmail.com
-smtp.password=jcagbiwpahvcfqrf
+smtp.user=COMPLETAR
+smtp.password=COMPLETAR
 smtp.protocol=smtp
 smtp.auth=true
 smtp.starttls.enable=true
 
 # --- Clever Cloud (Backup remoto) ---
-clever.brc.host=b1zeyndbfc1bmeiernaw-mysql.services.clever-cloud.com
+clever.brc.host=COMPLETAR
 clever.brc.port=3306
-clever.brc.database=b1zeyndbfc1bmeiernaw
-clever.brc.user=uhhm5ckiyyizik8y
-clever.brc.password=TXJcnVkA9yW9JDaUNg0a
-clever.bsas.host=bewqn4ds4dxour1xkgu6-mysql.services.clever-cloud.com
+clever.brc.database=COMPLETAR
+clever.brc.user=COMPLETAR
+clever.brc.password=COMPLETAR
+clever.bsas.host=COMPLETAR
 clever.bsas.port=3306
-clever.bsas.database=bewqn4ds4dxour1xkgu6
-clever.bsas.user=uocexuvpspnbuath
-clever.bsas.password=waHWGTIYsS52IV0ZiOLU
+clever.bsas.database=COMPLETAR
+clever.bsas.user=COMPLETAR
+clever.bsas.password=COMPLETAR
 
 # --- FacturaSoft (sync clientes) ---
 facturasoft.brc.host=localhost
 facturasoft.brc.port=3306
 facturasoft.brc.database=facturacion_db_brc
-facturasoft.brc.user=root
-facturasoft.brc.password=root
+facturasoft.brc.user=reparsoft_app
+facturasoft.brc.password=COMPLETAR
 facturasoft.bsas.host=localhost
 facturasoft.bsas.port=3306
 facturasoft.bsas.database=facturacion_db_bsas
-facturasoft.bsas.user=root
-facturasoft.bsas.password=root
+facturasoft.bsas.user=reparsoft_app
+facturasoft.bsas.password=COMPLETAR
 
 # --- Migración (VentanaMigracion) ---
 migracion.staging.host=localhost
 migracion.staging.port=3306
 migracion.staging.database=reparsoft_staging
-migracion.staging.user=root
-migracion.staging.password=root
+migracion.staging.user=reparsoft_app
+migracion.staging.password=COMPLETAR
 migracion.destino.host=localhost
 migracion.destino.port=3306
-migracion.destino.user=root
-migracion.destino.password=root
+migracion.destino.user=reparsoft_app
+migracion.destino.password=COMPLETAR
 
 # --- Rutas de archivos ---
 files.backup.local.path=F:/els/backup

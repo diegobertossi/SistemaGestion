@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 
+import util.Config;
+
 public class Conexion {
 
     private static volatile Conexion instancia;
@@ -16,25 +18,28 @@ public class Conexion {
 
     private static boolean modoAntiguaGlobal = false;
 
+    // Credenciales y parámetros se leen de config.properties (util.Config).
+    // Los defaults solo aplican si el archivo no existe o falta la clave.
     static {
-        props.setProperty("db.host", "localhost");
-        props.setProperty("db.port", "3306");
-        props.setProperty("db.user", "root");
-        props.setProperty("db.password", "root");
+        props.setProperty("db.host", Config.get("db.host", "localhost"));
+        props.setProperty("db.port", Config.get("db.port", "3306"));
+        props.setProperty("db.user", Config.get("db.user", "root"));
+        props.setProperty("db.password", Config.get("db.password", "root"));
 
         props.setProperty(
             "db.options",
-            "useUnicode=true" +
-            "&characterEncoding=UTF-8" +
-            "&connectionCollation=utf8mb4_unicode_ci" +
-            "&serverTimezone=UTC" +
-            "&useSSL=false" +
-            "&allowPublicKeyRetrieval=true" +
-            "&connectTimeout=5000" +
-            "&socketTimeout=120000"
+            Config.get("db.options",
+                "useUnicode=true" +
+                "&characterEncoding=UTF-8" +
+                "&connectionCollation=utf8mb4_unicode_ci" +
+                "&serverTimezone=UTC" +
+                "&useSSL=false" +
+                "&allowPublicKeyRetrieval=true" +
+                "&connectTimeout=5000" +
+                "&socketTimeout=120000")
         );
 
-        System.out.println("ℹ️ Usando configuración local fija para MySQL 8.4 LTS.");
+        System.out.println("ℹ️ Configuración de conexión leída desde config.properties.");
     }
 
     // ── Constructor privado ───────────────────────────────────────────────────
