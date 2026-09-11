@@ -158,9 +158,18 @@ public class GestorVisualizacionEquipos {
 	}
 
 	/**
-	 * Abre la ventana de visualización de equipos
+	 * Abre la ventana de visualización de equipos.
+	 * Si no hay equipos cargados muestra un mensaje informativo y no abre la ventana.
+	 *
+	 * @return true si la ventana fue abierta, false si no hay equipos
 	 */
-	public void abrirVentanaVisualizarEquipos() throws ParseException {
+	public boolean abrirVentanaVisualizarEquipos() throws ParseException {
+		if (agenda.contarReparaciones() == 0) {
+			JOptionPane.showMessageDialog(controlador.getVentanaEquipos(), "NO HAY EQUIPOS INGRESADOS",
+					"Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+
 		int elsInicial = obtenerELSInicial(agenda.getUbicacionBase());
 		String ubicacion = agenda.getUbicacionBase();
 
@@ -178,6 +187,7 @@ public class GestorVisualizacionEquipos {
 			ventanaVisualizarEquipos = new VentanaVisualizarEquipos(controlador);
 			controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
 			SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
+			SpellChecker.register(ventanaVisualizarEquipos.getTextDiagnostico());
 
 			// Inicializar las variables de navegación con el ÚLTIMO ELS
 			if (ubicacion.equalsIgnoreCase("Bariloche")) {
@@ -192,9 +202,11 @@ public class GestorVisualizacionEquipos {
 			controlador.setVentanaVisualizarEquipos(ventanaVisualizarEquipos);
 
 			cerrarVentanaAnterior();
+			return true;
 		} else {
-			JOptionPane.showMessageDialog(null, "No se ha ingresado ningún equipo.", "Mensaje Informativo",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(controlador.getVentanaEquipos(), "NO HAY EQUIPOS INGRESADOS",
+					"Mensaje Informativo", JOptionPane.INFORMATION_MESSAGE);
+			return false;
 		}
 	}
 
@@ -205,6 +217,7 @@ public class GestorVisualizacionEquipos {
 		ventanaVisualizarEquipos = new VentanaVisualizarEquipos(controlador);
 		controladorUsuLogin.verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
 		SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
+		SpellChecker.register(ventanaVisualizarEquipos.getTextDiagnostico());
 
 		// Inicializar las variables de navegación con el ELS específico
 		String ubicacion = agenda.getUbicacionBase();
@@ -708,8 +721,8 @@ public class GestorVisualizacionEquipos {
 		gestorInterfaz.agregarListenersPrecios(ventana);
 		gestorInterfaz.agregarFocusListeners(ventana);
 		gestorInterfaz.configurarUndoRedo(ventanaVisualizarEquipos);
-		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextInformeCliente());
-		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextDiagnostico());
+		gestorInterfaz.habilitarMenuContextualConOrtografia(ventanaVisualizarEquipos.getTextInformeCliente());
+		gestorInterfaz.habilitarMenuContextualConOrtografia(ventanaVisualizarEquipos.getTextDiagnostico());
 		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextFalla());
 		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextMarca());
 		gestorInterfaz.habilitarMenuContextual(ventanaVisualizarEquipos.getTextModelo());

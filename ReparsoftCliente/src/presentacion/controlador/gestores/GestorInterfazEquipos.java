@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -25,12 +26,14 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.MenuSelectionManager;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingConstants;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.event.PopupMenuEvent;
+import javax.swing.text.Highlighter;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.UndoManager;
 import java.awt.Toolkit;
@@ -422,6 +425,94 @@ public class GestorInterfazEquipos {
                 }
             }
         });
+    }
+    
+    /**
+     * Habilita el menú contextual (copiar/cortar/pegar) en un componente que
+     * además tiene corrector ortográfico (JOrtho). Para evitar que ambos menús
+     * se superpongan en el clic derecho:
+     * - si el clic cae dentro de una selección existente, se muestra este
+     *   menú (copiar/cortar/pegar), incluso sobre palabras subrayadas;
+     * - si no hay selección abarcando el clic y el cursor está sobre una
+     *   palabra subrayada en rojo (mal escrita), se le da prioridad al menú
+     *   del diccionario (que JOrtho muestra por sí mismo).
+     */
+    public void habilitarMenuContextualConOrtografia(JTextComponent editor) {
+        JPopupMenu menu = new JPopupMenu();
+        JMenuItem copiar = new JMenuItem("Copiar");
+        JMenuItem pegar = new JMenuItem("Pegar");
+        JMenuItem cortar = new JMenuItem("Cortar");
+
+        copiar.addActionListener(e -> editor.copy());
+        pegar.addActionListener(e -> editor.paste());
+        cortar.addActionListener(e -> editor.cut());
+
+        menu.add(cortar);
+        menu.add(copiar);
+        menu.add(pegar);
+
+        editor.addMouseListener(new MouseAdapter() {
+            private void mostrarSiCorresponde(MouseEvent e) {
+                if (!e.isPopupTrigger()) {
+                    return;
+                }
+
+                int offset = editor.viewToModel(new Point(e.getX(), e.getY()));
+                if (!usarMenuEdicion(editor, offset)) {
+                    // El cursor está sobre una palabra subrayada (mal escrita)
+                    // sin selección que la abarque: el diccionario tiene prioridad.
+                    return;
+                }
+
+                boolean haySeleccion = editor.getSelectionStart() != editor.getSelectionEnd();
+                copiar.setEnabled(haySeleccion);
+                cortar.setEnabled(haySeleccion && editor.isEditable());
+                pegar.setEnabled(editor.isEditable());
+
+                // Garantizar que no quede visible ningún otro menú (el del
+                // diccionario) junto con este.
+                MenuSelectionManager.defaultManager().clearSelectedPath();
+                menu.show(editor, e.getX(), e.getY());
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mostrarSiCorresponde(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                mostrarSiCorresponde(e);
+            }
+        });
+    }
+
+    /**
+     * Decide si ante un clic derecho en el offset dado corresponde mostrar el
+     * menú de edición (copiar/cortar/pegar) o dejar el del diccionario.
+     */
+    private static boolean usarMenuEdicion(JTextComponent editor, int offset) {
+        int selStart = editor.getSelectionStart();
+        int selEnd = editor.getSelectionEnd();
+        if (selStart != selEnd && offset >= selStart && offset < selEnd) {
+            return true;
+        }
+        return offset < 0 || !estaSobrePalabraMalEscrita(editor, offset);
+    }
+
+    /**
+     * Indica si el offset dado cae dentro de una palabra subrayada por el
+     * corrector ortográfico (JOrtho marca las palabras mal escritas con un
+     * resaltador en rojo).
+     */
+    private static boolean estaSobrePalabraMalEscrita(JTextComponent editor, int offset) {
+        Highlighter.Highlight[] highlights = editor.getHighlighter().getHighlights();
+        for (Highlighter.Highlight highlight : highlights) {
+            if (offset >= highlight.getStartOffset() && offset < highlight.getEndOffset()) {
+                return true;
+            }
+        }
+        return false;
     }
     
  // Mapa para guardar los UndoManagers por componente

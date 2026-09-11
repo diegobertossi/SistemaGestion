@@ -62,6 +62,7 @@ public class GestorListadoEquipos {
 		monedaFormatter = new MonedaFormatter();
 		controlador.getControladorUsuLogin().verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
 		SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
+		SpellChecker.register(ventanaVisualizarEquipos.getTextDiagnostico());
 
 		ventanaVisualizarEquipos.setTextELS(Integer.toString(numeroELS));
 
@@ -90,6 +91,7 @@ public class GestorListadoEquipos {
 		monedaFormatter = new MonedaFormatter();
 		controlador.getControladorUsuLogin().verificarPermisosVentanaVisualizacion(ventanaVisualizarEquipos);
 		SpellChecker.register(ventanaVisualizarEquipos.getTextInformeCliente());
+		SpellChecker.register(ventanaVisualizarEquipos.getTextDiagnostico());
 
 		ventanaVisualizarEquipos.setTextELS(Integer.toString(numeroELS));
 
