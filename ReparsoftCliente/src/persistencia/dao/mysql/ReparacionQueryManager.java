@@ -108,6 +108,27 @@ public class ReparacionQueryManager {
     }
 
     /**
+     * Elimina un equipo por IdEquipo (compensacion ante alta parcial:
+     * solo llamar con un id que este mismo flujo haya insertado)
+     */
+    public boolean deleteEquipo(int idEquipo) {
+        PreparedStatement statement = null;
+        Connection conn = null;
+        try {
+            conn = conexion.getSQLConexion();
+            statement = conn.prepareStatement(SQLQueries.DELETE_EQUIPO);
+            statement.setInt(1, idEquipo);
+
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LogDAO.error("Error en deleteEquipo: " + idEquipo, e);
+            return false;
+        } finally {
+            closeResources(statement, null, conn);
+        }
+    }
+
+    /**
      * Obtiene todas las reparaciones
      */
     public List<ReparacionDTO> readAll() {

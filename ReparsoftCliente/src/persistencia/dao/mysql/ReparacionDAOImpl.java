@@ -54,6 +54,11 @@ public class ReparacionDAOImpl implements ReparacionDAO {
     }
 
     @Override
+    public boolean deleteEquipo(int idEquipo) {
+        return queryManager.deleteEquipo(idEquipo);
+    }
+
+    @Override
     public List<ReparacionDTO> readAll() {
         return queryManager.readAll();
     }

@@ -55,6 +55,7 @@ import VistaPropias.CorrectorGramaticalAPI.ErrorGramatical;
 import VistaPropias.CorrectorGramaticalAPI.ResultadoRevision;
 import VistaPropias.DialogoRevisionGramatical;
 import modelo.Agenda;
+import util.NombresArchivos;
 import util.RutasSistema;
 import presentacion.reportes.ReportePresupuesto;
 import presentacion.vista.VentanaAgregarImagenes;
@@ -573,7 +574,7 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						String diagnostico = ventanaGenerarPresupuesto.getTextInforme().getText();
 						String precioDolar = ventanaGenerarPresupuesto.getTextPrecioDolar().getText();
 						String plazoEntrega = ventanaGenerarPresupuesto.getTextPlazoEntrega().getText();
-						String nombreWordNuevo = "AV " + aviso + "-" + "ELS " + els + "_" + cliente + ".docx";
+						String nombreWordNuevo = NombresArchivos.docxInforme(aviso, els, cliente);
 						String nuevoDocumento = pathBase + nombreWordNuevo;
 
 						try {
@@ -628,7 +629,9 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 						String ELS = ventanaGenerarPresupuesto.getTextELS().getText();
 						String NombreContacto = agenda.ContactoPorCliente(NombreCliente);
 						String emailContacto = agenda.EmailPorCliente(NombreCliente);
-						String NombrePDF = "Presupuesto ELS_" + ELS + "_" + NombreCliente + ".pdf";
+						// Nombre exacto del archivo recien generado (ver NombresArchivos):
+						// no reconstruirlo a mano.
+						String NombrePDF = new File(reporteHolder[0].getPdfGuardado()).getName();
 						String empresa = "ELS - Electronic Laboratory & Services.";
 						String mdp = "Mar del Plata: Avellaneda 2766 1 piso MDP -(7600) - Te: +54 9 223 5969934. NUEVA DIRECCION.";
 						String caba = "Bs As: Arcos 4002 4 A - Buenos Aires(1429) - Te: +54 9 11 4703-2205.";
@@ -2281,7 +2284,18 @@ public class ControladorPresupuestos implements ActionListener, MouseListener, I
 		String ELS = String.valueOf(numeroELS);
 		String NombreContacto = agenda.ContactoPorCliente(NombreCliente);
 		String emailContacto = agenda.EmailPorCliente(NombreCliente);
-		String NombrePDF = "Presupuesto ELS_" + ELS + "_" + NombreCliente + ".pdf";
+		// El PDF se localiza (el mas reciente) en vez de reconstruir el nombre
+		// (ver NombresArchivos).
+		String carpetaPDF = agenda.getUbicacionBase().equalsIgnoreCase("Bariloche")
+				? RutasSistema.adaptar("F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF\\")
+				: RutasSistema.adaptar("F:\\ELS\\Administracion\\Sistema\\Presupuestos PDF\\");
+		File pdfGenerado = NombresArchivos.localizarMasReciente(carpetaPDF, "Presupuesto ELS_" + ELS + "_");
+		if (pdfGenerado == null) {
+			JOptionPane.showMessageDialog(null, "No se encontró el PDF del presupuesto ELS " + ELS + ".\nRegenere el presupuesto antes de enviarlo.", "Aviso",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		String NombrePDF = pdfGenerado.getName();
 
 		ventanaEmail = new VentanaEmail();
 		agregarListenerAventanaEmail();

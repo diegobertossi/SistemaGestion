@@ -11,7 +11,9 @@ import java.util.regex.Pattern;
  *   - PRODUCCION: se guarda en ...\Administracion\Sistema\...
  * Las bases de datos MySQL no cambian; solo cambian estas rutas de guardado.
  * El modo elegido se persiste en Preferences (en Windows: HKCU\Software\JavaSoft\Prefs\reparsoft)
- * para que el sistema recuerde el estado al cerrarse y reabrirse.
+ * para que el sistema recuerde el estado al cerrarse y reabrirse. El valor por
+ * defecto (cuando el perfil de Windows aun no eligio) se lee de
+ * config.properties: sistema.modo.default=prueba|produccion (default: prueba).
  */
 public class RutasSistema {
 
@@ -38,10 +40,14 @@ public class RutasSistema {
 
     private static boolean cargarModoGuardado() {
         try {
-            return Preferences.userRoot().node(PREF_NODO).getBoolean(PREF_MODO_PRUEBA, true);
+            return Preferences.userRoot().node(PREF_NODO).getBoolean(PREF_MODO_PRUEBA, defaultModoPrueba());
         } catch (Exception e) {
-            return true;
+            return defaultModoPrueba();
         }
+    }
+
+    static boolean defaultModoPrueba() {
+        return !"produccion".equalsIgnoreCase(Config.get("sistema.modo.default", "prueba").trim());
     }
 
     private static void guardarModo(boolean activo) {

@@ -43,6 +43,7 @@ import dto.ClienteDTO;
 import dto.RemitoDTO;
 import dto.ReparacionDTO;
 import dto.SucursalDTO;
+import util.ReintentoAlta;
 
 public class ControladorSalidas implements ActionListener, MouseListener, ItemListener, KeyListener {
 	private VentanaSalidas ventanaSalidas;
@@ -606,34 +607,53 @@ private void generarRemito(VentanaRemitos ventanaRemitos, int filas) {
 			progreso.mostrar();
 
 		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-				@Override
-				protected Void doInBackground() {
-					try {
-						List<RemitoDTO> lista = new ArrayList<RemitoDTO>();
+			@Override
+			protected Void doInBackground() {
+				try {
+					// Cabecera con reintento ante idRemito concurrente (MAX()+1): cada
+					// intento recalcula id y numero. Lineas y PDF van DESPUES del exito.
+					final int[] idHolder = new int[1];
+					boolean cabeceraOk = ReintentoAlta.reintentar(3, () -> {
+						refrescarNumeroRemito();
 						int idRemito = agenda.dameIDRemito() + 1;
-						RemitoDTO nuevoRemito = TomarDatos(idRemito);
-						lista.add(nuevoRemito);
-						ReporteRemitoSalida reporte = new ReporteRemitoSalida(nuevoRemito, lista, agenda);
-
-						final boolean[] guardadoOk = new boolean[1];
-						Thread guardarThread = new Thread(() -> {
-							guardadoOk[0] = reporte.guardar();
-						});
-						guardarThread.start();
-
-						RemitoDTO nuevoRemitoTabla = TomarDatosParaTabla(idRemito);
-						agenda.agregarRemito(nuevoRemitoTabla);
-
-						for (int i = 0; i < filas; i++) {
-
-							Boolean agregar = (Boolean) ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8);
-
-							if (agregar != null && agregar) {
-								ReparacionDTO reparacionAeditar = TomarDatosPantalla(i, idRemito);
-								agenda.editarReparacionAgregarRemito(reparacionAeditar);
-							}
-
+						if (!agenda.agregarRemito(TomarDatosParaTabla(idRemito))) {
+							return false;
 						}
+						idHolder[0] = idRemito;
+						return true;
+					});
+					if (!cabeceraOk) {
+						SwingUtilities.invokeLater(() -> {
+							progreso.cerrar();
+							mostrarMensajeSiempreArriba(
+									"No se pudo generar el remito: otro usuario generó uno al mismo tiempo.\nReintente la operación.",
+									"Error", JOptionPane.ERROR_MESSAGE);
+						});
+						return null;
+					}
+					final int idRemito = idHolder[0];
+
+					List<RemitoDTO> lista = new ArrayList<RemitoDTO>();
+					RemitoDTO nuevoRemito = TomarDatos(idRemito);
+					lista.add(nuevoRemito);
+					ReporteRemitoSalida reporte = new ReporteRemitoSalida(nuevoRemito, lista, agenda);
+
+					final boolean[] guardadoOk = new boolean[1];
+					Thread guardarThread = new Thread(() -> {
+						guardadoOk[0] = reporte.guardar();
+					});
+					guardarThread.start();
+
+					for (int i = 0; i < filas; i++) {
+
+						Boolean agregar = (Boolean) ventanaRemitos.getModelEquiposParaRemito().getValueAt(i, 8);
+
+						if (agregar != null && agregar) {
+							ReparacionDTO reparacionAeditar = TomarDatosPantalla(i, idRemito);
+							agenda.editarReparacionAgregarRemito(reparacionAeditar);
+						}
+
+					}
 
 						try {
 							guardarThread.join();
@@ -1141,6 +1161,18 @@ worker.execute();
 			ID = 6;
 
 		return ID;
+	}
+
+	/**
+	 * Relee el numero de remito (MAX()+1) justo antes de guardar para achicar la
+	 * ventana de race con otros usuarios. Solo si hay ubicacion elegida.
+	 */
+	private void refrescarNumeroRemito() {
+		if (ventanaRemitos != null && ventanaRemitos.getComboUbicacion() != null
+				&& ventanaRemitos.getComboUbicacion().getSelectedIndex() != 0
+				&& ventanaRemitos.getComboUbicacion().getSelectedItem() != null) {
+			tomarNumeroRemito(ventanaRemitos.getComboUbicacion().getSelectedItem().toString());
+		}
 	}
 
 	private String tomarNumeroRemito(String ubicacion) {

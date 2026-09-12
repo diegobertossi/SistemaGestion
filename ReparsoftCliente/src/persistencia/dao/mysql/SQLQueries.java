@@ -15,6 +15,9 @@ public class SQLQueries {
     public static final String DELETE = 
         "DELETE FROM reparaciones WHERE ELS = ?";
     
+    public static final String DELETE_EQUIPO = 
+        "DELETE FROM Equipos WHERE IdEquipo = ?";
+    
     public static final String UPDATE_REPARACION = 
         "UPDATE reparaciones SET " +
         "FechaEntrada = ?, FechadeDiagnostico = ?, Falla = ?, " +

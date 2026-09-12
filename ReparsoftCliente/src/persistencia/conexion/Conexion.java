@@ -78,6 +78,19 @@ public class Conexion {
             if (esAntigua) nombreBase += "antiguas";
         }
 
+        // Override opcional para simulacion/testing (db.database.<clave>): permite
+        // apuntar a una BD clonada sin tocar el mapeo productivo. Sin la clave, el
+        // comportamiento es identico al de siempre.
+        String claveOverride;
+        if (ubicacion.equalsIgnoreCase("Bariloche")) {
+            claveOverride = esAntigua ? "db.database.bariloche_antigua" : "db.database.bariloche";
+        } else if (ubicacion.equalsIgnoreCase("Buenos Aires")) {
+            claveOverride = esAntigua ? "db.database.bsas_antigua" : "db.database.bsas";
+        } else {
+            claveOverride = "db.database." + nombreBase;
+        }
+        nombreBase = Config.get(claveOverride, nombreBase);
+
         try {
             String host     = props.getProperty("db.host");
             String port     = props.getProperty("db.port");

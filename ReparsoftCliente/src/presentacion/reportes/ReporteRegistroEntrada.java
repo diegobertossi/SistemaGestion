@@ -23,6 +23,7 @@ import net.sf.jasperreports.view.JasperViewer;
 import dto.RegistroEntradaReporteDTO;
 import modelo.Agenda;
 import persistencia.dao.mysql.LogDAO;
+import util.NombresArchivos;
 import util.RutasSistema;
 
 public class ReporteRegistroEntrada {
@@ -105,7 +106,7 @@ public class ReporteRegistroEntrada {
 	}
 
 	public void guardar() {
-		nombreArchivoPDF = "ELS_" + ELS + ".pdf";
+		nombreArchivoPDF = NombresArchivos.pdfRegistro(ELS);
 
 		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
 			outFileName = RutasSistema.adaptar("F:\\ELS\\Bariloche\\Administracion\\Sistema\\Registros de Ingreso\\") + nombreArchivoPDF;
@@ -122,5 +123,9 @@ public class ReporteRegistroEntrada {
 		} catch (JRException e) {
 			LogDAO.error("Error al exportar registro de entrada PDF", e);
 		}
+	}
+
+	public String getPdfGuardado() {
+		return outFileName;
 	}
 }

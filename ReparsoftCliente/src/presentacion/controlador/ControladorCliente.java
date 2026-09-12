@@ -62,6 +62,7 @@ import presentacion.vista.VentanaSucursales;
 import dto.ClienteDTO;
 import dto.SucursalDTO;
 import util.Config;
+import util.ReintentoAlta;
 
 public class ControladorCliente implements ActionListener, MouseListener {
 	private VentanaClientes ventanaClientes;
@@ -322,17 +323,22 @@ public class ControladorCliente implements ActionListener, MouseListener {
 				String[] correos = textoCorreos.split("\\n");
 				String emailTexto = String.join(" ;", correos);
 
-				ClienteDTO nuevoCliente = null;
-				SucursalDTO sucursalDefault = null;
+			ClienteDTO nuevoCliente = null;
+			SucursalDTO sucursalDefault = null;
 
-				String tipoDoc = this.ventanaClientes.getCmbTipoDocumento().getSelectedItem() != null
-					? this.ventanaClientes.getCmbTipoDocumento().getSelectedItem().toString() : "CUIT";
-				String condIva = this.ventanaClientes.getCmbCondicionIva().getSelectedItem() != null
-					? this.ventanaClientes.getCmbCondicionIva().getSelectedItem().toString() : "";
-				String tipoPer = this.ventanaClientes.getRdEmpresa().isSelected() ? "empresa" : "particular";
+			String tipoDoc = this.ventanaClientes.getCmbTipoDocumento().getSelectedItem() != null
+				? this.ventanaClientes.getCmbTipoDocumento().getSelectedItem().toString() : "CUIT";
+			String condIva = this.ventanaClientes.getCmbCondicionIva().getSelectedItem() != null
+				? this.ventanaClientes.getCmbCondicionIva().getSelectedItem().toString() : "";
+			String tipoPer = this.ventanaClientes.getRdEmpresa().isSelected() ? "empresa" : "particular";
 
-				// Crear nuevo cliente
-				nuevoCliente = new ClienteDTO(dameIDcliente(), nombreTexto.trim(),
+			// Crear nuevo cliente con reintento ante altas concurrentes (IDs por MAX()+1):
+			// cada intento recalcula ambos IDs; ante fallo parcial se compensa borrando
+			// lo que ese mismo intento haya insertado. Syncs fuera del reintento.
+			final ClienteDTO[] clienteHolder = new ClienteDTO[1];
+			final SucursalDTO[] sucursalHolder = new SucursalDTO[1];
+			boolean altaOk = ReintentoAlta.reintentar(3, () -> {
+				ClienteDTO c = new ClienteDTO(dameIDcliente(), nombreTexto.trim(),
 						this.ventanaClientes.getTxtCUIT().getText().trim(),
 						this.ventanaClientes.getTxtDireccion().getText().trim(),
 						this.ventanaClientes.getTxtTelEmpresa().getText().trim(),
@@ -340,17 +346,33 @@ public class ControladorCliente implements ActionListener, MouseListener {
 						this.ventanaClientes.getTxtTelContacto().getText().trim(),
 						emailTexto != null ? emailTexto.trim() : "",
 						tipoDoc, condIva, tipoPer);
+				SucursalDTO s = SucursalDefault(c.getId());
+				boolean okC = this.agenda.agregarClientes(c);
+				boolean okS = okC && this.agenda.agregarSucursal(s);
+				if (!okS) {
+					if (okC) {
+						this.agenda.borrarCliente(c);
+					}
+					return false;
+				}
+				clienteHolder[0] = c;
+				sucursalHolder[0] = s;
+				return true;
+			});
+			if (!altaOk) {
+				JOptionPane.showMessageDialog(null,
+						"No se pudo guardar el cliente: otro usuario dio de alta un registro al mismo tiempo.\nReintente la operación.",
+						"Error al guardar Cliente", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			nuevoCliente = clienteHolder[0];
+			sucursalDefault = sucursalHolder[0];
 
-				sucursalDefault = SucursalDefault(nuevoCliente.getId());
+			// Sync a FacturaSoft
+			sincronizarConFacturaSoft(nuevoCliente);
 
-				this.agenda.agregarClientes(nuevoCliente);
-				this.agenda.agregarSucursal(sucursalDefault);
-
-				// Sync a FacturaSoft
-				sincronizarConFacturaSoft(nuevoCliente);
-
-				// Finalizar operación
-				finalizarOperacion();
+			// Finalizar operación
+			finalizarOperacion();
 
 			} else if (editando && clienteElegido != null) {
 				// *** MODO EDITAR CLIENTE ***
@@ -775,15 +797,30 @@ public class ControladorCliente implements ActionListener, MouseListener {
 						return;
 					}
 
-					SucursalDTO nuevaSucursal = new SucursalDTO(dameIDsucursal(), nombreTexto.trim(),
+				// Alta con reintento ante IDs concurrentes (MAX()+1): cada intento
+				// recalcula el ID; es un insert unico asi que no requiere compensacion.
+				final SucursalDTO[] sucursalHolder = new SucursalDTO[1];
+				boolean sucOk = ReintentoAlta.reintentar(3, () -> {
+					SucursalDTO s = new SucursalDTO(dameIDsucursal(), nombreTexto.trim(),
 							clienteElegido.getId(), this.ventanaSucursales.getTxtDireccion().getText().trim(),
 							this.ventanaSucursales.getTxtContacto().getText().trim(),
 							this.ventanaSucursales.getTxtTelContacto().getText().trim(),
 							this.ventanaSucursales.getTxtCorreo().getText().trim());
+					if (!this.agenda.agregarSucursal(s)) {
+						return false;
+					}
+					sucursalHolder[0] = s;
+					return true;
+				});
+				if (!sucOk) {
+					JOptionPane.showMessageDialog(null,
+							"No se pudo guardar la sucursal: otro usuario dio de alta un registro al mismo tiempo.\nReintente la operación.",
+							"Error al guardar Sucursal", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				SucursalDTO nuevaSucursal = sucursalHolder[0];
 
-					this.agenda.agregarSucursal(nuevaSucursal);
-
-					finalizarOperacionSucursal();
+				finalizarOperacionSucursal();
 
 				} else if (editandoSucursal && sucursalElegida != null) {
 

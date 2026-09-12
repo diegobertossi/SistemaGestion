@@ -27,6 +27,7 @@ import dto.RegistroEntradaReporteDTO;
 import modelo.Agenda;
 import presentacion.controlador.ControladorReparacion;
 import presentacion.vista.VentanaAgregarEquipo;
+import util.ReintentoAlta;
 import presentacion.reportes.ReporteRegistroEntrada;
 
 /**
@@ -322,11 +323,38 @@ public class GestorAgregarEquipo {
         if (opcion != JOptionPane.YES_OPTION) return;
         
         try {
-            ReparacionDTO nuevoReparacion = gestorDatos.extraerDatosAgregar(ventanaAgregarEquipo, 
-                idClienteSeleccionado, idSucursalSeleccionada);
-            
+            // Alta con reintento ante ELS/IDs concurrentes (MAX()+1): cada intento
+            // usa ELS fresco (y actualiza la ventana, que lo usa el registro PDF)
+            // e IdEquipo fresco; ante fallo parcial se compensa borrando SOLO lo
+            // que ese mismo intento inserto. Nada fuera de la BD dentro del loop.
+            final ReparacionDTO[] dtoHolder = new ReparacionDTO[1];
+            boolean guardadoOk = ReintentoAlta.reintentar(3, () -> {
+                int elsFresco = obtenerNumeroELS();
+                ventanaAgregarEquipo.setTextELS(Integer.toString(elsFresco));
+                ReparacionDTO dto = gestorDatos.extraerDatosAgregar(ventanaAgregarEquipo,
+                    idClienteSeleccionado, idSucursalSeleccionada);
+                if (dto == null) {
+                    return false;
+                }
+                boolean okEq = agenda.agregarEquipoR(dto);
+                boolean okRep = okEq && agenda.agregarSoloReparacion(dto);
+                if (!okRep) {
+                    if (okEq) {
+                        agenda.borraEquipo(dto.getIDEquipo());
+                    }
+                    return false;
+                }
+                dtoHolder[0] = dto;
+                return true;
+            });
+            if (!guardadoOk) {
+                JOptionPane.showMessageDialog(null,
+                    "No se pudo guardar el equipo: otro usuario dio de alta un registro al mismo tiempo.\nReintente la operación.",
+                    "Error al guardar", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            ReparacionDTO nuevoReparacion = dtoHolder[0];
             if (nuevoReparacion != null) {
-                agenda.agregarReparacionR(nuevoReparacion);
                 
                 // Deshabilitar campos
                 deshabilitarCamposPostGuardado();

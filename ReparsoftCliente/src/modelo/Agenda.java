@@ -140,8 +140,8 @@ public class Agenda {
 	}
 
 	// CLIENTES
-	public void agregarClientes(ClienteDTO nuevoCliente) {
-		Cliente.insert(nuevoCliente);
+	public boolean agregarClientes(ClienteDTO nuevoCliente) {
+		return Cliente.insert(nuevoCliente);
 	}
 
 	public void editarClientes(ClienteDTO Clienteeditado) {
@@ -197,8 +197,8 @@ public class Agenda {
 	}
 
 	// SUCURSALES
-	public void agregarSucursal(SucursalDTO nuevaSucursal) {
-		Sucursal.insert(nuevaSucursal);
+	public boolean agregarSucursal(SucursalDTO nuevaSucursal) {
+		return Sucursal.insert(nuevaSucursal);
 	}
 
 	public void borrarSucursal(SucursalDTO Sucursal_a_eliminar) {
@@ -295,9 +295,21 @@ public class Agenda {
 	}
 
 	// REPARACIONES
-	public void agregarReparacionR(ReparacionDTO nuevaReparacion) {
-		ReparacionR.insertEquipo(nuevaReparacion);
-		ReparacionR.insert(nuevaReparacion);
+	public boolean agregarReparacionR(ReparacionDTO nuevaReparacion) {
+		if (!ReparacionR.insertEquipo(nuevaReparacion)) {
+			return false;
+		}
+		return ReparacionR.insert(nuevaReparacion);
+	}
+
+	// Alta por pasos (para reintentos ante IDs concurrentes: permite compensar
+	// con precision segun que paso fallo)
+	public boolean agregarEquipoR(ReparacionDTO nuevaReparacion) {
+		return ReparacionR.insertEquipo(nuevaReparacion);
+	}
+
+	public boolean agregarSoloReparacion(ReparacionDTO nuevaReparacion) {
+		return ReparacionR.insert(nuevaReparacion);
 	}
 
 	public void editarReparacionR(ReparacionDTO Reparacion_a_editar) {
@@ -340,6 +352,10 @@ public class Agenda {
 
 	public void borraReparacion(ReparacionDTO Reparacion_a_eliminar) {
 		ReparacionR.delete(Reparacion_a_eliminar);
+	}
+
+	public boolean borraEquipo(int idEquipo) {
+		return ReparacionR.deleteEquipo(idEquipo);
 	}
 
 	public List<ReparacionDTO> obtenerReparacion() {
@@ -675,8 +691,8 @@ public class Agenda {
 	}
 
 	// REMITOS
-	public void agregarRemito(RemitoDTO nuevoRemito) {
-		remito.insert(nuevoRemito);
+	public boolean agregarRemito(RemitoDTO nuevoRemito) {
+		return remito.insert(nuevoRemito);
 	}
 
 	public void ListarUbicacion(JComboBox<?> comboUbicacion) {

@@ -25,6 +25,7 @@ import net.sf.jasperreports.view.JasperViewer;
 import dto.RemitoDTO;
 import modelo.Agenda;
 import persistencia.dao.mysql.LogDAO;
+import util.NombresArchivos;
 import util.RutasSistema;
 
 @SuppressWarnings("deprecation")
@@ -134,7 +135,7 @@ public class ReporteRemitoSalida {
 
 	@SuppressWarnings("rawtypes")
 	public boolean guardar() {
-		nombreArchivoPDF = NumeroRemito + "-" + ubicacionRemito + "_" + NombreCliente + ".pdf";
+		nombreArchivoPDF = NombresArchivos.pdfRemito(NumeroRemito, ubicacionRemito, NombreCliente);
 		String ubicacionSistema = agenda.getUbicacionBase();
 
 		if (ubicacionSistema.compareTo("Bariloche") == 0) {

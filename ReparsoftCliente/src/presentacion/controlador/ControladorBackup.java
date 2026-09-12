@@ -109,6 +109,33 @@ public class ControladorBackup implements ActionListener, MouseListener {
 		return "ordenesbrc"; // fallback
 	}
 
+	/**
+	 * Gate para las operaciones destructivas (import/restore): exige el codigo de
+	 * seguridad y advierte que los demas usuarios concurrentes veran errores
+	 * mientras la base se reemplaza. Devuelve true solo si se autoriza.
+	 */
+	private boolean pedirCodigoSeguridadRestore() {
+		javax.swing.JPasswordField campo = new javax.swing.JPasswordField();
+		int r = JOptionPane.showConfirmDialog(ventanaBackUp,
+				new Object[] {
+						"Esta operación REEMPLAZA la base de datos local.\n"
+								+ "Si hay otros usuarios trabajando (Escritorio Remoto),\n"
+								+ "avíseles antes de continuar: verán errores hasta que termine.\n\n"
+								+ "Ingrese el código de seguridad para autorizar:",
+						campo },
+				"Restaurar base de datos", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+		if (r != JOptionPane.OK_OPTION) {
+			return false;
+		}
+		String codigo = new String(campo.getPassword());
+		if (codigo.compareTo(Config.get("security.codigo.acceso", "0000")) != 0) {
+			JOptionPane.showMessageDialog(ventanaBackUp, "Código incorrecto.", "Acceso denegado",
+					JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
 	@SuppressWarnings({ "deprecation", "unused" })
 	public void actionPerformed(ActionEvent e) {
 
@@ -155,17 +182,18 @@ public class ControladorBackup implements ActionListener, MouseListener {
 
 		if (ventanaBackUp != null && e.getSource() == ventanaBackUp.getBtnImportarB()) {
 			if (seleccion == ventanaBackUp.getRdbtnLocal().getModel()) {
+				if (!pedirCodigoSeguridadRestore()) {
+					return;
+				}
 				ventanaBackUp.dispose();
 				ActualizarBackupMySQLlocal();
 			} else if (seleccion == ventanaBackUp.getRdbtnRemoto().getModel()) {
-				int opcion = JOptionPane.showConfirmDialog(null,
-						"Se sobreescribirá la base de datos local. ¿Desea continuar?", "Confirmar Importación Remota",
-						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-				if (opcion == JOptionPane.YES_OPTION) {
-					ventanaBackUp.dispose();
-					ActualizarBackupMySQLremotoConSwingWorker(agenda.getUbicacionBase(), cleverCloudHost,
-							cleverCloudPort, cleverCloudUser, cleverCloudPassword, cleverCloudDatabase);
+				if (!pedirCodigoSeguridadRestore()) {
+					return;
 				}
+				ventanaBackUp.dispose();
+				ActualizarBackupMySQLremotoConSwingWorker(agenda.getUbicacionBase(), cleverCloudHost,
+						cleverCloudPort, cleverCloudUser, cleverCloudPassword, cleverCloudDatabase);
 			} else {
 				JOptionPane.showMessageDialog(null, "Seleccione una ubicación");
 			}

@@ -37,6 +37,8 @@ public interface ReparacionDAO
 	public boolean editEquipo(ReparacionDTO reparacion_a_editar);
 		
 	public boolean delete(ReparacionDTO Reparacion_a_eliminar);
+
+	public boolean deleteEquipo(int idEquipo);
 	
 	public List<ReparacionDTO> readAll();
 	

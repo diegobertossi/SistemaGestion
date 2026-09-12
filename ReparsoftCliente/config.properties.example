@@ -61,3 +61,12 @@ files.excel.export.path=F:/els/export
 
 # --- Seguridad ---
 security.codigo.acceso=0000
+
+# --- Sistema ---
+# Modo inicial de carpetas (RutasSistema) para perfiles de Windows que aun no
+# eligieron con el boton PRUEBA/PRODUCCION: prueba | produccion.
+# En el servidor multi-usuario usar produccion.
+sistema.modo.default=prueba
+# Override opcional de BD para simulacion/testing (Conexion): si se define,
+# esa sede apunta a la BD indicada en vez de la productiva. Omitir en produccion.
+#db.database.bariloche=ordenesbrc_sim

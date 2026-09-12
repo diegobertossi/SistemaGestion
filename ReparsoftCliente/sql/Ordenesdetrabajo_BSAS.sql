@@ -186,8 +186,8 @@ CREATE TABLE `usuario` (
 
 
 INSERT INTO `usuario` (`idUsuario`, `idRol`, `dni`,`nombre`, `apellido`, `telefono`, `email`, `login`, `pass`) VALUES ( 1,0,0,'','','','','','');
-INSERT INTO `usuario` (`idUsuario`, `idRol`, `dni`,`nombre`, `apellido`, `telefono`, `email`, `login`, `pass`) VALUES ( 2,1,30925503,'Diego','Bertossi','1137688372','diego.bertossi@elsweb.com.ar','diego','1234');
-INSERT INTO `usuario` (`idUsuario`, `idRol`, `dni`,`nombre`, `apellido`, `telefono`, `email`, `login`, `pass`) VALUES (6,4,11111111,'Sergio','Fernández','5492235969934','sergio.fernandez@elsweb.com.ar','sfernandez','123456');
+INSERT INTO `usuario` (`idUsuario`, `idRol`, `dni`,`nombre`, `apellido`, `telefono`, `email`, `login`, `pass`) VALUES ( 2,1,30925503,'Diego','Bertossi','1137688372','diego.bertossi@elsweb.com.ar','diego','udr/WuL1wJcvitckk+koDQ==');
+INSERT INTO `usuario` (`idUsuario`, `idRol`, `dni`,`nombre`, `apellido`, `telefono`, `email`, `login`, `pass`) VALUES (6,4,11111111,'Sergio','Fernández','5492235969934','sergio.fernandez@elsweb.com.ar','sergio','OpePm5KRXd3PiEvSdvuQ5g==');
 
 
 

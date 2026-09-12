@@ -26,6 +26,7 @@ import net.sf.jasperreports.view.JasperViewer;
 import dto.RegistroPresupuestoDTO;
 import modelo.Agenda;
 import persistencia.dao.mysql.LogDAO;
+import util.NombresArchivos;
 import util.RutasSistema;
 
 @SuppressWarnings("deprecation")
@@ -103,7 +104,7 @@ public class ReportePresupuesto {
 
 	@SuppressWarnings("rawtypes")
 	public boolean guardar() {
-		nombreArchivoPDF = "Presupuesto ELS_" + ELS + "_" + Cliente + ".pdf";
+		nombreArchivoPDF = NombresArchivos.pdfPresupuesto(ELS, Cliente);
 
 		if (agenda.getUbicacionBase().compareTo("Bariloche") == 0) {
 			outFileName = RutasSistema.adaptar("F:\\ELS\\Bariloche\\Administracion\\Sistema\\Presupuestos PDF\\") + nombreArchivoPDF;
